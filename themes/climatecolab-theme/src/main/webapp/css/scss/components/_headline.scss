@@ -74,7 +74,7 @@
 .headline .days-left span {
   font-size: 24px;
   font-weight: 700;
-  color: $accent-color;
+  color: $t-Color__accent;
   padding-right: 5px;
   vertical-align: middle;
 }
@@ -88,7 +88,7 @@
   padding: 10px 10px;
   border-top: 1px dashed #00f;
   border-bottom: 1px dashed #00f;
-  background: $primary-light-grey;
+  background: $t-Color__primary_grey--light;
   text-align: center;
 }
 
@@ -107,14 +107,14 @@
   display: inline;
   width: auto;
   font-weight: 400;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 .headline h2 span {
   font-size: 33px;
   vertical-align: middle;
   font-weight: 700;
-  color: $secondary-color;
+  color: $t-Color__secondary;
 }
 
 .subhead .right {

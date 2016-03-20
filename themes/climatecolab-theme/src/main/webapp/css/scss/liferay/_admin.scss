@@ -14,8 +14,8 @@ div#p_p_id_145_ {
 
 #p_p_id_145_ div.navbar-inner {
   width: 100%;
-  @include background-gradient($primary-color);
-  color: contrasting-color($primary-color);
+  @include background-gradient($t-Color__primary);
+  color: contrasting-color($t-Color__primary);
 }
 
 #p_p_id_145_ div.container > div {
@@ -52,7 +52,7 @@ div#p_p_id_145_ {
 
 #p_p_id_145_ li.open ul {
   display: block;
-  background-color: $primary-color;
+  background-color: $t-Color__primary;
 }
 
 #p_p_id_145_ ul.nav.nav-account-controls li.dropdown a {
@@ -69,7 +69,7 @@ div#p_p_id_145_ {
 }
 
 #p_p_id_145_ ul.nav.nav-add-controls li > a {
-  background: $primary-color;
+  background: $t-Color__primary;
   border: 1px solid;
   border-radius: 3px;
   padding-top: 2px;
@@ -155,7 +155,7 @@ div#p_p_id_145_ {
 
 .savechanges h4 {
   font-size: 22px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   margin-bottom: 20px;
   font-weight: 400;
 }
@@ -183,7 +183,7 @@ div#p_p_id_145_ {
 }
 
 .admin_box {
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
   padding: 18px 20px;
   margin: 10px 0 40px 0;
 }
@@ -210,7 +210,7 @@ div#p_p_id_145_ {
 }
 
 .adm2 tr.t td {
-  border-bottom: 1px solid $darkest-grey;
+  border-bottom: 1px solid $t-Color__grey--darkest;
   padding-bottom: 5px;
   padding-left: 10px;
 }

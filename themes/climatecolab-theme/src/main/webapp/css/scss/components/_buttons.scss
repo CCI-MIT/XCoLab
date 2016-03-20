@@ -22,23 +22,23 @@
   }
   @extend %base-button;
 
-  color: contrasting-color($button-color, white, $darkest-grey, $text-threshold);
+  color: contrasting-color($button-color, white, $t-Color__grey--darkest, $t-Text__threshold);
   @include background-gradient($button-color, $image-url, 40px);
   text-shadow: 1px 1px 0 darken($button-color, 25%);
   border: 1px solid $border-color;
 
   &:hover {
-    color: contrasting-color(darken($button-color, 10%), white, $darkest-grey, $text-threshold);
+    color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
     @include background-gradient(darken($button-color, 10%), $image-url, 40px);
   }
 }
 
 //blue-button.a is for legacy support (e.g. ice faclet portlets)
 a.primary-button, .blue-button a, input.primary-button {
-  @include theme-button($primary-color, $primary-dark);
+  @include theme-button($t-Color__primary, $t-Color__primary--dark);
 }
 
 //gray-button.a is for legacy support (e.g. ice faclet portlets)
 a.grey-button, .gray-button a, input.grey-button {
-  @include theme-button($medium-grey, $dark-grey);
+  @include theme-button($t-Color__grey--medium, $t-Color__grey--dark);
 }

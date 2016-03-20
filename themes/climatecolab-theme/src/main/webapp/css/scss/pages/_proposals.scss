@@ -4,7 +4,7 @@
 .proposal-head {
   padding-top: 28px;
   background: url(../images/pattern-6x6-blue.png);
-  border-bottom: 1px solid $medium-grey;
+  border-bottom: 1px solid $t-Color__grey--medium;
 }
 
 .proposal-head:after {
@@ -75,7 +75,7 @@
   display: inline-block;
   font-size: 13px;
   color: white;
-  background: $primary-color;
+  background: $t-Color__primary;
   text-transform: uppercase;
   font-weight: 700;
   @include border-top-left-radius(5px);
@@ -86,20 +86,20 @@
 .prop-tabs li a:hover {
   height: 24px;
   padding: 12px 11px 1px;
-  background: $primary-darkest;
-  border-top: 1px solid $medium-grey;
-  border-left: 1px solid $medium-grey;
-  border-right: 1px solid $medium-grey;
+  background: $t-Color__primary--darkest;
+  border-top: 1px solid $t-Color__grey--medium;
+  border-left: 1px solid $t-Color__grey--medium;
+  border-right: 1px solid $t-Color__grey--medium;
 }
 
 .prop-tabs li.c a {
   height: 25px;
   padding: 12px 11px 0;
-  color: $primary-color;
+  color: $t-Color__primary;
   background: white;
-  border-top: 1px solid $medium-grey;
-  border-left: 1px solid $medium-grey;
-  border-right: 1px solid $medium-grey;
+  border-top: 1px solid $t-Color__grey--medium;
+  border-left: 1px solid $t-Color__grey--medium;
+  border-right: 1px solid $t-Color__grey--medium;
 }
 
 .prop-tabs li a div {
@@ -107,7 +107,7 @@
   text-align: center;
   font: 12px Arial, Helvetica, sans-serif;
   color: white;
-  background: $primary-darkest;
+  background: $t-Color__primary--darkest;
   padding: 0 5px;
   margin-left: 5px;
   @include border-radius(8px);
@@ -121,7 +121,7 @@
   text-align: center;
   font: 12px Arial, Helvetica, sans-serif;
   color: white;
-  background: $primary-darkest;
+  background: $t-Color__primary--darkest;
   padding: 0 5px;
   margin-left: 5px;
   @include border-radius(8px);
@@ -160,14 +160,14 @@
   padding: 3px 10px 0;
   margin-right: 5px;
   display: inline-block;
-  background: $primary-darkest;
+  background: $t-Color__primary--darkest;
   font-size: 14px;
   color: white;
   @include border-radius(3px);
 }
 
 .edit-prop-butts span {
-  background: $light-grey;
+  background: $t-Color__grey--light;
   font-weight: 700;
 }
 
@@ -192,7 +192,7 @@
 
 .prop-left h2 {
   font-size: 27px;
-  color: $secondary-color;
+  color: $t-Color__secondary;
   margin: 10px 0 16px;
   text-align: justify;
 }
@@ -200,11 +200,11 @@
 .prop-left h3 {
   font-size: 22px;
   margin-bottom: 13px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 .prop-left p {
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
 }
 
 .prop-left p.intro {
@@ -213,19 +213,19 @@
 }
 
 .div1 {
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
   height: 6px;
   margin: 30px 0 30px;
 }
 
 .div2 {
-  background: $light-grey;
+  background: $t-Color__grey--light;
   height: 1px;
   margin: 38px 0 30px;
 }
 
 .div3 {
-  border-top: 1px dotted $medium-grey;
+  border-top: 1px dotted $t-Color__grey--medium;
   height: 1px;
 }
 
@@ -233,12 +233,12 @@
 .propbox {
   clear: both;
   padding: 0 0 8px 14px;
-  border-bottom: 1px solid $lightest-grey;
+  border-bottom: 1px solid $t-Color__grey--lightest;
 }
 
 .propbox.featured {
-  background: $lightest-grey;
-  border-bottom: 1px solid $light-grey;
+  background: $t-Color__grey--lightest;
+  border-bottom: 1px solid $t-Color__grey--light;
 }
 
 .propbox.top {
@@ -252,7 +252,7 @@
 
 .propbox .row2 {
   font-size: 13px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   clear: both;
 }
 
@@ -280,7 +280,7 @@
   float: left;
   display: inline;
   font-weight: 700;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 .propbox h4 span {
@@ -298,12 +298,12 @@
 }
 
 .thumbbox {
-  background: url(../images/icon-proposal-support.png) no-repeat 11px 5px $lightest-grey;
+  background: url(../images/icon-proposal-support.png) no-repeat 11px 5px $t-Color__grey--lightest;
   margin-right: 6px;
 }
 
 .voteboxsmall {
-  background: url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px $lightest-grey;
+  background: url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px $t-Color__grey--lightest;
   margin-right: 6px;
 }
 
@@ -330,11 +330,11 @@
 }
 
 .propbox-red {
-  background-color: $alert-color !important;
+  background-color: $t-Color__alert !important;
 }
 
 .propbox-green {
-  background-color: $secondary-light !important;
+  background-color: $t-Color__secondary--light !important;
 }
 
 /* right column */
@@ -351,21 +351,21 @@
 
 .votebox-shade {
   width: 331px;
-  background: $light-grey;
+  background: $t-Color__grey--light;
   margin: 3px 0 0 3px;
 }
 
 .votebox {
   width: 331px;
-  background: $lightest-grey;
-  border: 1px solid $light-grey;
+  background: $t-Color__grey--lightest;
+  border: 1px solid $t-Color__grey--light;
   position: relative;
   top: -5px;
   left: -5px;
 }
 
 .votebox-top {
-  border-bottom: 1px dotted $medium-grey;
+  border-bottom: 1px dotted $t-Color__grey--medium;
   padding: 10px 10px 20px 18px;
 }
 
@@ -374,12 +374,12 @@
   width: 260px;
   padding-top: 17px;
   font-size: 27px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 .votebox-top .vote span {
   font-size: 33px;
-  color: $secondary-color;
+  color: $t-Color__secondary;
   font-weight: 700;
 }
 
@@ -400,8 +400,8 @@
 
 .votebox-bottom {
   font-size: 16px;
-  color: $dark-grey;
-  background: $lightest-grey;
+  color: $t-Color__grey--dark;
+  background: $t-Color__grey--lightest;
   padding: 14px 0 17px 18px;
 }
 
@@ -436,7 +436,7 @@
   padding: 10px 0 10px 12px;
   line-height: normal;
   text-transform: uppercase;
-  color: $secondary-color;
+  color: $t-Color__secondary;
 }
 
 .prop-right h5.toppad {
@@ -446,15 +446,15 @@
 .prop-right h5.topbox {
   padding: 10px 0 10px 12px;
   margin-bottom: 9px;
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
   font-size: 13px;
-  color: $medium-grey;
-  border-top: 1px dotted $medium-grey;
+  color: $t-Color__grey--medium;
+  border-top: 1px dotted $t-Color__grey--medium;
 }
 
 .prop-title {
-  background: $lightest-grey;
-  border-bottom: 1px solid $light-grey;
+  background: $t-Color__grey--lightest;
+  border-bottom: 1px solid $t-Color__grey--light;
   line-height: 21px;
   color: black;
   padding: 13px 18px 13px 12px;
@@ -478,9 +478,9 @@
 }
 
 .prop-contest {
-  background: $lightest-grey;
-  border-top: 1px solid $light-grey;
-  border-bottom: 1px solid $light-grey;
+  background: $t-Color__grey--lightest;
+  border-top: 1px solid $t-Color__grey--light;
+  border-bottom: 1px solid $t-Color__grey--light;
   font-size: 13px;
   line-height: 18px;
   color: black;
@@ -489,8 +489,8 @@
 }
 
 .prop-settings {
-  background: $lightest-grey;
-  border-bottom: 1px solid $light-grey;
+  background: $t-Color__grey--lightest;
+  border-bottom: 1px solid $t-Color__grey--light;
   font-size: 13px;
   line-height: 18px;
   color: black;
@@ -504,7 +504,7 @@
 .prop-results div {
   font-size: 13px;
   line-height: 16px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   margin-bottom: 10px;
 }
 
@@ -518,7 +518,7 @@
 }
 
 .contributors td {
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   padding: 6px 10px;
   vertical-align: middle;
 }
@@ -533,7 +533,7 @@
 }
 
 .contributors tr.odd td {
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
 }
 
 .contributors tr.bottom td {
@@ -543,7 +543,7 @@
 
 /* add proposal boxes */
 .addpropbox {
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
   @include border-radius(12px);
   padding: 13px 15px 12px 12px;
   margin-bottom: 13px;
@@ -571,7 +571,7 @@
 }
 
 .addpropbox.blue {
-  background: $primary-light-grey;
+  background: $t-Color__primary_grey--light;
 }
 
 /* form fields */
@@ -580,7 +580,7 @@
   width: 110px;
   display: inline-block;
   font-size: 16px;
-  color: $medium-grey;
+  color: $t-Color__grey--medium;
 }
 
 .addpropform label strong, .addpropform .blue span {
@@ -594,7 +594,7 @@
 
 .addpropform input, .addpropform textarea {
   float: right;
-  border: 1px solid $medium-grey;
+  border: 1px solid $t-Color__grey--medium;
   font-size: 16px;
 }
 
@@ -611,7 +611,7 @@
 
 .addpropform .notation {
   font-size: 15px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   margin: 1px 0 25px 12px;
 }
 
@@ -640,7 +640,7 @@
   float: right;
   width: 454px;
   padding: 0 0 5px 11px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
 }
 
 .proposals #contactForm {
@@ -676,12 +676,12 @@
 }
 
 .historyTable .even td, #proposalPickerTable .ui-datatable-odd {
-  background-color: $lightest-grey;
+  background-color: $t-Color__grey--lightest;
 
 }
 
 .historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
-  color: $secondary-color !important;
+  color: $t-Color__secondary !important;
 }
 
 //TODO: popup?
@@ -720,7 +720,7 @@
   font-size: 10px;
 
   > div {
-    background: $primary-color;
+    background: $t-Color__primary;
     padding: 3px;
     width: 185px;
     color: white;
@@ -740,7 +740,7 @@
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid $primary-dark;
+    border-bottom: 5px solid $t-Color__primary--dark;
   }
 
   //bottom corner
@@ -753,6 +753,6 @@
     height: 0;
     border-bottom: 5px solid transparent;
     border-top: 5px solid transparent;
-    border-left: 5px solid $primary-dark;
+    border-left: 5px solid $t-Color__primary--dark;
   }
 }

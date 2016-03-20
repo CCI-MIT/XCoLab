@@ -1,21 +1,21 @@
 .alert {
   padding: 4px 14px 4px 14px;
   margin: 10px auto;
-  background-color: $lightest-grey;
-  border: 1px solid $light-grey;
+  background-color: $t-Color__grey--lightest;
+  border: 1px solid $t-Color__grey--light;
   @include border-radius(4px);
   font-size: 12px;
   display: inline-block;
 }
 
 .alert-danger, .alert-error {
-  color: $alert-color;
-  background-color: $alert-light;
-  border-color: $lightest-grey;
+  color: $t-Color__alert;
+  background-color: $t-Color__alert--light;
+  border-color: $t-Color__grey--lightest;
 }
 
 %message {
-  border: 1px dashed $dark-grey;
+  border: 1px dashed $t-Color__grey--dark;
   border-left: 0;
   border-right: 0;
   padding: 10px 10px;
@@ -28,15 +28,15 @@
 
 .error-message {
   @extend %message;
-  background: $alert-light;
+  background: $t-Color__alert--light;
 }
 
 .info-message {
   @extend %message;
-  background: $info-background;
+  background: $t-Color__info__background;
 }
 
 .success-message {
   @extend %message;
-  background: $success-background;
+  background: $t-Color__success__background;
 }

@@ -1,12 +1,12 @@
 $c-Helpbox__borderRadius: 10px !default;
 $c-Helpbox__backgroundColor: white !default;
-$c-Helpbox__borderColor: $primary-dark-grey !default;
+$c-Helpbox__borderColor: $t-Color__primary__grey--dark !default;
 
 $c-Helpbox__header_background: url(../images/grid_t.gif) !default;
 
-$c-Helpbox__header__title__textColor: $secondary-color !default;
+$c-Helpbox__header__title__textColor: $t-Color__secondary !default;
 
-$c-Helpbox__text__textColor: $darkest-grey;
+$c-Helpbox__text__textColor: $t-Color__grey--darkest;
 
 
 .c-Helpbox {

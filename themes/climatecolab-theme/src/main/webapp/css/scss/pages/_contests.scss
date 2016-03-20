@@ -16,8 +16,8 @@
   float: left;
   height: 34px;
   line-height: 34px;
-  background: $lightest-grey;
-  border: solid 1px $medium-grey;
+  background: $t-Color__grey--lightest;
+  border: solid 1px $t-Color__grey--medium;
   @include border-radius(6px);
   margin-right: 16px;
   font-size: 12px;
@@ -44,7 +44,7 @@
     background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
 
     &.selected {
-      background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $primary-color;
+      background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $t-Color__primary;
     }
   }
 
@@ -52,7 +52,7 @@
     background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
 
     &.selected {
-      background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px $primary-color;
+      background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px $t-Color__primary;
     }
   }
 
@@ -60,7 +60,7 @@
     background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
 
     &.selected {
-      background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $primary-color;
+      background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $t-Color__primary;
     }
   }
 }
@@ -78,7 +78,7 @@ table.contest-list-view {
   td {
     font-size: 14px;
     line-height: 20px;
-    border-bottom: 1px solid $lightest-grey;
+    border-bottom: 1px solid $t-Color__grey--lightest;
 
     &.odd {
       background-image: url(../images/pattern-tbl-6x6.png);
@@ -86,7 +86,7 @@ table.contest-list-view {
   }
 
   .featured td {
-    background-color: $lightest-grey;
+    background-color: $t-Color__grey--lightest;
   }
 
   a {
@@ -162,7 +162,7 @@ table.contest-list-view {
   width: 170px;
   height: 27px;
   padding: 1px 0 0 8px;
-  border: 1px solid $light-grey;
+  border: 1px solid $t-Color__grey--light;
   font: 12px "Lucida Grande", Arial, sans-serif;
 }
 
@@ -195,7 +195,7 @@ table.contest-list-view {
 .contestbox {
   width: 452px;
   height: 152px;
-  border: 4px solid $lightest-grey;
+  border: 4px solid $t-Color__grey--lightest;
   background: white;
   padding: 9px 8px;
   margin-bottom: 24px;
@@ -215,20 +215,20 @@ table.contest-list-view {
   font-size: 14px;
   padding-top: 3px;
   line-height: 20px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   position: relative;
 }
 
 .contestbox h3 {
   margin-bottom: 8px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 .contestbox .count {
   position: absolute;
   top: 128px;
   left: 0;
-  color: $medium-grey;
+  color: $t-Color__grey--medium;
 }
 
 .contest-featured-seperator {
@@ -282,14 +282,14 @@ table.contest-list-view {
 
 /* top section of the contests page under the headline, above the sub-headline */
 .contest-detail {
-  background-color: $lightest-grey;
-  border-bottom: 1px solid $light-grey;
+  background-color: $t-Color__grey--lightest;
+  border-bottom: 1px solid $t-Color__grey--light;
   margin-top: -4px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 .contest-detail .heading {
-  background: url(../images/pattern-6x6-lite.png) darken($lightest-grey, 7);
+  background: url(../images/pattern-6x6-lite.png) darken($t-Color__grey--lightest, 7);
   min-height: 24px;
   padding: 7px 0 5px 20px;
   font-size: 22px;
@@ -358,7 +358,7 @@ table.contest-list-view {
   font-size: 14px;
   font-weight: 700;
   padding-top: 0;
-  color: $medium-grey;
+  color: $t-Color__grey--medium;
   float: left;
 }
 
@@ -389,8 +389,8 @@ table.contest-list-view {
   display: inline-block;
   padding-top: 8px;
   margin-left: 3px;
-  background: $primary-light-grey;
-  border: 1px solid $primary-dark-grey;
+  background: $t-Color__primary_grey--light;
+  border: 1px solid $t-Color__primary__grey--dark;
   font-size: 16px;
   font-weight: 700;
   text-align: center;
@@ -410,8 +410,8 @@ table.contest-list-view {
   padding: 11px 10px 0;
   font-size: 14px;
   line-height: 20px;
-  color: $darkest-grey;
-  border-bottom: 1px solid $lightest-grey;
+  color: $t-Color__grey--darkest;
+  border-bottom: 1px solid $t-Color__grey--lightest;
 }
 
 .userslist a {
@@ -428,11 +428,11 @@ table.contest-list-view {
 }
 
 .userslist.featured td {
-  background-color: $lightest-grey;
+  background-color: $t-Color__grey--lightest;
 }
 
 .userslist tr.feat-bot {
-  border-bottom: 1px solid $primary-grey;
+  border-bottom: 1px solid $t-Color__primary_grey;
 }
 
 //TODO: these also somewhat relate to blueheaderbar
@@ -457,7 +457,7 @@ table.contest-list-view {
 }
 
 .contestbar .phaseFuture {
-  color: $medium-grey;
+  color: $t-Color__grey--medium;
 }
 
 .phaseLinkContainer {
@@ -467,7 +467,7 @@ table.contest-list-view {
 }
 
 #priorActiveAllWidget {
-  border: 1px solid $primary-color;
+  border: 1px solid $t-Color__primary;
   -moz-box-shadow: 0 2px 2px #666;
   -webkit-box-shadow: 0 2px 2px #666;
   box-shadow: 0 2px 2px #666;
@@ -494,12 +494,12 @@ table.contest-list-view {
 
 #priorActiveAllWidget ul li.active,
 #priorActiveAllWidget ul li:hover {
-  background: $primary-light-grey;
+  background: $t-Color__primary_grey--light;
 }
 
 #priorActiveAllWidget ul li.active,
 #priorActiveAllWidget ul li:hover {
-  background: $primary-light-grey;
+  background: $t-Color__primary_grey--light;
 }
 
 #priorActiveAllWidget ul li a,
@@ -549,7 +549,7 @@ table.contest-list-view {
   display: inline-block;
 
   color: white;
-  box-shadow: 2px 2px 1px $dark-grey;
+  box-shadow: 2px 2px 1px $t-Color__grey--dark;
 
   position: absolute;
   top: 115px;
@@ -567,18 +567,18 @@ table.contest-list-view {
 
 .contest-flag-color {
   @extend %contest-flag;
-  @include background-gradient($secondary-color);
+  @include background-gradient($t-Color__secondary);
   &:after {
-    border: 1px solid $secondary-light;
+    border: 1px solid $t-Color__secondary--light;
     border-left: 0;
   }
 }
 
 .contest-flag-grey {
   @extend %contest-flag;
-  @include background-gradient($medium-grey);
+  @include background-gradient($t-Color__grey--medium);
   &:after {
-    border: 1px solid $light-grey;
+    border: 1px solid $t-Color__grey--light;
     border-left: 0;
   }
 }

@@ -92,7 +92,7 @@ header.portlet-topper {
 
 .aui .lfr-icon-action a {
   background: white;
-  border: 2px solid $medium-grey;
+  border: 2px solid $t-Color__grey--medium;
   padding: 5px;
   margin: 5px;
   color: black;
@@ -100,7 +100,7 @@ header.portlet-topper {
 }
 
 .aui .lfr-icon-action a:hover {
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
 }
 
 .aui .lfr-icon-menu ul.dropdown-menu li {

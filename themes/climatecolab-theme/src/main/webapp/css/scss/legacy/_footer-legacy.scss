@@ -4,12 +4,12 @@
 
 #footer {
   height: 190px;
-  background: url(../images/bg-noise.png) $lightest-grey;
+  background: url(../images/bg-noise.png) $t-Color__grey--lightest;
 }
 
 #footmenu {
   height: 49px;
-  @include background(url(../images/bg-noise.png), simple-gradient($dark-grey));
+  @include background(url(../images/bg-noise.png), simple-gradient($t-Color__grey--dark));
 }
 
 #footmenu li {
@@ -24,7 +24,7 @@
 }
 
 #footmenu li a:hover, #footmenu li.c a {
-  color: $accent-color;
+  color: $t-Color__accent;
 }
 
 #footleft {
@@ -44,20 +44,20 @@
   width: 380px;
   margin-right: 16px;
   font-size: 13px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   line-height: 20px;
 }
 
 #footright #txt a {
   padding-bottom: 2px;
-  border-bottom: 1px solid $light-grey;
+  border-bottom: 1px solid $t-Color__grey--light;
   font-size: 12px;
   font-weight: 600;
   color: black;
 }
 
 #footright #txt a:hover {
-  color: $accent-color;
+  color: $t-Color__accent;
 }
 
 #footright #cc {
@@ -96,7 +96,7 @@ ul li {
 }
 
 .popup-tabcontainer {
-  border: 1px solid $medium-grey;
+  border: 1px solid $t-Color__grey--medium;
 }
 
 #proposalPickerTable td {

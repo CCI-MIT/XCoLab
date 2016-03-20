@@ -3,7 +3,7 @@
 // we can adjust the web content on production
 
 .homespot {
-  background: url(../images/bg-noise.png) $lightest-grey;
+  background: url(../images/bg-noise.png) $t-Color__grey--lightest;
   padding-bottom: 5px;
 }
 
@@ -27,7 +27,7 @@
   float: left;
   width: 530px;
   padding-left: 10px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   position: relative;
   font-size: 16px;
 }
@@ -46,25 +46,25 @@
 }
 
 a.learn {
-  @include theme-button($primary-color, $primary-darkest, url(../images/homespot/light-bulb-white.png));
+  @include theme-button($t-Color__primary, $t-Color__primary--darkest, url(../images/homespot/light-bulb-white.png));
   text-transform: uppercase;
   margin-right: 15px;
 }
 
 a.get {
-  @include theme-button($secondary-color, $secondary-darkest, url(../images/homespot/people-white.png));
+  @include theme-button($t-Color__secondary, $t-Color__secondary--darkest, url(../images/homespot/people-white.png));
   text-transform: uppercase;
   margin-right: 15px;
 }
 
 .newsbox {
-  background: url(../images/bg-noise.png) $lightest-grey;
+  background: url(../images/bg-noise.png) $t-Color__grey--lightest;
   width: 418px;
   font-size: 15px;
   padding: 10px 26px 10px 18px;
   margin: 25px 0 25px;
   position: relative;
-  border: 1px solid $light-grey;
+  border: 1px solid $t-Color__grey--light;
   @include border-radius(6px);
 }
 
@@ -159,7 +159,7 @@ a.get {
   display: block;
   float: left;
   padding: 8px 0 0 41px;
-  color: $lightest-grey !important;
+  color: $t-Color__grey--lightest !important;
 }
 
 .sketchy-icon-black {
@@ -208,7 +208,7 @@ a.get {
 }
 
 .conference-days {
-  color: $accent-color;
+  color: $t-Color__accent;
   font-weight: bold;
   margin: 16px 0 0 60px;
   display: block;
@@ -342,7 +342,7 @@ a.get {
 
 .home #content h2 {
   font-size: 20px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   margin-bottom: 18px;
 }
 
@@ -362,9 +362,9 @@ a.get {
 
 /* homepage activity boxes ------------- */
 .activitybox {
-  border-bottom: 1px solid $light-grey;
+  border-bottom: 1px solid $t-Color__grey--light;
   font-size: 14px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
 }
 
 .activitybox:after {
@@ -388,7 +388,7 @@ a.get {
 }
 
 .activitybox.blu {
-  background: $primary-light-grey;
+  background: $t-Color__primary_grey--light;
 }
 
 .activitybox.bottom {
@@ -409,7 +409,7 @@ a.get {
 
 .activitybox h3 {
   font-size: 14px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
 }
 
 .activitybox .status {

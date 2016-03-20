@@ -8,7 +8,7 @@
 
 .is-required {
   font-style: italic;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   margin-bottom: 20px;
 }
 
@@ -39,7 +39,7 @@
   width: 220px;
   height: 27px;
   padding: 6px 20px 0 0;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 .popupreg_input_container {
@@ -48,7 +48,7 @@
 
 .popupreg_input {
   float: left;
-  border: 1px solid $medium-grey;
+  border: 1px solid $t-Color__grey--medium;
   width: 300px;
   height: 33px;
   padding: 2px 0 0 8px;
@@ -98,7 +98,7 @@
 
 #menu-right li.c {
   background: white;
-  border-left: 1px solid $medium-grey;
+  border-left: 1px solid $t-Color__grey--medium;
 }
 
 /*** POPUPS ****/
@@ -117,7 +117,7 @@
 .popup .login_popup_box {
   padding: 17px 0 10px 13px;
   font-size: 14px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   font-weight: 700;
 }
 
@@ -162,5 +162,5 @@ table.login-box-table th {
 
 .required-field:after {
   content: '*';
-  color: $primary-color;
+  color: $t-Color__primary;
 }

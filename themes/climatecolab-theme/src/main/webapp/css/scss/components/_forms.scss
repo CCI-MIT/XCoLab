@@ -13,7 +13,7 @@ div.selectbox-wrapper {
   text-align: left;
   overflow: auto;
   background-color: white;
-  border: 1px solid $light-grey;
+  border: 1px solid $t-Color__grey--light;
 }
 
 #main div.selectbox-wrapper ul,
@@ -23,12 +23,12 @@ div.selectbox-wrapper ul {
 
 #main div.selectbox-wrapper ul li.selected,
 div.selectbox-wrapper ul li.selected {
-  background-color: $primary-light-grey;
+  background-color: $t-Color__primary_grey--light;
 }
 
 #main div.selectbox-wrapper ul li.current,
 div.selectbox-wrapper ul li.current {
-  background-color: $primary-grey;
+  background-color: $t-Color__primary_grey;
 }
 
 #main div.selectbox-wrapper ul li,
@@ -67,7 +67,7 @@ div.selectbox-wrapper ul li {
   font-size: 11px;
   font-style: normal;
   font-weight: 600;
-  color: $accent-color;
+  color: $t-Color__accent;
 }
 
 .wf-active .selectbox span {
@@ -95,7 +95,7 @@ input.selectbox span {
   font-size: 13px;
   font-style: normal;
   font-weight: 600;
-  color: $accent-color;
+  color: $t-Color__accent;
 }
 
 ul.dropdown-menu {

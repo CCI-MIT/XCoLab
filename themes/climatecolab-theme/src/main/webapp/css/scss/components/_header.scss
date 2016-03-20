@@ -14,34 +14,34 @@
 #menu li {
   float: left;
   list-style: none;
-  border-left: 1px solid $light-grey;
+  border-left: 1px solid $t-Color__grey--light;
 }
 
 #menu li:hover {
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 #menu li.c {
   background: white;
-  border-left: 1px solid $medium-grey;
+  border-left: 1px solid $t-Color__grey--medium;
 }
 
 #menu li a {
   height: 41px;
   padding: 26px 16px 0 15px;
-  color: $primary-color;
+  color: $t-Color__primary;
   font-weight: 700;
   display: inline-block;
   box-sizing: content-box;
 }
 
 #menu li a:hover, #menu li.c a {
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   height: 42px;
 }
 
 #menu li:hover + li, #menu li.c + li {
-  border-left: 1px solid $medium-grey;
+  border-left: 1px solid $t-Color__grey--medium;
 }
 
 #menu li a.search {
@@ -49,7 +49,7 @@
   height: 22px;
   padding-top: 45px;
   font-size: 10px;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   text-transform: uppercase;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -90,7 +90,7 @@
   padding: 45px 7px 0 7px;
   font-size: 10px;
   font-weight: 700;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
   display: inline-block;
   text-transform: uppercase;
 }
@@ -111,7 +111,7 @@
 #menu-right li.help {
   background: url(../images/icon-menu-help.png) no-repeat 20px 15px;
   padding-left: 7px;
-  border-left: 1px solid $light-grey;
+  border-left: 1px solid $t-Color__grey--light;
 }
 
 #menu-right li.register:hover {
@@ -135,7 +135,7 @@
 #menu-right li.user a {
   height: 47px;
   padding: 20px 15px 0 0;
-  color: $primary-color;
+  color: $t-Color__primary;
   font-size: 15px;
   text-transform: none;
 }
@@ -145,7 +145,7 @@
 }
 
 #menu-right li.user a img {
-  border: 1px solid $medium-grey;
+  border: 1px solid $t-Color__grey--medium;
   margin-left: 10px;
   vertical-align: -9px;
 }
@@ -168,7 +168,7 @@
   width: 33px;
   height: 30px;
   padding: 12px 0 0 12px;
-  background: $darkest-grey;
+  background: $t-Color__grey--darkest;
   @include border-top-left-radius(3px);
   @include border-top-right-radius(3px);
 }
@@ -198,7 +198,7 @@
   width: 52px;
   height: 30px;
   padding-top: 3px;
-  background: $primary-color;
+  background: $t-Color__primary;
   border: none;
   font-size: 15px;
   font-weight: 700;
@@ -209,7 +209,7 @@
 }
 
 .search-submit:hover {
-  background: $primary-dark;
+  background: $t-Color__primary--dark;
 }
 
 /* LOGIN POP */
@@ -226,7 +226,7 @@
   height: 30px;
   padding: 12px 0 0 12px;
   margin-left: 242px;
-  background: $darkest-grey;
+  background: $t-Color__grey--darkest;
   @include border-top-left-radius(3px);
   @include border-top-right-radius(3px);
 }
@@ -236,7 +236,7 @@
   padding: 17px 0 10px 13px;
   background: url(../images/search-bg.png);
   font-size: 14px;
-  color: $lightest-grey;
+  color: $t-Color__grey--lightest;
   font-weight: 700;
   @include border-bottom-left-radius(3px);
   @include border-bottom-right-radius(3px);
@@ -300,7 +300,7 @@
   width: 88px;
   height: 30px;
   padding-top: 3px;
-  background: $primary-color;
+  background: $t-Color__primary;
   border: none;
   font-size: 15px;
   font-weight: 700;
@@ -311,7 +311,7 @@
 }
 
 .login-submit:hover {
-  background: $primary-dark;
+  background: $t-Color__primary--dark;
 }
 
 .user-notification {
@@ -328,13 +328,13 @@
 .user-notification-top {
   top: 13px;
   right: 78px;
-  background: $primary-darkest;
+  background: $t-Color__primary--darkest;
 }
 
 .user-notification-message {
   top: 84px;
   left: 105px;
-  background: $secondary-color;
+  background: $t-Color__secondary;
 }
 
 /* USER POP */
@@ -351,13 +351,13 @@
   height: 34px;
   padding: 8px 0 0 8px;
   margin-left: 120px;
-  background: url(../images/arrow-white_down.png) no-repeat 39px center $darkest-grey;
+  background: url(../images/arrow-white_down.png) no-repeat 39px center $t-Color__grey--darkest;
   @include border-top-left-radius(3px);
   @include border-top-right-radius(3px);
 }
 
 .usertop img {
-  border: 1px solid $medium-grey;
+  border: 1px solid $t-Color__grey--medium;
 }
 
 .userbox {
@@ -365,7 +365,7 @@
   padding: 10px 0 18px 17px;
   background: url(../images/search-bg.png);
   font-size: 14px;
-  color: $lightest-grey;
+  color: $t-Color__grey--lightest;
   font-weight: 700;
   @include border-bottom-left-radius(3px);
   @include border-bottom-right-radius(3px);

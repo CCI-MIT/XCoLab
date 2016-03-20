@@ -47,9 +47,9 @@ input.searchPhrase {
   width: 322px;
   height: 25px;
   padding: 2px 0 0 8px;
-  background: $lightest-grey;
-  border: 1px solid $light-grey;
-  color: $darkest-grey;
+  background: $t-Color__grey--lightest;
+  border: 1px solid $t-Color__grey--light;
+  color: $t-Color__grey--darkest;
   font-size: 13px;
   font-weight: 400;
   margin-top: 6px;
@@ -65,7 +65,7 @@ input.searchPhrase {
 
     &.c {
       cursor: default;
-      color: $darkest-grey;
+      color: $t-Color__grey--darkest;
     }
   }
 }

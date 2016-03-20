@@ -4,10 +4,10 @@
   position: relative;
   z-index: 5;
   font-size: 15px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   line-height: 20px;
   background: url(../images/grid_t.gif) white;
-  border: 1px solid $lightest-grey;
+  border: 1px solid $t-Color__grey--lightest;
   @include border-radius(10px);
   padding-bottom: 15px;
 }
@@ -38,7 +38,7 @@
   float: left;
   width: 734px;
   padding-left: 10px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   position: relative;
 }
 
@@ -46,7 +46,7 @@
   background: url(../images/icon_act-arrows-l.png) no-repeat 0 24px;
   padding: 26px 0 22px 47px;
   font-size: 16px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   font-weight: 600;
 }
 
@@ -54,7 +54,7 @@
   background: url(../images/icon_act-arrows-r.png) no-repeat 0 24px;
   padding: 26px 0 22px 47px;
   font-size: 16px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   font-weight: 600;
 }
 
@@ -97,13 +97,13 @@
   padding: 10px;
   margin-left: -10px;
   font: normal 12px/20px Verdana, sans-serif;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
   border: 1px solid white;
 }
 
 .act_left-list li ul li:hover {
-  background: $primary-light-grey;
-  border: 1px solid $primary-dark-grey;
+  background: $t-Color__primary_grey--light;
+  border: 1px solid $t-Color__primary__grey--dark;
 }
 
 .act_left-list li.d ul li a {
@@ -228,7 +228,7 @@
   width: 50px;
   line-height: normal;
   font: 11px Verdana, sans-serif;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
 }
 
 .actions_chart_y-axis li {
@@ -240,8 +240,8 @@
   float: left;
   width: 683px;
   height: 380px;
-  border-left: 1px solid $light-grey;
-  border-bottom: 1px solid $light-grey;
+  border-left: 1px solid $t-Color__grey--light;
+  border-bottom: 1px solid $t-Color__grey--light;
   background: url(../images/actions_grid.png);
 }
 
@@ -251,7 +251,7 @@
   margin-left: 50px;
   line-height: normal;
   font: 11px Verdana, sans-serif;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
 }
 
 .actions_chart_x-axis li {
@@ -290,7 +290,7 @@
 .act-edit_right {
   float: right;
   width: 489px;
-  color: $darkest-grey;
+  color: $t-Color__grey--darkest;
 }
 
 .act-edit_left-top {
@@ -329,7 +329,7 @@
   width: 50px;
   line-height: normal;
   font: 11px Verdana, sans-serif;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
 }
 
 .actions-edit_chart_y-axis li {
@@ -341,8 +341,8 @@
   float: left;
   width: 433px;
   height: 380px;
-  border-left: 1px solid $light-grey;
-  border-bottom: 1px solid $light-grey;
+  border-left: 1px solid $t-Color__grey--light;
+  border-bottom: 1px solid $t-Color__grey--light;
   background: url(../images/actions_grid.png);
 }
 
@@ -352,7 +352,7 @@
   margin-left: 50px;
   line-height: normal;
   font: 11px Verdana, sans-serif;
-  color: $dark-grey;
+  color: $t-Color__grey--dark;
 }
 
 .actions-edit_chart_x-axis li {
@@ -391,14 +391,14 @@
 .chart_sub-menu li a:hover {
   padding: 11px 0 11px 20px;
   margin: 0;
-  background: $light-grey;
+  background: $t-Color__grey--light;
   color: white;
 }
 
 .chart_sub-menu li.c a, #content .chart_sub-menu li.c a {
   padding: 11px 0 11px 20px;
   margin: 0;
-  background: $light-grey;
+  background: $t-Color__grey--light;
   color: white;
 }
 
@@ -435,7 +435,7 @@
   float: left;
   width: 455px;
   margin-right: 10px;
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
   padding: 17px 15px 6px 15px;
   font-size: 13px;
   color: #444;
@@ -448,7 +448,7 @@
 .act-edit-box_right {
   float: left;
   width: 459px;
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
   padding: 17px 15px 6px 15px;
   font-size: 13px;
   color: #444;
@@ -484,12 +484,12 @@
 .control_title span {
   font-size: 18px;
   font-weight: bold;
-  color: $secondary-color;
+  color: $t-Color__secondary;
 }
 
 .control_wrap {
   font: 11px Verdana, sans-serif;
-  color: $medium-grey;
+  color: $t-Color__grey--medium;
   line-height: 14px;
   height: 38px;
   margin: 12px 0;
@@ -547,8 +547,8 @@
 }
 
 .control_input {
-  background: url(../images/bg-noise.png), $lightest-grey;
-  border: 1px solid $light-grey;
+  background: url(../images/bg-noise.png), $t-Color__grey--lightest;
+  border: 1px solid $t-Color__grey--light;
   width: 53px;
   height: 34px;
   padding-right: 6px;
@@ -560,7 +560,7 @@
 .control_div {
   clear: both;
   height: 2px;
-  background: $lightest-grey;
+  background: $t-Color__grey--lightest;
   margin-bottom: 10px;
 }
 
@@ -587,37 +587,37 @@
 }
 
 .rounded_button.brn a {
-  background: $lightest-grey;
-  color: $darkest-grey;
+  background: $t-Color__grey--lightest;
+  color: $t-Color__grey--darkest;
 }
 
 .rounded_button.brn a:hover {
-  color: $accent-color;
+  color: $t-Color__accent;
 }
 
 .rounded_button.blu a {
-  background: $primary-light-grey;
-  color: $darkest-grey;
+  background: $t-Color__primary_grey--light;
+  color: $t-Color__grey--darkest;
 }
 
 .rounded_button.blu a:hover {
-  color: $accent-color;
+  color: $t-Color__accent;
 }
 
 .rounded_button.blugrid a {
-  background: $primary-color;
+  background: $t-Color__primary;
   color: white;
-  border: 1px solid $primary-dark-grey;
+  border: 1px solid $t-Color__primary__grey--dark;
 }
 
 .rounded_button.blugrid a:hover {
   background: white;
-  color: $primary-dark-grey;
+  color: $t-Color__primary__grey--dark;
 }
 
 .rounded_button.blugrid.c a {
   background: white;
-  color: $primary-dark-grey;
+  color: $t-Color__primary__grey--dark;
 }
 
 .ui-slider {
@@ -640,7 +640,7 @@
   height: 20px;
   overflow: hidden;
   margin-left: -6px;
-  background: $primary-color;
+  background: $t-Color__primary;
   cursor: pointer;
   @include border-radius(4px);
   border: 0;
@@ -654,7 +654,7 @@
   margin-left: -0.6px;
   top: -3px;
   overflow: hidden;
-  background: $primary-color;
+  background: $t-Color__primary;
 }
 
 .ui-slider-range {
@@ -667,7 +667,7 @@
   font-size: .9em;
   background: white url(../images/slider_bg.gif) 0 0 repeat-x;
   color: black;
-  border: 4px solid $lightest-grey;
+  border: 4px solid $t-Color__grey--lightest;
   position: relative;
 }
 
@@ -690,7 +690,7 @@
 
 .control_definition {
   font: 11px Verdana, sans-serif;
-  color: $medium-grey;
+  color: $t-Color__grey--medium;
 }
 
 #content input.control_input {
@@ -722,8 +722,8 @@
 }
 
 .act_left-list li.act_left-list-child:hover {
-  background: $primary-light-grey;
-  border: 1px solid $primary-dark-grey;
+  background: $t-Color__primary_grey--light;
+  border: 1px solid $t-Color__primary__grey--dark;
 }
 
 tr.jqplot-table-legend {
@@ -759,7 +759,7 @@ td.jqplot-table-legend div.act_tt-bot_label {
 }
 
 td.jqplot-table-legend a:hover {
-  color: $primary-light;
+  color: $t-Color__primary--light;
 }
 
 #impact .shaded-bg {
