@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 @Configuration
 
 @EnableTransactionManagement
-@PropertySource("classpath:application.properties")
+@PropertySource({"classpath:application.properties","file:${user.home}/.xcolab.application.properties"})
 public class PersistenceContext {
  
     @Autowired
