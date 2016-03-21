@@ -93,7 +93,9 @@
 				<div id="priorActiveAllWidget">
 					<ul>
 						<li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
-						<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
+						<c:if test="${priorContestsExist}">
+							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
+						</c:if>
 						<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All ${contestType.contestNamePlural}</a></li>
 					</ul>
 
