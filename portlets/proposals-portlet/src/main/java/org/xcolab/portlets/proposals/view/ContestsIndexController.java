@@ -67,6 +67,13 @@ public class ContestsIndexController extends BaseProposalsController {
 
         ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
         ContestType contestType = preferences.getContestType();
+
+        if (contestType.getSuggestionContestId() > 0) {
+            Contest c = ContestLocalServiceUtil.getContest(contestType.getSuggestionContestId());
+            String link = ContestLocalServiceUtil.getContestLinkUrl(c);
+            model.addAttribute("suggestionContestLink", link);
+        }
+
         if (viewType == null) {
             // view type wasn't set
             final Cookie[] cookies = request.getCookies(); //null if cookies are disabled

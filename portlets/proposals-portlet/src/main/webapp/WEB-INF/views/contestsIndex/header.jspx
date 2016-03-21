@@ -101,9 +101,11 @@
 			</div>
 		</div>
 		<div class="divider"><!--  --></div>
-  		<div class="show">
-  			<a href="/contests/2014/contest-suggestions">Suggest a new ${contestType.contestName}</a>
-  		</div> 
+		<c:if test="${not empty suggestionContestLink}">
+  			<div class="show">
+  				<a href="${suggestionContestLink}">Suggest a new ${contestType.contestName}</a>
+  			</div>
+		</c:if>
  			<div class="filter" style="position: relative;">
  				<portlet:renderURL var="filterURL" />
 	 			<form action="${filterURL }" id="filterContestsForm" method="get">
