@@ -231,7 +231,8 @@ public class ImpactIterationUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactIteration[] findByIterationId_PrevAndNext(
-        ImpactIterationPK impactIterationPK, long iterationId,
+        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK,
+        long iterationId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -290,7 +291,7 @@ public class ImpactIterationUtil {
     * @return the new impact iteration
     */
     public static com.ext.portlet.model.ImpactIteration create(
-        ImpactIterationPK impactIterationPK) {
+        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK) {
         return getPersistence().create(impactIterationPK);
     }
 
@@ -303,7 +304,7 @@ public class ImpactIterationUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactIteration remove(
-        ImpactIterationPK impactIterationPK)
+        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(impactIterationPK);
@@ -324,7 +325,7 @@ public class ImpactIterationUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactIteration findByPrimaryKey(
-        ImpactIterationPK impactIterationPK)
+        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK)
         throws com.ext.portlet.NoSuchImpactIterationException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(impactIterationPK);
@@ -338,7 +339,7 @@ public class ImpactIterationUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ImpactIteration fetchByPrimaryKey(
-        ImpactIterationPK impactIterationPK)
+        com.ext.portlet.service.persistence.ImpactIterationPK impactIterationPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(impactIterationPK);
     }

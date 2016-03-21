@@ -137,7 +137,7 @@ public interface ImpactTemplateMaxFocusAreaPersistence extends BasePersistence<I
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactTemplateMaxFocusArea[] findByFocusAreaListId_PrevAndNext(
-        ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK,
+        com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK,
         long focusAreaListId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException,
@@ -185,7 +185,7 @@ public interface ImpactTemplateMaxFocusAreaPersistence extends BasePersistence<I
     * @return the new impact template max focus area
     */
     public com.ext.portlet.model.ImpactTemplateMaxFocusArea create(
-        ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK);
+        com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK);
 
     /**
     * Removes the impact template max focus area with the primary key from the database. Also notifies the appropriate model listeners.
@@ -196,7 +196,7 @@ public interface ImpactTemplateMaxFocusAreaPersistence extends BasePersistence<I
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactTemplateMaxFocusArea remove(
-        ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK)
+        com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK)
         throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -213,7 +213,7 @@ public interface ImpactTemplateMaxFocusAreaPersistence extends BasePersistence<I
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactTemplateMaxFocusArea findByPrimaryKey(
-        ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK)
+        com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK)
         throws com.ext.portlet.NoSuchImpactTemplateMaxFocusAreaException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -225,7 +225,7 @@ public interface ImpactTemplateMaxFocusAreaPersistence extends BasePersistence<I
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ImpactTemplateMaxFocusArea fetchByPrimaryKey(
-        ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK)
+        com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPK impactTemplateMaxFocusAreaPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

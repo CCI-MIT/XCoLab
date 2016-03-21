@@ -213,6 +213,20 @@ public interface ContestTypeModel extends BaseModel<ContestType> {
      */
     public void setHasDiscussion(boolean hasDiscussion);
 
+    /**
+     * Returns the suggestion contest ID of this contest type.
+     *
+     * @return the suggestion contest ID of this contest type
+     */
+    public long getSuggestionContestId();
+
+    /**
+     * Sets the suggestion contest ID of this contest type.
+     *
+     * @param suggestionContestId the suggestion contest ID of this contest type
+     */
+    public void setSuggestionContestId(long suggestionContestId);
+
     @Override
     public boolean isNew();
 

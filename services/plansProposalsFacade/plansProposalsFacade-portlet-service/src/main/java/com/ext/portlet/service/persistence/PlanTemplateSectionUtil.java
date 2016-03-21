@@ -234,7 +234,8 @@ public class PlanTemplateSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanTemplateSection[] findByPlanTemplateId_PrevAndNext(
-        PlanTemplateSectionPK planTemplateSectionPK, long planTemplateId,
+        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK,
+        long planTemplateId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -400,7 +401,8 @@ public class PlanTemplateSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanTemplateSection[] findByPlanSectionId_PrevAndNext(
-        PlanTemplateSectionPK planTemplateSectionPK, long planSectionId,
+        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK,
+        long planSectionId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -459,7 +461,7 @@ public class PlanTemplateSectionUtil {
     * @return the new plan template section
     */
     public static com.ext.portlet.model.PlanTemplateSection create(
-        PlanTemplateSectionPK planTemplateSectionPK) {
+        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK) {
         return getPersistence().create(planTemplateSectionPK);
     }
 
@@ -472,7 +474,7 @@ public class PlanTemplateSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanTemplateSection remove(
-        PlanTemplateSectionPK planTemplateSectionPK)
+        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK)
         throws com.ext.portlet.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(planTemplateSectionPK);
@@ -493,7 +495,7 @@ public class PlanTemplateSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanTemplateSection findByPrimaryKey(
-        PlanTemplateSectionPK planTemplateSectionPK)
+        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK)
         throws com.ext.portlet.NoSuchPlanTemplateSectionException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(planTemplateSectionPK);
@@ -507,7 +509,7 @@ public class PlanTemplateSectionUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.PlanTemplateSection fetchByPrimaryKey(
-        PlanTemplateSectionPK planTemplateSectionPK)
+        com.ext.portlet.service.persistence.PlanTemplateSectionPK planTemplateSectionPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(planTemplateSectionPK);
     }

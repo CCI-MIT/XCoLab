@@ -383,6 +383,7 @@
 			<basic name="friendlyUrlStringProposal" />
 			<basic name="menuItemName" />
 			<basic name="hasDiscussion" />
+			<basic name="suggestionContestId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

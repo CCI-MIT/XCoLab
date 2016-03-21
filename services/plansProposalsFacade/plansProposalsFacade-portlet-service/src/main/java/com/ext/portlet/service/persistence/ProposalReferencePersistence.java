@@ -137,7 +137,8 @@ public interface ProposalReferencePersistence extends BasePersistence<ProposalRe
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalReference[] findByProposalId_PrevAndNext(
-        ProposalReferencePK proposalReferencePK, long proposalId,
+        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK,
+        long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalReferenceException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -275,7 +276,8 @@ public interface ProposalReferencePersistence extends BasePersistence<ProposalRe
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalReference[] findBySubProposalId_PrevAndNext(
-        ProposalReferencePK proposalReferencePK, long subProposalId,
+        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK,
+        long subProposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalReferenceException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -322,7 +324,7 @@ public interface ProposalReferencePersistence extends BasePersistence<ProposalRe
     * @return the new proposal reference
     */
     public com.ext.portlet.model.ProposalReference create(
-        ProposalReferencePK proposalReferencePK);
+        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK);
 
     /**
     * Removes the proposal reference with the primary key from the database. Also notifies the appropriate model listeners.
@@ -333,7 +335,7 @@ public interface ProposalReferencePersistence extends BasePersistence<ProposalRe
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalReference remove(
-        ProposalReferencePK proposalReferencePK)
+        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK)
         throws com.ext.portlet.NoSuchProposalReferenceException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -350,7 +352,7 @@ public interface ProposalReferencePersistence extends BasePersistence<ProposalRe
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalReference findByPrimaryKey(
-        ProposalReferencePK proposalReferencePK)
+        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK)
         throws com.ext.portlet.NoSuchProposalReferenceException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -362,7 +364,7 @@ public interface ProposalReferencePersistence extends BasePersistence<ProposalRe
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalReference fetchByPrimaryKey(
-        ProposalReferencePK proposalReferencePK)
+        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

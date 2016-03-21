@@ -308,6 +308,7 @@
 		<field name="friendlyUrlStringProposal" type="String" />
 		<field name="menuItemName" type="String" />
 		<field name="hasDiscussion" type="boolean" />
+		<field name="suggestionContestId" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.DiscussionCategory">
 		<field name="pk" type="long" />

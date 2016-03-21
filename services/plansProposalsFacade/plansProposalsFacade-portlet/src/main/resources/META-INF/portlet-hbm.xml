@@ -360,6 +360,7 @@
 		<property name="friendlyUrlStringProposal" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="menuItemName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="hasDiscussion" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="suggestionContestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.DiscussionCategoryImpl" table="xcolab_DiscussionCategory">
 		<cache usage="read-write" />

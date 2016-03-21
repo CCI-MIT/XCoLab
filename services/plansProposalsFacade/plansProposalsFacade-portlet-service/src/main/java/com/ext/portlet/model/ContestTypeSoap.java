@@ -24,6 +24,7 @@ public class ContestTypeSoap implements Serializable {
     private String _friendlyUrlStringProposal;
     private String _menuItemName;
     private boolean _hasDiscussion;
+    private long _suggestionContestId;
 
     public ContestTypeSoap() {
     }
@@ -42,6 +43,7 @@ public class ContestTypeSoap implements Serializable {
         soapModel.setFriendlyUrlStringProposal(model.getFriendlyUrlStringProposal());
         soapModel.setMenuItemName(model.getMenuItemName());
         soapModel.setHasDiscussion(model.getHasDiscussion());
+        soapModel.setSuggestionContestId(model.getSuggestionContestId());
 
         return soapModel;
     }
@@ -180,5 +182,13 @@ public class ContestTypeSoap implements Serializable {
 
     public void setHasDiscussion(boolean hasDiscussion) {
         _hasDiscussion = hasDiscussion;
+    }
+
+    public long getSuggestionContestId() {
+        return _suggestionContestId;
+    }
+
+    public void setSuggestionContestId(long suggestionContestId) {
+        _suggestionContestId = suggestionContestId;
     }
 }
