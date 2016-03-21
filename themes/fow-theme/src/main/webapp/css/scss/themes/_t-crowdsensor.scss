@@ -2,46 +2,46 @@
 
 
 //main colors:
-$primary-color: #5da034;
-$secondary-color: #f6911d;
-$accent-color: #eb008a;
-$auxiliary-color: #00acee; // 4th color when needed (e.g. ontology)
+$t-Color__primary: #5da034;
+$t-Color__secondary: #f6911d;
+$t-Color__accent: #eb008a;
+$t-Color__auxiliary: #00acee; // 4th color when needed (e.g. ontology)
 
 //lightness variations
-$primary-light: lighten($primary-color, 30); $__hex: #afdc93;
-$secondary-light: lighten($secondary-color, 15); $__hex: #f9b567;
+$t-Color__primary--light: lighten($t-Color__primary, 30); $__hex: #afdc93;
+$t-Color__secondary--light: lighten($t-Color__secondary, 15); $__hex: #f9b567;
 
-$primary-dark: darken($primary-color, 10); $__hex: #457727;
-$secondary-dark: darken($secondary-color, 10); $__hex: #d37508;
+$t-Color__primary--dark: darken($t-Color__primary, 10); $__hex: #457727;
+$t-Color__secondary--dark: darken($t-Color__secondary, 10); $__hex: #d37508;
 
-$primary-darkest: darken($primary-color, 20); $__hex: #2f511a;
-$secondary-darkest: darken($secondary-color, 20); $__hex: #a25a06;
+$t-Color__primary--darkest: darken($t-Color__primary, 20); $__hex: #2f511a;
+$t-Color__secondary--darkest: darken($t-Color__secondary, 20); $__hex: #a25a06;
 
 //grey variations of the primary color
-$primary-dark-grey: desaturate($primary-color, 25); $__hex: #648550;
-$primary-grey: lighten($primary-dark-grey, 25); $__hex_color: #a6c097;
-$primary-light-grey: lighten($primary-dark-grey, 40); $__hex: #cfddc6;
+$t-Color__primary__grey--dark: desaturate($t-Color__primary, 25); $__hex: #648550;
+$t-Color__primary__grey: lighten($t-Color__primary__grey--dark, 25); $__hex_color: #a6c097;
+$t-Color__primary_grey--light: lighten($t-Color__primary__grey--dark, 40); $__hex: #cfddc6;
 
 //greys
-$lightest-grey: #e7e9eb;
-$light-grey: #babbbd;
-$medium-grey: #808184;
-$dark-grey: #57585a;
-$darkest-grey: #404143;
+$t-Color__grey--lightest: #e7e9eb;
+$t-Color__grey--light: #babbbd;
+$t-Color__grey--medium: #808184;
+$t-Color__grey--dark: #57585a;
+$t-Color__grey--darkest: #404143;
 
 //alert and message colors:
-$alert-color: #eb008a;
-$alert-light: #f6dfec;
-$info-background: $secondary-light;
-$success-background: $primary-color;
+$t-Color__alert: #eb008a;
+$t-Color__alert--light: #f6dfec;
+$t-Color__info__background: $t-Color__primary_grey--light;
+$t-Color__success__background: $t-Color__secondary--light;
 
 //standard text colors
-$text-light: white;
-$text-dark: $darkest-grey;
-$text-threshold: 175;
+$t-Color__text--light: white;
+$t-Color__text--dark: $t-Color__grey--darkest;
+$t-Text__threshold: 175;
 
 //outline view TODO: see if we can adapt this to use our colors
-$outline-level1: #e0dacb; // background slevel1
-$outline-level2: #d1cbbf; // background slevel2
-$outline-level3: #c1bcb2; // background slevel3
-$outline-level4: #aaa69f; // background slevel4-6
+$t-Color__outline__level1: #e0dacb; // background slevel1
+$t-Color__outline__level2: #d1cbbf; // background slevel2
+$t-Color__outline__level3: #c1bcb2; // background slevel3
+$t-Color__outline__level4: #aaa69f; // background slevel4-6
