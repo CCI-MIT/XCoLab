@@ -337,6 +337,7 @@ public class ContestTypePersistenceImpl extends BasePersistenceImpl<ContestType>
         contestTypeImpl.setFriendlyUrlStringProposal(contestType.getFriendlyUrlStringProposal());
         contestTypeImpl.setMenuItemName(contestType.getMenuItemName());
         contestTypeImpl.setHasDiscussion(contestType.isHasDiscussion());
+        contestTypeImpl.setSuggestionContestId(contestType.getSuggestionContestId());
 
         return contestTypeImpl;
     }

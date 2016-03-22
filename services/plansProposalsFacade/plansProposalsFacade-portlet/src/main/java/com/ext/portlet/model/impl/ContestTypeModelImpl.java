@@ -59,9 +59,10 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
             { "friendlyUrlStringContests", Types.VARCHAR },
             { "friendlyUrlStringProposal", Types.VARCHAR },
             { "menuItemName", Types.VARCHAR },
-            { "hasDiscussion", Types.BOOLEAN }
+            { "hasDiscussion", Types.BOOLEAN },
+            { "suggestionContestId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestType (id_ LONG not null primary key,contestName VARCHAR(75) null,contestNamePlural VARCHAR(75) null,proposalName VARCHAR(75) null,proposalNamePlural VARCHAR(75) null,portletName VARCHAR(75) null,portletUrl VARCHAR(75) null,friendlyUrlStringContests VARCHAR(75) null,friendlyUrlStringProposal VARCHAR(75) null,menuItemName VARCHAR(75) null,hasDiscussion BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestType (id_ LONG not null primary key,contestName VARCHAR(75) null,contestNamePlural VARCHAR(75) null,proposalName VARCHAR(75) null,proposalNamePlural VARCHAR(75) null,portletName VARCHAR(75) null,portletUrl VARCHAR(75) null,friendlyUrlStringContests VARCHAR(75) null,friendlyUrlStringProposal VARCHAR(75) null,menuItemName VARCHAR(75) null,hasDiscussion BOOLEAN,suggestionContestId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestType";
     public static final String ORDER_BY_JPQL = " ORDER BY contestType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestType.id_ ASC";
@@ -92,6 +93,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
     private String _friendlyUrlStringProposal;
     private String _menuItemName;
     private boolean _hasDiscussion;
+    private long _suggestionContestId;
     private ContestType _escapedModel;
 
     public ContestTypeModelImpl() {
@@ -121,6 +123,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         model.setFriendlyUrlStringProposal(soapModel.getFriendlyUrlStringProposal());
         model.setMenuItemName(soapModel.getMenuItemName());
         model.setHasDiscussion(soapModel.getHasDiscussion());
+        model.setSuggestionContestId(soapModel.getSuggestionContestId());
 
         return model;
     }
@@ -192,6 +195,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
             getFriendlyUrlStringProposal());
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
+        attributes.put("suggestionContestId", getSuggestionContestId());
 
         return attributes;
     }
@@ -265,6 +269,12 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         if (hasDiscussion != null) {
             setHasDiscussion(hasDiscussion);
+        }
+
+        Long suggestionContestId = (Long) attributes.get("suggestionContestId");
+
+        if (suggestionContestId != null) {
+            setSuggestionContestId(suggestionContestId);
         }
     }
 
@@ -430,6 +440,17 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         _hasDiscussion = hasDiscussion;
     }
 
+    @JSON
+    @Override
+    public long getSuggestionContestId() {
+        return _suggestionContestId;
+    }
+
+    @Override
+    public void setSuggestionContestId(long suggestionContestId) {
+        _suggestionContestId = suggestionContestId;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -468,6 +489,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         contestTypeImpl.setFriendlyUrlStringProposal(getFriendlyUrlStringProposal());
         contestTypeImpl.setMenuItemName(getMenuItemName());
         contestTypeImpl.setHasDiscussion(getHasDiscussion());
+        contestTypeImpl.setSuggestionContestId(getSuggestionContestId());
 
         contestTypeImpl.resetOriginalValues();
 
@@ -599,12 +621,14 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         contestTypeCacheModel.hasDiscussion = getHasDiscussion();
 
+        contestTypeCacheModel.suggestionContestId = getSuggestionContestId();
+
         return contestTypeCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("{id=");
         sb.append(getId());
@@ -628,6 +652,8 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         sb.append(getMenuItemName());
         sb.append(", hasDiscussion=");
         sb.append(getHasDiscussion());
+        sb.append(", suggestionContestId=");
+        sb.append(getSuggestionContestId());
         sb.append("}");
 
         return sb.toString();
@@ -635,7 +661,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(37);
+        StringBundler sb = new StringBundler(40);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -684,6 +710,10 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>hasDiscussion</column-name><column-value><![CDATA[");
         sb.append(getHasDiscussion());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>suggestionContestId</column-name><column-value><![CDATA[");
+        sb.append(getSuggestionContestId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

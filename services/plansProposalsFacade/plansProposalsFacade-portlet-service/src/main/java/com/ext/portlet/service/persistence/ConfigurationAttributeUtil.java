@@ -127,7 +127,7 @@ public class ConfigurationAttributeUtil {
     * @return the new configuration attribute
     */
     public static com.ext.portlet.model.ConfigurationAttribute create(
-        ConfigurationAttributePK configurationAttributePK) {
+        com.ext.portlet.service.persistence.ConfigurationAttributePK configurationAttributePK) {
         return getPersistence().create(configurationAttributePK);
     }
 
@@ -140,7 +140,7 @@ public class ConfigurationAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ConfigurationAttribute remove(
-        ConfigurationAttributePK configurationAttributePK)
+        com.ext.portlet.service.persistence.ConfigurationAttributePK configurationAttributePK)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(configurationAttributePK);
@@ -161,7 +161,7 @@ public class ConfigurationAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ConfigurationAttribute findByPrimaryKey(
-        ConfigurationAttributePK configurationAttributePK)
+        com.ext.portlet.service.persistence.ConfigurationAttributePK configurationAttributePK)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(configurationAttributePK);
@@ -175,7 +175,7 @@ public class ConfigurationAttributeUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ConfigurationAttribute fetchByPrimaryKey(
-        ConfigurationAttributePK configurationAttributePK)
+        com.ext.portlet.service.persistence.ConfigurationAttributePK configurationAttributePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(configurationAttributePK);
     }

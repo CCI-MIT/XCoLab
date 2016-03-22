@@ -50,6 +50,7 @@ public class ContestTypeWrapper implements ContestType,
             getFriendlyUrlStringProposal());
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
+        attributes.put("suggestionContestId", getSuggestionContestId());
 
         return attributes;
     }
@@ -123,6 +124,12 @@ public class ContestTypeWrapper implements ContestType,
 
         if (hasDiscussion != null) {
             setHasDiscussion(hasDiscussion);
+        }
+
+        Long suggestionContestId = (Long) attributes.get("suggestionContestId");
+
+        if (suggestionContestId != null) {
+            setSuggestionContestId(suggestionContestId);
         }
     }
 
@@ -376,6 +383,26 @@ public class ContestTypeWrapper implements ContestType,
     @Override
     public void setHasDiscussion(boolean hasDiscussion) {
         _contestType.setHasDiscussion(hasDiscussion);
+    }
+
+    /**
+    * Returns the suggestion contest ID of this contest type.
+    *
+    * @return the suggestion contest ID of this contest type
+    */
+    @Override
+    public long getSuggestionContestId() {
+        return _contestType.getSuggestionContestId();
+    }
+
+    /**
+    * Sets the suggestion contest ID of this contest type.
+    *
+    * @param suggestionContestId the suggestion contest ID of this contest type
+    */
+    @Override
+    public void setSuggestionContestId(long suggestionContestId) {
+        _contestType.setSuggestionContestId(suggestionContestId);
     }
 
     @Override

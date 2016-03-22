@@ -31,6 +31,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
     private String _friendlyUrlStringProposal;
     private String _menuItemName;
     private boolean _hasDiscussion;
+    private long _suggestionContestId;
     private BaseModel<?> _contestTypeRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
@@ -84,6 +85,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
             getFriendlyUrlStringProposal());
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
+        attributes.put("suggestionContestId", getSuggestionContestId());
 
         return attributes;
     }
@@ -157,6 +159,12 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
         if (hasDiscussion != null) {
             setHasDiscussion(hasDiscussion);
+        }
+
+        Long suggestionContestId = (Long) attributes.get("suggestionContestId");
+
+        if (suggestionContestId != null) {
+            setSuggestionContestId(suggestionContestId);
         }
     }
 
@@ -412,6 +420,29 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         }
     }
 
+    @Override
+    public long getSuggestionContestId() {
+        return _suggestionContestId;
+    }
+
+    @Override
+    public void setSuggestionContestId(long suggestionContestId) {
+        _suggestionContestId = suggestionContestId;
+
+        if (_contestTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setSuggestionContestId",
+                        long.class);
+
+                method.invoke(_contestTypeRemoteModel, suggestionContestId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestTypeRemoteModel() {
         return _contestTypeRemoteModel;
     }
@@ -490,6 +521,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         clone.setFriendlyUrlStringProposal(getFriendlyUrlStringProposal());
         clone.setMenuItemName(getMenuItemName());
         clone.setHasDiscussion(getHasDiscussion());
+        clone.setSuggestionContestId(getSuggestionContestId());
 
         return clone;
     }
@@ -539,7 +571,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("{id=");
         sb.append(getId());
@@ -563,6 +595,8 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(getMenuItemName());
         sb.append(", hasDiscussion=");
         sb.append(getHasDiscussion());
+        sb.append(", suggestionContestId=");
+        sb.append(getSuggestionContestId());
         sb.append("}");
 
         return sb.toString();
@@ -570,7 +604,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(37);
+        StringBundler sb = new StringBundler(40);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -619,6 +653,10 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>hasDiscussion</column-name><column-value><![CDATA[");
         sb.append(getHasDiscussion());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>suggestionContestId</column-name><column-value><![CDATA[");
+        sb.append(getSuggestionContestId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");
