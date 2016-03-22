@@ -146,7 +146,7 @@
 .continue a {
   padding: 28px 24px 24px;
   display: inline-block;
-  background: $t-Color__primary_grey--light;
+  background: $t-Color__primary__grey--light;
   font-size: 18px;
   font-weight: 700;
   text-align: center;
@@ -183,7 +183,7 @@
 }
 
 .one-butt {
-  background: $t-Color__primary_grey--light;
+  background: $t-Color__primary__grey--light;
   border: 1px solid $t-Color__primary;
   height: 27px;
   padding: 7px 12px 0;
@@ -352,7 +352,7 @@
 }
 
 .checkout {
-  background: url(../images/pattern-6x6-white.png) $t-Color__primary_grey--light;
+  background: url(../images/pattern-6x6-white.png) $t-Color__primary__grey--light;
   width: 505px;
   padding: 24px 16px 26px 32px;
   font-size: 17px;

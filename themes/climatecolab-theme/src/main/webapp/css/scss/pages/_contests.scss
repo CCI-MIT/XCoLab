@@ -389,7 +389,7 @@ table.contest-list-view {
   display: inline-block;
   padding-top: 8px;
   margin-left: 3px;
-  background: $t-Color__primary_grey--light;
+  background: $t-Color__primary__grey--light;
   border: 1px solid $t-Color__primary__grey--dark;
   font-size: 16px;
   font-weight: 700;
@@ -432,7 +432,7 @@ table.contest-list-view {
 }
 
 .userslist tr.feat-bot {
-  border-bottom: 1px solid $t-Color__primary_grey;
+  border-bottom: 1px solid $t-Color__primary__grey;
 }
 
 //TODO: these also somewhat relate to blueheaderbar
@@ -494,12 +494,12 @@ table.contest-list-view {
 
 #priorActiveAllWidget ul li.active,
 #priorActiveAllWidget ul li:hover {
-  background: $t-Color__primary_grey--light;
+  background: $t-Color__primary__grey--light;
 }
 
 #priorActiveAllWidget ul li.active,
 #priorActiveAllWidget ul li:hover {
-  background: $t-Color__primary_grey--light;
+  background: $t-Color__primary__grey--light;
 }
 
 #priorActiveAllWidget ul li a,
