@@ -377,3 +377,6 @@ span.ontology-term-label {
   content: '*';
   color: #30a3fb;
 }
+#cvsContests input {
+  width:210px;
+}

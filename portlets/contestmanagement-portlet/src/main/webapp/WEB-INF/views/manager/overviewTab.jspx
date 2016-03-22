@@ -33,6 +33,13 @@
 				<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/createContest" target="_blank">Create new Contest</a>
 			</div>
 		</div>
+
+		<div style="margin-bottom: 40px;">
+			<div class="floatRight outerVerticalCenter">
+				<a class="innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/batchCreateContest" target="_blank">Batch Contest creation</a>
+			</div>
+		</div>
+
 	</div>
 	
 	<div class="cmsDetailsBox">

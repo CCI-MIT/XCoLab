@@ -9,6 +9,11 @@
     </route>
 
     <route>
+        <pattern>/batchCreateContest</pattern>
+        <generated-parameter name="batchCreateContest">true</generated-parameter>
+    </route>
+
+    <route>
         <pattern>/contestId/{contestId}</pattern>
         <generated-parameter name="tab">DESCRIPTION</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
