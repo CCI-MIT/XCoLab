@@ -1,6 +1,6 @@
 package org.xcolab.persistence;
 
-import com.jolbox.bonecp.BoneCPDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
@@ -30,13 +30,22 @@ public class PersistenceContext {
     private Environment env;
 
     public DataSource dataSource() {
-        BoneCPDataSource dataSource = new BoneCPDataSource();
+        final HikariDataSource dataSource = new HikariDataSource();
  
-        dataSource.setDriverClass(env.getRequiredProperty("db.driver"));
+        dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
         dataSource.setJdbcUrl(env.getRequiredProperty("db.url"));
         dataSource.setUsername(env.getRequiredProperty("db.username"));
         dataSource.setPassword(env.getRequiredProperty("db.password"));
- 
+
+        dataSource.setMaximumPoolSize(20);
+        dataSource.setMinimumIdle(5);
+        dataSource.setIdleTimeout(120000);
+
+        //mysql optimizations
+        dataSource.addDataSourceProperty("cachePrepStmts", true);
+        dataSource.addDataSourceProperty("prepStmtCacheSize", 250);
+        dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", 1024);
+
         return dataSource;
     }
 

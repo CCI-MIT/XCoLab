@@ -12,12 +12,12 @@ import java.util.List;
 
 public class MembersClient {
 
-    private static final String  EUREKA_APPLICATION_ID = "members-service";
+    private static final String EUREKA_APPLICATION_ID = "members-service";
 
     @Autowired
     static RestTemplate restTemplate = new RestTemplate();
 
-    public static void getAllUsers(){
+    public static void getAllUsers() {
 
         //User user = restTemplate.getForObject("http://"+EUREKA_APPLICATION_ID+"/members", User.class);
 
@@ -25,7 +25,5 @@ public class MembersClient {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<User_>>(){});
 
         List<User_> userList = response.getBody();
-
-
     }
 }
