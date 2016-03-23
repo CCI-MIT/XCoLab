@@ -1,11 +1,14 @@
 $c-Tooltip__borderRadius: 5px !default;
 
+$c-Tooltip__textColor: white !default;
+$c-Tooltip__actions__a__hover__textColor: $t-Color__primary--light !default;
+
 $c-Tooltip__background: transparent url(../images/tooltip-bg.png) !default;
-$c-Tooltip__arrow__background: url(../images/tooltip-arrow.png) no-repeat bottom center;
-$c-Tooltip__actions__background: url(../images/actions_tooltip-top.png) no-repeat right top;
-$c-Tooltip__actions__arrow__background: url(../images/actions_tooltip-arrow.png) no-repeat 0 8px;
-$c-Tooltip__actions__text__background: url(../images/actions_tooltip-bg.png);
-$c-Tooltip__actions__bottom__background: url(../images/actions_tooltip-bottom.png) no-repeat right;
+$c-Tooltip__arrow__background: url(../images/tooltip-arrow.png) no-repeat bottom center !default;
+$c-Tooltip__actions__background: url(../images/actions_tooltip-top.png) no-repeat right top !default;
+$c-Tooltip__actions__arrow__background: url(../images/actions_tooltip-arrow.png) no-repeat 0 8px !default;
+$c-Tooltip__actions__text__background: url(../images/actions_tooltip-bg.png) !default;
+$c-Tooltip__actions__bottom__background: url(../images/actions_tooltip-bottom.png) no-repeat right !default;
 
 .c-Tooltip { //tooltip
   display: none;
@@ -16,7 +19,7 @@ $c-Tooltip__actions__bottom__background: url(../images/actions_tooltip-bottom.pn
   background: $c-Tooltip__background;
   @include box-shadow(0 0 6px #666);
   @include border-radius($c-Tooltip__borderRadius);
-  color: white;
+  color: $c-Tooltip__textColor;
   font: 13px Arial, Helvetica, sans-serif;
 }
 
@@ -41,7 +44,7 @@ $c-Tooltip__actions__bottom__background: url(../images/actions_tooltip-bottom.pn
 }
 
 .c-Tooltip__actions a:hover { //act_tooltip a:hover
-  color: $t-Color__primary--light;
+  color: $c-Tooltip__actions__a__hover__textColor;
 }
 
 .c-Tooltip__actions__arrow { //act_tt-wrap
@@ -54,7 +57,7 @@ $c-Tooltip__actions__bottom__background: url(../images/actions_tooltip-bottom.pn
   min-height: 30px;
   width: 258px;
   background: $c-Tooltip__actions__background;
-  color: white;
+  color: $c-Tooltip__textColor;
   font: 11px/17px Verdana, sans-serif;
 }
 
