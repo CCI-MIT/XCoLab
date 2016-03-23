@@ -91,46 +91,46 @@
 						<div class="blueheaderbar tooltips" data-entity='contest'>
 							<div class="contest" style="">
 								<a href="#" data-sort-column="Name"><span class="contestTypeContestNames">&#160;</span></a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by name
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 								
 							</div>
 							<div class="proposal">
 								<a href="#" data-sort-column="Proposals"><!--  --></a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by<br />number of <div class="contestTypeProposalNames">&#160;</div>
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 							<div class="comment">
 								<a href="#" data-sort-column="Comments"> <!--  --></a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by<br />number of comments
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 
 							<div class="what">
 								<a href="#" data-sort-column="What"> What</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by what
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 							<div class="where">
 								<a href="#" data-sort-column="Where"> Where</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by where
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 							<div class="who">
 								<a href="#" data-sort-column="Who"> Who</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by who
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 						</div>
@@ -152,18 +152,18 @@
 							<div class="proposalname">
 								<div style="display: inline-block">
 									<a href="#" data-sort-column="Proposal"><span class="contestTypeProposalNames">&#160;</span> name</a>
-									<div class="tooltip">
+									<div class="c-Tooltip">
 										click to sort by name
-										<div class="tt-arrow"><!-- --></div>
+										<div class="c-Tooltip__arrow"><!-- --></div>
 									</div>
 								</div>
 								/&#160;
 
 								<div style="display: inline-block">
 									<a href="#" data-sort-column="Author">Author(s)</a>
-									<div class="tooltip">
+									<div class="c-Tooltip">
 										click to sort by author
-										<div class="tt-arrow"><!-- --></div>
+										<div class="c-Tooltip__arrow"><!-- --></div>
 									</div>
 								</div>
 							</div>
@@ -172,18 +172,18 @@
 								<a href="#" data-sort-column="Supporters">
 									<!--  -->
 								</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by<br />number of supporters
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 
 							<div class="propcomm">
 								<a href="#" data-sort-column="Comments"> <!--  -->
 								</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by<br />number of comments
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 							<div class="modified">
@@ -262,7 +262,7 @@
                     <br />
                     <img src="${themeDisplay.pathThemeImages}/icon-prize{{ data.ribbon }}.png" />
                 </span>
-					<div class="tooltip">
+					<div class="c-Tooltip">
 						{{data.ribbonText}}
 					</div>
 				</div>
@@ -290,7 +290,7 @@
 					{{#each data.contests}}
 						<li>
 							<img alt="{{this.name}}" class='fieldWithTooltip tooltipAbove' height="25" width="25" src="/image/contest?img_id={{this.contestLogoId}}" />
-							<div class="tooltip">Contest: {{this.name}}<div class="tt-arrow"><!--  --></div></div>
+							<div class="c-Tooltip">Contest: {{this.name}}<div class="c-Tooltip__arrow"><!--  --></div></div>
 						</li>
 					{{/each}}
 					</ul>
@@ -311,7 +311,7 @@
 					{{#if contest.flagText}}
 						<span class="{{#if contest.flagTooltip}} fieldWithTooltip {{/if}}">{{contest.flagText}}:&#160;</span>
                     		<c:if test="${not empty contest.flagTooltip}">
-                        		<div class="tooltip">{{contest.flagTooltip}}<div class="tt-arrow"><!--  --></div></div>
+                        		<div class="c-Tooltip">{{contest.flagTooltip}}<div class="c-Tooltip__arrow"><!--  --></div></div>
                         	</c:if>
                 	{{/if}}
                 		<a href="javascript:;">{{contest.contestShortName}}</a>

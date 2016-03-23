@@ -19,7 +19,7 @@
                     <span class="fieldWithTooltip">
                         <img src="/climatecolab-theme/images/icon_question-chk-qm.png" height="15px" />
                     </span>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         Click here to see how ${contestType.proposalNamePlural} have been judged.
                     </div>
                 </a></strong>

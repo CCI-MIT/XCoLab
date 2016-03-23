@@ -57,9 +57,9 @@
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
                     <a href="${sortURL }">${contestType.proposalName} name</a>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         click to sort by name
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
                 </div>
@@ -76,9 +76,9 @@
                     </portlet:renderURL>
                     <a href="${sortURL }">Author(s)</a>
 
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         click to sort by author
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
                 </div>
@@ -95,9 +95,9 @@
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
                     <a href="${sortURL }"><!--  --></a>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         click to sort by<br />number of votes
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
                 </div>
@@ -113,9 +113,9 @@
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
                     <a href="${sortURL }"><!--  --></a>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         click to sort by<br />number of supporters
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
                 </div>
@@ -131,9 +131,9 @@
                     <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'COMMENTS' ? not sortFilterPage.sortAscending : true }" />
                 </portlet:renderURL>
                 <a href="${sortURL }"><!--  --></a>
-                <div class="tooltip">
+                <div class="c-Tooltip">
                     click to sort by<br />number of comments
-                    <div class="tt-arrow"><!-- --></div>
+                    <div class="c-Tooltip__arrow"><!-- --></div>
                 </div>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
             </div>
@@ -148,9 +148,9 @@
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
                     <a href="${sortURL }">Modified</a>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         click to sort by date
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
                 </div>
@@ -164,9 +164,9 @@
                         <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CONTRIBUTORS' ? not sortFilterPage.sortAscending : true }" />
                     </portlet:renderURL>
                     <a href="${sortURL }">Contributors</a>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         click to sort by contributor
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
                 </div>
@@ -189,9 +189,9 @@
                         <a href="${sortURL }" style="padding-left: 5px;">Fellows</a>
                         <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SCREENINGSTATUS" />
                     </c:if>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         Status of the fellows' screening decision
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
 
                     <!-- Sorting by judges -->
@@ -207,9 +207,9 @@
                     <a href="${sortURL }">
                         Judges
                     </a>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         Status of the judges' ratings
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="JUDGESTATUS" />
 
@@ -226,9 +226,9 @@
                         Overall
                     </a>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="OVERALLSTATUS" />
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         State of the final advancing decision
-                        <div class="tt-arrow"><!-- --></div>
+                        <div class="c-Tooltip__arrow"><!-- --></div>
                     </div>
                 </div>
             </c:if>

@@ -134,11 +134,11 @@
   visibility: hidden;
 }
 
-.act_tt-wrap {
+.c-Tooltip__actions__arrow {
   background: url(../images/actions_tooltip-arrow.png) no-repeat 0 8px;
 }
 
-.act_tt-txt {
+.c-Tooltip__actions__text {
   width: 258px;
   background: url(../images/actions_tooltip-bg.png);
   margin-left: 8px;
@@ -148,7 +148,7 @@
   min-height: 30px;
 }
 
-.act_tt-bot {
+.c-Tooltip__actions__bottom {
   background: url(../images/actions_tooltip-bottom.png) no-repeat right;
   height: 20px;
 }

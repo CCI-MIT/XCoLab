@@ -17,7 +17,7 @@
 						<c:if test="${not empty contest.flagText }">
 							<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
 							<c:if test="${not empty contest.flagTooltip}">
-								<div class="tooltip">${contest.flagTooltip}<div class="tt-arrow"><!--  --></div></div>
+								<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
 							</c:if>
 						</c:if>
 						<collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
@@ -63,7 +63,7 @@
 								</c:choose>
                             </span>
 
-						<div class="tooltip">
+						<div class="c-Tooltip">
 							<c:choose>
 								<c:when test="${not contest.judgeStatus}">
 									Judge's decision incomplete.
@@ -87,7 +87,7 @@
 										</c:otherwise>
 									</c:choose>
                                 </span>
-							<div class="tooltip">
+							<div class="c-Tooltip">
 								<c:choose>
 									<c:when test="${contest.screeningStatus}">
 										Fellow screening completed.

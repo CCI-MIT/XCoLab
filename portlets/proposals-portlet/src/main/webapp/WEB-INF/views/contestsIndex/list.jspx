@@ -22,8 +22,8 @@
 						<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CONTEST_NAME' ? not sortFilterPage.sortAscending : true }" />
 					</portlet:renderURL>
 					<a href="${sortURL }">${contestType.contestName}</a>
-					<div class="tooltip">
-						click to sort by ${contestType.contestName} title <div class="tt-arrow"><!--  --></div>
+					<div class="c-Tooltip">
+						click to sort by ${contestType.contestName} title <div class="c-Tooltip__arrow"><!--  --></div>
 					</div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTEST_NAME" />
 
@@ -36,8 +36,8 @@
 					</portlet:renderURL>
 					<a href="${sortURLProposalsCount}"><!--  --> </a>
 
-					<div class="tooltip">
-						click to sort by<br />number of ${contestType.proposalNamePlural}<div class="tt-arrow"><!--  --></div>
+					<div class="c-Tooltip">
+						click to sort by<br />number of ${contestType.proposalNamePlural}<div class="c-Tooltip__arrow"><!--  --></div>
 					</div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="PROPOSALS_COUNT" />
 				</th>
@@ -50,7 +50,7 @@
 								<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'VOTES_COUNT' ? not sortFilterPage.sortAscending : true }" />
 							</portlet:renderURL>
 							<a href="${sortURLVotes }"> <!--  --></a>
-							<div class="tooltip">click to sort by number of votes<div class="tt-arrow"><!--  --></div></div>
+							<div class="c-Tooltip">click to sort by number of votes<div class="c-Tooltip__arrow"><!--  --></div></div>
 							<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES_COUNT" />
 						</c:when>
 						<c:otherwise>
@@ -60,7 +60,7 @@
 								<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'COMMENTS_COUNT' ? not sortFilterPage.sortAscending : true }" />
 							</portlet:renderURL>
 							<a href="${sortURLComments }"> <!--  --></a>
-							<div class="tooltip">click to sort by number of comments<div class="tt-arrow"><!--  --></div></div>
+							<div class="c-Tooltip">click to sort by number of comments<div class="c-Tooltip__arrow"><!--  --></div></div>
 							<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS_COUNT" />
 						</c:otherwise>
 					</c:choose>
@@ -72,7 +72,7 @@
 						<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'WHAT' ? not sortFilterPage.sortAscending : true }" />
 					</portlet:renderURL>
 					<a href="${sortURLWhat }"> What</a>
-					<div class="tooltip">click to sort by actions<div class="tt-arrow"><!--  --></div></div>
+					<div class="c-Tooltip">click to sort by actions<div class="c-Tooltip__arrow"><!--  --></div></div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHAT" />
 				</th>
 				<th class="ontology_where">
@@ -82,7 +82,7 @@
 						<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'WHERE' ? not sortFilterPage.sortAscending : true }" />
 					</portlet:renderURL>
 					<a href="${sortURLWhere }"> Where</a>
-					<div class="tooltip">click to sort by<br />geographical area<div class="tt-arrow"><!--  --></div></div>
+					<div class="c-Tooltip">click to sort by<br />geographical area<div class="c-Tooltip__arrow"><!--  --></div></div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHERE" />
 
 				</th>
@@ -93,7 +93,7 @@
 						<portlet:param name="sortAscending" value="${sortAscending}" />
 					</portlet:renderURL>
 					<a href="${sortURLWho }"> Who</a>
-					<div class="tooltip">click to sort by who<br />this issue affects<div class="tt-arrow"><!--  --></div></div>
+					<div class="c-Tooltip">click to sort by who<br />this issue affects<div class="c-Tooltip__arrow"><!--  --></div></div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHO" />
 				</th>
 				<th class="ontology_how">
@@ -104,18 +104,18 @@
 						<portlet:param name="sortAscending" value="${sortAscending}" />
 					</portlet:renderURL>
 					<a href="${sortURLHow }"> How</a>
-					<div class="tooltip">click to sort by how<br />this issue affects<div class="tt-arrow"><!--  --></div></div>
+					<div class="c-Tooltip">click to sort by how<br />this issue affects<div class="c-Tooltip__arrow"><!--  --></div></div>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="HOW" />
 				</th>
 				<c:if test="${proposalsPermissions.canJudgeActions}">
 					<th>
 						<a href="#" style="background: none; margin-top: 9px;">Judge</a>
-						<div class="tooltip">see if judges are done<br />with this ${contestType.contestName}<div class="tt-arrow"><!--  --></div></div>
+						<div class="c-Tooltip">see if judges are done<br />with this ${contestType.contestName}<div class="c-Tooltip__arrow"><!--  --></div></div>
 					</th>
 					<th>
 						<c:if test="${proposalsPermissions.canFellowActions}">
 							<a href="#" style="background: none; margin-top: 9px;">Fellow</a>
-							<div class="tooltip">see if fellows are done<br />with this ${contestType.contestName}<div class="tt-arrow"><!--  --></div></div>
+							<div class="c-Tooltip">see if fellows are done<br />with this ${contestType.contestName}<div class="c-Tooltip__arrow"><!--  --></div></div>
 						</c:if>
 					</th>
 				</c:if>

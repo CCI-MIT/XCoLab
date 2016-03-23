@@ -456,8 +456,8 @@ table.judgingForm {
   font-style: italic;
 }
 
-#proposalPicker_proposalsContainer .tooltip .higlightText1,
-#proposalPicker_contestsContainer .tooltip .higlightText1 {
+#proposalPicker_proposalsContainer .c-Tooltip .higlightText1,
+#proposalPicker_contestsContainer .c-Tooltip .higlightText1 {
   background: none;
   text-decoration: none;
   font-style: normal;
@@ -510,7 +510,7 @@ div.selected {
 }
 
 /* fix problem with the tooltip library, where tooltips overlay the phase names */
-.contestbar .phaseLinkContainer div.tooltip {
+.contestbar .phaseLinkContainer div.c-Tooltip {
   top: -102px !important;
 }
 

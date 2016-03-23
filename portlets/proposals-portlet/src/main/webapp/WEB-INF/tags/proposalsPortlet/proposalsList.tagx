@@ -44,7 +44,7 @@
                     <br />
                     <img src="/climatecolab-theme/images/icon-prize${proposal.ribbonWrapper.ribbon}.png" />
                 </span>
-                <div class="tooltip">
+                <div class="c-Tooltip">
                     ${proposal.ribbonWrapper.ribbonText}
                 </div>
             </div>
@@ -100,7 +100,7 @@
 
                         <c:if test="${proposalsPermissions.canFellowActions}">
                             <proposalsPortlet:proposalJudgingIcon value="${proposal.screeningStatus.statusValue}" />
-                            <div class="tooltip">
+                            <div class="c-Tooltip">
                                 <c:choose>
                                     <c:when test="${proposal.screeningStatus.statusValue == 0}">
                                         Fellows have not decided yet if the ${contestType.proposalName} will be forwarded to judges.
@@ -116,7 +116,7 @@
                         </c:if>
 
                         <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
-                        <div class="tooltip">
+                        <div class="c-Tooltip">
                             <c:choose>
                                 <c:when test="${proposal.judgeStatus.statusValue == 0}">
                                     The judges have not rated this ${contestType.proposalName} yet.
@@ -131,7 +131,7 @@
                         </div>
 
                         <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
-                        <div class="tooltip">
+                        <div class="c-Tooltip">
                             <c:choose>
                                 <c:when test="${proposal.overallStatus.statusValue == 0}">
                                     The ${contestType.proposalName} review has not been done yet.

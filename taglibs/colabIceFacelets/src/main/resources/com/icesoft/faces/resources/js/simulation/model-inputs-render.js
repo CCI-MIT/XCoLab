@@ -1202,7 +1202,7 @@ function initActTooltips() {
 	jQuery('.actInputDef').each(function() {
 		var actInputDef = jQuery(this);
 		
-		var tooltip = actInputDef.find(".act_tooltip");
+		var tooltip = actInputDef.find(".c-Tooltip__actions");
 		
 		actInputDef.mouseover(function() {
 			if (showTips) {
@@ -1222,7 +1222,7 @@ function showHideTips() {
 	showTips = !showTips;
 	if (showTips) {
 		jQuery("#showHideTipsTrigger").text("HIDE TIPS");
-		jQuery(".act_tooltip").hide();
+		jQuery(".c-Tooltip__actions").hide();
 	}
 	else {
 		jQuery("#showHideTipsTrigger").text("SHOW TIPS");

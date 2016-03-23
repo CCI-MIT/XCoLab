@@ -73,9 +73,9 @@
 
 												<div class="c-Badge__text--small">20</div>
 												<span class="c-Badge__year--small">${badge.badgeYearShort}</span>
-												<div class="tooltip">
+												<div class="c-Tooltip">
 														${badge.badgeText} in ${badge.contestName}
-													<div class="tt-arrow"><!--  --></div>
+													<div class="c-Tooltip__arrow"><!--  --></div>
 												</div>
 											</div>
 										</a>

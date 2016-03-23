@@ -45,7 +45,7 @@
                             <c:set var="customStyle" scope="session" value="top: -87px; left: -50px;"/>
                         </c:when>
                     </c:choose>
-                    <div class="tooltip" style="${customStyle}">
+                    <div class="c-Tooltip" style="${customStyle}">
                         <c:if test="${not empty phase.phaseStatusDescription}">
                             ${phase.phaseStatusDescription }
                         </c:if>
@@ -57,7 +57,7 @@
 								- <fmt:formatDate value="${phase.phaseEndDate}" type="date" dateStyle="SHORT"  pattern="MM/dd/yy zz" />
 							</c:if>
 						</c:if>
-						<div class="tt-arrow"><!--  --></div>
+						<div class="c-Tooltip__arrow"><!--  --></div>
 					</div>
 				</div>
 				<c:if test="${! status.last }">

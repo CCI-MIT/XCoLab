@@ -447,12 +447,12 @@ function updateBreadcrumb(placeholder, items) {
 	
 function initTooltips() {
     function findTooltip(obj) {
-        if (obj.next().hasClass('tooltip')) {
+        if (obj.next().hasClass('c-Tooltip')) {
             return obj.next();
         }
 		var children = $(obj).children();
 		for (i = 0; i < children.length; ++i) {
-			if (jQuery(children[i]).hasClass('tooltip')) {
+			if (jQuery(children[i]).hasClass('c-Tooltip')) {
 				return jQuery(children[i]);
 			}
 		}
