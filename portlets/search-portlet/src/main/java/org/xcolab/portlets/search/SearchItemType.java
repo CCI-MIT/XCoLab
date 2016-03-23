@@ -15,6 +15,7 @@ import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.util.Version;
 import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
+import org.xcolab.portlets.search.paging.PageLinkWrapper;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

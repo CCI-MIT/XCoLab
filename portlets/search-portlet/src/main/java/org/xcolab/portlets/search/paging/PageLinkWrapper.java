@@ -1,6 +1,7 @@
-package org.xcolab.portlets.search;
+package org.xcolab.portlets.search.paging;
 
 import org.apache.commons.lang3.StringUtils;
+import org.xcolab.portlets.search.SearchBean;
 
 /**
  * Created by johannes on 12/14/15.
