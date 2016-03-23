@@ -6,11 +6,9 @@
 
     <jsp:directive.include file="../init.jspx" />
     <portlet:actionURL var="createBathContetsURL">
+        <portlet:param name="action" value="createBatchContest"/>
         <portlet:param name="action_forwardToPage" value="descriptionTab"/>
         <portlet:param name="action_errorForwardToPage" value="descriptionTab"/>
-        <portlet:param name="tab" value="DESCRIPTION"/>
-        <portlet:param name="contestId" value="${contestWrapper.contestPK }"/>
-        <portlet:param name="action" value="updateContestDetails"/>
     </portlet:actionURL>
 
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
@@ -23,7 +21,7 @@
         <h2>Contest data</h2>
 
         <form:form action="${createBathContetsURL }" commandName="contestBatchBean"  cssClass="addpropform"
-                   id="editForm" method="post">
+                   id="batchForm" method="post">
             <div class="reg_errors"><!--  -->
                 <form:errors cssClass="alert alert-error" path="*"/>
             </div>
@@ -92,6 +90,35 @@
             </div>
             <div class="addpropbox">
                 <label>
+                    <strong>Organization/company logo</strong>
+                </label>
+
+                <div class="addprophelp">If available, it is preferred to use a version of the logo that is horizontal
+                    and has a transparent background.
+                </div>
+
+                <div class="upload logoImageUpload">
+                    <div class="uploadbox" id="logoImage">
+                        <c:choose>
+                            <c:when test='${contestWrapper.sponsorLogoId > 0}'>
+                                <c:set var="logoImageUrl"
+                                       value="/image/proposal?img_id=${contestWrapper.sponsorLogoId}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="logoImageUrl" value="/climatecolab-theme/images/proposal_default.png"/>
+                            </c:otherwise>
+                        </c:choose>
+                        <img src="${logoImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"
+                             id="logoImageImg"/>
+                        <form:input path="sponsorLogoId" cssStyle="display: none;" id="logoImageId"/>
+                    </div>
+
+                    <div id="logoImageUploadWidget" class="uploadWidget optional"><!--  --></div>
+                    <div class="clear"><!--  --></div>
+                </div>
+            </div>
+            <div class="addpropbox blue">
+                <label>
                     <strong>Proposal template</strong>
                     <a href="javascript:;" class="helpTrigger"><img
                             src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
@@ -137,7 +164,7 @@
                     </div>
                 </div>
             </div>
-            <div class="addpropbox">
+            <div class="addpropbox blue">
                 <label>
                     <strong>Contest level</strong>
                     <a href="javascript:;" class="helpTrigger"><img
@@ -174,7 +201,7 @@
                     </div>
                 </div>
             </div>
-            <div class="addpropbox">
+            <div class="addpropbox blue">
                 <label>
                     <strong>Contests in CSV</strong>
                     <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
@@ -191,6 +218,7 @@
                 </div>
                 <script type="text/javascript">
                     <![CDATA[
+                    var fieldCounter =0;
                     $(function() {
                         $("#fileCSV").change(function(evt){
 
@@ -199,6 +227,7 @@
                                 complete: function(results) {
                                     console.log(results);
                                     $("#cvsContainer").show();
+                                    fieldCounter = 0;
                                 },
                                 step: function(row) {
                                     console.log("Row:", row.data);
@@ -207,22 +236,30 @@
                             });
 
                         });
+
+                        $("#createAllContestsAbove").click(function (){
+                            //validate field sizes.
+                            $("#batchForm").submit();
+                        });
+
                     });
+
                     function addTableRow(data){
                         if(data.length >= 3) {
                             var tableRow = $('<tr>');
-                            tableRow.append(addTableCellInput(data[0],"contestTitle[]"));
-                            tableRow.append(addTableCellInput(data[1],"contestShortName[]"));
-                            tableRow.append(addTableCellInput(data[2],"contestQuestion[]"));
+                            tableRow.append(addTableCellInput(data[0],"contestCSVs["+fieldCounter+"].contestTitle"));
+                            tableRow.append(addTableCellInput(data[1],"contestCSVs["+fieldCounter+"].contestShortName"));
+                            tableRow.append(addTableCellInput(data[2],"contestCSVs["+fieldCounter+"].contestQuestion"));
                             var ontField = "";
 
                             if(data.length > 3) {
                                 for (var i = 3; i < data.length; i++) {
                                     ontField += data[i] +((i+1 == data.length)?(""):(","));
                                 }
-                                tableRow.append(addTableCellInput(ontField, "ontologyTerms[]"));
+                                tableRow.append(addTableCellInput(ontField, "contestCSVs["+fieldCounter+"].ontologyTerms"));
                             }
                             $("#cvsContests").append(tableRow);
+                            fieldCounter++;
                         }
                     }
                     function addTableCellInput(data, fieldName){
@@ -243,7 +280,7 @@
                     <tr><th>Contest title </th><th>Contest short name</th><th>Contest question </th><th>Ontology terms</th></tr>
                 </table>
             </div>
-            <div class="floatRight outerVerticalCenter"><a target="_blank" href="/web/guest/cms/-/contestmanagement/createContest" class="primary-button innerVerticalCenter">Create all contests above</a></div>
+            <div class="floatRight outerVerticalCenter"><a  class="primary-button innerVerticalCenter" id="createAllContestsAbove">Create all contests above</a></div>
         </form:form>
     </div>
 </jsp:root>

@@ -3,6 +3,7 @@ package org.xcolab.portlets.contestmanagement.beans;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 public class ContestBatchBean {
@@ -24,6 +25,25 @@ public class ContestBatchBean {
 
     private Long contestLogoId;
 
+    private Long sponsorLogoId;
+
+    private List<ContestCSVBean> contestCSVs;
+
+    public List<ContestCSVBean> getContestCSVs() {
+        return contestCSVs;
+    }
+
+    public void setContestCSVs(List<ContestCSVBean> contestCSVs) {
+        this.contestCSVs = contestCSVs;
+    }
+
+    public Long getSponsorLogoId() {
+        return sponsorLogoId;
+    }
+
+    public void setSponsorLogoId(Long sponsorLogoId) {
+        this.sponsorLogoId = sponsorLogoId;
+    }
 
 
     public Long getContestLogoId() {

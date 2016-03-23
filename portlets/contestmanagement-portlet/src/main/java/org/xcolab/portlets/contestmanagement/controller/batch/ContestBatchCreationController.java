@@ -15,6 +15,7 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.ContestTier;
@@ -22,8 +23,11 @@ import org.xcolab.portlets.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,6 +70,19 @@ public class ContestBatchCreationController {
             return "batch/uploadContestCSV";
         }
         throw new PortalException("User not authorized to create contest");
+    }
+
+    @RequestMapping(params = "action=createBatchContest")
+    public void createBatchContestController(ActionRequest request, Model model, ActionResponse response,
+                                               @Valid ContestBatchBean contestBatchBean,
+                                               BindingResult result) {
+
+        // should check for valid data from CVS even after the fact.
+        int c = 0;
+        c ++;
+        c --;
+        // should iterate in the data in the contest
+        //
     }
 
     private List<LabelValue> getProposalTemplateSelectionItems() {
