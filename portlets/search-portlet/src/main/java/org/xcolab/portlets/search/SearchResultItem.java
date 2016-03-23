@@ -1,5 +1,6 @@
 package org.xcolab.portlets.search;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Query;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 public class SearchResultItem {
     private final Map<String, Field> fields;
+    private final boolean isVisible;
     private SearchItemType itemType;
     private String content;
     private String title;
@@ -27,7 +29,7 @@ public class SearchResultItem {
 
     public SearchResultItem(Document doc, Query query, org.apache.lucene.search.Query luceneQuery, boolean odd)
             throws ParseException, IOException, com.liferay.portal.kernel.search.ParseException,
-            InvalidTokenOffsetsException {
+            InvalidTokenOffsetsException, SystemException {
         fields = doc.getFields();
         for (SearchItemType type : SearchItemType.values()) {
             if (type.isOfGivenType(doc)) {
@@ -35,6 +37,7 @@ public class SearchResultItem {
                 break;
             }
         }
+        isVisible = itemType.getSearchItem().isVisible(doc);
 
         QueryScorer scorer = new QueryScorer(luceneQuery);
         Formatter formatter = new SimpleHTMLFormatter();
@@ -80,6 +83,10 @@ public class SearchResultItem {
 
     public void setOdd(boolean odd) {
         this.odd = odd;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
     }
 
     public class Pair {

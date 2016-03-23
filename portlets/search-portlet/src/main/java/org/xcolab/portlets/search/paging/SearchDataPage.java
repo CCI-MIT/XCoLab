@@ -44,14 +44,14 @@ public class SearchDataPage {
             throws SystemException, SearchException, ParseException, org.apache.lucene.queryParser.ParseException,
             InvalidTokenOffsetsException, IOException {
         this.page = page;
-        this.searchPhrase = searchPhrase.trim();
+        this.searchPhrase = StringUtils.trim(searchPhrase);
         this.searchLocation = searchLocation;
 
         initializeItems();
     }
 
     private void initializeItems() throws SearchException, org.apache.lucene.queryParser.ParseException, ParseException,
-            InvalidTokenOffsetsException, IOException {
+            InvalidTokenOffsetsException, IOException, SystemException {
         StringBuilder querySb = new StringBuilder();
 
         if (StringUtils.isEmpty(searchPhrase)) {
@@ -97,7 +97,11 @@ public class SearchDataPage {
         items = new ArrayList<>();
         int i = 0;
         for (Document doc : hits.getDocs()) {
-            items.add(new SearchResultItem(doc, query, luceneQuery, (i++ % 2) == 0));
+            //TODO: don't reduce page size for invisible items -> incorporate in query
+            final SearchResultItem resultItem = new SearchResultItem(doc, query, luceneQuery, (i++ % 2) == 0);
+            if (resultItem.isVisible()) {
+                items.add(resultItem);
+            }
         }
     }
 
