@@ -19,10 +19,6 @@ public class PageLinkWrapper {
         this.searchLocation = searchLocation;
     }
 
-    public PageLinkWrapper(String searchPhrase, String searchLocation) {
-        this ("", 1, searchPhrase, searchLocation);
-    }
-
     public String getLinkText() {
         if (StringUtils.isEmpty(text)) {
             return Integer.toString(page);
@@ -43,12 +39,12 @@ public class PageLinkWrapper {
     }
 
     public String getLinkUrl() {
-        String url = "/web/guest/search/-/search/for/"+searchPhrase;
+        String url = "/web/guest/search/-/search/for/" + searchPhrase;
         if (!StringUtils.isEmpty(searchLocation)) {
-            url += "/in/"+searchLocation;
+            url += "/in/" + searchLocation;
         }
         if (page > 1) {
-            url += "/page/"+page;
+            url += "/page/" + page;
         }
         return url;
     }

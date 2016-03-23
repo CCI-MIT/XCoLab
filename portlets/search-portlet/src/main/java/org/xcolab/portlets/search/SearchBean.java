@@ -23,25 +23,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class SearchBean implements Serializable {
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     private final static int PAGE_SIZE = 10;
     private final static int PAGER_RANGE = 5;
     private final String searchLocation;
     private final int pageNumber;
-
-    private String searchPhrase = "";
     private final SearchItemType selectedSearchItemType;
-
+    private String searchPhrase = "";
     private List<SearchResultItem> items;
     private int totalNumberCustomers;
 
-    public SearchBean(String searchPhrase, String searchLocation, Integer pageNumber) throws IOException, ParseException, SearchException, org.apache.lucene.queryParser.ParseException, InvalidTokenOffsetsException {
+    public SearchBean(String searchPhrase, String searchLocation, Integer pageNumber)
+            throws IOException, ParseException, SearchException, org.apache.lucene.queryParser.ParseException,
+            InvalidTokenOffsetsException {
         this.pageNumber = pageNumber == null || pageNumber < 1 ? 1 : pageNumber;
-        this.searchLocation = searchLocation == null? "" : searchLocation;
+        this.searchLocation = searchLocation == null ? "" : searchLocation;
         if (StringUtils.isEmpty(searchPhrase)) {
             this.searchPhrase = "";
         } else {
@@ -56,11 +53,8 @@ public class SearchBean implements Serializable {
         initializeItems();
     }
 
-    public String getSearchPhrase() {
-        return searchPhrase;
-    }
-
-    private void initializeItems() throws SearchException, org.apache.lucene.queryParser.ParseException, ParseException, InvalidTokenOffsetsException, IOException {
+    private void initializeItems() throws SearchException, org.apache.lucene.queryParser.ParseException, ParseException,
+            InvalidTokenOffsetsException, IOException {
         StringBuilder querySb = new StringBuilder();
 
         if (StringUtils.isEmpty(searchPhrase)) {
@@ -92,7 +86,8 @@ public class SearchBean implements Serializable {
         Query query = new StringQueryImpl(queryStr);
 
         Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_34);
-        org.apache.lucene.search.Query luceneQuery = new QueryParser(Version.LUCENE_34, "content", analyzer).parse(queryStr);
+        org.apache.lucene.search.Query luceneQuery =
+                new QueryParser(Version.LUCENE_34, "content", analyzer).parse(queryStr);
 
         //Query query = new StringQueryImpl(searchPhrase);
 
@@ -108,6 +103,10 @@ public class SearchBean implements Serializable {
         for (Document doc : hits.getDocs()) {
             items.add(new SearchResultItem(doc, query, luceneQuery, (i++ % 2) == 0));
         }
+    }
+
+    public String getSearchPhrase() {
+        return searchPhrase;
     }
 
     public List<SearchResultItem> getItems() {
@@ -130,21 +129,14 @@ public class SearchBean implements Serializable {
         return selectedSearchItemType;
     }
 
-    public int getNumberOfPages() {
-        int numPages =  totalNumberCustomers / PAGE_SIZE;
-        if (totalNumberCustomers % PAGE_SIZE != 0) {
-            numPages++;
-        }
-        return numPages;
-    }
-
     public List<PageLinkWrapper> getPageLinks() {
         List<PageLinkWrapper> pageLinks = new ArrayList<>();
         pageLinks.add(new PageLinkWrapper("<< First", 1, searchPhrase, searchLocation));
         if (pageNumber > 1) {
             pageLinks.add(new PageLinkWrapper("< Previous", pageNumber - 1, searchPhrase, searchLocation));
         }
-        for (int i = Math.max(1, pageNumber - PAGER_RANGE), stop = Math.min(getNumberOfPages(), pageNumber + PAGER_RANGE); i <= stop; i++) {
+        for (int i = Math.max(1, pageNumber - PAGER_RANGE), stop =
+             Math.min(getNumberOfPages(), pageNumber + PAGER_RANGE); i <= stop; i++) {
             pageLinks.add(new PageLinkWrapper("", i, searchPhrase, searchLocation));
         }
         if (pageNumber < getNumberOfPages()) {
@@ -152,6 +144,14 @@ public class SearchBean implements Serializable {
         }
         pageLinks.add(new PageLinkWrapper("Last >>", getNumberOfPages(), searchPhrase, searchLocation));
         return pageLinks;
+    }
+
+    public int getNumberOfPages() {
+        int numPages = totalNumberCustomers / PAGE_SIZE;
+        if (totalNumberCustomers % PAGE_SIZE != 0) {
+            numPages++;
+        }
+        return numPages;
     }
 
     public int getTotalNumberOfResults() {
