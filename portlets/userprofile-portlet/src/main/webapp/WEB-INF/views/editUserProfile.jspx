@@ -223,7 +223,7 @@
 			</div>
 		</div> <!-- /main -->
 
-		<div class="right_col v1">
+		<div class="c-Message__column v1">
 			<div class="comm_rightcol">
 				<div class="comm_rightcol-title2">Message Settings</div>
 				<table border="0" cellpadding="0" cellspacing="0" class="colab">
@@ -261,12 +261,12 @@
 				</table>
 				<div class="clearfix"><!-- --></div>
 			</div>
-		</div> <!-- /right_col3 -->
+		</div> <!-- /c-Message__column -->
 
 		<form:hidden id="userRegistrationImageId" path="imageId" />
 	</form:form>
 
-	<div class="right_col v1">
+	<div class="c-Message__column v1">
 		<div class="comm_rightcol">
 			<div class="comm_rightcol-title2">${colabShortName} Newsletter Settings</div>
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
@@ -285,9 +285,9 @@
 			</table>
 			<div class="clearfix"><!-- --></div>
 		</div>
-	</div> <!-- /right_col -->
+	</div> <!-- /c-Message__column -->
 
-	<div class="right_col v1">
+	<div class="c-Message__column v1">
 		<div class="comm_rightcol">
 			<div class="comm_rightcol-title2">SSO Settings</div>
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
@@ -330,7 +330,7 @@
 			</table>
 			<div class="clearfix"><!-- --></div>
 		</div>
-	</div> <!-- /right_col3 -->
+	</div> <!-- /c-Message__column -->
 
 	<div class="right_col v1">
 		<div class="comm_rightcol">

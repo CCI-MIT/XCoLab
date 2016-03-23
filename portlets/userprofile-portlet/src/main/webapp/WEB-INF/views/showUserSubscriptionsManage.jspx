@@ -64,7 +64,7 @@
 
       </div>
 
-      <div class="right_col3" style="margin-top: 49px!important;">
+      <div class="c-Message__column" style="margin-top: 49px!important;">
         <div class="comm_list">
           <h3>Display</h3>
           <ul>
@@ -86,7 +86,7 @@
           </ul>
         </div>
 
-      </div> <!-- /right_col3 -->
+      </div> <!-- /c-Message__column -->
 
     <div class="clearfix"><!-- --></div>
 
