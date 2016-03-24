@@ -209,8 +209,8 @@
 <!-- /SEARCH POPUP -->
 
      <!-- ERROR REPORT POPUP -->
-     <div id="popup_error_reporting" class="popup-wrap" style="display: none;">
-         <div class="popup">
+     <div id="popup_error_reporting" class="c-Popup__wrapper" style="display: none;">
+         <div class="c-Popup">
              <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_error_reporting').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
 
              <h4>Oh Snap!</h4>

@@ -47,9 +47,9 @@
 		var proposalType;
 	</script>
 	<div>
-		<div id="popup_proposalPicker" class="popup-wrap proposal-picker"
+		<div id="popup_proposalPicker" class="c-Popup__wrapper proposal-picker"
 			style="display: none;">
-			<div class="popup">
+			<div class="c-Popup">
 				<div class="closepopuplogin">
 					<a href="javascript:;"
 						onclick="jQuery('#popup_proposalPicker').hide()"> <img

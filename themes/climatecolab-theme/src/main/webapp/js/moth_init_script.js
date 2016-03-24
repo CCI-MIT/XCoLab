@@ -248,7 +248,7 @@ function insertParam(key, value)
 }
 
 function closePopup(obj) {
-	jQuery(".popup-wrap").hide();
+	jQuery(".c-Popup__wrapper").hide();
 }
 
 

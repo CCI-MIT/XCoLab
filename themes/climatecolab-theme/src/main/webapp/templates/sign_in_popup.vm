@@ -1,5 +1,5 @@
-<div id="popup_login" class="popup-wrap small" style="display: none;">
-    <div class="popup">
+<div id="popup_login" class="c-Popup__wrapper small" style="display: none;">
+    <div class="c-Popup">
         <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_login').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
         
         <h4>Please log in to the $_colab_name</h4>
@@ -44,8 +44,8 @@
 
 
   
-<div id="popup_forgotpassword" class="popup-wrap small" style="display: none;">
-    <div class="popup">
+<div id="popup_forgotpassword" class="c-Popup__wrapper small" style="display: none;">
+    <div class="c-Popup">
         <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_forgotpassword').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
     
         <h4>Password recovery</h4>

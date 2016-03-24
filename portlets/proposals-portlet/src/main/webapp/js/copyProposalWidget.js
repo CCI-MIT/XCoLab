@@ -98,7 +98,7 @@ function updatePopupSize() {
 	var container = jQuery("#copyProposalContainer");
 	container.find("#copyProposalPopup").css({top: "20px"});
 	var availableHeight = jQuery(window).height();
-	container.find(".popup").css({height: (availableHeight - 200), "overflow-x": "auto"});
+	container.find(".c-Popup").css({height: (availableHeight - 200), "overflow-x": "auto"});
 }
 
 jQuery(function() {

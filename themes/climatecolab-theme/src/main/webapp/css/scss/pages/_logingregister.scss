@@ -104,24 +104,24 @@
 /*** POPUPS ****/
 //TODO: this might patrially go to the popups partial
 
-.popup-wrap.small {
+.c-Popup__wrapper.small {
   width: 432px;
   margin-left: -216px;
 }
 
-.popup-wrap.proposal-picker {
+.c-Popup__wrapper.proposal-picker {
   width: 1044px;
   margin-left: -522px;
 }
 
-.popup .login_popup_box {
+.c-Popup .login_popup_box {
   padding: 17px 0 10px 13px;
   font-size: 14px;
   color: $t-Color__grey--dark;
   font-weight: 700;
 }
 
-.popup .login_popup_box .username, .popup .login_popup_box .password {
+.c-Popup .login_popup_box .username, .c-Popup .login_popup_box .password {
   border: 1px solid #bbb;
 }
 

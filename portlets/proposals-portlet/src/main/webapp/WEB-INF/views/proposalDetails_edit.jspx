@@ -221,9 +221,9 @@
 <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
 
 
-<div id="acceptTosPopup" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
-    <div class="popup-wrap p1" id="acceptTosPopup">
-        <div class="popup">
+<div id="c-Popup__accept__TOS" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
+    <div class="c-Popup__wrapper p1" id="c-Popup__accept__TOS">
+        <div class="c-Popup">
             <h4>By saving your ${contestType.proposalName} you are entering the ${colabName} ${contestType.contestName} and agree to the&#160;
                 <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>
                 &#160;and ${contestType.contestName} Rules.</h4>
@@ -241,8 +241,8 @@
 </div>
 
 <div id="invalidFieldsPopupContainer" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none; ">
-    <div class="popup-wrap p1" id="invalidFieldsPopup">
-        <div class="popup">
+    <div class="c-Popup__wrapper p1" id="invalidFieldsPopup">
+        <div class="c-Popup">
             <h4>The following sections have too many characters:</h4>
             <ul id="invalidFieldsList"><!--  --></ul>
             <div class="btns">
@@ -324,16 +324,16 @@
         }
 
         function showAcceptTosPopup() {
-            jQuery("#acceptTosPopup").fadeIn("fast");
+            jQuery("#c-Popup__accept__TOS").fadeIn("fast");
         }
 
         function closeAcceptTosPopup() {
-            jQuery("#acceptTosPopup").fadeOut("fast");
+            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
             enableButtons();
         }
 
         function tosAcceptedSave() {
-            jQuery("#acceptTosPopup").fadeOut("fast");
+            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
             disableButtons(true);
             saveIfValid();
         }
@@ -383,8 +383,8 @@
         }
     </script>
 <div id="copyProposalContainer" style="display: none;">
-    <div class="popup-wrap p1" id="copyProposalPopup">
-        <div class="popup">
+    <div class="c-Popup__wrapper p1" id="copyProposalPopup">
+        <div class="c-Popup">
             <div class="closepopuplogin">
                 <a href="javascript:;" onclick="jQuery('#copyProposalContainer').hide()">
                     <img src="${themeDisplay.pathThemeImages}/help_close.png" width="20" height="20" alt="X"/>

@@ -6,8 +6,8 @@
 
 #if ($request.getParameter('postRegistration'))
 <script type="text/javascript" src="$javascript_folder/postRegistration.js?tt=$themeTimestamp"></script>
-<div id="popup_postRegistration" class="popup-wrap small">
-    <div class="popup">
+<div id="popup_postRegistration" class="c-Popup__wrapper small">
+    <div class="c-Popup">
         <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_postRegistration').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
 
         <h3 style="margin-bottom: 30px;">You're all set!</h3>
