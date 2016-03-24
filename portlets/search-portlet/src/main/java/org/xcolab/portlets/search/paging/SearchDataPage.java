@@ -60,7 +60,7 @@ public class SearchDataPage {
         }
         SearchItemType[] selectedSearchItemTypes;
 
-        if (StringUtils.isEmpty(searchLocation) || searchLocation.equals("FULL_SITE")) {
+        if (StringUtils.isEmpty(searchLocation) || "FULL_SITE".equals(searchLocation)) {
             selectedSearchItemTypes = SearchItemType.values();
         } else {
             selectedSearchItemTypes = new SearchItemType[]{SearchItemType.valueOf(searchLocation)};
