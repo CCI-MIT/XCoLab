@@ -81,6 +81,14 @@ public class ContestProposalsController extends BaseProposalsController {
         return "contestProposals";
     }
 
+    @ActionMapping(params = "action=redirectOldContestDiscussionUrl")
+    public void redirectOldContestDiscussionUrl(ActionRequest request, ActionResponse response, Model model,
+            @RequestParam Long contestId) throws SystemException, PortalException, IOException {
+
+        String contestUrl = ContestLocalServiceUtil.getContestLinkUrl(proposalsContext.getContest(request));
+        response.sendRedirect(contestUrl + "/discussion");
+    }
+
     @ActionMapping(params = "action=redirectOldContestProposalsUrl")
     public void redirectOldContestProposalsUrl(ActionRequest request, ActionResponse response, Model model,
                                        @RequestParam Long contestId, @RequestParam(required = false) Long phaseId) throws SystemException, PortalException, IOException {
