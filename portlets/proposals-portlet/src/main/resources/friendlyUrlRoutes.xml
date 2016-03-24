@@ -269,6 +269,13 @@
     </route>
 
     <route>
+        <pattern>/contestId/{contestId}/page/discussion</pattern>
+        <generated-parameter name="action">redirectOldContestDiscussionUrl</generated-parameter>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+    </route>
+
+    <route>
         <pattern>/contestId/{contestId}/planId/{planId}</pattern>
         <generated-parameter name="action">redirectOldProposalUrl</generated-parameter>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
