@@ -650,6 +650,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         ProposalVote vote = proposalVoteLocalService.createProposalVote(new ProposalVotePK(contestPhaseId, userId));
         vote.setCreateDate(new Date());
         vote.setProposalId(proposalId);
+        vote.setIsValid(true);
 
         proposalVoteLocalService.addProposalVote(vote);
         if (publishActivity) {
