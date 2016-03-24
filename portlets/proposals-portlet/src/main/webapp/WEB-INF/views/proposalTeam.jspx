@@ -40,7 +40,7 @@
                     <form:form id="requestMembershipForm" action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
                         <div class="requestMembershipDIV">
                             <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
-                            <form:errors cssClass="alert alert-error" path="requestComment" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />
                             <div id="requestButtons">
                                 <a href="javascript:;" class="primary-button requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>
                             </div>
@@ -70,7 +70,7 @@
                             <form:textarea id="invite-recipient" cssClass="requestComment" path="inviteRecipient" placeholder="Enter screen name or last name" style="display:none;"/>
                             <div id="invite-member-validation-url" style="display: none">${inviteMemberValidationURL}</div>
                             <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
-                            <!--<form:errors cssClass="alert alert-error" path="requestComment" />-->
+                            <!--<form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />-->
                             <div id="requestButtons">
                                 <a href="javascript:;" class="primary-button requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>
                             </div>

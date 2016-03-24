@@ -327,7 +327,7 @@ jQuery(document).ready(function() {
     
     
     jQuery(".closepopuplogin a").click(function() {
-    	jQuery(".popup_login_form .error-message").remove();
+    	jQuery(".popup_login_form .c-Alert__error__message").remove();
     	jQuery(".popup_login_form .popup_login-message").show();
     	jQuery('.popup_login, .popup_forgotpassword').hide();
     });

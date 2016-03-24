@@ -112,7 +112,7 @@
             <div class="addprophelp">Give your ${contestType.proposalName} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
             <div class="addpropInputContainer">
                 <form:input path="name" id="proposalName" />
-                <form:errors path="name" cssClass="alert alert-error" />
+                <form:errors path="name" cssClass="c-Alert c-Alert__error" />
                 <div class="clearfix"><!--  --></div>
 
                 <div class="clearfix"><!-- --></div>

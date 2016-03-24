@@ -54,7 +54,7 @@
         </div>
 
 		<c:if test="${ error != null and isRegistering }">
-			<div class="error-message">${error}</div>
+			<div class="c-Alert__error__message">${error}</div>
 		</c:if>
 
 		<form style="margin-top: 20px;" action="/loginregister-portlet/fileUploadServlet" method="post"
@@ -66,20 +66,20 @@
 		<form:form action="${createAccountURL }" commandName="createUserBean" id="registrationForm">
 			<input type="hidden" name="action" value="add" />
 			<div class="reg_errors"><!--  --></div>
-			<form:errors cssClass="alert alert-error" />
+			<form:errors cssClass="c-Alert c-Alert__error" />
 			<table class="reg">
 				<tr style="${ generateScreenName ? 'display: none;' : ''}">
 					<th nowrap="nowrap" class="required-field">Screen name </th>
 					<td><form:input cssClass="popupreg_input" path="screenName" /><br />
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="screenName" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="screenName" />
 						</div></td>
 				</tr>
 				<tr>
 					<th nowrap="nowrap" class="required-field">Email </th>
 					<td><form:input cssClass="popupreg_input" path="email" />
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="email" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="email" />
 						</div>
                     </td>
                     <th class="second" rowspan="4">Photo</th>
@@ -106,7 +106,7 @@
                     <th nowrap="nowrap" class="required-field">Retype email </th>
                     <td><form:input cssClass="popupreg_input" path="retypeEmail" />
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-error" path="retypeEmail" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="retypeEmail" />
                         </div>
                     </td>
                 </tr>
@@ -115,7 +115,7 @@
 					<th nowrap="nowrap" class="required-field">First name </th>
 					<td><form:input cssClass="popupreg_input" path="firstName" onchange="generateScreenName()"/>
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="firstName" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
 						</div></td>
 				</tr>
 
@@ -123,7 +123,7 @@
 					<th nowrap="nowrap" class="required-field">Last name </th>
 					<td><form:input cssClass="popupreg_input" path="lastName" onchange="generateScreenName()"/>
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="lastName" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
 						</div></td>
 				</tr>
 
@@ -131,7 +131,7 @@
 					<th nowrap="nowrap" class="required-field">Password </th>
 					<td><form:password cssClass="popupreg_input" path="password" />
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="password" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="password" />
 						</div></td>
 				</tr>
 
@@ -141,7 +141,7 @@
 					<td><form:password cssClass="popupreg_input"
 							path="retypePassword" />
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="retypePassword" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="retypePassword" />
 						</div></td>
 
 					<th class="second required-field">
@@ -161,7 +161,7 @@
                             <span class="limit_charactersMax">2000</span> characters
                         </div>
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="shortBio" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="shortBio" />
 						</div>
                     </td>
 				</tr>
@@ -174,7 +174,7 @@
 						<img src="${getCaptchaImage }" style="margin-bottom: 10px;"/><br />
 						<form:input cssClass="popupreg_input" path="captchaText" />
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="captchaText" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="captchaText" />
 						</div>
 					</td>
 				</tr>

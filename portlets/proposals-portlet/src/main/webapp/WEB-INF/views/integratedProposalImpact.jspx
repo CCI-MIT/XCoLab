@@ -63,7 +63,7 @@
 
                         <div id="proposalToModelMap" class="addpropbox" style="display: none;">
                             <c:if test="${not empty proposalToModelMap}">
-                                <div class="alert alert-error">
+                                <div class="c-Alert c-Alert__error">
                                     In order to use the values from your regional plans here, all the regional plans
                                     need to use the same modeling engine, and you must include a regional plan for all
                                     the regions.
@@ -189,14 +189,14 @@
                 </c:when>
                 <c:when test="${modelId > 0 or scenarioId > 0}">
                     <div id="modelContent">
-                        <div class="alert alert-warnig"><h3>
+                        <div class="c-Alert alert-warnig"><h3>
                             The proposal author(s) have not yet estimated the emission impacts of this proposal.
                         </h3></div>
                     </div>
                 </c:when>
                 <c:otherwise>
                     <div id="modelContent">
-                        <div class="alert alert-error">
+                        <div class="c-Alert c-Alert__error">
                             No modeling engine is configured for this contest. Please contact the administrator.
                         </div>
                     </div>

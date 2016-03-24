@@ -356,7 +356,7 @@
 
 				<form:form commandName="messageBean" id="messageForm">
 					<div class="reg_errors"><!--  --></div>
-					<form:errors cssClass="alert alert-error" />
+					<form:errors cssClass="c-Alert c-Alert__error" />
 
 					<div>
 						<p>
@@ -377,7 +377,7 @@
 							<strong>Message:</strong> &#160;
 							<form:textarea cssClass="c-Message__input sendMessage_message" path="messageText" /><br />
 							<div class="reg_errors"><!--  -->
-								<form:errors cssClass="alert alert-error error" path="messageText" />
+								<form:errors cssClass="c-Alert c-Alert__error error" path="messageText" />
 							</div>
 						</p>
 

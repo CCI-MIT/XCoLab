@@ -62,7 +62,7 @@
 
     <div class="cmsDetailsBox">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="alert alert-error" path="*"/>
+            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
         </div>
 
         <form:form action="${changeContestScheduleURL }" commandName="elementSelectIdWrapper" id="selectForm"
@@ -78,7 +78,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="alert alert-error" path="elementId"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId"/>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                 <form:input path="scheduleName" cssClass="wideLargeInput"/>
 
                 <div class="reg_errors"><!--  -->
-                    <form:errors cssClass="alert alert-error" path="scheduleName"/>
+                    <form:errors cssClass="c-Alert c-Alert__error" path="scheduleName"/>
                 </div>
             </div>
 
@@ -139,7 +139,7 @@
                                          data-form-name="contestPhaseDeleted"/>
 
                             <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-error"
+                                <form:errors cssClass="c-Alert c-Alert__error"
                                              path="schedulePhases[${x.index}].phaseStartDate"/>
                             </div>
 
