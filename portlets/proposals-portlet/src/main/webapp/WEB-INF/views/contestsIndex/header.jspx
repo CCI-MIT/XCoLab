@@ -8,7 +8,7 @@
 	<!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="preferences" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"-->
 
-	<div class="headline formmargin">
+	<div class="c-Headline formmargin">
 		<div style="position: relative;">
 			<c:if test="${showContestManagementLink}">
 				<a href="/web/guest/cms/-/contestmanagement/manager/tab/OVERVIEW" target="_blank">Go to Contest Management Tool</a>
@@ -141,7 +141,7 @@
             </div>
         </form>
     </div>
-	<div class="headline">
+	<div class="c-Headline">
 		${preferences.callToAction}
 	</div>
 

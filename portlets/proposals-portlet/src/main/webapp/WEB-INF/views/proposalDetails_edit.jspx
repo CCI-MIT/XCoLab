@@ -59,7 +59,7 @@
         </c:otherwise>
     </c:choose>
 
-    <div class="headline addprop">
+    <div class="c-Headline addprop">
         <c:choose>
             <c:when test="${move }">
                 <p>
@@ -87,7 +87,7 @@
             30 minutes. Please save all ${contestType.proposalName} content offline before clicking
             PUBLISH or else it may be lost.
         </p>
-    </div> <!-- /headline -->
+    </div> <!-- /c-Headline -->
 
 
     <form action="/fileUpload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">

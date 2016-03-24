@@ -18,7 +18,7 @@
         <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
         <script type="text/javascript" src="/discussions-portlet/js/discussionComments.js" ><!-- --></script>
 
-		<div class="headline prophead">
+		<div class="c-Headline prophead">
 			<h2>
 				<span>${thread.commentsCount}</span>
 				<c:choose>
