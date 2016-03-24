@@ -756,3 +756,14 @@
     border-left: 5px solid $t-Color__primary--dark;
   }
 }
+
+.prop-butt {
+  float: right;
+  width: 475px;
+  text-align: left;
+
+  img {
+    vertical-align: middle;
+    padding-right: 10px;
+  }
+}
