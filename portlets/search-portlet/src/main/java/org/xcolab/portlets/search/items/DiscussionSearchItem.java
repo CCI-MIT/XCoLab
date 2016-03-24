@@ -20,6 +20,9 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     private final static String[] TITLE_FIELDS = {"title"};
     private final static String[] CONTENT_FIELDS = {"content"};
 
+    private DiscussionMessage discussionMessage;
+    private DiscussionCategoryGroup categoryGroup;
+
     @Override
     public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
         String title = concatFields(TITLE_FIELDS, doc, highlighter);
@@ -27,21 +30,26 @@ public class DiscussionSearchItem extends AbstractSearchItem {
             try {
                 DiscussionCategoryGroup dcg = getCategoryGroup(doc);
                 return "Discussion for " + dcg.getDescription();
-            } catch (SystemException | PortalException ignored) { }
+            } catch (SystemException | PortalException e) {
+                return "Comment";
+            }
         }
-        return "Comment";
+        return title;
     }
 
     @Override
     public String getLinkUrl(Document doc) throws SystemException {
-        String idStr = doc.get(Field.ENTRY_CLASS_PK);
-        Long messageId = Long.parseLong(idStr);
         try {
-            DiscussionMessage msg = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
+            DiscussionMessage msg = getMessage(doc);
+            DiscussionCategoryGroup dcg = getCategoryGroup(doc);
+
+            if (dcg.getCommentsThread() > 0 && !StringUtils.isBlank(dcg.getUrl())) {
+                return dcg.getUrl();
+            }
 
             Long threadId = msg.getThreadId();
             if (threadId == 0) {
-                threadId = messageId;
+                threadId = msg.getMessageId();
             }
             return new ThreadWrapper(threadId).getLinkUrl();
         } catch (SystemException | PortalException e) {
@@ -55,19 +63,21 @@ public class DiscussionSearchItem extends AbstractSearchItem {
         return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
     }
 
-    public long getMessageId(Document doc) {
-        String idStr = doc.get(Field.ENTRY_CLASS_PK);
-        return Long.parseLong(idStr);
-    }
-
     public DiscussionMessage getMessage(Document doc) throws SystemException, PortalException {
-        return DiscussionMessageLocalServiceUtil.getDiscussionMessage(getMessageId(doc));
+        if (discussionMessage == null) {
+            String idStr = doc.get(Field.ENTRY_CLASS_PK);
+            long messageId = Long.parseLong(idStr);
+            discussionMessage = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
+        }
+        return discussionMessage;
     }
 
     public DiscussionCategoryGroup getCategoryGroup(Document doc) throws SystemException, PortalException {
-        DiscussionMessage message = getMessage(doc);
-        return DiscussionCategoryGroupLocalServiceUtil
-                .getDiscussionCategoryGroup(message.getCategoryGroupId());
+        if (categoryGroup == null) {
+            categoryGroup = DiscussionCategoryGroupLocalServiceUtil
+                    .getDiscussionCategoryGroup(getMessage(doc).getCategoryGroupId());
+        }
+        return categoryGroup;
     }
 
     @Override

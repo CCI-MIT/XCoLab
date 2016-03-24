@@ -1,9 +1,6 @@
 package org.xcolab.portlets.search;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.xcolab.portlets.search.items.AbstractSearchItem;
 import org.xcolab.portlets.search.items.BlogSearchItem;
 import org.xcolab.portlets.search.items.ContentSearchItem;
@@ -13,55 +10,41 @@ import org.xcolab.portlets.search.items.ProposalSearchItem;
 import org.xcolab.portlets.search.items.UserSearchItem;
 import org.xcolab.portlets.search.paging.PageLinkWrapper;
 
-import java.io.IOException;
-
 public enum SearchItemType {
 
     PLAN("Proposals", new String[]{"entryClassName", "com.ext.portlet.model.Proposal"},
-            new String[]{"content", "title", "pitch", "sections"},
-            new ProposalSearchItem()),
+            new String[]{"content", "title", "pitch", "sections"}, ProposalSearchItem.class),
+
     CONTEST("Contests", new String[]{"entryClassName", "com.ext.portlet.model.Contest"},
-            new String[]{"content", "title"},
-            new ContestSearchItem()),
+            new String[]{"content", "title"}, ContestSearchItem.class),
 
     USER("Users", new String[]{"entryClassName", "com.liferay.portal.model.User"},
-            new String[]{"screenName", "firstName", "lastName"},
-            new UserSearchItem()),
+            new String[]{"screenName", "firstName", "lastName"}, UserSearchItem.class),
 
     CONTENT("Content", new String[]{"entryClassName",
             "com.liferay.portlet.wiki.model.* OR com.liferay.portlet.journal.model.JournalArticle"},
-            new String[]{"title"},
-            new ContentSearchItem()),
+            new String[]{"title"}, ContentSearchItem.class),
 
-    BLOG("News", new String[]{"entryClassName", "com.liferay.portlet.blogs.model.*"}, new String[]{"title", "content"},
-            new BlogSearchItem()),
+    BLOG("News", new String[]{"entryClassName", "com.liferay.portlet.blogs.model.*"},
+            new String[]{"title", "content"}, BlogSearchItem.class),
+
     DISCUSSION("Discussions", new String[]{"entryClassName", "com.ext.portlet.model.DiscussionMessage"},
-            new String[]{"title", "content"},
-            new DiscussionSearchItem());
+            new String[]{"title", "content"}, DiscussionSearchItem.class);
 
     private final String[] determinatorFieldValue;
     private final String[] searchFields;
     private final String searchInDescription;
-    private final AbstractSearchItem searchItem;
+    private final Class<? extends AbstractSearchItem> searchItemClass;
 
     SearchItemType(String searchInDescription, String[] determinatorInfo, String[] searchFields,
-            AbstractSearchItem searchItem) {
-        this.searchItem = searchItem;
+            Class<? extends AbstractSearchItem> searchItemClass) {
+        this.searchItemClass = searchItemClass;
         if (determinatorInfo.length != 2) {
             throw new IllegalArgumentException("Determinator info table needs to have 2 values");
         }
         this.determinatorFieldValue = determinatorInfo;
         this.searchFields = searchFields;
         this.searchInDescription = searchInDescription;
-    }
-
-    public String getUrl(Document doc) throws SystemException {
-        return searchItem.getLinkUrl(doc);
-    }
-
-    public String getTitle(Document doc, Highlighter highlighter)
-            throws IOException, InvalidTokenOffsetsException, SystemException {
-        return searchItem.getTitle(doc, highlighter);
     }
 
     public String getQuery(String userQuery) {
@@ -94,11 +77,6 @@ public enum SearchItemType {
         return sb.toString();
     }
 
-    public String getContent(Document doc, Highlighter highlighter)
-            throws IOException, InvalidTokenOffsetsException, SystemException {
-        return searchItem.getContent(doc, highlighter);
-    }
-
     public boolean isOfGivenType(Document doc) {
         String detFieldVal = doc.get(determinatorFieldValue[0]);
         if (detFieldVal != null) {
@@ -129,6 +107,6 @@ public enum SearchItemType {
     }
 
     public AbstractSearchItem getSearchItem() {
-        return searchItem;
+        return AbstractSearchItem.newInstance(searchItemClass);
     }
 }

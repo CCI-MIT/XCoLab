@@ -12,6 +12,7 @@ import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.util.Version;
+import org.xcolab.portlets.search.items.AbstractSearchItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,9 +46,10 @@ public class SearchResultItem {
         Highlighter highlighter = new Highlighter(formatter, scorer);
         highlighter.getBestFragment(new StandardAnalyzer(Version.LUCENE_34), "firstName", doc.get("firstName"));
         if (itemType != null) {
-            content = itemType.getContent(doc, highlighter);
-            url = itemType.getUrl(doc);
-            title = itemType.getTitle(doc, highlighter);
+            AbstractSearchItem searchItem = itemType.getSearchItem();
+            content = searchItem.getContent(doc, highlighter);
+            url = searchItem.getLinkUrl(doc);
+            title = searchItem.getTitle(doc, highlighter);
         }
         this.odd = odd;
     }

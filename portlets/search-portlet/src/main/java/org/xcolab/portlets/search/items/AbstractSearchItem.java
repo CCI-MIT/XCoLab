@@ -10,15 +10,39 @@ import org.apache.lucene.util.Version;
 import java.io.IOException;
 
 public abstract class AbstractSearchItem {
-
     private static final String HTML_CLEAN_UP_REGEXP = "<[^>]*>";
+
     public final static int MAX_CONTENT_LENGTH = 255;
 
     public abstract String getTitle(Document doc, Highlighter highlighter)
             throws SystemException, IOException, InvalidTokenOffsetsException;
+
     public abstract String getLinkUrl(Document doc) throws SystemException;
+
     public abstract String getContent(Document doc, Highlighter highlighter)
             throws SystemException, IOException, InvalidTokenOffsetsException;
+
+    public static AbstractSearchItem newInstance(Class<? extends AbstractSearchItem> clazz) {
+        if (BlogSearchItem.class == clazz) {
+            return new BlogSearchItem();
+        }
+        if (ContentSearchItem.class == clazz) {
+            return new ContentSearchItem();
+        }
+        if (ContestSearchItem.class == clazz) {
+            return new ContestSearchItem();
+        }
+        if (DiscussionSearchItem.class == clazz) {
+            return new DiscussionSearchItem();
+        }
+        if (ProposalSearchItem.class == clazz) {
+            return new BlogSearchItem();
+        }
+        if (UserSearchItem.class == clazz) {
+            return new BlogSearchItem();
+        }
+        throw new IllegalArgumentException("Invalid class name provided to factory method: " + clazz.getName());
+    }
 
     protected String concatFields(String[] fields, Document doc, Highlighter highlighter)
             throws IOException, InvalidTokenOffsetsException {
