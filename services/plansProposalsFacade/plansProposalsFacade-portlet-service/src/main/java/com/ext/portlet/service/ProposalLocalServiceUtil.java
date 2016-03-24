@@ -711,6 +711,40 @@ public class ProposalLocalServiceUtil {
     }
 
     /**
+    * <p>Sends a request to join proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId     user id
+    * @param comment    optional comment
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public static com.liferay.portal.model.MembershipRequest addRequestedMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .addRequestedMembershipRequest(proposalId, userId, comment);
+    }
+
+    /**
+    * <p>Sends a request to join proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId     user id
+    * @param comment    optional comment
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public static com.liferay.portal.model.MembershipRequest addInvitedMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .addInvitedMembershipRequest(proposalId, userId, comment);
+    }
+
+    /**
     * <p>Remove a user from a proposal team</p>
     *
     * @param proposalId proposal id

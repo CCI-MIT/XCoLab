@@ -30,6 +30,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
+import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.wrappers.BaseProposalWrapper;
@@ -213,7 +214,8 @@ public class ProposalWrapper extends BaseProposalWrapper {
             membershipRequests = new ArrayList<>();
             try {
                 for (MembershipRequest m : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())) {
-                    membershipRequests.add(new MembershipRequestWrapper(m));
+                    if(m.getStatusId()== MembershipRequestStatus.STATUS_PENDING_REQUESTED)
+                        membershipRequests.add(new MembershipRequestWrapper(m));
                 }
             } catch (SystemException | PortalException e) {
                 _log.warn(String.format("Could not retrieve membership requests for proposal %d", proposal.getProposalId()));

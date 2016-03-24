@@ -28,6 +28,7 @@ import java.util.Date;
  */
 public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLocalServiceWrapper {
 
+
 	public CustomMembershipRequestLocalServiceImpl(MembershipRequestLocalService membershipRequestLocalService) {
 		super(membershipRequestLocalService);
 	}
@@ -69,19 +70,20 @@ public class CustomMembershipRequestLocalServiceImpl extends MembershipRequestLo
 		MembershipRequest membershipRequest =
 				MembershipRequestUtil.findByPrimaryKey(membershipRequestId);
 
-		membershipRequest.setReplyComments(replyComments);
-		membershipRequest.setReplyDate(new Date());
+		if((statusId == MembershipRequestConstants.STATUS_APPROVED)||
+				(statusId == MembershipRequestConstants.STATUS_DENIED)) {
+			membershipRequest.setReplyComments(replyComments);
+			membershipRequest.setReplyDate(new Date());
 
-		if (replierUserId != 0) {
-			membershipRequest.setReplierUserId(replierUserId);
+			if (replierUserId != 0) {
+				membershipRequest.setReplierUserId(replierUserId);
+			} else {
+				long defaultUserId = UserLocalServiceUtil.getDefaultUserId(
+						membershipRequest.getCompanyId());
+
+				membershipRequest.setReplierUserId(defaultUserId);
+			}
 		}
-		else {
-			long defaultUserId = UserLocalServiceUtil.getDefaultUserId(
-					membershipRequest.getCompanyId());
-
-			membershipRequest.setReplierUserId(defaultUserId);
-		}
-
 		membershipRequest.setStatusId(statusId);
 
 		MembershipRequestUtil.update(membershipRequest);

@@ -70,6 +70,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
 import org.xcolab.proposals.events.ProposalMemberAddedEvent;
@@ -118,6 +119,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     private static final Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
 
     private static final long ADMINISTRATOR_USER_ID = 10144L;
+
+
 
     /**
      * Default description of group working on a plan.
@@ -751,8 +754,18 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public List<MembershipRequest> getMembershipRequests(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
-        return MembershipRequestLocalServiceUtil.search(proposal.getGroupId(),
+        List<MembershipRequest>  invited = MembershipRequestLocalServiceUtil.search(proposal.getGroupId(),
+                MembershipRequestStatus.STATUS_PENDING_INVITED, 0, Integer.MAX_VALUE);
+        List<MembershipRequest>  requested = MembershipRequestLocalServiceUtil.search(proposal.getGroupId(),
+                MembershipRequestStatus.STATUS_PENDING_REQUESTED, 0, Integer.MAX_VALUE);
+        List<MembershipRequest>  olderRequests = MembershipRequestLocalServiceUtil.search(proposal.getGroupId(),
                 MembershipRequestConstants.STATUS_PENDING, 0, Integer.MAX_VALUE);
+        List<MembershipRequest> combined = new ArrayList<>();
+        if(invited!=null&&invited.size()> 0){combined.addAll(invited);}
+        if(requested!=null&&requested.size()> 0){combined.addAll(requested);}
+        if(olderRequests!=null&&olderRequests.size()> 0){combined.addAll(olderRequests);}
+
+        return combined;
     }
 
     /**
@@ -769,6 +782,42 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         Proposal proposal = getProposal(proposalId);
 
         return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment == null? StringPool.BLANK : comment, null);
+    }
+
+    /**
+     * <p>Sends a request to join proposal team</p>
+     *
+     * @param proposalId proposal id
+     * @param userId     user id
+     * @param comment    optional comment
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    @Override
+    public MembershipRequest addRequestedMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
+        Proposal proposal = getProposal(proposalId);
+        MembershipRequest membershipRequest = addMembershipRequest(proposalId,userId,comment);
+        MembershipRequestLocalServiceUtil.updateStatus(0l,membershipRequest.getMembershipRequestId(),null,
+                MembershipRequestStatus.STATUS_PENDING_REQUESTED,false,null);
+        return membershipRequest;
+    }
+
+    /**
+     * <p>Sends a request to join proposal team</p>
+     *
+     * @param proposalId proposal id
+     * @param userId     user id
+     * @param comment    optional comment
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    @Override
+    public MembershipRequest addInvitedMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
+        Proposal proposal = getProposal(proposalId);
+        MembershipRequest membershipRequest = addMembershipRequest(proposalId,userId,comment);
+        MembershipRequestLocalServiceUtil.updateStatus(0l,membershipRequest.getMembershipRequestId(),null,
+                MembershipRequestStatus.STATUS_PENDING_INVITED,false,null);
+        return membershipRequest;
     }
 
     /**
@@ -856,7 +905,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public boolean hasUserRequestedMembership(long proposalId, long userId) throws PortalException, SystemException {
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
-        return !MembershipRequestLocalServiceUtil.getMembershipRequests(userId, proposal.getGroupId(), MembershipRequestConstants.STATUS_PENDING).isEmpty();
+        boolean hasRequested = !MembershipRequestLocalServiceUtil.getMembershipRequests(userId, proposal.getGroupId(),
+                MembershipRequestStatus.STATUS_PENDING_REQUESTED).isEmpty();
+        boolean hasBeenInvited = !MembershipRequestLocalServiceUtil.getMembershipRequests(userId, proposal.getGroupId(),
+                MembershipRequestStatus.STATUS_PENDING_INVITED).isEmpty();
+        return hasRequested||hasBeenInvited;
 
     }
 

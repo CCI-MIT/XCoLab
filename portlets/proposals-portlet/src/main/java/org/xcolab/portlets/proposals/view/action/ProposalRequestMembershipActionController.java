@@ -83,7 +83,7 @@ public class ProposalRequestMembershipActionController {
         final User proposalAuthor = UserLocalServiceUtil.getUser(proposal.getAuthorId());
         final Contest contest = proposalsContext.getContest(request);
 
-        ProposalLocalServiceUtil.addMembershipRequest(proposalId, sender.getUserId(), comment);
+        ProposalLocalServiceUtil.addRequestedMembershipRequest(proposalId, sender.getUserId(), comment);
 
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
@@ -125,7 +125,7 @@ public class ProposalRequestMembershipActionController {
 						comment = "No message specified";
 					}
 					MembershipRequest memberRequest = ProposalLocalServiceUtil
-                            .addMembershipRequest(proposalId,recipient.getUserId(),comment);
+                            .addInvitedMembershipRequest(proposalId,recipient.getUserId(),comment);
 
                     ServiceContext serviceContext = new ServiceContext();
                     serviceContext.setPortalURL(themeDisplay.getPortalURL());
