@@ -39,7 +39,7 @@
                 <div class="msgContent hidden">
                     <p><ice:outputText value="#{message.filteredContent}" escape="false" /></p>
                     <div class="floatRight">
-                    <div class="blue-button">
+                    <div class="c-Button__primary">
                         <ice:commandLink actionListener="#{messagingBean.toggleSendMessage}" value="Reply" onclick="jQuery('.messagingContainer').block();" >
                             <f:attribute name="replyMessageId" value="#{message.messageId}" />
                         </ice:commandLink>
@@ -77,7 +77,7 @@
       </ice:dataTable>
       <br /><br />
       <ice:panelGroup styleClass="messages_bot" rendered="#{messagingBean.type == 'INBOX'}">
-        <div class="blue-button">
+        <div class="c-Button__primary">
             <ice:commandLink actionListener="#{messagingBean.archiveSelectedMessages}" >Archive selected messages</ice:commandLink>
         </div>
       </ice:panelGroup>

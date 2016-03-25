@@ -13,7 +13,7 @@
         <h2><span>#{discussionBean.commentsCount}</span> comments</h2>
         <div class="comm-butt">
 	        <img src="/climatecolab-theme/images/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="add a comment" /> 
-	        <div class="blue-button" id="addcomment_button2"><a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); return false;'>Jump to comment form</a></div>
+	        <div class="c-Button__primary" id="addcomment_button2"><a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); return false;'>Jump to comment form</a></div>
             <div class="comm-share">
                     <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
                         addthis:title="#{discussionBean.discussion.description}"
@@ -163,7 +163,7 @@
             <ice:inputTextarea id="messageContent" value="#{discussionBean.newComment.description}" styleClass="commentbox commentContent"/>
             <br />
             <span class="errorMsg portlet-msg-error" style="display: none;">Value is required</span>
-            <div class="blue-button"><ice:commandLink  actionListener="#{discussionBean.newComment.addComment}" onclick="if (! window.isAddCommentFormValid()) return false; window.disableAddComment();">Add Comment</ice:commandLink></div>
+            <div class="c-Button__primary"><ice:commandLink  actionListener="#{discussionBean.newComment.addComment}" onclick="if (! window.isAddCommentFormValid()) return false; window.disableAddComment();">Add Comment</ice:commandLink></div>
         </div>
     </ice:panelGroup>
     

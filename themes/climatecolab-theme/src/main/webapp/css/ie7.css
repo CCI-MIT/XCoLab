@@ -1,5 +1,5 @@
 .rss {position:absolute; right:47px;}
-.blue-button, .gray-button {display:inline;}
+.c-Button__primary, .c-Button__secondary {display:inline;}
 .comm-butt img, .prop-butt img {position:relative; top:-10px;}
 .blueheaderbar .proposalname a {vertical-align:middle;}
 #footright #txt {width:410px;}

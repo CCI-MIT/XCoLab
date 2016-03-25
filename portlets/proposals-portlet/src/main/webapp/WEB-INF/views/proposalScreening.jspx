@@ -111,7 +111,7 @@
                     </div>
                     <c:choose>
                         <c:when test="${proposalsPermissions.canFellowActions}">
-                            <a style="display:block; float:right;" href="javascript:;" class="primary-button requestMembershipSubmitButton"
+                            <a style="display:block; float:right;" href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
                                    onclick="jQuery(this).parents('form').submit();">Save ${contestType.proposalName} decision</a>
                         </c:when>
                         <c:otherwise>
@@ -145,7 +145,7 @@
                             <h4>Rating comment:</h4>
                             <i>Your comment will be visible to other Fellows and Judges only.</i>
                             <form:textarea id="fellowRatingComment" cssClass="commentbox" path="comment" style="width:100%;"/>
-                                <a style="display:block; float:right;" href="javascript:;" class="primary-button requestMembershipSubmitButton"
+                                <a style="display:block; float:right;" href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
                                 onclick="jQuery(this).parents('form').submit();">Save</a>
                         </c:when>
                         <c:otherwise>
@@ -159,7 +159,7 @@
             </form:form>
             <c:if test="proposalsPermissions.canAdminAll">
                 <div class="addpropbox">
-                        <a style="display:block; float:right;" class="primary-button requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
+                        <a style="display:block; float:right;" class="c-Button__primary requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
                 </div>
             </c:if>
         </div>

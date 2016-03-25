@@ -34,7 +34,7 @@
                         <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
                         <portlet:param name="pageToDisplay" value="createProposal" />
                     </portlet:renderURL>
-                    <a class="primary-button" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
+                    <a class="c-Button__primary" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                        onclick="if(!deferUntilLoginTargeted('${createProposalURL}')) return false;">
                         <span>CREATE</span> ${contestType.proposalName}
                     </a>

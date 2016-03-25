@@ -76,7 +76,7 @@
                                         </c:forEach>
                                     </div>
                                     <c:if test="proposalsPermissions.canAdminAll">
-                                        <a style="display:block; float:left;" class="primary-button" href="${sendEmailURL}">Send e-Mails</a>
+                                        <a style="display:block; float:left;" class="c-Button__primary" href="${sendEmailURL}">Send e-Mails</a>
                                     </c:if>
                                 </div>
                                 <a href="${contest.emailTemplateUrl}" target="_blank">Go to Email Template</a>
@@ -87,22 +87,22 @@
                                                 <strong>The advancement is finalized and may not be changed anymore.</strong>
                                             </p>
                                             <c:if test="${proposalsPermissions.canAdminAll}">
-                                                <a style="display:block; float:right; margin-top: 10px;" class="primary-button" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                                                <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
                                                     Save
                                                 </a>
                                                 <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
-                                                <a style="display:block; float:right; margin-top: 10px;" class="primary-button" href="javascript:;" onclick="$('#submit-unfreeze').click();">
+                                                <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="$('#submit-unfreeze').click();">
                                                     Unfreeze
                                                 </a>
                                             </c:if>
                                         </c:when>
                                         <c:when test="${proposalsPermissions.canFellowActions}">
-                                            <a style="display:block; float:right; margin-top: 10px;" class="primary-button" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                                            <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
                                                 Save
                                             </a>
                                             <div id="advancement-freeze-button">
                                                 <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
-                                                <a style="display:block; float:right; margin-top: 10px;" class="primary-button" href="javascript:;" onclick="$('#submit-freeze').click();">
+                                                <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="$('#submit-freeze').click();">
                                                     Freeze
                                                 </a>
                                             </div>
@@ -116,7 +116,7 @@
                                     <div id="advancement-force-button">
                                         <c:if test="${proposalsPermissions.canAdminAll and not hasAlreadyBeenPromoted}">
                                                 <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
-                                                <a style="display:block; float:right; margin-top: 10px;" class="primary-button" href="javascript:;" onclick="$('#submit-forcePromotion').click();">
+                                                <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="$('#submit-forcePromotion').click();">
                                                     Execute judging decision
                                                 </a>
                                         </c:if>
@@ -223,7 +223,7 @@
     </c:if>
     <c:if test="${not proposal.allJudgesReviewFinished}">
         <script>
-            $(".judging_comments .primary-button").hide();
+            $(".judging_comments .c-Button__primary").hide();
         </script>
     </c:if>
 

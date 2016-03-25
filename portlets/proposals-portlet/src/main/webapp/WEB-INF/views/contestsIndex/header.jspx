@@ -131,9 +131,9 @@
                         <div class="lrContentPlaceholder lfr-column " id="suggestContestPopupContent">
                                <div><textarea name="suggestContestText" class="portlet-form-input-field" style="display: block; width: 100%; height: 80px;">Your suggestion</textarea></div>
                                 <center>
-                                    <a class="primary-button iceCmdLnk" href="javascript:;" onclick=" $(this).parents('form:first').get(0).setAttribute('action', '${suggestContestURL}'); $(this).parents('form:first').submit();">
+                                    <a class="c-Button__primary iceCmdLnk" href="javascript:;" onclick=" $(this).parents('form:first').get(0).setAttribute('action', '${suggestContestURL}'); $(this).parents('form:first').submit();">
 										Send</a>
-                                    <a class="primary-button" href="javascript:;" onclick="$('#c-Popup__suggest').hide();">Cancel</a>
+                                    <a class="c-Button__primary" href="javascript:;" onclick="$('#c-Popup__suggest').hide();">Cancel</a>
                                 </center>
                         </div>
                     </div>

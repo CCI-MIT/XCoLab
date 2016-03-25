@@ -158,17 +158,17 @@
                                         <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                                     </p>
 
-                                    <a class="primary-button" href="#" id="saveChangesButton">SAVE and PUBLISH
+                                    <a class="c-Button__primary" href="#" id="saveChangesButton">SAVE and PUBLISH
                                         changes</a>
                                     <c:choose>
                                         <c:when test="${proposal.currentVersion > 0 }">
-                                            <collab:proposalLink proposal="${proposal}" cssClass="grey-button"
+                                            <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
                                                                  linkId="discardChangesButton"
                                                                  text="DISCARD changes"/>
                                         </c:when>
                                         <c:otherwise>
                                             <!--  proposal creation, return to contest proposals page on discard -->
-                                            <collab:contestLink contest="${contest }" cssClass="grey-button"
+                                            <collab:contestLink contest="${contest }" cssClass="c-Button__secondary"
                                                                           linkId="discardChangesButton"
                                                                           text="DISCARD changes"/>
                                         </c:otherwise>

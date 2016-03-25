@@ -15,7 +15,7 @@
 
     <div class="searchFormContainer">
         <input value="${searchBean.searchPhrase}" class="searchPhrase" id="searchPhrase"/>
-        <a class="primary-button" href="javascript:;"
+        <a class="c-Button__primary" href="javascript:;"
            onclick="window.location = '/web/guest/search/-/search/for/' + encodeURI($('#searchPhrase').val())">Search</a>
     </div>
 

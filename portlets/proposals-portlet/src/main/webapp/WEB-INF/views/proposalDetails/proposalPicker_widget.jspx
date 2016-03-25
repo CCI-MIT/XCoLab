@@ -83,7 +83,7 @@
 							placeholder="Filter" maxcharacters="80" validatelength="true"
 							class="rteInitialized"
 							style="height: 22px; width: 175px; padding: 0 5px;" />
-						<a class="primary-button" href="javascript:;">Search</a>
+						<a class="c-Button__primary" href="javascript:;">Search</a>
 					</div>
 					
 					<div id="proposalPicker_viewArea">
@@ -242,8 +242,8 @@
 				</div>
 				<div id="warning"></div>
 				<div class="pickerButtons">
-                	<a class="primary-button" href="#" id="savePickedProposals">Choose <span class="contestTypeProposalNames">&#160;</span></a>
-                	<a class="grey-button" href="#" id="cancelPickedProposals">Cancel</a>
+                	<a class="c-Button__primary" href="#" id="savePickedProposals">Choose <span class="contestTypeProposalNames">&#160;</span></a>
+                	<a class="c-Button__secondary" href="#" id="cancelPickedProposals">Cancel</a>
 					<div class="clearfix clear"><!--  --></div>
                 </div>
 			</div>

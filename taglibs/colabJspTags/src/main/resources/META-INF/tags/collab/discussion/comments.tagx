@@ -197,12 +197,12 @@
 						<span class="errorMsg portlet-msg-error" style="display: none;">Value is required</span>
 						<c:choose>
 							<c:when test="${discussionPermissions.canAddComment }">
-								<a class="primary-button" href="javascript:;" id="addCommentButton">
+								<a class="c-Button__primary" href="javascript:;" id="addCommentButton">
 									Add Comment
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a class="primary-button" href="javascript:;" data-is-deferred="true" id="addCommentButton">
+								<a class="c-Button__primary" href="javascript:;" data-is-deferred="true" id="addCommentButton">
 									Add Comment
 								</a>
 							</c:otherwise>

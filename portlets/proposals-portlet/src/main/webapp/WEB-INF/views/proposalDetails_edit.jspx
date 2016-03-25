@@ -233,8 +233,8 @@
                     ${preferences.termsOfService}
             </div>
             <div class="btns">
-                <a class="primary-button cp1-1" href="javascript:;" id="tosAccepted">ACCEPT</a>
-                <a class="grey-button cp1-2" href="javascript:;" id="closeAcceptTos">DO NOT Accept</a>
+                <a class="c-Button__primary cp1-1" href="javascript:;" id="tosAccepted">ACCEPT</a>
+                <a class="c-Button__secondary cp1-2" href="javascript:;" id="closeAcceptTos">DO NOT Accept</a>
             </div>
         </div>
     </div>
@@ -246,7 +246,7 @@
             <h4>The following sections have too many characters:</h4>
             <ul id="invalidFieldsList"><!--  --></ul>
             <div class="btns">
-                <a class="primary-button cp1-1" href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')">CLOSE</a>
+                <a class="c-Button__primary cp1-1" href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')">CLOSE</a>
             </div>
         </div>
     </div>
@@ -268,15 +268,15 @@
                     <br />
                     <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                 </p>
-                <a class="primary-button" href="#" id="saveChangesButton">SAVE and PUBLISH changes</a>
+                <a class="c-Button__primary" href="#" id="saveChangesButton">SAVE and PUBLISH changes</a>
                 <c:choose>
                     <c:when test="${proposal.currentVersion > 0 }">
-                        <collab:proposalLink proposal="${proposal}" cssClass="grey-button"
+                        <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
                                              linkId="discardChangesButton" text="DISCARD changes" />
                     </c:when>
                     <c:otherwise>
                         <!--  proposal creation, return to contest proposals page on discard -->
-                        <collab:contestLink contest="${contest}" cssClass="grey-button"
+                        <collab:contestLink contest="${contest}" cssClass="c-Button__secondary"
                                             linkId="discardChangesButton" text="DISCARD changes" />
                     </c:otherwise>
                 </c:choose>
@@ -395,7 +395,7 @@
             <div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
                 <div id="copyProposalContests"><!--  --></div>
                 <center>
-                    <a class="primary-button" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
+                    <a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
                 </center>
             </div>
         </div>

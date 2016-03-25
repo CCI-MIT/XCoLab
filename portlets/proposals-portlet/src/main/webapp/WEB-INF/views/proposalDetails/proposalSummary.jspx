@@ -26,7 +26,7 @@
                                         <portlet:param name="action" value="voteOnProposalAction" />
                                     </portlet:actionURL>
 
-                                    <a class="primary-button" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+                                    <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
                                         <c:set var="voteForText" value="VOTE for ${contestType.proposalName}" />
                                         ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : 'RETRACT vote'}
                                     </a>

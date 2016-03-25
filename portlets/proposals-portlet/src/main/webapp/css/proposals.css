@@ -405,7 +405,7 @@ table.judgingForm {
   padding: 10px;
 }
 
-#proposalPickerSearchContainer .blue-button {
+#proposalPickerSearchContainer .c-Button__primary {
   display: inline-block;
 }
 

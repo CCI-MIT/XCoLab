@@ -158,7 +158,7 @@
 				<h4>Please choose ${contestType.contestName} to which you'd like to copy this ${contestType.proposalName}</h4>
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
-						<a class="primary-button" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
+						<a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
 				</div>
 			</div>
 		</div>

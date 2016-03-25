@@ -45,10 +45,10 @@
                 </div>
                 <ice:inputTextarea id="messageContent" value="#{discussionBean.newThread.description}" styleClass="profile_about"  style="width: 660px; height: 100px;" /><br />
                 <ice:message for="messageContent" />
-                <div class="blue-button">
+                <div class="c-Button__primary">
                     <ice:commandLink value="Add" actionListener="#{discussionBean.newThread.save}" />
                 </div>    
-                <div class="blue-button">
+                <div class="c-Button__primary">
                     <ice:commandLink value="Cancel" onclick="Collab.nav.refresh();" />
                 </div>
             </div>

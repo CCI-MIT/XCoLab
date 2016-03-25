@@ -42,7 +42,7 @@
             				<input type='radio' value='true' name='planOpen' ${proposal.open ? "checked='checked'" : ''} />Anyone<br />
             			]]>
 
-						<a class="primary-button" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+						<a class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
 							Save
 						</a>
             		</form>
@@ -76,7 +76,7 @@
             					</c:choose>	
             				</c:forEach>
             			</select>
-						<a class="primary-button" href="javascript:;" onclick="$(this).parents('form:first').submit();">
+						<a class="c-Button__primary" href="javascript:;" onclick="$(this).parents('form:first').submit();">
 							Save
 						</a>
             		</form>
@@ -98,7 +98,7 @@
         	            <portlet:param name="delete" value="true" />
             		</portlet:actionURL >
             		<form action="${deleteProposalURL }" method="post" id="deleteProposalForm">
-						<a class="primary-button" href="javascript:;" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
+						<a class="c-Button__primary" href="javascript:;" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
 							DELETE ${contestType.proposalName}
 						</a>
             		</form>
@@ -124,7 +124,7 @@
 				<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
 					<strong>Promote ${contestType.proposalName} to latest ${contestType.contestName} phase</strong>
 					<div>
-						<a class="primary-button" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+						<a class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
 							<span>Promote</span> ${contestType.proposalName}
 						</a>
 					</div>
@@ -136,7 +136,7 @@
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
             	<div>
-					<a class="primary-button" href="javascript:;"
+					<a class="c-Button__primary" href="javascript:;"
 						onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,true)">
 						<span>Move</span> this ${contestType.proposalName}
 					</a>
@@ -148,7 +148,7 @@
                 <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                     <strong>Copy ${contestType.proposalName} to different ${contestType.contestName}</strong>
                     <div>
-						<a class="primary-button" href="javascript:;"
+						<a class="c-Button__primary" href="javascript:;"
 						   onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,false)">
 							<span>Copy</span> this ${contestType.proposalName}
 						</a>
@@ -233,7 +233,7 @@
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
 					<center>
-						<a class="primary-button" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
+						<a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
 					</center>
 				</div>
 			</div>

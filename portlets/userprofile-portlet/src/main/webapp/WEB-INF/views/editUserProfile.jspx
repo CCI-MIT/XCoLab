@@ -218,8 +218,8 @@
 					<div class="clearfix">&#160;</div>
 				</div>
 
-				<a class="primary-button" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
-				<a class="grey-button" href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a>
+				<a class="c-Button__primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
+				<a class="c-Button__secondary" href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a>
 			</div>
 		</div> <!-- /main -->
 
@@ -338,7 +338,7 @@
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<tr class="colabRow">
 					<td class="actionColumn">
-						<a style="font-size: 12px;" class="grey-button" href="javascript:;" onclick="
+						<a style="font-size: 12px;" class="c-Button__secondary" href="javascript:;" onclick="
 						if(confirm('Are you sure you want to delete your ${colabName} account?'))
                            window.location = '${deleteProfileUrl}'">DELETE</a>
 					</td>

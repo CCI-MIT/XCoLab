@@ -230,7 +230,7 @@
                      <input type="text" name="email" class="email" style="width:98%; min-height: 25px; padding-left: 2%; margin-top: -10px;" placeholder="Email address" />
                      <div class="clearfix"><!-- --></div>
                      <div class="btns">
-                         <a class="primary-button login-submit" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
+                         <a class="c-Button__primary login-submit" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
                      </div>
                  </form>
              </div>

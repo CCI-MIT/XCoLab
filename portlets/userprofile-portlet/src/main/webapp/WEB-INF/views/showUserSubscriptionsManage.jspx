@@ -57,8 +57,8 @@
           </table>
 
         <div class="com-info bot">
-          <a class="primary-button" href="javascript:;" onclick="selectAllSubscriptions()">SELECT ALL</a>
-          <a class="primary-button" href="javascript:;" onclick="jQuery('#removeSubscriptionsForm').submit();" >REMOVE SELECTED</a>
+          <a class="c-Button__primary" href="javascript:;" onclick="selectAllSubscriptions()">SELECT ALL</a>
+          <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#removeSubscriptionsForm').submit();" >REMOVE SELECTED</a>
         </div>
         </form:form>
 

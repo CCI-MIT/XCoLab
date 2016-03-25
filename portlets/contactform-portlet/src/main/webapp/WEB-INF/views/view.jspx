@@ -55,7 +55,7 @@
 				<tr>
 					<th></th>
 					<td colspan="3">
-						<a class="primary-button" href="javascript:;" onclick="$('#contactFormForm').submit()">Send message</a>
+						<a class="c-Button__primary" href="javascript:;" onclick="$('#contactFormForm').submit()">Send message</a>
 					</td>
 				</tr>
 			</table>

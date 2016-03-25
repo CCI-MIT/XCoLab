@@ -163,7 +163,7 @@
 			<div class="clearfix">&#160;</div>
 		</div>
 		<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
-			<a class="primary-button" href="javascript:;"
+			<a class="c-Button__primary" href="javascript:;"
 			   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
 				<strong>${userBean.firstName}</strong> a Message </a>
 		</c:if>
@@ -238,7 +238,7 @@
 			</table>
 
 			<c:if test="${not empty currentUserProfile.activities}">
-				<a class="primary-button" href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
+				<a class="c-Button__primary" href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
 			</c:if>
 		</c:if>
 
@@ -391,8 +391,8 @@
 					</div>
 
 					<div class="btns">
-						<a class="primary-button" href="javascript:;" onclick="submitSendMessageForm()">Send message</a>
-						<a class="grey-button" href="javascript:;"
+						<a class="c-Button__primary" href="javascript:;" onclick="submitSendMessageForm()">Send message</a>
+						<a class="c-Button__secondary" href="javascript:;"
 						   onclick="clearSendMessageForm(); hideSendMessagForm(); return false;">Cancel</a>
 					</div>
 				</form:form>

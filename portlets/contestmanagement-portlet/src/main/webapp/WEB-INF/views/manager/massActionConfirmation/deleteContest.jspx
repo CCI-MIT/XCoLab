@@ -33,8 +33,8 @@
                    id="editForm" method="post">
             <div class="cmsDetailsBox">
                 <div class="outerVerticalCenter">
-                    <a class="primary-button innerVerticalCenter" href="#" id="submitButton">DELETE contest(s) and phases</a>
-                    <a class="grey-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/manager">DISCARD &amp; go back to overview</a>
+                    <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s) and phases</a>
+                    <a class="c-Button__secondary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/manager">DISCARD &amp; go back to overview</a>
                 </div>
             </div>
             <div class="cmsDetailsBox">

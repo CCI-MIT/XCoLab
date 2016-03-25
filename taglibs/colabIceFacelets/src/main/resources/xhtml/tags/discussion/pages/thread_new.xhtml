@@ -161,7 +161,7 @@
             <ice:inputHidden id="messageTitle" value="#{discussionBean.currentThread.newMessage.title}" styleClass="title text" maxlength="255"/>
             <ice:inputTextarea id="messageContent" value="#{discussionBean.currentThread.newMessage.description}" styleClass="commentbox" /><br />
             <ice:message for="messageContent" />
-            <div class="blue-button"><ice:commandLink  actionListener="#{discussionBean.currentThread.newMessage.addMessageToThread}" >Add Message</ice:commandLink></div>
+            <div class="c-Button__primary"><ice:commandLink  actionListener="#{discussionBean.currentThread.newMessage.addMessageToThread}" >Add Message</ice:commandLink></div>
         </div>
     </ice:panelGroup>
     
