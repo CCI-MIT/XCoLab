@@ -79,9 +79,6 @@ public class VoteOnProposalActionController {
                 serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
                 ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
-                final ProposalVote vote = ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposal.getProposalId(), user.getUserId());
-                vote.setIsValid(true);
-                vote.persist();
 
                 final boolean voteIsValid = validateVote(user, proposal, contest, serviceContext);
                 if (voteIsValid) {
