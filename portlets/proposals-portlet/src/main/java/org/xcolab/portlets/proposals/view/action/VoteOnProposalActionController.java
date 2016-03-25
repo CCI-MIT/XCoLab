@@ -79,6 +79,9 @@ public class VoteOnProposalActionController {
                 serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
                 ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
+                final ProposalVote vote = ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposal.getProposalId(), user.getUserId());
+                vote.setIsValid(true);
+                vote.persist();
 
                 final boolean voteIsValid = validateVote(user, proposal, contest, serviceContext);
                 if (voteIsValid) {
@@ -120,12 +123,13 @@ public class VoteOnProposalActionController {
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
                         recentVotesFromSharedIP++;
                     }
-                } catch (NoSuchProposalVoteException ignored) { }
-
-                if (StringUtils.getLevenshteinDistance(user.getFirstName(), otherUser.getFirstName()) < 3
-                        && StringUtils.getLevenshteinDistance(user.getLastName(), otherUser.getLastName()) < 3) {
-                    vote.setIsValid(false);
-                    break;
+                    if (StringUtils.getLevenshteinDistance(user.getFirstName(), otherUser.getFirstName()) < 3
+                            && StringUtils.getLevenshteinDistance(user.getLastName(), otherUser.getLastName()) < 3) {
+                        vote.setIsValid(false);
+                        break;
+                    }
+                } catch (NoSuchProposalVoteException ignored) {
+                    //the user has not voted for this proposal -> ignore
                 }
             }
             if (vote.isIsValid() && recentVotesFromSharedIP > 7) {
