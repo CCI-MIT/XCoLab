@@ -1,7 +1,7 @@
 $c-Alert__backgroundColor: $t-Color__grey--lightest !default;
 $c-Alert__border: 1px solid $t-Color__grey--light !default;
 
-$c-Alert__danger_error__backgroudnColor: $t-Color__alert--light !default;
+$c-Alert__danger_error__backgroundColor: $t-Color__alert--light !default;
 $c-Alert__danger_error__borderColor: $t-Color__grey--lightest !default;
 $c-Alert__danger_error__textColor: $t-Color__alert !default;
 
@@ -22,9 +22,9 @@ $c-Alert__success__message__background: $t-Color__success__background !default;
 }
 
 .c-Alert__danger, .c-Alert__error { //.alert-danger, .alert-error
-  background-color: $t-Color__alert--light;
-  border-color: $t-Color__grey--lightest;
-  color: $t-Color__alert;
+  background-color: $c-Alert__danger_error__backgroundColor;
+  border-color: $c-Alert__danger_error__borderColor;
+  color: $c-Alert__danger_error__textColor;
 }
 
 %message {
