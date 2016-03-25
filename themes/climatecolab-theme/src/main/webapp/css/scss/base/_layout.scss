@@ -13,7 +13,7 @@ body {
   background: white;
 }
 
-.inner, #content, #footmenu ul {
+.inner, #content, #c-Footer__menu ul {
   width: 984px;
   margin: 0 auto;
 }
@@ -65,4 +65,16 @@ body {
 // reduce padding below edit proposal button block
 #content.ep {
   padding-top: 16px;
+}
+
+ol, ul {
+  margin-left: 0;
+}
+
+ol li {
+  margin-left: 20px;
+}
+
+ul li {
+  margin-left: 11px;
 }

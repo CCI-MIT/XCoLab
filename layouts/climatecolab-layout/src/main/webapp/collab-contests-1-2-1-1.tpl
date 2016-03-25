@@ -13,8 +13,8 @@
     </div>
 </div>
         
-<div id="footer">
-    <div id="footmenu">
+<div id="c-Footer">
+    <div id="c-Footer__menu">
         <ul>
             <li><a href="/web/guest/feedback">Contact</a></li>
             <li><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
@@ -26,9 +26,9 @@
                 <li><a href="javascript:return false;" onclick="deferUntilLogin();">Sign In</a></li>
             #end
         </ul>
-    </div> <!-- #footmenu -->
+    </div> <!-- #c-Footer__menu -->
     
     <div class="inner lrContentPlaceholder lfr-column ">
                 $processor.processColumn("column-2")
     </div> <!-- .inner -->
-</div> <!-- #footer -->
+</div> <!-- #c-Footer -->

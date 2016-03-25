@@ -684,6 +684,10 @@
   color: $t-Color__secondary !important;
 }
 
+#proposalPickerTable td {
+  padding: 10px;
+}
+
 //TODO: popup?
 #previousProposalsPopup.c-Popup__wrapper {
   top: -2000px;
@@ -766,4 +770,15 @@
     vertical-align: middle;
     padding-right: 10px;
   }
+}
+
+.popup-tabcontainer {
+  border: 1px solid $t-Color__grey--medium;
+}
+
+.prop-tabs li {
+  list-style: none;
+  background: none;
+  padding: 0;
+  margin-left: 0;
 }

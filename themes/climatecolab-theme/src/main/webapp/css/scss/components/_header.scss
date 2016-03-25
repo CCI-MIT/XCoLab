@@ -13,7 +13,10 @@
 
 #menu li {
   float: left;
+  padding: 0;
+  margin-left: 0;
   list-style: none;
+  background: none;
   border-left: 1px solid $t-Color__grey--light;
 }
 
@@ -378,6 +381,10 @@
 
 .userbox li {
   height: 28px;
+  list-style: none;
+  background: none;
+  padding: 0;
+  margin-left: 0;
 }
 
 .userbox a {

@@ -313,7 +313,7 @@ jQuery(document).ready(function() {
 			jQuery('.hp_box').fadeIn(300);
 		});
 	
-	var footer = jQuery("#footmenu").next();
+	var footer = jQuery("#c-Footer__menu").next();
 	footer.appendTo(jQuery("#foot_wrap"));
 	
 	jQuery('.close').click(function() { 
