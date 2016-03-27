@@ -249,8 +249,6 @@
 		<column name="stringValue" type="String" />
 		<column name="realValue" type="double" />
 
-
-
 		<finder return-type="Collection" name="ProposalId_ProposalUnversionedAttribute">
 			<finder-column name="proposalId" />
 		</finder>
@@ -262,6 +260,48 @@
 
 	</entity>
 	<!-- Proposal impact -->
+
+	<entity name="ProposalMoveHistory" local-service="true">
+		<column name="id_" type="long" primary="true"/>
+		<column name="sourceProposalId" type="long"/>
+		<column name="sourceContestId" type="long"/>
+		<column name="sourcePhaseId" type="long"/>
+		<column name="targetProposalId" type="long"/>
+		<column name="targetContestId" type="long"/>
+		<column name="targetPhaseId" type="long"/>
+		<column name="movingUserId" type="long"/>
+		<column name="moveDate" type="Date"/>
+		<column name="moveType" type="String"/>
+
+        <finder name="SourceProposalId" return-type="Collection">
+            <finder-column name="sourceProposalId"/>
+        </finder>
+        <finder name="SourceContestId" return-type="Collection">
+            <finder-column name="sourceContestId"/>
+        </finder>
+        <finder name="SourcePhaseId" return-type="Collection">
+            <finder-column name="sourcePhaseId"/>
+        </finder>
+        <finder name="TargetProposalId" return-type="Collection">
+            <finder-column name="targetProposalId"/>
+        </finder>
+        <finder name="TargetContestId" return-type="Collection">
+            <finder-column name="targetContestId"/>
+        </finder>
+        <finder name="TargetPhaseId" return-type="Collection">
+            <finder-column name="targetPhaseId"/>
+        </finder>
+
+        <finder name="SourceProposalIdContestId" return-type="Collection">
+            <finder-column name="sourceProposalId"/>
+            <finder-column name="sourceContestId"/>
+        </finder>
+        <finder name="TargetProposalIdContestId" return-type="ProposalMoveHistory">
+            <finder-column name="targetProposalId"/>
+            <finder-column name="targetContestId"/>
+        </finder>
+
+	</entity>
 
 
 </service-builder>

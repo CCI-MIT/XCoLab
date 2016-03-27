@@ -46,7 +46,7 @@ public interface ConfigurationAttributePersistence extends BasePersistence<Confi
     * @return the new configuration attribute
     */
     public com.ext.portlet.model.ConfigurationAttribute create(
-        com.ext.portlet.service.persistence.ConfigurationAttributePK configurationAttributePK);
+        ConfigurationAttributePK configurationAttributePK);
 
     /**
     * Removes the configuration attribute with the primary key from the database. Also notifies the appropriate model listeners.
@@ -57,7 +57,7 @@ public interface ConfigurationAttributePersistence extends BasePersistence<Confi
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ConfigurationAttribute remove(
-        com.ext.portlet.service.persistence.ConfigurationAttributePK configurationAttributePK)
+        ConfigurationAttributePK configurationAttributePK)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -74,7 +74,7 @@ public interface ConfigurationAttributePersistence extends BasePersistence<Confi
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ConfigurationAttribute findByPrimaryKey(
-        com.ext.portlet.service.persistence.ConfigurationAttributePK configurationAttributePK)
+        ConfigurationAttributePK configurationAttributePK)
         throws com.ext.portlet.NoSuchConfigurationAttributeException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -86,7 +86,7 @@ public interface ConfigurationAttributePersistence extends BasePersistence<Confi
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ConfigurationAttribute fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.ConfigurationAttributePK configurationAttributePK)
+        ConfigurationAttributePK configurationAttributePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

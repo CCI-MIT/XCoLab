@@ -69,6 +69,7 @@ import com.ext.portlet.service.persistence.ProposalAttributeFinder;
 import com.ext.portlet.service.persistence.ProposalAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalFinder;
+import com.ext.portlet.service.persistence.ProposalMoveHistoryPersistence;
 import com.ext.portlet.service.persistence.ProposalPersistence;
 import com.ext.portlet.service.persistence.ProposalRatingFinder;
 import com.ext.portlet.service.persistence.ProposalRatingPersistence;
@@ -513,6 +514,12 @@ public abstract class PlanTemplateSectionServiceBaseImpl extends BaseServiceImpl
     protected com.ext.portlet.service.ProposalContestPhaseAttributeService proposalContestPhaseAttributeService;
     @BeanReference(type = ProposalContestPhaseAttributePersistence.class)
     protected ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence;
+    @BeanReference(type = com.ext.portlet.service.ProposalMoveHistoryLocalService.class)
+    protected com.ext.portlet.service.ProposalMoveHistoryLocalService proposalMoveHistoryLocalService;
+    @BeanReference(type = com.ext.portlet.service.ProposalMoveHistoryService.class)
+    protected com.ext.portlet.service.ProposalMoveHistoryService proposalMoveHistoryService;
+    @BeanReference(type = ProposalMoveHistoryPersistence.class)
+    protected ProposalMoveHistoryPersistence proposalMoveHistoryPersistence;
     @BeanReference(type = com.ext.portlet.service.ProposalRatingLocalService.class)
     protected com.ext.portlet.service.ProposalRatingLocalService proposalRatingLocalService;
     @BeanReference(type = com.ext.portlet.service.ProposalRatingService.class)
@@ -4443,6 +4450,63 @@ public abstract class PlanTemplateSectionServiceBaseImpl extends BaseServiceImpl
     public void setProposalContestPhaseAttributePersistence(
         ProposalContestPhaseAttributePersistence proposalContestPhaseAttributePersistence) {
         this.proposalContestPhaseAttributePersistence = proposalContestPhaseAttributePersistence;
+    }
+
+    /**
+     * Returns the proposal move history local service.
+     *
+     * @return the proposal move history local service
+     */
+    public com.ext.portlet.service.ProposalMoveHistoryLocalService getProposalMoveHistoryLocalService() {
+        return proposalMoveHistoryLocalService;
+    }
+
+    /**
+     * Sets the proposal move history local service.
+     *
+     * @param proposalMoveHistoryLocalService the proposal move history local service
+     */
+    public void setProposalMoveHistoryLocalService(
+        com.ext.portlet.service.ProposalMoveHistoryLocalService proposalMoveHistoryLocalService) {
+        this.proposalMoveHistoryLocalService = proposalMoveHistoryLocalService;
+    }
+
+    /**
+     * Returns the proposal move history remote service.
+     *
+     * @return the proposal move history remote service
+     */
+    public com.ext.portlet.service.ProposalMoveHistoryService getProposalMoveHistoryService() {
+        return proposalMoveHistoryService;
+    }
+
+    /**
+     * Sets the proposal move history remote service.
+     *
+     * @param proposalMoveHistoryService the proposal move history remote service
+     */
+    public void setProposalMoveHistoryService(
+        com.ext.portlet.service.ProposalMoveHistoryService proposalMoveHistoryService) {
+        this.proposalMoveHistoryService = proposalMoveHistoryService;
+    }
+
+    /**
+     * Returns the proposal move history persistence.
+     *
+     * @return the proposal move history persistence
+     */
+    public ProposalMoveHistoryPersistence getProposalMoveHistoryPersistence() {
+        return proposalMoveHistoryPersistence;
+    }
+
+    /**
+     * Sets the proposal move history persistence.
+     *
+     * @param proposalMoveHistoryPersistence the proposal move history persistence
+     */
+    public void setProposalMoveHistoryPersistence(
+        ProposalMoveHistoryPersistence proposalMoveHistoryPersistence) {
+        this.proposalMoveHistoryPersistence = proposalMoveHistoryPersistence;
     }
 
     /**

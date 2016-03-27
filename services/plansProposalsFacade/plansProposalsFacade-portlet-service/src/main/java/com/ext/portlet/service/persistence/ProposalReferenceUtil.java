@@ -232,8 +232,7 @@ public class ProposalReferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalReference[] findByProposalId_PrevAndNext(
-        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK,
-        long proposalId,
+        ProposalReferencePK proposalReferencePK, long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalReferenceException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -399,8 +398,7 @@ public class ProposalReferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalReference[] findBySubProposalId_PrevAndNext(
-        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK,
-        long subProposalId,
+        ProposalReferencePK proposalReferencePK, long subProposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalReferenceException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -459,7 +457,7 @@ public class ProposalReferenceUtil {
     * @return the new proposal reference
     */
     public static com.ext.portlet.model.ProposalReference create(
-        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK) {
+        ProposalReferencePK proposalReferencePK) {
         return getPersistence().create(proposalReferencePK);
     }
 
@@ -472,7 +470,7 @@ public class ProposalReferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalReference remove(
-        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK)
+        ProposalReferencePK proposalReferencePK)
         throws com.ext.portlet.NoSuchProposalReferenceException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(proposalReferencePK);
@@ -493,7 +491,7 @@ public class ProposalReferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalReference findByPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK)
+        ProposalReferencePK proposalReferencePK)
         throws com.ext.portlet.NoSuchProposalReferenceException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(proposalReferencePK);
@@ -507,7 +505,7 @@ public class ProposalReferenceUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.ProposalReference fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalReferencePK proposalReferencePK)
+        ProposalReferencePK proposalReferencePK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(proposalReferencePK);
     }
