@@ -21,7 +21,7 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.view.action.AddUpdateProposalDetailsActionController;
+import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -37,12 +37,12 @@ public class CreateProposalController extends BaseProposalsController {
 
     @RequestMapping(params = "pageToDisplay=createProposal")
     public String showContestProposals(RenderRequest request, RenderResponse response, 
-            @RequestParam String contestUrlName, @RequestParam(required=false) Long baseProposalId,
-            @RequestParam(required=false, defaultValue = "-1") int baseProposalVersion, 
-            @RequestParam(required=false) Long baseContestId, Model model) 
+            @RequestParam String contestUrlName, @RequestParam(required = false) Long baseProposalId,
+            @RequestParam(required = false, defaultValue = "-1") int baseProposalVersion,
+            @RequestParam(required = false) Long baseContestId, Model model)
             throws PortalException, SystemException, ProposalsAuthorizationException {
 
-        if(!proposalsContext.getPermissions(request).getCanCreate()) {
+        if (!proposalsContext.getPermissions(request).getCanCreate()) {
             throw new ProposalsAuthorizationException("creation not allowed");
         }
 
@@ -77,12 +77,11 @@ public class CreateProposalController extends BaseProposalsController {
         ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
         final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();
         setSeoTexts(request, seoText, null, null);
-        
 
-        AnalyticsUtil.publishEvent(request, userId, AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_KEY + 1, 
-        		AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_CATEGORY, 
-        		AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_ACTION , 
-        		AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_LABEL, 
+        AnalyticsUtil.publishEvent(request, userId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
+                ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,
+                ProposalUpdateHelper.PROPOSAL_ANALYTICS_ACTION ,
+                ProposalUpdateHelper.PROPOSAL_ANALYTICS_LABEL,
     			1);
         
         return "proposalDetails_edit";

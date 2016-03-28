@@ -95,7 +95,7 @@
                 <p>
                     <label>
                         <strong>Target Phase:</strong><br />
-                        <form:select id="selectTargetContestPhase" path="moveToContestPhaseId">
+                        <form:select id="selectTargetContestPhase" path="moveToContestId">
                             <form:option value="-1" label="Choose a contest phase" />
                         </form:select>
                     </label>
