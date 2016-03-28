@@ -218,7 +218,7 @@
                                     <span class="spinner-area"><!-- --> </span>
                                 </div>
                             </div>
-                            <div id="header" class="shaded-bg" style="display: none">
+                            <div id="c-Header" class="shaded-bg" style="display: none">
                                 <h3 id="region-title"><!-- --></h3>
 
                                 <h3 id="sector-title"><!-- --></h3>
@@ -515,8 +515,8 @@
             // Set detail table header
             var sectorTerm = row.find('td.sector > span');
             var regionTerm = row.find('td.region > span');
-            $('div#impact-series-detail #header h3#region-title').text(regionTerm.text());
-            $('div#impact-series-detail #header h3#sector-title').text(sectorTerm.text());
+            $('div#impact-series-detail #c-Header h3#region-title').text(regionTerm.text());
+            $('div#impact-series-detail #c-Header h3#sector-title').text(sectorTerm.text());
 
             var url = replaceImpactURLPlaceholders(getDataSeriesURL,
                     [SECTOR_TERM_ID_PLACEHOLDER, REGION_TERM_ID_PLACEHOLDER],
@@ -639,8 +639,8 @@
                         $('div#author-info').show();
                         // Set header fields
                         var authorNameHtml = jQuery(impactSeriesAuthorTemplate({author: data.author}));
-                        $('div#impact-series-detail div#header span#author-name').html(authorNameHtml);
-                        $('div#impact-series-detail div#header span#save-date').text(data.updateDate);
+                        $('div#impact-series-detail div#c-Header span#author-name').html(authorNameHtml);
+                        $('div#impact-series-detail div#c-Header span#save-date').text(data.updateDate);
 
                     } else {
                         $('div#author-info').hide();
@@ -825,8 +825,8 @@
             loadSeriesEditData(url);
 
             // Replace detail header
-            $('div#impact-series-detail #header h3#region-title').text($('div#new-series select#region option:selected').text());
-            $('div#impact-series-detail #header h3#sector-title').text($('div#new-series select#sector option:selected').text());
+            $('div#impact-series-detail #c-Header h3#region-title').text($('div#new-series select#region option:selected').text());
+            $('div#impact-series-detail #c-Header h3#sector-title').text($('div#new-series select#sector option:selected').text());
             // userInputOccurred = true;
 
             $('#delete-button').removeClass('disabled');
@@ -837,7 +837,7 @@
                 $('div#impact-series-detail').fadeIn();
 
                 $('div#impact-series-detail div#new-series').fadeIn();
-                $('div#impact-series-detail div#header').hide();
+                $('div#impact-series-detail div#c-Header').hide();
                 $('div#impact-series-detail table#edit-table').fadeOut();
 
                 loadRegionTerms();
@@ -850,7 +850,7 @@
                 $('tr#impact-new-series-row').removeClass('selected');
 
                 $('div#impact-series-detail div#new-series').fadeOut();
-                $('div#impact-series-detail div#header').hide();
+                $('div#impact-series-detail div#c-Header').hide();
                 $('div#impact-series-detail table#edit-table').fadeOut();
             }
 
@@ -860,7 +860,7 @@
             $('div#impact-series-detail').fadeIn();
 
             $('div#impact-series-detail div#new-series').hide();
-            $('div#impact-series-detail div#header').fadeIn();
+            $('div#impact-series-detail div#c-Header').fadeIn();
             $('div#impact-series-detail table#edit-table').fadeIn();
         }
 
@@ -870,7 +870,7 @@
 
             });
             $('div#impact-series-detail div#new-series').hide();
-            $('div#impact-series-detail div#header').fadeOut();
+            $('div#impact-series-detail div#c-Header').fadeOut();
             $('div#impact-series-detail table#edit-table').fadeOut();
         }
 
@@ -882,7 +882,7 @@
                 $impactSeriesDetailElement.find('a').addClass('disabled');
                 $('#impact-summary').find('tr').addClass('disabled');
 
-                $impactSeriesDetailElement.find('div#header').spin('large');
+                $impactSeriesDetailElement.find('div#c-Header').spin('large');
                 $impactSeriesDetailElement.find('div#new-series').spin('large');
             } else {
                 $impactSeriesDetailElement.removeClass('disabled');
@@ -890,7 +890,7 @@
                 $impactSeriesDetailElement.find('a').removeClass('disabled');
                 $('#impact-summary').find('tr').removeClass('disabled');
 
-                $impactSeriesDetailElement.find('div#header').spin(false);
+                $impactSeriesDetailElement.find('div#c-Header').spin(false);
                 $impactSeriesDetailElement.find('div#new-series').spin(false);
             }
         }

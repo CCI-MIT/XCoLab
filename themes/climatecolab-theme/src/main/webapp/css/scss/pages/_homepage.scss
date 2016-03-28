@@ -433,3 +433,19 @@ a.get {
 .activitybox .new_user {
   background: url(../images/icon-activity-new_user.png) no-repeat left 10px;
 }
+
+.home #c-Header {
+  background: white;
+}
+
+.home #c-Header__menu li:hover {
+  background: url(../images/bg-noise.jpg);
+}
+
+.home #c-Header__menu li a:hover {
+  height: 41px;
+}
+
+.home #c-Header__menu li a.search:hover {
+  height: 22px;
+}

@@ -49,7 +49,7 @@ function initSearchUpperBox() {
 function initLoginPopupUpper() {
 	jQuery("#loginPopupTrigger").click(function() {
 		jQuery("#loginPopupContainer").fadeIn("fast");
-		jQuery("#loginPopupContainer .username").focus();
+		jQuery("#loginPopupContainer .c-Header__login__username").focus();
 	});
 	
 	function hideIfLoginNotUsed() {

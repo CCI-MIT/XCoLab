@@ -624,13 +624,13 @@ div.selected {
   height: 32px;
 }
 
-#impact-series-detail div#header {
+#impact-series-detail div#c-Header {
   padding-top: 15px;
   vertical-align: middle;
   display: table-cell;
 }
 
-#impact-series-detail div#header h3 {
+#impact-series-detail div#c-Header h3 {
   margin-right: 10px;
   display: inline-block;
 }

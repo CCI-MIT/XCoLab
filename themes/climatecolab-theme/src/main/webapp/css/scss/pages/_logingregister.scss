@@ -1,4 +1,4 @@
-.searchpop, .loginpop {
+.c-Header__search__pop, .c-Header__login__pop {
   display: none;
 }
 
@@ -96,7 +96,7 @@
   display: none;
 }
 
-#menu-right li.c {
+#c-Header__menu__right li.c {
   background: white;
   border-left: 1px solid $t-Color__grey--medium;
 }
@@ -121,11 +121,11 @@
   font-weight: 700;
 }
 
-.c-Popup .login_popup_box .username, .c-Popup .login_popup_box .password {
+.c-Popup .login_popup_box .c-Header__login__username, .c-Popup .login_popup_box .c-Header__login__password {
   border: 1px solid #bbb;
 }
 
-#popup_forgotpassword .username {
+#popup_forgotpassword .c-Header__login__username {
   width: 224px;
 }
 

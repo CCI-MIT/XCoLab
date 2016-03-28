@@ -18,7 +18,7 @@
             <input style="width: 100%; line-height: 20px; padding: 3px;" name="userEmailAddress" type="text" id="email-field" placeholder="Email address"/>
             <p style="margin-top:15px">Thanks!</p>
             <div class="btns" style="text-align: center;">
-                <a id="submit-button" class="c-Button__primary disabled login-submit" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Submit</a>
+                <a id="submit-button" class="c-Button__primary disabled c-Header__login__submit" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Submit</a>
                 <a class="c-Button__secondary" href="/web/guest/plans">Go back to contests</a>
             </div>
         </form>
