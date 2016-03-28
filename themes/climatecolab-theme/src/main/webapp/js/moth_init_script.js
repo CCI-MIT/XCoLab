@@ -386,13 +386,13 @@ jQuery(document).ready(function() {
 });
 
 function initSelectbox() {
-	if (jQuery('.selectbox1, .selectbox1-dis-dis').length > 0) {
-		var selectboxOnChange = jQuery('.selectbox1').get(0).getAttribute("onchange");
+	if (jQuery('.Form__selectbox__new, .selectbox1-dis-dis').length > 0) {
+		var selectboxOnChange = jQuery('.Form__selectbox__new').get(0).getAttribute("onchange");
 
-		jQuery('.selectbox1').selectbox({
-			inputClass: 'selectbox',
+		jQuery('.Form__selectbox__new').selectbox({
+			inputClass: 'c-Form__selectbox',
 			onChangeCallback: function () {
-				jQuery(".selectbox1").change();
+				jQuery(".Form__selectbox__new").change();
 				
 				}
 		});
