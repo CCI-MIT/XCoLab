@@ -6,7 +6,7 @@
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0">
 
-    <!--@elvariable id="move" type="java.lang.Boolean"-->
+    <!--@elvariable id="isMove" type="java.lang.Boolean"-->
     <!--@elvariable id="hasNotMappedSections" type="java.lang.Boolean"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>
@@ -21,7 +21,7 @@
 
     <!--ProposalSectionsTabController-->
     <jsp:useBean id="updateProposalSectionsBean" scope="request" type="org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean"/>
-    <c:if test="${move}">
+    <c:if test="${isMove}">
         <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"/>
         <jsp:useBean id="baseContest" scope="request" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"/>
     </c:if>
@@ -61,7 +61,7 @@
 
     <div class="headline addprop">
         <c:choose>
-            <c:when test="${move }">
+            <c:when test="${isMove }">
                 <p>
                     You're about to move a ${contestType.proposalName}
                     <collab:proposalLink proposal="${baseProposal}" escape="true" />
@@ -98,10 +98,10 @@
     <form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform" id="editForm">
         <form:hidden path="baseProposalId" />
         <form:hidden path="baseProposalContestId" />
-        <form:hidden path="move" />
-        <form:hidden path="hideOnMove" />
+        <form:hidden path="isMove" />
+        <form:hidden path="moveType" />
         <form:hidden path="moveFromContestPhaseId" />
-        <form:hidden path="moveToContestPhaseId" />
+        <form:hidden path="moveToContestId" />
 
         <div class="addpropbox q1">
             <label>

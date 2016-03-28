@@ -137,7 +137,7 @@
             	<strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
             	<div>
 					<a class="primary-button" href="javascript:;"
-						onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,true)">
+						onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup('MOVE_PERMANENTLY')">
 						<span>Move</span> this ${contestType.proposalName}
 					</a>
 				</div>
@@ -146,15 +146,27 @@
 
             <c:if test="${ proposalsPermissions.canCopyProposal }">
                 <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-                    <strong>Copy ${contestType.proposalName} to different ${contestType.contestName}</strong>
+                    <strong>Reopen ${contestType.proposalName} in different ${contestType.contestName}</strong>
                     <div>
 						<a class="primary-button" href="javascript:;"
-						   onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup(true,false)">
-							<span>Copy</span> this ${contestType.proposalName}
+						   onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup('COPY')">
+							<span>Reopen</span> this ${contestType.proposalName}
 						</a>
                     </div>
                 </div>
             </c:if>
+
+		<c:if test="${ proposalsPermissions.canForkProposal }">
+			<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+				<strong>Fork ${contestType.proposalName} in different ${contestType.contestName}</strong>
+				<div>
+					<a class="primary-button" href="javascript:;"
+					   onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup('FORK')">
+						<span>Fork</span> this ${contestType.proposalName}
+					</a>
+				</div>
+			</div>
+		</c:if>
         
         
         </div>
