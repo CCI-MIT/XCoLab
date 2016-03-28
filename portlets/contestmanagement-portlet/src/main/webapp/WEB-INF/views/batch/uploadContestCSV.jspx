@@ -4,12 +4,15 @@
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+    <!--<jsp:directive.include file="../init.jspx" />-->
+
     <jsp:directive.include file="../init.jspx" />
-    <portlet:actionURL var="createBathContetsURL">
+
+
+    <portlet:renderURL var="createBathContetsURL">
         <portlet:param name="action" value="createBatchContest"/>
-        <portlet:param name="action_forwardToPage" value="descriptionTab"/>
-        <portlet:param name="action_errorForwardToPage" value="descriptionTab"/>
-    </portlet:actionURL>
+    </portlet:renderURL>
+
 
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
     <div class="cmsDetailsBox">
@@ -219,6 +222,14 @@
                 <script type="text/javascript">
                     <![CDATA[
                     var fieldCounter =0;
+                    var validCSV = false;
+                    var fieldSizes = {
+                        "contestTitle" : 60,
+                        "contestShortName": 60,
+                        "contestQuestion": 140,
+                        "ontologyTerms" : 60
+                    };
+
                     $(function() {
                         $("#fileCSV").change(function(evt){
 
@@ -228,35 +239,78 @@
                                     console.log(results);
                                     $("#cvsContainer").show();
                                     fieldCounter = 0;
+                                    validCSV = true;
+                                },
+                                error: function(){
+                                    alert("Invalid file, please follow the structure in the field`s description.");
+                                    validCSV = false;
                                 },
                                 step: function(row) {
-                                    console.log("Row:", row.data);
+                                    //console.log("Row:", row.data);
                                     addTableRow(row.data[0]);
                                 }
                             });
-
                         });
-
                         $("#createAllContestsAbove").click(function (){
-                            //validate field sizes.
-                            $("#batchForm").submit();
+                            if(!validCSV) {
+                                alert("Please select a valid CSV file! Follow the structure described in the field Contests in CSV!")
+                                $("#fileCSV").focus();
+                                return;
+                            }
+                            if($("#scheduleTemplateId").val()==0){
+                                alert("Please select a Schedule Template")
+                                $("#scheduleTemplateId").focus();
+                                return;
+                            }
+                            if($("#contestTier").val()==0){
+                                alert("Please select a Contest Tier")
+                                $("#contestTier").focus();
+                                return;
+                            }
+                            if($("#contestTier").val()==0){
+                                alert("Please select a Contest Tier")
+                                $("#contestTier").focus();
+                                return;
+                            }
+                            if(validCSVFields()) {
+                                $("#batchForm").submit();
+                            }
                         });
 
                     });
+                    function validateField(fieldSelector,errorMessage){
+                        var arrayOfFields = $(fieldSelector);
+                        var field = null;
+                        for (var i = 0; i < arrayOfFields.length; i++) {
+                            field = arrayOfFields[i];
+                            if ($(field).val() == 0) {
+                                $(field).focus();
+                                alert(errorMessage);
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    function validCSVFields() {
+                        if(!validateField(".contestTitle","Please input a value for the Contest Title!")) return false;
+                        if(!validateField(".contestShortName","Please input a value for the Contest Short Name!")) return false;
+                        if(!validateField(".contestQuestion","Please input a value for the Contest Question!")) return false;
 
+                        return true;
+                    }
                     function addTableRow(data){
                         if(data.length >= 3) {
                             var tableRow = $('<tr>');
-                            tableRow.append(addTableCellInput(data[0],"contestCSVs["+fieldCounter+"].contestTitle"));
-                            tableRow.append(addTableCellInput(data[1],"contestCSVs["+fieldCounter+"].contestShortName"));
-                            tableRow.append(addTableCellInput(data[2],"contestCSVs["+fieldCounter+"].contestQuestion"));
+                            tableRow.append(addTableCellInput(data[0],"contestTitle"));
+                            tableRow.append(addTableCellInput(data[1],"contestShortName"));
+                            tableRow.append(addTableCellInput(data[2],"contestQuestion"));
                             var ontField = "";
 
                             if(data.length > 3) {
                                 for (var i = 3; i < data.length; i++) {
                                     ontField += data[i] +((i+1 == data.length)?(""):(","));
                                 }
-                                tableRow.append(addTableCellInput(ontField, "contestCSVs["+fieldCounter+"].ontologyTerms"));
+                                tableRow.append(addTableCellInput(ontField, "ontologyTerms"));
                             }
                             $("#cvsContests").append(tableRow);
                             fieldCounter++;
@@ -266,11 +320,22 @@
                         var cell = $('<td>');
                         var input = $('<input>');
                         input.attr("type","text");
-                        input.attr("name",fieldName);
-                        input.attr("value",data);
+                        input.attr("name","contestCSVs["+fieldCounter+"]."+fieldName);
+                        input.attr("maxcharacters",fieldSizes[fieldName]);
+                        input.attr("value",trimFieldToSize(data,fieldSizes[fieldName]));
+                        input.attr("class",fieldName );
+
+
                         cell.append(input);
                         return cell;
 
+                    }
+                    function trimFieldToSize(fieldValue,fieldSize){
+                        if(fieldValue.length > fieldSize){
+                            return fieldValue.substring(0,fieldSize);
+                        }else {
+                            return fieldValue;
+                        }
                     }
                     ]]>
                 </script>
@@ -280,7 +345,7 @@
                     <tr><th>Contest title </th><th>Contest short name</th><th>Contest question </th><th>Ontology terms</th></tr>
                 </table>
             </div>
-            <div class="floatRight outerVerticalCenter"><a  class="primary-button innerVerticalCenter" id="createAllContestsAbove">Create all contests above</a></div>
+            <div class="floatRight outerVerticalCenter"><a  class="primary-button innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
         </form:form>
     </div>
 </jsp:root>
