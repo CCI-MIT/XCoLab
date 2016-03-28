@@ -32,7 +32,7 @@ public class ProposalMoveHistoryLocalServiceImpl
 
     @Override
     public ProposalMoveHistory create(long srcProposalId, long targetProposalId, long srcContestId, long targetContestId,
-            long sourcePhaseId, long targetPhaseId, String moveType) throws SystemException {
+            long sourcePhaseId, long targetPhaseId, long userId, String moveType) throws SystemException {
         final ProposalMoveHistory proposalMoveHistory = proposalMoveHistoryPersistence
                 .create(counterLocalService.increment(ProposalMoveHistory.class.getName()));
         proposalMoveHistory.setSourceProposalId(srcProposalId);
@@ -44,6 +44,7 @@ public class ProposalMoveHistoryLocalServiceImpl
         proposalMoveHistory.setSourcePhaseId(sourcePhaseId);
         proposalMoveHistory.setTargetPhaseId(targetPhaseId);
 
+        proposalMoveHistory.setMovingUserId(userId);
         proposalMoveHistory.setMoveDate(DateTime.now().toDate());
         proposalMoveHistory.setMoveType(moveType);
 
@@ -54,20 +55,20 @@ public class ProposalMoveHistoryLocalServiceImpl
 
     @Override
     public ProposalMoveHistory createMoveHistory(long proposalId, long srcContestId, long targetContestId,
-            long srcPhaseId, long targetPhaseId) throws SystemException {
-        return create(proposalId, proposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, "MOVE_PERMANENTLY");
+            long srcPhaseId, long targetPhaseId, long userId) throws SystemException {
+        return create(proposalId, proposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId, "MOVE_PERMANENTLY");
     }
 
     @Override
     public ProposalMoveHistory createCopyHistory(long proposalId, long srcContestId, long targetContestId,
-            long srcPhaseId, long targetPhaseId) throws SystemException {
-        return create(proposalId, proposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, "COPY");
+            long srcPhaseId, long targetPhaseId, long userId) throws SystemException {
+        return create(proposalId, proposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId, "COPY");
     }
 
     @Override
     public ProposalMoveHistory createForkHistory(long srcProposalId, long targetProposalId, long srcContestId, long targetContestId,
-            long srcPhaseId, long targetPhaseId) throws SystemException {
-        return create(srcProposalId, targetProposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, "COPY");
+            long srcPhaseId, long targetPhaseId, long userId) throws SystemException {
+        return create(srcProposalId, targetProposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId, "FORK");
     }
 
     @Override

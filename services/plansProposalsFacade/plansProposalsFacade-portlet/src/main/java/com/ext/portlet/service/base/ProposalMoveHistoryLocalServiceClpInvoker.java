@@ -164,26 +164,26 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
         _methodName524 = "create";
 
         _methodParameterTypes524 = new String[] {
-                "long", "long", "long", "long", "long", "long",
+                "long", "long", "long", "long", "long", "long", "long",
                 "java.lang.String"
             };
 
         _methodName525 = "createMoveHistory";
 
         _methodParameterTypes525 = new String[] {
-                "long", "long", "long", "long", "long"
+                "long", "long", "long", "long", "long", "long"
             };
 
         _methodName526 = "createCopyHistory";
 
         _methodParameterTypes526 = new String[] {
-                "long", "long", "long", "long", "long"
+                "long", "long", "long", "long", "long", "long"
             };
 
         _methodName527 = "createForkHistory";
 
         _methodParameterTypes527 = new String[] {
-                "long", "long", "long", "long", "long", "long"
+                "long", "long", "long", "long", "long", "long", "long"
             };
 
         _methodName528 = "getBySourceProposalId";
@@ -328,7 +328,8 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 ((Long) arguments[3]).longValue(),
                 ((Long) arguments[4]).longValue(),
                 ((Long) arguments[5]).longValue(),
-                (java.lang.String) arguments[6]);
+                ((Long) arguments[6]).longValue(),
+                (java.lang.String) arguments[7]);
         }
 
         if (_methodName525.equals(name) &&
@@ -337,7 +338,8 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
                 ((Long) arguments[3]).longValue(),
-                ((Long) arguments[4]).longValue());
+                ((Long) arguments[4]).longValue(),
+                ((Long) arguments[5]).longValue());
         }
 
         if (_methodName526.equals(name) &&
@@ -346,7 +348,8 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
                 ((Long) arguments[3]).longValue(),
-                ((Long) arguments[4]).longValue());
+                ((Long) arguments[4]).longValue(),
+                ((Long) arguments[5]).longValue());
         }
 
         if (_methodName527.equals(name) &&
@@ -356,7 +359,8 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 ((Long) arguments[2]).longValue(),
                 ((Long) arguments[3]).longValue(),
                 ((Long) arguments[4]).longValue(),
-                ((Long) arguments[5]).longValue());
+                ((Long) arguments[5]).longValue(),
+                ((Long) arguments[6]).longValue());
         }
 
         if (_methodName528.equals(name) &&

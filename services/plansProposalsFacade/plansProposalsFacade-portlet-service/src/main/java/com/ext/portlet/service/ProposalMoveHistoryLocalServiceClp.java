@@ -167,26 +167,26 @@ public class ProposalMoveHistoryLocalServiceClp
         _methodName19 = "create";
 
         _methodParameterTypes19 = new String[] {
-                "long", "long", "long", "long", "long", "long",
+                "long", "long", "long", "long", "long", "long", "long",
                 "java.lang.String"
             };
 
         _methodName20 = "createMoveHistory";
 
         _methodParameterTypes20 = new String[] {
-                "long", "long", "long", "long", "long"
+                "long", "long", "long", "long", "long", "long"
             };
 
         _methodName21 = "createCopyHistory";
 
         _methodParameterTypes21 = new String[] {
-                "long", "long", "long", "long", "long"
+                "long", "long", "long", "long", "long", "long"
             };
 
         _methodName22 = "createForkHistory";
 
         _methodParameterTypes22 = new String[] {
-                "long", "long", "long", "long", "long", "long"
+                "long", "long", "long", "long", "long", "long", "long"
             };
 
         _methodName23 = "getBySourceProposalId";
@@ -745,7 +745,7 @@ public class ProposalMoveHistoryLocalServiceClp
     public com.ext.portlet.model.ProposalMoveHistory create(
         long srcProposalId, long targetProposalId, long srcContestId,
         long targetContestId, long sourcePhaseId, long targetPhaseId,
-        java.lang.String moveType)
+        long userId, java.lang.String moveType)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -764,6 +764,8 @@ public class ProposalMoveHistoryLocalServiceClp
                     sourcePhaseId,
                         
                     targetPhaseId,
+                        
+                    userId,
                         
                     ClpSerializer.translateInput(moveType)
                     });
@@ -788,7 +790,7 @@ public class ProposalMoveHistoryLocalServiceClp
     @Override
     public com.ext.portlet.model.ProposalMoveHistory createMoveHistory(
         long proposalId, long srcContestId, long targetContestId,
-        long srcPhaseId, long targetPhaseId)
+        long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -804,7 +806,9 @@ public class ProposalMoveHistoryLocalServiceClp
                         
                     srcPhaseId,
                         
-                    targetPhaseId
+                    targetPhaseId,
+                        
+                    userId
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -827,7 +831,7 @@ public class ProposalMoveHistoryLocalServiceClp
     @Override
     public com.ext.portlet.model.ProposalMoveHistory createCopyHistory(
         long proposalId, long srcContestId, long targetContestId,
-        long srcPhaseId, long targetPhaseId)
+        long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -843,7 +847,9 @@ public class ProposalMoveHistoryLocalServiceClp
                         
                     srcPhaseId,
                         
-                    targetPhaseId
+                    targetPhaseId,
+                        
+                    userId
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -866,7 +872,7 @@ public class ProposalMoveHistoryLocalServiceClp
     @Override
     public com.ext.portlet.model.ProposalMoveHistory createForkHistory(
         long srcProposalId, long targetProposalId, long srcContestId,
-        long targetContestId, long srcPhaseId, long targetPhaseId)
+        long targetContestId, long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -884,7 +890,9 @@ public class ProposalMoveHistoryLocalServiceClp
                         
                     srcPhaseId,
                         
-                    targetPhaseId
+                    targetPhaseId,
+                        
+                    userId
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);

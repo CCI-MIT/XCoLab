@@ -49,6 +49,10 @@ public class BaseContestWrapper {
     protected final Contest contest;
     protected BaseContestPhaseWrapper activePhase;
 
+    public BaseContestWrapper(long contestId) throws SystemException, PortalException {
+        this(ContestLocalServiceUtil.getContest(contestId));
+    }
+
     public BaseContestWrapper(Contest contest) {
         this.contest = contest;
     }

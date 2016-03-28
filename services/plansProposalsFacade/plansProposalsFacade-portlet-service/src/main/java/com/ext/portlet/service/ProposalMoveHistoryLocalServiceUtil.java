@@ -265,38 +265,38 @@ public class ProposalMoveHistoryLocalServiceUtil {
     public static com.ext.portlet.model.ProposalMoveHistory create(
         long srcProposalId, long targetProposalId, long srcContestId,
         long targetContestId, long sourcePhaseId, long targetPhaseId,
-        java.lang.String moveType)
+        long userId, java.lang.String moveType)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .create(srcProposalId, targetProposalId, srcContestId,
-            targetContestId, sourcePhaseId, targetPhaseId, moveType);
+            targetContestId, sourcePhaseId, targetPhaseId, userId, moveType);
     }
 
     public static com.ext.portlet.model.ProposalMoveHistory createMoveHistory(
         long proposalId, long srcContestId, long targetContestId,
-        long srcPhaseId, long targetPhaseId)
+        long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .createMoveHistory(proposalId, srcContestId,
-            targetContestId, srcPhaseId, targetPhaseId);
+            targetContestId, srcPhaseId, targetPhaseId, userId);
     }
 
     public static com.ext.portlet.model.ProposalMoveHistory createCopyHistory(
         long proposalId, long srcContestId, long targetContestId,
-        long srcPhaseId, long targetPhaseId)
+        long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .createCopyHistory(proposalId, srcContestId,
-            targetContestId, srcPhaseId, targetPhaseId);
+            targetContestId, srcPhaseId, targetPhaseId, userId);
     }
 
     public static com.ext.portlet.model.ProposalMoveHistory createForkHistory(
         long srcProposalId, long targetProposalId, long srcContestId,
-        long targetContestId, long srcPhaseId, long targetPhaseId)
+        long targetContestId, long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .createForkHistory(srcProposalId, targetProposalId,
-            srcContestId, targetContestId, srcPhaseId, targetPhaseId);
+            srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId);
     }
 
     public static java.util.List<com.ext.portlet.model.ProposalMoveHistory> getBySourceProposalId(

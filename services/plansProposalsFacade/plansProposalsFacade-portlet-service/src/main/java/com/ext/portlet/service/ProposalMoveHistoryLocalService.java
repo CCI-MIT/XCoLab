@@ -243,22 +243,22 @@ public interface ProposalMoveHistoryLocalService extends BaseLocalService,
     public com.ext.portlet.model.ProposalMoveHistory create(
         long srcProposalId, long targetProposalId, long srcContestId,
         long targetContestId, long sourcePhaseId, long targetPhaseId,
-        java.lang.String moveType)
+        long userId, java.lang.String moveType)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.ProposalMoveHistory createMoveHistory(
         long proposalId, long srcContestId, long targetContestId,
-        long srcPhaseId, long targetPhaseId)
+        long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.ProposalMoveHistory createCopyHistory(
         long proposalId, long srcContestId, long targetContestId,
-        long srcPhaseId, long targetPhaseId)
+        long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.ProposalMoveHistory createForkHistory(
         long srcProposalId, long targetProposalId, long srcContestId,
-        long targetContestId, long srcPhaseId, long targetPhaseId)
+        long targetContestId, long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

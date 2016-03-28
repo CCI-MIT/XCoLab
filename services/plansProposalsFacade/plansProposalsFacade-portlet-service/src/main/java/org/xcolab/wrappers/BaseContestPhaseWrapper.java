@@ -26,6 +26,10 @@ public class BaseContestPhaseWrapper {
     protected final ContestPhase contestPhase;
     protected ContestStatus status;
 
+    public BaseContestPhaseWrapper(long contestPhaseId) throws SystemException, PortalException {
+        this(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId));
+    }
+
     public BaseContestPhaseWrapper(ContestPhase contestPhase) {
         if (contestPhase == null){
             throw new IllegalArgumentException("Contest phase must not be null.");

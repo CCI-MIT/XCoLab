@@ -281,39 +281,39 @@ public class ProposalMoveHistoryLocalServiceWrapper
     public com.ext.portlet.model.ProposalMoveHistory create(
         long srcProposalId, long targetProposalId, long srcContestId,
         long targetContestId, long sourcePhaseId, long targetPhaseId,
-        java.lang.String moveType)
+        long userId, java.lang.String moveType)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalMoveHistoryLocalService.create(srcProposalId,
             targetProposalId, srcContestId, targetContestId, sourcePhaseId,
-            targetPhaseId, moveType);
+            targetPhaseId, userId, moveType);
     }
 
     @Override
     public com.ext.portlet.model.ProposalMoveHistory createMoveHistory(
         long proposalId, long srcContestId, long targetContestId,
-        long srcPhaseId, long targetPhaseId)
+        long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalMoveHistoryLocalService.createMoveHistory(proposalId,
-            srcContestId, targetContestId, srcPhaseId, targetPhaseId);
+            srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId);
     }
 
     @Override
     public com.ext.portlet.model.ProposalMoveHistory createCopyHistory(
         long proposalId, long srcContestId, long targetContestId,
-        long srcPhaseId, long targetPhaseId)
+        long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalMoveHistoryLocalService.createCopyHistory(proposalId,
-            srcContestId, targetContestId, srcPhaseId, targetPhaseId);
+            srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId);
     }
 
     @Override
     public com.ext.portlet.model.ProposalMoveHistory createForkHistory(
         long srcProposalId, long targetProposalId, long srcContestId,
-        long targetContestId, long srcPhaseId, long targetPhaseId)
+        long targetContestId, long srcPhaseId, long targetPhaseId, long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _proposalMoveHistoryLocalService.createForkHistory(srcProposalId,
             targetProposalId, srcContestId, targetContestId, srcPhaseId,
-            targetPhaseId);
+            targetPhaseId, userId);
     }
 
     @Override
