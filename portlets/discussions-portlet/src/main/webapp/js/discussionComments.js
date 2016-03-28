@@ -1,9 +1,9 @@
 
 function disableAddComment() {
-    jQuery("#thecomment").find(".addCommentButton").attr('disabled', true);
+    jQuery(".c-Comment__new").find(".addCommentButton").attr('disabled', true);
 }
 function isAddCommentFormValid() {
-    var $thecomment = jQuery("#thecomment");
+    var $thecomment = jQuery(".c-Comment__new");
     var isValid = (jQuery.trim($thecomment.find(".commentContent").val()) != '');
     if (!isValid) {
         isValid = jQuery.trim(CKEDITOR.instances.messageContent.getData()) != '';

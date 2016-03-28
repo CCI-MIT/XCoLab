@@ -152,3 +152,10 @@ body.colab {
   float: left;
   margin-right: 15px;
 }
+
+//TODO: only used in blogsstats-portlet
+ul#blogArchives li {
+  list-style: none;
+  margin-bottom: 10px;
+  background: none;
+}

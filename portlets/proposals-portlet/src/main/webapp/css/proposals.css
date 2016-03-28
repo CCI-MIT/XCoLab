@@ -354,7 +354,7 @@ table.judgingForm {
   display: inline-block;
 }
 
-.judging_comments .comment .commentor, .judging_comments .comment .the-comment {
+.judging_comments .comment .c-Comment__commentor, .judging_comments .comment .c-Comment {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -362,11 +362,11 @@ table.judgingForm {
   vertical-align: top;
 }
 
-.judging_comments .comment .commentor {
+.judging_comments .comment .c-Comment__commentor {
   width: 30%;
 }
 
-.judging_comments .comment .the-comment {
+.judging_comments .comment .c-Comment {
   width: 70%;
 }
 

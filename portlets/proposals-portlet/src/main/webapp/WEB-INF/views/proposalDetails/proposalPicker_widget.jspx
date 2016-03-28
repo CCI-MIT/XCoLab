@@ -282,7 +282,7 @@
 				<div class="thumbbox">
                 	{{data.supportersCount}}
            		</div>
-                <div class="commbox">
+                <div class="c-Comment__count">
                     {{data.commentsCount}}
                 </div>
                 <div class="modbox">

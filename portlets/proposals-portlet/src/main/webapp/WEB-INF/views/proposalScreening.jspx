@@ -100,7 +100,7 @@
                         <div class="form-errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="fellowScreeningActionCommentBody" />
                         </div>
-                        <form:textarea id="fellowCommentBody" cssClass="commentbox" path="fellowScreeningActionCommentBody" style="width:100%;"/>
+                        <form:textarea id="fellowCommentBody" cssClass="c-Comment__box" path="fellowScreeningActionCommentBody" style="width:100%;"/>
                         <div id="comment-footers">
                             <c:forEach var="template" items="${emailTemplates}">
                                 <div class="${template.key}">
@@ -144,7 +144,7 @@
 
                             <h4>Rating comment:</h4>
                             <i>Your comment will be visible to other Fellows and Judges only.</i>
-                            <form:textarea id="fellowRatingComment" cssClass="commentbox" path="comment" style="width:100%;"/>
+                            <form:textarea id="fellowRatingComment" cssClass="c-Comment__box" path="comment" style="width:100%;"/>
                                 <a style="display:block; float:right;" href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
                                 onclick="jQuery(this).parents('form').submit();">Save</a>
                         </c:when>

@@ -1,15 +1,15 @@
 
 function disableAddComment() {
-    jQuery("#thecomment .addCommentButton").attr('disabled', true);
+    jQuery(".c-Comment__new .addCommentButton").attr('disabled', true);
 }
 function isAddCommentFormValid() {
-    var isValid = (jQuery.trim(jQuery("#thecomment .commentContent").val()) != '');
+    var isValid = (jQuery.trim(jQuery(".c-Comment__new .commentContent").val()) != '');
 
     if (isValid) {
-        jQuery('#thecomment .errorMsg').hide();
+        jQuery('.c-Comment__new .errorMsg').hide();
     }
     else {
-        jQuery('#thecomment .errorMsg').show();
+        jQuery('.c-Comment__new .errorMsg').show();
     }
     return isValid;
 }

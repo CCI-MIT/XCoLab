@@ -118,7 +118,7 @@ table.contest-list-view {
     @extend %image-only;
   }
 
-  th.comments {
+  th.c-Comment__list {
     @extend %image-only;
     background-image: url(../images/icon-list-comment.png);
   }

@@ -26,8 +26,8 @@
         </c:if>
     </div>
 
-    <div class="threads-container">
-        <div class="main-content">
+    <div class="c-Comment__threads">
+        <div class="c-Comment__threads__container">
             <div class="comm_disc-head">
                 <div class="comm_disc-title">
                     <h2>${empty currentCategory ? 'All Discussions' : currentCategory.title}</h2>
@@ -47,7 +47,7 @@
             </c:if>
 
 
-            <table class="thread-list">
+            <table class="c-Comment__threads__list">
                 <thead class="blueheaderbar">
                 <tr>
                     <th>
@@ -126,7 +126,7 @@
             </table>
         </div>
 
-        <div class="sidebar">
+        <div class="c-Comment__threads__sidebar">
             <a class="subscribeLinkSmall">
                 <img src="/climatecolab-theme/images/subscribe_small_2.png" /> Subscribe
             </a>

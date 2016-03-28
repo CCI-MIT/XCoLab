@@ -31,7 +31,7 @@
                 
                 >
                
-                    <img src="/climatecolab-theme/images/share.png" width="24" height="24" alt="Share" class="icon_share" />
+                    <img src="/climatecolab-theme/images/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
                     Share
                 </a>
                 &#160;
@@ -74,7 +74,7 @@
 
 
     
-     <ice:dataTable value="#{discussionBean.currentThread.threadMessages}" var="message" varStatus="messageStatus" columnClasses="commentor,the-comment" rowClasses="odd,even" styleClass="comments" id="commentsTable">
+     <ice:dataTable value="#{discussionBean.currentThread.threadMessages}" var="message" varStatus="messageStatus" columnClasses="c-Comment__commentor,c-Comment" rowClasses="odd,even" styleClass="c-Comment__list" id="commentsTable">
         <ice:column styleClass="#{message.expertReview ? 'expertReview' : ''}">
             
             <collab:userPortrait screenName="#{message.author.screenName}" portraitId="#{message.author.portraitId}" width="59" height="59" /><br />
@@ -121,7 +121,7 @@
                     <div class="content">
                         <ice:outputText value="#{message.filteredDescription}" escape="false" />
                     </div>
-                    <div class="commentsActions">
+                    <div class="c-Comment__actions">
                         <ice:commandButton actionListener="#{message.markSpam}" value="Mark as Spam" rendered="${discussionBean.permissions.canReportSpam and message.spamReportCount == 0}"/>
                         <ice:commandButton actionListener="#{message.removeSpamReport}" value="Not Spam" rendered="${discussionBean.permissions.getCanRemoveSpamReport(message) and message.spamReportCount > 0}"/>
                         <ice:commandButton actionListener="#{message.toggleEdit}" value="Edit" rendered='#{discussionBean.permissions.canAdminMessages}'/>
@@ -153,13 +153,13 @@
         </ice:column>
     </ice:dataTable>
 
-    <ice:panelGroup styleClass="addthread addcomment" rendered="#{discussionBean.permissions.canAddMessage}">
-        <div id="add">
+    <ice:panelGroup styleClass="addthread c-Comment__add" rendered="#{discussionBean.permissions.canAddMessage}">
+        <div class="c-Comment__add__info">
             <strong>ADD YOUR RESPONSE</strong>
         </div>
-        <div id="thecomment">
+        <div class="c-Comment__new">
             <ice:inputHidden id="messageTitle" value="#{discussionBean.currentThread.newMessage.title}" styleClass="title text" maxlength="255"/>
-            <ice:inputTextarea id="messageContent" value="#{discussionBean.currentThread.newMessage.description}" styleClass="commentbox" /><br />
+            <ice:inputTextarea id="messageContent" value="#{discussionBean.currentThread.newMessage.description}" styleClass="c-Comment__box" /><br />
             <ice:message for="messageContent" />
             <div class="c-Button__primary"><ice:commandLink  actionListener="#{discussionBean.currentThread.newMessage.addMessageToThread}" >Add Message</ice:commandLink></div>
         </div>

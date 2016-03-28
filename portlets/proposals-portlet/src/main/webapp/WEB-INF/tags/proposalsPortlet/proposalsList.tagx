@@ -75,7 +75,7 @@
                         <collab:proposalLink proposal="${proposal}" text="${proposal.supportersCount}" tab="TEAM"/>
                     </div>
                	</c:if>
-                <div class="commbox">
+                <div class="c-Comment__count">
                     <collab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>
                 <c:if test="${not contest.isContestCompleted(contestPhase) }">

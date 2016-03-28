@@ -51,7 +51,7 @@
             <form:errors cssClass="c-Alert c-Alert__error" path="comment" />
         </div>
 
-        <form:textarea path="comment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
+        <form:textarea path="comment" cssClass="c-Comment__box" style="width:100%;" placeholder="Write your review here..." />
 
         <div class="clearfix" style="width: 100%;">
             <a class="c-Button__primary" style="display:block; float:right; margin-top: 10px;" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>

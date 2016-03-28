@@ -12,12 +12,12 @@
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
     <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
 
-    <div class="comments">
+    <div class="c-Comment__list">
         <c:forEach var="wrapper" items="${proposalRatingsWrappers}" varStatus="status">
             <discussions:getRoleName userId="${wrapper.author.userId}" proposalId="${proposalId}">
                 <!--@elvariable id="role" type="org.xcolab.enums.MemberRole"-->
                 <div class="comment">
-                    <div class="commentor">
+                    <div class="c-Comment__commentor">
                         <proposalsPortlet:userPortrait  screenName="${wrapper.author.screenName}" portraitId="${wrapper.author.portraitId}" width="59" height="59" />
                         <br />
                         <proposalsPortlet:userLinkSimple text="${wrapper.author.screenName}" userId="${wrapper.author.userId}" /> <br />

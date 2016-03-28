@@ -30,17 +30,17 @@
 					</c:otherwise>
 				</c:choose>
 			</h2>
-			<div class="comm-butt">
+			<div class="c-Comment__button">
 				<c:if test="${discussionPermissions.canSeeAddCommentButton}">
-					<a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); return false;'>
+					<a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery(".c-Comment__new")[0].scrollIntoView(); return false;'>
                         <img src="/climatecolab-theme/images/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="add a comment" /> Jump to comment form
                     </a>
 				</c:if>
-				<div class="comm-share">
+				<div class="c-Comment__share">
 					<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
 					   addthis:title="${categoryGroup.description}"
 					   addthis:description="${categoryGroup.description}">
-						<img src="/climatecolab-theme/images/share.png" width="24" height="24" alt="Share" class="icon_share" />
+						<img src="/climatecolab-theme/images/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
 						Share conversation
 					</a>
 				</div>
@@ -57,11 +57,11 @@
 				</div>
 			</c:when>
 			<c:otherwise>
-				<table class="comments" id="commentsTable" >
+				<table class="c-Comment__list" id="commentsTable" >
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
 						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
 							<tr class="${message.expertReview ? 'expertReview' : ''} ${status.index mod 2 == 0 ? 'odd' : 'even'}">
-								<td class="commentor ${message.expertReview ? 'expertReview' : ''}">
+								<td class="c-Comment__commentor ${message.expertReview ? 'expertReview' : ''}">
 									<a id="_message_${message.messageId}"></a>
 									<collab:userPortrait  screenName="${message.author.screenName}" portraitId="${message.author.portraitId}" width="59" height="59" />
 									<br />
@@ -96,7 +96,7 @@
 										<span>share</span>
 									</a>
 								</td>
-								<td class="the-comment ${message.expertReview ? 'expertReview' : ''} ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
+								<td class="c-Comment ${message.expertReview ? 'expertReview' : ''} ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
 									<c:choose>
 										<c:when test="${authorId == message.author.userId}">
 											<div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> creator</div></div>
@@ -108,7 +108,7 @@
 									<div id="message_${message.messageId}" class="content">
 										${message.body }
 									</div>
-									<div class="commentsActions">
+									<div class="c-Comment__actions">
 										<c:if test="${discussionPermissions.getCanReportMessage(message) }">
 											<portlet:actionURL var="reportSpamURL">
 												<portlet:param name="action" value="reportSpam" />
@@ -167,8 +167,8 @@
 			</c:otherwise>
 		</c:choose>
 		<c:if test="${discussionPermissions.canSeeAddCommentButton }">
-			<div class="addcomment">
-				<div id="add">
+			<div class="c-Comment__add">
+				<div class="c-Comment__add__info">
 					<strong>ADD YOUR COMMENT</strong><br />
 					<c:choose>
 						<c:when test="${not empty currentTab and currentTab eq 'SCREENING'}">
@@ -182,7 +182,7 @@
 						</c:when>
 					</c:choose>
 				</div>
-				<div id="thecomment">
+				<div class="c-Comment__new">
 					<portlet:actionURL var="addCommentURL">
 						<portlet:param name="action" value="addDiscussionMessage" />
 						<portlet:param name="proposalId" value="${proposalId}" />
@@ -191,7 +191,7 @@
 						<input name="discussionId" class="title text hidden" maxlength="255" value="${categoryGroup.discussionId }"/>
                         <input name="title" class="title text hidden" maxlength="255" />
                         <input name="threadId" class="title text hidden" maxlength="255" value="${empty thread.threadId ? 0 : thread.threadId}" />
-						<textarea id="messageContent" name="description"  class="rte commentbox commentContent"><!-- --></textarea>
+						<textarea id="messageContent" name="description"  class="rte c-Comment__box commentContent"><!-- --></textarea>
 						<div class="clearfix"><!-- --></div>
 						<br />
 						<span class="errorMsg portlet-msg-error" style="display: none;">Value is required</span>
