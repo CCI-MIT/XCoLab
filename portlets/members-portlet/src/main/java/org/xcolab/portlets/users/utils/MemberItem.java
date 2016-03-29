@@ -5,9 +5,9 @@ import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.pojo.User_;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ public class MemberItem implements Serializable {
     private String screenName;
     private int points;
 
-    public MemberItem(User user, String memberCategoryParam) throws PortalException, SystemException {
+    public MemberItem(User_ user, String memberCategoryParam) throws PortalException, SystemException {
 
         userId = user.getUserId();
         activityCount = Xcolab_UserLocalServiceUtil.getUserActivityCount(userId);

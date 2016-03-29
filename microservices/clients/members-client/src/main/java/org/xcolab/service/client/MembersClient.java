@@ -6,26 +6,54 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.pojo.User_;
 
 import java.util.List;
 
+
+
 public class MembersClient {
 
-    private static final String  EUREKA_APPLICATION_ID = "members-service";
+    private static final String  EUREKA_APPLICATION_ID = "localhost:8080";// ";// localhost:8080/members-service
 
     @Autowired
     static RestTemplate restTemplate = new RestTemplate();
 
-    public static void getAllUsers(){
+
+    public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
+                                          boolean ascOrder, int firstUser, int lastUser){
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+EUREKA_APPLICATION_ID+"/members")
+                .queryParam("firstRecord", firstUser)
+                .queryParam("lastRecord", lastUser);
+
+
+        if(sortField != null && !sortField.isEmpty()){
+            uriBuilder.queryParam("sort", ((ascOrder)?(""):("-"))+sortField);
+        }
+        if(screenNameFilterValue != null && !screenNameFilterValue.isEmpty()){
+            uriBuilder.queryParam("screenName", screenNameFilterValue);
+        }
+        if(categoryFilterValue != null && !categoryFilterValue.isEmpty())
+            uriBuilder.queryParam("category",categoryFilterValue);
 
         //User user = restTemplate.getForObject("http://"+EUREKA_APPLICATION_ID+"/members", User.class);
 
-        ResponseEntity<List<User_>> response = restTemplate.exchange("http://"+EUREKA_APPLICATION_ID+"/members",
+        ResponseEntity<List<User_>> response = restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<User_>>(){});
 
-        List<User_> userList = response.getBody();
-
-
+        return response.getBody();
+    }
+    public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue){
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+EUREKA_APPLICATION_ID+"/members/count");
+        if(screenNameFilterValue != null ){
+            uriBuilder.queryParam("screenName", screenNameFilterValue);
+        }
+        if(categoryFilterValue != null ) {
+            uriBuilder.queryParam("category", categoryFilterValue);
+        }
+        Integer totalResults = restTemplate.getForObject(uriBuilder.build().toString(), Integer.class);
+        return totalResults;
     }
 }

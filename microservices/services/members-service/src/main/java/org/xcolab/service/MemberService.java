@@ -21,8 +21,50 @@ public class MemberService {
 
 
     public List<User_> listAll(){
-        return this.memberDao.listAllMembersSortByRoleName(0,10,"",false);
+        return this.memberDao.listMembersSortByRoleName(0,10,"",false);
         //hard coded for testing
+    }
+    public List<User_> listMembersSortByScreenName(int firstUser, int lastUser, String screenNameFilter,
+                                                   boolean isAscOrder){
+        return this.memberDao.listMembersSortByScreenName(firstUser,lastUser,screenNameFilter, isAscOrder);
+    }
+    public List<User_> listMembersSortByPoint(int firstUser, int lastUser, String screenNameFilter,
+                                                   boolean isAscOrder){
+        return this.memberDao.listMembersSortByPoint(firstUser,lastUser,screenNameFilter, isAscOrder);
+    }
+    public List<User_> listMembersSortByActivityCount(int firstUser, int lastUser, String screenNameFilter,
+                                                   boolean isAscOrder){
+        return this.memberDao.listMembersSortByActivityCount(firstUser,lastUser,screenNameFilter, isAscOrder);
+    }
+    public List<User_> listMembersSortByMemberSince(int firstUser, int lastUser, String screenNameFilter,
+                                                   boolean isAscOrder){
+        return this.memberDao.listMembersSortByMemberSince(firstUser,lastUser,screenNameFilter, isAscOrder);
+    }
+    public List<User_> listMembersSortByRoleName(int firstUser, int lastUser, String screenNameFilter,
+                                                    boolean isAscOrder){
+        return this.memberDao.listMembersSortByRoleName(firstUser,lastUser,screenNameFilter, isAscOrder);
+    }
+
+    public List<User_> listMembersSortByScreenNameFilteredByCategory(int firstUser, int lastUser,
+                                                                     String screenNameFilter, boolean isAscOrder,
+                                                                     String roleName){
+        return this.memberDao.listMembersSortByScreenNameFilteredByCategory(firstUser, lastUser,
+                screenNameFilter, isAscOrder, roleName);
+    }
+
+    public List<User_> listMembersSortByMemberSinceFilteredByCategory(int firstUser, int lastUser,
+                                                                      String screenNameFilter, boolean isAscOrder,
+                                                                      String roleName){
+        return this.memberDao.listMembersSortByMemberSinceFilteredByCategory(firstUser, lastUser,
+                screenNameFilter, isAscOrder, roleName);
+    }
+
+    public Integer countMembers(String filter){
+        return this.memberDao.countMembers(filter);
+    }
+
+    public Integer countMembersFilteredByCategory(String filter, String roleName){
+        return this.memberDao.countMembersFilteredByCategory(filter, roleName);
     }
 
 }

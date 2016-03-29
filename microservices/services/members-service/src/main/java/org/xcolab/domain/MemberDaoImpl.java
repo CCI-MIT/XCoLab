@@ -31,19 +31,17 @@ public class MemberDaoImpl implements MemberDao{
 
 
 
-
-
-    public List<User_> listAllMembersSortByScreenName(int startRecord, int limitRecord, String filter,
+    public List<User_> listMembersSortByScreenName(int startRecord, int limitRecord, String filter,
                                                        boolean isAscOrder) {
-        return listAllMembersSortByField(startRecord,limitRecord,filter, USER_.SCREEN_NAME, isAscOrder);
+        return listMembersSortByField(startRecord,limitRecord,filter, USER_.SCREEN_NAME, isAscOrder);
     }
 
-    public List<User_> listAllMembersSortByMemberSince(int startRecord, int limitRecord, String filter,
+    public List<User_> listMembersSortByMemberSince(int startRecord, int limitRecord, String filter,
                                                        boolean isAscOrder) {
-        return listAllMembersSortByField(startRecord,limitRecord,filter, USER_.CREATE_DATE, isAscOrder);
+        return listMembersSortByField(startRecord,limitRecord,filter, USER_.CREATE_DATE, isAscOrder);
     }
 
-    public List<User_> listAllMembersSortByActivityCount(int startRecord, int limitRecord, String filter,
+    public List<User_> listMembersSortByActivityCount(int startRecord, int limitRecord, String filter,
                                                         boolean isAscOrder) {
 
         Field<Object> activityCount =
@@ -67,7 +65,7 @@ public class MemberDaoImpl implements MemberDao{
 
     }
 
-    public List<User_> listAllMembersSortByRoleName(int startRecord, int limitRecord, String filter,
+    public List<User_> listMembersSortByRoleName(int startRecord, int limitRecord, String filter,
                                                  boolean isAscOrder) {
 
         Field<Long> userIdOriginalRoleSelect = USERS_ROLES.USER_ID.as("userIdOrdinalSelect");
@@ -91,7 +89,7 @@ public class MemberDaoImpl implements MemberDao{
                 .limit(startRecord,limitRecord).fetchInto(User_.class);
 
     }
-    public List<User_> listAllMembersSortByPoint(int startRecord, int limitRecord, String filter,
+    public List<User_> listMembersSortByPoint(int startRecord, int limitRecord, String filter,
                                                           boolean isAscOrder) {
 
         Field<Object> points =
@@ -115,9 +113,9 @@ public class MemberDaoImpl implements MemberDao{
 
     }
 
-    private List<User_> listAllMembersSortByField(int startRecord, int limitRecord, String filter,
+    private List<User_> listMembersSortByField(int startRecord, int limitRecord, String filter,
                                                  TableField<User_Record, ?> field, boolean isAscOrder) {
-            if(!filter.isEmpty()) {
+            if(filter != null && !filter.isEmpty()) {
                 return this.dslContext.select().
                         from(USER_).
                         join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
@@ -138,5 +136,84 @@ public class MemberDaoImpl implements MemberDao{
                         orderBy((isAscOrder?(field.asc()):(field.desc()))).
                         limit(startRecord,limitRecord).fetchInto(User_.class);
             }
+    }
+
+    public Integer countMembers(String filter){
+        if(filter != null && !filter.isEmpty()) {
+            return this.dslContext.selectCount().
+                    from(USER_).
+                    join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
+                    join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
+                    where(USER_.SCREEN_NAME.contains(filter)).
+                    or(USER_.FIRST_NAME.contains(filter)).
+                    or(USER_.LAST_NAME.contains(filter)).
+                    and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%")).fetchOne(0, Integer.class);
+
+        }else{
+            return this.dslContext.selectCount().
+                    from(USER_).
+                    join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
+                    join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
+                    where(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%")).fetchOne(0, Integer.class);
+        }
+    }
+
+    public Integer countMembersFilteredByCategory(String filter, String roleName){
+        if(filter != null && !filter.isEmpty()) {
+            return this.dslContext.selectCount().
+                    from(USER_).
+                    join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
+                    join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
+                    where(USER_.SCREEN_NAME.contains(filter)).
+                    or(USER_.FIRST_NAME.contains(filter)).
+                    or(USER_.LAST_NAME.contains(filter)).
+                    and(ROLES_CATEGORY.CATEGORY_NAME.like("%"+roleName+"%")).
+                    fetchOne(0,Integer.class);
+
+        }else{
+            return this.dslContext.select().
+                    from(USER_).
+                    join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
+                    join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
+                    where(ROLES_CATEGORY.CATEGORY_NAME.like("%"+roleName+"%")).
+                    fetchOne(0,Integer.class);
+        }
+    }
+
+    public List<User_> listMembersSortByScreenNameFilteredByCategory(int startRecord, int limitRecord, String filter,
+                                                      boolean isAscOrder,String roleName) {
+        return listMembersSortByFieldFilteredByCategory(startRecord,limitRecord,filter,
+                USER_.SCREEN_NAME, isAscOrder,roleName);
+    }
+
+    public List<User_> listMembersSortByMemberSinceFilteredByCategory(int startRecord, int limitRecord, String filter,
+                                                       boolean isAscOrder, String roleName) {
+        return listMembersSortByFieldFilteredByCategory(startRecord,limitRecord,filter,
+                USER_.CREATE_DATE, isAscOrder,roleName);
+    }
+
+    private List<User_> listMembersSortByFieldFilteredByCategory(int startRecord, int limitRecord, String filter,
+                                                  TableField<User_Record, ?> field, boolean isAscOrder,String roleName){
+        if(filter != null && !filter.isEmpty()) {
+            return this.dslContext.select().
+                    from(USER_).
+                    join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
+                    join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
+                    where(USER_.SCREEN_NAME.contains(filter)).
+                    or(USER_.FIRST_NAME.contains(filter)).
+                    or(USER_.LAST_NAME.contains(filter)).
+                    and(ROLES_CATEGORY.CATEGORY_NAME.like("%"+roleName+"%")).
+                    orderBy((isAscOrder?(field.asc()):(field.desc()))).
+                    limit(startRecord,limitRecord).fetchInto(User_.class);
+
+        }else{
+            return this.dslContext.select().
+                    from(USER_).
+                    join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
+                    join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
+                    where(ROLES_CATEGORY.CATEGORY_NAME.like("%"+roleName+"%")).
+                    orderBy((isAscOrder?(field.asc()):(field.desc()))).
+                    limit(startRecord,limitRecord).fetchInto(User_.class);
+        }
     }
 }
