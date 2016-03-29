@@ -6,6 +6,7 @@ $c-Header__menu__li__hoverColor: $t-Color__grey--darkest !default;
 $c-Header__menu__li__isCurrent__border--left: 1px solid $t-Color__grey--medium !default;
 
 $c-Header__menu__li__a__textColor: $t-Color__primary !default;
+$c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
 $c-Header__menu__li__a__search__backgroundUrl: url(../images/icon-menu-search.png) !default;
 $c-Header__menu__li__a__search__textColor: $t-Color__grey--dark !default;
 $c-Header__menu__li__a__search__fontFamily: Arial, Helvetica, sans-serif !default;
@@ -26,6 +27,7 @@ $c-Header__menu__right__li__user__a__textColor: $t-Color__primary !default;
 $c-Header__menu__right__li__user__a--hover__textColor: #333 !default;
 $c-Header__menu__right__li__user__a__img__border: 1px solid $t-Color__grey--medium !default;
 $c-Header__menu__right__li__a__textColor: $t-Color__grey--dark !default;
+$c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
 $c-Header__menu__right__li__a--hover__textColor: black !default;
 
 $c-Header__search__top__background: $t-Color__grey--darkest !default;
@@ -103,7 +105,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
       height: 41px;
       padding: 26px 16px 0 15px;
       color: $c-Header__menu__li__a__textColor;
-      font-weight: 700;
+      font-weight: $c-Header__menu__li__a__fontWeight;
       display: inline-block;
       box-sizing: content-box;
 
@@ -199,7 +201,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
       height: 22px;
       padding: 45px 7px 0 7px;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: $c-Header__menu__right__li__a__fontWeight;
       color: $c-Header__menu__right__li__a__textColor;
       display: inline-block;
       text-transform: uppercase;
