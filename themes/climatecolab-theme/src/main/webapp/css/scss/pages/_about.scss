@@ -1,3 +1,9 @@
+$p-About__left__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
+$p-About__left__li__a__padding--left: 4px !default;
+$p-About__left__li__a__current__border--left: none !default;
+$p-About__left__li__a__current__padding--left: 0px !default;
+$p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
+
 /* ABOUT ------------------------------------------------------------------------------------- */
 
 /* columns  ------------- */
@@ -33,10 +39,12 @@
   height: 30px;
   padding: 11px 0 0 4px;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: $p-About__left__li__a__fontWeight;
   color: $t-Color__primary;
   border-bottom: 1px solid #ccc;
   display: inline-block;
+
+  padding-left: $p-About__left__li__a__padding--left;
 }
 
 .about-left li a:hover {
@@ -369,4 +377,7 @@
 
 .about-left ul li a:hover, .about-left ul li.c > a {
   background: #F2F1E9;
+  border-left: $p-About__left__li__a__current__border--left;
+  padding-left: $p-About__left__li__a__current__padding--left;
+  color: $p-About__left__li__a__current__textColor;
 }

@@ -76,3 +76,9 @@ $c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__li__a__textColor: $t-Color__grey--medium;
 $c-Header__menu__li__hoverColor: $t-Color__red;
+
+$p-About__left__li__a__fontWeight: $b-Typography__fontWeight--regular;
+$p-About__left__li__a__padding--left: 15px;
+$p-About__left__li__a__current__border--left: 5px solid $t-Color__secondary ;
+$p-About__left__li__a__current__padding--left: 10px;
+$p-About__left__li__a__current__textColor: $t-Color__black;
