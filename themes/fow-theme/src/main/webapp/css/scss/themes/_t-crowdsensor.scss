@@ -82,3 +82,9 @@ $p-About__left__li__a__padding--left: 15px;
 $p-About__left__li__a__current__border--left: 5px solid $t-Color__secondary ;
 $p-About__left__li__a__current__padding--left: 10px;
 $p-About__left__li__a__current__textColor: $t-Color__black;
+
+$p-Contests__contestFlag__capitalization: uppercase;
+$p-Contests__contestFlag__boxShadow: 0px 0px 15px $t-Color__grey--light;
+$p-Contests__contestFlag--color__border: none;
+$p-Contests__contestBox__boder--buttom: 1px solid $t-Color__grey;
+$p-Contests__contestBox--hover__boxShadow: 0 0 15px $t-Color__grey--light;
