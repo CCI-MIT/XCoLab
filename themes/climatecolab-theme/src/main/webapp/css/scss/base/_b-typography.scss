@@ -17,12 +17,21 @@ $b-Typography__fontWeight: 400 !default;
 $b-Typography__fontWeight--bold: 700 !default;
 $b-Typography__fontWeight__h1: 400 !default;
 
+$b-Typography__capitalization--none: none !default;
+$b-Typography__capitalization--capitalize: uppercase !default;
+
 $b-Typography__fontSize__h1: 32px !default;
 $b-Typography__fontSize__h2: 27px !default;
 $b-Typography__fontSize__h3: 19px !default;
 $b-Typography__fontSize__h4: 15px !default;
 $b-Typography__fontSize__h5: 14px !default;
 $b-Typography__fontSize__h6: 14px !default;
+
+$b-Typography__capitalization__h1: $b-Typography__capitalization--none !default;
+$b-Typography__capitalization__h2: $b-Typography__capitalization--none !default;
+
+$b-Typography__fontWeight__h2: $b-Typography__fontWeight--bold !default;
+$b-Typography__fontWeight__h3: $b-Typography__fontWeight--bold !default;
 
 $b-Typography__textColor: initial !default;
 $b-Typography__textColor__h1: $t-Color__grey--darkest !default;
@@ -49,14 +58,18 @@ h1 {
   font-size: $b-Typography__fontSize__h1;
   color: $b-Typography__textColor__h1;
   line-height: $b-Typography__lineHeight__h1;
+  text-transform: $b-Typography__capitalization__h1;
 }
 
 h2 {
   font-size: $b-Typography__fontSize__h2;
+  font-weight: $b-Typography__fontWeight__h2;
+  text-transform: $b-Typography__capitalization__h2;
 }
 
 h3 {
   font-size: $b-Typography__fontSize__h3;
+  font-weight: $b-Typography__fontWeight__h3;
 }
 
 h4 {

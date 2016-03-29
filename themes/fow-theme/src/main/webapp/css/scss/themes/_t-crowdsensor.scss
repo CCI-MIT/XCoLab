@@ -62,3 +62,11 @@ $b-Typography__fontWeight--medium: 500 !default;
 
 $t-Color__primary: $t-Color__red;
 $t-Color__secondary: $t-Color__green;
+
+$b-Typography__fontFamily: "Fira Sans", Arial, Helvetica;
+$b-Typography__fontFamily__h1: "Fira Sans", Verdana, sans-serif;
+$b-Typography__capitalization__h1: uppercase;
+$b-Typography__capitalization__h2: uppercase;
+$b-Typography__textColor__h1: $t-Color__primary;
+$b-Typography__fontWeight__h2: $b-Typography__fontWeight--regular;
+$b-Typography__fontWeight__h3: $b-Typography__fontWeight--regular;
