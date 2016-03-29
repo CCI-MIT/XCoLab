@@ -152,7 +152,10 @@
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
 							<td colspan="4">
-							<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">Manage profile and settings</a>
+								<a class="c-Button__primary"
+								   href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">
+									Manage profile and settings
+								</a>
 							</td>
 						</tr>
 					</c:if>
