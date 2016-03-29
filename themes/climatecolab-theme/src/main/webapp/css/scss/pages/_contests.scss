@@ -65,33 +65,7 @@
   }
 }
 
-table.contest-list-view {
-  th, td {
-    padding: 5px;
-  }
-
-  th {
-    height: 30px;
-    line-height: 30px;
-  }
-
-  td {
-    font-size: 14px;
-    line-height: 20px;
-    border-bottom: 1px solid $t-Color__grey--lightest;
-
-    &.odd {
-      background-image: url(../images/pattern-tbl-6x6.png);
-    }
-  }
-
-  .featured td {
-    background-color: $t-Color__grey--lightest;
-  }
-
-  a {
-    font-weight: 700;
-  }
+.p-Contests__ListViewTable { //table.contest-list-view
 
   %image-only {
     background-position-y: 8px;
@@ -118,27 +92,27 @@ table.contest-list-view {
     @extend %image-only;
   }
 
-  th.c-Comment__list {
+  th.comments {
     @extend %image-only;
     background-image: url(../images/icon-list-comment.png);
   }
 
-  th.ontology_what {
+  .ontology_what {
     @extend %image-text;
     background-image: url(../images/icon-list-what.png);
   }
 
-  th.ontology_where {
+  .ontology_where {
     @extend %image-text;
     background-image: url(../images/icon-list-where.png);
   }
 
-  th.ontology_who {
+  .ontology_who {
     @extend %image-text;
     background-image: url(../images/icon-list-who.png);
   }
 
-  th.ontology_how {
+  .ontology_how {
     @extend %image-text;
     background-image: url(../images/contest-icon-how.png);
   }
@@ -433,37 +407,6 @@ table.contest-list-view {
 
 .userslist tr.feat-bot {
   border-bottom: 1px solid $t-Color__primary__grey;
-}
-
-//TODO: these also somewhat relate to blueheaderbar
-.contestbar .phaseSeparatorContainer {
-  width: 16px;
-  display: inline-block;
-  padding-left: 7px;
-  padding-right: 7px;
-
-}
-
-.contestbar .phaseSeparator {
-  width: 16px;
-  height: 37px;
-  top: 0;
-  position: absolute;
-  background: url(../images/contest_blueheader_separator.png) no-repeat;
-}
-
-.contestbar .phaseActive, .contestbar .phaseActive a {
-  font-weight: 700;
-}
-
-.contestbar .phaseFuture {
-  color: $t-Color__grey--medium;
-}
-
-.phaseLinkContainer {
-  display: inline-block;
-  position: relative;
-  font-size: 13px;
 }
 
 #priorActiveAllWidget {

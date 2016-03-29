@@ -24,8 +24,11 @@ table {
   width: 100%;
 }
 
-td, th {
+td {
   vertical-align: top;
+}
+
+td, th {
   text-align: left;
   line-height: normal;
 }

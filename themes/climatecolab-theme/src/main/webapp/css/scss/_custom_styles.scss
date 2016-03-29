@@ -28,11 +28,9 @@
 
 @import 'components/c-Headline';
 
-/* --[/END components/headline]--[components/blueheaderbar]-------- */
+@import 'components/c-Table';
 
-@import 'components/blueheaderbar';
-
-/* --[/END components/blueheaderbar]--[pages/homepage]------------- */
+@import 'components/c-TitleBar';
 
 @import 'pages/homepage';
 
@@ -125,6 +123,9 @@
 @import "liferay/liferay";
 
 /* --[/END components/liferay]------------------------------------- */
+
+@import "pages/p-ContestProposals";
+@import "pages/p-Members";
 
 /* --[misc styles]------------------------------------- */
 

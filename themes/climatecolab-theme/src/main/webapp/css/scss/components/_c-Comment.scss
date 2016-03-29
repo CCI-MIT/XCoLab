@@ -147,16 +147,6 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   }
 }
 
-.c-Comment__threads__list { //table.thread-list
-  td, th {
-    padding: 8px;
-  }
-
-  tr {
-    border-bottom: $c-Comment__threads__list__tr__border--bottom;
-  }
-}
-
 .addpropbox.evaluation {
   .c-Comment__commentor {
     float: left;

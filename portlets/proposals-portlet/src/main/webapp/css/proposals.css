@@ -31,12 +31,6 @@
   width: 105px;
 }
 
-.contestSubscribe img {
-  width: 25px;
-  vertical-align: bottom;
-  margin-right: 5px;
-}
-
 td .ontologyItem {
   padding-right: 30px;
   padding-top: 2px;
@@ -388,10 +382,6 @@ table.judgingForm {
 
 .propbox.judgement-actions .title-author {
   width: 485px;
-}
-
-.blueheaderbar.judgement-actions .proposalname {
-  width: 489px;
 }
 
 #advanceDecision {
