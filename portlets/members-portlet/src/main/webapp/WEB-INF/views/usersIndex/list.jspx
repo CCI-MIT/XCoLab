@@ -9,8 +9,8 @@
 
 	<div class="main_long">
 
-	<div class="blueheaderbar">
-        <div class="user">
+	<div class="c-TitleBar">
+        <div class="p-Members__list__element--user">
         	<portlet:renderURL var="sortURL">
         		<portlet:param name="sortColumn" value="USER_NAME" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }" />
@@ -24,7 +24,7 @@
            	</div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
         </div>
-		<div class="points">
+		<div class="p-Members__list__element--points">
 			<portlet:renderURL var="sortURLPoints">
 				<portlet:param name="sortColumn" value="POINTS" />
 				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : false }" />
@@ -44,7 +44,7 @@
 			<div class="c-Tooltip">Click to sort by points</div>
 			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
 		</div>
-        <div class="activity">
+        <div class="p-Members__list__element--activity">
         	<portlet:renderURL var="sortURLActivity">
         		<portlet:param name="sortColumn" value="ACTIVITY" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : false }" />
@@ -56,7 +56,7 @@
             <div class="c-Tooltip">Click to sort by activity</div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
         </div>
-        <div class="category">
+        <div class="p-Members__list__element--category">
         	<portlet:renderURL var="sortURLCategory">
         		<portlet:param name="sortColumn" value="CATEGORY" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : false }" />
@@ -68,7 +68,7 @@
             <div class="c-Tooltip">Click to sort by category</div>
             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
         </div>
-        <div class="seniority">
+        <div class="p-Members__list__element--seniority">
         	<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'MEMBER_SINCE' ? not sortFilterPage.sortAscending : false }" />
         	<portlet:renderURL var="sortURLSeniority">
         		<portlet:param name="sortColumn" value="MEMBER_SINCE" />
@@ -84,7 +84,7 @@
 
     </div>
 
-	<table class="userslist table">
+	<table class="c-Table userslist table">
 		<c:forEach var="user" items="${users }">
 			<tr>
 				<td class="column screenName" style="">

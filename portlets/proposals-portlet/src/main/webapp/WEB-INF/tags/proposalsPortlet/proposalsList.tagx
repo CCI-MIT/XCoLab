@@ -95,7 +95,7 @@
                 </c:if>
 
 
-                <c:if test="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
+                <c:if test="${not contest.isContestCompleted(contestPhase) and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
                     <div class="fellow-judge-action">
 
                         <c:if test="${proposalsPermissions.canFellowActions}">

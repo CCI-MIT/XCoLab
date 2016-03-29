@@ -88,7 +88,7 @@
 					
 					<div id="proposalPicker_viewArea">
 					<div id="proposalPickerTableContests">
-						<div class="blueheaderbar tooltips" data-entity='contest'>
+						<div class="c-TitleBar tooltips" data-entity='contest'>
 							<div class="contest" style="">
 								<a href="#" data-sort-column="Name"><span class="contestTypeContestNames">&#160;</span></a>
 								<div class="c-Tooltip">
@@ -148,8 +148,8 @@
 								<!--  -->
 							</span>
 						</div>
-						<div class="blueheaderbar tooltips" data-entity='proposal'>
-							<div class="proposalname">
+						<div class="c-TitleBar tooltips" data-entity='proposal'>
+							<div class="p-ContestProposals__list__element--proposalname">
 								<div style="display: inline-block">
 									<a href="#" data-sort-column="Proposal"><span class="contestTypeProposalNames">&#160;</span> name</a>
 									<div class="c-Tooltip">
@@ -168,7 +168,7 @@
 								</div>
 							</div>
 
-							<div class="thumbs">
+							<div class="p-ContestProposals__list__element--thumbs">
 								<a href="#" data-sort-column="Supporters">
 									<!--  -->
 								</a>
@@ -178,7 +178,7 @@
 								</div>
 							</div>
 
-							<div class="propcomm">
+							<div class="p-ContestProposals__list__element--comments">
 								<a href="#" data-sort-column="Comments"> <!--  -->
 								</a>
 								<div class="c-Tooltip">
@@ -186,7 +186,7 @@
 									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
-							<div class="modified">
+							<div class="p-ContestProposals__list__element--modifiedDate">
 								<span class='text'><span class="contestTypeContestNamesPlural">&#160;</span></span>
 							</div>
 

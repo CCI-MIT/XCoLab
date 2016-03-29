@@ -12,6 +12,9 @@
     <jsp:useBean id="proposals" type="org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean" scope="request" />
     <jsp:useBean id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage" scope="request" />
 
+    <c:set var="showJudgingStatus" scope="request"
+           value="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}"/>
+
     <div id="content">
         <jsp:directive.include file="./contestProposals/header.jspx"/>
         <jsp:directive.include file="./contestProposals/header_contest_details.jspx"/>
@@ -41,12 +44,10 @@
                 </c:if>
             </div>
         </div>
-        <div class="blueheaderbar
-                    tooltips
-                    ${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions ? 'judgement-actions' : ''}
-                    ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
-                    ">
-            <div class="proposalname">
+        <!--TODO: convert to c-Table-->
+        <div class="c-TitleBar tooltips">
+            <div class="p-ContestProposals__list__element--proposalname ${contestCompleted ? 'completed' : ''}
+                    ${showJudgingStatus ? 'judgeActions' : ''}">
                 <div style="display: inline-block">
                     <portlet:renderURL var="sortURL">
                         <portlet:param name="contestYear" value="${contest.contestYear }" />
@@ -85,7 +86,8 @@
             </div>
 
             <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
-                <div class="votes">
+                <div class="p-ContestProposals__list__element--votes ${contestCompleted ? 'completed' : ''}
+                        ${showJudgingStatus ? 'judgeActions' : ''}">
                     <portlet:renderURL var="sortURL">
                         <portlet:param name="contestYear" value="${contest.contestYear }" />
                         <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -103,7 +105,8 @@
                 </div>
             </c:if>
             <c:if test="${not contestPhase.canVote}">
-                <div class="thumbs">
+                <div class="p-ContestProposals__list__element--thumbs ${contestCompleted ? 'completed' : ''}
+                        ${showJudgingStatus ? 'judgeActions' : ''}">
                     <portlet:renderURL var="sortURL">
                         <portlet:param name="contestYear" value="${contest.contestYear }" />
                         <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -121,7 +124,8 @@
                 </div>
             </c:if>
 
-            <div class="propcomm">
+            <div class="p-ContestProposals__list__element--comments ${contestCompleted ? 'completed' : ''}
+                    ${showJudgingStatus ? 'judgeActions' : ''}">
                 <portlet:renderURL var="sortURL">
                     <portlet:param name="contestYear" value="${contest.contestYear }" />
                     <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -138,7 +142,8 @@
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
             </div>
             <c:if test="${not contest.isContestCompleted(contestPhase)}">
-                <div class="modified">
+                <div class="p-ContestProposals__list__element--modifiedDate ${contestCompleted ? 'completed' : ''}
+                        ${showJudgingStatus ? 'judgeActions' : ''}">
                     <portlet:renderURL var="sortURL">
                         <portlet:param name="contestYear" value="${contest.contestYear }" />
                         <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -154,7 +159,8 @@
                     </div>
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
                 </div>
-                <div class="contributor">
+                <div class="p-ContestProposals__list__element--contributor ${contestCompleted ? 'completed' : ''}
+                        ${showJudgingStatus ? 'judgeActions' : ''}">
                     <portlet:renderURL var="sortURL">
                         <portlet:param name="contestYear" value="${contest.contestYear }" />
                         <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -171,8 +177,8 @@
                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
                 </div>
             </c:if>
-            <c:if test="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
-                <div class="judgefellow">
+            <c:if test="${not contestCompleted and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
+                <div class="p-ContestProposals__list__element--judgeFellow ${contestCompleted ? 'completed' : ''}">
                     Advancing Status<br />
 
                     <!-- Sorting by Fellows -->
