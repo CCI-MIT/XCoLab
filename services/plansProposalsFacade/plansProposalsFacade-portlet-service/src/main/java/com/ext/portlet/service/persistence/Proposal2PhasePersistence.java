@@ -137,7 +137,8 @@ public interface Proposal2PhasePersistence extends BasePersistence<Proposal2Phas
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.Proposal2Phase[] findByProposalId_PrevAndNext(
-        Proposal2PhasePK proposal2PhasePK, long proposalId,
+        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK,
+        long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposal2PhaseException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -275,7 +276,8 @@ public interface Proposal2PhasePersistence extends BasePersistence<Proposal2Phas
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.Proposal2Phase[] findByContestPhaseId_PrevAndNext(
-        Proposal2PhasePK proposal2PhasePK, long contestPhaseId,
+        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK,
+        long contestPhaseId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposal2PhaseException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -321,7 +323,7 @@ public interface Proposal2PhasePersistence extends BasePersistence<Proposal2Phas
     * @return the new proposal2 phase
     */
     public com.ext.portlet.model.Proposal2Phase create(
-        Proposal2PhasePK proposal2PhasePK);
+        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK);
 
     /**
     * Removes the proposal2 phase with the primary key from the database. Also notifies the appropriate model listeners.
@@ -332,7 +334,7 @@ public interface Proposal2PhasePersistence extends BasePersistence<Proposal2Phas
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.Proposal2Phase remove(
-        Proposal2PhasePK proposal2PhasePK)
+        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
         throws com.ext.portlet.NoSuchProposal2PhaseException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -349,7 +351,7 @@ public interface Proposal2PhasePersistence extends BasePersistence<Proposal2Phas
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.Proposal2Phase findByPrimaryKey(
-        Proposal2PhasePK proposal2PhasePK)
+        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
         throws com.ext.portlet.NoSuchProposal2PhaseException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -361,7 +363,7 @@ public interface Proposal2PhasePersistence extends BasePersistence<Proposal2Phas
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.Proposal2Phase fetchByPrimaryKey(
-        Proposal2PhasePK proposal2PhasePK)
+        com.ext.portlet.service.persistence.Proposal2PhasePK proposal2PhasePK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

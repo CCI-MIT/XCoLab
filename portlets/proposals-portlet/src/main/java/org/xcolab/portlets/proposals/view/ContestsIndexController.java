@@ -67,6 +67,13 @@ public class ContestsIndexController extends BaseProposalsController {
 
         ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
         ContestType contestType = preferences.getContestType();
+
+        if (contestType.getSuggestionContestId() > 0) {
+            Contest c = ContestLocalServiceUtil.getContest(contestType.getSuggestionContestId());
+            String link = ContestLocalServiceUtil.getContestLinkUrl(c);
+            model.addAttribute("suggestionContestLink", link);
+        }
+
         if (viewType == null) {
             // view type wasn't set
             final Cookie[] cookies = request.getCookies(); //null if cookies are disabled
@@ -92,6 +99,8 @@ public class ContestsIndexController extends BaseProposalsController {
         List<ContestWrapper> contests = new ArrayList<>();
         List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContestsByContestType(contestType.getId()) :
         	ContestLocalServiceUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId());
+        List<Contest> priorContests = ContestLocalServiceUtil.getContestsByActivePrivateType(false, false,
+                contestType.getId());
 
         if (contestsToWrap.size() == 1) {
             final Contest contest = contestsToWrap.get(0);
@@ -111,6 +120,7 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         model.addAttribute("contests", contests);
+        model.addAttribute("priorContestsExist", priorContests.size() > 0 ? true : false);
         model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
                 showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
         model.addAttribute("viewType", viewType);

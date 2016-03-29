@@ -1,6 +1,7 @@
-package org.xcolab.portlets.search;
+package org.xcolab.portlets.search.paging;
 
 import org.apache.commons.lang3.StringUtils;
+import org.xcolab.portlets.search.SearchBean;
 
 /**
  * Created by johannes on 12/14/15.
@@ -17,10 +18,6 @@ public class PageLinkWrapper {
         this.page = page;
         this.searchPhrase = searchPhrase;
         this.searchLocation = searchLocation;
-    }
-
-    public PageLinkWrapper(String searchPhrase, String searchLocation) {
-        this ("", 1, searchPhrase, searchLocation);
     }
 
     public String getLinkText() {
@@ -43,12 +40,12 @@ public class PageLinkWrapper {
     }
 
     public String getLinkUrl() {
-        String url = "/web/guest/search/-/search/for/"+searchPhrase;
+        String url = "/web/guest/search/-/search/for/" + searchPhrase;
         if (!StringUtils.isEmpty(searchLocation)) {
-            url += "/in/"+searchLocation;
+            url += "/in/" + searchLocation;
         }
         if (page > 1) {
-            url += "/page/"+page;
+            url += "/page/" + page;
         }
         return url;
     }

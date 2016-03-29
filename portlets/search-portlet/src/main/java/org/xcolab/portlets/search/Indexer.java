@@ -1,16 +1,16 @@
 /**
  * Copyright (c) 2000-2009 Liferay, Inc. All rights reserved.
- *
+ * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p/>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p/>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,14 +21,6 @@
  */
 
 package org.xcolab.portlets.search;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.portlet.PortletURL;
 
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -68,6 +60,13 @@ import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalArticleConstants;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 
+import javax.portlet.PortletURL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 /**
  * <a href="Indexer.java.html"><b><i>View Source</i></b></a>
  *
@@ -79,266 +78,65 @@ import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
  */
 public class Indexer implements com.liferay.portal.kernel.search.Indexer {
 
-	public static final String PORTLET_ID = PortletKeys.JOURNAL;
-    private static Log _log = LogFactoryUtil.getLog(Indexer.class);
+    private static final Log _log = LogFactoryUtil.getLog(Indexer.class);
 
-	public static void addArticle(
-			long companyId, long groupId, String articleId, double version,
-			String title, String description, String content, String type,
-			Date displayDate, String[] tagsCategories, String[] tagsEntries,
-			ExpandoBridge expandoBridge)
-		throws SearchException {
+    private static final String[] _CLASS_NAMES = {
+            JournalArticle.class.getName(),
+            JournalArticle.class.getName() + ".index"
+    };
+    public static final String PORTLET_ID = PortletKeys.JOURNAL;
 
-		Document doc = getArticleDocument(
-			companyId, groupId, articleId, version, title, description, content,
-			type, displayDate, tagsCategories, tagsEntries, expandoBridge);
+    public static void addArticle(
+            long companyId, long groupId, String articleId, double version,
+            String title, String description, String content, String type,
+            Date displayDate, String[] tagsCategories, String[] tagsEntries,
+            ExpandoBridge expandoBridge)
+            throws SearchException {
 
-		SearchEngineUtil.addDocument(companyId, doc);
-	}
+        Document doc = getArticleDocument(
+                companyId, groupId, articleId, version, title, description, content,
+                type, displayDate, tagsCategories, tagsEntries, expandoBridge);
 
-	public static void deleteArticle(long companyId, String articleId)
-		throws SearchException {
-
-		SearchEngineUtil.deleteDocument(companyId, getArticleUID(articleId));
-		SearchEngineUtil.deleteDocument(companyId, getArticleUID(articleId, true));
-	}
-
-	public static Document getArticleDocument(
-		long companyId, long groupId, String articleId, double version,
-		String title, String description, String content, String type,
-		Date displayDate, String[] tagsCategories, String[] tagsEntries,
-		ExpandoBridge expandoBridge) {
-
-		if ((content != null) &&
-			((content.indexOf("<dynamic-content") != -1) ||
-			 (content.indexOf("<static-content") != -1))) {
-
-			content = _getIndexableContent(content);
-
-			content = StringUtil.replace(
-				content, "<![CDATA[", StringPool.BLANK);
-			content = StringUtil.replace(content, "]]>", StringPool.BLANK);
-		}
-
-		content = StringUtil.replace(content, "&amp;", "&");
-		content = StringUtil.replace(content, "&lt;", "<");
-		content = StringUtil.replace(content, "&gt;", ">");
-
-		content = HtmlUtil.extractText(content);
-		
-		Document doc = new DocumentImpl();
-
-		// check if this is an most recent version of an article
-		JournalArticle article;
-		boolean isOld = false;
-		try {
-			article = JournalArticleLocalServiceUtil.getArticle(groupId, articleId);
-			if (article.getVersion() != version) {
-				isOld = true;
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			// ignore
-		} 
-				
-				
-		if (isOld) {
-			doc.addUID(PORTLET_ID, articleId, "old");
-		}
-		else {
-			doc.addUID(PORTLET_ID, articleId);
-		}
-
-		doc.addModifiedDate(displayDate);
-
-		doc.addKeyword(Field.COMPANY_ID, companyId);
-		doc.addKeyword(Field.PORTLET_ID, PORTLET_ID);
-		doc.addKeyword(Field.GROUP_ID, groupId);
-
-		doc.addText(Field.TITLE, title);
-		doc.addText(Field.CONTENT, content);
-		doc.addText(Field.DESCRIPTION, description);
-
-		doc.addKeyword(Field.ENTRY_CLASS_PK, articleId);
-		doc.addKeyword(Field.VERSION, version);
-		doc.addKeyword(Field.TYPE, type);
-		
-
-		ExpandoBridgeIndexerUtil.addAttributes(doc, expandoBridge);
-		
-		try {
-			Layout pageLayout = getLayoutForContent(articleId);
-			
-			if (pageLayout != null) {
-				Layout tmp = pageLayout;
-				boolean isAbout = false;
-				while (tmp != null && !isAbout) {
-					if (tmp.getFriendlyURL().toLowerCase().contains("/about") || tmp.getFriendlyURL().toLowerCase().contains("/contests")) {
-						isAbout = true;
-					}
-					if (tmp.getParentLayoutId() > 0) {
-						try {
-							tmp = LayoutLocalServiceUtil.getLayout(tmp.getGroupId(), tmp.getPrivateLayout(), tmp.getParentLayoutId());
-							
-						}
-						catch (com.liferay.portal.NoSuchLayoutException e) {
-							tmp = null;
-						} catch (PortalException e) {
-							tmp = null;
-						}
-					}
-					else {
-						tmp = null;
-					}
-				}
-				
-				if (isAbout) {
-					doc.addKeyword("PAGE_URL", pageLayout.getFriendlyURL());
-					doc.addKeyword(Field.ENTRY_CLASS_NAME, JournalArticle.class.getName() + ".index");
-				}
-			}
-			else {
-				doc.addKeyword(Field.ENTRY_CLASS_NAME, JournalArticle.class.getName());
-			}
-		} catch (SystemException e) {
-			doc.addKeyword(Field.ENTRY_CLASS_NAME, JournalArticle.class.getName());
-			e.printStackTrace();
-		}
-		return doc;
-	}
-
-	public static String getArticleUID(String articleId) {
-		return getArticleUID(articleId, false);
-	}
-	
-	public static String getArticleUID(String articleId, boolean isOld) {
-		Document doc = new DocumentImpl();
-
-		if (isOld) {
-			doc.addUID(PORTLET_ID, articleId, "old");
-		}
-		else {
-			doc.addUID(PORTLET_ID, articleId);
-		}
-
-		return doc.get(Field.UID);
-	}
-
-
-	public String[] getClassNames() {
-		return _CLASS_NAMES;
-	}
-
-	private static String _getIndexableContent(String content) {
-		try {
-			StringBuilder sb = new StringBuilder();
-
-			com.liferay.portal.kernel.xml.Document doc = SAXReaderUtil.read(
-				content);
-
-			Element root = doc.getRootElement();
-
-			_getIndexableContent(sb, root);
-
-			return sb.toString();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-
-			return content;
-		}
-	}
-
-	private static void _getIndexableContent(StringBuilder sb, Element root)
-		throws Exception {
-
-		for (Element el : root.elements()) {
-			String elType = el.attributeValue("type", StringPool.BLANK);
-
-			if (elType.equals("text") || elType.equals("text_box") ||
-				elType.equals("text_area")) {
-
-				for (Element dynamicContent : el.elements("dynamic-content")) {
-					String text = dynamicContent.getText();
-
-					sb.append(text);
-					sb.append(StringPool.SPACE);
-				}
-			}
-			else if (el.getName().equals("static-content")) {
-				String text = el.getText();
-
-				sb.append(text);
-				sb.append(StringPool.SPACE);
-			}
-
-			_getIndexableContent(sb, el);
-		}
-	}
-
-	private static final String[] _CLASS_NAMES = new String[] {
-		JournalArticle.class.getName(),
-		JournalArticle.class.getName() + ".index"
-	};
-	
-	private static Layout getLayoutForContent(String articleId) throws SystemException {
-		DynamicQuery layoutQuery = DynamicQueryFactoryUtil.forClass(Layout.class, PortalClassLoaderUtil.getClassLoader());
-		
-		DynamicQuery preferencesQuery = DynamicQueryFactoryUtil.forClass(PortletPreferences.class, PortalClassLoaderUtil.getClassLoader());
-		
-		preferencesQuery.add(RestrictionsFactoryUtil.like("portletId", "56_INSTANCE%"));  
-		preferencesQuery.add(RestrictionsFactoryUtil.like("preferences", "%<name>articleId</name><value>" + articleId + "</value>%"));  
-		preferencesQuery.setProjection(ProjectionFactoryUtil.property("plid"));  
-		
-		layoutQuery.add(PropertyFactoryUtil.forName("plid").in(preferencesQuery));  
-		
-		//List result = PortletPreferencesLocalServiceUtil.dynamicQuery(preferencesQuery);
-		
-		List result = LayoutLocalServiceUtil.dynamicQuery(layoutQuery);
-		
-		if (result.size() > 0) {
-			Layout layout = (Layout) result.get(0);
-			return layout;
-		}
-		return null;
-	}
-
-    @Override
-    public void delete(long companyId, String uid) throws SearchException {
-        // TODO Auto-generated method stub
-        
+        SearchEngineUtil.addDocument(companyId, doc);
     }
 
-    @Override
-    public void delete(Object obj) throws SearchException {
-        // TODO Auto-generated method stub
-        
+    public static void deleteArticle(long companyId, String articleId)
+            throws SearchException {
+
+        SearchEngineUtil.deleteDocument(companyId, getArticleUID(articleId));
+        SearchEngineUtil.deleteDocument(companyId, getArticleUID(articleId, true));
     }
 
-    @Override
-    public Document getDocument(Object obj) throws SearchException {
-        JournalArticle article = (JournalArticle) obj;
-        
-        String articleId = article.getArticleId();
-        long groupId = article.getGroupId();
-        long companyId = article.getCompanyId();
-        double version = article.getVersion();
-        
-        String content = article.getContent();
-        String title = article.getTitle();
-        Date displayDate = article.getDisplayDate();
-        String description = article.getDescription();
-        String type = article.getType();
-        ExpandoBridge expandoBridge = article.getExpandoBridge();
-        
+    public static String getArticleUID(String articleId) {
+        return getArticleUID(articleId, false);
+    }
+
+    public static String getArticleUID(String articleId, boolean isOld) {
+        Document doc = new DocumentImpl();
+
+        if (isOld) {
+            doc.addUID(PORTLET_ID, articleId, "old");
+        } else {
+            doc.addUID(PORTLET_ID, articleId);
+        }
+
+        return doc.get(Field.UID);
+    }
+
+    public static Document getArticleDocument(
+            long companyId, long groupId, String articleId, double version,
+            String title, String description, String content, String type,
+            Date displayDate, String[] tagsCategories, String[] tagsEntries,
+            ExpandoBridge expandoBridge) {
+
         if ((content != null) &&
-            ((content.indexOf("<dynamic-content") != -1) ||
-             (content.indexOf("<static-content") != -1))) {
+                ((content.contains("<dynamic-content")) ||
+                        (content.contains("<static-content")))) {
 
             content = _getIndexableContent(content);
 
             content = StringUtil.replace(
-                content, "<![CDATA[", StringPool.BLANK);
+                    content, "<![CDATA[", StringPool.BLANK);
             content = StringUtil.replace(content, "]]>", StringPool.BLANK);
         }
 
@@ -347,26 +145,26 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         content = StringUtil.replace(content, "&gt;", ">");
 
         content = HtmlUtil.extractText(content);
-        
+
         Document doc = new DocumentImpl();
 
         // check if this is an most recent version of an article
+        JournalArticle article;
         boolean isOld = false;
         try {
-            JournalArticle tmpArticle = JournalArticleLocalServiceUtil.getArticle(groupId, String.valueOf(articleId));
+            article = JournalArticleLocalServiceUtil.getArticle(groupId, articleId);
             if (article.getVersion() != version) {
                 isOld = true;
             }
         } catch (Exception e1) {
             e1.printStackTrace();
             // ignore
-        } 
-                
-                
+        }
+
+
         if (isOld) {
             doc.addUID(PORTLET_ID, articleId, "old");
-        }
-        else {
+        } else {
             doc.addUID(PORTLET_ID, articleId);
         }
 
@@ -383,42 +181,234 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         doc.addKeyword(Field.ENTRY_CLASS_PK, articleId);
         doc.addKeyword(Field.VERSION, version);
         doc.addKeyword(Field.TYPE, type);
-        
+
 
         ExpandoBridgeIndexerUtil.addAttributes(doc, expandoBridge);
-        
+
         try {
             Layout pageLayout = getLayoutForContent(articleId);
-            
+
             if (pageLayout != null) {
                 Layout tmp = pageLayout;
                 boolean isAbout = false;
                 while (tmp != null && !isAbout) {
-                    if (tmp.getFriendlyURL().toLowerCase().contains("/about") || tmp.getFriendlyURL().toLowerCase().contains("/contests")) {
+                    if (tmp.getFriendlyURL().toLowerCase().contains("/about") || tmp.getFriendlyURL().toLowerCase()
+                            .contains("/contests")) {
                         isAbout = true;
                     }
                     if (tmp.getParentLayoutId() > 0) {
                         try {
-                            tmp = LayoutLocalServiceUtil.getLayout(tmp.getGroupId(), tmp.getPrivateLayout(), tmp.getParentLayoutId());
-                            
-                        }
-                        catch (com.liferay.portal.NoSuchLayoutException e) {
-                            tmp = null;
+                            tmp = LayoutLocalServiceUtil
+                                    .getLayout(tmp.getGroupId(), tmp.getPrivateLayout(), tmp.getParentLayoutId());
+
                         } catch (PortalException e) {
                             tmp = null;
                         }
-                    }
-                    else {
+                    } else {
                         tmp = null;
                     }
                 }
-                
+
                 if (isAbout) {
                     doc.addKeyword("PAGE_URL", pageLayout.getFriendlyURL());
                     doc.addKeyword(Field.ENTRY_CLASS_NAME, JournalArticle.class.getName() + ".index");
                 }
+            } else {
+                doc.addKeyword(Field.ENTRY_CLASS_NAME, JournalArticle.class.getName());
             }
-            else {
+        } catch (SystemException e) {
+            doc.addKeyword(Field.ENTRY_CLASS_NAME, JournalArticle.class.getName());
+            e.printStackTrace();
+        }
+        return doc;
+    }
+
+    private static String _getIndexableContent(String content) {
+        try {
+            StringBuilder sb = new StringBuilder();
+
+            com.liferay.portal.kernel.xml.Document doc = SAXReaderUtil.read(
+                    content);
+
+            Element root = doc.getRootElement();
+
+            _getIndexableContent(sb, root);
+
+            return sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return content;
+        }
+    }
+
+    private static void _getIndexableContent(StringBuilder sb, Element root)
+            throws Exception {
+
+        for (Element el : root.elements()) {
+            String elType = el.attributeValue("type", StringPool.BLANK);
+
+            if (elType.equals("text") || elType.equals("text_box") ||
+                    elType.equals("text_area")) {
+
+                for (Element dynamicContent : el.elements("dynamic-content")) {
+                    String text = dynamicContent.getText();
+
+                    sb.append(text);
+                    sb.append(StringPool.SPACE);
+                }
+            } else if (el.getName().equals("static-content")) {
+                String text = el.getText();
+
+                sb.append(text);
+                sb.append(StringPool.SPACE);
+            }
+
+            _getIndexableContent(sb, el);
+        }
+    }
+
+    private static Layout getLayoutForContent(String articleId) throws SystemException {
+        DynamicQuery layoutQuery =
+                DynamicQueryFactoryUtil.forClass(Layout.class, PortalClassLoaderUtil.getClassLoader());
+
+        DynamicQuery preferencesQuery =
+                DynamicQueryFactoryUtil.forClass(PortletPreferences.class, PortalClassLoaderUtil.getClassLoader());
+
+        preferencesQuery.add(RestrictionsFactoryUtil.like("portletId", "56_INSTANCE%"));
+        preferencesQuery.add(RestrictionsFactoryUtil
+                .like("preferences", "%<name>articleId</name><value>" + articleId + "</value>%"));
+        preferencesQuery.setProjection(ProjectionFactoryUtil.property("plid"));
+
+        layoutQuery.add(PropertyFactoryUtil.forName("plid").in(preferencesQuery));
+
+        //List result = PortletPreferencesLocalServiceUtil.dynamicQuery(preferencesQuery);
+
+        List result = LayoutLocalServiceUtil.dynamicQuery(layoutQuery);
+
+        if (!result.isEmpty()) {
+            return (Layout) result.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public String[] getClassNames() {
+        return _CLASS_NAMES;
+    }
+
+    @Override
+    public void delete(long companyId, String uid) throws SearchException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void delete(Object obj) throws SearchException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public Document getDocument(Object obj) throws SearchException {
+        JournalArticle article = (JournalArticle) obj;
+
+        String articleId = article.getArticleId();
+        long groupId = article.getGroupId();
+        long companyId = article.getCompanyId();
+        double version = article.getVersion();
+
+        String content = article.getContent();
+        String title = article.getTitle();
+        Date displayDate = article.getDisplayDate();
+        String description = article.getDescription();
+        String type = article.getType();
+        ExpandoBridge expandoBridge = article.getExpandoBridge();
+
+        if ((content != null) &&
+                ((content.contains("<dynamic-content")) ||
+                        (content.contains("<static-content")))) {
+
+            content = _getIndexableContent(content);
+
+            content = StringUtil.replace(
+                    content, "<![CDATA[", StringPool.BLANK);
+            content = StringUtil.replace(content, "]]>", StringPool.BLANK);
+        }
+
+        content = StringUtil.replace(content, "&amp;", "&");
+        content = StringUtil.replace(content, "&lt;", "<");
+        content = StringUtil.replace(content, "&gt;", ">");
+
+        content = HtmlUtil.extractText(content);
+
+        Document doc = new DocumentImpl();
+
+        // check if this is an most recent version of an article
+        boolean isOld = false;
+        try {
+            JournalArticle tmpArticle = JournalArticleLocalServiceUtil.getArticle(groupId, String.valueOf(articleId));
+            if (article.getVersion() != version) {
+                isOld = true;
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            // ignore
+        }
+
+
+        if (isOld) {
+            doc.addUID(PORTLET_ID, articleId, "old");
+        } else {
+            doc.addUID(PORTLET_ID, articleId);
+        }
+
+        doc.addModifiedDate(displayDate);
+
+        doc.addKeyword(Field.COMPANY_ID, companyId);
+        doc.addKeyword(Field.PORTLET_ID, PORTLET_ID);
+        doc.addKeyword(Field.GROUP_ID, groupId);
+
+        doc.addText(Field.TITLE, title);
+        doc.addText(Field.CONTENT, content);
+        doc.addText(Field.DESCRIPTION, description);
+
+        doc.addKeyword(Field.ENTRY_CLASS_PK, articleId);
+        doc.addKeyword(Field.VERSION, version);
+        doc.addKeyword(Field.TYPE, type);
+
+
+        ExpandoBridgeIndexerUtil.addAttributes(doc, expandoBridge);
+
+        try {
+            Layout pageLayout = getLayoutForContent(articleId);
+
+            if (pageLayout != null) {
+                Layout tmp = pageLayout;
+                boolean isAbout = false;
+                while (tmp != null && !isAbout) {
+                    if (tmp.getFriendlyURL().toLowerCase().contains("/about") || tmp.getFriendlyURL().toLowerCase()
+                            .contains("/contests")) {
+                        isAbout = true;
+                    }
+                    if (tmp.getParentLayoutId() > 0) {
+                        try {
+                            tmp = LayoutLocalServiceUtil
+                                    .getLayout(tmp.getGroupId(), tmp.getPrivateLayout(), tmp.getParentLayoutId());
+
+                        } catch (PortalException e) {
+                            tmp = null;
+                        }
+                    } else {
+                        tmp = null;
+                    }
+                }
+
+                if (isAbout) {
+                    doc.addKeyword("PAGE_URL", pageLayout.getFriendlyURL());
+                    doc.addKeyword(Field.ENTRY_CLASS_NAME, JournalArticle.class.getName() + ".index");
+                }
+            } else {
                 doc.addKeyword(Field.ENTRY_CLASS_NAME, JournalArticle.class.getName());
             }
         } catch (SystemException e) {
@@ -458,7 +448,6 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
     }
 
 
-
     @Override
     public String getSortField(String orderByCol) {
         // TODO Auto-generated method stub
@@ -489,75 +478,72 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         return false;
     }
 
-	@Override
-	public boolean isVisible(long l, int i) throws Exception {
-		return true;
-	}
+    @Override
+    public boolean isVisible(long l, int i) throws Exception {
+        return true;
+    }
 
-	@Override
-	public boolean isVisibleRelatedEntry(long l, int i) throws Exception {
-		return true;
-	}
+    @Override
+    public boolean isVisibleRelatedEntry(long l, int i) throws Exception {
+        return true;
+    }
 
-	@Override
+    @Override
     public void postProcessContextQuery(BooleanQuery contextQuery, SearchContext searchContext) throws Exception {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void postProcessSearchQuery(BooleanQuery searchQuery, SearchContext searchContext) throws Exception {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void registerIndexerPostProcessor(IndexerPostProcessor indexerPostProcessor) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void reindex(Object obj) throws SearchException {
 
-        JournalArticle article = (JournalArticle)obj;
+        JournalArticle article = (JournalArticle) obj;
 
         Document document = getDocument(article);
 
         if (!article.isIndexable() ||
-            (!article.isApproved() &&
-             (article.getVersion() !=
-                  JournalArticleConstants.VERSION_DEFAULT))) {
+                (!article.isApproved() &&
+                        (article.getVersion() !=
+                                JournalArticleConstants.VERSION_DEFAULT))) {
 
             SearchEngineUtil.deleteDocument(
-                getSearchEngineId(), article.getCompanyId(),
-                document.get(Field.UID));
+                    getSearchEngineId(), article.getCompanyId(),
+                    document.get(Field.UID));
 
             return;
         }
 
         SearchEngineUtil.deleteDocument(
-            getSearchEngineId(), article.getCompanyId(), document.getUID());
+                getSearchEngineId(), article.getCompanyId(), document.getUID());
         SearchEngineUtil.updateDocument(
-            getSearchEngineId(), article.getCompanyId(), document);
-        
+                getSearchEngineId(), article.getCompanyId(), document);
+
     }
 
     @Override
     public void reindex(String className, long classPK) throws SearchException {
 
-        JournalArticle article;
         try {
-            article = JournalArticleLocalServiceUtil.getLatestArticle(
-                classPK, WorkflowConstants.STATUS_APPROVED);
+            JournalArticle article = JournalArticleLocalServiceUtil.getLatestArticle(
+                    classPK, WorkflowConstants.STATUS_APPROVED);
 
             reindex(article);
-        } catch (PortalException e) {
-            throw new SearchException(e);
-        } catch (SystemException e) {
+        } catch (PortalException | SystemException e) {
             throw new SearchException(e);
         }
-        
+
     }
 
     @Override
@@ -565,7 +551,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         long companyId = GetterUtil.getLong(ids[0]);
         List<JournalArticle> articles = null;
         try {
-            articles = JournalArticleLocalServiceUtil.getJournalArticles(0,  Integer.MAX_VALUE);
+            articles = JournalArticleLocalServiceUtil.getJournalArticles(0, Integer.MAX_VALUE);
         } catch (SystemException e) {
             _log.error("Can't reindex plans", e);
             throw new SearchException("Can't reindex plans", e);
@@ -576,7 +562,8 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
                 Document document = getDocument(article);
                 documents.add(document);
             } catch (SearchException e) {
-                _log.error("An exception has been thrown when reindexing article with id: " + article.getArticleId(), e);
+                _log.error("An exception has been thrown when reindexing article with id: " + article.getArticleId(),
+                        e);
             }
 
         }
@@ -592,35 +579,35 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
     @Override
     public void unregisterIndexerPostProcessor(IndexerPostProcessor indexerPostProcessor) {
         // TODO Auto-generated method stub
-        
+
     }
 
-	@Override
-	public void addRelatedEntryFields(Document document, Object obj)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void addRelatedEntryFields(Document document, Object obj)
+            throws Exception {
+        // TODO Auto-generated method stub
 
-	@Override
-	public String getSortField(String orderByCol, int sortType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    }
 
-	@Override
-	public boolean hasPermission(PermissionChecker permissionChecker,
-			String entryClassName, long entryClassPK, String actionId)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public String getSortField(String orderByCol, int sortType) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public void reindexDDMStructures(List<Long> ddmStructureIds)
-			throws SearchException {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public boolean hasPermission(PermissionChecker permissionChecker,
+            String entryClassName, long entryClassPK, String actionId)
+            throws Exception {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void reindexDDMStructures(List<Long> ddmStructureIds)
+            throws SearchException {
+        // TODO Auto-generated method stub
+
+    }
 
 }

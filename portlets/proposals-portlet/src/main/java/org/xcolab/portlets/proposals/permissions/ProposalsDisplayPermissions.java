@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.MembershipRequestConstants;
 import com.liferay.portal.model.User;
+import org.xcolab.enums.MembershipRequestStatus;
 
 /**
  * Created by johannes on 9/30/15.
@@ -88,7 +89,8 @@ public class ProposalsDisplayPermissions {
 
     public boolean getUserHasOpenMembershipRequest() throws PortalException, SystemException {
         for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())){
-            if (mr.getUserId() == user.getUserId() && mr.getStatusId() == MembershipRequestConstants.STATUS_PENDING) {
+            if (mr.getUserId() == user.getUserId() && ((mr.getStatusId() == MembershipRequestConstants.STATUS_PENDING)
+                    ||mr.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED)) {
                 return true;
             }
         }

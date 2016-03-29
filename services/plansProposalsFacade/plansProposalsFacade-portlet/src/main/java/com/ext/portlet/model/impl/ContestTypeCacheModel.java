@@ -31,10 +31,11 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
     public String friendlyUrlStringProposal;
     public String menuItemName;
     public boolean hasDiscussion;
+    public long suggestionContestId;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("{id=");
         sb.append(id);
@@ -58,6 +59,8 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         sb.append(menuItemName);
         sb.append(", hasDiscussion=");
         sb.append(hasDiscussion);
+        sb.append(", suggestionContestId=");
+        sb.append(suggestionContestId);
         sb.append("}");
 
         return sb.toString();
@@ -124,6 +127,7 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         }
 
         contestTypeImpl.setHasDiscussion(hasDiscussion);
+        contestTypeImpl.setSuggestionContestId(suggestionContestId);
 
         contestTypeImpl.resetOriginalValues();
 
@@ -143,6 +147,7 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         friendlyUrlStringProposal = objectInput.readUTF();
         menuItemName = objectInput.readUTF();
         hasDiscussion = objectInput.readBoolean();
+        suggestionContestId = objectInput.readLong();
     }
 
     @Override
@@ -205,5 +210,6 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         }
 
         objectOutput.writeBoolean(hasDiscussion);
+        objectOutput.writeLong(suggestionContestId);
     }
 }

@@ -752,6 +752,42 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
+    * <p>Sends a request to join proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId     user id
+    * @param comment    optional comment
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    @Override
+    public com.liferay.portal.model.MembershipRequest addRequestedMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.addRequestedMembershipRequest(proposalId,
+            userId, comment);
+    }
+
+    /**
+    * <p>Sends a request to join proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId     user id
+    * @param comment    optional comment
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    @Override
+    public com.liferay.portal.model.MembershipRequest addInvitedMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalLocalService.addInvitedMembershipRequest(proposalId,
+            userId, comment);
+    }
+
+    /**
     * <p>Remove a user from a proposal team</p>
     *
     * @param proposalId proposal id

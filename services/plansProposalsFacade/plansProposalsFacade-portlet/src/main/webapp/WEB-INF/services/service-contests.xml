@@ -166,6 +166,7 @@
         <column name="friendlyUrlStringProposal" type="String" />
         <column name="menuItemName" type="String"/>
         <column name="hasDiscussion" type="boolean" />
+        <column name="suggestionContestId" type="long" />
     </entity>
     
     <entity name="ContestDebate" local-service="true">

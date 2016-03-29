@@ -232,7 +232,8 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.FocusAreaOntologyTerm[] findByFocusAreaId_PrevAndNext(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK, long focusAreaId,
+        com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK,
+        long focusAreaId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchFocusAreaOntologyTermException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -291,7 +292,7 @@ public class FocusAreaOntologyTermUtil {
     * @return the new focus area ontology term
     */
     public static com.ext.portlet.model.FocusAreaOntologyTerm create(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK) {
+        com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK) {
         return getPersistence().create(focusAreaOntologyTermPK);
     }
 
@@ -304,7 +305,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.FocusAreaOntologyTerm remove(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
+        com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK)
         throws com.ext.portlet.NoSuchFocusAreaOntologyTermException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().remove(focusAreaOntologyTermPK);
@@ -325,7 +326,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.FocusAreaOntologyTerm findByPrimaryKey(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
+        com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK)
         throws com.ext.portlet.NoSuchFocusAreaOntologyTermException,
             com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().findByPrimaryKey(focusAreaOntologyTermPK);
@@ -339,7 +340,7 @@ public class FocusAreaOntologyTermUtil {
     * @throws SystemException if a system exception occurred
     */
     public static com.ext.portlet.model.FocusAreaOntologyTerm fetchByPrimaryKey(
-        FocusAreaOntologyTermPK focusAreaOntologyTermPK)
+        com.ext.portlet.service.persistence.FocusAreaOntologyTermPK focusAreaOntologyTermPK)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getPersistence().fetchByPrimaryKey(focusAreaOntologyTermPK);
     }

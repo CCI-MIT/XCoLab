@@ -655,6 +655,34 @@ public interface ProposalLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * <p>Sends a request to join proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId     user id
+    * @param comment    optional comment
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public com.liferay.portal.model.MembershipRequest addRequestedMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * <p>Sends a request to join proposal team</p>
+    *
+    * @param proposalId proposal id
+    * @param userId     user id
+    * @param comment    optional comment
+    * @throws PortalException in case of LR error
+    * @throws SystemException in case of LR error
+    */
+    public com.liferay.portal.model.MembershipRequest addInvitedMembershipRequest(
+        long proposalId, long userId, java.lang.String comment)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * <p>Remove a user from a proposal team</p>
     *
     * @param proposalId proposal id
