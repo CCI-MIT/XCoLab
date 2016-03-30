@@ -1,4 +1,4 @@
-package org.xcolab.domain;
+package org.xcolab.domain.member;
 
 
 import org.xcolab.model.tables.pojos.User_;
@@ -34,4 +34,8 @@ public interface MemberDao {
      public Integer countMembersFilteredByCategory(String filter, String roleName);
 
      public Integer countMembers(String filter);
+
+     public Integer getMemberMaterializedPoints(Long memberId);
+
+     public Integer getMemberActivityCount(Long memberId);
 }

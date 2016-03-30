@@ -1,13 +1,12 @@
 package org.xcolab.portlets.users.utils;
 
-import com.ext.portlet.service.PointsLocalServiceUtil;
-import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.enums.MemberRole;
+
+import org.xcolab.legacy.enums.MemberRole;
+import org.xcolab.pojo.Role_;
 import org.xcolab.pojo.User_;
+import org.xcolab.service.client.MembersClient;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -25,10 +24,10 @@ public class MemberItem implements Serializable {
     public MemberItem(User_ user, String memberCategoryParam) throws PortalException, SystemException {
 
         userId = user.getUserId();
-        activityCount = Xcolab_UserLocalServiceUtil.getUserActivityCount(userId);
+        activityCount = MembersClient.getMemberActivityCount(userId);
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();
-        points = PointsLocalServiceUtil.getUserMaterializedPoints(userId);
+        points = MembersClient.getMemberMaterializedPoints(userId);
 
         if (memberCategoryParam != null && memberCategoryParam.compareTo("") != 0) {
             switch (memberCategoryParam){
@@ -61,8 +60,11 @@ public class MemberItem implements Serializable {
                     memberRole = MemberRole.STAFF;
             }
         } else {
-            List<Role> roles = UserLocalServiceUtil.getUser(userId).getRoles();
-            memberRole = MemberRole.getHighestRole(roles);
+            List<Role_> roles = MembersClient.getMemberRoles(userId);
+            try {
+                memberRole = MemberRole.getHighestRole(roles);
+            } catch (MemberRole.NoSuchMemberRoleException ignored) {
+            }
         }
     }
 

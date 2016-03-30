@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.ConfigurationAttributeKey;
-import org.xcolab.enums.MemberRole;
+import org.xcolab.legacy.enums.MemberRole;
 import org.xcolab.pojo.User_;
 import org.xcolab.portlets.users.utils.MemberItem;
 import org.xcolab.service.client.MembersClient;
@@ -29,7 +29,8 @@ public class MembersController {
     @RequestMapping
     public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage,
                             @RequestParam(value = "page", required = false) Long pageParam,
-                            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam, Model model)
+                            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam,
+                            Model model)
             throws SystemException, PortalException {
         int page = 1;
         if (pageParam != null) {
@@ -100,8 +101,10 @@ public class MembersController {
         model.addAttribute("memberCategories", MemberCategoryLocalServiceUtil
                 .getVisibleMemberCategories());
 
-        model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
-        model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
+        model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.
+                getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
+        model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.
+                getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
         return "users";
     }
 }

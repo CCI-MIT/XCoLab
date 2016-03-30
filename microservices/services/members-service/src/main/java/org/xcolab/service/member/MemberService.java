@@ -1,8 +1,8 @@
-package org.xcolab.service;
+package org.xcolab.service.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xcolab.domain.MemberDao;
+import org.xcolab.domain.member.MemberDao;
 import org.xcolab.model.tables.pojos.User_;
 
 import java.util.List;
@@ -65,6 +65,14 @@ public class MemberService {
 
     public Integer countMembersFilteredByCategory(String filter, String roleName){
         return this.memberDao.countMembersFilteredByCategory(filter, roleName);
+    }
+
+    public Integer getMemberMaterializedPoints(Long memberId){
+        return this.memberDao.getMemberMaterializedPoints(memberId);
+    }
+
+    public Integer getMemberActivityCount(Long memberId){
+        return this.memberDao.getMemberActivityCount(memberId);
     }
 
 }

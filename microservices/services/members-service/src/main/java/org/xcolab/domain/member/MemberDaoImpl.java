@@ -1,4 +1,4 @@
-package org.xcolab.domain;
+package org.xcolab.domain.member;
 
 
 
@@ -14,6 +14,7 @@ import org.xcolab.model.tables.records.User_Record;
 
 import java.util.List;
 
+import static org.jooq.impl.DSL.countDistinct;
 import static org.jooq.impl.DSL.max;
 import static org.jooq.impl.DSL.sum;
 import static org.xcolab.model.Tables.POINTS;
@@ -78,7 +79,7 @@ public class MemberDaoImpl implements MemberDao{
 
         org.xcolab.model.tables.User_ user = USER_.as("user");
         return this.dslContext.
-                select(user.fields())
+                selectDistinct(user.fields())
                 .from(user)
                 .join(originalRoleSelect).on(user.USER_ID.eq(userIdOriginalRoleSelect))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ORDINAL.equal(roleOrdinalRoleSelect))
@@ -99,7 +100,7 @@ public class MemberDaoImpl implements MemberDao{
                         .asField("points");
 
         return this.dslContext.
-                select(USER_.fields()).
+                selectDistinct(USER_.fields()).
                 select(points).
                 from(USER_).
                 join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
@@ -116,7 +117,7 @@ public class MemberDaoImpl implements MemberDao{
     private List<User_> listMembersSortByField(int startRecord, int limitRecord, String filter,
                                                  TableField<User_Record, ?> field, boolean isAscOrder) {
             if(filter != null && !filter.isEmpty()) {
-                return this.dslContext.select().
+                return this.dslContext.selectDistinct().
                         from(USER_).
                         join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
                         join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
@@ -128,7 +129,7 @@ public class MemberDaoImpl implements MemberDao{
                         limit(startRecord,limitRecord).fetchInto(User_.class);
 
             }else{
-                return this.dslContext.select().
+                return this.dslContext.selectDistinct().
                         from(USER_).
                         join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
                         join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
@@ -140,7 +141,7 @@ public class MemberDaoImpl implements MemberDao{
 
     public Integer countMembers(String filter){
         if(filter != null && !filter.isEmpty()) {
-            return this.dslContext.selectCount().
+            return this.dslContext.select(countDistinct(USER_.USER_ID)).
                     from(USER_).
                     join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
                     join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
@@ -150,7 +151,7 @@ public class MemberDaoImpl implements MemberDao{
                     and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%")).fetchOne(0, Integer.class);
 
         }else{
-            return this.dslContext.selectCount().
+            return this.dslContext.select(countDistinct(USER_.USER_ID)).
                     from(USER_).
                     join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
                     join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
@@ -160,7 +161,7 @@ public class MemberDaoImpl implements MemberDao{
 
     public Integer countMembersFilteredByCategory(String filter, String roleName){
         if(filter != null && !filter.isEmpty()) {
-            return this.dslContext.selectCount().
+            return this.dslContext.select(countDistinct(USER_.USER_ID)).
                     from(USER_).
                     join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
                     join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
@@ -171,7 +172,7 @@ public class MemberDaoImpl implements MemberDao{
                     fetchOne(0,Integer.class);
 
         }else{
-            return this.dslContext.select().
+            return this.dslContext.select(countDistinct(USER_.USER_ID)).
                     from(USER_).
                     join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
                     join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
@@ -195,7 +196,7 @@ public class MemberDaoImpl implements MemberDao{
     private List<User_> listMembersSortByFieldFilteredByCategory(int startRecord, int limitRecord, String filter,
                                                   TableField<User_Record, ?> field, boolean isAscOrder,String roleName){
         if(filter != null && !filter.isEmpty()) {
-            return this.dslContext.select().
+            return this.dslContext.selectDistinct().
                     from(USER_).
                     join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
                     join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
@@ -207,7 +208,7 @@ public class MemberDaoImpl implements MemberDao{
                     limit(startRecord,limitRecord).fetchInto(User_.class);
 
         }else{
-            return this.dslContext.select().
+            return this.dslContext.selectDistinct().
                     from(USER_).
                     join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
                     join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
@@ -215,5 +216,16 @@ public class MemberDaoImpl implements MemberDao{
                     orderBy((isAscOrder?(field.asc()):(field.desc()))).
                     limit(startRecord,limitRecord).fetchInto(User_.class);
         }
+    }
+    public Integer getMemberMaterializedPoints(Long memberId){
+        return this.dslContext.select(sum(POINTS.HYPOTHETICAL_POINTS)).
+                from(POINTS).where(POINTS.USER_ID.equal(memberId)).fetchOne(0,Integer.class);
+
+    }
+
+    public Integer getMemberActivityCount(Long memberId){
+        return this.dslContext.selectCount().
+                from(SOCIAL_ACTIVITY).where(SOCIAL_ACTIVITY.USER_ID.equal(memberId)).fetchOne(0,Integer.class);
+
     }
 }
