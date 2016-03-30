@@ -1,3 +1,8 @@
+$c-Button__base__padding: 8px !default;
+$c-Button__base__fontWeight: 700 !default;
+$c-Button__base__borderRadius: 5px !default;
+$c-Button__base__capitalization: none !default;
+
 $c-Button__primary__backgroundColor: $t-Color__primary !default;
 $c-Button__primary__borderColor: $t-Color__primary--dark !default;
 
@@ -6,13 +11,14 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
 
 %base-button {
   display: inline-block;
-  padding: 8px;
+  padding: $c-Button__base__padding;
   margin-left: 5px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: $c-Button__base__fontWeight;
   line-height: normal;
-  @include border-radius(5px);
-  @include transition(all 1s ease-in-out);
+  text-transform: $c-Button__base__capitalization;
+
+  @include border-radius($c-Button__base__borderRadius);
 
   &.disabled {
     opacity: 0.4;
@@ -21,19 +27,35 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
 }
 
 @mixin theme-button($button-color, $border-color: null, $image-url: null) {
-  @if $border-color == null {
-    $border-color: darken($button-color, 15%);
-  }
   @extend %base-button;
 
+  @if $border-color == none {
+    @if $image-url == none or $image-url == null {
+      @include background($button-color);
+    } @else {
+      @include background($button-color, $image-url, 40px);
+    }
+  } @else {
+    @include background-gradient($button-color, $image-url, 40px);
+    border: 1px solid $border-color;
+  }
+
   color: contrasting-color($button-color, white, $t-Color__grey--darkest, $t-Text__threshold);
-  @include background-gradient($button-color, $image-url, 40px);
-  text-shadow: 1px 1px 0 darken($button-color, 25%);
-  border: 1px solid $border-color;
+  $c-Button__theme__textShadow: 1px 1px 0 darken($button-color, 25%) !default;
+  text-shadow: $c-Button__theme__textShadow;
 
   &:hover {
     color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
-    @include background-gradient(darken($button-color, 10%), $image-url, 40px);
+    @if $border-color == none {
+      @if $image-url == none or $image-url == null {
+        @include background(darken($button-color, 10%));
+      } @else {
+        @include background(darken($button-color, 10%), $image-url, 40px);
+      }
+
+    } @else {
+      @include background-gradient(darken($button-color, 10%), $image-url, 40px);
+    }
   }
 }
 
