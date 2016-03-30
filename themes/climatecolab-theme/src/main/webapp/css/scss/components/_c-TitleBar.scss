@@ -2,6 +2,13 @@
 $c-TitleBar__backgroundColor: $t-Color__primary__grey--light !default;
 $c-TitleBar__borderBottom__color: $t-Color__primary__grey !default;
 $c-TitleBar__textColor: $t-Color__grey--darkest !default;
+$c-TitleBar__element--active__capitalization: none !default;
+$c-TitleBar__element--disabled__textColor: $t-Color__primary__grey--light !default;
+$c-TitleBar__a__textColor: $t-Color__primary !default;
+$c-TitleBar__a__fontWeight: 700 !default;
+$c-TitleBar__capitalization: none !default;
+
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__primary__grey--light !default;
 
 $c-TitleBar__actionButton__backgroundColor: $c-TitleBar__backgroundColor !default;
 
@@ -14,6 +21,16 @@ $c-TitleBar__separator__color: #B9E3FF !default;
   background: $c-TitleBar__backgroundColor;
   border-bottom: 1px solid $c-TitleBar__borderBottom__color;
   color: $c-TitleBar__textColor;
+  text-transform: $c-TitleBar__capitalization;
+
+  a {
+    color: $c-TitleBar__a__textColor;
+    font-weight: $c-TitleBar__a__fontWeight;
+  }
+
+  &.contestSummary {
+    background: $c-TitleBar__contestSummary__backgroundColor;
+  }
 }
 
 .c-TitleBar__element {
@@ -37,11 +54,13 @@ $c-TitleBar__separator__color: #B9E3FF !default;
   }
 
   &.disabled {
-    color: $t-Color__grey--medium;
+    color: $c-TitleBar__element--disabled__textColor;
+    text-transform: none;
   }
 
   &.active {
     font-weight: $b-Typography__fontWeight--bold;
+    text-transform: $c-TitleBar__element--active__capitalization;
   }
 }
 
@@ -65,7 +84,7 @@ $c-TitleBar__separator__color: #B9E3FF !default;
   &:after {
     border-color: transparent;
     border-width: 12px;
-    border-left-color: $c-TitleBar__backgroundColor;
+    border-left-color: $c-TitleBar__contestSummary__backgroundColor;
     margin-top: -12px;
   }
   //noinspection CssOptimizeSimilarProperties

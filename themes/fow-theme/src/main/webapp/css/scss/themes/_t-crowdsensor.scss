@@ -91,6 +91,16 @@ $c-Footer__backgroundColor: white;
 $c-Footer__menu__li__a--hover__color: $t-Color__primary;
 $c-Footer__menu__backgroundGradient: linear-gradient(top, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
 $c-Footer__menu__boxShadow: inset 0px 5px 12px lighten($t-Color__grey--dark, 10%);
+$c-TitleBar__backgroundColor: $t-Color__red;
+$c-TitleBar__element--active__capitalization: uppercase;
+$c-TitleBar__separator__color: white;
+$c-TitleBar__textColor: white;
+$c-TitleBar__element--disabled__textColor: $t-Color__pattern__gray--light;
+$c-TitleBar__a__textColor: white;
+$c-TitleBar__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__grey--dark;
+$c-TitleBar__capitalization: uppercase;
+
 $p-About__left__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $p-About__left__li__a__padding--left: 15px;
 $p-About__left__li__a__current__border--left: 5px solid $t-Color__secondary ;

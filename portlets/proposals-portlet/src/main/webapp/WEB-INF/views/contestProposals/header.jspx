@@ -19,7 +19,7 @@
 	</div>
     <!-- /c-Headline -->
 
-	<div class="c-TitleBar">
+	<div class="c-TitleBar contestSummary">
 		<jsp:directive.include file="./header_contestPhases.jspx" />
 		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
 			<portlet:actionURL var="subscribeContestURL">
