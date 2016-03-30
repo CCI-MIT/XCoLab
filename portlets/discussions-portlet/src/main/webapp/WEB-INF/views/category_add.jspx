@@ -13,7 +13,7 @@
 
     <h1>Create new category</h1>
     <div class="addthread">
-        <div id="thecomment">
+        <div class="c-Comment__new">
             <portlet:actionURL var="addCategoryUrl">
                 <portlet:param name="action" value="createCategory" />
             </portlet:actionURL>
@@ -29,8 +29,8 @@
                     </label>
                 </div>
                 <div>
-                    <input type="submit" class="primary-button" value="Add" />
-                    <a class="grey-button" href="/web/guest/discussion">Cancel</a>
+                    <input type="submit" class="c-Button__primary" value="Add" />
+                    <a class="c-Button__secondary" href="/web/guest/discussion">Cancel</a>
                 </div>
             </form>
         </div>

@@ -1,0 +1,82 @@
+
+$c-TitleBar__backgroundColor: $t-Color__primary__grey--light !default;
+$c-TitleBar__borderBottom__color: $t-Color__primary__grey !default;
+$c-TitleBar__textColor: $t-Color__grey--darkest !default;
+
+$c-TitleBar__actionButton__backgroundColor: $c-TitleBar__backgroundColor !default;
+
+//TODO: theme
+$c-TitleBar__separator__color: #B9E3FF !default;
+
+.c-TitleBar {
+  height: 37px;
+  line-height: 37px;
+  background: $c-TitleBar__backgroundColor;
+  border-bottom: 1px solid $c-TitleBar__borderBottom__color;
+  color: $c-TitleBar__textColor;
+}
+
+.c-TitleBar__element {
+  display: inline-block;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  font-size: 13px;
+
+  //inline icons
+  img {
+    height: 25px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  //states
+  &.right {
+    float: right;
+  }
+
+  &.disabled {
+    color: $t-Color__grey--medium;
+  }
+
+  &.active {
+    font-weight: $b-Typography__fontWeight--bold;
+  }
+}
+
+.c-TitleBar__element--withSeparator {
+  @extend .c-TitleBar__element;
+
+  margin-right: 15px;
+
+  //arrow implementation:
+  &:after, &:before {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+  //noinspection CssOptimizeSimilarProperties
+  &:after {
+    border-color: transparent;
+    border-width: 12px;
+    border-left-color: $c-TitleBar__backgroundColor;
+    margin-top: -12px;
+  }
+  //noinspection CssOptimizeSimilarProperties
+  &:before {
+    border-color: transparent;
+    border-width: 16px;
+    border-left-color: $c-TitleBar__separator__color;
+    margin-top: -16px;
+  }
+}
+
+.c-TitleBar__actionButton {
+  background: $c-TitleBar__actionButton__backgroundColor;
+}

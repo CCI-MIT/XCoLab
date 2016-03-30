@@ -50,7 +50,7 @@
 						<form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value" itemLabel="lable"/>
 					</form:select>
 					<div class="reg_errors">
-						<form:errors cssClass="alert alert-error" path="elementId" />
+						<form:errors cssClass="c-Alert c-Alert__error" path="elementId" />
 					</div>
 				</div>
 			</div>
@@ -66,14 +66,14 @@
 					<form:hidden path="planTemplateId"/>
 
 					<div class="reg_errors"><!--  -->
-						<form:errors cssClass="alert alert-error" path="*" />
+						<form:errors cssClass="c-Alert c-Alert__error" path="*" />
 					</div>
 
 					<div class="addpropbox">
 						<strong class="inputTitleLeft">Template name:</strong>
 						<form:input path="templateName"/>
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="templateName" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="templateName" />
 						</div>
 					</div>
 					<h3>Proposal template sections</h3>
@@ -205,7 +205,7 @@
 							<div class="addpropInputContainer">
 								<form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText"  />   <!-- cssClass="ckeditor_placeholder" -->
 								<div class="reg_errors">
-									<form:errors cssClass="alert alert-error" path="sections[${x.index}].helpText" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].helpText" />
 								</div>
 							</div>
 							<div class="clearfix"><!--  --></div>
@@ -213,7 +213,7 @@
 							<div class="addpropInputContainer">
 								<form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText"  />   <!-- cssClass="ckeditor_placeholder" -->
 								<div class="reg_errors">
-									<form:errors cssClass="alert alert-error" path="sections[${x.index}].defaultText" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].defaultText" />
 								</div>
 							</div>
 
@@ -226,7 +226,7 @@
 					</c:forEach>
 
 					<div class="addSection" id="addSection" name="addSection">
-						<a class="primary-button" id="addSectionButton" href="#addSection">ADD section</a>
+						<a class="c-Button__primary" id="addSectionButton" href="#addSection">ADD section</a>
 					</div>
 				</form:form>
 			</div>
@@ -256,7 +256,7 @@
 						<td ><collab:contestLink contest="${contestWrapper}" /></td>
 						<td>Tier ${contestWrapper.contestTier}</td>
 						<td>
-							<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+							<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
 						</td>
 					</tr>
 				</c:forEach>

@@ -36,9 +36,9 @@
             <p style="margin-top:15px">Thanks!</p>
 
             <div class="btns" style="text-align: center;">
-                <a id="submit-button" class="primary-button disabled login-submit" href="javascript:;"
+                <a id="submit-button" class="c-Button__primary disabled c-Header__login__submit" href="javascript:;"
                        onclick="jQuery(this).parents('form').submit();">Submit</a>
-                <a class="grey-button" href="/web/guest/cms/-/contestmanagement/manager">Go back to contest manager</a>
+                <a class="c-Button__secondary" href="/web/guest/cms/-/contestmanagement/manager">Go back to contest manager</a>
             </div>
         </form>
     </div>

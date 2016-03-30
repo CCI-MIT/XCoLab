@@ -47,9 +47,9 @@
 		var proposalType;
 	</script>
 	<div>
-		<div id="popup_proposalPicker" class="popup-wrap proposal-picker"
+		<div id="popup_proposalPicker" class="c-Popup__wrapper proposal-picker"
 			style="display: none;">
-			<div class="popup">
+			<div class="c-Popup">
 				<div class="closepopuplogin">
 					<a href="javascript:;"
 						onclick="jQuery('#popup_proposalPicker').hide()"> <img
@@ -83,54 +83,54 @@
 							placeholder="Filter" maxcharacters="80" validatelength="true"
 							class="rteInitialized"
 							style="height: 22px; width: 175px; padding: 0 5px;" />
-						<a class="primary-button" href="javascript:;">Search</a>
+						<a class="c-Button__primary" href="javascript:;">Search</a>
 					</div>
 					
 					<div id="proposalPicker_viewArea">
 					<div id="proposalPickerTableContests">
-						<div class="blueheaderbar tooltips" data-entity='contest'>
+						<div class="c-TitleBar tooltips" data-entity='contest'>
 							<div class="contest" style="">
 								<a href="#" data-sort-column="Name"><span class="contestTypeContestNames">&#160;</span></a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by name
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 								
 							</div>
 							<div class="proposal">
 								<a href="#" data-sort-column="Proposals"><!--  --></a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by<br />number of <div class="contestTypeProposalNames">&#160;</div>
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 							<div class="comment">
 								<a href="#" data-sort-column="Comments"> <!--  --></a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by<br />number of comments
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 
 							<div class="what">
 								<a href="#" data-sort-column="What"> What</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by what
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 							<div class="where">
 								<a href="#" data-sort-column="Where"> Where</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by where
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 							<div class="who">
 								<a href="#" data-sort-column="Who"> Who</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by who
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 						</div>
@@ -148,45 +148,45 @@
 								<!--  -->
 							</span>
 						</div>
-						<div class="blueheaderbar tooltips" data-entity='proposal'>
-							<div class="proposalname">
+						<div class="c-TitleBar tooltips" data-entity='proposal'>
+							<div class="p-ContestProposals__list__element--proposalname">
 								<div style="display: inline-block">
 									<a href="#" data-sort-column="Proposal"><span class="contestTypeProposalNames">&#160;</span> name</a>
-									<div class="tooltip">
+									<div class="c-Tooltip">
 										click to sort by name
-										<div class="tt-arrow"><!-- --></div>
+										<div class="c-Tooltip__arrow"><!-- --></div>
 									</div>
 								</div>
 								/&#160;
 
 								<div style="display: inline-block">
 									<a href="#" data-sort-column="Author">Author(s)</a>
-									<div class="tooltip">
+									<div class="c-Tooltip">
 										click to sort by author
-										<div class="tt-arrow"><!-- --></div>
+										<div class="c-Tooltip__arrow"><!-- --></div>
 									</div>
 								</div>
 							</div>
 
-							<div class="thumbs">
+							<div class="p-ContestProposals__list__element--thumbs">
 								<a href="#" data-sort-column="Supporters">
 									<!--  -->
 								</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by<br />number of supporters
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
 
-							<div class="propcomm">
+							<div class="p-ContestProposals__list__element--comments">
 								<a href="#" data-sort-column="Comments"> <!--  -->
 								</a>
-								<div class="tooltip">
+								<div class="c-Tooltip">
 									click to sort by<br />number of comments
-									<div class="tt-arrow"><!-- --></div>
+									<div class="c-Tooltip__arrow"><!-- --></div>
 								</div>
 							</div>
-							<div class="modified">
+							<div class="p-ContestProposals__list__element--modifiedDate">
 								<span class='text'><span class="contestTypeContestNamesPlural">&#160;</span></span>
 							</div>
 
@@ -242,8 +242,8 @@
 				</div>
 				<div id="warning"></div>
 				<div class="pickerButtons">
-                	<a class="primary-button" href="#" id="savePickedProposals">Choose <span class="contestTypeProposalNames">&#160;</span></a>
-                	<a class="grey-button" href="#" id="cancelPickedProposals">Cancel</a>
+                	<a class="c-Button__primary" href="#" id="savePickedProposals">Choose <span class="contestTypeProposalNames">&#160;</span></a>
+                	<a class="c-Button__secondary" href="#" id="cancelPickedProposals">Cancel</a>
 					<div class="clearfix clear"><!--  --></div>
                 </div>
 			</div>
@@ -262,7 +262,7 @@
                     <br />
                     <img src="${themeDisplay.pathThemeImages}/icon-prize{{ data.ribbon }}.png" />
                 </span>
-					<div class="tooltip">
+					<div class="c-Tooltip">
 						{{data.ribbonText}}
 					</div>
 				</div>
@@ -282,7 +282,7 @@
 				<div class="thumbbox">
                 	{{data.supportersCount}}
            		</div>
-                <div class="commbox">
+                <div class="c-Comment__count">
                     {{data.commentsCount}}
                 </div>
                 <div class="modbox">
@@ -290,7 +290,7 @@
 					{{#each data.contests}}
 						<li>
 							<img alt="{{this.name}}" class='fieldWithTooltip tooltipAbove' height="25" width="25" src="/image/contest?img_id={{this.contestLogoId}}" />
-							<div class="tooltip">Contest: {{this.name}}<div class="tt-arrow"><!--  --></div></div>
+							<div class="c-Tooltip">Contest: {{this.name}}<div class="c-Tooltip__arrow"><!--  --></div></div>
 						</li>
 					{{/each}}
 					</ul>
@@ -311,7 +311,7 @@
 					{{#if contest.flagText}}
 						<span class="{{#if contest.flagTooltip}} fieldWithTooltip {{/if}}">{{contest.flagText}}:&#160;</span>
                     		<c:if test="${not empty contest.flagTooltip}">
-                        		<div class="tooltip">{{contest.flagTooltip}}<div class="tt-arrow"><!--  --></div></div>
+                        		<div class="c-Tooltip">{{contest.flagTooltip}}<div class="c-Tooltip__arrow"><!--  --></div></div>
                         	</c:if>
                 	{{/if}}
                 		<a href="javascript:;">{{contest.contestShortName}}</a>

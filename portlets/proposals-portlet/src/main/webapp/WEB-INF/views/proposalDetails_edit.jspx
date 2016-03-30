@@ -59,7 +59,7 @@
         </c:otherwise>
     </c:choose>
 
-    <div class="headline addprop">
+    <div class="c-Headline addprop">
         <c:choose>
             <c:when test="${move }">
                 <p>
@@ -87,7 +87,7 @@
             30 minutes. Please save all ${contestType.proposalName} content offline before clicking
             PUBLISH or else it may be lost.
         </p>
-    </div> <!-- /headline -->
+    </div> <!-- /c-Headline -->
 
 
     <form action="/fileUpload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
@@ -112,7 +112,7 @@
             <div class="addprophelp">Give your ${contestType.proposalName} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
             <div class="addpropInputContainer">
                 <form:input path="name" id="proposalName" />
-                <form:errors path="name" cssClass="alert alert-error" />
+                <form:errors path="name" cssClass="c-Alert c-Alert__error" />
                 <div class="clearfix"><!--  --></div>
 
                 <div class="clearfix"><!-- --></div>
@@ -221,9 +221,9 @@
 <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
 
 
-<div id="acceptTosPopup" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
-    <div class="popup-wrap p1" id="acceptTosPopup">
-        <div class="popup">
+<div id="c-Popup__accept__TOS" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
+    <div class="c-Popup__wrapper p1" id="c-Popup__accept__TOS">
+        <div class="c-Popup">
             <h4>By saving your ${contestType.proposalName} you are entering the ${colabName} ${contestType.contestName} and agree to the&#160;
                 <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>
                 &#160;and ${contestType.contestName} Rules.</h4>
@@ -233,20 +233,20 @@
                     ${preferences.termsOfService}
             </div>
             <div class="btns">
-                <a class="primary-button cp1-1" href="javascript:;" id="tosAccepted">ACCEPT</a>
-                <a class="grey-button cp1-2" href="javascript:;" id="closeAcceptTos">DO NOT Accept</a>
+                <a class="c-Button__primary cp1-1" href="javascript:;" id="tosAccepted">ACCEPT</a>
+                <a class="c-Button__secondary cp1-2" href="javascript:;" id="closeAcceptTos">DO NOT Accept</a>
             </div>
         </div>
     </div>
 </div>
 
 <div id="invalidFieldsPopupContainer" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none; ">
-    <div class="popup-wrap p1" id="invalidFieldsPopup">
-        <div class="popup">
+    <div class="c-Popup__wrapper p1" id="invalidFieldsPopup">
+        <div class="c-Popup">
             <h4>The following sections have too many characters:</h4>
             <ul id="invalidFieldsList"><!--  --></ul>
             <div class="btns">
-                <a class="primary-button cp1-1" href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')">CLOSE</a>
+                <a class="c-Button__primary cp1-1" href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')">CLOSE</a>
             </div>
         </div>
     </div>
@@ -268,15 +268,15 @@
                     <br />
                     <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                 </p>
-                <a class="primary-button" href="#" id="saveChangesButton">SAVE and PUBLISH changes</a>
+                <a class="c-Button__primary" href="#" id="saveChangesButton">SAVE and PUBLISH changes</a>
                 <c:choose>
                     <c:when test="${proposal.currentVersion > 0 }">
-                        <collab:proposalLink proposal="${proposal}" cssClass="grey-button"
+                        <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
                                              linkId="discardChangesButton" text="DISCARD changes" />
                     </c:when>
                     <c:otherwise>
                         <!--  proposal creation, return to contest proposals page on discard -->
-                        <collab:contestLink contest="${contest}" cssClass="grey-button"
+                        <collab:contestLink contest="${contest}" cssClass="c-Button__secondary"
                                             linkId="discardChangesButton" text="DISCARD changes" />
                     </c:otherwise>
                 </c:choose>
@@ -324,16 +324,16 @@
         }
 
         function showAcceptTosPopup() {
-            jQuery("#acceptTosPopup").fadeIn("fast");
+            jQuery("#c-Popup__accept__TOS").fadeIn("fast");
         }
 
         function closeAcceptTosPopup() {
-            jQuery("#acceptTosPopup").fadeOut("fast");
+            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
             enableButtons();
         }
 
         function tosAcceptedSave() {
-            jQuery("#acceptTosPopup").fadeOut("fast");
+            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
             disableButtons(true);
             saveIfValid();
         }
@@ -383,8 +383,8 @@
         }
     </script>
 <div id="copyProposalContainer" style="display: none;">
-    <div class="popup-wrap p1" id="copyProposalPopup">
-        <div class="popup">
+    <div class="c-Popup__wrapper p1" id="copyProposalPopup">
+        <div class="c-Popup">
             <div class="closepopuplogin">
                 <a href="javascript:;" onclick="jQuery('#copyProposalContainer').hide()">
                     <img src="${themeDisplay.pathThemeImages}/help_close.png" width="20" height="20" alt="X"/>
@@ -395,7 +395,7 @@
             <div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
                 <div id="copyProposalContests"><!--  --></div>
                 <center>
-                    <a class="primary-button" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
+                    <a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
                 </center>
             </div>
         </div>

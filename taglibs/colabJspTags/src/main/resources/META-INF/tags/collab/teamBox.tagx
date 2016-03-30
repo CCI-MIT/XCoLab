@@ -19,9 +19,9 @@
     <div class="teamMemberAdd">
       <input id="${inputBox}" type="text" class="profile_input teamMembers" />
       <div class="clear"><!-- --></div>
-      <div id="${pleaseChooseFromList}" style="display: none;" class="alert alert-error">Please choose a user from list.</div>
+      <div id="${pleaseChooseFromList}" style="display: none;" class="c-Alert c-Alert__error">Please choose a user from list.</div>
       <div class="clear"><!-- --></div>
-      <div id="${unknownUsersContainer}"  style="display: none;" class="alert alert-error">Unknown users: <ul></ul></div>
+      <div id="${unknownUsersContainer}"  style="display: none;" class="c-Alert c-Alert__error">Unknown users: <ul></ul></div>
     </div>
     <div class="teamMemberListing">
       <input type="hidden" name="${memberList}" id="${memberList}"/>

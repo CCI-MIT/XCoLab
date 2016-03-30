@@ -1,0 +1,54 @@
+
+.c-Table {
+
+}
+
+.c-Table__row {
+   &.featured {
+     background-color: $t-Color__grey--lightest;
+   }
+}
+
+.c-Table__row--title { //thead.blueheaderbar
+  background: $t-Color__primary__grey--light;
+  border-bottom: 1px solid $t-Color__primary__grey;
+  color: $t-Color__grey--darkest;
+  position: -webkit-sticky;
+  position: sticky;
+
+  height: 30px;
+  line-height: 30px;
+  font-weight: 700;
+}
+
+%c-Table__cell {
+  padding: 5px;
+}
+
+.c-Table__cell {
+  @extend %c-Table__cell;
+  font-size: 14px;
+  line-height: 20px;
+  border-bottom: 1px solid $t-Color__grey--lightest;
+
+  &.odd {
+    background-image: url(../images/pattern-tbl-6x6.png);
+  }
+}
+
+.c-Table__cell--title {
+  @extend %c-Table__cell;
+}
+
+.c-Table__sortArrow {
+  display: inline;
+}
+
+//TODO: port
+.shadebar {
+  content: '';
+  background: url(../images/tableshade.png) repeat-x;
+  height: 4px;
+  position: relative;
+  z-index: 9;
+}

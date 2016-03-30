@@ -13,7 +13,7 @@
                     <h5 class="fieldWithTooltip tooltipAbove">
                         <a>${type.label}</a>
                     </h5>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         ${type.description}
                     </div>
             </div>
@@ -28,7 +28,7 @@
                             <label for="rating${value.id}" class="fieldWithTooltip tooltipAbove">
                                 ${value.name}
                             </label>
-                            <div class="tooltip">
+                            <div class="c-Tooltip">
                                 ${value.description}
                             </div>
                         </td>

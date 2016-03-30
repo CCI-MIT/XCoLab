@@ -2,7 +2,7 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<div class="headline contest-page">
+	<div class="c-Headline contest-page">
 		<div class="contest-image">
 			<img src="/image/contest?img_id=${contest.contestLogoId}" width="52" height="52" alt="Contest Image" />
 		</div>
@@ -17,32 +17,30 @@
 			</div>
 		</c:if>
 	</div>
-    <!-- /headline -->
-	
-	<div class="blueheaderbar">
-		<div class="contestbar">
-			<jsp:directive.include file="./header_contestPhases.jspx" />
-			<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
-				<portlet:actionURL var="subscribeContestURL">
-					<portlet:param name="contestId" value="${contest.contestPK }" />
-					<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-					<portlet:param name="action" value="subscribeContest" />
-					<portlet:param name="action_forwardToPage" value="contestProposals" />
-				</portlet:actionURL>
-				<div class="contestSubscribe">
-					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
-						<c:choose>
-							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
-								<img src="/climatecolab-theme/images/icon_star.png" />Subscribe
-							</c:when>
-							<c:otherwise>
-								<img src="/climatecolab-theme/images/unsubscribe.png" />Unsubscribe
-							</c:otherwise>
-						</c:choose>
-					</a>
-				</div>
-			</c:if>
-		</div>
+    <!-- /c-Headline -->
+
+	<div class="c-TitleBar">
+		<jsp:directive.include file="./header_contestPhases.jspx" />
+		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
+			<portlet:actionURL var="subscribeContestURL">
+				<portlet:param name="contestId" value="${contest.contestPK }" />
+				<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
+				<portlet:param name="action" value="subscribeContest" />
+				<portlet:param name="action_forwardToPage" value="contestProposals" />
+			</portlet:actionURL>
+			<div class="c-TitleBar__actionButton c-TitleBar__element right">
+				<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
+					<c:choose>
+						<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
+							<img src="/climatecolab-theme/images/icon_star.png" />Subscribe
+						</c:when>
+						<c:otherwise>
+							<img src="/climatecolab-theme/images/unsubscribe.png" />Unsubscribe
+						</c:otherwise>
+					</c:choose>
+				</a>
+			</div>
+		</c:if>
 	</div>
 	<div class="shadebar"><!--  --></div>
 </jsp:root>

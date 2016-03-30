@@ -38,14 +38,14 @@ The Climate CoLab site is currently undergoing an unusually high level of activi
 <p style="margin-top:0;">If you would like to get notified once the maintenance period is over, please leave your email below and we'll drop you a line once the site is back online.</p>
 <form action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="post">
 <input class="iceInpTxt portlet-form-input-field profile_input" id="email" name="email" type="text" placeholder="Your email address" stlye="width:100%;text-align:center;">
-<div style="display:block;" class="blue-button"><a onclick="get_form(this).submit(); return false" class="requestMembershipSubmitButton" style="text-decoration: none;" href="javascript:;">Notify me</a></div>
+<div style="display:block;" class="c-Button__primary"><a onclick="get_form(this).submit(); return false" class="requestMembershipSubmitButton" style="text-decoration: none;" href="javascript:;">Notify me</a></div>
 </form>
 
 </div>
 
 <div class="contestbox" style="display:none;">
 Safari
-<div style="display:block;" class="blue-button"><a class="requestMembershipSubmitButton" href="javascript:;">Notify me</a></div>
+<div style="display:block;" class="c-Button__primary"><a class="requestMembershipSubmitButton" href="javascript:;">Notify me</a></div>
 </div>
 
 

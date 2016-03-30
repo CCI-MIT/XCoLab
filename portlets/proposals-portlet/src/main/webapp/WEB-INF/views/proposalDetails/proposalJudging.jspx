@@ -42,19 +42,19 @@
         </i>
         <div class="clearfix"><!-- --></div>
         <br/>
-        <form:errors cssClass="alert alert-error" />
+        <form:errors cssClass="c-Alert c-Alert__error" />
 
         <proposalsPortlet:proposalRating ratingTypes="${judgeProposalBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
         <h3 style="margin-top: 10px;"><c:if test="proposalsPermissions.canJudgeActions">Judge </c:if> Feedback</h3>
         <div class="form-errors"><!--  -->
-            <form:errors cssClass="alert alert-error" path="comment" />
+            <form:errors cssClass="c-Alert c-Alert__error" path="comment" />
         </div>
 
-        <form:textarea path="comment" cssClass="commentbox" style="width:100%;" placeholder="Write your review here..." />
+        <form:textarea path="comment" cssClass="c-Comment__box" style="width:100%;" placeholder="Write your review here..." />
 
         <div class="clearfix" style="width: 100%;">
-            <a class="primary-button" style="display:block; float:right; margin-top: 10px;" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
+            <a class="c-Button__primary" style="display:block; float:right; margin-top: 10px;" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
         </div>
 
     </form:form>

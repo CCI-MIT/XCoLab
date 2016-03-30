@@ -57,14 +57,14 @@
           </table>
 
         <div class="com-info bot">
-          <a class="primary-button" href="javascript:;" onclick="selectAllSubscriptions()">SELECT ALL</a>
-          <a class="primary-button" href="javascript:;" onclick="jQuery('#removeSubscriptionsForm').submit();" >REMOVE SELECTED</a>
+          <a class="c-Button__primary" href="javascript:;" onclick="selectAllSubscriptions()">SELECT ALL</a>
+          <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#removeSubscriptionsForm').submit();" >REMOVE SELECTED</a>
         </div>
         </form:form>
 
       </div>
 
-      <div class="right_col3" style="margin-top: 49px!important;">
+      <div class="c-Message__column" style="margin-top: 49px!important;">
         <div class="comm_list">
           <h3>Display</h3>
           <ul>
@@ -86,7 +86,7 @@
           </ul>
         </div>
 
-      </div> <!-- /right_col3 -->
+      </div> <!-- /c-Message__column -->
 
     <div class="clearfix"><!-- --></div>
 

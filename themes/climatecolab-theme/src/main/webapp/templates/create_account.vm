@@ -78,8 +78,8 @@
     <!-- /Registration -->
     
   <div class="btns">
-      <a class="primary-button" href="javascript:;" class="s1">SAVE changes</a>
-     <a class="grey-button" href="javascript:;" class="s2">Discard changes</a>
+      <a class="c-Button__primary" href="javascript:;" class="s1">SAVE changes</a>
+     <a class="c-Button__secondary" href="javascript:;" class="s2">Discard changes</a>
   </div>
  </div>
 </div>

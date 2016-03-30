@@ -10,9 +10,9 @@
   <div class="messagingContainer">
   	<script type="text/javascript" src="/html/portlet/ext/js/jquery.validate.pack.js"> <!-- --> </script>
     <div class="main_long">
-      <div id="message-info">
+      <div class="c-Message">
         <ice:form>
-            <span class="num">#{messagingBean.messagesCount}</span> messages
+            <span class="c-Message__number">#{messagingBean.messagesCount}</span> messages
             <div style="float: right;">
                 <ice:commandLink actionListener="#{messagingBean.toggleSendMessage}" onclick="jQuery('.messagingContainer').block();">
                     <img src="/climatecolab-theme/images/icon_new-message.gif" width="31" height="29" /> compose message
@@ -39,7 +39,7 @@
                 <div class="msgContent hidden">
                     <p><ice:outputText value="#{message.filteredContent}" escape="false" /></p>
                     <div class="floatRight">
-                    <div class="blue-button">
+                    <div class="c-Button__primary">
                         <ice:commandLink actionListener="#{messagingBean.toggleSendMessage}" value="Reply" onclick="jQuery('.messagingContainer').block();" >
                             <f:attribute name="replyMessageId" value="#{message.messageId}" />
                         </ice:commandLink>
@@ -77,7 +77,7 @@
       </ice:dataTable>
       <br /><br />
       <ice:panelGroup styleClass="messages_bot" rendered="#{messagingBean.type == 'INBOX'}">
-        <div class="blue-button">
+        <div class="c-Button__primary">
             <ice:commandLink actionListener="#{messagingBean.archiveSelectedMessages}" >Archive selected messages</ice:commandLink>
         </div>
       </ice:panelGroup>
@@ -120,7 +120,7 @@
           
         </div> <!-- /main -->
     
-    <div class="right_col3 v1">
+    <div class="c-Message__column v1">
                        <script type="text/javascript">
                                 <f:subview rendered="#{messagingBean.messageToShow != null}">
                                     showMessageById("message_#{messagingBean.messageToShow}");

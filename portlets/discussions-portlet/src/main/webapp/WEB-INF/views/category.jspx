@@ -26,8 +26,8 @@
         </c:if>
     </div>
 
-    <div class="threads-container">
-        <div class="main-content">
+    <div class="c-Comment__threads">
+        <div class="c-Comment__threads__container">
             <div class="comm_disc-head">
                 <div class="comm_disc-title">
                     <h2>${empty currentCategory ? 'All Discussions' : currentCategory.title}</h2>
@@ -47,86 +47,86 @@
             </c:if>
 
 
-            <table class="thread-list">
-                <thead class="blueheaderbar">
-                <tr>
-                    <th>
-                        <portlet:actionURL var="sortURL">
-                            <portlet:param name="action" value="sortCategory" />
-                            <portlet:param name="categoryId" value="${currentCategory.id}" />
-                            <portlet:param name="sortColumn" value="TITLE" />
-                            <portlet:param name="currentSortColumn" value="${sortColumn}" />
-                            <portlet:param name="currentSortAscending" value="${sortAscending}" />
-                        </portlet:actionURL>
-                        <a href="${sortURL }">Title</a>
-                        <div class="tooltip">
-                            click to sort by title
-                            <div class="tt-arrow"><!-- --></div>
-                        </div>
-                        <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
-                    </th>
+            <table class="c-Table">
+                <thead>
+                    <tr class="c-Table__row--title">
+                        <th class="c-Table__cell--title">
+                            <portlet:actionURL var="sortURL">
+                                <portlet:param name="action" value="sortCategory" />
+                                <portlet:param name="categoryId" value="${currentCategory.id}" />
+                                <portlet:param name="sortColumn" value="TITLE" />
+                                <portlet:param name="currentSortColumn" value="${sortColumn}" />
+                                <portlet:param name="currentSortAscending" value="${sortAscending}" />
+                            </portlet:actionURL>
+                            <a href="${sortURL }">Title</a>
+                            <div class="c-Tooltip">
+                                click to sort by title
+                                <div class="c-Tooltip__arrow"><!-- --></div>
+                            </div>
+                            <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
+                        </th>
 
-                    <th>
-                        <portlet:actionURL var="sortURL">
-                            <portlet:param name="action" value="sortCategory" />
-                            <portlet:param name="categoryId" value="${currentCategory.id}" />
-                            <portlet:param name="sortColumn" value="REPLIES" />
-                            <portlet:param name="currentSortColumn" value="${sortColumn}" />
-                            <portlet:param name="currentSortAscending" value="${sortAscending}" />
-                        </portlet:actionURL>
-                        <a href="${sortURL }">Replies</a>
-                        <div class="tooltip">
-                            click to sort by replies
-                            <div class="tt-arrow"><!-- --></div>
-                        </div>
-                        <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
-                    </th>
+                        <th class="c-Table__cell--title">
+                            <portlet:actionURL var="sortURL">
+                                <portlet:param name="action" value="sortCategory" />
+                                <portlet:param name="categoryId" value="${currentCategory.id}" />
+                                <portlet:param name="sortColumn" value="REPLIES" />
+                                <portlet:param name="currentSortColumn" value="${sortColumn}" />
+                                <portlet:param name="currentSortAscending" value="${sortAscending}" />
+                            </portlet:actionURL>
+                            <a href="${sortURL }">Replies</a>
+                            <div class="c-Tooltip">
+                                click to sort by replies
+                                <div class="c-Tooltip__arrow"><!-- --></div>
+                            </div>
+                            <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
+                        </th>
 
-                    <th>
-                        <portlet:actionURL var="sortURL">
-                            <portlet:param name="action" value="sortCategory" />
-                            <portlet:param name="categoryId" value="${currentCategory.id}" />
-                            <portlet:param name="sortColumn" value="LAST_COMMENTER" />
-                            <portlet:param name="currentSortColumn" value="${sortColumn}" />
-                            <portlet:param name="currentSortAscending" value="${sortAscending}" />
-                        </portlet:actionURL>
-                        <a href="${sortURL }">Last Commenter</a>
-                        <div class="tooltip">
-                            click to sort by last commenter
-                            <div class="tt-arrow"><!-- --></div>
-                        </div>
-                        <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
-                    </th>
+                        <th class="c-Table__cell--title">
+                            <portlet:actionURL var="sortURL">
+                                <portlet:param name="action" value="sortCategory" />
+                                <portlet:param name="categoryId" value="${currentCategory.id}" />
+                                <portlet:param name="sortColumn" value="LAST_COMMENTER" />
+                                <portlet:param name="currentSortColumn" value="${sortColumn}" />
+                                <portlet:param name="currentSortAscending" value="${sortAscending}" />
+                            </portlet:actionURL>
+                            <a href="${sortURL }">Last Commenter</a>
+                            <div class="c-Tooltip">
+                                click to sort by last commenter
+                                <div class="c-Tooltip__arrow"><!-- --></div>
+                            </div>
+                            <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
+                        </th>
 
-                    <th>
-                        <portlet:actionURL var="sortURL">
-                            <portlet:param name="action" value="sortCategory" />
-                            <portlet:param name="categoryId" value="${currentCategory.id}" />
-                            <portlet:param name="sortColumn" value="DATE" />
-                            <portlet:param name="currentSortColumn" value="${sortColumn}" />
-                            <portlet:param name="currentSortAscending" value="${sortAscending}" />
-                        </portlet:actionURL>
-                        <a href="${sortURL }">Date</a>
-                        <div class="tooltip">
-                            click to sort by date
-                            <div class="tt-arrow"><!-- --></div>
-                        </div>
-                        <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
-                    </th>
-                </tr>
+                        <th class="c-Table__cell--title">
+                            <portlet:actionURL var="sortURL">
+                                <portlet:param name="action" value="sortCategory" />
+                                <portlet:param name="categoryId" value="${currentCategory.id}" />
+                                <portlet:param name="sortColumn" value="DATE" />
+                                <portlet:param name="currentSortColumn" value="${sortColumn}" />
+                                <portlet:param name="currentSortAscending" value="${sortAscending}" />
+                            </portlet:actionURL>
+                            <a href="${sortURL }">Date</a>
+                            <div class="c-Tooltip">
+                                click to sort by date
+                                <div class="c-Tooltip__arrow"><!-- --></div>
+                            </div>
+                            <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
+                        </th>
+                    </tr>
                 </thead>
                 <c:forEach var="thread" items="${threads}">
-                    <tr>
-                        <td><a href="${thread.linkUrl}">${thread.title}</a></td>
-                        <td>${thread.commentsCount}</td>
-                        <td><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.screenName}"/></td>
-                        <td>${thread.modifiedDate}</td>
+                    <tr class="c-Table__row">
+                        <td class="c-Table__cell"><a href="${thread.linkUrl}">${thread.title}</a></td>
+                        <td class="c-Table__cell">${thread.commentsCount}</td>
+                        <td class="c-Table__cell"><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.screenName}"/></td>
+                        <td class="c-Table__cell">${thread.modifiedDate}</td>
                     </tr>
                 </c:forEach>
             </table>
         </div>
 
-        <div class="sidebar">
+        <div class="c-Comment__threads__sidebar">
             <a class="subscribeLinkSmall">
                 <img src="/climatecolab-theme/images/subscribe_small_2.png" /> Subscribe
             </a>

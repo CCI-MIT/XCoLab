@@ -113,40 +113,40 @@
 	#dockbar()
 #end
 
-<div id="header">
+<div id="c-Header">
  <div class="inner">
-  <div id="logo"><a href="/"><img src="$images_folder/logo-climate-colab.png" alt="$_colab_name" height="42" /></a></div>
-  <ul id="menu">
-   <li class="#if ($pageName== 'about' || $parentPageName == 'about') c #end"><a href="/web/guest/about">About</a></li>
+  <div id="c-Header__logo"><a href="/"><img src="$images_folder/logo-climate-colab.png" alt="$_colab_name" height="42" /></a></div>
+  <ul id="c-Header__menu">
+   <li class="#if ($pageName== 'about' || $parentPageName == 'about') isCurrent #end"><a href="/web/guest/about">About</a></li>
    #foreach( $contest_page in $_contest_pages)
-       <li class="#if ($pageName == $contest_page.portletName) c #end"><a href="$contest_page.portletUrl">$contest_page.menuItemName</a></li>
+       <li class="#if ($pageName == $contest_page.portletName) isCurrent #end"><a href="$contest_page.portletUrl">$contest_page.menuItemName</a></li>
    #end
-   <li class="#if ($pageName== 'community' || $parentPageName == 'community')) c #end" ><a href="/web/guest/members">Community</a></li>
-   <li class="#if ($pageName == 'search') c #end"><a href="javascript:;" class="search" id="searchPopupTrigger" >Search</a></li>
+   <li class="#if ($pageName== 'community' || $parentPageName == 'community')) isCurrent #end" ><a href="/web/guest/members">Community</a></li>
+   <li class="#if ($pageName == 'search') isCurrent #end"><a href="javascript:;" class="search" id="searchPopupTrigger" >Search</a></li>
   </ul>
 
 #if ($themeDisplay.signedIn)
   #set($messageService = $serviceLocator.findService("plansProposalsFacade-portlet","com.ext.portlet.service.MessageRecipientStatusLocalService"))
   #set($unreadMessages = $messageService.countUnreadMessages($user.userId))
-    <ul id="menu-right">
+    <ul id="c-Header__menu__right">
    <li class="user"><a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a>
     #if ($unreadMessages > 0)
-       <div class="user-notification user-notification-top">$unreadMessages</div>
+       <div class="c-Header__user__notification c-Header__user__notification__top">$unreadMessages</div>
     #end
    </li>
    <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
   </ul>
   
   <!-- USER POPUP -->
-  <div class="userpop" id="userPopupContainer">
-   <div class="usertop"><img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></div>
-   <div class="userbox">
+  <div class="c-Header__user__pop" id="userPopupContainer">
+   <div class="c-Header__user__top"><img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></div>
+   <div class="c-Header__user__box">
     <ul>
      <li><a href="/web/guest/member/-/member/userId/$user.userId">My profile</a></li>
      <li>
          <a href="/web/guest/messaging">My messages</a>
          #if ($unreadMessages > 0)
-             <div class="user-notification user-notification-message">$unreadMessages</div>
+             <div class="c-Header__user__notification c-Header__user__notification__message">$unreadMessages</div>
          #end
      </li>
      <li><a href="/web/guest/member/-/member/userId/$user.userId/page/subscriptions">My subscriptions</a></li>
@@ -170,28 +170,28 @@
 <!-- /USER POPUP -->
 
 #else  
-  <ul id="menu-right">
+  <ul id="c-Header__menu__right">
    <li class="register"><a href="/web/guest/loginregister?redirect=$escapeTool.url($themeDisplay.uRLCurrent)">Register</a></li>
    <li class="login" ><a  href="javascript:;" id="loginPopupTrigger">Login</a></li>
    <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
   </ul>
   
 <!-- LOGIN POPUP -->
-  <div class="loginpop" id="loginPopupContainer">
-   <div class="logintop"><img src="$images_folder/icon-menu-login3.png" width="26" height="18" /></div>
-   <div class="loginbox">
+  <div class="c-Header__login__pop" id="loginPopupContainer">
+   <div class="c-Header__login__top"><img src="$images_folder/icon-menu-login3.png" width="26" height="18" /></div>
+   <div class="c-Header__login__box">
 
-    <div class="loginwith">
+    <div class="c-Header__login__with">
         <a href="/web/guest/loginregister/-/login/SSO/facebookLogin" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
         <a href="/web/guest/loginregister/-/login/SSO/googleLogin" class="sketchy-icon google-sketchy"><span>Google</span></a>
     </div>
-    <div class="loginwith-del"></div><div class="loginwith-or">OR</div><div class="loginwith-del"></div>
+    <div class="c-Header__login__with__del"></div><div class="c-Header__login__with__or">OR</div><div class="c-Header__login__with__del"></div>
     <div class="clearfix"></div>
     <form id="signInFormPopup" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&saveLastPath=1&_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true" style="margin-top: 10px;">
-     <input name="login" type="text" class="username" placeholder="username"  />
-     <input name="password" type="password" class="password" placeholder="password" />
+     <input name="login" type="text" class="c-Header__login__username" placeholder="username"  />
+     <input name="password" type="password" class="c-Header__login__password" placeholder="password" />
      <input name="redirect" type="hidden" />
-     <span><em><a href="javascript:;" class="forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span> <input name="submit" type="submit" class="login-submit" value="LOGIN" id="loginPopupTopSubmit"/>
+     <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span> <input name="submit" type="submit" class="c-Header__login__submit" value="LOGIN" id="loginPopupTopSubmit"/>
     </form>
    </div>
   </div>
@@ -199,18 +199,18 @@
 #end
   
 <!-- SEARCH POPUP -->
-  <div class="searchpop" id="searchPopupContainer">
-   <div class="searchtop"><img src="$images_folder/icon-menu-search2.png" width="20" height="19" /></div>
-   <div class="searchbox">
-     <input name="search-term" type="text" class="search-term" value="" id="searchinput" />
-     <input name="submit" type="submit" class="search-submit" value="GO" id="searchsubmit" />
+  <div class="c-Header__search__pop" id="searchPopupContainer">
+   <div class="c-Header__search__top"><img src="$images_folder/icon-menu-search2.png" width="20" height="19" /></div>
+   <div class="c-Header__search__box">
+     <input name="c-Header__search__term" type="text" class="c-Header__search__term" value="" id="searchinput" />
+     <input name="submit" type="submit" class="c-Header__search__submit" value="GO" id="searchsubmit" />
     </div>
   </div>
 <!-- /SEARCH POPUP -->
 
      <!-- ERROR REPORT POPUP -->
-     <div id="popup_error_reporting" class="popup-wrap" style="display: none;">
-         <div class="popup">
+     <div id="popup_error_reporting" class="c-Popup__wrapper" style="display: none;">
+         <div class="c-Popup">
              <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_error_reporting').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
 
              <h4>Oh Snap!</h4>
@@ -218,19 +218,19 @@
                  <form id="signInForm_form" method="post" action="/c/reportError">
                      <input name="url" type="hidden" />
                      <input id="stackTrackeInput" name="stackTrace" type="hidden" value="${exception.stackTrace}"/>
-                     <div class="info-message">
+                     <div class="c-Alert__info__message">
                          <p>Unfortunately your request caused an error. To help us improve our service we would kindly ask you to provide a short description of the steps you took prior to receiving this message.</p>
                      </div>
-                     <textarea name="description" class="username" style="width:98%; min-height: 50px; margin-top: -10px;" placeholder="Description" ></textarea>
+                     <textarea name="description" class="c-Header__login__username" style="width:98%; min-height: 50px; margin-top: -10px;" placeholder="Description" ></textarea>
                      <br/>
                      <br/>
-                     <div class="info-message">
+                     <div class="c-Alert__info__message">
                          <p>If you provide your e-Mail address below we will let you know as soon as we've fixed the problem</p>
                      </div>
                      <input type="text" name="email" class="email" style="width:98%; min-height: 25px; padding-left: 2%; margin-top: -10px;" placeholder="Email address" />
                      <div class="clearfix"><!-- --></div>
                      <div class="btns">
-                         <a class="primary-button login-submit" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
+                         <a class="c-Button__primary c-Header__login__submit" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
                      </div>
                  </form>
              </div>

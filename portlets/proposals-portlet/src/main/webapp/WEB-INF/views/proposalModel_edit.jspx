@@ -47,8 +47,8 @@
                     	<br />
                     	<c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                     </p>
-                    <a class="primary-button" href="javascript:;" id="saveChangesButton">SAVE and PUBLISH changes</a>
-					<collab:proposalLink proposal="${proposal}" text="DISCARD changes" tab="${currentTab }" cssClass="grey-button"/>
+                    <a class="c-Button__primary" href="javascript:;" id="saveChangesButton">SAVE and PUBLISH changes</a>
+					<collab:proposalLink proposal="${proposal}" text="DISCARD changes" tab="${currentTab }" cssClass="c-Button__secondary"/>
                 </div>
                 <div class="admin-right">
                     <p>&#160;</p>

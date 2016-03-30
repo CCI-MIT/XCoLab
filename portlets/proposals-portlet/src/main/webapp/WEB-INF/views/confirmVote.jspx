@@ -11,12 +11,12 @@
         <c:choose>
             <c:when test="${success}">
                 <jsp:useBean id="proposal" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper" scope="request"/>
-                <div class="success-message">
+                <div class="c-Alert__success__message">
                     Thank you for confirming your vote for the ${contestType.proposalName} ${proposal.name}. Your vote has been counted.
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="error-message">
+                <div class="c-Alert__error__message">
                     <c:choose>
                         <c:when test="${error == 'NoSuchProposalVote'}">
                             The vote you are trying to confirm does not exist.

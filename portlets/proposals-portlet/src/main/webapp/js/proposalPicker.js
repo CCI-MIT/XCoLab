@@ -419,10 +419,10 @@ $("#savePickedProposals").click(function(event) {
 	return false;
 });
 
-$("#popup_proposalPicker .blueheaderbar a").click(function(event) {
+$("#popup_proposalPicker .c-TitleBar a").click(function(event) {
 	event.preventDefault();
 	var link = $(this);
-	var parentContainer = link.parents(".blueheaderbar");
+	var parentContainer = link.parents(".c-TitleBar");
 	var column = link.attr('data-sort-column');
     link.parent().parent().children().each(function() {
         $(this).children().remove('.sort-arrow');
