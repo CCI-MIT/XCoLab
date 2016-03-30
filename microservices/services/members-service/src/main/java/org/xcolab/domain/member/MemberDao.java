@@ -11,11 +11,16 @@ public interface MemberDao {
      public List<User_> listMembersSortByActivityCount(int startRecord, int limitRecord, String filter,
                                                           boolean isAscOrder);
 
+     public List<User_> listMembersSortByActivityCountFilteredByCategory(int startRecord, int limitRecord,
+                                                                         String filter, boolean isAscOrder,
+                                                                         String roleName);
      public List<User_> listMembersSortByMemberSince(int startRecord, int limitRecord, String filter,
                                                         boolean isAscOrder);
 
      public List<User_> listMembersSortByPoint(int startRecord, int limitRecord, String filter, boolean isAscOrder);
 
+     public List<User_> listMembersSortByPointFilteredByCategory(int startRecord, int limitRecord, String filter,
+                                                                 boolean isAscOrder,String roleName);
 
      public List<User_> listMembersSortByRoleName(int startRecord, int limitRecord, String filter,
                                                      boolean isAscOrder);

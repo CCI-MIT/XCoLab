@@ -65,6 +65,29 @@ public class MemberDaoImpl implements MemberDao{
                 limit(startRecord,limitRecord).fetchInto(User_.class);
 
     }
+    public List<User_> listMembersSortByActivityCountFilteredByCategory(int startRecord, int limitRecord, String filter,
+                                                      boolean isAscOrder, String roleName) {
+
+        Field<Object> activityCount =
+                this.dslContext.selectCount()
+                        .from(SOCIAL_ACTIVITY)
+                        .where(SOCIAL_ACTIVITY.USER_ID.equal(USER_.USER_ID))
+                        .asField("activityCount");
+
+        return this.dslContext.
+                select(USER_.fields()).
+                select(activityCount).
+                from(USER_).
+                join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
+                join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
+                where(USER_.SCREEN_NAME.contains(filter)).
+                or(USER_.FIRST_NAME.contains(filter)).
+                or(USER_.LAST_NAME.contains(filter)).
+                and(ROLES_CATEGORY.CATEGORY_NAME.like("%"+roleName+"%")).
+                orderBy((isAscOrder?(activityCount.asc()):(activityCount.desc()))).
+                limit(startRecord,limitRecord).fetchInto(User_.class);
+
+    }
 
     public List<User_> listMembersSortByRoleName(int startRecord, int limitRecord, String filter,
                                                  boolean isAscOrder) {
@@ -90,6 +113,32 @@ public class MemberDaoImpl implements MemberDao{
                 .limit(startRecord,limitRecord).fetchInto(User_.class);
 
     }
+
+    public List<User_> listMembersSortByRoleNameFilteredByCategory(int startRecord, int limitRecord, String filter,
+                                                 boolean isAscOrder, String roleName) {
+
+        Field<Long> userIdOriginalRoleSelect = USERS_ROLES.USER_ID.as("userIdOrdinalSelect");
+        Field<Integer> roleOrdinalRoleSelect = max(ROLES_CATEGORY.ROLE_ORDINAL).as("roleOrdinalSelect");
+        Table<Record2<Long,Integer>> originalRoleSelect = this.dslContext.select(userIdOriginalRoleSelect,roleOrdinalRoleSelect)
+                .from(USERS_ROLES)
+                .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
+                .where(ROLES_CATEGORY.CATEGORY_NAME.like("%"+roleName+"%"))
+                .groupBy(USERS_ROLES.USER_ID).asTable("originalRoleSelect");
+
+        org.xcolab.model.tables.User_ user = USER_.as("user");
+        return this.dslContext.
+                selectDistinct(user.fields())
+                .from(user)
+                .join(originalRoleSelect).on(user.USER_ID.eq(userIdOriginalRoleSelect))
+                .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ORDINAL.equal(roleOrdinalRoleSelect))
+                .where(user.SCREEN_NAME.contains(filter))
+                .or(user.FIRST_NAME.contains(filter))
+                .or(user.LAST_NAME.contains(filter))
+                .orderBy((isAscOrder?(roleOrdinalRoleSelect.asc()):(roleOrdinalRoleSelect.desc())))
+                .limit(startRecord,limitRecord).fetchInto(User_.class);
+
+    }
+
     public List<User_> listMembersSortByPoint(int startRecord, int limitRecord, String filter,
                                                           boolean isAscOrder) {
 
@@ -109,6 +158,29 @@ public class MemberDaoImpl implements MemberDao{
                 or(USER_.FIRST_NAME.contains(filter)).
                 or(USER_.LAST_NAME.contains(filter)).
                 and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%")).
+                orderBy((isAscOrder?(points.asc()):(points.desc()))).
+                limit(startRecord,limitRecord).fetchInto(User_.class);
+
+    }
+    public List<User_> listMembersSortByPointFilteredByCategory(int startRecord, int limitRecord, String filter,
+                                              boolean isAscOrder,String roleName) {
+
+        Field<Object> points =
+                this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
+                        .from(POINTS)
+                        .where(POINTS.USER_ID.equal(USER_.USER_ID))
+                        .asField("points");
+
+        return this.dslContext.
+                selectDistinct(USER_.fields()).
+                select(points).
+                from(USER_).
+                join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID)).
+                join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID)).
+                where(USER_.SCREEN_NAME.contains(filter)).
+                or(USER_.FIRST_NAME.contains(filter)).
+                or(USER_.LAST_NAME.contains(filter)).
+                and(ROLES_CATEGORY.CATEGORY_NAME.like("%"+roleName+"%")).
                 orderBy((isAscOrder?(points.asc()):(points.desc()))).
                 limit(startRecord,limitRecord).fetchInto(User_.class);
 

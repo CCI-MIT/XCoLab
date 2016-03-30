@@ -32,10 +32,24 @@ public class MemberService {
                                                    boolean isAscOrder){
         return this.memberDao.listMembersSortByPoint(firstUser,lastUser,screenNameFilter, isAscOrder);
     }
+
+    public List<User_> listMembersSortByPointFilteredByCategory(int startRecord, int limitRecord, String filter,
+                                                                boolean isAscOrder,String roleName){
+        return this.memberDao.listMembersSortByPointFilteredByCategory(startRecord, limitRecord, filter,
+                isAscOrder, roleName);
+    }
     public List<User_> listMembersSortByActivityCount(int firstUser, int lastUser, String screenNameFilter,
                                                    boolean isAscOrder){
         return this.memberDao.listMembersSortByActivityCount(firstUser,lastUser,screenNameFilter, isAscOrder);
     }
+    public List<User_> listMembersSortByActivityCountFilteredByCategory(int firstUser, int lastUser,
+                                                                        String screenNameFilter,
+                                                                        boolean isAscOrder,
+                                                                        String roleName){
+        return this.memberDao.listMembersSortByActivityCountFilteredByCategory(firstUser,lastUser,
+                screenNameFilter, isAscOrder, roleName);
+    }
+
     public List<User_> listMembersSortByMemberSince(int firstUser, int lastUser, String screenNameFilter,
                                                    boolean isAscOrder){
         return this.memberDao.listMembersSortByMemberSince(firstUser,lastUser,screenNameFilter, isAscOrder);

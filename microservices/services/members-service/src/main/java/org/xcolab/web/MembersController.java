@@ -67,13 +67,15 @@ public class MembersController {
                 if(category == null) {
                     return memberService.listMembersSortByPoint(firstRecordInt, lastRecordInt, screenName, isAsc);
                 }else{
-                    return memberService.listMembersSortByPoint(firstRecordInt, lastRecordInt, screenName, isAsc);
+                    return memberService.listMembersSortByPointFilteredByCategory(firstRecordInt, lastRecordInt,
+                            screenName, isAsc,category);
                 }
             case "ACTIVITY":
                 if(category == null) {
                     return memberService.listMembersSortByActivityCount(firstRecordInt, lastRecordInt, screenName, isAsc);
                 }else{
-                    return memberService.listMembersSortByActivityCount(firstRecordInt, lastRecordInt, screenName, isAsc);
+                    return memberService.listMembersSortByActivityCountFilteredByCategory(firstRecordInt,
+                            lastRecordInt, screenName, isAsc, category);
                 }
             case "CATEGORY":
                 if(category == null) {
@@ -116,7 +118,8 @@ public class MembersController {
         if(memberId == null){
             return 0;
         } else {
-            return this.memberService.getMemberActivityCount(memberId);
+            Integer ret = this.memberService.getMemberActivityCount(memberId);
+            return ((ret==null)?(0):(ret));
         }
 
     }
@@ -125,7 +128,8 @@ public class MembersController {
         if(memberId == null){
             return 0;
         }else{
-            return this.memberService.getMemberMaterializedPoints(memberId);
+            Integer ret = this.memberService.getMemberMaterializedPoints(memberId);
+            return ((ret==null)?(0):(ret));
         }
 
     }
