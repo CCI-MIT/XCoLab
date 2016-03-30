@@ -120,12 +120,13 @@ public class VoteOnProposalActionController {
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
                         recentVotesFromSharedIP++;
                     }
-                } catch (NoSuchProposalVoteException ignored) { }
-
-                if (StringUtils.getLevenshteinDistance(user.getFirstName(), otherUser.getFirstName()) < 3
-                        && StringUtils.getLevenshteinDistance(user.getLastName(), otherUser.getLastName()) < 3) {
-                    vote.setIsValid(false);
-                    break;
+                    if (StringUtils.getLevenshteinDistance(user.getFirstName(), otherUser.getFirstName()) < 3
+                            && StringUtils.getLevenshteinDistance(user.getLastName(), otherUser.getLastName()) < 3) {
+                        vote.setIsValid(false);
+                        break;
+                    }
+                } catch (NoSuchProposalVoteException ignored) {
+                    //the user has not voted for this proposal -> ignore
                 }
             }
             if (vote.isIsValid() && recentVotesFromSharedIP > 7) {

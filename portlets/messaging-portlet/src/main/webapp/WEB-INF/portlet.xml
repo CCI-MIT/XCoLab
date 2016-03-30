@@ -9,21 +9,13 @@
 	<portlet>
 		<portlet-name>messaging-portlet</portlet-name>
 		<display-name>messaging-portlet</display-name>
-		<portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/xhtml/view.xhtml</value>
-		</init-param>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.edit</name>
-			<value>/xhtml/edit.xhtml</value>
-		</init-param>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<supports>
 			<mime-type>text/html</mime-type>
 			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT Messaging (ICE)</title>
+			<title>MIT Messaging</title>
 			<short-title>Messaging</short-title>
 			<keywords>messaging</keywords>
 		</portlet-info>
