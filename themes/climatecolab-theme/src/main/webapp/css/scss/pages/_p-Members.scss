@@ -10,23 +10,23 @@
 
 .p-Members__list__element--user { //.blueheaderbar .user
   @extend %p-Members__list__element;
-  width: 330px;
+  width: 320px;
 }
 
 .p-Members__list__element--points { //.blueheaderbar .points
   @extend %p-Members__list__element;
-  width: 88px;
+  width: 80px;
   padding-left: 11px;
 }
 
 .p-Members__list__element--activity { //.blueheaderbar .activity
   @extend %p-Members__list__element;
-  width: 80px;
+  width: 70px;
 }
 
 .p-Members__list__element--category { //.blueheaderbar .category
   @extend %p-Members__list__element;
-  width: 108px;
+  width: 100px;
 
   a {
     margin-left: 15px;
@@ -35,5 +35,5 @@
 
 .p-Members__list__element--seniority { //.blueheaderbar .seniority
   @extend %p-Members__list__element;
-  width: 121px;
+  width: 110px;
 }
