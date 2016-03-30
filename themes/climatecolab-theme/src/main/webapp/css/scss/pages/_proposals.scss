@@ -1,9 +1,14 @@
+$p-proposal__header__background: url(../images/pattern-6x6-blue.png) !default;
+$p-proposal__tab__li__a__fontWeight: 700 !default;
+$p-proposal__tab__li__a__borderRadius: 5px !default;
+$p-proposal__propbox__h4__fontWeight: 700 !default;
+
 /* PROPOSALS ----------------------------------------------------------------------------- */
 
 /* proposal HEADER */
 .proposal-head {
   padding-top: 28px;
-  background: url(../images/pattern-6x6-blue.png);
+  background: $p-proposal__header__background;
   border-bottom: 1px solid $t-Color__grey--medium;
 }
 
@@ -77,9 +82,9 @@
   color: white;
   background: $t-Color__primary;
   text-transform: uppercase;
-  font-weight: 700;
-  @include border-top-left-radius(5px);
-  @include border-top-right-radius(5px);
+  font-weight: $p-proposal__tab__li__a__fontWeight;
+  @include border-top-left-radius($p-proposal__tab__li__a__borderRadius);
+  @include border-top-right-radius($p-proposal__tab__li__a__borderRadius);
   @include box-sizing(content-box);
 }
 
@@ -279,7 +284,7 @@
 .propbox h4 {
   float: left;
   display: inline;
-  font-weight: 700;
+  font-weight: $p-proposal__propbox__h4__fontWeight;
   color: $t-Color__grey--darkest;
 }
 
