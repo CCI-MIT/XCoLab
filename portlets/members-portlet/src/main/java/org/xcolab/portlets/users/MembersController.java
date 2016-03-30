@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.ConfigurationAttributeKey;
-import org.xcolab.legacy.enums.MemberRole;
 import org.xcolab.pojo.User_;
 import org.xcolab.portlets.users.utils.MemberItem;
 import org.xcolab.service.client.MembersClient;
@@ -76,11 +75,7 @@ public class MembersController {
 
         for (User_ user : dbUsersMicro) {
             MemberItem memberItem = new MemberItem(user, memberCategoryParam);
-            if (memberItem.getMemberRole() != MemberRole.STAFF) {
-                users.add(memberItem);
-            } else {
-                usersCount--;
-            }
+            users.add(memberItem);
         }
 
 
