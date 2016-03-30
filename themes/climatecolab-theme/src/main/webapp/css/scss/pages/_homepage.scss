@@ -1,5 +1,15 @@
 /*  HOMEPAGE  ------------------------------------------------------------------------------ */
 
+$p-homepage__content__h2__fontSize: 20px !default;
+$p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
+
+$p-homepage__learn__backgroundColor: $t-Color__primary !default;
+$p-homepage__get__backgroundColor: $t-Color__secondary !default;
+$p-homepage__learn__borderColor: $t-Color__primary--darkest !default;
+$p-homepage__get__borderColor: $t-Color__secondary--darkest !default;
+$p-homepage__learn__imageUrl: url(../images/homespot/light-bulb-white.png) !default;
+$p-homepage__get__imageUrl: url(../images/homespot/people-white.png) !default;
+
 .homespot {
   background: url(../images/bg-noise.png) $t-Color__grey--lightest;
   padding-bottom: 5px;
@@ -44,13 +54,13 @@
 }
 
 a.learn {
-  @include theme-button($t-Color__primary, $t-Color__primary--darkest, url(../images/homespot/light-bulb-white.png));
+  @include theme-button($p-homepage__learn__backgroundColor, $p-homepage__learn__borderColor, $p-homepage__learn__imageUrl);
   text-transform: uppercase;
   margin-right: 15px;
 }
 
 a.get {
-  @include theme-button($t-Color__secondary, $t-Color__secondary--darkest, url(../images/homespot/people-white.png));
+  @include theme-button($p-homepage__get__backgroundColor, $p-homepage__get__borderColor, $p-homepage__get__imageUrl);
   text-transform: uppercase;
   margin-right: 15px;
 }
@@ -339,8 +349,8 @@ a.get {
 }
 
 .home #content h2 {
-  font-size: 20px;
-  color: $t-Color__grey--darkest;
+  font-size: $p-homepage__content__h2__fontSize;
+  color: $p-homepage__content__h2__textColor;
   margin-bottom: 18px;
 }
 
