@@ -53,14 +53,20 @@ $t-Color__black: #060606;
 $t-Color__grey--dark: #354046;
 $t-Color__grey: #ACACAC;
 $t-Color__red: #D71A11;
-$t-Color__red--dark: #B50800;
+$t-Color__red--desat: #CD5046;
+$t-Color__red--dark: #960800;
 $t-Color__green: #54BD14;
+
+$t-Color__pattern__gray: #68696D;
+$t-Color__pattern__gray--light: #D7D9DA;
+$t-Color__pattern__gray--lightest: #F5F5F4;
 
 $b-Typography__fontWeight--light: 200 !default;
 $b-Typography__fontWeight--regular: 400 !default;
 $b-Typography__fontWeight--medium: 500 !default;
 
 $t-Color__primary: $t-Color__red;
+$t-Color__primary--darkest: $t-Color__red--dark;
 $t-Color__secondary: $t-Color__green;
 
 $b-Typography__fontFamily: "Fira Sans", Arial, Helvetica;
