@@ -83,6 +83,10 @@ $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__li__a__textColor: $t-Color__grey--medium;
 $c-Header__menu__li__hoverColor: $t-Color__red;
 
+$c-Footer__backgroundColor: white;
+$c-Footer__menu__li__a--hover__color: $t-Color__primary;
+$c-Footer__menu__backgroundGradient: linear-gradient(top, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
+$c-Footer__menu__boxShadow: inset 0px 5px 12px lighten($t-Color__grey--dark, 10%);
 $p-About__left__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $p-About__left__li__a__padding--left: 15px;
 $p-About__left__li__a__current__border--left: 5px solid $t-Color__secondary ;
