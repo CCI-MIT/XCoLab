@@ -1,9 +1,20 @@
 $p-Contests__contestFlag__capitalization : $b-Typography__capitalization--none !default;
 $p-Contests__contestFlag__boxShadow: 2px 2px 1px $t-Color__grey--dark !default;
 $p-Contests__contestFlag--color__border: 1px solid $t-Color__secondary--light !default;
+
 $p-Contests__contestBox__boder--buttom: null !default;
 $p-Contests__contestBox--hover__boxShadow: 0 0 10px #666 !default;
 
+$p-Contests__contestDetail__backgroundColor: $t-Color__grey--lightest !default;
+$p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.png) darken($t-Color__grey--lightest, 7) !default;
+
+$p-Contests__userslist__a__fontWeight: 700 !default;
+
+$p-Contests__detailsButton__fontWeight: 700 !default;
+$p-Contests__detailsButton__borderRadius: 5px !default;
+$p-Contests__detailsButton__padding: 8px 5px 0px 5px !default;
+$p-Contests__detailsButton__backgroundColor: $t-Color__primary__grey--light !default;
+$p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
 
 /* CONTESTS ------------------------------------------------------------------------------------- */
 
@@ -269,14 +280,14 @@ $p-Contests__contestBox--hover__boxShadow: 0 0 10px #666 !default;
 
 /* top section of the contests page under the headline, above the sub-headline */
 .contest-detail {
-  background-color: $t-Color__grey--lightest;
+  background-color: $p-Contests__contestDetail__backgroundColor;
   border-bottom: 1px solid $t-Color__grey--light;
   margin-top: -4px;
   color: $t-Color__grey--darkest;
 }
 
 .contest-detail .heading {
-  background: url(../images/pattern-6x6-lite.png) darken($t-Color__grey--lightest, 7);
+  background: $p-Contests__contestDetail__heading__background;
   min-height: 24px;
   padding: 7px 0 5px 20px;
   font-size: 22px;
@@ -369,21 +380,17 @@ $p-Contests__contestBox--hover__boxShadow: 0 0 10px #666 !default;
 }
 
 .contest-detail .buttons a, a.detailbutton {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: $p-Contests__detailsButton__padding;
   width: 115px;
   height: 27px;
   display: inline-block;
-  padding-top: 8px;
   margin-left: 3px;
-  background: $t-Color__primary__grey--light;
-  border: 1px solid $t-Color__primary__grey--dark;
+  background: $p-Contests__detailsButton__backgroundColor;
+  border: 1px solid $p-Contests__detailsButton__borderColor;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: $p-Contests__detailsButton__fontWeight;
   text-align: center;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  @include border-radius($p-Contests__detailsButton__borderRadius);
 }
 
 /* the table with rows of users  */
@@ -402,7 +409,7 @@ $p-Contests__contestBox--hover__boxShadow: 0 0 10px #666 !default;
 }
 
 .userslist a {
-  font-weight: 700;
+  font-weight: $p-Contests__userslist__a__fontWeight;
 }
 
 .userslist tr.top td {
