@@ -2,18 +2,15 @@ package org.xcolab.portlets.users;
 
 import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
-import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.ConfigurationAttributeKey;
-import org.xcolab.enums.MemberRole;
+import org.xcolab.pojo.User_;
 import org.xcolab.portlets.users.utils.MemberItem;
 import org.xcolab.service.client.MembersClient;
 
@@ -31,7 +28,8 @@ public class MembersController {
     @RequestMapping
     public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage,
                             @RequestParam(value = "page", required = false) Long pageParam,
-                            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam, Model model)
+                            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam,
+                            Model model)
             throws SystemException, PortalException {
         int page = 1;
         if (pageParam != null) {
@@ -50,110 +48,36 @@ public class MembersController {
 
         int endUser = firstUser + USERS_PER_PAGE;
 
-        String filter = "%";
+
         String filterParam = request.getParameter("filter");
         if (filterParam != null) {
-            filter = "%" + filterParam + "%";
             sortFilterPage.setFilter(filterParam);
         }
         int usersCount;
 
         List<MemberItem> users = new ArrayList<>();
 
-        MembersClient.getAllUsers();
+
         final String sortColumn = sortFilterPage.getSortColumn() != null ? sortFilterPage.getSortColumn() : "";
-        List<User> dBUsers;
-        if (memberCategoryParam == null || memberCategoryParam.compareTo("") == 0) {
 
-            if (filterParam != null){
-                usersCount = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenName(0, Integer.MAX_VALUE,
-                        filter, true).size();
-            } else {
-                usersCount = UserLocalServiceUtil.getUsersCount();
-            }
+        usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
 
-            switch (sortColumn) {
-                case "USER_NAME":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenName(firstUser, endUser,
-                            filter, sortFilterPage.isSortAscending());
-                    break;
-
-                case "POINTS":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPoints(firstUser, endUser,
-                            filter, sortFilterPage.isSortAscending());
-                    break;
-
-                case "ACTIVITY":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCount(firstUser, endUser,
-                            filter, sortFilterPage.isSortAscending());
-                    break;
-
-                case "CATEGORY":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByRoleName(firstUser, endUser,
-                            filter, sortFilterPage.isSortAscending());
-                    break;
-
-                case "MEMBER_SINCE":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSince(firstUser, endUser,
-                            filter, sortFilterPage.isSortAscending());
-                    break;
-                default:
-                    sortFilterPage.setSortColumn("POINTS");
-                    sortFilterPage.setSortAscending(false);
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPoints(firstUser, endUser,
-                            filter, sortFilterPage.isSortAscending());
-
-            }
-            request.getPortletSession().setAttribute("previousSortColumn", sortColumn);
-            request.getPortletSession().setAttribute("previousSortOrder", sortFilterPage.isSortAscending());
-
-            for (User user : dBUsers) {
-                MemberItem memberItem = new MemberItem(user, memberCategoryParam);
-                if (memberItem.getMemberRole() != MemberRole.STAFF) {
-                    users.add(memberItem);
-                } else {
-                    usersCount--;
-                }
-            }
-        } else { //Filtering by category
-            String memberCategoryFilter="%" + memberCategoryParam + "%";
-
-            //Pagination
-            usersCount = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameFilteredByCategory(0, Integer.MAX_VALUE, filter, memberCategoryFilter, true).size();
-
-            switch (sortColumn) {
-                case "UserNAME":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameFilteredByCategory(firstUser,
-                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
-                    break;
-                case "POINTS":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsFilteredByCategory(firstUser,
-                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
-                    break;
-                case "ACTIVITY":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByActivityCountFilteredByCategory(firstUser,
-                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
-                    break;
-                case "CATEGORY":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByScreenNameFilteredByCategory(firstUser,
-                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
-                    break;
-                case "MEMBER_SINCE":
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByMemberSinceFilteredByCategory(firstUser,
-                            endUser, filter, memberCategoryFilter, sortFilterPage.isSortAscending());
-                    break;
-                default:
-                    dBUsers = Xcolab_UserLocalServiceUtil.getUsersSortedByPointsFilteredByCategory(firstUser,
-                            endUser, filter, memberCategoryFilter, false);
-                    sortFilterPage.setSortColumn("POINTS");
-                    sortFilterPage.setSortAscending(false);
-            }
-
-            for (User user : dBUsers) {
-                MemberItem memberItem = new MemberItem(user, memberCategoryParam);
-                users.add(memberItem);
-            }
+        if(sortColumn == null || sortColumn.isEmpty()){
+            sortFilterPage.setSortColumn("POINTS");
+            sortFilterPage.setSortAscending(false);
         }
+        List<User_> dbUsersMicro = MembersClient.listMembers(memberCategoryParam, filterParam, sortColumn,
+                sortFilterPage.isSortAscending(), firstUser, endUser);
+
+
+        request.getPortletSession().setAttribute("previousSortColumn", sortColumn);
+        request.getPortletSession().setAttribute("previousSortOrder", sortFilterPage.isSortAscending());
+
+        for (User_ user : dbUsersMicro) {
+            MemberItem memberItem = new MemberItem(user, memberCategoryParam);
+            users.add(memberItem);
+        }
+
 
         int pagesCount = (int) Math.ceil(usersCount / (double) USERS_PER_PAGE);
         int endPage = pagesCount;
@@ -172,8 +96,10 @@ public class MembersController {
         model.addAttribute("memberCategories", MemberCategoryLocalServiceUtil
                 .getVisibleMemberCategories());
 
-        model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
-        model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
+        model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.
+                getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
+        model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.
+                getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
         return "users";
     }
 }
