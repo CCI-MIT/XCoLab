@@ -77,33 +77,34 @@
 			</div>
 		</c:if>
 
-		<div class="show">
-			<div class="show-active">
-				<c:choose>
-					<c:when test="${showActiveContests }">
-						<a href="#" >Active ${contestType.contestNamePlural}</a>
-					</c:when>
-					<c:when test="${not showActiveContests and not showAllContests }">
-						<a href="#" >Prior ${contestType.contestNamePlural}</a>
-					</c:when>
-					<c:otherwise>
-						<a href="#" >All ${contestType.contestNamePlural}</a>
-					</c:otherwise>
-				</c:choose>
-				<div id="priorActiveAllWidget">
-					<ul>
-						<li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
-						<c:if test="${priorContestsExist}">
-							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
-						</c:if>
-						<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All ${contestType.contestNamePlural}</a></li>
-					</ul>
+		<c:if test="${priorContestsExist}">
+			<div class="show">
+				<div class="show-active">
+					<c:choose>
+						<c:when test="${showActiveContests }">
+							<a href="#" >Active ${contestType.contestNamePlural}</a>
+						</c:when>
+						<c:when test="${not showActiveContests and not showAllContests }">
+							<a href="#" >Prior ${contestType.contestNamePlural}</a>
+						</c:when>
+						<c:otherwise>
+							<a href="#" >All ${contestType.contestNamePlural}</a>
+						</c:otherwise>
+					</c:choose>
+					<div id="priorActiveAllWidget">
+						<ul>
+							<li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
 
+								<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
+
+							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All ${contestType.contestNamePlural}</a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="divider"><!--  --></div>
+		</c:if>
 		<c:if test="${not empty suggestionContestLink}">
+			<div class="divider"><!--  --></div>
   			<div class="show">
   				<a href="${suggestionContestLink}">Suggest a new ${contestType.contestName}</a>
   			</div>
