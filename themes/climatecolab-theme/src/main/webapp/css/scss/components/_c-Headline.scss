@@ -1,5 +1,6 @@
 $c-Headline__addprop__textColor: black !default;
 $c-Headline__h2__textColor: $t-Color__grey--darkest !default;
+$c-Headline__h2__span__fontWeight: 700 !default;
 $c-Headline__h2__span__textColor: $t-Color__secondary !default;
 $c-Headline__fold__message_backgroundColor: $t-Color__primary__grey--light !default;
 $c-Headline__days-left__span__textColor: $t-Color__accent !default;
@@ -70,7 +71,7 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
     span { //.headline h2 span
       vertical-align: middle;
       font-size: 33px;
-      font-weight: 700;
+      font-weight: $c-Headline__h2__span__fontWeight;
       color: $c-Headline__h2__span__textColor;
     }
   }

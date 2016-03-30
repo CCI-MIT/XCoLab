@@ -83,6 +83,10 @@ $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__li__a__textColor: $t-Color__grey--medium;
 $c-Header__menu__li__hoverColor: $t-Color__red;
 
+$c-Headline__days-left__span__textColor: $t-Color__red;
+$c-Headline__h2__span__textColor: $t-Color__red;
+$c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
+
 $c-Footer__backgroundColor: white;
 $c-Footer__menu__li__a--hover__color: $t-Color__primary;
 $c-Footer__menu__backgroundGradient: linear-gradient(top, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
