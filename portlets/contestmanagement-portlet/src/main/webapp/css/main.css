@@ -66,9 +66,7 @@
 }
 
 .cmsDetailsBox .addpropbox select {
-  height: 30px;
   width: 445px;
-  font-size: 16px;
 }
 
 .cmsDetailsBox .addpropbox select.multi {
