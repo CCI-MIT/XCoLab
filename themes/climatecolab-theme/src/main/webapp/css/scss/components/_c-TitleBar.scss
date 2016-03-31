@@ -1,6 +1,5 @@
-
 $c-TitleBar__backgroundColor: $t-Color__primary__grey--light !default;
-$c-TitleBar__borderBottom__color: $t-Color__primary__grey !default;
+$c-TitleBar__borderBottom: 1px solid $t-Color__primary__grey !default;
 $c-TitleBar__textColor: $t-Color__grey--darkest !default;
 $c-TitleBar__element--active__capitalization: none !default;
 $c-TitleBar__element--disabled__textColor: $t-Color__primary__grey--light !default;
@@ -19,7 +18,7 @@ $c-TitleBar__separator__color: #B9E3FF !default;
   height: 37px;
   line-height: 37px;
   background: $c-TitleBar__backgroundColor;
-  border-bottom: 1px solid $c-TitleBar__borderBottom__color;
+  border-bottom: $c-TitleBar__borderBottom;
   color: $c-TitleBar__textColor;
   text-transform: $c-TitleBar__capitalization;
 
