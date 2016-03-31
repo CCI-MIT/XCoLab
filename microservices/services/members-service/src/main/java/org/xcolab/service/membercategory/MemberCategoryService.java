@@ -12,11 +12,11 @@ public class MemberCategoryService {
     private final MemberCategoryDao memberCategoryDao;
 
     @Autowired
-    public MemberCategoryService(MemberCategoryDao memberCategoryDao){
+    public MemberCategoryService(MemberCategoryDao memberCategoryDao) {
         this.memberCategoryDao = memberCategoryDao;
     }
 
-    public MemberCategory getMemberCategory(Long roleId){
+    public MemberCategory getMemberCategory(Long roleId) {
         return this.memberCategoryDao.getMemberCategory(roleId);
     }
 }

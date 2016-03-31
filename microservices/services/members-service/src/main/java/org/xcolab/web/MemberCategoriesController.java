@@ -15,7 +15,7 @@ public class MemberCategoriesController {
     private MemberCategoryService memberCategoryService;
 
     @RequestMapping(value = "/membercategories/{roleId}", method = RequestMethod.GET)
-    public MemberCategory getMemberCategory(@PathVariable("roleId") Long roleId){
+    public MemberCategory getMemberCategory(@PathVariable("roleId") Long roleId) {
         return this.memberCategoryService.getMemberCategory(roleId);
     }
 }
