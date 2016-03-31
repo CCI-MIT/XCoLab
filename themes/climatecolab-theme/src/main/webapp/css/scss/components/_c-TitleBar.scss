@@ -5,6 +5,7 @@ $c-TitleBar__textColor: $t-Color__grey--darkest !default;
 $c-TitleBar__element--active__capitalization: none !default;
 $c-TitleBar__element--disabled__textColor: $t-Color__primary__grey--light !default;
 $c-TitleBar__a__textColor: $t-Color__primary !default;
+$c-TitleBar__a__textColor--hover: black; !default;
 $c-TitleBar__a__fontWeight: 700 !default;
 $c-TitleBar__capitalization: none !default;
 
@@ -26,6 +27,10 @@ $c-TitleBar__separator__color: #B9E3FF !default;
   a {
     color: $c-TitleBar__a__textColor;
     font-weight: $c-TitleBar__a__fontWeight;
+  }
+
+  a:hover {
+    color: $c-TitleBar__a__textColor--hover;
   }
 
   &.contestSummary {
