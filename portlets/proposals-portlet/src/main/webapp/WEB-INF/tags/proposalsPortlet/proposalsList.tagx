@@ -17,6 +17,7 @@
 	<div class="shadebar"><!--  --></div>
 </c:if>
 <c:forEach var="proposal" items="${proposals }">
+    <!--@elvariable id="proposal" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"-->
 
     <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
         <c:choose>
@@ -55,11 +56,14 @@
                     	<collab:proposalLink proposal="${proposal}" phase="${contestPhase}" escape="false" />
                         /&#160;
                         <c:choose>
-                        	<c:when test="${empty proposal.team}">
-                        		<proposalsPortlet:userLinkSimple userId="${proposal.author.userId}" text="${proposal.author.screenName}" />
+                        	<c:when test="${not empty proposal.team}">
+                                <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.team}"/>
                         	</c:when>
+                            <c:when test="${proposal.members.size() > 1}">
+                                <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.screenName} and ${proposal.members.size() - 1} ${proposal.members.size() > 2 ? 'others' : 'other'}"/>
+                            </c:when>
                         	<c:otherwise>
-                            	${proposal.team}
+                                <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.screenName}"/>
                         	</c:otherwise>
                         </c:choose>
                     </h4>
