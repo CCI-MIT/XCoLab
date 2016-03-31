@@ -1,8 +1,10 @@
+$p-community__left__lineHeight: 21px !default;
+
 .community-left {
   float: left;
   width: 736px;
   font-size: 16px;
-  line-height: 21px;
+  line-height: $p-community__left__lineHeight;
   color: black;
   position: relative;
 }
