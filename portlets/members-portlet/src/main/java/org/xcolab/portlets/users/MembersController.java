@@ -53,14 +53,12 @@ public class MembersController {
         if (filterParam != null) {
             sortFilterPage.setFilter(filterParam);
         }
-        int usersCount;
 
         List<MemberItem> users = new ArrayList<>();
 
-
         final String sortColumn = sortFilterPage.getSortColumn() != null ? sortFilterPage.getSortColumn() : "";
 
-        usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
+        int usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
 
         if(sortColumn == null || sortColumn.isEmpty()){
             sortFilterPage.setSortColumn("POINTS");

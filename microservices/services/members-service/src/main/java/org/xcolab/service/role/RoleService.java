@@ -13,12 +13,11 @@ public class RoleService {
     private final RoleDao roleDao;
 
     @Autowired
-    public RoleService(RoleDao roleDao){
-
+    public RoleService(RoleDao roleDao) {
         this.roleDao = roleDao;
     }
 
-    public List<Role_> getMemberRoles(Long memberId){
+    public List<Role_> getMemberRoles(Long memberId) {
         return this.roleDao.getMemberRoles(memberId);
     }
 }

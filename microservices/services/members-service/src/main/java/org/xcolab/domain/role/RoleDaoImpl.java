@@ -12,12 +12,13 @@ import static org.xcolab.model.Tables.ROLE_;
 import static org.xcolab.model.Tables.USERS_ROLES;
 
 @Repository
-public class RoleDaoImpl implements RoleDao{
+public class RoleDaoImpl implements RoleDao {
 
     @Autowired
     private DSLContext dslContext;
 
-    public List<Role_> getMemberRoles(Long memberId){
+    @Override
+    public List<Role_> getMemberRoles(Long memberId) {
         return this.dslContext.select()
                 .from(USERS_ROLES)
                 .join(ROLE_).on(ROLE_.ROLE_ID.eq(USERS_ROLES.ROLE_ID))
