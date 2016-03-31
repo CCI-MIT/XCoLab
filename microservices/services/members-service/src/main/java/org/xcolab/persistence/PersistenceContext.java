@@ -1,6 +1,7 @@
 package org.xcolab.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
+
 import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;

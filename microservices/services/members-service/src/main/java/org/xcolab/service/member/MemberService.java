@@ -18,67 +18,67 @@ public class MemberService {
     }
 
     public List<User_> listMembersSortByScreenName(int firstUser, int lastUser,
-            String screenNameFilter, boolean isAscOrder) {
+                                                   String screenNameFilter, boolean isAscOrder) {
         return this.memberDao.listMembersSortByScreenName(firstUser, lastUser, screenNameFilter,
                 isAscOrder);
     }
 
     public List<User_> listMembersSortByPoint(int firstUser, int lastUser, String screenNameFilter,
-            boolean isAscOrder) {
+                                              boolean isAscOrder) {
         return this.memberDao.listMembersSortByPoint(firstUser, lastUser,
                 screenNameFilter, isAscOrder);
     }
 
     public List<User_> listMembersSortByPointFilteredByCategory(int startRecord,
-            int limitRecord,
-            String filter,
-            boolean isAscOrder,
-            String roleName) {
+                                                                int limitRecord,
+                                                                String filter,
+                                                                boolean isAscOrder,
+                                                                String roleName) {
         return this.memberDao.listMembersSortByPointFilteredByCategory(startRecord,
                 limitRecord, filter, isAscOrder, roleName);
     }
 
     public List<User_> listMembersSortByActivityCount(int firstUser, int lastUser,
-            String screenNameFilter, boolean isAscOrder) {
+                                                      String screenNameFilter, boolean isAscOrder) {
         return this.memberDao.listMembersSortByActivityCount(firstUser, lastUser,
                 screenNameFilter, isAscOrder);
     }
 
     public List<User_> listMembersSortByActivityCountFilteredByCategory(int firstUser, int lastUser,
-            String screenNameFilter,
-            boolean isAscOrder,
-            String roleName) {
+                                                                        String screenNameFilter,
+                                                                        boolean isAscOrder,
+                                                                        String roleName) {
         return this.memberDao.listMembersSortByActivityCountFilteredByCategory(firstUser, lastUser,
                 screenNameFilter, isAscOrder, roleName);
     }
 
     public List<User_> listMembersSortByMemberSince(int firstUser, int lastUser,
-            String screenNameFilter, boolean isAscOrder) {
+                                                    String screenNameFilter, boolean isAscOrder) {
         return this.memberDao.listMembersSortByMemberSince(firstUser, lastUser,
                 screenNameFilter, isAscOrder);
     }
 
     public List<User_> listMembersSortByRoleName(int firstUser, int lastUser,
-            String screenNameFilter, boolean isAscOrder) {
+                                                 String screenNameFilter, boolean isAscOrder) {
         return this.memberDao.listMembersSortByRoleName(firstUser, lastUser,
                 screenNameFilter, isAscOrder);
     }
 
     public List<User_> listMembersSortByRoleNameFilteredByCategory(int firstUser, int lastUser, String screenNameFilter,
-            boolean isAscOrder, String roleName) {
+                                                                   boolean isAscOrder, String roleName) {
         return this.memberDao.listMembersSortByRoleNameFilteredByCategory(firstUser,
                 lastUser, screenNameFilter, isAscOrder, roleName);
     }
 
 
     public List<User_> listMembersSortByScreenNameFilteredByCategory(int firstUser, int lastUser,
-            String screenNameFilter, boolean isAscOrder, String roleName) {
+                                                                     String screenNameFilter, boolean isAscOrder, String roleName) {
         return this.memberDao.listMembersSortByScreenNameFilteredByCategory(firstUser, lastUser,
                 screenNameFilter, isAscOrder, roleName);
     }
 
     public List<User_> listMembersSortByMemberSinceFilteredByCategory(int firstUser, int lastUser,
-            String screenNameFilter, boolean isAscOrder, String roleName) {
+                                                                      String screenNameFilter, boolean isAscOrder, String roleName) {
         return this.memberDao.listMembersSortByMemberSinceFilteredByCategory(firstUser, lastUser,
                 screenNameFilter, isAscOrder, roleName);
     }

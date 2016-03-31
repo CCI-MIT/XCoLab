@@ -8,45 +8,45 @@ import java.util.List;
 public interface MemberDao {
 
     List<User_> listMembersSortByActivityCount(int startRecord, int limitRecord,
-            String filter, boolean isAscOrder);
+                                               String filter, boolean isAscOrder);
 
     List<User_> listMembersSortByActivityCountFilteredByCategory(int startRecord,
-            int limitRecord,
-            String filter,
-            boolean isAscOrder,
-            String roleName);
+                                                                 int limitRecord,
+                                                                 String filter,
+                                                                 boolean isAscOrder,
+                                                                 String roleName);
 
     List<User_> listMembersSortByMemberSince(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder);
+                                             boolean isAscOrder);
 
     List<User_> listMembersSortByPoint(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder);
+                                       boolean isAscOrder);
 
     List<User_> listMembersSortByPointFilteredByCategory(int startRecord, int limitRecord,
-            String filter, boolean isAscOrder,
-            String roleName);
+                                                         String filter, boolean isAscOrder,
+                                                         String roleName);
 
     List<User_> listMembersSortByRoleName(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder);
+                                          boolean isAscOrder);
 
     List<User_> listMembersSortByRoleNameFilteredByCategory(int startRecord, int limitRecord,
-            String filter, boolean isAscOrder,
-            String roleName);
+                                                            String filter, boolean isAscOrder,
+                                                            String roleName);
 
     List<User_> listMembersSortByScreenName(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder);
+                                            boolean isAscOrder);
 
     List<User_> listMembersSortByMemberSinceFilteredByCategory(int startRecord,
-            int limitRecord,
-            String filter,
-            boolean isAscOrder,
-            String roleName);
+                                                               int limitRecord,
+                                                               String filter,
+                                                               boolean isAscOrder,
+                                                               String roleName);
 
     List<User_> listMembersSortByScreenNameFilteredByCategory(int startRecord,
-            int limitRecord,
-            String filter,
-            boolean isAscOrder,
-            String roleName);
+                                                              int limitRecord,
+                                                              String filter,
+                                                              boolean isAscOrder,
+                                                              String roleName);
 
     Integer countMembersFilteredByCategory(String filter, String roleName);
 

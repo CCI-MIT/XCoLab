@@ -29,12 +29,12 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByScreenName(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder) {
+                                                   boolean isAscOrder) {
         return listMembersSortByField(startRecord, limitRecord, filter, USER_.SCREEN_NAME, isAscOrder);
     }
 
     private List<User_> listMembersSortByField(int startRecord, int limitRecord, String filter,
-            TableField<User_Record, ?> field, boolean isAscOrder) {
+                                               TableField<User_Record, ?> field, boolean isAscOrder) {
         if (filter != null && !filter.isEmpty()) {
             return this.dslContext.selectDistinct()
                     .from(USER_)
@@ -60,13 +60,13 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByMemberSince(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder) {
+                                                    boolean isAscOrder) {
         return listMembersSortByField(startRecord, limitRecord, filter, USER_.CREATE_DATE, isAscOrder);
     }
 
     @Override
     public List<User_> listMembersSortByActivityCount(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder) {
+                                                      boolean isAscOrder) {
         Field<Object> activityCount = this.dslContext.selectCount()
                 .from(SOCIAL_ACTIVITY)
                 .where(SOCIAL_ACTIVITY.USER_ID.equal(USER_.USER_ID))
@@ -87,8 +87,8 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByActivityCountFilteredByCategory(int startRecord, int limitRecord,
-            String filter, boolean isAscOrder,
-            String roleName) {
+                                                                        String filter, boolean isAscOrder,
+                                                                        String roleName) {
         Field<Object> activityCount =
                 this.dslContext.selectCount()
                         .from(SOCIAL_ACTIVITY)
@@ -110,7 +110,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByRoleName(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder) {
+                                                 boolean isAscOrder) {
 
         Field<Long> userIdOriginalRoleSelect = USERS_ROLES.USER_ID.as("userIdOrdinalSelect");
         Field<Integer> roleOrdinalRoleSelect = max(ROLES_CATEGORY.ROLE_ORDINAL)
@@ -137,8 +137,8 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByRoleNameFilteredByCategory(int startRecord, int limitRecord,
-            String filter, boolean isAscOrder,
-            String roleName) {
+                                                                   String filter, boolean isAscOrder,
+                                                                   String roleName) {
 
         Field<Long> userIdOriginalRoleSelect = USERS_ROLES.USER_ID.as("userIdOrdinalSelect");
         Field<Integer> roleOrdinalRoleSelect = max(ROLES_CATEGORY.ROLE_ORDINAL)
@@ -165,7 +165,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByPoint(int startRecord, int limitRecord, String filter,
-            boolean isAscOrder) {
+                                              boolean isAscOrder) {
 
         Field<Object> points =
                 this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
@@ -190,8 +190,8 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByPointFilteredByCategory(int startRecord, int limitRecord,
-            String filter, boolean isAscOrder,
-            String roleName) {
+                                                                String filter, boolean isAscOrder,
+                                                                String roleName) {
         Field<Object> points = this.dslContext
                 .select(sum(POINTS.MATERIALIZED_POINTS))
                 .from(POINTS)
@@ -257,17 +257,17 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByScreenNameFilteredByCategory(int startRecord,
-            int limitRecord, String filter,
-            boolean isAscOrder,
-            String roleName) {
+                                                                     int limitRecord, String filter,
+                                                                     boolean isAscOrder,
+                                                                     String roleName) {
         return listMembersSortByFieldFilteredByCategory(startRecord, limitRecord, filter,
                 USER_.SCREEN_NAME, isAscOrder, roleName);
     }
 
     private List<User_> listMembersSortByFieldFilteredByCategory(int startRecord, int limitRecord,
-            String filter,
-            TableField<User_Record, ?> field,
-            boolean isAscOrder, String roleName) {
+                                                                 String filter,
+                                                                 TableField<User_Record, ?> field,
+                                                                 boolean isAscOrder, String roleName) {
         if (filter != null && !filter.isEmpty()) {
             return this.dslContext.selectDistinct()
                     .from(USER_)
@@ -292,7 +292,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<User_> listMembersSortByMemberSinceFilteredByCategory(int startRecord, int limitRecord,
-            String filter, boolean isAscOrder, String roleName) {
+                                                                      String filter, boolean isAscOrder, String roleName) {
         return listMembersSortByFieldFilteredByCategory(startRecord, limitRecord, filter,
                 USER_.CREATE_DATE, isAscOrder, roleName);
     }

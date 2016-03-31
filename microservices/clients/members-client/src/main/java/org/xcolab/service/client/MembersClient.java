@@ -15,11 +15,11 @@ public class MembersClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/members-service";
 
-    
+
     static RestTemplate restTemplate = new RestTemplate();
 
     public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
-            boolean ascOrder, int firstUser, int lastUser) {
+                                          boolean ascOrder, int firstUser, int lastUser) {
 
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members")

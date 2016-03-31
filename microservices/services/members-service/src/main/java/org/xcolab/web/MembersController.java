@@ -27,10 +27,10 @@ public class MembersController {
 
     @RequestMapping("/members")
     public List<User_> listMembers(@RequestParam String firstRecord,
-                             @RequestParam String lastRecord,
-                             @RequestParam(required = false) String sort,
-                             @RequestParam(required = false) String screenName,
-                             @RequestParam(required = false) String category) {
+                                   @RequestParam String lastRecord,
+                                   @RequestParam(required = false) String sort,
+                                   @RequestParam(required = false) String screenName,
+                                   @RequestParam(required = false) String category) {
         boolean isAsc = true;
         if (sort == null) {
             sort = "";
