@@ -96,7 +96,7 @@
                         <database>
                             <name>org.jooq.util.mysql.MySQLDatabase</name>
                             <includes>empty</includes>
-                            <inputSchema>xcolab</inputSchema>
+                            <inputSchema>${db.schema}</inputSchema>
                         </database>
                         <generate>
                             <pojos>true</pojos>
