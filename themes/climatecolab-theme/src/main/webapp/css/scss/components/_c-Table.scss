@@ -1,3 +1,4 @@
+$c-Table__shadebar__background: url(../images/tableshade.png) repeat-x !default;
 
 .c-Table {
 
@@ -47,7 +48,7 @@
 //TODO: port
 .shadebar {
   content: '';
-  background: url(../images/tableshade.png) repeat-x;
+  background: $c-Table__shadebar__background;
   height: 4px;
   position: relative;
   z-index: 9;
