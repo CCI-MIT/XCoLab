@@ -100,17 +100,6 @@
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<th class="b m nowrap required-field" width="170">
-								Screen Name
-							</th>
-							<td>
-								<form:input id="screenNameMessage" cssClass="profile_input" path="screenName"></form:input>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="screenName" />
-								</div>
-							</td>
-						</tr>
 
 						<tr>
 							<th class="b m required-field">
