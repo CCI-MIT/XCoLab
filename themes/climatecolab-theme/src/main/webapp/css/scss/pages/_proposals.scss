@@ -1,7 +1,29 @@
 $p-proposal__header__background: url(../images/pattern-6x6-blue.png) !default;
+$p-proposal__header__h1__textColor: $b-Typography__textColor !default;
+$p-proposal__header__h1__capitalization: $b-Typography__capitalization--none !default;
+$p-proposal__header__borderBottomColor: $t-Color__grey--medium !default;
 $p-proposal__tab__li__a__fontWeight: 700 !default;
 $p-proposal__tab__li__a__borderRadius: 5px !default;
 $p-proposal__propbox__h4__fontWeight: 700 !default;
+
+$p-proposal__votebox__shade__background: $t-Color__grey--light !default;
+$p-proposal__votebox__top__left: 5px !default;
+$p-proposal__votebox__marginTop: 0px !default;
+
+$p-proposal__left__h2__textColor: $t-Color__secondary !default;
+$p-proposal__left__h2__capitalization: $b-Typography__capitalization--none !default;
+$p-proposal__left__h2__fontWeight: initial !default;
+
+$p-proposal__right__h5__topbox__backgroundColor: $t-Color__grey--lightest !default;
+$p-proposal__right__h5__topbox__padding--top: 10px !default;
+$p-proposal__right__h5__topbox__font-size: 13px !default;
+$p-proposal__right__h5__topbox__fontWeight: bold !default;
+$p-proposal__right__h5__topbox__border--top: 1px dotted $t-Color__grey--medium !default;
+$p-proposal__title__addProp__fontWeight: 700 !default;
+$p-proposal__settings__padding--bottom: 10px !default;
+$p-proposal__settings__backgroundColor: $t-Color__grey--lightest !default;
+$p-proposal__contest__backgroundColor: $t-Color__grey--lightest !default;
+$p-proposal__contest__padding--top--bottom: 12px !default;
 
 /* PROPOSALS ----------------------------------------------------------------------------- */
 
@@ -56,6 +78,8 @@ $p-proposal__propbox__h4__fontWeight: 700 !default;
 
 .proposal-head h1 {
   font-size: 29px;
+  color: $p-proposal__header__h1__textColor;
+  text-transform: $p-proposal__header__h1__capitalization;
 }
 
 /* proposal TABS */
@@ -197,9 +221,11 @@ $p-proposal__propbox__h4__fontWeight: 700 !default;
 
 .prop-left h2 {
   font-size: 27px;
-  color: $t-Color__secondary;
+  color: $p-proposal__left__h2__textColor;
   margin: 10px 0 16px;
   text-align: justify;
+  text-transform: $p-proposal__left__h2__capitalization;
+  font-weight: $p-proposal__left__h2__fontWeight;
 }
 
 .prop-left h3 {
@@ -356,7 +382,7 @@ $p-proposal__propbox__h4__fontWeight: 700 !default;
 
 .votebox-shade {
   width: 331px;
-  background: $t-Color__grey--light;
+  background: $p-proposal__votebox__shade__background;
   margin: 3px 0 0 3px;
 }
 
@@ -365,8 +391,9 @@ $p-proposal__propbox__h4__fontWeight: 700 !default;
   background: $t-Color__grey--lightest;
   border: 1px solid $t-Color__grey--light;
   position: relative;
-  top: -5px;
-  left: -5px;
+  top: $p-proposal__votebox__top__left;
+  left: $p-proposal__votebox__top__left;
+  margin-top: $p-proposal__votebox__marginTop;
 }
 
 .votebox-top {
@@ -449,12 +476,13 @@ $p-proposal__propbox__h4__fontWeight: 700 !default;
 }
 
 .prop-right h5.topbox {
-  padding: 10px 0 10px 12px;
+  padding: $p-proposal__right__h5__topbox__padding--top 0 10px 12px;
   margin-bottom: 9px;
-  background: $t-Color__grey--lightest;
-  font-size: 13px;
+  background: $p-proposal__right__h5__topbox__backgroundColor;
+  font-size: $p-proposal__right__h5__topbox__font-size;
   color: $t-Color__grey--medium;
-  border-top: 1px dotted $t-Color__grey--medium;
+  border-top: $p-proposal__right__h5__topbox__border--top;
+  font-weight: $p-proposal__right__h5__topbox__fontWeight;
 }
 
 .prop-title {
@@ -468,7 +496,7 @@ $p-proposal__propbox__h4__fontWeight: 700 !default;
 .prop-title.addprop {
   background: none;
   border-bottom: none;
-  font-weight: 700;
+  font-weight: $p-proposal__title__addProp__fontWeight;
   padding: 0 18px 9px 12px;
 }
 
@@ -483,23 +511,23 @@ $p-proposal__propbox__h4__fontWeight: 700 !default;
 }
 
 .prop-contest {
-  background: $t-Color__grey--lightest;
+  background: $p-proposal__contest__backgroundColor;
   border-top: 1px solid $t-Color__grey--light;
   border-bottom: 1px solid $t-Color__grey--light;
   font-size: 13px;
   line-height: 18px;
   color: black;
-  padding: 10px 18px 12px 12px;
+  padding: $p-proposal__contest__padding--top--bottom 18px $p-proposal__contest__padding--top--bottom 12px;
   margin-bottom: 3px;
 }
 
 .prop-settings {
-  background: $t-Color__grey--lightest;
+  background: $p-proposal__settings__backgroundColor;
   border-bottom: 1px solid $t-Color__grey--light;
   font-size: 13px;
   line-height: 18px;
   color: black;
-  padding: 8px 18px 10px 12px;
+  padding: 8px 18px $p-proposal__settings__padding--bottom 12px;
 }
 
 .prop-results {

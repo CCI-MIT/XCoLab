@@ -147,10 +147,28 @@ $p-homepage__get__borderColor: none;
 $p-homepage__learn__imageUrl: none;
 $p-homepage__get__imageUrl: none;
 
-$p-proposal__header__background: white;
+$p-proposal__header__background: transparent;
+$p-proposal__header__h1__textColor: $t-Color__red;
 $p-proposal__tab__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $p-proposal__tab__li__a__borderRadius: 0px;
-$p-proposal__propbox__h4__fontWeight: $b-Typography__fontWeight--regular;$c-Table__shadebar__background: none;
+$p-proposal__propbox__h4__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__right__h5__topbox__backgroundColor: white;
+$p-proposal__settings__backgroundColor: white;
+$p-proposal__contest__backgroundColor: white;
+$p-proposal__votebox__top__left: 0px;
+$p-proposal__votebox__marginTop: 35px;
+$p-proposal__votebox__shade__background: transparent;
+$p-proposal__right__h5__topbox__padding--top: 20px;
+$p-proposal__right__h5__topbox__font-size: 14pt;
+$p-proposal__right__h5__topbox__fontWeight: $b-Typography__fontWeight--light;
+$p-proposal__right__h5__topbox__border--top: 1px solid $t-Color__grey--light;
+$c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__settings__padding--bottom: 25px;
+$p-proposal__contest__padding--top--bottom: 20px;
+$p-proposal__title__addProp__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__left__h2__textColor: $t-Color__black;
+$p-proposal__left__h2__fontWeight: $b-Typography__fontWeight--light;
+
 $p-community__left__lineHeight: default;
 
 $c-Table__shadebar__background: none;
