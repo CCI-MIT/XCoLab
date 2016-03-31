@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MembersClient {
 
-    private static final String  EUREKA_APPLICATION_ID = "localhost:8080";// ";// localhost:8080/members-service
+    private static final String  EUREKA_APPLICATION_ID  = "localhost:8080/members-service";// ";// localhost:8080/members-service
 
     @Autowired
     static RestTemplate restTemplate = new RestTemplate();
@@ -26,7 +26,7 @@ public class MembersClient {
     public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstUser, int lastUser){
 
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+EUREKA_APPLICATION_ID+"/members")
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+EUREKA_APPLICATION_ID +"/members")
                 .queryParam("firstRecord", firstUser)
                 .queryParam("lastRecord", lastUser);
 
@@ -45,7 +45,7 @@ public class MembersClient {
         return response.getBody();
     }
     public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue){
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+EUREKA_APPLICATION_ID+"/members/count");
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+EUREKA_APPLICATION_ID +"/members/count");
         if(screenNameFilterValue != null ){
             uriBuilder.queryParam("screenName", screenNameFilterValue);
         }
@@ -57,20 +57,20 @@ public class MembersClient {
     }
     public static Integer getMemberActivityCount(Long memberId){
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+
-                EUREKA_APPLICATION_ID+"/members/"+memberId+"/activityCount");
+                EUREKA_APPLICATION_ID +"/members/"+memberId+"/activityCount");
         Integer totalResults = restTemplate.getForObject(uriBuilder.build().toString(), Integer.class);
         return totalResults;
     }
     public static Integer getMemberMaterializedPoints(Long memberId){
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+
-                EUREKA_APPLICATION_ID+"/members/"+memberId+"/materializedPoints");
+                EUREKA_APPLICATION_ID +"/members/"+memberId+"/materializedPoints");
         Integer totalResults = restTemplate.getForObject(uriBuilder.build().toString(), Integer.class);
         return totalResults;
     }
 
     public static List<Role_> getMemberRoles(Long memberId){
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+
-                EUREKA_APPLICATION_ID+"/members/"+memberId+"/roles");
+                EUREKA_APPLICATION_ID +"/members/"+memberId+"/roles");
 
         ResponseEntity<List<Role_>> response = restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Role_>>(){});
@@ -80,7 +80,7 @@ public class MembersClient {
     }
     public static MemberCategory getMemberCategory(Long roleId){
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"+
-                EUREKA_APPLICATION_ID+"/membercategories/"+roleId+"");
+                EUREKA_APPLICATION_ID +"/membercategories/"+roleId+"");
         MemberCategory memberCategory = restTemplate.getForObject(uriBuilder.build().toString(), MemberCategory.class);
 
         return memberCategory;
