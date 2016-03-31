@@ -29,16 +29,22 @@
 				<portlet:param name="action_forwardToPage" value="contestProposals" />
 			</portlet:actionURL>
 			<div class="c-TitleBar__actionButton c-TitleBar__element right">
-				<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
-					<c:choose>
-						<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
-							<img src="/climatecolab-theme/images/icon_star.png" />Subscribe
-						</c:when>
-						<c:otherwise>
-							<img src="/climatecolab-theme/images/unsubscribe.png" />Unsubscribe
-						</c:otherwise>
-					</c:choose>
-				</a>
+				<span class="fieldWithTooltip tooltipAbove">
+					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
+						<c:choose>
+							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
+								<img src="/climatecolab-theme/images/icon_star.png" />Subscribe
+							</c:when>
+							<c:otherwise>
+								<img src="/climatecolab-theme/images/unsubscribe.png" />Unsubscribe
+							</c:otherwise>
+						</c:choose>
+					</a>
+				</span>
+				<div class="c-Tooltip">
+					Receive daily activity digests about this ${contestType.contestName} and its ${contestType.proposalNamePlural} via email or under "My subscriptions".
+					<div class="c-Tooltip__arrow"><!--  --></div>
+				</div>
 			</div>
 		</c:if>
 	</div>
