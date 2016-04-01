@@ -48,7 +48,7 @@ $c-TitleBar__separator__color: #B9E3FF !default;
   //inline icons
   img {
     height: 25px;
-    vertical-align: middle;
+    vertical-align: -8px; //vertical-align: middle;
     margin-right: 5px;
   }
 
