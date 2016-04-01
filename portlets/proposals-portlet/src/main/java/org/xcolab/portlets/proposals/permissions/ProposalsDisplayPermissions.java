@@ -77,14 +77,13 @@ public class ProposalsDisplayPermissions {
     }
 
     public boolean getCanSeeUnsupportButton() throws PortalException, SystemException {
-        return !user.isDefaultUser() && isSupporter();
+        return (!user.isDefaultUser() && isSupporter())
+                && !proposalsPermissions.isVotingEnabled();
     }
 
     public boolean getCanSeeSupportButton() throws PortalException, SystemException {
-        /* Hide Button in voting phase */
-        return !(contestPhase.getContestPhaseType() == 13
-                || contestPhase.getContestPhaseType() == 15)
-                && (user.isDefaultUser() || !isSupporter());
+        return (user.isDefaultUser() || !isSupporter())
+                && !proposalsPermissions.isVotingEnabled();
     }
 
     public boolean getUserHasOpenMembershipRequest() throws PortalException, SystemException {

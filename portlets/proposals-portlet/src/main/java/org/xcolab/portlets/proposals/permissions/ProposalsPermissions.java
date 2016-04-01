@@ -115,7 +115,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanSupportProposal() throws PortalException, SystemException {
-        return ! user.isDefaultUser();
+        return !user.isDefaultUser() && !isVotingEnabled();
     }
 
     public boolean getCanSubscribeContest() {
