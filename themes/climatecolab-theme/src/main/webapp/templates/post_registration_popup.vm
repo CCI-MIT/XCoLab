@@ -59,7 +59,6 @@
                 return;
             }
 
-            // console.log("no rteinitilized");
             var tmp = this;
             var thiz = jQuery(this);
 
@@ -78,7 +77,6 @@
             }
 
             if (thiz.hasClass("rte")) {
-                // console.log("rte");
                 var editor = CKEDITOR.replace(thiz.attr("id"));
 
                 thiz.get(0)["ckeditor"] = editor;
@@ -116,7 +114,6 @@
                 setTimeout(function() { updateCharacterCounter(thiz, editor); }, 2000);
             }
             else {
-                console.log("else events to bind");
                 eventsToBind = {
                     keypress: function(event) {
                         if (! shouldAllowMoreCharacters(thiz)) {
@@ -142,15 +139,11 @@
                 thiz.bind('input propertychange', function() {
                     if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
                         updateCharacterCounter(thiz);
-                        // console.log("propertychange");
                     }
                 });
             }
             jQuery(this).addClass('rteInitialized');
         });
-
-
-
     };
 
     /**

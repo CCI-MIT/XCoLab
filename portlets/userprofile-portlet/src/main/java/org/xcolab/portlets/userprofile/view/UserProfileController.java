@@ -298,19 +298,6 @@ public class UserProfileController {
             }
         }
 
-        if (updatedUserBean.getScreenName() != null
-                && !updatedUserBean.getScreenName().equals(currentUserProfile.getUserBean().getScreenName())) {
-
-            validator.validate(updatedUserBean, result, UserBean.ScreenNameChanged.class);
-
-            if (!result.hasErrors()) {
-                currentUserProfile.getUser().setScreenName(updatedUserBean.getScreenName());
-                changedUserPart = true;
-            } else {
-                validationError = true;
-                _log.warn("ScreenName change failed for userId: " + currentUserProfile.getUser().getUserId());
-            }
-        }
         boolean eMailChanged = false;
         if (updatedUserBean.getEmail() != null && !updatedUserBean.getEmail().trim().isEmpty() &&
                 !updatedUserBean.getEmail().equals(currentUserProfile.getUserBean().getEmailStored())) {

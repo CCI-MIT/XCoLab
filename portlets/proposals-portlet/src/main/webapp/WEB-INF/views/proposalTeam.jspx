@@ -123,16 +123,16 @@
                 <div class="prop-butt">
                     <img src="${themeDisplay.pathThemeImages}/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
 
-                        <a class="c-Button__primary" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                <c:choose>
-                                    <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">
-                                        Support ${contestType.proposalName}
-                                    </c:when>
-                                    <c:otherwise>
-                                        Retract support
-                                    </c:otherwise>
-                                </c:choose>
-                        </a>
+                    <a class="c-Button__primary" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+                        <c:choose>
+                            <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">
+                                Support ${contestType.proposalName}
+                            </c:when>
+                            <c:otherwise>
+                                Retract support
+                            </c:otherwise>
+                        </c:choose>
+                    </a>
                 </div>
             </c:if>
         </div>

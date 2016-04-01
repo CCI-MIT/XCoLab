@@ -285,14 +285,14 @@
                 // Editor change callback
                 for (var key in CKEDITOR.instances) {
                     CKEDITOR.instances[key].on('saveSnapshot', function(ev) {
-                        var len = jQuery.trim(strip(ev.editor.getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                        var len = jQuery.trim(CKEDITOR.instances["shortBio"].getData().replace(/&lt;[^&gt;]*&gt;/g, "")
+                                .replace(/&amp;nbsp;/g, " ").replace(/\s+/g, " ")).length;
                         validateCharlength( $('[id="'+key+'"]'), len);
                     });
                 }
             }
 
-            function strip(html)
-            {
+            function strip(html) {
                 var tmp = document.createElement("DIV");
                 tmp.innerHTML = html;
                 return tmp.textContent || tmp.innerText || "";
@@ -301,18 +301,24 @@
             function validateCharlength(elem, len) {
                 var charCountContainer = elem.parent().find('.inputLimitContainer');
 
-                var elem = charCountContainer.children('.limit_characterCount');
+                var $characterCountElement = charCountContainer.children('.limit_characterCount');
                 var max = parseInt(charCountContainer.children('.limit_charactersMax').text());
-                if (elem) {
+                if ($characterCountElement) {
                     if (len > max) {
                         charCountContainer.addClass('overflow');
-                    }
-                    else {
+                    } else {
                         charCountContainer.removeClass('overflow');
                     }
-                    elem.text(""+len);
+					$characterCountElement.text(""+len);
                 }
             }
+
+            //TODO: work around since out CKEditor version doesn't support on change events:
+            setInterval(function() {
+                var len = jQuery.trim(CKEDITOR.instances["shortBio"].getData().replace(/&lt;[^&gt;]*&gt;/g, "")
+                        .replace(/&amp;nbsp;/g, " ").replace(/\s+/g, " ")).length;
+                validateCharlength($("#shortBio"), len);
+            }, 250);
 			
 		</script>
         <c:if test="${generateScreenName}">

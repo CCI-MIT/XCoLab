@@ -11,29 +11,23 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.portlets.userprofile.validators.UniqueEmail;
-import org.xcolab.portlets.userprofile.validators.UniqueScreenName;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.validation.CompareStrings;
 import org.xcolab.utils.validation.ValidBioLength;
-import org.xcolab.utils.validation.ValidScreenName;
 
 import java.io.Serializable;
 
 @CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"}, groups = {
         UserBean.PasswordChanged.class, UserBean.EmailChanged.class})
 @UniqueEmail(emailProperty = "email", groups = {UserBean.EmailChanged.class})
-@UniqueScreenName(screenNameProperty = "screenName", groups = {UserBean.ScreenNameChanged.class})
-@ValidScreenName(screenNameProperty = "screenName", groups = {UserBean.ScreenNameChanged.class})
 @ValidBioLength(bioProperty = "shortBio")
 public class UserBean implements Serializable {
-
 
     private static final long serialVersionUID = 1L;
     private static final String EMAIL_REGEX =
             "(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
     private static final long DEFAULT_COMPANY_ID = 10112L;
 
-    @NotBlank(groups = {UserBean.ScreenNameChanged.class})
     private String screenName;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
@@ -259,10 +253,6 @@ public class UserBean implements Serializable {
     }
 
     public interface EmailChanged {
-
-    }
-
-    public interface ScreenNameChanged {
 
     }
 }
