@@ -18,6 +18,7 @@
 
     <modules>
         <module>members-service</module>
+        <module>emails-service</module>
         <module>eureka-service</module>
     </modules>
 
