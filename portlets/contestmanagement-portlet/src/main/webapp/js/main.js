@@ -16,8 +16,7 @@ function initializeTextEditors() {
             thiz.attr({maxCharacters: limitCharactersMax.text(), validateLength: true});
             this.limitCharacterCounter = limitCharacterCount;
             updateCharacterCounter(thiz);
-        }
-        else {
+        } else {
             thiz.attr({validateLength: false});
         }
 
@@ -80,8 +79,7 @@ function initializeTextEditors() {
         }
         jQuery(this).addClass('rteInitialized');
     });
-
-};
+}
 
 function updateCharacterCounter(input, editor) {
     var parent = input.parents('.addpropbox');
