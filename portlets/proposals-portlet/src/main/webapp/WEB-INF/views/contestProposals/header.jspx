@@ -32,10 +32,10 @@
 				<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
 					<c:choose>
 						<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
-							<img src="/climatecolab-theme/images/icon_star.png" />Subscribe
+							<img src="${themeDisplay.pathThemeImages}/icon_star.png" />Subscribe
 						</c:when>
 						<c:otherwise>
-							<img src="/climatecolab-theme/images/unsubscribe.png" />Unsubscribe
+							<img src="${themeDisplay.pathThemeImages}/unsubscribe.png" />Unsubscribe
 						</c:otherwise>
 					</c:choose>
 				</a>

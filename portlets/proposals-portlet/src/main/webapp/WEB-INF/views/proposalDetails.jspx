@@ -19,36 +19,6 @@
                 /*
                         inplace stylesheet is preferred over jquery CSS.
                 */
-            .ui-widget-content a {
-                color: #30a3fb;
-            }
-
-            .historyTable * {
-                border: 0 !important;
-                text-align: left !important;
-                font-size: 15px !important;
-            }
-
-            .historyTable .ui-datatable-even td {
-                background-color: #f1f1e9;
-            }
-
-            .historyTable .ui-datatable-odd td {
-                background-color: #fff;
-            }
-
-            .historyTable table {
-                width: 617px;
-                margin-top: 10px;
-            }
-
-            .ui-datatable table {
-                width: auto;
-            }
-
-            .ui-widget-header {
-                background: none;
-            }
         </style>
 
 
