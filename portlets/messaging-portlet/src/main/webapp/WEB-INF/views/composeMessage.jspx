@@ -38,7 +38,7 @@
                 <form:textarea path="messageContent" cssClass="rte commentbox commentContent"/> <br />
             </label>
 
-            <a class="primary-button" href="javascript:;" onclick="jQuery('#sendMessageForm').submit()">Send</a>
+            <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#sendMessageForm').submit()">Send</a>
         </form:form>
     </div>
 

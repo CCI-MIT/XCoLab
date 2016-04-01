@@ -37,29 +37,29 @@
 
                 <form:form action="${archiveMessagesUrl}" id="archiveMessagesForm" method="post"
                            modelAttribute="messagingBean">
-                    <table class="thread-list">
-                        <thead class="blueheaderbar">
-                            <tr>
-                                <th></th>
-                                <th>Subject</th>
-                                <th>${messagingBean.type != 'SENT' ? 'From' : 'To'}</th>
-                                <th>Date</th>
+                    <table class="c-Table">
+                        <thead>
+                            <tr class="c-Table__row--title">
+                                <th class="c-Table__cell--title"></th>
+                                <th class="c-Table__cell--title">Subject</th>
+                                <th class="c-Table__cell--title">${messagingBean.type != 'SENT' ? 'From' : 'To'}</th>
+                                <th class="c-Table__cell--title">Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="message" items="${messagingBean.dataPage.messages}" varStatus="x">
                                 <!--@elvariable id="message" type="org.xcolab.portlets.messaging.beans.MessageBean"-->
-                                <tr>
-                                    <td>
+                                <tr class="c-Table__row">
+                                    <td class="c-Table__cell">
                                         <c:if test="${messagingBean.type == 'INBOX'}">
                                             <form:checkbox path="dataPage.messages[${x.index}].selected" />
                                             <form:hidden path="dataPage.messages[${x.index}].messageId" />
                                         </c:if>
                                     </td>
-                                    <td>
+                                    <td class="c-Table__cell">
                                         <a href="${message.linkUrl}">${message.subject}</a>
                                     </td>
-                                    <td>
+                                    <td class="c-Table__cell">
                                         <c:choose>
                                             <c:when test="${messagingBean.type == 'SENT'}">
                                                 <collab:userLinkSimple userId="${message.to.get(0).userId}" text="${message.to.get(0).screenName}" />
@@ -73,7 +73,7 @@
                                         </c:choose>
 
                                     </td>
-                                    <td>${message.createDateFormatted}</td>
+                                    <td class="c-Table__cell">${message.createDateFormatted}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -109,7 +109,7 @@
                     <br />
                     <h3>Actions</h3>
                     <p>
-                        <a class="primary-button" href="javascript:;" onclick="jQuery('#archiveMessagesForm').submit()">
+                        <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#archiveMessagesForm').submit()">
                             Archive
                         </a>
                     </p>
