@@ -44,11 +44,14 @@
 		</plugins>
 	</build>
 	<dependencies>
+        <!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc-portlet</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
+        <!-- Liferay -->
 		<dependency>
 			<groupId>com.liferay.portal</groupId>
 			<artifactId>portal-service</artifactId>
@@ -61,6 +64,8 @@
 			<version>${liferay.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+        <!-- JSP/servlet/el -->
 		
 		<dependency>
 			<groupId>javax.el</groupId>
@@ -74,6 +79,23 @@
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
 		<dependency>
 			<groupId>org.jboss.seam</groupId>
 			<artifactId>jboss-el</artifactId>
@@ -86,32 +108,27 @@
 			</exclusions>
 		</dependency>
 
+        <!-- Other external dependencies -->
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
-
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>5.1.1.Final</version>
         </dependency>
-		
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.4</version>
-			<scope>provided</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
+        <!-- Internal dependencies -->
+
 		<dependency>
 			<groupId>org.xcolab.services</groupId>
 			<artifactId>plansProposalsFacade-portlet-service</artifactId>
@@ -123,24 +140,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
         <dependency>
             <groupId>org.xcolab.taglibs</groupId>
             <artifactId>colabJspTags</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
 	</dependencies>
 
 	<repositories>
