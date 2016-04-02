@@ -119,6 +119,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
       &.search {
         background: $c-Header__menu__li__a__search__backgroundUrl no-repeat 24px 18px;
+        background-position-x: 50%;
         height: 22px;
         padding-top: 45px;
         font-size: 10px;

@@ -1,0 +1,56 @@
+
+$c-TableList__background--odd: $t-Color__primary__grey--light !default;
+
+.c-TableList {
+  &.fullWidth {
+    width: 100%;
+  }
+}
+
+.c-TableList__row { //.activitiesbox
+  font-size: 14px;
+  color: $t-Color__grey--dark;
+
+  border-bottom: 1px solid $t-Color__grey--light;
+
+  &.odd { //.blu
+    background: $c-TableList__background--odd;
+  }
+
+  @extend .clearfix;
+}
+
+.c-TableList__row--last {
+  @extend .c-TableList__row;
+  border-bottom: none;
+}
+
+.c-TableList__item {
+  float: left;
+
+  &.right {
+    float: right;
+  }
+}
+
+/* homepage activity boxes ------------- */
+
+//TODO: what's this???
+//* html .activitybox {
+//  height: 1%;
+//}
+
+.activitybox .text {
+  float: left;
+  width: 85%;
+  line-height: 20px;
+}
+
+.activitybox h3 {
+  font-size: 14px;
+  color: $t-Color__grey--dark;
+}
+
+.activitybox .status {
+  margin-left: 5px;
+}

@@ -380,80 +380,34 @@ a.get {
   width: 20px;
 }
 
-/* homepage activity boxes ------------- */
-.activitybox {
-  border-bottom: 1px solid $t-Color__grey--light;
-  font-size: 14px;
-  color: $t-Color__grey--dark;
-}
-
-.activitybox:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-.activitybox {
-  display: inline-block;
-}
-
-* html .activitybox {
-  height: 1%;
-}
-
-.activitybox {
-  display: block;
-}
-
-.activitybox.blu {
-  background: $t-Color__primary__grey--light;
-}
-
-.activitybox.bottom {
-  border-bottom: none;
-}
-
-.activitybox .status {
-  float: left;
+%p-Homepage__activitybox__image {
   width: 50px;
   height: 50px;
 }
 
-.activitybox .text {
-  float: left;
-  width: 85%;
-  line-height: 20px;
+.p-Homepage__activitybox__comment {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-comment.png) no-repeat center;
 }
 
-.activitybox h3 {
-  font-size: 14px;
-  color: $t-Color__grey--dark;
+.p-Homepage__activitybox__edit {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-edit.png) no-repeat center;
 }
 
-.activitybox .status {
-  margin-left: 5px;
+.p-Homepage__activitybox__new {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-new_proposal.png) no-repeat center;
 }
 
-.activitybox .comment {
-  background: url(../images/icon-activity-comment.png) no-repeat left 12px;
+.p-Homepage__activitybox__up {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-thumbs_up.png) no-repeat center;
 }
 
-.activitybox .edit {
-  background: url(../images/icon-activity-edit.png) no-repeat left 12px;
-}
-
-.activitybox .new {
-  background: url(../images/icon-activity-new_proposal.png) no-repeat left 12px;
-}
-
-.activitybox .up {
-  background: url(../images/icon-activity-thumbs_up.png) no-repeat left 11px;
-}
-
-.activitybox .new_user {
-  background: url(../images/icon-activity-new_user.png) no-repeat left 10px;
+.p-Homepage__activitybox__new_user {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-new_user.png) no-repeat center;
 }
 
 .home #c-Header {

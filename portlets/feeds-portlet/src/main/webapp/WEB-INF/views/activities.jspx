@@ -19,18 +19,19 @@
 		Nothing found.
 	</c:when>
 	<c:when test="${feedStyle == 'FULL' }">
-		<c:forEach items="${activities }" var="activity">
-			<div id="activitiesTable">
-				<div class="activitybox ${activity.odd ? '' : 'blu' }" style="width: 100%">
-					<div class="status ${activity.type.displayName}" ><!--  --></div>
-					<div class="text" style="width: 750px; margin-top: 20px;">
-						<c:out value="${activity.body}" escapeXml="false" />						
+		<div class="c-Table fullWidth">
+			<c:forEach items="${activities }" var="activity">
+				<div id="activitiesTable">
+					<div class="c-TableList__row ${activity.odd ? 'odd' : '' }">
+						<div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}" ><!--  --></div>
+						<div class="c-TableList__item" style="width: 750px; margin-top: 20px;">
+							<c:out value="${activity.body}" escapeXml="false" />
+						</div>
+						<h5 class="c-TableList__item right" style="margin-top: 20px; margin-right:10px;">${activity.activityDateAgo}</h5>
 					</div>
-					<h3 style="float: right; margin-top: 20px; margin-right:10px;">${activity.activityDateAgo}</h3>
 				</div>
-            	<div class="clear clearfix"></div>
-			</div>
-		</c:forEach>
+			</c:forEach>
+		</div>
 		
 		<div class="paginatorControls">
 			<c:choose>
@@ -77,15 +78,17 @@
 		<div class="clearfix"><!--  --></div>
 	</c:when>
 	<c:otherwise>
-		<c:forEach items="${activities }" var="activity">
-			<div class="activitybox ${activity.odd ? '' : 'blu'}">
-				<div class="status ${activity.type.displayName}"><!--  --></div>
-				<div class="text">
-        			<h3>${activity.activityDateAgo}</h3>
-					<c:out value="${activity.body}" escapeXml="false" />
-        		</div>
-    		</div>
-		</c:forEach>
+		<div class="c-TableList">
+			<c:forEach items="${activities }" var="activity">
+				<div class="c-TableList__row ${activity.odd ? 'odd' : ''}">
+					<div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}"><!--  --></div>
+					<div class="c-TableList__item">
+						<h5>${activity.activityDateAgo}</h5>
+						<c:out value="${activity.body}" escapeXml="false" />
+					</div>
+				</div>
+			</c:forEach>
+		</div>
 	</c:otherwise>
 </c:choose>
 
