@@ -1,5 +1,3 @@
-/*  HOMEPAGE  ------------------------------------------------------------------------------ */
-
 $p-homepage__content__h2__fontSize: 20px !default;
 $p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
 
@@ -10,9 +8,22 @@ $p-homepage__get__borderColor: $t-Color__secondary--darkest !default;
 $p-homepage__learn__imageUrl: url(../images/homespot/light-bulb-white.png) !default;
 $p-homepage__get__imageUrl: url(../images/homespot/people-white.png) !default;
 
+//TODO: legacy for climate colab
 .homespot {
   background: url(../images/bg-noise.png) $t-Color__grey--lightest;
   padding-bottom: 5px;
+}
+
+.p-Homepage__homespot { //.homespot
+  background: url(../images/bg-noise.png) $t-Color__grey--lightest;
+  padding-bottom: 5px;
+}
+
+.p-Homepage__homespot__background { //.earth
+  background: url(../images/homespot/background.png) no-repeat right 0 center;
+  @include background-size(contain);
+  width: 100%;
+  min-height: 336px;
 }
 
 .topshade {
@@ -22,6 +33,7 @@ $p-homepage__get__imageUrl: url(../images/homespot/people-white.png) !default;
   z-index: 5;
 }
 
+//TODO: legacy for climate colab
 .earth {
   background: url(../images/homespot/earth.png) no-repeat 500px top;
   @include background-size(contain);
@@ -35,7 +47,7 @@ $p-homepage__get__imageUrl: url(../images/homespot/people-white.png) !default;
   float: left;
   width: 530px;
   padding-left: 10px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__text--dark;
   position: relative;
   font-size: 16px;
 }
