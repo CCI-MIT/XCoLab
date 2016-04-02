@@ -85,7 +85,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 }
 
 .prop-description a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .proposal-head h1 {
@@ -188,7 +188,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 }
 
 .edit-prop a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .edit-prop-butts {
@@ -209,7 +209,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 
 .edit-prop-butts span {
   background: $t-Color__grey--light;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .lastedited {
@@ -334,7 +334,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
   float: left;
   width: 30px;
   height: 22px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   color: black;
   padding: 4px 0 0 31px;
   @include border-radius(3px);
@@ -429,7 +429,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 .votebox-top .vote span {
   font-size: 33px;
   color: $t-Color__secondary;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .votebox-top .vote img {
@@ -444,7 +444,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 
 .votebox-top .c-Button__primary {
   margin-top: 5px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 .votebox-bottom {
@@ -456,11 +456,11 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 
 .votebox-bottom span {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .votebox-bottom a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   margin-left: 5px;
 }
 
@@ -559,12 +559,12 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 }
 
 .prop-title a, .prop-avatar a, .prop-contest a, .prop-results a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 /* contributors table */
 .contributors a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .contributors td {
@@ -673,7 +673,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 .addpropform .upload a {
   padding-top: 20px;
   font-size: 17px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   display: inline-block;
 }
 
@@ -718,7 +718,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 }
 
 .historyTable {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .historyTable td {

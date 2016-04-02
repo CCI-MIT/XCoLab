@@ -35,7 +35,7 @@ $c-Message__input__background: #F2F1E9 url(../images/sendMessage_textarea.gif) n
   background: $c-Message__input__background;
   border: none;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 //TODO: verify if still necessary
@@ -49,7 +49,7 @@ $c-Message__input__background: #F2F1E9 url(../images/sendMessage_textarea.gif) n
     background: $c-Message__input__background;
     border: none;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: $b-Typography__fontWeight;
   }
 }
 

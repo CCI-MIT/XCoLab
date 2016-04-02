@@ -74,7 +74,7 @@ $c-Footer__menu__boxShadow: none !default;
       padding-bottom: 2px;
       border-bottom: 1px solid $t-Color__grey--light;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: $b-Typography__fontWeight--bold;
       color: black;
 
       &:hover {

@@ -265,7 +265,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   background: $c-Header__search__submit__background;
   border: none;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   color: $c-Header__search__submit__textColor;
   text-align: center;
   @include border-radius(3px);
@@ -300,13 +300,13 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   background: $c-Header__login__box__background;
   font-size: 14px;
   color: $c-Header__login__box__textColor;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   @include border-bottom-left-radius(3px);
   @include border-bottom-right-radius(3px);
   @include border-top-left-radius(3px);
 
   span {
-    font-weight: 400;
+    font-weight: $b-Typography__fontWeight;
 
     a {
       color: $c-Header__login__box__span__a__textColor;
@@ -367,7 +367,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   background: $c-Header__login__submit__background;
   border: $c-Header__login__submit__border;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   color: $c-Header__login__submit__textColor;
   text-align: center;
   @include border-radius(3px);
@@ -429,7 +429,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   background: $c-Header__user__box__background;
   font-size: 14px;
   color: $c-Header__user__box__textColor;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   @include border-bottom-left-radius(3px);
   @include border-bottom-right-radius(3px);
   @include border-top-left-radius(3px);
@@ -438,7 +438,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
     height: 18px;
     padding-top: 10px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: $b-Typography__fontWeight--bold;
     color: $c-Header__user__box__a__textColor;
     display: inline-block;
 

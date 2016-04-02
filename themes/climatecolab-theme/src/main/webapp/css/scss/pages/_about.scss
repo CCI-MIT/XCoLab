@@ -96,7 +96,7 @@ $p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
 
 .about-right h2.ex {
   font-size: 24px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   font-style: italic;
   margin-top: 18px;
 }
@@ -154,7 +154,7 @@ $p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
   display: inline-block;
   background: $t-Color__primary__grey--light;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   text-align: center;
   vertical-align: middle;
   @include border-radius(12px);
@@ -249,7 +249,7 @@ $p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
 }
 
 .one a, .two a, .three a, .four a, .five a, .six a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .contribute {
@@ -372,7 +372,7 @@ $p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
 }
 
 .checkout a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .about-left ul li a:hover, .about-left ul li.c > a {

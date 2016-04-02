@@ -229,7 +229,7 @@ a.get {
 
 .conference-days {
   color: $t-Color__accent;
-  font-weight: bold;
+  font-weight: $b-Typography__fontWeight--bold;
   margin: 16px 0 0 60px;
   display: block;
 }

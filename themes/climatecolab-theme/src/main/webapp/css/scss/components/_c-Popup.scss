@@ -36,7 +36,7 @@ $c-Popup__close__background--hover: url(../images/x.png) no-repeat left bottom !
     line-height: 22px;
 
     a { //.popup p a
-      font-weight: 700;
+      font-weight: $b-Typography__fontWeight--bold;
     }
 
     span { //.popup p span
@@ -48,7 +48,7 @@ $c-Popup__close__background--hover: url(../images/x.png) no-repeat left bottom !
     margin-bottom: 30px;
     font-size: 22px;
     color: $c-Popup__h4__textColor;
-    font-weight: 400;
+    font-weight: $b-Typography__fontWeight;
   }
 
   .btns { //.popup .btns

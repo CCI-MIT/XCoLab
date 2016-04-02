@@ -39,7 +39,7 @@ $p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
   @include border-radius(6px);
   margin-right: 16px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   text-transform: uppercase;
 
   > div {
@@ -249,7 +249,7 @@ $p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
 }
 
 .prop a, .comm a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .contestbox:hover {
@@ -354,7 +354,7 @@ $p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
 
 .contest-detail .advisors {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   padding-top: 0;
   color: $t-Color__grey--medium;
   float: left;

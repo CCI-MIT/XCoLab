@@ -39,7 +39,7 @@ $p-community__left__lineHeight: 21px !default;
   width: 500px;
   font-size: 21px;
   color: $t-Color__grey--medium;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 /*.wf-active .comm_date { font-size:23px; }*/
@@ -54,7 +54,7 @@ $p-community__left__lineHeight: 21px !default;
 
 .comm_icons a {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   padding-bottom: 0;
   border-bottom: none;
 }
@@ -88,7 +88,7 @@ $p-community__left__lineHeight: 21px !default;
 .comm_disc-title h2 span {
   color: #666;
   font-size: 21px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   padding-right: 5px;
   font-style: normal;
 }
@@ -116,7 +116,7 @@ $p-community__left__lineHeight: 21px !default;
 .comm_info-left span {
   color: $t-Color__secondary;
   font-size: 30px;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   padding-right: 5px;
   font-style: normal;
 }
@@ -163,7 +163,7 @@ $p-community__left__lineHeight: 21px !default;
 }
 
 .comm_list li.c {
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .colab .colabRow {
@@ -215,7 +215,7 @@ $p-community__left__lineHeight: 21px !default;
   border: 1px solid $t-Color__grey--light;
   color: $t-Color__grey--dark;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 .wf-active .comm_search {
@@ -233,7 +233,7 @@ $p-community__left__lineHeight: 21px !default;
   cursor: pointer;
   color: white;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 .wf-active .comm_submit {
@@ -278,7 +278,7 @@ $p-community__left__lineHeight: 21px !default;
 }
 
 .comm_member td.b {
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .comm_member .memdiv {
@@ -330,6 +330,7 @@ $p-community__left__lineHeight: 21px !default;
 }
 
 /** PAGER **/
+//TODO: probably unused?
 .iceDatPgrTbl td {
   padding: 0 4px 0 4px;
 }
@@ -339,11 +340,11 @@ $p-community__left__lineHeight: 21px !default;
 }
 
 .iceDatPgrScrCol {
-  font-weight: bold;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .iceDatPgr .iceDatPgrScrBtn {
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   padding: 0 4px 0 4px;
 }
 
@@ -382,7 +383,7 @@ input.comm_search {
   border: 1px solid #BCB6B1;
   color: $t-Color__grey--dark;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   margin-top: 5px;
 }
 

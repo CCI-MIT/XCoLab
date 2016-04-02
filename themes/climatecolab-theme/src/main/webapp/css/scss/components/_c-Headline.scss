@@ -27,7 +27,7 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
     color: $c-Headline__addprop__textColor;
 
     a { //.headline.addprop a
-      font-weight: 700;
+      font-weight: $b-Typography__fontWeight--bold;
     }
   }
 
@@ -65,7 +65,7 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
     display: inline;
     float: left;
     width: auto;
-    font-weight: 400;
+    font-weight: $b-Typography__fontWeight;
     color: $c-Headline__h2__textColor;
 
     span { //.headline h2 span
@@ -92,7 +92,7 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
 
     span { //.headline .days-left span
       font-size: 24px;
-      font-weight: 700;
+      font-weight: $b-Typography__fontWeight--bold;
       color: $c-Headline__days-left__span__textColor;
       padding-right: 5px;
       vertical-align: middle;

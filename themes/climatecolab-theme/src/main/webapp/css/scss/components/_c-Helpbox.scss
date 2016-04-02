@@ -31,7 +31,7 @@ $c-Helpbox__text__textColor: $t-Color__grey--darkest;
 }
 
 .c-Helpbox__header__title {
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   color: $c-Helpbox__header__title__textColor;
 }
 

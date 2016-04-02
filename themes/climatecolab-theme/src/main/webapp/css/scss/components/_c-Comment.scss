@@ -70,7 +70,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   }
 
   strong {
-    font-weight: 600;
+    font-weight: $b-Typography__fontWeight--bold;
   }
 }
 
@@ -129,7 +129,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   color: $c-Comment__commentor__textColor;
 
   a {
-    font-weight: 700;
+    font-weight: $b-Typography__fontWeight--bold;
   }
 
   img {
@@ -137,7 +137,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   }
 
   span {
-    font-weight: 700;
+    font-weight: $b-Typography__fontWeight--bold;
   }
 }
 
@@ -194,7 +194,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   height: 26px;
   padding: 6px 0 0 101px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   color: #444;
 }
 
@@ -213,7 +213,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
 //TODO: unused in source code - verify if used elsewhere
 .featured_expert-name {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   padding: 9px 0 20px 103px;
   line-height: 20px;
 }
