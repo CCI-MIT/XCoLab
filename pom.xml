@@ -125,6 +125,7 @@
 		</pluginManagement>
 	</build>
 	<modules>
+		<module>microservices</module>
 		<module>services</module>
 		<module>portlets</module>
 		<module>taglibs</module>

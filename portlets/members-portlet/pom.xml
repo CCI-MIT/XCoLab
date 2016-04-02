@@ -38,6 +38,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 	<dependencies>
@@ -115,7 +116,9 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
+
+
 		<dependency>
   			<groupId>org.xcolab.taglibs</groupId>
   			<artifactId>colabJspTags</artifactId>
@@ -165,7 +168,11 @@
             <artifactId>jsoup</artifactId>
             <version>1.7.2</version>
         </dependency>
-            
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>members-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>	
 	<repositories>
 		<repository>
@@ -181,7 +188,7 @@
 	</repositories>
 
 	<properties>
-		<spring.version>4.0.0.RELEASE</spring.version>
+		<spring.version>4.2.5.RELEASE</spring.version>
 	</properties>
 
 </project>
