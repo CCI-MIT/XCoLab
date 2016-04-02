@@ -10,12 +10,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.xcolab.microservices.services</groupId>
-    <artifactId>emails-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <description>The emails service for XColab platform</description>
-    <packaging>war</packaging>
-    <name>emails-service</name>
+    <artifactId>admin-service</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>admin-service</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
@@ -81,12 +78,8 @@
             <artifactId>spring-cloud-starter-eureka-server</artifactId>
             <version>1.0.6.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>org.codemonkey.simplejavamail</groupId>
-            <artifactId>simple-java-mail</artifactId>
-            <version>3.0.1</version>
-        </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -124,7 +117,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes></includes>
+                            <includes>xcolab_ContestEmailTemplate</includes>
                         </database>
                     </generator>
                 </configuration>
@@ -141,7 +134,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <finalName>emails-service</finalName>
+                            <finalName>admin-service</finalName>
                         </configuration>
                     </execution>
                 </executions>
@@ -173,4 +166,5 @@
             </plugin>
         </plugins>
     </build>
+    
 </project>

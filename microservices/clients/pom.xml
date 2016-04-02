@@ -16,6 +16,8 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>admin-client</module>
+        <module>emails-client</module>
         <module>members-client</module>
     </modules>
 
