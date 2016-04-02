@@ -61,16 +61,18 @@ $t-Color__pattern__gray: #68696D;
 $t-Color__pattern__gray--light: #D7D9DA;
 $t-Color__pattern__gray--lightest: #F5F5F4;
 
-$b-Typography__fontWeight--light: 200 !default;
-$b-Typography__fontWeight--regular: 400 !default;
-$b-Typography__fontWeight--medium: 500 !default;
-
 $t-Color__primary: $t-Color__red;
 $t-Color__primary--darkest: $t-Color__red--dark;
 $t-Color__secondary: $t-Color__green;
 
-$b-Typography__fontFamily: "Fira Sans", Arial, Helvetica;
-$b-Typography__fontFamily__h1: "Fira Sans", Verdana, sans-serif;
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans:400,500,300);
+
+$b-Typography__fontWeight--light: 300;
+$b-Typography__fontWeight--regular: 400;
+$b-Typography__fontWeight--medium: 500;
+
+$b-Typography__fontFamily: "Fira Sans", Arial, sans-serif;
+$b-Typography__fontFamily__h1: "Fira Sans", Arial, sans-serif;
 $b-Typography__capitalization__h1: uppercase;
 $b-Typography__capitalization__h2: uppercase;
 $b-Typography__textColor__h1: $t-Color__primary;
