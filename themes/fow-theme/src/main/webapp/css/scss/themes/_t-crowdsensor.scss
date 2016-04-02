@@ -1,11 +1,22 @@
 @import "compass";
 
+$t-Color__black: #060606;
+$t-Color__grey--dark: #354046;
+$t-Color__grey: #ACACAC;
+$t-Color__red: #D71A11;
+$t-Color__red--desat: #CD5046;
+$t-Color__red--dark: #960800;
+$t-Color__green: #54BD14;
+
+$t-Color__pattern__gray: #68696D;
+$t-Color__pattern__gray--light: #D7D9DA;
+$t-Color__pattern__gray--lightest: #F5F5F4;
 
 //main colors:
-$t-Color__primary: #5da034;
-$t-Color__secondary: #f6911d;
-$t-Color__accent: #eb008a;
-$t-Color__auxiliary: #00acee; // 4th color when needed (e.g. ontology)
+$t-Color__primary: $t-Color__red;
+$t-Color__secondary: $t-Color__green;
+$t-Color__accent: $t-Color__green; //not using accent for now
+$t-Color__auxiliary: $t-Color__green; // 4th color when needed (e.g. ontology) -- not used for now
 
 //lightness variations
 $t-Color__primary--light: lighten($t-Color__primary, 30); $__hex: #afdc93;
@@ -15,7 +26,7 @@ $t-Color__primary--dark: darken($t-Color__primary, 10); $__hex: #457727;
 $t-Color__secondary--dark: darken($t-Color__secondary, 10); $__hex: #d37508;
 
 $t-Color__primary--darkest: darken($t-Color__primary, 20); $__hex: #2f511a;
-$t-Color__secondary--darkest: darken($t-Color__secondary, 20); $__hex: #a25a06;
+$t-Color__primary--darkest: $t-Color__red--dark;
 
 //grey variations of the primary color
 $t-Color__primary__grey--dark: desaturate($t-Color__primary, 25); $__hex: #648550;
@@ -47,23 +58,8 @@ $t-Color__outline__level3: #c1bcb2; // background slevel3
 $t-Color__outline__level4: #aaa69f; // background slevel4-6
 
 
-
-
-$t-Color__black: #060606;
-$t-Color__grey--dark: #354046;
-$t-Color__grey: #ACACAC;
-$t-Color__red: #D71A11;
-$t-Color__red--desat: #CD5046;
-$t-Color__red--dark: #960800;
-$t-Color__green: #54BD14;
-
-$t-Color__pattern__gray: #68696D;
-$t-Color__pattern__gray--light: #D7D9DA;
-$t-Color__pattern__gray--lightest: #F5F5F4;
-
-$t-Color__primary: $t-Color__red;
-$t-Color__primary--darkest: $t-Color__red--dark;
-$t-Color__secondary: $t-Color__green;
+// ====
+// changes in component variables
 
 @import url(https://fonts.googleapis.com/css?family=Fira+Sans:400,500,300);
 
@@ -188,6 +184,9 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 445px !default;
 $p-community__left__lineHeight: default;
 
 $c-Table__shadebar__background: none;
+$c-Table__borderColor: $t-Color__grey;
+$c-Table__title__backgroundColor: $t-Color__primary;
+$c-Table__title__fontColor: white;
 
 $p-ContestProposals__list__element--proposalname__width: 605px;
 $p-ContestProposals__list__element__border: 1px solid;
