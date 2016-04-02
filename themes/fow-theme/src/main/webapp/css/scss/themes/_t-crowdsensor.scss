@@ -4,7 +4,6 @@ $t-Color__black: #060606;
 $t-Color__grey--dark: #354046;
 $t-Color__grey: #ACACAC;
 $t-Color__red: #D71A11;
-$t-Color__red--desat: #CD5046;
 $t-Color__red--dark: #960800;
 $t-Color__green: #54BD14;
 
@@ -13,28 +12,28 @@ $t-Color__pattern__gray--light: #D7D9DA;
 $t-Color__pattern__gray--lightest: #F5F5F4;
 
 //main colors:
-$t-Color__primary: $t-Color__red;
-$t-Color__secondary: $t-Color__green;
-$t-Color__accent: $t-Color__green; //not using accent for now
-$t-Color__auxiliary: $t-Color__green; // 4th color when needed (e.g. ontology) -- not used for now
+$t-Color__primary: $t-Color__red; $__hex: #D71A11;
+$t-Color__secondary: $t-Color__green; $__hex: #54BD14;
+$t-Color__accent: $t-Color__green; $__hex: #54BD14; //not using accent for now
+$t-Color__auxiliary: $t-Color__green; $__hex: #54BD14; // 4th color when needed (e.g. ontology) -- not used for now
 
 //lightness variations
-$t-Color__primary--light: lighten($t-Color__primary, 30); $__hex: #afdc93;
-$t-Color__secondary--light: lighten($t-Color__secondary, 15); $__hex: #f9b567;
+$t-Color__primary--light: lighten($t-Color__primary, 15); $__hex: #f04e47;
+$t-Color__secondary--light: lighten($t-Color__secondary, 10); $__hex: #6ae71d;
 
-$t-Color__primary--dark: darken($t-Color__primary, 10); $__hex: #457727;
-$t-Color__secondary--dark: darken($t-Color__secondary, 10); $__hex: #d37508;
+$t-Color__primary--dark: darken($t-Color__primary, 15); $__hex: #8e110b;
+$t-Color__secondary--dark: darken($t-Color__secondary, 10); $__hex: #3d8a0f;
 
-$t-Color__primary--darkest: darken($t-Color__primary, 20); $__hex: #2f511a;
-$t-Color__primary--darkest: $t-Color__red--dark;
+$t-Color__primary--darkest: darken($t-Color__primary, 20); $__hex: #5f0b07;
+$t-Color__secondary--darkest: darken($t-Color__primary, 20); $__hex: #295c0a;
 
-//grey variations of the primary color
-$t-Color__primary__grey--dark: desaturate($t-Color__primary, 25); $__hex: #648550;
-$t-Color__primary__grey: lighten($t-Color__primary__grey--dark, 25); $__hex_color: #a6c097;
-$t-Color__primary__grey--light: lighten($t-Color__primary__grey--dark, 40); $__hex: #cfddc6;
+//desaturated (grey) variations of the primary color
+$t-Color__primary__grey: desaturate($t-Color__primary, 30); $__hex: #b43a34;
+$t-Color__primary__grey--dark: darken($t-Color__primary__grey, 10); $__hex_color: #8a2d28;
+$t-Color__primary__grey--light: lighten($t-Color__primary__grey--dark, 10); $__hex: #cd5751;
 
 //greys
-$t-Color__grey--lightest: #e7e9eb;
+$t-Color__grey--lightest: $t-Color__pattern__gray--lightest;
 $t-Color__grey--light: #babbbd;
 $t-Color__grey--medium: #808184;
 $t-Color__grey--dark: #57585a;

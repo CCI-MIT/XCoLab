@@ -24,6 +24,10 @@ $c-Table__title__fontColor: $t-Color__grey--darkest !default;
   height: 30px;
   line-height: 30px;
   font-weight: $b-Typography__fontWeight--bold;
+
+  a {
+    color: $c-Table__title__fontColor;
+  }
 }
 
 %c-Table__cell {

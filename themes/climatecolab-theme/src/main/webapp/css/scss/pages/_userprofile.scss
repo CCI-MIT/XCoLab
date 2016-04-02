@@ -88,8 +88,8 @@
   padding: 10px 0 0 8px;
   font-size: 12px;
   line-height: normal;
-  font-weight: 600;
-  color: #444;
+  font-weight: $b-Typography__fontWeight--bold;
+  color: contrasting-color($t-Color__primary__grey--light);
   margin-bottom: 5px;
 }
 
