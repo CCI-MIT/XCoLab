@@ -9,64 +9,61 @@
     <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
 
     <div class="prop-right">
-	    <div class="votebox-wrap">
-		    <div class="votebox-shade">
-			    <div class="votebox">
-				    <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
-					    <div class="votebox-top clearfix">
-						    <div class="vote">
-							    <img src="${themeDisplay.pathThemeImages}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
-                                <span>${proposal.votesCount}</span> votes
-                                <c:if test="${proposalsPermissions.votingEnabled}">
-                                    <portlet:actionURL var="voteOnProposalURL">
-                                        <portlet:param name="action_forwardToPage" value="proposalDetails" />
-                                        <portlet:param name="contestId" value="${contest.contestPK }" />
-                                        <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-                                        <portlet:param name="proposalId" value="${proposal.proposalId }" />
-                                        <portlet:param name="action" value="voteOnProposalAction" />
-                                    </portlet:actionURL>
-
-                                    <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                        <c:set var="voteForText" value="VOTE for ${contestType.proposalName}" />
-                                        ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : 'RETRACT vote'}
-                                    </a>
-                                    <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per ${contestType.contestName}</p>
-                                </c:if>
-                            </div>
-                            <div class="question">
-                                <a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
-                                    <img src="${themeDisplay.pathThemeImages}/icon-proposal-question.png" width="23" height="23" alt="Question?" />
-                                </a>
-                            </div>
-                        </div>
-                    </c:if>
-                    <div class="votebox-bottom">
-                        <img src="${themeDisplay.pathThemeImages}/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
-                        <span>${proposal.supportersCount}</span> supporters
-                        <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-							<portlet:actionURL var="supportProposalActionURL">
-								<portlet:param name="action_forwardToPage" value="proposalDetails" />
-								<portlet:param name="contestId" value="${contest.contestPK }" />
+	    <div class="c-Box boxColor--dark hasShadow hasBorder">
+            <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
+                <div class="votebox-top clearfix">
+                    <div class="vote">
+                        <img src="${themeDisplay.pathThemeImages}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
+                        <span>${proposal.votesCount}</span> votes
+                        <c:if test="${proposalsPermissions.votingEnabled}">
+                            <portlet:actionURL var="voteOnProposalURL">
+                                <portlet:param name="action_forwardToPage" value="proposalDetails" />
+                                <portlet:param name="contestId" value="${contest.contestPK }" />
                                 <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-								<portlet:param name="proposalId" value="${proposal.proposalId }" />
-								<portlet:param name="action" value="supportProposalAction" />
-							</portlet:actionURL>
-                    		<a href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
-                                <c:set var="supportText" value="Support ${contestType.proposalName}" />
-								${proposalsDisplayPermissions.canSeeSupportButton ? supportText : 'Retract support' }
-							</a>
-						</c:if>
+                                <portlet:param name="proposalId" value="${proposal.proposalId }" />
+                                <portlet:param name="action" value="voteOnProposalAction" />
+                            </portlet:actionURL>
+
+                            <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+                                <c:set var="voteForText" value="VOTE for ${contestType.proposalName}" />
+                                ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : 'RETRACT vote'}
+                            </a>
+                            <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per ${contestType.contestName}</p>
+                        </c:if>
                     </div>
-                </div> <!-- /votebox -->
-            </div> <!-- /votebox shade -->
-        </div> <!-- /votebox wrapper -->
-        <div class="share">
-            <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left; width: 205px;">
+                    <div class="question">
+                        <a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
+                            <img src="${themeDisplay.pathThemeImages}/icon-proposal-question.png" width="23" height="23" alt="Question?" />
+                        </a>
+                    </div>
+                </div>
+            </c:if>
+            <div class="votebox-bottom">
+                <span>
+                    <img src="${themeDisplay.pathThemeImages}/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
+                    ${proposal.supportersCount}
+                </span> supporters
+                <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
+                    <portlet:actionURL var="supportProposalActionURL">
+                        <portlet:param name="action_forwardToPage" value="proposalDetails" />
+                        <portlet:param name="contestId" value="${contest.contestPK }" />
+                        <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
+                        <portlet:param name="proposalId" value="${proposal.proposalId }" />
+                        <portlet:param name="action" value="supportProposalAction" />
+                    </portlet:actionURL>
+                    <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+                        <c:set var="supportText" value="Support ${contestType.proposalName}" />
+                        ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : 'Retract support' }
+                    </a>
+                </c:if>
+            </div>
+        </div> <!-- /c-Box -->
+        <div class="c-Box boxColor--light clearfix">
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
                 <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                 <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                 <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                 <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-
             </div>
 			<c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
 				<portlet:actionURL var="subscribeProposalURL">
@@ -76,22 +73,25 @@
 					<portlet:param name="action" value="subscribeProposal" />
 					<portlet:param name="action_forwardToPage" value="proposalDetails" />
 				</portlet:actionURL>
-				<div class="info subscribe">
+				<div class="p-Proposal__subscribe" style="float: right;">
 					<a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
 						<c:choose>
 							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-								<img src="${themeDisplay.pathThemeImages}/icon_star.png" /> Subscribe
+								<img height="20" src="${themeDisplay.pathThemeImages}/icon_star.png" /> Subscribe
 							</c:when>
 							<c:otherwise>
-								<img src="${themeDisplay.pathThemeImages}/unsubscribe.png" /> Unsubscribe
+								<img height="20" src="${themeDisplay.pathThemeImages}/unsubscribe.png" /> Unsubscribe
 							</c:otherwise>
 						</c:choose>
 					</a>
 				</div>
 			</c:if>
-            <div class="clearfix">&#160;</div>
+        </div>
+        <div class="c-Box">
             <div class="message-share-button">
-                <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }"><img src="${themeDisplay.pathThemeImages}/icon_new-message.gif" width="31" height="29" /> Share via ${colabShortName} messaging</a>
+                <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }">
+                    <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> Share via ${colabShortName} messaging
+                </a>
             </div>
             <script type="text/javascript">
                 if (typeof(addthis) != 'undefined') {

@@ -163,7 +163,6 @@ $p-proposal__settings__backgroundColor: white;
 $p-proposal__contest__backgroundColor: white;
 $p-proposal__votebox__top__left: 0px;
 $p-proposal__votebox__marginTop: 35px;
-$p-proposal__votebox__shade__background: transparent;
 $p-proposal__right__h5__topbox__padding--top: 20px;
 $p-proposal__right__h5__topbox__font-size: 14pt;
 $p-proposal__right__h5__topbox__fontWeight: $b-Typography__fontWeight--light;
@@ -178,9 +177,10 @@ $p-proposal__thumbbox__backgroundColor: white;
 $p-proposal__thumbbox__a__fontWeight: $b-Typography__fontWeight--regular;
 $p-proposal__thumbbox__a__margin--left: 10px;
 $p-proposal__thumbbox__background--top: 0px;
-$p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px !default;
-$p-proposal__propbox__judgementActions__titleAuthor__width: 445px !default;
+$p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
+$p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
+$p-Proposal__subscribe__capitalization: uppercase !default;
 
 $p-community__left__lineHeight: default;
 
@@ -197,4 +197,15 @@ $p-ContestProposals__list__element--judgeFellow__border--left: 1px solid;
 $p-ContestProposals__list__element--contributor__width: 146px;
 $p-ContestProposals__list__element--proposalname__judgeActions__width: 449px;
 
-$c-TableList__background--odd: url(../images/bg-noise.png) $t-Color__pattern__gray--lightest !default;
+$c-TableList__background--odd: url(../images/bg-noise.png) $t-Color__pattern__gray--lightest;
+
+$c-Box__shadow: none;
+$c-Box__background__color--dark: #354046;
+$c-Box__background__color--light: $t-Color__grey--lightest;
+$c-Box__background__color--primary: $t-Color__primary;
+$c-Box__background--dark: url(../images/bg-noise.png) $c-Box__background__color--dark;
+$c-Box__background--light: url(../images/bg-noise.png) $c-Box__background__color--light;
+$c-Box__border: none;
+$c-Box__button__backgroundColor--light: white;
+$c-Box__button__backgroundColor--dark: $t-Color__grey--darkest;
+

@@ -37,6 +37,8 @@ $p-proposal__history__item__textColor: $t-Color__primary !default;
 $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 455px !default;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 
+$p-Proposal__subscribe__capitalization: none !default;
+
 /* PROPOSALS ----------------------------------------------------------------------------- */
 
 /* proposal HEADER */
@@ -386,32 +388,6 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 }
 
 /* right column */
-.votebox-wrap {
-  width: 334px;
-  margin-top: -34px;
-}
-
-/* increase negative top margin for edit proposal button block */
-.votebox-wrap.ep {
-  width: 334px;
-  margin-top: -87px;
-}
-
-.votebox-shade {
-  width: 331px;
-  background: $p-proposal__votebox__shade__background;
-  margin: 3px 0 0 3px;
-}
-
-.votebox {
-  width: 331px;
-  background: $t-Color__grey--lightest;
-  border: 1px solid $t-Color__grey--light;
-  position: relative;
-  top: $p-proposal__votebox__top__left;
-  left: $p-proposal__votebox__top__left;
-  margin-top: $p-proposal__votebox__marginTop;
-}
 
 .votebox-top {
   border-bottom: 1px dotted $t-Color__grey--medium;
@@ -447,38 +423,14 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
   font-weight: $b-Typography__fontWeight;
 }
 
-.votebox-bottom {
-  font-size: 16px;
-  color: $t-Color__grey--dark;
-  background: $t-Color__grey--lightest;
-  padding: 14px 0 17px 18px;
-}
-
 .votebox-bottom span {
   font-size: 20px;
   font-weight: $b-Typography__fontWeight--bold;
 }
 
-.votebox-bottom a {
-  font-weight: $b-Typography__fontWeight--bold;
-  margin-left: 5px;
-}
-
-.votebox-bottom img {
-  padding-right: 6px;
-  vertical-align: -3px;
-}
-
-.prop-right .share {
-  margin: 17px 0 36px 17px;
-}
-
-.prop-right .share a {
-  margin-right: 15px;
-}
-
-.prop-right .share img {
-  vertical-align: middle;
+.p-Proposal__subscribe {
+  text-transform: $p-Proposal__subscribe__capitalization;
+  line-height: 34px;
 }
 
 .prop-right h5 {
