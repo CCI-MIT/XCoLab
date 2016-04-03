@@ -70,9 +70,16 @@ $b-Typography__fontFamily: "Fira Sans", Arial, sans-serif;
 $b-Typography__fontFamily__h1: "Fira Sans", Arial, sans-serif;
 $b-Typography__capitalization__h1: uppercase;
 $b-Typography__capitalization__h2: uppercase;
+$b-Typography__fontSize__h1: 33px;
+$b-Typography__fontSize__h2: 31px;
+$b-Typography__fontSize__h3: 24px;
+$b-Typography__fontSize__h4: 17px;
+$b-Typography__fontSize__h5: 17px;
+$b-Typography__fontSize__h6: 15px;
 $b-Typography__textColor__h1: $t-Color__primary;
-$b-Typography__fontWeight__h2: $b-Typography__fontWeight--regular;
+$b-Typography__fontWeight__h2: $b-Typography__fontWeight--light;
 $b-Typography__fontWeight__h3: $b-Typography__fontWeight--regular;
+$b-Typography__fontWeight__h5: $b-Typography__fontWeight--light;
 $b-Typography__fontWeight--bold: $b-Typography__fontWeight--medium;
 
 $c-Header__background: white;
@@ -209,3 +216,4 @@ $c-Box__border: none;
 $c-Box__button__backgroundColor--light: white;
 $c-Box__button__backgroundColor--dark: $t-Color__grey--darkest;
 
+$b-Spacing__separatorColor: $t-Color__grey;

@@ -1,0 +1,46 @@
+
+$c-Count__number__color: $t-Color__secondary !default;
+$c-Count__number__color--accent: $t-Color__accent !default;
+
+//TODO: port other counts to this
+
+.c-Count {
+  font-size: 20px;
+
+  &.large {
+    font-size: 27px;
+  }
+
+  &.small {
+    font-size: 15px;
+  }
+}
+
+%c-Count__number {
+  font-size: 24px;
+  font-weight: $b-Typography__fontWeight--bold;
+  vertical-align: middle;
+
+  &.large {
+    font-size: 33px;
+  }
+
+  &.small {
+    font-size: 20px;
+  }
+}
+
+.c-Count__number {
+  @extend %c-Count__number;
+  color: $c-Count__number__color;
+}
+
+.c-Count__number--accent {
+  @extend %c-Count__number;
+  color: $c-Count__number__color--accent;
+}
+
+.c-Count__number--neutral {
+  @extend %c-Count__number;
+  color: $b-Typography__textColor;
+}

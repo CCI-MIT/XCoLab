@@ -30,8 +30,12 @@ $b-Typography__fontSize__h6: 14px !default;
 $b-Typography__capitalization__h1: $b-Typography__capitalization--none !default;
 $b-Typography__capitalization__h2: $b-Typography__capitalization--none !default;
 
+$b-Typography__fontWeight__h1: $b-Typography__fontWeight !default;
 $b-Typography__fontWeight__h2: $b-Typography__fontWeight--bold !default;
 $b-Typography__fontWeight__h3: $b-Typography__fontWeight--bold !default;
+$b-Typography__fontWeight__h4: $b-Typography__fontWeight !default;
+$b-Typography__fontWeight__h5: $b-Typography__fontWeight !default;
+$b-Typography__fontWeight__h6: $b-Typography__fontWeight !default;
 
 $b-Typography__textColor: initial !default;
 $b-Typography__textColor__h1: $t-Color__grey--darkest !default;
@@ -74,14 +78,17 @@ h3 {
 
 h4 {
   font-size: $b-Typography__fontSize__h4;
+  font-weight: $b-Typography__fontWeight__h4;
 }
 
 h5 {
   font-size: $b-Typography__fontSize__h5;
+  font-weight: $b-Typography__fontWeight__h5;
 }
 
 h6 {
   font-size: $b-Typography__fontSize__h6;
+  font-weight: $b-Typography__fontWeight__h6;
 }
 
 p {
