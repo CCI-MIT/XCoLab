@@ -327,8 +327,8 @@
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<tr class="colabRow">
 					<td class="actionColumn">
-						<a style="font-size: 12px;" class="c-Button__secondary" href="javascript:;" onclick="
-						if(confirm('Are you sure you want to delete your ${colabName} account?'))
+						<a class="c-Button__secondary small" href="javascript:;" onclick="
+						if (confirm('Are you sure you want to delete your ${colabName} account?'))
                            window.location = '${deleteProfileUrl}'">DELETE</a>
 					</td>
                     <td>

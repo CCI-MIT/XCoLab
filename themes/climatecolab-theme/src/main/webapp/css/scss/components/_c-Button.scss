@@ -1,7 +1,9 @@
-$c-Button__base__padding: 8px !default;
-$c-Button__base__fontWeight: 700 !default;
-$c-Button__base__borderRadius: 5px !default;
-$c-Button__base__capitalization: none !default;
+$c-Button__padding: 8px !default;
+$c-Button__padding--large: 8px !default;
+$c-Button__padding--small: 8px !default;
+$c-Button__fontWeight: 700 !default;
+$c-Button__borderRadius: 5px !default;
+$c-Button__capitalization: none !default;
 
 $c-Button__primary__backgroundColor: $t-Color__primary !default;
 $c-Button__primary__borderColor: $t-Color__primary--dark !default;
@@ -9,25 +11,38 @@ $c-Button__primary__borderColor: $t-Color__primary--dark !default;
 $c-Button__grey__backgroundColor: $t-Color__grey--medium !default;
 $c-Button__grey__borderColor: $t-Color__grey--dark !default;
 
-%base-button {
+%c-Button__base {
   display: inline-block;
-  padding: $c-Button__base__padding;
+  padding: $c-Button__padding;
   margin-left: 5px;
   font-size: 16px;
-  font-weight: $c-Button__base__fontWeight;
+  font-weight: $c-Button__fontWeight;
   line-height: normal;
-  text-transform: $c-Button__base__capitalization;
+  text-transform: $c-Button__capitalization;
 
-  @include border-radius($c-Button__base__borderRadius);
+  @include border-radius($c-Button__borderRadius);
 
   &.disabled {
     opacity: 0.4;
     pointer-events: none;
   }
+
+  &.small {
+    font-size: 12px;
+    padding: $c-Button__padding--small;
+  }
+  &.large {
+    font-size: 16px;
+    padding: $c-Button__padding--large;
+  }
+}
+
+@function hover-color($color) {
+  @return darken($color, 10%);
 }
 
 @mixin theme-button($button-color, $border-color: null, $image-url: null) {
-  @extend %base-button;
+  @extend %c-Button__base;
 
   @if $border-color == none {
     @if $image-url == none or $image-url == null {
@@ -48,13 +63,13 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
     color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
     @if $border-color == none {
       @if $image-url == none or $image-url == null {
-        @include background(darken($button-color, 10%));
+        @include background(hover-color($button-color));
       } @else {
-        @include background(darken($button-color, 10%), $image-url, 40px);
+        @include background(hover-color($button-color), $image-url, 40px);
       }
 
     } @else {
-      @include background-gradient(darken($button-color, 10%), $image-url, 40px);
+      @include background-gradient(hover-color($button-color), $image-url, 40px);
     }
   }
 }

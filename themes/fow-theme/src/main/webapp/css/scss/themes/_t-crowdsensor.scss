@@ -94,10 +94,12 @@ $c-Footer__menu__li__a--hover__color: $t-Color__primary;
 $c-Footer__menu__backgroundGradient: linear-gradient(top, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
 $c-Footer__menu__boxShadow: inset 0px 5px 12px lighten($t-Color__grey--dark, 10%);
 
-$c-Button__base__padding: 15px 30px;
-$c-Button__base__fontWeight: $b-Typography__fontWeight--regular;
-$c-Button__base__borderRadius: 20px;
-$c-Button__base__capitalization: uppercase;
+$c-Button__padding: 10px 15px;
+$c-Button__padding--small: 8px 12px;
+$c-Button__padding--large: 15px 25px;
+$c-Button__fontWeight: $b-Typography__fontWeight--regular;
+$c-Button__borderRadius: 25px;
+$c-Button__capitalization: uppercase;
 $c-Button__theme__textShadow: none;
 
 $c-Button__primary__borderColor: none;
