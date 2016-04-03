@@ -17,16 +17,16 @@ $c-Count__number__color--accent: $t-Color__accent !default;
 }
 
 %c-Count__number {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: $b-Typography__fontWeight--bold;
   vertical-align: middle;
 
   &.large {
-    font-size: 33px;
+    font-size: 36px;
   }
 
   &.small {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
 

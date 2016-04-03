@@ -77,7 +77,7 @@
 					<a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
 						<c:choose>
 							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-								<img height="20" src="${themeDisplay.pathThemeImages}/icon_star.png" /> Subscribe
+								<img height="20" src="${themeDisplay.pathThemeImages}/subscribe.png" /> Subscribe
 							</c:when>
 							<c:otherwise>
 								<img height="20" src="${themeDisplay.pathThemeImages}/unsubscribe.png" /> Unsubscribe
