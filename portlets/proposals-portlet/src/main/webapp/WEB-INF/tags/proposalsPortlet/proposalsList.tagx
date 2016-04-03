@@ -1,9 +1,11 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"  
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	version="2.0">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+
+    <liferay-theme:defineObjects />
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"-->
@@ -43,7 +45,7 @@
             <div class="ribbonPlaceholder">
                 <span class="fieldWithTooltip">
                     <br />
-                    <img src="/climatecolab-theme/images/icon-prize${proposal.ribbonWrapper.ribbon}.png" />
+                    <img src="${themeDisplay.pathThemeImages}/icon-prize${proposal.ribbonWrapper.ribbon}.png" />
                 </span>
                 <div class="c-Tooltip">
                     ${proposal.ribbonWrapper.ribbonText}
