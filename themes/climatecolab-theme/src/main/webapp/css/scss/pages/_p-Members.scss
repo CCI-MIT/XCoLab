@@ -3,14 +3,13 @@
   height: 37px;
   a {
     font-weight: $b-Typography__fontWeight--bold;
-    margin-left: 10px;
     display: inline-block;
   }
 }
 
 .p-Members__list__element--user { //.blueheaderbar .user
   @extend %p-Members__list__element;
-  width: 320px;
+  width: 275px;
 }
 
 .p-Members__list__element--points { //.blueheaderbar .points
@@ -21,19 +20,15 @@
 
 .p-Members__list__element--activity { //.blueheaderbar .activity
   @extend %p-Members__list__element;
-  width: 70px;
+  width: 60px;
 }
 
 .p-Members__list__element--category { //.blueheaderbar .category
   @extend %p-Members__list__element;
-  width: 100px;
-
-  a {
-    margin-left: 15px;
-  }
+  width: 70px;
 }
 
 .p-Members__list__element--seniority { //.blueheaderbar .seniority
   @extend %p-Members__list__element;
-  width: 110px;
+  width: 90px;
 }
