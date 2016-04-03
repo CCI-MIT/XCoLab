@@ -85,8 +85,9 @@ $c-Footer__menu__boxShadow: none !default;
 }
 
 //TODO: unused in source code - verify if used elsewhere
+//TODO: experimentally removed, breaks tab bar on community page
 .portlet-journal-content ul, .portlet-journal-content ol, .portlet-wiki ul, .portlet-wiki ol {
-  margin-bottom: 15px;
+  //margin-bottom: 15px;
 }
 
 //TODO: unused in source code - verify if used elsewhere

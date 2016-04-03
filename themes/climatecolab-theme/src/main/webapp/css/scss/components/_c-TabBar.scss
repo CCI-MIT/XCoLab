@@ -1,0 +1,109 @@
+
+$c-TabBar__background: transparent !default;
+$c-TabBar__borderTop: none !default;
+$c-TabBar__borderBottom: none !default;
+$c-TabBar__paddingTop: 0 !default;
+
+$c-TabBar__tab__background: $t-Color__primary !default;
+$c-TabBar__tab__borderRadius: 0 !default;
+
+$c-TabBar__tab__paddingTop: 13px !default;
+$c-TabBar__tab__paddingBottom: 0 !default;
+$c-TabBar__tab__paddingSides: 12px !default;
+
+$c-TabBar__tab__fontSize: 13px !default;
+$c-TabBar__tab__textColor: white !default;
+$c-TabBar__tab__textColor--active: $t-Color__primary !default;
+
+$c-TabBar__tab__borderTop: 1px solid $t-Color__grey--medium !default;
+$c-TabBar__tab__borderLeft: 1px solid $t-Color__grey--medium !default;
+$c-TabBar__tab__borderRight: 1px solid $t-Color__grey--medium !default;
+$c-TabBar__tab__borderRight--last: $c-TabBar__tab__borderRight !default;
+$c-TabBar__tab__fontWeight: 700 !default;
+$c-TabBar__tab__borderRadius: 5px !default;
+
+$c-TabBar__tab__count__background: $t-Color__primary--darkest !default;
+
+$c-TabBar__tab__shadow--active: none !default;
+$b-TabBar__tab__marginRight: 6px !default;
+
+.c-TabBar { //.prop_tabs
+  margin-top: 8px;
+  padding-top: $c-TabBar__paddingTop;
+  margin-bottom: 0;
+  background: $c-TabBar__background;
+  border-top: $c-TabBar__borderTop;
+  border-bottom: $c-TabBar__borderBottom;
+}
+
+%c-TabBar__tab { //.prop-tabs li
+  border-top: $c-TabBar__tab__borderTop;
+  border-left: $c-TabBar__tab__borderLeft;
+  float: left;
+  list-style: none;
+  //height: 37px;
+  margin-right: $b-TabBar__tab__marginRight;
+
+  a { //.prop-tabs li a
+    display: inline-block;
+    //height: 24px;
+    padding-top: $c-TabBar__tab__paddingTop;
+    padding-right: $c-TabBar__tab__paddingSides;
+    padding-left: $c-TabBar__tab__paddingSides;
+    padding-bottom: $c-TabBar__tab__paddingBottom;
+    font-size: $c-TabBar__tab__fontSize;
+    background: $c-TabBar__tab__background;
+    color: $c-TabBar__tab__textColor;
+    text-transform: uppercase;
+    font-weight: $c-TabBar__tab__fontWeight;
+    @include border-top-left-radius($c-TabBar__tab__borderRadius);
+    @include border-top-right-radius($c-TabBar__tab__borderRadius);
+    @include box-sizing(content-box);
+  }
+
+  a:hover { //.prop-tabs li a:hover
+    background: hover-color($c-TabBar__tab__background);
+  }
+
+  &.active {
+    border-top: 1px solid $t-Color__grey--medium;
+    border-left: 1px solid $t-Color__grey--medium;
+  }
+
+  &.active a { //.prop-tabs li.c a
+    color: $c-TabBar__tab__textColor--active;
+    background: white;
+    box-shadow: $c-TabBar__tab__shadow--active;
+  }
+}
+
+.c-TabBar__tab {
+  @extend %c-TabBar__tab;
+  //needed to overwrite "ul li" default
+  margin-left: 0;
+  border-right: $c-TabBar__tab__borderRight;
+}
+
+.c-TabBar__tab--first {
+  @extend %c-TabBar__tab;
+  margin-left: 15px;
+  border-right: $c-TabBar__tab__borderRight;
+}
+
+.c-TabBar__tab--last {
+  @extend %c-TabBar__tab;
+  //needed to overwrite "ul li" default
+  margin-left: 0;
+  border-right: $c-TabBar__tab__borderRight--last;
+}
+
+.c-TabBar__tab__count { //.prop-tabs li a div
+  display: inline-block;
+  text-align: center;
+  font-size: 12px;
+  background: $c-TabBar__tab__count__background;
+  color: contrasting-color($c-TabBar__tab__count__background);
+  padding: 0 5px;
+  margin-left: 5px;
+  @include border-radius(8px);
+}

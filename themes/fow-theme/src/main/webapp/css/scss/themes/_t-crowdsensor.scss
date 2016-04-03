@@ -160,8 +160,6 @@ $p-homepage__get__imageUrl: none;
 
 $p-proposal__header__background: transparent;
 $p-proposal__header__h1__textColor: $t-Color__red;
-$p-proposal__tab__li__a__fontWeight: $b-Typography__fontWeight--regular;
-$p-proposal__tab__li__a__borderRadius: 0px;
 $p-proposal__propbox__h4__fontWeight: $b-Typography__fontWeight--regular;
 $p-proposal__propbox__titleAuthor__width: 602px;
 $p-proposal__propbox__padding: 15px 0px 30px 14px;
@@ -217,3 +215,24 @@ $c-Box__button__backgroundColor--light: white;
 $c-Box__button__backgroundColor--dark: $t-Color__grey--darkest;
 
 $b-Spacing__separatorColor: $t-Color__grey;
+
+$c-TabBar__background: url(../images/bg-noise.png) white;
+$c-TabBar__borderTop: 1px solid $t-Color__grey--medium;
+$c-TabBar__paddingTop: 35px;
+
+$c-TabBar__tab__paddingTop: 20px;
+$c-TabBar__tab__paddingBottom: 19px;
+$c-TabBar__tab__paddingSides: 25px;
+$c-TabBar__tab__background: rgba(255, 255, 255, 0);
+$c-TabBar__tab__shadow--active: inset 0 -4px 0 $t-Color__green;
+$c-TabBar__tab__fontWeight: $b-Typography__fontWeight--regular;
+$c-TabBar__tab__borderRadius: 0px;
+$c-TabBar__tab__borderTop: none;
+$c-TabBar__tab__borderRight: none;
+$c-TabBar__tab__borderRight--last: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__fontSize: 17px;
+$c-TabBar__tab__textColor: $t-Color__primary;
+$c-TabBar__tab__textColor--active: $t-Color__grey--darkest;
+$b-TabBar__tab__marginRight: 0;
+
+$c-TabBar__tab__count__background: $t-Color__pattern__gray--light;

@@ -2,8 +2,6 @@ $p-proposal__header__background: url(../images/pattern-6x6-blue.png) !default;
 $p-proposal__header__h1__textColor: $b-Typography__textColor !default;
 $p-proposal__header__h1__capitalization: $b-Typography__capitalization--none !default;
 $p-proposal__header__borderBottomColor: $t-Color__grey--medium !default;
-$p-proposal__tab__li__a__fontWeight: 700 !default;
-$p-proposal__tab__li__a__borderRadius: 5px !default;
 $p-proposal__propbox__padding: 0 0 8px 14px !default;
 $p-proposal__propbox__h4__fontWeight: 700 !default;
 $p-proposal__propbox__titleAuthor__width: 632px !default;
@@ -94,66 +92,6 @@ $p-Proposal__subscribe__capitalization: none !default;
   font-size: 29px;
   color: $p-proposal__header__h1__textColor;
   text-transform: $p-proposal__header__h1__capitalization;
-}
-
-/* proposal TABS */
-.prop-tabs {
-  margin-top: 8px;
-}
-
-.prop-tabs ul {
-  height: 37px;
-}
-
-.prop-tabs li {
-  float: left;
-  list-style: none;
-  height: 37px;
-  margin-right: 6px;
-}
-
-.prop-tabs li a {
-  height: 24px;
-  padding: 13px 12px 0;
-  display: inline-block;
-  font-size: 13px;
-  color: white;
-  background: $t-Color__primary;
-  text-transform: uppercase;
-  font-weight: $p-proposal__tab__li__a__fontWeight;
-  @include border-top-left-radius($p-proposal__tab__li__a__borderRadius);
-  @include border-top-right-radius($p-proposal__tab__li__a__borderRadius);
-  @include box-sizing(content-box);
-}
-
-.prop-tabs li a:hover {
-  height: 24px;
-  padding: 12px 11px 1px;
-  background: $t-Color__primary--darkest;
-  border-top: 1px solid $t-Color__grey--medium;
-  border-left: 1px solid $t-Color__grey--medium;
-  border-right: 1px solid $t-Color__grey--medium;
-}
-
-.prop-tabs li.c a {
-  height: 25px;
-  padding: 12px 11px 0;
-  color: $t-Color__primary;
-  background: white;
-  border-top: 1px solid $t-Color__grey--medium;
-  border-left: 1px solid $t-Color__grey--medium;
-  border-right: 1px solid $t-Color__grey--medium;
-}
-
-.prop-tabs li a div {
-  display: inline;
-  text-align: center;
-  font: 12px Arial, Helvetica, sans-serif;
-  color: white;
-  background: $t-Color__primary--darkest;
-  padding: 0 5px;
-  margin-left: 5px;
-  @include border-radius(8px);
 }
 
 .discussion-button-badge {

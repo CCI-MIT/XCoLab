@@ -380,11 +380,6 @@ a.get {
   width: 20px;
 }
 
-%p-Homepage__activitybox__image {
-  width: 50px;
-  height: 50px;
-}
-
 .p-Homepage__activitybox__comment {
   @extend %p-Homepage__activitybox__image;
   background: url(../images/icon-activity-comment.png) no-repeat center;
@@ -408,6 +403,12 @@ a.get {
 .p-Homepage__activitybox__new_user {
   @extend %p-Homepage__activitybox__image;
   background: url(../images/icon-activity-new_user.png) no-repeat center;
+}
+
+%p-Homepage__activitybox__image {
+  width: 50px;
+  height: 50px;
+  background-size: 25px;
 }
 
 .home #c-Header {

@@ -26,38 +26,31 @@ $b-Spacing__separatorColor: $t-Color__grey--light !default;
 
 .b-Spacing {
   @extend %b-Spacing;
-  padding: $b-Spacing__spacing__horizontal $b-Spacing__spacing__vertical;
+  margin: $b-Spacing__spacing__horizontal $b-Spacing__spacing__vertical;
 }
 
 .b-Spacing__inline {
   @extend %b-Spacing;
   display: inline-block;
-  padding-left: $b-Spacing__spacing__horizontal;
-  padding-right: $b-Spacing__spacing__horizontal;
+  margin-left: $b-Spacing__spacing__horizontal;
+  margin-right: $b-Spacing__spacing__horizontal;
 }
 
 
 .b-Spacing--large {
   @extend %b-Spacing;
-  padding: $b-Spacing__spacing__horizontal--large $b-Spacing__spacing__vertical--large;
+  margin: $b-Spacing__spacing__horizontal--large $b-Spacing__spacing__vertical--large;
 }
 
 .b-Spacing__inline--large {
   @extend %b-Spacing;
   display: inline-block;
-  padding-left: $b-Spacing__spacing__horizontal--large;
-  padding-right: $b-Spacing__spacing__horizontal--large;
+  margin-left: $b-Spacing__spacing__horizontal--large;
+  margin-right: $b-Spacing__spacing__horizontal--large;
 }
 
 
-.b-Spacing--margin {
+.b-Spacing__inner {
   @extend %b-Spacing;
-  margin: $b-Spacing__spacing__horizontal $b-Spacing__spacing__vertical;
-}
-
-.b-Spacing__inline--margin {
-  @extend %b-Spacing;
-  display: inline-block;
-  margin-left: $b-Spacing__spacing__horizontal;
-  margin-right: $b-Spacing__spacing__horizontal;
+  padding: $b-Spacing__spacing__horizontal $b-Spacing__spacing__vertical;
 }
