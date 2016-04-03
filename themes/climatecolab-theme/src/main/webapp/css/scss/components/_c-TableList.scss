@@ -1,9 +1,25 @@
+//TODO: perhaps combine this with c-Table
 
 $c-TableList__background--odd: $t-Color__primary__grey--light !default;
 
 .c-TableList {
+
+  //for jquery UI data tables
+  & td {
+    padding: 5px;
+  }
+
   &.fullWidth {
     width: 100%;
+  }
+}
+
+.c-TableList--noBorder {
+  @extend .c-TableList;
+
+  //for jquery UI data tables
+  &, & tr, & td, & tbody, & thead {
+    border: none;
   }
 }
 
@@ -20,7 +36,7 @@ $c-TableList__background--odd: $t-Color__primary__grey--light !default;
   @extend .clearfix;
 }
 
-.c-TableList__row--last {
+.c-TableList__row--last, .c-TableList__row--noBorder {
   @extend .c-TableList__row;
   border-bottom: none;
 }
@@ -33,24 +49,17 @@ $c-TableList__background--odd: $t-Color__primary__grey--light !default;
   }
 }
 
-/* homepage activity boxes ------------- */
-
-//TODO: what's this???
-//* html .activitybox {
-//  height: 1%;
-//}
-
-.activitybox .text {
-  float: left;
-  width: 85%;
-  line-height: 20px;
+//jqeruy UI data table styled as a borderless TableList
+.ui-datatable-even {
+  @extend .c-TableList__row--noBorder;
+  background: $c-TableList__background--odd;
 }
 
-.activitybox h3 {
-  font-size: 14px;
-  color: $t-Color__grey--dark;
+.ui-datatable-odd {
+  @extend .c-TableList__row--noBorder;
 }
 
-.activitybox .status {
-  margin-left: 5px;
+.ui-widget-content {
+  border: none;
+  background: none;
 }

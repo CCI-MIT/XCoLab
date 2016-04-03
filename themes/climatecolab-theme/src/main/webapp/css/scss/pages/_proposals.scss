@@ -713,27 +713,6 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
   vertical-align: top;
 }
 
-.historyTable, .historyTable tr, .historyTable td {
-  border: 0;
-}
-
-.historyTable {
-  font-weight: $b-Typography__fontWeight--bold;
-}
-
-.historyTable td {
-  padding: 5px;
-}
-
-.historyTable .even td, #proposalPickerTable .ui-datatable-odd {
-  background-color: $t-Color__grey--lightest;
-
-}
-
-.historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
-  color: $t-Color__secondary !important;
-}
-
 #proposalPickerTable td {
   padding: 10px;
 }
@@ -837,18 +816,21 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
   color: $p-proposal__history__item__textColor;
 }
 
-.historyTable * {
-  border: 0 !important;
-  text-align: left !important;
-  font-size: 15px !important;
+.historyTable {
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
-.historyTable .ui-datatable-even td {
-  background-color: #f1f1e9;
+.historyTable td {
+  padding: 5px;
 }
 
-.historyTable .ui-datatable-odd td {
-  background-color: #fff;
+//TODO: does this really need to be different?
+#proposalPickerTable .ui-datatable-odd {
+  background-color: $t-Color__grey--lightest;
+}
+
+.historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
+  color: $t-Color__secondary !important;
 }
 
 .historyTable table {

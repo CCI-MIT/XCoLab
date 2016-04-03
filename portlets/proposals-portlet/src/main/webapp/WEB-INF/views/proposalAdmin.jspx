@@ -203,7 +203,7 @@
 		        <strong>History</strong>
             	<div id="versions" class="versionsContainer hidden">
                 	<div class="versions">
-                    	<div class="historyTable">
+                    	<div class="p-Proposal__history c-TableList--noBorder fullWidth">
                         	<table>
                             	<tbody class="ui-datatable-data ui-widget-content">
                                 </tbody>
