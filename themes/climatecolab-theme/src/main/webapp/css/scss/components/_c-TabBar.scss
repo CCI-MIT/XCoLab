@@ -5,27 +5,32 @@ $c-TabBar__borderBottom: none !default;
 $c-TabBar__paddingTop: 0 !default;
 
 $c-TabBar__tab__background: $t-Color__primary !default;
-$c-TabBar__tab__borderRadius: 0 !default;
 
 $c-TabBar__tab__paddingTop: 13px !default;
-$c-TabBar__tab__paddingBottom: 0 !default;
+$c-TabBar__tab__paddingBottom: 13px !default;
 $c-TabBar__tab__paddingSides: 12px !default;
 
 $c-TabBar__tab__fontSize: 13px !default;
 $c-TabBar__tab__textColor: white !default;
 $c-TabBar__tab__textColor--active: $t-Color__primary !default;
 
-$c-TabBar__tab__borderTop: 1px solid $t-Color__grey--medium !default;
-$c-TabBar__tab__borderLeft: 1px solid $t-Color__grey--medium !default;
-$c-TabBar__tab__borderRight: 1px solid $t-Color__grey--medium !default;
+$c-TabBar__tab__borderTop: 1px solid transparent !default;
+$c-TabBar__tab__borderLeft: none !default;
+$c-TabBar__tab__borderRight: none !default; //1px solid $t-Color__grey--medium
 $c-TabBar__tab__borderRight--last: $c-TabBar__tab__borderRight !default;
 $c-TabBar__tab__fontWeight: 700 !default;
 $c-TabBar__tab__borderRadius: 5px !default;
+$c-TabBar__tab__active__border--right: 1px solid $t-Color__grey--medium !default;
+$c-TabBar__tab__borderLeft--first: none !default;
+$c-TabBar__tab__borderRight--first: $c-TabBar__tab__borderRight !default;
+$c-TabBar__tab__active__border--right--left: 1px solid $t-Color__grey--medium !default;
 
 $c-TabBar__tab__count__background: $t-Color__primary--darkest !default;
 
 $c-TabBar__tab__shadow--active: none !default;
 $b-TabBar__tab__marginRight: 6px !default;
+
+$c-TabBar__tab--first__margin--left: 0px !default;
 
 .c-TabBar { //.prop_tabs
   margin-top: 8px;
@@ -67,7 +72,14 @@ $b-TabBar__tab__marginRight: 6px !default;
 
   &.active {
     border-top: 1px solid $t-Color__grey--medium;
-    border-left: 1px solid $t-Color__grey--medium;
+    /*
+    @if $c-TabBar__tab__active__border--right--left != none {
+      border-left: $c-TabBar__tab__active__border--right--left;
+      border-right: $c-TabBar__tab__active__border--right--left;
+    }
+    */
+    @include border-top-left-radius($c-TabBar__tab__borderRadius);
+    @include border-top-right-radius($c-TabBar__tab__borderRadius);
   }
 
   &.active a { //.prop-tabs li.c a
@@ -86,8 +98,9 @@ $b-TabBar__tab__marginRight: 6px !default;
 
 .c-TabBar__tab--first {
   @extend %c-TabBar__tab;
-  margin-left: 60px;
-  border-right: $c-TabBar__tab__borderRight;
+  margin-left: $c-TabBar__tab--first__margin--left;
+  border-left: $c-TabBar__tab__borderLeft--first;
+  border-right: $c-TabBar__tab__borderRight--first;
 }
 
 .c-TabBar__tab--last {
