@@ -1,3 +1,6 @@
+$p-Members__list__element--user__width: 272px !default;
+$p-Members__list__element--seniority: 96px !default;
+
 %p-Members__list__element {
   float: left;
   height: 37px;
@@ -9,7 +12,7 @@
 
 .p-Members__list__element--user { //.blueheaderbar .user
   @extend %p-Members__list__element;
-  width: 275px;
+  width: $p-Members__list__element--user__width;
 }
 
 .p-Members__list__element--points { //.blueheaderbar .points
@@ -30,5 +33,5 @@
 
 .p-Members__list__element--seniority { //.blueheaderbar .seniority
   @extend %p-Members__list__element;
-  width: 90px;
+  width: $p-Members__list__element--seniority;
 }
