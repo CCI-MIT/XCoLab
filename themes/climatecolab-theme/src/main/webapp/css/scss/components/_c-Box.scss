@@ -82,3 +82,9 @@ $c-Box__button__backgroundColor--dark: $t-Color__primary !default;
   @extend .c-Box;
   @include border-radius($c-Box__rounded__borderRadius);
 }
+
+
+a.c-Box__button.boxColor--dark {
+  margin-top: -5px;
+  float: right;
+}
