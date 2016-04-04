@@ -6,12 +6,13 @@ import org.codemonkey.simplejavamail.email.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
 
 
 @PropertySource({"classpath:application.properties", "file:${user.home}/.xcolab.application.properties"})
-
+@Component
 public class EmailUtil {
 
     @Autowired
@@ -32,9 +33,9 @@ public class EmailUtil {
         String userName = env.getRequiredProperty("mail.smtp.user");
         String password = env.getRequiredProperty("mail.smtp.pass");
         switch (env.getRequiredProperty("mail.smtp.transport.strategy")) {
-            case "SSL":
+            case "TLS":
                 new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password, TransportStrategy.SMTP_TLS).sendMail(email);
-            case "TSL":
+            case "SSL":
                 new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password, TransportStrategy.SMTP_SSL).sendMail(email);
             default:
                 new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password).sendMail(email);
