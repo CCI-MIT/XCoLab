@@ -67,7 +67,7 @@ public class ProcessUserEmailAction {
 				
 			BalloonLinkLocalServiceUtil.addBalloonLink(link);
 			sendNotificationEmail(request, but, link);
-			response.sendRedirect("/socialnetworkprize2015/-/link/" + link.getUuid());
+			response.sendRedirect("/socialnetworkprize2016/-/link/" + link.getUuid());
 			
 		}
 	}
