@@ -39,7 +39,8 @@ $c-Header__search__box__background: url(../images/search-bg.png) !default;
 $c-Header__search__term__font: 12px "Lucida Grande", Arial, sans-serif !default;
 $c-Header__search__submit__background: $t-Color__primary !default;
 $c-Header__search__submit__textColor: white !default;
-$c-Header__search__submit--hover__background: $t-Color__primary--dark !default;
+$c-Header__search__submit__borderRadius: 3px !default;
+$c-Header__search__pop__positionLeft: 520px !default;
 
 $c-Header__login__top__background: $t-Color__grey--darkest !default;
 $c-Header__login__box__background: url(../images/search-bg.png) !default;
@@ -225,7 +226,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 .c-Header__search__pop { //.searchpop
   position: absolute;
   top: 11px;
-  left: 520px;
+  left: $c-Header__search__pop__positionLeft;
   z-index: 11;
 }
 
@@ -239,9 +240,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__search__box { //.searchbox
-  width: 274px;
-  height: 42px;
-  padding: 17px 0 0 12px;
+  padding: 10px;
   background: $c-Header__search__box__background;
   @include border-bottom-left-radius(3px);
   @include border-bottom-right-radius(3px);
@@ -249,7 +248,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__search__term { //.search-term
-  float: left;
+  display: inline-block;
   width: 199px;
   height: 29px;
   margin-right: 7px;
@@ -259,28 +258,28 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__search__submit { //.search-submit
-  float: left;
-  width: 52px;
-  height: 30px;
-  padding-top: 3px;
+  display: inline-block;
+  padding: 4px 5px;
+  margin-left: 5px;
+  line-height: normal;
   background: $c-Header__search__submit__background;
-  border: none;
   font-size: 15px;
   font-weight: $b-Typography__fontWeight--bold;
+  text-transform: uppercase;
   color: $c-Header__search__submit__textColor;
-  text-align: center;
-  @include border-radius(3px);
   cursor: pointer;
+  @include border-radius($c-Header__search__submit__borderRadius);
 
   &:hover {
-    background: $c-Header__search__submit--hover__background;
+    background: hover-color($c-Header__search__submit__background);
+    color: $c-Header__search__submit__textColor;
   }
 }
 
 .c-Header__login__pop { //.loginpop
   position: absolute;
   top: 11px;
-  left: 631px;
+  left: 635px;
   width: 287px;
   z-index: 11;
 }
@@ -288,7 +287,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 .c-Header__login__top { //.logintop
   width: 33px;
   height: 30px;
-  padding: 12px 0 0 12px;
+  padding: 6px 3px 0 9px;
   margin-left: 242px;
   background: $c-Header__login__top__background;
   @include border-top-left-radius(3px);

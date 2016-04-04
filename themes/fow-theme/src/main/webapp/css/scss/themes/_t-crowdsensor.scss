@@ -91,6 +91,9 @@ $c-Header__menu__li__isCurrent__boxShadow: inset 0 -8px 0px $t-Color__red !defau
 $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__li__a__textColor: $t-Color__grey--medium;
 $c-Header__menu__li__hoverColor: $t-Color__red;
+$c-Header__search__submit__borderRadius: 0;
+$c-Header__search__submit__fontWeight: $b-Typography__fontWeight--light;
+$c-Header__search__pop__positionLeft: 474px;
 
 $c-Headline__days-left__span__textColor: $t-Color__red;
 $c-Headline__h2__span__textColor: $t-Color__red;
@@ -189,7 +192,8 @@ $p-proposal__thumbbox__background--top: 0px;
 $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
-$p-Proposal__subscribe__capitalization: uppercase !default;
+$p-Proposal__subscribe__capitalization: uppercase;
+$p-Proposal__edit__button__backgroundColor: $t-Color__primary;
 
 $p-community__left__lineHeight: default;
 

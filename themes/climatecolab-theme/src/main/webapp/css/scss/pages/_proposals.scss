@@ -37,6 +37,8 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 
 $p-Proposal__subscribe__capitalization: none !default;
 
+$p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
+
 /* PROPOSALS ----------------------------------------------------------------------------- */
 
 /* proposal HEADER */
@@ -141,7 +143,7 @@ $p-Proposal__subscribe__capitalization: none !default;
   padding: 3px 10px 0;
   margin-right: 5px;
   display: inline-block;
-  background: $t-Color__primary--darkest;
+  background: $p-Proposal__edit__button__backgroundColor;
   font-size: 14px;
   color: white;
   @include border-radius(3px);
