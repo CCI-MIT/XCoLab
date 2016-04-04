@@ -29,7 +29,7 @@
 					<portlet:param name="page" value="1" />
 				</portlet:renderURL>
 				<span class="fieldWithTooltip tooltipAbove">
-					<img style="width: 15px; height: 15px;" src="/climatecolab-theme/images/icon-addprop-question.png" />
+					<img style="width: 15px; height: 15px;" src="${themeDisplay.pathThemeImages}/icon-addprop-question-bar.png" />
 					<div class="c-Tooltip">
 						CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
 						<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
