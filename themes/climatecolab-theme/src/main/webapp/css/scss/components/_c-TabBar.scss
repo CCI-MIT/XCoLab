@@ -86,7 +86,7 @@ $b-TabBar__tab__marginRight: 6px !default;
 
 .c-TabBar__tab--first {
   @extend %c-TabBar__tab;
-  margin-left: 15px;
+  margin-left: 60px;
   border-right: $c-TabBar__tab__borderRight;
 }
 
