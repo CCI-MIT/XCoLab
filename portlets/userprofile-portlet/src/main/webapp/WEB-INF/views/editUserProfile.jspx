@@ -61,7 +61,7 @@
 		<div id="main" class="userprofile">
 			<form:hidden path="userId"/>
 			<div class="reg_errors"><!--  --></div>
-			<form:errors cssClass="alert alert-error" />
+			<form:errors cssClass="c-Alert c-Alert__error" />
 
 			<!-- use these fields to prevent chrome from wrongly filling in country and current password automatically -->
 			<input type="text" style="display:none" />
@@ -85,7 +85,7 @@
 							<td>
 								<form:input id="firstName" path="firstName" cssClass="profile_input"/>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-error" path="firstName" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
 								</div>
 							</td>
 						</tr>
@@ -96,18 +96,7 @@
 							<td>
 								<form:input id="lastName" path="lastName" cssClass="profile_input"/>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-error" path="lastName" />
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th class="b m nowrap required-field" width="170">
-								Screen Name
-							</th>
-							<td>
-								<form:input id="screenNameMessage" cssClass="profile_input" path="screenName"></form:input>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-error" path="screenName" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
 								</div>
 							</td>
 						</tr>
@@ -151,7 +140,7 @@
 							<td>
 								<form:input  id="email" cssClass="profile_input" path="email"></form:input>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-error" path="email" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="email" />
 								</div>
 							</td>
 						</tr>
@@ -163,7 +152,7 @@
 							<td>
 								<form:input  id="retypeEmail" cssClass="profile_input" path="retypeEmail"></form:input>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-error" path="retypeEmail" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="retypeEmail" />
 								</div>
 							</td>
 						</tr>
@@ -175,7 +164,7 @@
 							<td>
 								<form:password cssClass="profile_input" path="currentPassword" />
 								<div class="reg_errors">
-									<form:errors cssClass="alert alert-error" path="currentPassword" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="currentPassword" />
 								</div>
 							</td>
 						</tr>
@@ -186,7 +175,7 @@
 							<td>
 								<form:password cssClass="profile_input" path="password"/>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-error" path="password" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="password" />
 								</div>
 							</td>
 						</tr>
@@ -197,7 +186,7 @@
 							<td>
 								<form:password cssClass="profile_input" path="retypePassword" />
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-error" path="retypePassword" />
+									<form:errors cssClass="c-Alert c-Alert__error" path="retypePassword" />
 								</div>
 							</td>
 						</tr>
@@ -213,13 +202,13 @@
 						<span class="limit_charactersMax">2000</span> characters
 					</div>
 					<div class="reg_errors"><!--  -->
-						<form:errors cssClass="alert alert-error" path="shortBio" />
+						<form:errors cssClass="c-Alert c-Alert__error" path="shortBio" />
 					</div>
 					<div class="clearfix">&#160;</div>
 				</div>
 
-				<a class="primary-button" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
-				<a class="grey-button" href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a>
+				<a class="c-Button__primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
+				<a class="c-Button__secondary" href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a>
 			</div>
 		</div> <!-- /main -->
 
@@ -261,7 +250,7 @@
 				</table>
 				<div class="clearfix"><!-- --></div>
 			</div>
-		</div> <!-- /right_col3 -->
+		</div> <!-- /right_col -->
 
 		<form:hidden id="userRegistrationImageId" path="imageId" />
 	</form:form>
@@ -330,7 +319,7 @@
 			</table>
 			<div class="clearfix"><!-- --></div>
 		</div>
-	</div> <!-- /right_col3 -->
+	</div> <!-- /right_col -->
 
 	<div class="right_col v1">
 		<div class="comm_rightcol">
@@ -338,7 +327,7 @@
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<tr class="colabRow">
 					<td class="actionColumn">
-						<a style="font-size: 12px;" class="grey-button" href="javascript:;" onclick="
+						<a style="font-size: 12px;" class="c-Button__secondary" href="javascript:;" onclick="
 						if(confirm('Are you sure you want to delete your ${colabName} account?'))
                            window.location = '${deleteProfileUrl}'">DELETE</a>
 					</td>
@@ -374,47 +363,44 @@
 			jQuery("#userPortrait").block({
 				message : "Sending message"
 			});
-
 		});
 
 		function isJSONavailable(){
 			return typeof JSON === 'object' &amp;&amp; typeof JSON.parse === 'function';
 		}
+
 		function updateProfilePictureId (imageId){
 			jQuery("#userPortrait").attr("src","/image/contest?img_id=" + imageId);
 			jQuery("#userRegistrationImageId").val(imageId);
 		}
 
-		jQuery("#fileUploadFrame").load(
-				function() {
-					try {
-						if(jQuery(this).contents().text()) {
-							var response;
-							if (isJSONavailable()) {
-								response = JSON.parse(jQuery(this).contents().text());
-							} else {
-								response = eval("(" + jQuery(this).contents().text() + ")");
-							}
-							if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
-								updateProfilePictureId(response.imageId);
-								jQuery("#userPortrait").unblock();
-								jQuery.growlUI('', 'Profile image uploaded, press save to store!');
-							}
-						}
+		jQuery("#fileUploadFrame").load(function() {
+			try {
+				if(jQuery(this).contents().text()) {
+					var response;
+					if (isJSONavailable()) {
+						response = JSON.parse(jQuery(this).contents().text());
+					} else {
+						response = eval("(" + jQuery(this).contents().text() + ")");
 					}
-					catch (e) {
-						jQuery.growlUI('', 'Profile image upload failed!');
-						//console.log("fileUploadFrame error",e);
+					if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
+						updateProfilePictureId(response.imageId);
+						jQuery("#userPortrait").unblock();
+						jQuery.growlUI('', 'Profile image uploaded, press save to store!');
 					}
-
-				});
+				}
+			} catch (e) {
+				jQuery.growlUI('', 'Profile image upload failed!');
+				//console.log("fileUploadFrame error",e);
+			}
+		});
 
 		function updateUploadBtnOffset() {
 			var container = jQuery("#uploadImageContainer");
 			var containerOffset = container.offset();
 			jQuery("#portraitUploadInput").offset(containerOffset);
-
 		}
+
 		jQuery(function() {
 			updateUploadBtnOffset();
 			$(window).resize(updateUploadBtnOffset);
@@ -451,7 +437,7 @@
 			for (var key in CKEDITOR.instances) {
 				CKEDITOR.instances[key].on('saveSnapshot', function(ev) {
 					var len = jQuery.trim(strip(ev.editor.getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
-					validateCharlength( $('[id="'+key+'"]'), len);
+					validateCharlength( $('[id="' + key + '"]'), len);
 				});
 			}
 		}
@@ -480,93 +466,54 @@
 		}
 
 		jQuery("#email").keyup(function(){
-			if(jQuery("#email").val() !== "" &amp;&amp; jQuery("#email").val() !== jQuery("#emailStored").val()) {
+			var $emailElement = jQuery("#email");
+            if ($emailElement.val() !== "" &amp;&amp; $emailElement.val() !== jQuery("#emailStored").val()) {
 				jQuery("#retypeEmailRow").slideDown();
-			} else{
+			} else {
 				jQuery("#retypeEmailRow").slideUp();
 			}
-		})
+		});
 
 		jQuery("#password").keyup(function(){
-			if(jQuery("#password").val() !== "") {
+			if (jQuery("#password").val() !== "") {
 				jQuery("#retypePasswordRow").slideDown();
 			} else {
 				jQuery("#retypePasswordRow").slideUp();
 			}
-		})
-
-
+		});
 
 		jQuery("#sendEmailOnActivity").change(function(){
 
-			if(!jQuery("#sendEmailOnActivity").is(":checked")){
-				jQuery("#sendDailyEmailOnActivity").attr('checked', false);
-				jQuery("#sendDailyEmailOnActivity").attr("disabled", true);
-			} else{
-				jQuery("#sendDailyEmailOnActivity").removeAttr("disabled");
+			var $dailyEmailsToggleElement = jQuery("#sendDailyEmailOnActivity");
+            if (!jQuery("#sendEmailOnActivity").is(":checked")) {
+				$dailyEmailsToggleElement.attr('checked', false);
+				$dailyEmailsToggleElement.attr("disabled", true);
+			} else {
+				$dailyEmailsToggleElement.removeAttr("disabled");
 			}
-		})
-
+		});
 
 		function updateMessageSettingsOnServer(updateUrl, formData){
 			var deferred = jQuery.Deferred();
 				sendAjaxToServer(updateUrl, formData).done(function(response){
-					if(response){
+					if (response) {
 						jQuery.growlUI('', 'Successfully updated message settings!');
-					} else{
+					} else {
 						jQuery.growlUI('','Updating message settings failed!');
 					}
 				});
 			return deferred;
 		}
 
-		/*
-		function updateMessageSettings(element){
-
-			var updateMessageSettingsURL = '${updateUserSendEmailOnMessageSettings}';
-			var checkedFormData = createCheckedFormData(element.checked);
-			updateMessageSettingsOnServer(updateMessageSettingsURL, checkedFormData).done(function (result) {
-				if(!result) {
-					jQuery("#" + element.id +"").attr('checked', true);
-				}
-
-			});
-		}*/
-
 		function updateUserSendEmailOnActivitySettings(element){
 
 			var updateMessageSettingsURL = '${updateUserSendEmailOnActivitySettings}';
 			var checkedFormData = createCheckedFormData(element.checked);
 			updateMessageSettingsOnServer(updateMessageSettingsURL, checkedFormData).done(function (result) {
-				if(!result) {
+				if (!result) {
 					jQuery("#updateUserSendEmailOnActivitySettings").attr('checked', !element.checked);
 				}
 			});
-
-			/*
-			 var updateMessageSettingsActivityDailyURL = '${updateUserSendDailyEmailOnActivitySettings}';
-			sendAjaxToServer(updateMessageSettingsActivityURL, formData).done(function(response){
-				if(response){
-
-					if(!element.checked) {
-						sendAjaxToServer(updateMessageSettingsActivityDailyURL, formData).done(function (response) {
-							if (response) {
-								jQuery.growlUI('', 'Successfully updated message settings!');
-							} else {
-								jQuery.growlUI('', 'Updating message settings partly failed!');
-								jQuery("#updateUserSendDailyEmailOnActivitySettings").attr('checked', true);
-							}
-						});
-					} else{
-						jQuery.growlUI('', 'Successfully updated message settings!');
-					}
-
-				} else{
-					jQuery.growlUI('','Updating message settings failed!');
-					jQuery("#updateUserSendDailyEmailOnActivitySettings").attr('checked', true);
-				}
-			});*/
-
 		}
 
 		function updateUserSendEmailOnMessageSettings(element){
@@ -574,7 +521,7 @@
 			var updateMessageSettingsURL = '${updateUserSendEmailOnMessageSettings}';
 			var checkedFormData = createCheckedFormData(element.checked);
 			updateMessageSettingsOnServer(updateMessageSettingsURL, checkedFormData).done(function (result) {
-				if(!result) {
+				if (!result) {
 					jQuery("#updateUserSendEmailOnMessageSettings").attr('checked', !element.checked);
 				}
 			});
@@ -582,7 +529,7 @@
 
 		function createCheckedFormData(elementChecked){
 			var formData = "messageSetting=";
-			if(elementChecked) {
+			if (elementChecked) {
 				formData += "true";
 			} else {
 				formData += "false";
@@ -590,8 +537,7 @@
 			return formData;
 		}
 
-		function updateUserSendDailyEmailOnActivitySettings(element){
-
+		function updateUserSendDailyEmailOnActivitySettings(element) {
 			var updateMessageSettingsURL = '${updateUserSendDailyEmailOnActivitySettings}';
 			var checkedFormData = createCheckedFormData(element.checked);
 			updateMessageSettingsOnServer(updateMessageSettingsURL, checkedFormData).done(function (result) {
@@ -601,8 +547,7 @@
 			});
 		}
 
-
-		function updateNewsletterSettings(element){
+		function updateNewsletterSettings(element) {
 			//console.log("updateNewsletterSettings", element.checked);
 			if(element.checked){
 				subscribeNewsletter();
@@ -611,13 +556,13 @@
 			}
 		}
 
-		function updateNewsletterSettingsOnServer(updateUrl){
+		function updateNewsletterSettingsOnServer(updateUrl) {
 			var deferred = jQuery.Deferred();
-				sendAjaxToServer(updateUrl).done(function(response){
-					if(response){
+				sendAjaxToServer(updateUrl).done(function(response) {
+					if (response) {
 						deferred.resolve(true);
 						jQuery.growlUI('', 'Successfully updated Newsletter settings!');
-					} else{
+					} else {
 						deferred.resolve(false);
 						jQuery.growlUI('','Updating Newsletter settings failed!');
 					}
@@ -625,12 +570,11 @@
 			return deferred;
 		}
 
-		function subscribeNewsletter(){
+		function subscribeNewsletter() {
 			var newsletterSubscribeURL = '${newsletterSubscribe}';
 			updateNewsletterSettingsOnServer(newsletterSubscribeURL).done(function (result) {
-				if(!result) {
+				if (!result) {
 					jQuery("#emailSubscribedToNewsletter").attr('checked', false);
-					//jQuery("#newsletterSettingsLabel").text("Un-Subscribe");
 				}
 			});
 
@@ -638,20 +582,19 @@
 		function unSubscribeNewsletter() {
 			var newsletterUnSubscribeURL = '${newsletterUnSubscribe}';
 			updateNewsletterSettingsOnServer(newsletterUnSubscribeURL).done(function (result) {
-				if(!result) {
+				if (!result) {
 					jQuery("#emailSubscribedToNewsletter").attr('checked', true);
-					//jQuery("#newsletterSettingsLabel").text("Subscribe");
 				}
 			});
 		}
 
-		function unlinkSSOonServer(updateUrl){
+		function unlinkSSOonServer(updateUrl) {
 			var deferred = jQuery.Deferred();
 				sendAjaxToServer(updateUrl).done(function(response){
-					if(response){
+					if (response) {
 						deferred.resolve(true);
 						jQuery.growlUI('','Unlinking SSO successfull!');
-					} else{
+					} else {
 						deferred.resolve(false);
 						jQuery.growlUI('','Unlinking SSO failed!');
 					}
@@ -659,28 +602,30 @@
 			return deferred;
 		}
 
-		function unlinkFacebookSSO(){
+		function unlinkFacebookSSO() {
 			var unlinkSSOURL = '${unlinkFacebookSSO}';
 			unlinkSSOonServer(unlinkSSOURL).done(function (result) {
-				if(result) {
+				if (result) {
 					jQuery("#hasFacebookId").attr('onclick',"");
-					jQuery("#hasOpenId").attr('disabled', true);
-					jQuery("#hasOpenId").removeAttr('checked');
-				} else{
+					var $hasOpenIdElement = jQuery("#hasOpenId");
+                    $hasOpenIdElement.attr('disabled', true);
+					$hasOpenIdElement.removeAttr('checked');
+				} else {
 					jQuery("#hasFacebookId").attr('checked', true);
 				}
 			});
 		}
 
-		function unlinkGoogleSSO(){
+		function unlinkGoogleSSO() {
 			var unlinkSSOURL = '${unlinkGoogleSSO}';
 			unlinkSSOonServer(unlinkSSOURL).done(function (result) {
-				if(result) {
-					jQuery("#hasOpenId").attr('onclick', "");
-					jQuery("#hasOpenId").attr('disabled', "true");
-					jQuery("#hasOpenId").removeAttr('checked');
+				var $hasOpenIdElement = jQuery("#hasOpenId");
+                if (result) {
+					$hasOpenIdElement.attr('onclick', "");
+					$hasOpenIdElement.attr('disabled', "true");
+					$hasOpenIdElement.removeAttr('checked');
 				} else {
-					jQuery("#hasOpenId").attr('checked', true);
+					$hasOpenIdElement.attr('checked', true);
 				}
 			});
 		}

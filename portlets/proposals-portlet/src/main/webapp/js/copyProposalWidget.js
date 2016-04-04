@@ -9,7 +9,7 @@ function proposalCopy_loadContests(move, hideOnMove) {
     		html.push(obj.contestName);
     		html.push("</td>");
     		html.push("<td>");
-    		html.push('<div class="blue-button"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName + '/');
+    		html.push('<div class="c-Button__primary"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName + '/');
 
     		if (move && hideOnMove) {
     			html.push('/c/proposal/');
@@ -67,7 +67,7 @@ function loadProposalSections() {
     		}
     		html.push("</td>");
     		html.push("<td>");
-    		html.push('<div class="blue-button"><a href="javascript:;" class="copySectionBtn" data-section-id="');
+    		html.push('<div class="c-Button__primary"><a href="javascript:;" class="copySectionBtn" data-section-id="');
     	    html.push(obj.sectionId);
     	    html.push('">Copy</a></div>');
     		html.push("</td></tr>");
@@ -98,7 +98,7 @@ function updatePopupSize() {
 	var container = jQuery("#copyProposalContainer");
 	container.find("#copyProposalPopup").css({top: "20px"});
 	var availableHeight = jQuery(window).height();
-	container.find(".popup").css({height: (availableHeight - 200), "overflow-x": "auto"});
+	container.find(".c-Popup").css({height: (availableHeight - 200), "overflow-x": "auto"});
 }
 
 jQuery(function() {

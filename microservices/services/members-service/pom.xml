@@ -25,6 +25,7 @@
 	</properties>
 
 
+
 	<dependencies>	
 		 <dependency>
 	        <groupId>org.jooq</groupId>
@@ -152,8 +153,25 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>com.coderplus.maven.plugins</groupId>
+				<artifactId>copy-rename-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<id>copy-file</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<sourceFile>${user.home}/.xcolab.application.properties</sourceFile>
+							<destinationFile>target/classes/application.properties</destinationFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-	
-
 </project>

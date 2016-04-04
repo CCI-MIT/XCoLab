@@ -11,23 +11,23 @@
 
 	<c:forEach var="contest" items="${contests }">
 		<c:if test="${contest.showInListView}">
-			<tr class="${featured ? 'featured' : ''}">
-				<td>
+			<tr class="c-Table__row ${featured ? 'featured' : ''}">
+				<td class="c-Table__cell">
 					<div class="contestFlag">
 						<c:if test="${not empty contest.flagText }">
 							<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
 							<c:if test="${not empty contest.flagTooltip}">
-								<div class="tooltip">${contest.flagTooltip}<div class="tt-arrow"><!--  --></div></div>
+								<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
 							</c:if>
 						</c:if>
 						<collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
 						${contest.contestName}
 					</div>
 				</td>
-				<td class="odd">
+				<td class="c-Table__cell odd">
 					${contest.proposalsCount}
 				</td>
-				<td>
+				<td class="c-Table__cell">
 					<c:choose>
 						<c:when test="${contest.activePhase.canVote }">
 							${contest.votesCount}
@@ -37,21 +37,21 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td class="odd">
+				<td class="c-Table__cell odd">
 					<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what }" />
 				</td>
-				<td>
+				<td class="c-Table__cell">
 					<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where }" />
 				</td>
-				<td class="odd">
+				<td class="c-Table__cell odd">
 					<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who }"/>
 				</td>
-				<td>
+				<td class="c-Table__cell">
 					<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.how }"/>
 				</td>
 
 				<c:if test="${proposalsPermissions.canJudgeActions}">
-					<td class="odd">
+					<td class="c-Table__cell odd">
                             <span class="fieldWithTooltip">
                                 <c:choose>
 									<c:when test="${not contest.judgeStatus}">
@@ -63,7 +63,7 @@
 								</c:choose>
                             </span>
 
-						<div class="tooltip">
+						<div class="c-Tooltip">
 							<c:choose>
 								<c:when test="${not contest.judgeStatus}">
 									Judge's decision incomplete.
@@ -76,18 +76,18 @@
 					</td>
 
 					<c:if test="${proposalsPermissions.canFellowActions}">
-						<td>
-                                <span class="fieldWithTooltip">
-                                    <c:choose>
-										<c:when test="${contest.screeningStatus}">
-											<img src="/climatecolab-theme/images/icon_question-chk.png"/>
-										</c:when>
-										<c:otherwise>
-											<img src="/climatecolab-theme/images/icon_question-x.png"/>
-										</c:otherwise>
-									</c:choose>
-                                </span>
-							<div class="tooltip">
+						<td class="c-Table__cell">
+							<span class="fieldWithTooltip">
+								<c:choose>
+									<c:when test="${contest.screeningStatus}">
+										<img src="/climatecolab-theme/images/icon_question-chk.png"/>
+									</c:when>
+									<c:otherwise>
+										<img src="/climatecolab-theme/images/icon_question-x.png"/>
+									</c:otherwise>
+								</c:choose>
+							</span>
+							<div class="c-Tooltip">
 								<c:choose>
 									<c:when test="${contest.screeningStatus}">
 										Fellow screening completed.

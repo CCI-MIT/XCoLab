@@ -23,7 +23,7 @@ public class PersistenceTest {
     private DSLContext dslContext;
 
     @Test
-    public void testGetContests() throws SQLException {
+    public void testGetUsers() throws SQLException {
         final List<User_> users = dslContext.select()
                 .from(USER_).fetchInto(User_.class);
         Assert.assertTrue(!users.isEmpty());

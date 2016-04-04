@@ -1,0 +1,83 @@
+.p-ContestProposals__list {
+
+}
+
+%p-ContestProposals__list__element {
+  float: left;
+  height: 37px;
+}
+
+.p-ContestProposals__list__element--proposalname { //.blueheaderbar .proposalname
+  @extend %p-ContestProposals__list__element;
+  width: 645px;
+  padding-left: 9px;
+
+  &.completed { //.blueheaderbar.completed .proposalname
+    width: 765px;
+  }
+
+  &.judgeActions {
+    width: 489px;
+  }
+}
+
+.p-ContestProposals__list__element--thumbs { //.blueheaderbar .thumbs
+  @extend %p-ContestProposals__list__element;
+  width: 67px;
+  position: relative;
+  text-align: center;
+
+  a {
+    background: url(../images/icon-proposal-vote.png) no-repeat 0 7px;
+    width: 20px;
+    height: 37px;
+    display: inline-block;
+  }
+}
+
+.p-ContestProposals__list__element--votes { //.blueheaderbar .votes a
+  @extend %p-ContestProposals__list__element;
+  a {
+    background: url(../images/icon-proposal-vote.png) no-repeat 0 7px;
+    width: 20px;
+    height: 37px;
+    display: inline-block;
+  }
+}
+
+.p-ContestProposals__list__element--comments { //.blueheaderbar .propcomm {
+  @extend %p-ContestProposals__list__element;
+  width: 65px;
+  position: relative;
+  text-align: center;
+
+  a {
+    background: url(../images/icon-list-comment.png) no-repeat 0 8px;
+    width: 24px;
+    height: 37px;
+    display: inline-block;
+  }
+}
+
+.p-ContestProposals__list__element--modifiedDate { //.blueheaderbar .modified
+  @extend %p-ContestProposals__list__element;
+  width: 85px;
+  text-align: center;
+}
+
+.p-ContestProposals__list__element--contributor { //.blueheaderbar .contributor
+  @extend %p-ContestProposals__list__element;
+  width: 106px;
+  text-align: center;
+}
+
+.p-ContestProposals__list__element--judgeFellow { //.blueheaderbar .judgefellow {
+  @extend %p-ContestProposals__list__element;
+  width: 159px;
+  position: relative;
+  text-align: center;
+
+  a {
+    font-size: 0.9em
+  }
+}

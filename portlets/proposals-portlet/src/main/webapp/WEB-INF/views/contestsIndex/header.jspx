@@ -8,7 +8,7 @@
 	<!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="preferences" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"-->
 
-	<div class="headline formmargin">
+	<div class="c-Headline formmargin">
 		<div style="position: relative;">
 			<c:if test="${showContestManagementLink}">
 				<a href="/web/guest/cms/-/contestmanagement/manager/tab/OVERVIEW" target="_blank">Go to Contest Management Tool</a>
@@ -77,33 +77,34 @@
 			</div>
 		</c:if>
 
-		<div class="show">
-			<div class="show-active">
-				<c:choose>
-					<c:when test="${showActiveContests }">
-						<a href="#" >Active ${contestType.contestNamePlural}</a>
-					</c:when>
-					<c:when test="${not showActiveContests and not showAllContests }">
-						<a href="#" >Prior ${contestType.contestNamePlural}</a>
-					</c:when>
-					<c:otherwise>
-						<a href="#" >All ${contestType.contestNamePlural}</a>
-					</c:otherwise>
-				</c:choose>
-				<div id="priorActiveAllWidget">
-					<ul>
-						<li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
-						<c:if test="${priorContestsExist}">
-							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
-						</c:if>
-						<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All ${contestType.contestNamePlural}</a></li>
-					</ul>
+		<c:if test="${priorContestsExist}">
+			<div class="show">
+				<div class="show-active">
+					<c:choose>
+						<c:when test="${showActiveContests }">
+							<a href="#" >Active ${contestType.contestNamePlural}</a>
+						</c:when>
+						<c:when test="${not showActiveContests and not showAllContests }">
+							<a href="#" >Prior ${contestType.contestNamePlural}</a>
+						</c:when>
+						<c:otherwise>
+							<a href="#" >All ${contestType.contestNamePlural}</a>
+						</c:otherwise>
+					</c:choose>
+					<div id="priorActiveAllWidget">
+						<ul>
+							<li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
 
+								<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
+
+							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All ${contestType.contestNamePlural}</a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="divider"><!--  --></div>
+		</c:if>
 		<c:if test="${not empty suggestionContestLink}">
+			<div class="divider"><!--  --></div>
   			<div class="show">
   				<a href="${suggestionContestLink}">Suggest a new ${contestType.contestName}</a>
   			</div>
@@ -125,9 +126,9 @@
             <portlet:param name="action" value="suggestContest" />
         </portlet:actionURL>
         <form method="post">
-            <div id="suggestContestPopupContainer" style="display: none;">
-                <div class="popup-wrap p1" id="suggestContestPopup">
-                    <div class="popup"><h4>Please review the&#160;<a
+            <div id="c-Popup__suggest" style="display: none;">
+                <div class="c-Popup__wrapper p1" id="suggestContestPopup">
+                    <div class="c-Popup"><h4>Please review the&#160;<a
                             href="/web/guest/resources/-/wiki/Main/Guidelines+for+suggesting+new+contests"
                             target="_blank">new ${contestType.contestName} guidelines</a> and the enter your suggestion below. A message will be sent to the ${colabName} staff and they will follow up with you soon.
                     </h4>
@@ -135,9 +136,9 @@
                         <div class="lrContentPlaceholder lfr-column " id="suggestContestPopupContent">
                                <div><textarea name="suggestContestText" class="portlet-form-input-field" style="display: block; width: 100%; height: 80px;">Your suggestion</textarea></div>
                                 <center>
-                                    <a class="primary-button iceCmdLnk" href="javascript:;" onclick=" $(this).parents('form:first').get(0).setAttribute('action', '${suggestContestURL}'); $(this).parents('form:first').submit();">
+                                    <a class="c-Button__primary iceCmdLnk" href="javascript:;" onclick=" $(this).parents('form:first').get(0).setAttribute('action', '${suggestContestURL}'); $(this).parents('form:first').submit();">
 										Send</a>
-                                    <a class="primary-button" href="javascript:;" onclick="$('#suggestContestPopupContainer').hide();">Cancel</a>
+                                    <a class="c-Button__primary" href="javascript:;" onclick="$('#c-Popup__suggest').hide();">Cancel</a>
                                 </center>
                         </div>
                     </div>
@@ -145,7 +146,7 @@
             </div>
         </form>
     </div>
-	<div class="headline">
+	<div class="c-Headline">
 		${preferences.callToAction}
 	</div>
 

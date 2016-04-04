@@ -52,7 +52,7 @@
 						<form:input path="contestUrlName" id="contestUrlName"/>
 
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="contestUrlName"/>
+							<form:errors cssClass="c-Alert c-Alert__error" path="contestUrlName"/>
 						</div>
 						<div class="clearfix"><!-- --></div>
 						<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -80,7 +80,7 @@
 						<form:input path="contestYear" id="contestYear" />
 
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="contestYear"/>
+							<form:errors cssClass="c-Alert c-Alert__error" path="contestYear"/>
 						</div>
 						<div class="clearfix"><!-- --></div>
 						<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -102,7 +102,7 @@
 						<form:input path="emailTemplateUrl" id="emailTemplateUrl"/>
 
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="emailTemplateUrl"/>
+							<form:errors cssClass="c-Alert c-Alert__error" path="emailTemplateUrl"/>
 						</div>
 						<div class="clearfix"><!-- --></div>
 						<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -128,7 +128,7 @@
 						</form:select>
 
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="contestTier"/>
+							<form:errors cssClass="c-Alert c-Alert__error" path="contestTier"/>
 						</div>
 					</div>
 				</div>
@@ -152,7 +152,7 @@
 						</form:select>
 
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="hideRibbons"/>
+							<form:errors cssClass="c-Alert c-Alert__error" path="hideRibbons"/>
 						</div>
 					</div>
 				</div>
@@ -183,7 +183,7 @@
 									</form:select>
 
 									<div class="reg_errors"><!--  -->
-										<form:errors cssClass="alert alert-error"
+										<form:errors cssClass="c-Alert c-Alert__error"
 													 path="contestModelSettings.defaultModelId"/>
 									</div>
 								</td>
@@ -200,7 +200,7 @@
 													  itemLabel="lable"/>
 									</form:select>
 									<div class="reg_errors"><!--  -->
-										<form:errors cssClass="alert alert-error"
+										<form:errors cssClass="c-Alert c-Alert__error"
 													 path="contestModelSettings.otherModelIds"/>
 									</div>
 								</td>
@@ -217,7 +217,7 @@
 									</form:select>
 
 									<div class="reg_errors"><!--  -->
-										<form:errors cssClass="alert alert-error"
+										<form:errors cssClass="c-Alert c-Alert__error"
 													 path="contestModelSettings.defaultModelSettings"/>
 									</div>
 								</td>
@@ -239,7 +239,7 @@
 							<form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 						</form:select>
 						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="alert alert-error" path="contestType" />
+							<form:errors cssClass="c-Alert c-Alert__error" path="contestType" />
 						</div>
 					</div>
 				</div>

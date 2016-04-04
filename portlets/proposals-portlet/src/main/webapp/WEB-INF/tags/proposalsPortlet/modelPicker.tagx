@@ -18,7 +18,7 @@
 					</div>
 				</c:if>
                 <h3 style="margin-top: 0;">Which modeling engine would you like to use?</h3>
-                <div class="selectbox1 modelsSelectBox">
+                <div class="c-Form__selectbox__new modelsSelectBox">
                 	<fieldset id="modelSet">
                 	<c:forEach var="model" items="${availableModels }">
 
@@ -75,7 +75,7 @@
 			// ignore
 		}
 
-		jQuery(".selectbox1").change(function(element) {
+		jQuery(".c-c-Form__selectbox__new").change(function(element) {
 			modeling.loadModel(element.target.value);
 			jQuery(".act-edit_left").html("");
 			jQuery(".act-edit_right").html("");

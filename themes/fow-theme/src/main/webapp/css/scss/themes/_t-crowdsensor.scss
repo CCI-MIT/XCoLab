@@ -1,0 +1,47 @@
+@import "compass";
+
+
+//main colors:
+$t-Color__primary: #5da034;
+$t-Color__secondary: #f6911d;
+$t-Color__accent: #eb008a;
+$t-Color__auxiliary: #00acee; // 4th color when needed (e.g. ontology)
+
+//lightness variations
+$t-Color__primary--light: lighten($t-Color__primary, 30); $__hex: #afdc93;
+$t-Color__secondary--light: lighten($t-Color__secondary, 15); $__hex: #f9b567;
+
+$t-Color__primary--dark: darken($t-Color__primary, 10); $__hex: #457727;
+$t-Color__secondary--dark: darken($t-Color__secondary, 10); $__hex: #d37508;
+
+$t-Color__primary--darkest: darken($t-Color__primary, 20); $__hex: #2f511a;
+$t-Color__secondary--darkest: darken($t-Color__secondary, 20); $__hex: #a25a06;
+
+//grey variations of the primary color
+$t-Color__primary__grey--dark: desaturate($t-Color__primary, 25); $__hex: #648550;
+$t-Color__primary__grey: lighten($t-Color__primary__grey--dark, 25); $__hex_color: #a6c097;
+$t-Color__primary__grey--light: lighten($t-Color__primary__grey--dark, 40); $__hex: #cfddc6;
+
+//greys
+$t-Color__grey--lightest: #e7e9eb;
+$t-Color__grey--light: #babbbd;
+$t-Color__grey--medium: #808184;
+$t-Color__grey--dark: #57585a;
+$t-Color__grey--darkest: #404143;
+
+//alert and message colors:
+$t-Color__alert: #eb008a;
+$t-Color__alert--light: #f6dfec;
+$t-Color__info__background: $t-Color__primary__grey--light;
+$t-Color__success__background: $t-Color__secondary--light;
+
+//standard text colors
+$t-Color__text--light: white;
+$t-Color__text--dark: $t-Color__grey--darkest;
+$t-Text__threshold: 175;
+
+//outline view TODO: see if we can adapt this to use our colors
+$t-Color__outline__level1: #e0dacb; // background slevel1
+$t-Color__outline__level2: #d1cbbf; // background slevel2
+$t-Color__outline__level3: #c1bcb2; // background slevel3
+$t-Color__outline__level4: #aaa69f; // background slevel4-6

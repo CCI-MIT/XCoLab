@@ -153,28 +153,32 @@
         <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
     </div>
 	<div id="copyProposalContainer" style="display: none;">
-    	<div class="popup-wrap p1" id="copyProposalPopup">
-			<div class="popup">
+    	<div class="c-Popup__wrapper p1" id="copyProposalPopup">
+			<div class="c-Popup">
 				<h4>Please choose ${contestType.contestName} to which you'd like to copy this ${contestType.proposalName}</h4>
 				<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
 					<div id="copyProposalContests"><!--  --></div>
-						<a class="primary-button" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
+						<a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
 				</div>
 			</div>
 		</div>
 	</div>
     <c:if test="${voted}">
-        <div id="popup_justVoted" class="popup-wrap small" style="">
-            <div class="popup">
+        <div id="popup_justVoted" class="c-Popup__wrapper small" style="">
+            <div class="c-Popup">
                 <div class="closepopuplogin">
-                    <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="${themeDisplay.pathThemeImages}/images/help_close.png" width="20" height="20" alt="X" /></a>
+                    <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="${themeDisplay.pathThemeImages}/help_close.png" width="20" height="20" alt="X" /></a>
                 </div>
                 <h2 style="color: #66b035;">Thank you for voting!</h2>
                 <div>
-                    <p style="color: #545454; margin-top: 5px;">You just voted for ${proposal.name}.
-
-                        <c:if test="${not empty votingDeadline}">The Voting Period ends ${votingDeadline}.</c:if> </p>
-                    <h4 style="color: #30a3fb;">Share your vote:</h4>
+                    <p style="color: #545454; margin-top: 5px;">
+                        You just voted for <b>${proposal.name}</b> in the ${contestType.contestName} <b>${proposal.contest.contestName}</b>. <br />
+                        <br />
+                        <c:if test="${not empty votingDeadline}">
+                            You can vote for one ${contestType.proposalName} in each ${contestType.contestName}, and can change your vote as many times as you’d like until ${votingDeadline}.<br/>
+                        </c:if>
+                    </p>
+                    <h4 style="color: #30a3fb;">Share your vote and invite others to vote, too:</h4>
                     <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="width: 205px;">
                         <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                         <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
@@ -186,8 +190,8 @@
             </div>
         </div>
     </c:if>
-    <div id="messaging-overlay" class="popup-wrap small" style="display: none;">
-        <div class="popup" style="overflow: hidden;">
+    <div id="messaging-overlay" class="c-Popup__wrapper small" style="display: none;">
+        <div class="c-Popup" style="overflow: hidden;">
             <jsp:directive.include file="./proposalDetails/proposalShare.jspx" />
         </div>
     </div>

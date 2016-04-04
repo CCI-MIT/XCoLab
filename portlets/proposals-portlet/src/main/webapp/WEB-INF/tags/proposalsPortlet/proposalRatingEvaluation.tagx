@@ -8,7 +8,7 @@
     <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
     <jsp:directive.attribute name="showRatingDescription" type="java.lang.Boolean" required="false" rtexprvalue="true"  description="Whether the Rating description should be displayed or not" />
 
-    <div class="the-comment">
+    <div class="c-Comment">
         <div class="content">
             <c:if test="${showPhase}">
                 <strong>${contestType.contestName} phase: </strong>
@@ -19,7 +19,7 @@
                     <span class="fieldWithTooltip">
                         <img src="/climatecolab-theme/images/icon_question-chk-qm.png" height="15px" />
                     </span>
-                    <div class="tooltip">
+                    <div class="c-Tooltip">
                         Click here to see how ${contestType.proposalNamePlural} have been judged.
                     </div>
                 </a></strong>

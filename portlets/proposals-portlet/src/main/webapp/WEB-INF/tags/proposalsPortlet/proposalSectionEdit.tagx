@@ -63,7 +63,7 @@
                         (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span><br />
                     </c:otherwise>
                 </c:choose>
-                <a class="primary-button" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">Select ${section.proposalNames}</a>
+                <a class="c-Button__primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">Select ${section.proposalNames}</a>
             </c:when>
             <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
                 <c:set var="pl" value="${section.stringValueAsProposalArray }"/>
@@ -76,7 +76,7 @@
                 		</tr>
                 	</c:forEach>
                 </table>
-                <a class="primary-button" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">Add ${section.proposalNames}</a>
+                <a class="c-Button__primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">Add ${section.proposalNames}</a>
             </c:when>
 
 			<c:otherwise>
@@ -95,7 +95,7 @@
         		</c:if>
         		<c:if test="${showCopySectionContentButton }">
         			<div class='alignright copyFromBaseProposalTriggerContainer'>
-        				<a class="primary-button copyFromBaseProposalTrigger" href="javascript:;" data-section-id="${section.sectionDefinitionId}">Copy from base ${contestType.proposalName}</a>
+        				<a class="c-Button__primary copyFromBaseProposalTrigger" href="javascript:;" data-section-id="${section.sectionDefinitionId}">Copy from base ${contestType.proposalName}</a>
         			</div>
         		</c:if>
 			</c:otherwise>

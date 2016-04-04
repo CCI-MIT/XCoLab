@@ -43,7 +43,7 @@ pageScope
 <c:set var='requestScope' value='${requestScope}'/>
 --%>
 
-<div class="alert alert-error">
+<div class="c-Alert c-Alert__error">
     <%= LanguageUtil.format(pageContext, "is-temporarily-unavailable", portletTitle, false) %>
 </div>
 

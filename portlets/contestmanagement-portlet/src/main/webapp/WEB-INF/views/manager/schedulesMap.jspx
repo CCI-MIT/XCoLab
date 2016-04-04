@@ -52,17 +52,17 @@
     <div class="cmsDetailsBox">
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
-                <a class="primary-button innerVerticalCenter" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
-                <a class="primary-button innerVerticalCenter" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
-                <a class="primary-button innerVerticalCenter" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
-                <a class="primary-button innerVerticalCenter" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
             </div>
         </div>
     </div>
 
     <div class="cmsDetailsBox">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="alert alert-error" path="*"/>
+            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
         </div>
 
         <form:form action="${changeContestScheduleURL }" commandName="elementSelectIdWrapper" id="selectForm"
@@ -78,7 +78,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="alert alert-error" path="elementId"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId"/>
                     </div>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                 <form:input path="scheduleName" cssClass="wideLargeInput"/>
 
                 <div class="reg_errors"><!--  -->
-                    <form:errors cssClass="alert alert-error" path="scheduleName"/>
+                    <form:errors cssClass="c-Alert c-Alert__error" path="scheduleName"/>
                 </div>
             </div>
 
@@ -103,7 +103,7 @@
                 <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
 
                 <div class="outerVerticalCenter floatRight">
-                    <a class="primary-button innerVerticalCenter" href="#" onclick="addContestPhase(event)">Add contest phase</a>
+                    <a class="c-Button__primary innerVerticalCenter" href="#" onclick="addContestPhase(event)">Add contest phase</a>
                 </div>
                 <table class="contestOverview">
                     <col span="1" class="extraSmallColumn"/>
@@ -139,7 +139,7 @@
                                          data-form-name="contestPhaseDeleted"/>
 
                             <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-error"
+                                <form:errors cssClass="c-Alert c-Alert__error"
                                              path="schedulePhases[${x.index}].phaseStartDate"/>
                             </div>
 
@@ -264,7 +264,7 @@
                             </c:otherwise>
                         </c:choose>
                         <td>
-                            <a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}"
+                            <a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}"
                                    target="_blank">EDIT</a>
                         </td>
                     </tr>

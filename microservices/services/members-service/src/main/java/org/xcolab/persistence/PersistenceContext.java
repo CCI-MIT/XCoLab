@@ -1,6 +1,7 @@
 package org.xcolab.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
+
 import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
@@ -23,15 +24,24 @@ import javax.sql.DataSource;
 @Configuration
 
 @EnableTransactionManagement
-@PropertySource({"classpath:application.properties","file:${user.home}/.xcolab.application.properties"})
+@PropertySource({"classpath:application.properties", "file:${user.home}/.xcolab.application.properties"})
 public class PersistenceContext {
- 
+
     @Autowired
     private Environment env;
 
+    @Bean
+    public DataSourceTransactionManager transactionManager() {
+        return new DataSourceTransactionManager(lazyConnectionDataSource());
+    }
+
+    public LazyConnectionDataSourceProxy lazyConnectionDataSource() {
+        return new LazyConnectionDataSourceProxy(dataSource());
+    }
+
     public DataSource dataSource() {
         final HikariDataSource dataSource = new HikariDataSource();
- 
+
         dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
         dataSource.setJdbcUrl(env.getRequiredProperty("db.url"));
         dataSource.setUsername(env.getRequiredProperty("db.username"));
@@ -49,52 +59,42 @@ public class PersistenceContext {
         return dataSource;
     }
 
-    public LazyConnectionDataSourceProxy lazyConnectionDataSource() {
-        return new LazyConnectionDataSourceProxy(dataSource());
+    @Bean
+    public DefaultDSLContext dsl() {
+        return new DefaultDSLContext(configuration());
     }
- 
+
+    @Bean
+    public DefaultConfiguration configuration() {
+        DefaultConfiguration jooqConfiguration = new DefaultConfiguration();
+
+        jooqConfiguration.set(connectionProvider());
+        jooqConfiguration.set(new DefaultExecuteListenerProvider(
+                jooqToSpringExceptionTransformer()
+        ));
+
+        String sqlDialectName = env.getRequiredProperty("jooq.sql.dialect");
+        SQLDialect dialect = SQLDialect.valueOf(sqlDialectName);
+        jooqConfiguration.set(dialect);
+
+        return jooqConfiguration;
+    }
+
+    @Bean
+    public DataSourceConnectionProvider connectionProvider() {
+        return new DataSourceConnectionProvider(transactionAwareDataSource());
+    }
+
+    @Bean
+    public JOOQToSpringExceptionTransformer jooqToSpringExceptionTransformer() {
+        return new JOOQToSpringExceptionTransformer();
+    }
+
     @Bean
     public TransactionAwareDataSourceProxy transactionAwareDataSource() {
         return new TransactionAwareDataSourceProxy(lazyConnectionDataSource());
     }
 
- 
-    @Bean
-    public DataSourceTransactionManager transactionManager() {
-        return new DataSourceTransactionManager(lazyConnectionDataSource());
-    }
- 
-    @Bean
-    public DataSourceConnectionProvider connectionProvider() {
-        return new DataSourceConnectionProvider(transactionAwareDataSource());
-    }
- 
-    @Bean
-    public JOOQToSpringExceptionTransformer jooqToSpringExceptionTransformer() {
-        return new JOOQToSpringExceptionTransformer();
-    }
- 
-    @Bean
-    public DefaultConfiguration configuration() {
-        DefaultConfiguration jooqConfiguration = new DefaultConfiguration();
- 
-        jooqConfiguration.set(connectionProvider());
-        jooqConfiguration.set(new DefaultExecuteListenerProvider(
-            jooqToSpringExceptionTransformer()
-        ));
- 
-        String sqlDialectName = env.getRequiredProperty("jooq.sql.dialect");
-        SQLDialect dialect = SQLDialect.valueOf(sqlDialectName);
-        jooqConfiguration.set(dialect);
- 
-        return jooqConfiguration;
-    }
- 
-    @Bean
-    public DefaultDSLContext dsl() {
-        return new DefaultDSLContext(configuration());
-    }
- 
     @Bean
     public DataSourceInitializer dataSourceInitializer() {
         DataSourceInitializer initializer = new DataSourceInitializer();

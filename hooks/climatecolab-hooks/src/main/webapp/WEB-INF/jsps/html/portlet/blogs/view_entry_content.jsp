@@ -86,7 +86,7 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
                       addthis:description="<%= description %>"
                 
                 >
-                    <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
+                    <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="c-Comment__share" />
                 </a>
                 <!-- AddThis Button BEGIN -->
                 <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
@@ -266,7 +266,7 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 					</c:if>
 
 					<c:if test="<%= enableComments %>">
-						<span class="comments">
+						<span class="c-Comment__list">
 
 							<c:choose>
 								<c:when test='<%= strutsAction.equals("/blogs/view_entry") %>'>

@@ -63,7 +63,7 @@
 
                         <div id="proposalToModelMap" class="addpropbox" style="display: none;">
                             <c:if test="${not empty proposalToModelMap}">
-                                <div class="alert alert-error">
+                                <div class="c-Alert c-Alert__error">
                                     In order to use the values from your regional plans here, all the regional plans
                                     need to use the same modeling engine, and you must include a regional plan for all
                                     the regions.
@@ -158,17 +158,17 @@
                                         <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                                     </p>
 
-                                    <a class="primary-button" href="#" id="saveChangesButton">SAVE and PUBLISH
+                                    <a class="c-Button__primary" href="#" id="saveChangesButton">SAVE and PUBLISH
                                         changes</a>
                                     <c:choose>
                                         <c:when test="${proposal.currentVersion > 0 }">
-                                            <collab:proposalLink proposal="${proposal}" cssClass="grey-button"
+                                            <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
                                                                  linkId="discardChangesButton"
                                                                  text="DISCARD changes"/>
                                         </c:when>
                                         <c:otherwise>
                                             <!--  proposal creation, return to contest proposals page on discard -->
-                                            <collab:contestLink contest="${contest }" cssClass="grey-button"
+                                            <collab:contestLink contest="${contest }" cssClass="c-Button__secondary"
                                                                           linkId="discardChangesButton"
                                                                           text="DISCARD changes"/>
                                         </c:otherwise>
@@ -189,14 +189,14 @@
                 </c:when>
                 <c:when test="${modelId > 0 or scenarioId > 0}">
                     <div id="modelContent">
-                        <div class="alert alert-warnig"><h3>
+                        <div class="c-Alert alert-warnig"><h3>
                             The proposal author(s) have not yet estimated the emission impacts of this proposal.
                         </h3></div>
                     </div>
                 </c:when>
                 <c:otherwise>
                     <div id="modelContent">
-                        <div class="alert alert-error">
+                        <div class="c-Alert c-Alert__error">
                             No modeling engine is configured for this contest. Please contact the administrator.
                         </div>
                     </div>

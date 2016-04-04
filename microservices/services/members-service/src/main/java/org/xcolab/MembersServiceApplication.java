@@ -7,13 +7,14 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 @SpringBootApplication
 // @EnableDiscoveryClient  //REENABLE FOR EUREKA
-public class MembersServiceApplication extends SpringBootServletInitializer{
+public class MembersServiceApplication extends SpringBootServletInitializer {
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(MembersServiceApplication.class);
-	}
-	public static void main(String[] args) {
-		SpringApplication.run(MembersServiceApplication.class, args);
-	}
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(MembersServiceApplication.class);
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(MembersServiceApplication.class, args);
+    }
 }

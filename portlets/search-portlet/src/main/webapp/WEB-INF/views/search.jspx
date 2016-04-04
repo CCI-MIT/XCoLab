@@ -15,14 +15,14 @@
 
     <div class="searchFormContainer">
         <input value="${searchBean.searchPhrase}" class="searchPhrase" id="searchPhrase"/>
-        <a class="primary-button" href="javascript:;"
+        <a class="c-Button__primary" href="javascript:;"
            onclick="window.location = '/web/guest/search/-/search/for/' + encodeURI($('#searchPhrase').val())">Search</a>
     </div>
 
     <div class="clearfix">
         <div id="main" class="searchresults">
 
-            <c:if test="${searchBean.totalNumberOfResults == 0 and not empty searchBean.searchPhrase}">
+            <c:if test="${searchBean.dataPage.totalResults == 0 and not empty searchBean.searchPhrase}">
                 <p>Nothing has been found.</p>
             </c:if>
             <div class="searchTable">
@@ -46,7 +46,7 @@
             <div class="comm_list">
                 Show results for:
                 <ul>
-                    <li class="${searchBean.selectedItemType == null ? 'c' : ''}">
+                    <li class="${searchBean.searchLocation == '' ? 'c' : ''}">
                         <portlet:renderURL var="fullSiteUrl">
                             <portlet:param name="action" value="searchLocation" />
                             <portlet:param name="searchPhrase" value="${searchBean.searchPhrase}" />
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <c:if test="${searchBean.numberOfPages > 1}">
+    <c:if test="${searchBean.dataPage.numberOfPages > 1}">
         <div class="pagination">
             <c:forEach var="pageLink" items="${searchBean.pageLinks}">
                 <a class="${pageLink.isCurrent(searchBean) ? 'c' : ''}" href="${pageLink.linkUrl}">${pageLink.linkText}</a>

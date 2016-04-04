@@ -1,0 +1,784 @@
+/* PROPOSALS ----------------------------------------------------------------------------- */
+
+/* proposal HEADER */
+.proposal-head {
+  padding-top: 28px;
+  background: url(../images/pattern-6x6-blue.png);
+  border-bottom: 1px solid $t-Color__grey--medium;
+}
+
+.proposal-head:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.proposal-head {
+  display: inline-block;
+}
+
+* html .proposal-head {
+  height: 1%;
+}
+
+.proposal-head {
+  display: block;
+}
+
+.proposal-image {
+  float: left;
+  width: 52px;
+  height: 52px;
+  margin-right: 15px;
+}
+
+.proposal-title {
+  float: left;
+  width: 910px;
+  color: black;
+  overflow: hidden;
+}
+
+.prop-description {
+  font-size: 18px;
+}
+
+.prop-description a {
+  font-weight: 700;
+}
+
+.proposal-head h1 {
+  font-size: 29px;
+}
+
+/* proposal TABS */
+.prop-tabs {
+  margin-top: 8px;
+}
+
+.prop-tabs ul {
+  height: 37px;
+}
+
+.prop-tabs li {
+  float: left;
+  list-style: none;
+  height: 37px;
+  margin-right: 6px;
+}
+
+.prop-tabs li a {
+  height: 24px;
+  padding: 13px 12px 0;
+  display: inline-block;
+  font-size: 13px;
+  color: white;
+  background: $t-Color__primary;
+  text-transform: uppercase;
+  font-weight: 700;
+  @include border-top-left-radius(5px);
+  @include border-top-right-radius(5px);
+  @include box-sizing(content-box);
+}
+
+.prop-tabs li a:hover {
+  height: 24px;
+  padding: 12px 11px 1px;
+  background: $t-Color__primary--darkest;
+  border-top: 1px solid $t-Color__grey--medium;
+  border-left: 1px solid $t-Color__grey--medium;
+  border-right: 1px solid $t-Color__grey--medium;
+}
+
+.prop-tabs li.c a {
+  height: 25px;
+  padding: 12px 11px 0;
+  color: $t-Color__primary;
+  background: white;
+  border-top: 1px solid $t-Color__grey--medium;
+  border-left: 1px solid $t-Color__grey--medium;
+  border-right: 1px solid $t-Color__grey--medium;
+}
+
+.prop-tabs li a div {
+  display: inline;
+  text-align: center;
+  font: 12px Arial, Helvetica, sans-serif;
+  color: white;
+  background: $t-Color__primary--darkest;
+  padding: 0 5px;
+  margin-left: 5px;
+  @include border-radius(8px);
+}
+
+.discussion-button-badge {
+  position: absolute;
+  right: -7px;
+  top: -6px;
+  display: inline;
+  text-align: center;
+  font: 12px Arial, Helvetica, sans-serif;
+  color: white;
+  background: $t-Color__primary--darkest;
+  padding: 0 5px;
+  margin-left: 5px;
+  @include border-radius(8px);
+}
+
+.button-wrapper {
+  position: relative;
+  display: inline-block
+}
+
+.button-wrapper .detailbutton {
+  overflow: auto;
+}
+
+/* edit proposal block */
+.edit-prop-wrap {
+  border-bottom: 1px dashed #666;
+  padding: 31px 0 13px;
+}
+
+.edit-prop {
+  font-size: 13px;
+}
+
+.edit-prop a {
+  font-weight: 700;
+}
+
+.edit-prop-butts {
+  float: left;
+  margin-right: 5px;
+}
+
+.edit-prop-butts a, .edit-prop-butts span {
+  height: 20px;
+  padding: 3px 10px 0;
+  margin-right: 5px;
+  display: inline-block;
+  background: $t-Color__primary--darkest;
+  font-size: 14px;
+  color: white;
+  @include border-radius(3px);
+}
+
+.edit-prop-butts span {
+  background: $t-Color__grey--light;
+  font-weight: 700;
+}
+
+.lastedited {
+  float: left;
+  height: 19px;
+  font-size: 13px;
+}
+
+/* proposal columns */
+.prop-left {
+  float: left;
+  width: 631px;
+  margin-right: 23px;
+  line-height: 24px;
+}
+
+.prop-right {
+  float: left;
+  width: 330px;
+}
+
+.prop-left h2 {
+  font-size: 27px;
+  color: $t-Color__secondary;
+  margin: 10px 0 16px;
+  text-align: justify;
+}
+
+.prop-left h3 {
+  font-size: 22px;
+  margin-bottom: 13px;
+  color: $t-Color__grey--darkest;
+}
+
+.prop-left p {
+  color: $t-Color__grey--dark;
+}
+
+.prop-left p.intro {
+  font-size: 19px;
+  line-height: 27px;
+}
+
+.div1 {
+  background: $t-Color__grey--lightest;
+  height: 6px;
+  margin: 30px 0 30px;
+}
+
+.div2 {
+  background: $t-Color__grey--light;
+  height: 1px;
+  margin: 38px 0 30px;
+}
+
+.div3 {
+  border-top: 1px dotted $t-Color__grey--medium;
+  height: 1px;
+}
+
+/*  the Table-like rows of proposals */
+.propbox {
+  clear: both;
+  padding: 0 0 8px 14px;
+  border-bottom: 1px solid $t-Color__grey--lightest;
+}
+
+.propbox.featured {
+  background: $t-Color__grey--lightest;
+  border-bottom: 1px solid $t-Color__grey--light;
+}
+
+.propbox.top {
+  margin-top: -4px;
+}
+
+.propbox .row1 {
+  height: 38px;
+  padding-top: 7px;
+}
+
+.propbox .row2 {
+  font-size: 13px;
+  color: $t-Color__grey--darkest;
+  clear: both;
+}
+
+.propbox .title-author {
+  float: left;
+  width: 632px;
+  margin-top: 12px;
+}
+
+.propbox.featured .title-author {
+  float: left;
+  width: 602px;
+  margin-top: 12px;
+}
+
+.propbox.completed .title-author {
+  width: 752px;
+}
+
+.propbox.featured.completed .title-author {
+  width: 722px;
+}
+
+.propbox h4 {
+  float: left;
+  display: inline;
+  font-weight: 700;
+  color: $t-Color__grey--darkest;
+}
+
+.propbox h4 span {
+  color: black;
+}
+
+.thumbbox, .c-Comment__count, .voteboxsmall {
+  float: left;
+  width: 30px;
+  height: 22px;
+  font-weight: 700;
+  color: black;
+  padding: 4px 0 0 31px;
+  @include border-radius(3px);
+}
+
+.thumbbox {
+  background: url(../images/icon-proposal-support.png) no-repeat 11px 5px $t-Color__grey--lightest;
+  margin-right: 6px;
+}
+
+.voteboxsmall {
+  background: url(../images/icon-proposal-vote-small.png) no-repeat 11px 5px $t-Color__grey--lightest;
+  margin-right: 6px;
+}
+
+.modbox {
+  float: left;
+  width: 81px;
+  padding-top: 4px;
+}
+
+.conbox {
+  float: left;
+  width: 99px;
+  padding-top: 4px;
+}
+
+.propbox.featured .ribbonPlaceholder {
+  height: 28px;
+  width: 30px;
+  float: left;
+}
+
+.propbox.featured .row2 {
+  padding-left: 30px;
+}
+
+.propbox-red {
+  background-color: $t-Color__alert !important;
+}
+
+.propbox-green {
+  background-color: $t-Color__secondary--light !important;
+}
+
+/* right column */
+.votebox-wrap {
+  width: 334px;
+  margin-top: -34px;
+}
+
+/* increase negative top margin for edit proposal button block */
+.votebox-wrap.ep {
+  width: 334px;
+  margin-top: -87px;
+}
+
+.votebox-shade {
+  width: 331px;
+  background: $t-Color__grey--light;
+  margin: 3px 0 0 3px;
+}
+
+.votebox {
+  width: 331px;
+  background: $t-Color__grey--lightest;
+  border: 1px solid $t-Color__grey--light;
+  position: relative;
+  top: -5px;
+  left: -5px;
+}
+
+.votebox-top {
+  border-bottom: 1px dotted $t-Color__grey--medium;
+  padding: 10px 10px 20px 18px;
+}
+
+.votebox-top .vote {
+  float: left;
+  width: 260px;
+  padding-top: 17px;
+  font-size: 27px;
+  color: $t-Color__grey--darkest;
+}
+
+.votebox-top .vote span {
+  font-size: 33px;
+  color: $t-Color__secondary;
+  font-weight: 700;
+}
+
+.votebox-top .vote img {
+  padding: 0 3px 0 5px;
+}
+
+.votebox-top .question {
+  float: right;
+  width: 23px;
+  height: 23px;
+}
+
+.votebox-top .c-Button__primary {
+  margin-top: 5px;
+  font-weight: 400;
+}
+
+.votebox-bottom {
+  font-size: 16px;
+  color: $t-Color__grey--dark;
+  background: $t-Color__grey--lightest;
+  padding: 14px 0 17px 18px;
+}
+
+.votebox-bottom span {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.votebox-bottom a {
+  font-weight: 700;
+  margin-left: 5px;
+}
+
+.votebox-bottom img {
+  padding-right: 6px;
+  vertical-align: -3px;
+}
+
+.prop-right .share {
+  margin: 17px 0 36px 17px;
+}
+
+.prop-right .share a {
+  margin-right: 15px;
+}
+
+.prop-right .share img {
+  vertical-align: middle;
+}
+
+.prop-right h5 {
+  padding: 10px 0 10px 12px;
+  line-height: normal;
+  text-transform: uppercase;
+  color: $t-Color__secondary;
+}
+
+.prop-right h5.toppad {
+  padding: 42px 0 5px 12px;
+}
+
+.prop-right h5.topbox {
+  padding: 10px 0 10px 12px;
+  margin-bottom: 9px;
+  background: $t-Color__grey--lightest;
+  font-size: 13px;
+  color: $t-Color__grey--medium;
+  border-top: 1px dotted $t-Color__grey--medium;
+}
+
+.prop-title {
+  background: $t-Color__grey--lightest;
+  border-bottom: 1px solid $t-Color__grey--light;
+  line-height: 21px;
+  color: black;
+  padding: 13px 18px 13px 12px;
+}
+
+.prop-title.addprop {
+  background: none;
+  border-bottom: none;
+  font-weight: 700;
+  padding: 0 18px 9px 12px;
+}
+
+.prop-avatar {
+  padding: 10px 12px 11px 12px;
+  font-size: 15px;
+  color: black;
+}
+
+.prop-avatar img {
+  vertical-align: middle;
+}
+
+.prop-contest {
+  background: $t-Color__grey--lightest;
+  border-top: 1px solid $t-Color__grey--light;
+  border-bottom: 1px solid $t-Color__grey--light;
+  font-size: 13px;
+  line-height: 18px;
+  color: black;
+  padding: 10px 18px 12px 12px;
+  margin-bottom: 3px;
+}
+
+.prop-settings {
+  background: $t-Color__grey--lightest;
+  border-bottom: 1px solid $t-Color__grey--light;
+  font-size: 13px;
+  line-height: 18px;
+  color: black;
+  padding: 8px 18px 10px 12px;
+}
+
+.prop-results {
+  padding: 10px 12px 0 12px;
+}
+
+.prop-results div {
+  font-size: 13px;
+  line-height: 16px;
+  color: $t-Color__grey--dark;
+  margin-bottom: 10px;
+}
+
+.prop-title a, .prop-avatar a, .prop-contest a, .prop-results a {
+  font-weight: 700;
+}
+
+/* contributors table */
+.contributors a {
+  font-weight: 700;
+}
+
+.contributors td {
+  color: $t-Color__grey--dark;
+  padding: 6px 10px;
+  vertical-align: middle;
+}
+
+.contributors td.big {
+  padding-top: 12px;
+}
+
+.contributors td img {
+  padding-right: 12px;
+  vertical-align: middle;
+}
+
+.contributors tr.odd td {
+  background: $t-Color__grey--lightest;
+}
+
+.contributors tr.bottom td {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 8px;
+}
+
+/* add proposal boxes */
+.addpropbox {
+  background: $t-Color__grey--lightest;
+  @include border-radius(12px);
+  padding: 13px 15px 12px 12px;
+  margin-bottom: 13px;
+  line-height: 19px;
+}
+
+.addpropbox:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.addpropbox {
+  display: inline-block;
+}
+
+* html .addpropbox {
+  height: 1%;
+}
+
+.addpropbox {
+  display: block;
+}
+
+.addpropbox.blue {
+  background: $t-Color__primary__grey--light;
+}
+
+/* form fields */
+.addpropform label {
+  float: left;
+  width: 110px;
+  display: inline-block;
+  font-size: 16px;
+  color: $t-Color__grey--medium;
+}
+
+.addpropform label strong, .addpropform .blue span {
+  color: black;
+}
+
+.addpropform label img {
+  position: relative;
+  top: 3px;
+}
+
+.addpropform input, .addpropform textarea {
+  float: right;
+  border: 1px solid $t-Color__grey--medium;
+  font-size: 16px;
+}
+
+.addpropform input {
+  height: 42px;
+  width: 445px;
+  padding: 0 5px;
+}
+
+.addpropform textarea {
+  width: 440px;
+  padding: 5px;
+}
+
+.addpropform .notation {
+  font-size: 15px;
+  color: $t-Color__grey--dark;
+  margin: 1px 0 25px 12px;
+}
+
+.addpropform .upload {
+  float: right;
+  width: 455px;
+}
+
+.addpropform .upload a {
+  padding-top: 20px;
+  font-size: 17px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.uploadbox {
+  float: left;
+  width: 50px;
+  height: 50px;
+  border: 1px dashed black;
+  margin-right: 20px;
+}
+
+.addprophelp {
+  background: url(../images/icon-addprop-arrow.png) no-repeat 0 3px;
+  float: right;
+  width: 454px;
+  padding: 0 0 5px 11px;
+  color: $t-Color__grey--dark;
+}
+
+.proposals #contactForm {
+  display: block;
+}
+
+.blue-arrow-right {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: url(/climatecolab-theme/images/arrows.png) 18px 0;
+  vertical-align: top;
+}
+
+.blue-arrow-left {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: url(/climatecolab-theme/images/arrows.png) 0 0;
+  vertical-align: top;
+}
+
+.historyTable, .historyTable tr, .historyTable td {
+  border: 0;
+}
+
+.historyTable {
+  font-weight: 700;
+}
+
+.historyTable td {
+  padding: 5px;
+}
+
+.historyTable .even td, #proposalPickerTable .ui-datatable-odd {
+  background-color: $t-Color__grey--lightest;
+
+}
+
+.historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
+  color: $t-Color__secondary !important;
+}
+
+#proposalPickerTable td {
+  padding: 10px;
+}
+
+//TODO: popup?
+#previousProposalsPopup.c-Popup__wrapper {
+  top: -2000px;
+  position: relative;
+  left: 280px;;
+}
+
+.prop-tabs ul {
+  margin-bottom: 0;
+}
+
+//ribbon
+.thread-creator-overlay {
+  background: url(/climatecolab-theme/images/Thread-creator-overlay.png) no-repeat;
+  float: left;
+  line-height: 0;
+  font-size: 0;
+  color: transparent;
+  position: absolute;
+  top: -7px;
+  right: -7px;
+}
+
+
+/* container */
+.thread-ribbon-container {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  overflow: hidden;
+  height: 120px;
+  padding-top: 15px;
+  line-height: normal;
+  font-size: 10px;
+
+  > div {
+    background: $t-Color__primary;
+    padding: 3px;
+    width: 185px;
+    color: white;
+    position: relative;
+    right: -70px;
+    text-align: center;
+    @include transform(rotate(45deg));
+  }
+
+  //top corner
+  &:before {
+    content: '';
+    position: absolute;
+    left: 109px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid $t-Color__primary--dark;
+  }
+
+  //bottom corner
+  &:after {
+    content: ' ';
+    position: absolute;
+    right: 0;
+    bottom: 53px;
+    width: 0;
+    height: 0;
+    border-bottom: 5px solid transparent;
+    border-top: 5px solid transparent;
+    border-left: 5px solid $t-Color__primary--dark;
+  }
+}
+
+.prop-butt {
+  float: right;
+  width: 475px;
+  text-align: left;
+
+  img {
+    vertical-align: middle;
+    padding-right: 10px;
+  }
+}
+
+.popup-tabcontainer {
+  border: 1px solid $t-Color__grey--medium;
+}
+
+.prop-tabs li {
+  list-style: none;
+  background: none;
+  padding: 0;
+  margin-left: 0;
+}

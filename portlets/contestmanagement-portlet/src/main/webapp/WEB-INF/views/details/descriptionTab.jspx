@@ -31,7 +31,7 @@
         <form:form action="${updateContestDescriptionURL }" commandName="contestDescriptionBean" cssClass="addpropform"
                    id="editForm" method="post">
             <div class="reg_errors"><!--  -->
-                <form:errors cssClass="alert alert-error" path="*"/>
+                <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
             </div>
             <div class="addpropbox">
                 <label>
@@ -49,7 +49,7 @@
                     <form:input path="contestShortName" id="contestShortName"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestShortName"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="contestShortName"/>
                     </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -81,7 +81,7 @@
                     <form:textarea path="contestName" id="contestName" cssClass="proposalPitchInput"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestName"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="contestName"/>
                     </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer">
@@ -173,7 +173,7 @@
                                    cssClass="ckeditor_placeholder contestDescription"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestDescription"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="contestDescription"/>
                     </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer">
@@ -202,7 +202,7 @@
                     </form:select>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="planTemplateId"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="planTemplateId"/>
                     </div>
                 </div>
             </div>
@@ -226,7 +226,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="alert alert-error" path="scheduleTemplateId"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="scheduleTemplateId"/>
                     </div>
                 </div>
             </div>

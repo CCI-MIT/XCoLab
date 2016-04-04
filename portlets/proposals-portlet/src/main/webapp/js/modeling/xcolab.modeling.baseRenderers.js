@@ -77,9 +77,9 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			var addTooltip = input.description && jQuery.trim(input.description).length > 0; 
 			container.append("<tr><td colspan='2'><div class='actInputDef control_title'><span>" + 
 					(idx+1) + ".</span> " + input.name + (addTooltip ? "<div class='tooltipTrigger'><div class='qmark'>?</div>" + 
-					"<div class='act_tooltip'><div class='act_tt-wrap'><div class='act_tt-txt'>" +
+					"<div class='c-Tooltip__actions'><div class='c-Tooltip__actions__arrow'><div class='c-Tooltip__actions__text'>" +
 					input.description + 
-					"</div></div><div class='act_tt-bot'></div></div></div>" : "") +
+					"</div></div><div class='c-Tooltip__actions__bottom'></div></div></div>" : "") +
 					"</div></td></tr>");
 		}
 		
@@ -96,9 +96,9 @@ if (typeof(XCoLab.modeling) == 'undefined')
 			var addTooltip = false;
 			container.append("<div><span class='input_def_header'>" + input.name + (addTooltip ? "<div class='tooltipTrigger'><div class='qmark'>?</div>" : "</span></div>"));
 			if (addTooltip) {
-				container.append("<div class='act_tooltip'><div class='act_tt-wrap'><div class='act_tt-txt'>"
+				container.append("<div class='c-Tooltip__actions'><div class='c-Tooltip__actions__arrow'><div class='c-Tooltip__actions__text'>"
 						+ input.description + 
-						"</div></div><div class='act_tt-bot'></div></div>"
+						"</div></div><div class='c-Tooltip__actions__bottom'></div></div>"
 						+ "</span></div>");
 			}
 		}

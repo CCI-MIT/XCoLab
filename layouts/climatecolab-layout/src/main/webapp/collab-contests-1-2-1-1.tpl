@@ -2,9 +2,9 @@
     $processor.processColumn("column-1")
 </div>
 
-<div id="suggestContestPopupContainer" >
-    <div class="popup-wrap p1" id="suggestContestPopup">
-        <div class="popup">
+<div id="c-Popup__suggest" >
+    <div class="c-Popup__wrapper p1" id="suggestContestPopup">
+        <div class="c-Popup">
             <h4>Please enter your suggestion below.  A message will be sent to the CoLab staff and they will follow up with you soon.</h4>
             <div id="suggestContestPopupContent" class="lrContentPlaceholder lfr-column ">
                 $processor.processColumn("column-4")
@@ -13,8 +13,8 @@
     </div>
 </div>
         
-<div id="footer">
-    <div id="footmenu">
+<div id="c-Footer">
+    <div id="c-Footer__menu">
         <ul>
             <li><a href="/web/guest/feedback">Contact</a></li>
             <li><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
@@ -26,9 +26,9 @@
                 <li><a href="javascript:return false;" onclick="deferUntilLogin();">Sign In</a></li>
             #end
         </ul>
-    </div> <!-- #footmenu -->
+    </div> <!-- #c-Footer__menu -->
     
     <div class="inner lrContentPlaceholder lfr-column ">
                 $processor.processColumn("column-2")
     </div> <!-- .inner -->
-</div> <!-- #footer -->
+</div> <!-- #c-Footer -->

@@ -40,7 +40,7 @@
                     //#{debateBean.currentItem}
                     
                 </script>
-                    <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
+                    <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="c-Comment__share" />
                     Share
                 </a>
                 &#160;
@@ -104,7 +104,7 @@
                     <div class="content">
                         <ice:outputText value="#{message.filteredDescription}" escape="false" />
                     </div>
-                    <div class="commentsActions">
+                    <div class="c-Comment__actions">
                         <ice:commandButton actionListener="#{message.toggleEdit}" value="Edit" rendered='#{discussionBean.permissions.canAdminMessages}'/>
                         <ice:commandButton actionListener="#{message.delete}" value="Delete" rendered='#{discussionBean.permissions.canAdminMessages}'/>
                         <ice:commandButton actionListener="#{message.addFlag}" value="Mark as an expert review" rendered='#{discussionBean.permissions.canAdminMessages and not message.expertReview}' >
@@ -124,7 +124,7 @@
                                 }
                     
                             </script>
-                                <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
+                                <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="c-Comment__share" />
                                 Share
                         </a>
                     </div>
@@ -151,9 +151,9 @@
         <div id="add">
             <strong>ADD YOUR RESPONSE</strong>
         </div>
-        <div id="thecomment">
+        <div class="c-Comment__new">
             <ice:inputHidden id="messageTitle" value="#{discussionBean.currentThread.newMessage.title}" styleClass="title text" maxlength="255"/>
-            <ice:inputTextarea id="messageContent" value="#{discussionBean.currentThread.newMessage.description}" styleClass="commentbox" /><br />
+            <ice:inputTextarea id="messageContent" value="#{discussionBean.currentThread.newMessage.description}" styleClass="c-Comment__box" /><br />
             <ice:message for="messageContent" />
             <ice:commandButton actionListener="#{discussionBean.currentThread.newMessage.addMessageToThread}" styleClass="comm_butt" />
         </div>

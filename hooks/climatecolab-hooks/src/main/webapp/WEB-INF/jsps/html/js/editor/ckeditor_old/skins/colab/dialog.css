@@ -709,13 +709,13 @@ body .cke_dialog {
     border-radius: 5px
 }
 
-.tooltip {
+.c-Tooltip {
     display: block;
     padding: 20px;
     background-color: lightgray;
     color: white;
 }
 
-.tooltip ol {
+.c-Tooltip ol {
     list-style-position: inside;
 }
