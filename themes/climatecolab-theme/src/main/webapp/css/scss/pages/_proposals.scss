@@ -38,6 +38,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 485px !default;
 $p-Proposal__subscribe__capitalization: none !default;
 
 $p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
+$p-Proposal__box__offColor: $t-Color__primary__grey--light !default;
 
 /* PROPOSALS ----------------------------------------------------------------------------- */
 
@@ -508,12 +509,13 @@ $p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
   height: 1%;
 }
 
+//TODO: port to c-Box
 .addpropbox {
   display: block;
 }
 
 .addpropbox.blue {
-  background: $t-Color__primary__grey--light;
+  background: $p-Proposal__box__offColor;
 }
 
 /* form fields */
