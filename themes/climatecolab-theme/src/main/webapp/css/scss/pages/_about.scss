@@ -3,6 +3,7 @@ $p-About__left__li__a__padding--left: 4px !default;
 $p-About__left__li__a__current__border--left: none !default;
 $p-About__left__li__a__current__padding--left: 0px !default;
 $p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
+$p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
 
 /* ABOUT ------------------------------------------------------------------------------------- */
 
@@ -358,7 +359,7 @@ $p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
 }
 
 .checkout {
-  background: url(../images/pattern-6x6-white.png) $t-Color__primary__grey--light;
+  background: url(../images/pattern-6x6-white.png) $p-About__checkout__backgroundColor;
   width: 505px;
   padding: 24px 16px 26px 32px;
   font-size: 17px;
