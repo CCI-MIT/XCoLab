@@ -13,9 +13,9 @@
             <ui:include src="./group.xhtml" />
         </f:subview>
         
-        <ice:panelGroup styleClass="act_tooltip" style="display: none;">
-            <ice:panelGroup styleClass="act_tt-wrap">
-                <ice:panelGroup styleClass="act_tt-txt">
+        <ice:panelGroup styleClass="c-Tooltip__actions" style="display: none;">
+            <ice:panelGroup styleClass="c-Tooltip__actions__arrow">
+                <ice:panelGroup styleClass="c-Tooltip__actions__text">
                     <f:subview  rendered="#{input.displayItemType == 'INDIVIDUAL'}">
                         <ice:outputText value="#{input.description}" escape="false" />
                     </f:subview>
@@ -26,7 +26,7 @@
                     
                 </ice:panelGroup>
             </ice:panelGroup>
-            <ice:panelGroup styleClass="act_tt-bot"></ice:panelGroup>
+            <ice:panelGroup styleClass="c-Tooltip__actions__bottom"></ice:panelGroup>
         </ice:panelGroup>
     </ice:panelGroup>
 

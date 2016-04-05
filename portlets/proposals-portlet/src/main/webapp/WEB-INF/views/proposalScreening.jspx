@@ -18,7 +18,7 @@
     }</style>
 
     <div id="content">
-        <form:errors cssClass="alert alert-error" />
+        <form:errors cssClass="c-Alert c-Alert__error" />
 
         This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
         <portlet:actionURL var="saveScreeningURL">
@@ -98,9 +98,9 @@
                         </div>
                         <i>Your comment will be visible to the public.</i>
                         <div class="form-errors"><!--  -->
-                            <form:errors cssClass="alert alert-error" path="fellowScreeningActionCommentBody" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="fellowScreeningActionCommentBody" />
                         </div>
-                        <form:textarea id="fellowCommentBody" cssClass="commentbox" path="fellowScreeningActionCommentBody" style="width:100%;"/>
+                        <form:textarea id="fellowCommentBody" cssClass="c-Comment__box" path="fellowScreeningActionCommentBody" style="width:100%;"/>
                         <div id="comment-footers">
                             <c:forEach var="template" items="${emailTemplates}">
                                 <div class="${template.key}">
@@ -111,7 +111,7 @@
                     </div>
                     <c:choose>
                         <c:when test="${proposalsPermissions.canFellowActions}">
-                            <a style="display:block; float:right;" href="javascript:;" class="primary-button requestMembershipSubmitButton"
+                            <a style="display:block; float:right;" href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
                                    onclick="jQuery(this).parents('form').submit();">Save ${contestType.proposalName} decision</a>
                         </c:when>
                         <c:otherwise>
@@ -128,7 +128,7 @@
 
                 </div>
                 <div class="addpropbox">
-                    <form:errors path="*" cssClass="alert alert-error" />
+                    <form:errors path="*" cssClass="c-Alert c-Alert__error" />
 
                     <h3 style="margin-top: 0;">My Rating</h3>
                     <i>Your rating will be visible to the Judging team only.</i>
@@ -144,8 +144,8 @@
 
                             <h4>Rating comment:</h4>
                             <i>Your comment will be visible to other Fellows and Judges only.</i>
-                            <form:textarea id="fellowRatingComment" cssClass="commentbox" path="comment" style="width:100%;"/>
-                                <a style="display:block; float:right;" href="javascript:;" class="primary-button requestMembershipSubmitButton"
+                            <form:textarea id="fellowRatingComment" cssClass="c-Comment__box" path="comment" style="width:100%;"/>
+                                <a style="display:block; float:right;" href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
                                 onclick="jQuery(this).parents('form').submit();">Save</a>
                         </c:when>
                         <c:otherwise>
@@ -159,7 +159,7 @@
             </form:form>
             <c:if test="proposalsPermissions.canAdminAll">
                 <div class="addpropbox">
-                        <a style="display:block; float:right;" class="primary-button requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
+                        <a style="display:block; float:right;" class="c-Button__primary requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
                 </div>
             </c:if>
         </div>

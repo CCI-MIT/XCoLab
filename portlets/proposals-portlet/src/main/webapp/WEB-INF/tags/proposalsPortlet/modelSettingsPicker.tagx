@@ -52,7 +52,7 @@
 							<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"/>
 						</span>
 
-                        <div class="tooltip" style="display: none; opacity: 1.0;">
+                        <div class="c-Tooltip" style="display: none; opacity: 1.0;">
                             ${model.value[1] }
                         </div>
                         <br/>

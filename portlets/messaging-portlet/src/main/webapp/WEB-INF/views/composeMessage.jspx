@@ -1,0 +1,45 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          xmlns:spring="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form">
+
+    <!--@elvariable id="sendMessageBean" type="org.xcolab.portlets.messaging.beans.SendMessageBean"-->
+
+    <portlet:actionURL var="newMessageUrl">
+        <portlet:param name="action" value="sendMessage" />
+    </portlet:actionURL>
+
+    <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
+    <script type="text/javascript">
+        var users = [];
+        var usersMap = {};
+        var userNames = [];
+        <c:forEach var="user" items="${sendMessageBean.usersList}">
+        usersMap["${user.screenName}"] = "${user.userId}";
+        userNames.push("${user.screenName}");
+        </c:forEach>
+    </script>
+
+    <h3>Compose message</h3>
+    <div>
+        <form:form action="${newMessageUrl}" id="sendMessageForm" modelAttribute="sendMessageBean" method="post">
+
+            <div>
+                <collab:teamBox title="Recipients" list="${sendMessageBean.recipientList}"/>
+                <div class="clearfix"><!-- --></div>
+            </div>
+            <label>
+                Subject:
+                <form:input path="subject" cssClass="required profile_input subject" /> <br/>
+            </label>
+            <label>
+                Content: <br />
+                <form:textarea path="messageContent" cssClass="rte commentbox commentContent"/> <br />
+            </label>
+
+            <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#sendMessageForm').submit()">Send</a>
+        </form:form>
+    </div>
+
+</jsp:root>

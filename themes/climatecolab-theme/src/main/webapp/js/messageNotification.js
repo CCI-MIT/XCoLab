@@ -22,7 +22,7 @@ function parseData(json) {
     var unreadMessages = json;
     // console.log("data: " + unreadMessages);
 
-    var element = $('.user-notification.user-notification-top');
+    var element = $('.c-Header__user__notification.c-Header__user__notification__top');
     if (unreadMessages > 0) {
         element.show();
         element.html(unreadMessages);

@@ -5,10 +5,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.enums.ColabConstants;
 
-/**
- * @author pdeboer
- *         First created on 8/26/13 at 4:05 PM
- */
 public final class UserCreationUtil {
 
     public static final String USERNAME_REGEX = "^[a-zA-Z0-9]+$";
@@ -17,9 +13,9 @@ public final class UserCreationUtil {
 
     public static String generateUsername(String firstName, String lastName) throws SystemException, PortalException {
         final UsernameGenerator[] usernameGenerators = {
-                new FirstLetterFullSecond(firstName, lastName),
-                new BothFull(firstName, lastName),
-                new BothFull(lastName, firstName)
+                //TODO: add configuration attribute to active first initial method
+               // new FirstLetterFullSecond(firstName, lastName),
+                new BothFull(firstName, lastName)
         };
 
         for (int i = 0; i < 1000; i++) {
@@ -32,7 +28,7 @@ public final class UserCreationUtil {
                 }
             }
         }
-        throw new PortalException("Username generation exhausted 3000 options for user " + firstName + " " + lastName);
+        throw new PortalException("Username generation exhausted all options for user " + firstName + " " + lastName);
     }
 
     public static boolean isUsernameAvailable(String username) throws SystemException {

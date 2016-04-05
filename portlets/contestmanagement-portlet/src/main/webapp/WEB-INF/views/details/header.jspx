@@ -5,7 +5,7 @@
 
 	<div class="proposal-head">
 		<div class="inner">
-			<div class="headline">
+			<div class="c-Headline">
 				<div class="proposal-image">
 					<c:choose>
 						<c:when test='${contestWrapper.contestLogoId > 0}'>

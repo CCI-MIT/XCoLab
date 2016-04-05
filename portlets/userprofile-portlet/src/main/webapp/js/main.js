@@ -9,17 +9,17 @@ jQuery(function() {
 });
 
 function clearSendMessageForm() {
-    jQuery(".sendMessagePopup, .popuplogin_input, .sendMessagePopup textarea").val('');
+    jQuery(".c-Message__popup, .c-Message__input, .c-Message__popup textarea").val('');
 }
 
 function lockSendMessageForm() {
-    jQuery(".sendMessagePopup").block({
+    jQuery(".c-Message__popup").block({
         message : "Sending message"
     });
 }
 
 function unblockSendMessageForm() {
-    jQuery(".sendMessagePopup").unblock();
+    jQuery(".c-Message__popup").unblock();
 }
 
 function updateSuccess(){
@@ -47,12 +47,12 @@ function limitExceeded() {
 }
 
 function hideSendMessagForm() {
-    jQuery(".sendMessagePopup").hide();
+    jQuery(".c-Message__popup").hide();
 }
 
 function showSendMessageForm() {
     clearSendMessageForm();
-    jQuery(".sendMessagePopup").show();
+    jQuery(".c-Message__popup").show();
 
 }
 
@@ -76,7 +76,7 @@ function sendMessageFormValid() {
 }
 
 function clearSendMessageForm() {
-    jQuery(".sendMessagePopup .error").hide();
+    jQuery(".c-Message__popup .error").hide();
     jQuery(".sendMessage_subject .sendMessage_message").val('');
 }
 

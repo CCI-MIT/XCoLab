@@ -393,7 +393,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 if (!tooltip) {
                                     var helpButton = this.getDialog().getContentElement('info', 'help');
                                     var dialog = document.createElement('div');
-                                    dialog.className = 'tooltip';
+                                    dialog.className = 'c-Tooltip';
                                     dialog.id = 'help-tooltip';
                                     dialog.innerHTML = IMAGE_UPLOAD_HELP_TEXT;
                                     var helpButtonDOMElement = document.getElementById(helpButton.domId);

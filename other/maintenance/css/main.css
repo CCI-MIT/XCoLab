@@ -37,13 +37,13 @@ margin: 5px 0 10px 0;
 }
 
 
-.blue-button:hover a, .blue-button a:hover {
+.c-Button__primary:hover a, .c-Button__primary a:hover {
 background: url(../img/button-blue-right-hover.png) no-repeat right top;
 }
-.blue-button:hover a, .blue-button a:hover {
+.c-Button__primary:hover a, .c-Button__primary a:hover {
 background: url(../img/button-blue-right-hover.png) no-repeat right top;
 }
-.blue-button a {
+.c-Button__primary a {
 background: url(../img/button-blue-right.png) no-repeat right top;
 padding: 10px 21px 0 8px;
 height: 31px;
@@ -54,7 +54,7 @@ text-shadow: 1px 1px 0 #114c65;
 display: inline-block;
 }
 
-.blue-button {
+.c-Button__primary {
 background: url(../img/button-blue-left.png) no-repeat left top;
 padding-left: 11px;
 height: 41px;

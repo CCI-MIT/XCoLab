@@ -66,16 +66,16 @@
 									<c:forEach var="badge" items="${currentUserProfile.badges}">
 										<c:if test="${not badge.hideRibbon}">
 										<a href="${badge.proposalLinkUrl}">
-											<div class="badge-small badge-${badge.badgeType} fieldWithTooltip tooltipAbove">
-												<span class="badge-small-title" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
+											<div class="c-Badge--small badge-${badge.badgeType} fieldWithTooltip tooltipAbove">
+												<span class="c-Badge__title--small" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
 														${badge.badgeTitle}
 												</span>
 
-												<div class="badge-small-text">20</div>
-												<span class="badge-small-year">${badge.badgeYearShort}</span>
-												<div class="tooltip">
+												<div class="c-Badge__text--small">20</div>
+												<span class="c-Badge__year--small">${badge.badgeYearShort}</span>
+												<div class="c-Tooltip">
 														${badge.badgeText} in ${badge.contestName}
-													<div class="tt-arrow"><!--  --></div>
+													<div class="c-Tooltip__arrow"><!--  --></div>
 												</div>
 											</div>
 										</a>
@@ -152,7 +152,10 @@
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
 							<td colspan="4">
-							<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">Manage profile and settings</a>
+								<a class="c-Button__primary"
+								   href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">
+									Manage profile and settings
+								</a>
 							</td>
 						</tr>
 					</c:if>
@@ -163,7 +166,7 @@
 			<div class="clearfix">&#160;</div>
 		</div>
 		<c:if test="${currentUserProfile.canSendMessage and not currentUserProfile.viewingOwnProfile }">
-			<a class="primary-button" href="javascript:;"
+			<a class="c-Button__primary" href="javascript:;"
 			   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
 				<strong>${userBean.firstName}</strong> a Message </a>
 		</c:if>
@@ -238,7 +241,7 @@
 			</table>
 
 			<c:if test="${not empty currentUserProfile.activities}">
-				<a class="primary-button" href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
+				<a class="c-Button__primary" href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
 			</c:if>
 		</c:if>
 
@@ -250,7 +253,7 @@
 	<!-- /main -->
 
 	<c:if test="${currentUserProfile.viewingOwnProfile}">
-		<div class="right_col3">
+		<div class="c-Message__column">
 			<div class="comm_rightcol">
 				<div class="comm_rightcol-title">INBOX</div>
 
@@ -340,7 +343,7 @@
 			</div>
 		</div>
 	</c:if>
-	<!-- /right_col -->
+	<!-- /c-Message__column -->
 
 	</c:when>
 	<c:otherwise>
@@ -356,28 +359,28 @@
 
 				<form:form commandName="messageBean" id="messageForm">
 					<div class="reg_errors"><!--  --></div>
-					<form:errors cssClass="alert alert-error" />
+					<form:errors cssClass="c-Alert c-Alert__error" />
 
 					<div>
 						<p>
 							<strong>Subject:</strong> &#160; <span class="error hidden">
 								* value required</span><br />
-							<form:input cssClass="popuplogin_input sendMessage_subject" path="messageSubject" /><br />
+							<form:input cssClass="c-Message__input sendMessage_subject" path="messageSubject" /><br />
 						</p>
 
 						<c:if test="${messageBean.messageHoneypotPosition eq 0}">
 							<p class="p">
 								<strong>Leave this blank:</strong> &#160;  <span class="error hidden">
 								* value required</span><br />
-								<form:input cssClass="popuplogin_input sendMessage_subject" path="messageHoneypot" /><br />
+								<form:input cssClass="c-Message__input sendMessage_subject" path="messageHoneypot" /><br />
 							</p>
 						</c:if>
 
 						<p>
 							<strong>Message:</strong> &#160;
-							<form:textarea cssClass="popuplogin_input sendMessage_message" path="messageText" /><br />
+							<form:textarea cssClass="c-Message__input sendMessage_message" path="messageText" /><br />
 							<div class="reg_errors"><!--  -->
-								<form:errors cssClass="alert alert-error error" path="messageText" />
+								<form:errors cssClass="c-Alert c-Alert__error error" path="messageText" />
 							</div>
 						</p>
 
@@ -385,14 +388,14 @@
 							<p class="p">
 								<strong>Leave this blank:</strong> &#160; <span class="error hidden">
 								* value required</span><br />
-								<form:textarea cssClass="popuplogin_input sendMessage_subject" path="messageHoneypot" /><br />
+								<form:textarea cssClass="c-Message__input sendMessage_subject" path="messageHoneypot" /><br />
 							</p>
 						</c:if>
 					</div>
 
 					<div class="btns">
-						<a class="primary-button" href="javascript:;" onclick="submitSendMessageForm()">Send message</a>
-						<a class="grey-button" href="javascript:;"
+						<a class="c-Button__primary" href="javascript:;" onclick="submitSendMessageForm()">Send message</a>
+						<a class="c-Button__secondary" href="javascript:;"
 						   onclick="clearSendMessageForm(); hideSendMessagForm(); return false;">Cancel</a>
 					</div>
 				</form:form>

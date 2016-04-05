@@ -23,7 +23,7 @@ public final class ListUtil {
      * @return a sorted list combining the values of all input lists
      */
     public static <T> List<T> mergeSortedLists(List<List<T>> inLists, Comparator<T> comparator) {
-        if (inLists.size() < 2) {
+            if (inLists.size() < 2) {
             return inLists.isEmpty() ? Collections.<T>emptyList() : inLists.get(0);
         }
         PriorityQueue<ListContainer<T>> minHeap = new PriorityQueue<>(inLists.size());
@@ -61,7 +61,7 @@ public final class ListUtil {
 
         T poll() {
             final T ret = currentItem;
-            currentItem = iterator.next();
+            currentItem = iterator.hasNext() ? iterator.next() : null;
             return ret;
         }
 
@@ -70,9 +70,9 @@ public final class ListUtil {
         }
 
         boolean hasNext() {
-            return iterator.hasNext();
+            return currentItem != null;
         }
-
+    
         @Override
         public int compareTo(ListContainer<T> o) {
             return comparator.compare(currentItem, o.peek());

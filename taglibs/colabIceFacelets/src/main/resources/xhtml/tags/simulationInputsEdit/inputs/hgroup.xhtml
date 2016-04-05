@@ -13,9 +13,9 @@
             <td class="first" colspan="#{fn:length(input.displayItems)}">
                 <div class="control_title actInputDef"><span>#{inputIndex}.</span>&#160;#{input.oryginalName}<br />
                 
-        <div class="act_tooltip" style="display: none;">
-            <div class="act_tt-wrap">
-                <div class="act_tt-txt">
+        <div class="c-Tooltip__actions" style="display: none;">
+            <div class="c-Tooltip__actions__arrow">
+                <div class="c-Tooltip__actions__text">
                     <f:subview  rendered="#{input.displayItemType == 'INDIVIDUAL'}">
                         #{input.description}
                     </f:subview>
@@ -26,7 +26,7 @@
                     
                 </div>
             </div>
-            <div class="act_tt-bot"></div>
+            <div class="c-Tooltip__actions__bottom"></div>
         </div>
             
             </div>

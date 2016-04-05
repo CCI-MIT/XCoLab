@@ -6,9 +6,9 @@
                     $processor.processColumn("column-1")
                 </div>      
         
-                <div id="footer">
+                <div id="c-Footer">
                     <div id="footdiv"></div>
-                    <div id="footmenu">
+                    <div id="c-Footer__menu">
                     <ul>
                         <li><a href="/web/guest/feedback">Contact</a></li>
                         <li><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
@@ -22,7 +22,7 @@
                         </ul>
                     </div>
                     $processor.processColumn("column-2")
-                </div> <!-- /footer -->
+                </div> <!-- /c-Footer -->
             </div> <!-- /content_home -->
         </div> <!-- /content_shade -->
         <div id="footshade"><div class="wht"></div></div>

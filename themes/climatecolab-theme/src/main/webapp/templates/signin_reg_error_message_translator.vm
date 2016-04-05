@@ -30,5 +30,5 @@
     #set ($error = "An error occurred")
 #end
 #if ($error) 
-     <div class="error-message"><p>$error</p></div>
+     <div class="c-Alert__error__message"><p>$error</p></div>
 #end

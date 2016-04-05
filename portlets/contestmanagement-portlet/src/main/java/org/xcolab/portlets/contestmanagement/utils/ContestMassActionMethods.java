@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
@@ -104,17 +103,6 @@ public class ContestMassActionMethods {
         InternetAddress[] adminEmailArray = {adminEmail};
         MailEngine.send(adminEmail, adminEmailArray, null, null, null,
                 emailSubject, emailBody, true, null, null, null);
-    }
-
-    public static void sendSupport2VotesEmail(List<Long> contestList, Object tbd, PortletRequest request)
-            throws PortalException, SystemException {
-        for (Long contestId : contestList) {
-            Contest contest = ContestLocalServiceUtil.getContest(contestId);
-            ServiceContext serviceContext = new ServiceContext();
-            serviceContext.setPortalURL(String.format("%s://%s%s", request.getScheme(), request.getServerName(),
-                    request.getServerPort() != 80 ? ":" + request.getServerPort() : ""));
-            ContestLocalServiceUtil.transferSupportsToVote(contest, serviceContext);
-        }
     }
 
     public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject,

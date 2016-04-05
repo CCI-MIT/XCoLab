@@ -1,15 +1,15 @@
 
 function disableAddComment() {
-    jQuery("#thecomment .addCommentButton").attr('disabled', true);
+    jQuery(".c-Comment__new .addCommentButton").attr('disabled', true);
 }
 function isAddCommentFormValid() {
-    var isValid = (jQuery.trim(jQuery("#thecomment .commentContent").val()) != '');
+    var isValid = (jQuery.trim(jQuery(".c-Comment__new .commentContent").val()) != '');
 
     if (isValid) {
-        jQuery('#thecomment .errorMsg').hide();
+        jQuery('.c-Comment__new .errorMsg').hide();
     }
     else {
-        jQuery('#thecomment .errorMsg').show();
+        jQuery('.c-Comment__new .errorMsg').show();
     }
     return isValid;
 }
@@ -20,7 +20,7 @@ function editComment(messageId, url){
     var formContent = '<form method="post" action="' + url + '">';
     formContent += '<textarea id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
     formContent += '<input name="messageId" type="hidden" value="' + messageId + '"/>';
-    formContent += '<div class="blue-button" style="margin-left: 320px; margin-top: 10px;"><a onclick=" $(this).parents(\'form:first\').submit()" type="submit" href="javascript:;">Save</a></div>';
+    formContent += '<div class="c-Button__primary" style="margin-left: 320px; margin-top: 10px;"><a onclick=" $(this).parents(\'form:first\').submit()" type="submit" href="javascript:;">Save</a></div>';
     formContent += '</form>';
     $('#message_' + messageId).append(formContent);
     $('#message_' + messageId).next().remove();

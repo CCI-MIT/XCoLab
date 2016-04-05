@@ -15,16 +15,15 @@
 	</div>
 
 	<!-- HELP DIVS -->
-	<div class="help" id="help1" style="display: none;">
-		<div class="helptop">
-			<span>Registration and Contacting Members</span>
-			<div class="closehelp">
-				<a href="javascript:;" onclick="jQuery.cookie('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()"><img
-						src="/climatecolab-theme/images/help_close.png" width="20"
-						height="20" alt="X" /></a>
+	<div class="c-Helpbox" id="help1" style="display: none;">
+		<div class="c-Helpbox__header">
+			<span class="c-Helpbox__header__title">Registration and Contacting Members</span>
+			<div class="c-Helpbox__header__close">
+				<a href="javascript:;" onclick="jQuery.cookie('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()">
+				<img src="/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" /></a>
 			</div>
 		</div>
-		<div class="helptext">
+		<div class="c-Helpbox__text">
 			Anyone in the world can become a Member of the ${colabName}
 			community by&#160;<a href="/web/guest/loginregister">registering</a>
 			on the site. Send a message to a member by clicking on the screen
@@ -118,7 +117,7 @@
 				</portlet:renderURL>
 				<form action="${filterURL }" id="filterUsersForm" method="post">
 					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />
-					<a class="primary-button" href="javascript:document.forms[2].submit();">Search</a>
+					<a class="c-Button__primary" href="javascript:document.forms[2].submit();">Search</a>
 				</form>
 			</div>
 
