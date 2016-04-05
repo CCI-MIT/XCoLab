@@ -10,7 +10,7 @@
 	<div class="main_long">
 
 	<div class="c-TitleBar">
-        <div class="p-Members__list__element--user" style="width: 290px">
+        <div class="p-Members__list__element--user">
         	<portlet:renderURL var="sortURL">
         		<portlet:param name="sortColumn" value="USER_NAME" />
         		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }" />
