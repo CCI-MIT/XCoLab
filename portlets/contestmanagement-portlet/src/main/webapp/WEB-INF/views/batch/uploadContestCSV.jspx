@@ -13,7 +13,12 @@
         <portlet:param name="action" value="createBatchContest"/>
     </portlet:renderURL>
 
+    <portlet:resourceURL var="validateOntologyTermsURL" id="validateOntologyTerm">
+    </portlet:resourceURL>
 
+    <script>
+        var validateOntologyTermsURL = '${validateOntologyTermsURL}';
+    </script>
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
     <div class="cmsDetailsBox">
         <collab:imageUpload uploadImageDivId="contestImage"/>
@@ -91,7 +96,7 @@
                     <div class="clear"><!--  --></div>
                 </div>
             </div>
-            <div class="addpropbox">
+            <div class="addpropbox blue">
                 <label>
                     <strong>Organization/company logo</strong>
                 </label>
@@ -232,7 +237,7 @@
 
                     $(function() {
                         $("#fileCSV").change(function(evt){
-
+                            $("#cvsContests").empty();
                             var f = evt.target.files[0];
                             Papa.parse(f, {
                                 complete: function(results) {
@@ -330,6 +335,18 @@
                         return cell;
 
                     }
+                    function addTableCellOntology(data, fieldName){
+                        var cell = $('<td>');
+                        cell.attr("id",fieldCounter+"_"+fieldName)
+                        var input = $('<input>');
+                        input.attr("type","hidden");
+                        input.attr("name","contestCSVs["+fieldCounter+"]."+fieldName);
+                        input.attr("value",data);
+                        validateOntologyTerms(data,fieldCounter+"_"+fieldName);
+                        cell.append(input);
+                        return cell;
+
+                    }
                     function trimFieldToSize(fieldValue,fieldSize){
                         if(fieldValue.length > fieldSize){
                             return fieldValue.substring(0,fieldSize);
@@ -337,6 +354,29 @@
                             return fieldValue;
                         }
                     }
+
+
+                    function validateOntologyTerms(ontologyTerms, fieldToPut) {
+
+                        var url = validateOntologyTermsURL;
+                        var postJson = {};
+                        var parameters={};
+                        var fieldId = fieldToPut;
+                        parameters.impactAuthorComment = ontologyTerms;
+
+                        $.post(url ,parameters , function (response) {
+                            var responseData = JSON.parse(response);
+                            if (responseData.success === false) {
+                                alert("Could not process request. Please contact the Administrator");
+                            } else {
+                               var validTerms = responseData.validOntologyTerms;
+                                console.log(validTerms);
+                                console.log(fieldId);
+
+                            }
+                        });
+                    }
+
                     ]]>
                 </script>
             </div>

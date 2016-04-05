@@ -15,18 +15,24 @@ import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestCSVBean;
@@ -34,10 +40,6 @@ import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.utils.IdListUtil;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.RenderRequest;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,13 +49,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("view")
-public class ContestBatchCreationController  {
+public class ContestBatchCreationController {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestBatchCreationController.class);
 
-    private Map<Long,Map<Long,Integer>> reusableFocusArea = new HashMap<>();
+    private Map<Long, Map<Long, Integer>> reusableFocusArea = new HashMap<>();
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {
@@ -64,6 +73,7 @@ public class ContestBatchCreationController  {
     public List<LabelValue> populateScheduleSelectionItems(PortletRequest request) {
         return getContestScheduleSelectionItems(request);
     }
+
     @ModelAttribute("contestLevelSelectionItems")
     public List<LabelValue> populateContestLevelSelectionItems() {
         return getContestLevelSelectionItems();
@@ -94,24 +104,24 @@ public class ContestBatchCreationController  {
                                                @Valid ContestBatchBean contestBatchBean,
                                                BindingResult result) throws IOException {
 
-        Map<String,String> contestLinks = new LinkedHashMap<>();
+        Map<String, String> contestLinks = new LinkedHashMap<>();
 
         // should check for valid data from CVS even after the fact.
         List<ContestCSVBean> contestsToBeCreated = contestBatchBean.getContestCSVs();
-        if(contestsToBeCreated!=null && contestsToBeCreated.size() > 0){
-            for(ContestCSVBean contestCSVBean: contestsToBeCreated){
+        if (contestsToBeCreated != null && contestsToBeCreated.size() > 0) {
+            for (ContestCSVBean contestCSVBean : contestsToBeCreated) {
 
                 Contest contest = createContest(contestCSVBean.getContestShortName(),
                         contestBatchBean.getContestDescription(),
                         contestCSVBean.getContestQuestion(),
-                        ((contestBatchBean.getContestLogoId()==null)?(1259173):(contestBatchBean.getContestLogoId())),
-                        ((contestBatchBean.getSponsorLogoId()==null)?(0l):(contestBatchBean.getSponsorLogoId())),
+                        ((contestBatchBean.getContestLogoId() == null) ? (1259173) : (contestBatchBean.getContestLogoId())),
+                        ((contestBatchBean.getSponsorLogoId() == null) ? (0l) : (contestBatchBean.getSponsorLogoId())),
                         contestBatchBean.getPlanTemplateId(),
                         contestBatchBean.getScheduleTemplateId(),
                         contestBatchBean.getContestTier(),
                         contestBatchBean.getContestType());
 
-                contestLinks.put(""+contest.getContestShortName(),"/web/guest/cms/-/contestmanagement/contestId/"
+                contestLinks.put("" + contest.getContestShortName(), "/web/guest/cms/-/contestmanagement/contestId/"
                         + contest.getContestPK() + "/tab/DESCRIPTION");
 
                 processOntologyTerms(contestCSVBean, contest);
@@ -125,61 +135,62 @@ public class ContestBatchCreationController  {
 
     private void processOntologyTerms(ContestCSVBean contestCSVBean, Contest contest) {
         List<Long> inputedOntologyTerms = null;
-        Map<Long,Integer> uniqueSelectedOntologyTerms = new HashMap<>();
+        Map<Long, Integer> uniqueSelectedOntologyTerms = new HashMap<>();
 
-        if( contestCSVBean.getOntologyTerms()!=null ) {
+        if (contestCSVBean.getOntologyTerms() != null) {
             inputedOntologyTerms = IdListUtil.getIdsFromString(contestCSVBean.getOntologyTerms());
-            try{
-                for(Long termId : inputedOntologyTerms) {
+            try {
+                for (Long termId : inputedOntologyTerms) {
                     OntologyTerm ontologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(termId);
-                    if( ontologyTerm!=null ){
-                        uniqueSelectedOntologyTerms.put(ontologyTerm.getId(),1);
+                    if (ontologyTerm != null) {
+                        uniqueSelectedOntologyTerms.put(ontologyTerm.getId(), 1);
                     }
                 }
 
                 Long focusAreaId = checkForExistingFocusArea(uniqueSelectedOntologyTerms);
-                if( focusAreaId==0l ) {
+                if (focusAreaId == 0l) {
                     FocusArea focusArea = FocusAreaLocalServiceUtil
                             .createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
                     focusArea.persist();
                     FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
                     focusAreaId = focusArea.getId();
 
-                    for (Map.Entry <Long,Integer> ontologyTerm : uniqueSelectedOntologyTerms.entrySet()) {
+                    for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms.entrySet()) {
                         FocusAreaOntologyTermLocalServiceUtil.addAreaTerm(focusAreaId, ontologyTerm.getKey());
 
                     }
-                    if(!reusableFocusArea.containsKey(focusAreaId)){
-                        reusableFocusArea.put(focusAreaId,uniqueSelectedOntologyTerms);
+                    if (!reusableFocusArea.containsKey(focusAreaId)) {
+                        reusableFocusArea.put(focusAreaId, uniqueSelectedOntologyTerms);
                     }
                 }
                 contest.setFocusAreaId(focusAreaId);
                 contest.persist();
 
-            } catch (SystemException | PortalException  ignored) {
+            } catch (SystemException | PortalException ignored) {
                 _log.warn("Update contest overview failed with: ", ignored);
             }
         }
     }
 
-    private Long checkForExistingFocusArea(Map<Long,Integer> selectedOntologyTerms) {
-        if(!reusableFocusArea.isEmpty()){
+    private Long checkForExistingFocusArea(Map<Long, Integer> selectedOntologyTerms) {
+        if (!reusableFocusArea.isEmpty()) {
             Iterator<Long> it = reusableFocusArea.keySet().iterator();
-            while(it.hasNext()){
+            while (it.hasNext()) {
                 Long focusArea = it.next();
-                Map<Long,Integer> ontTermsInFocusArea = reusableFocusArea.get(focusArea);
-                if(mapHasAllSelectedOntologyTerms(ontTermsInFocusArea,selectedOntologyTerms)){
+                Map<Long, Integer> ontTermsInFocusArea = reusableFocusArea.get(focusArea);
+                if (mapHasAllSelectedOntologyTerms(ontTermsInFocusArea, selectedOntologyTerms)) {
                     return focusArea;
                 }
             }
         }
         return 0l;
     }
-    private boolean mapHasAllSelectedOntologyTerms(Map<Long,Integer> ontTermsInFocusArea,
-                                                   Map<Long,Integer> selectedOntologyTerms){
-        if(selectedOntologyTerms.size()==ontTermsInFocusArea.size()){
-            for(Map.Entry <Long,Integer>  selectedOntTerm : selectedOntologyTerms.entrySet()){
-                if(!ontTermsInFocusArea.containsKey(selectedOntTerm.getKey())){
+
+    private boolean mapHasAllSelectedOntologyTerms(Map<Long, Integer> ontTermsInFocusArea,
+                                                   Map<Long, Integer> selectedOntologyTerms) {
+        if (selectedOntologyTerms.size() == ontTermsInFocusArea.size()) {
+            for (Map.Entry<Long, Integer> selectedOntTerm : selectedOntologyTerms.entrySet()) {
+                if (!ontTermsInFocusArea.containsKey(selectedOntTerm.getKey())) {
                     return false;
                 }
             }
@@ -197,7 +208,7 @@ public class ContestBatchCreationController  {
                                   Long planTemplateId,
                                   Long contestScheduleId,
                                   Long contestTierId,
-                                  Long contestTypeId){
+                                  Long contestTypeId) {
         try {
 
             Contest contest = ContestLocalServiceUtil.createNewContest(10144L, contestShortName);
@@ -221,7 +232,7 @@ public class ContestBatchCreationController  {
 
         } catch (SystemException e) {
             _log.warn("Could not create contest contest from CSV import: " + e);
-        } catch (PortalException e){
+        } catch (PortalException e) {
             _log.warn("Could not create contest contest from CSV import: " + e);
         }
         return null;
@@ -246,10 +257,11 @@ public class ContestBatchCreationController  {
 
     private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
         List<LabelValue> scheduleTemplateSelectionItems =
-                    ContestScheduleWrapper
-                            .getAllScheduleTemplateSelectionItems();
+                ContestScheduleWrapper
+                        .getAllScheduleTemplateSelectionItems();
         return scheduleTemplateSelectionItems;
     }
+
     private List<LabelValue> getContestLevelSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         for (ContestTier contestLevel : ContestTier.values()) {
@@ -257,6 +269,7 @@ public class ContestBatchCreationController  {
         }
         return selectItems;
     }
+
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         try {
@@ -270,5 +283,28 @@ public class ContestBatchCreationController  {
             _log.warn("Could not get contest type selection items: " + e);
         }
         return selectItems;
+    }
+
+    @ResourceMapping("validateOntologyTerm")
+    public void validateOntologyTerm(ResourceRequest request, ResourceResponse response,
+                                     @RequestParam(required = false) String ontologyTerms)
+            throws IOException, SystemException, PortalException {
+        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+        List<Long> inputedOntologyTerms = IdListUtil.getIdsFromString(ontologyTerms);
+        for (Long termId : inputedOntologyTerms) {
+            OntologyTerm ontologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(termId);
+            if (ontologyTerm != null) {
+                JSONObject ontItem = JSONFactoryUtil.createJSONObject();
+                ontItem.put("termId", ontologyTerm.getId());
+                ontItem.put("name", ontologyTerm.getName());
+                jsonArray.put(ontItem);
+
+            }
+        }
+        responseJSON.put("validOntologyTerms", jsonArray);
+        responseJSON.put("success", true);
+        response.getPortletOutputStream().write(responseJSON.toString().getBytes());
     }
 }
