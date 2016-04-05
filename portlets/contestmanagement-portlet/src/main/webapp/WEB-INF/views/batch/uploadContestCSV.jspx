@@ -18,13 +18,14 @@
 
     <script>
         var validateOntologyTermsURL = '${validateOntologyTermsURL}';
+        $('#contestImageInput').css
     </script>
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
     <div class="cmsDetailsBox">
         <collab:imageUpload uploadImageDivId="contestImage"/>
 
         <p>*Be sure to click <strong>Create all contests above</strong> before exiting this page or your content may be lost.</p>
-        <collab:imageUpload uploadImageDivId="logoImage" keepFormat="true"/>
+        <collab:imageUpload uploadImageDivId="logoImage" />
 
         <h2>Contest data</h2>
 
@@ -48,7 +49,7 @@
                     tackle and concludes by stating the contest's focus.
                 </div>
                 <div class="clearfix"><!-- --></div>
-                <div class="addpropInputContainer">
+                <div class="addpropInputContainer" style="height: 248px;">
                     <form:textarea path="contestDescription" id="contestDescription"
                                    cssClass="ckeditor_placeholder contestDescription"/>
 
@@ -315,7 +316,7 @@
                                 for (var i = 3; i < data.length; i++) {
                                     ontField += data[i] +((i+1 == data.length)?(""):(","));
                                 }
-                                tableRow.append(addTableCellInput(ontField, "ontologyTerms"));
+                                tableRow.append(addTableCellOntology(ontField, "ontologyTerms"));
                             }
                             $("#cvsContests").append(tableRow);
                             fieldCounter++;
@@ -337,15 +338,39 @@
                     }
                     function addTableCellOntology(data, fieldName){
                         var cell = $('<td>');
-                        cell.attr("id",fieldCounter+"_"+fieldName)
+                        cell.attr("id",fieldCounter+"_"+fieldName);
+                        validateOntologyTerms(data,fieldCounter+"_"+fieldName);
+                        return cell;
+                    }
+                    function addOntologyDataAfterValidation(fieldID, validOntTerms){
+
+                        var cell = $('#'+fieldID);
+                        var fieldName = fieldID.split("_")[1];
+                        var fieldCounter = fieldID.split("_")[0];
+
                         var input = $('<input>');
                         input.attr("type","hidden");
                         input.attr("name","contestCSVs["+fieldCounter+"]."+fieldName);
-                        input.attr("value",data);
-                        validateOntologyTerms(data,fieldCounter+"_"+fieldName);
-                        cell.append(input);
-                        return cell;
 
+                        var dataString = "";
+                        if(validOntTerms.length > 0 ){
+                            for(var i = 0 ; i < validOntTerms.length ; i++){
+                                dataString = dataString + validOntTerms[i].termId +((i + 1 == validOntTerms.length)?(""):(", "));
+                                var span = $('<span>');
+                                span.attr("class","token");
+                                span.html(validOntTerms[i].name);
+                                cell.append(span);
+
+                            }
+                        }else{
+                            var span = $('<span>');
+                            span.attr("class","token");
+                            span.html("No valid ontology term");
+                            cell.append(span);
+                        }
+                        input.attr("value",dataString);
+
+                        cell.append(input);
                     }
                     function trimFieldToSize(fieldValue,fieldSize){
                         if(fieldValue.length > fieldSize){
@@ -355,24 +380,19 @@
                         }
                     }
 
-
                     function validateOntologyTerms(ontologyTerms, fieldToPut) {
-
                         var url = validateOntologyTermsURL;
                         var postJson = {};
                         var parameters={};
                         var fieldId = fieldToPut;
-                        parameters.impactAuthorComment = ontologyTerms;
-
-                        $.post(url ,parameters , function (response) {
+                        parameters.ontologyTerms = ontologyTerms;
+                        $.post(url ,parameters ,function(response){
                             var responseData = JSON.parse(response);
                             if (responseData.success === false) {
                                 alert("Could not process request. Please contact the Administrator");
                             } else {
-                               var validTerms = responseData.validOntologyTerms;
-                                console.log(validTerms);
-                                console.log(fieldId);
-
+                                var validTerms = responseData.validOntologyTerms;
+                                addOntologyDataAfterValidation(fieldId, validTerms);
                             }
                         });
                     }
