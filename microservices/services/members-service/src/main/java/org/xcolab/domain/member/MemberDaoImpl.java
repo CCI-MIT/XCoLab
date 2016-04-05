@@ -299,7 +299,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public Integer getMemberMaterializedPoints(Long memberId) {
-        return this.dslContext.select(sum(POINTS.HYPOTHETICAL_POINTS))
+        return this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
                 .from(POINTS).where(POINTS.USER_ID.equal(memberId)).fetchOne(0, Integer.class);
     }
 
