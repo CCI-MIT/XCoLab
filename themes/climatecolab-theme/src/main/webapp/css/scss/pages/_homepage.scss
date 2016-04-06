@@ -449,3 +449,13 @@ a.get {
 .home #c-Header__menu li a.search:hover {
   height: 22px;
 }
+
+.p-Homepage__voting__notice {
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  img {
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+}
