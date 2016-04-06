@@ -1,7 +1,7 @@
 $p-About__left__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
 $p-About__left__li__a__padding--left: 4px !default;
 $p-About__left__li__a__current__border--left: none !default;
-$p-About__left__li__a__current__padding--left: 0px !default;
+$p-About__left__li__a__current__padding--left: 4px !default;
 $p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
 $p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
 
@@ -52,6 +52,13 @@ $p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
   color: $t-Color__grey--medium;
 }
 
+.about-left ul li a:hover, .about-left ul li.c > a {
+  background: #F2F1E9;
+  border-left: $p-About__left__li__a__current__border--left;
+  padding-left: $p-About__left__li__a__current__padding--left;
+  color: $p-About__left__li__a__current__textColor;
+}
+
 .about-left li ul {
   padding: 13px 0 16px;
   border-bottom: 1px solid #ccc;
@@ -72,6 +79,7 @@ $p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
 
 .about-left li ul li a:hover, .about-left li ul li.c > a {
   background: $t-Color__grey--lightest;
+  padding-left: 28px;
 }
 
 .about-right p {
@@ -374,11 +382,4 @@ $p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
 
 .checkout a {
   font-weight: $b-Typography__fontWeight--bold;
-}
-
-.about-left ul li a:hover, .about-left ul li.c > a {
-  background: #F2F1E9;
-  border-left: $p-About__left__li__a__current__border--left;
-  padding-left: $p-About__left__li__a__current__padding--left;
-  color: $p-About__left__li__a__current__textColor;
 }
