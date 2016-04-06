@@ -48,6 +48,8 @@ $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !de
 
 .p-ContestProposals__list__element--votes { //.blueheaderbar .votes a
   @extend %p-ContestProposals__list__element;
+  width: 67px;
+  text-align: center;
   border-right: $p-ContestProposals__list__element__border;
 
   a {
