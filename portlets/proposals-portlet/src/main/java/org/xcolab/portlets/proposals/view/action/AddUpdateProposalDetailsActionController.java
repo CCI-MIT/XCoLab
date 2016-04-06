@@ -9,6 +9,7 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
@@ -29,6 +30,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -334,6 +336,12 @@ public class AddUpdateProposalDetailsActionController {
         }
         
         model.addAttribute("updateProposalSectionsBean",updateProposalSectionsBean);
+
+        request.setAttribute("imageUploadServiceUrl", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.name(), 0L));
+        request.setAttribute("imageUploadHelpText", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.name(), 0L));
+
         return "proposalDetails_edit";
     }
 }

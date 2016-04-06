@@ -5,6 +5,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -84,6 +86,11 @@ public class CreateProposalController extends BaseProposalsController {
         		AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_ACTION , 
         		AddUpdateProposalDetailsActionController.PROPOSAL_ANALYTICS_LABEL, 
     			1);
+
+        request.setAttribute("imageUploadServiceUrl", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.name(), 0L));
+        request.setAttribute("imageUploadHelpText", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
+                ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.name(), 0L));
         
         return "proposalDetails_edit";
     }
