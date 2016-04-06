@@ -2,7 +2,7 @@ $c-TitleBar__backgroundColor: $t-Color__primary__grey--light !default;
 $c-TitleBar__borderBottom: 1px solid $t-Color__primary__grey !default;
 $c-TitleBar__textColor: $t-Color__grey--darkest !default;
 $c-TitleBar__element--active__capitalization: none !default;
-$c-TitleBar__element--disabled__textColor: #888888 !default;
+$c-TitleBar__element--disabled__textColor: $t-Color__grey--medium !default;
 $c-TitleBar__a__textColor: $t-Color__primary !default;
 $c-TitleBar__a__textColor--hover: black !default;
 $c-TitleBar__a__fontWeight: 700 !default;
