@@ -218,6 +218,9 @@ $p-ContestProposals__list__element--proposalname__judgeActions__width: 449px;
 $c-TableList__background--odd: url(../images/bg-noise.png) $t-Color__pattern__gray--lightest;
 
 $c-Box__shadow: none;
+$c-Box__boxColor--dark__margin--top: 0px;
+$c-Box__boxColor--light__padding--top: 15px;
+$c-Box__messaging__padding--top: 15px;
 $c-Box__background__color--dark: #354046;
 $c-Box__background__color--light: $t-Color__grey--lightest;
 $c-Box__background__color--primary: $t-Color__primary;
@@ -226,6 +229,7 @@ $c-Box__background--light: url(../images/bg-noise.png) $c-Box__background__color
 $c-Box__border: none;
 $c-Box__button__backgroundColor--light: white;
 $c-Box__button__backgroundColor--dark: $t-Color__grey--darkest;
+$c-Box__button__boxColor--dark__textColor: $t-Color__primary;
 
 $b-Spacing__separatorColor: $t-Color__grey;
 

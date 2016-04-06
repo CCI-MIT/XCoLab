@@ -1,18 +1,24 @@
-
 $c-Box__border: 1px solid $t-Color__grey--light !default;
 $c-Box__rounded__borderRadius: 12px !default;
-$c-Box__shadow: 3px 3px 1px $t-Color__grey--light !default;
+$c-Box__shadow: 3px 3px 1px $t-Color__grey--medium !default;
+
+$c-Box__boxColor--dark__margin--top: -34px !default;
 
 $c-Box__background__color--dark: $t-Color__grey--lightest !default;
-$c-Box__background__color--light: white !default;
+$c-Box__background__color--light: transparent !default;
 $c-Box__background__color--primary: $t-Color__primary__grey !default;
 
 $c-Box__background--dark: $c-Box__background__color--dark !default;
 $c-Box__background--light: $c-Box__background__color--light !default;
 $c-Box__background--primary: $c-Box__background__color--primary !default;
 
+$c-Box__boxColor--light__padding--top: 25px !default;
+$c-Box__messaging__padding--top: 5px !default;
+
 $c-Box__button__backgroundColor--light: $t-Color__primary !default;
 $c-Box__button__backgroundColor--dark: $t-Color__primary !default;
+
+$c-Box__button__boxColor--dark__textColor: white !default;
 
 .c-Box {
   padding: 15px;
@@ -25,11 +31,19 @@ $c-Box__button__backgroundColor--dark: $t-Color__primary !default;
   &.boxColor--dark {
     background: $c-Box__background--dark;
     color: contrasting-color($c-Box__background__color--dark);
+    margin-top: $c-Box__boxColor--dark__margin--top;
   }
 
   &.boxColor--light {
     background: $c-Box__background--light;
-    color: contrasting-color($c-Box__background__color--light);
+    padding-top: $c-Box__boxColor--light__padding--top;
+    padding-bottom: $c-Box__messaging__padding--top;
+
+    @if $c-Box__background--light != transparent {
+      color: contrasting-color($c-Box__background__color--light);
+    } @else {
+      color: contrasting-color(white);
+    }
   }
 
   &.hasShadow {
@@ -40,9 +54,14 @@ $c-Box__button__backgroundColor--dark: $t-Color__primary !default;
     border: $c-Box__border;
   }
 
+  &.messaging {
+    padding-top: $c-Box__messaging__padding--top;
+  }
+
   img {
     vertical-align: middle;
   }
+
 }
 
 .c-Box__button {
@@ -61,7 +80,9 @@ $c-Box__button__backgroundColor--dark: $t-Color__primary !default;
 
   &.boxColor--dark {
     background: $c-Box__button__backgroundColor--light;
-    color: $t-Color__primary;
+    color: $c-Box__button__boxColor--dark__textColor;
+    margin-top: -5px;
+    float: right;
 
     &:hover {
       background: hover-color($c-Box__button__backgroundColor--light);
@@ -81,10 +102,4 @@ $c-Box__button__backgroundColor--dark: $t-Color__primary !default;
 .c-Box--round {
   @extend .c-Box;
   @include border-radius($c-Box__rounded__borderRadius);
-}
-
-
-a.c-Box__button.boxColor--dark {
-  margin-top: -5px;
-  float: right;
 }
