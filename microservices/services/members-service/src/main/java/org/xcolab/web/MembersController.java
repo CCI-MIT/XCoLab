@@ -104,6 +104,11 @@ public class MembersController {
         }
     }
 
+    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
+    public User_ getMember(@PathVariable("memberId") Long memberId) {
+        return memberService.getUser(memberId);
+    }
+
     @RequestMapping(value = "/members/{memberId}/activityCount", method = RequestMethod.GET)
     public Integer getMemberActivityCount(@PathVariable("memberId") Long memberId) {
         if (memberId == null) {

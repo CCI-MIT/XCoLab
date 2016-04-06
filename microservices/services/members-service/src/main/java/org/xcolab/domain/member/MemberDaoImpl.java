@@ -290,6 +290,13 @@ public class MemberDaoImpl implements MemberDao {
         }
     }
 
+    public User_ getMember(Long userId) {
+        return this.dslContext.selectDistinct()
+                .from(USER_)
+                .where(USER_.USER_ID.equal(userId)).fetchOne(0, User_.class);
+
+    }
+
     @Override
     public List<User_> listMembersSortByMemberSinceFilteredByCategory(int startRecord, int limitRecord,
                                                                       String filter, boolean isAscOrder, String roleName) {

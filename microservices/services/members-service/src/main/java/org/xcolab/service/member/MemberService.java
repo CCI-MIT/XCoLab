@@ -98,4 +98,9 @@ public class MemberService {
     public Integer getMemberActivityCount(Long memberId) {
         return this.memberDao.getMemberActivityCount(memberId);
     }
+
+    public User_ getUser(Long userId) {
+        return this.memberDao.getMember(userId);
+    }
+
 }

@@ -84,4 +84,10 @@ public class MembersClient {
 
         return restTemplate.getForObject(uriBuilder.build().toString(), MemberCategory.class);
     }
+
+    public static User_ getMember(Long memberId){
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "");
+        return restTemplate.getForObject(uriBuilder.build().toString(), User_.class);
+    }
 }
