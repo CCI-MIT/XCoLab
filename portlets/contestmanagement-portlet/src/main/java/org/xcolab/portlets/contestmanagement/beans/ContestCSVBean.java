@@ -3,7 +3,6 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 public class ContestCSVBean {
 
-    private String contestTitle;
 
     private String contestShortName;
 
@@ -11,13 +10,6 @@ public class ContestCSVBean {
 
     private String ontologyTerms;
 
-    public String getContestTitle() {
-        return contestTitle;
-    }
-
-    public void setContestTitle(String contestTitle) {
-        this.contestTitle = contestTitle;
-    }
 
     public String getContestShortName() {
         return contestShortName;

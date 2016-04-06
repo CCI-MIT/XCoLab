@@ -97,7 +97,7 @@
                     <div class="clear"><!--  --></div>
                 </div>
             </div>
-            <div class="addpropbox blue">
+            <div class="addpropbox">
                 <label>
                     <strong>Organization/company logo</strong>
                 </label>
@@ -215,8 +215,8 @@
                     <strong>Contests in CSV</strong>
                     <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                 </label>
-                <div class="addprophelp">Select the file with the batch contests to be created. The file should be in the CSV (comma separated values) format.<br />  The fields should be in the following format:
-                    contest_title, contest_shortname ,contest_question ,ontology_id_term1 ,ontology_id_term2 ,ontology_id_term3
+                <div class="addprophelp">Select the file with the batch contests to be created. The file should be in the CSV (comma separated values) format.<br />  The fields should be in the following format: <br />
+                    contest_shortname ,contest_question ,ontology_id_term1 ,ontology_id_term2 ,ontology_id_term3
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer">
@@ -230,7 +230,6 @@
                     var fieldCounter =0;
                     var validCSV = false;
                     var fieldSizes = {
-                        "contestTitle" : 60,
                         "contestShortName": 60,
                         "contestQuestion": 140,
                         "ontologyTerms" : 60
@@ -298,7 +297,6 @@
                         return true;
                     }
                     function validCSVFields() {
-                        if(!validateField(".contestTitle","Please input a value for the Contest Title!")) return false;
                         if(!validateField(".contestShortName","Please input a value for the Contest Short Name!")) return false;
                         if(!validateField(".contestQuestion","Please input a value for the Contest Question!")) return false;
 
@@ -307,13 +305,13 @@
                     function addTableRow(data){
                         if(data.length >= 3) {
                             var tableRow = $('<tr>');
-                            tableRow.append(addTableCellInput(data[0],"contestTitle"));
-                            tableRow.append(addTableCellInput(data[1],"contestShortName"));
-                            tableRow.append(addTableCellInput(data[2],"contestQuestion"));
+
+                            tableRow.append(addTableCellInput(data[0],"contestShortName"));
+                            tableRow.append(addTableCellInput(data[1],"contestQuestion"));
                             var ontField = "";
 
-                            if(data.length > 3) {
-                                for (var i = 3; i < data.length; i++) {
+                            if(data.length > 2) {
+                                for (var i = 2; i < data.length; i++) {
                                     ontField += data[i] +((i+1 == data.length)?(""):(","));
                                 }
                                 tableRow.append(addTableCellOntology(ontField, "ontologyTerms"));
@@ -401,8 +399,11 @@
                 </script>
             </div>
             <div class="cmsDetailsBox" style="display: none" id="cvsContainer">
-                <table  id="cvsContests">
-                    <tr><th>Contest title </th><th>Contest short name</th><th>Contest question </th><th>Ontology terms</th></tr>
+                <table>
+                    <thead>
+                        <tr><th>Contest short name</th><th>Contest question </th><th>Ontology terms</th></tr>
+                    </thead>
+                    <tbody id="cvsContests" ></tbody>
                 </table>
             </div>
             <div class="floatRight outerVerticalCenter"><a  class="primary-button innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>

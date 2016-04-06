@@ -385,7 +385,7 @@ span.ontology-term-label {
   border-width: 1px;
   border-color: gray;
   border-style: solid;
-  margin-left: 4px;
-  margin-top: 5px;
-  display: block;
+  margin-left: 5px;
+  padding: 2px;
+  line-height: 26px;
 }
