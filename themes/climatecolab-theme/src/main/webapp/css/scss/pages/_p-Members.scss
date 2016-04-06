@@ -1,11 +1,13 @@
-$p-Members__list__element--user__width: 272px !default;
-$p-Members__list__element--seniority: 96px !default;
+$p-Members__list__element--user__width: 262px !default;
+$p-Members__list__element--seniority: 101px !default;
+
+$p-Members__list__element__fontWeight: $b-Typography__fontWeight--bold !default;
 
 %p-Members__list__element {
   float: left;
   height: 37px;
   a {
-    font-weight: $b-Typography__fontWeight--bold;
+    font-weight: $p-Members__list__element__fontWeight;
     display: inline-block;
   }
 }
@@ -23,12 +25,12 @@ $p-Members__list__element--seniority: 96px !default;
 
 .p-Members__list__element--activity { //.blueheaderbar .activity
   @extend %p-Members__list__element;
-  width: 60px;
+  width: 63px;
 }
 
 .p-Members__list__element--category { //.blueheaderbar .category
   @extend %p-Members__list__element;
-  width: 70px;
+  width: 73px;
 }
 
 .p-Members__list__element--seniority { //.blueheaderbar .seniority
