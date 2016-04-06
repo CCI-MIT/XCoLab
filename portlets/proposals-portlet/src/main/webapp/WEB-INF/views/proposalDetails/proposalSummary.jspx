@@ -87,7 +87,7 @@
 				</div>
 			</c:if>
         </div>
-        <div class="c-Box">
+        <div class="c-Box messaging">
             <div class="message-share-button">
                 <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }">
                     <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> Share via ${colabShortName} messaging
