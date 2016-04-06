@@ -72,12 +72,10 @@ $c-TabBar__tab--first__margin--left: 0px !default;
 
   &.active {
     border-top: 1px solid $t-Color__grey--medium;
-    /*
     @if $c-TabBar__tab__active__border--right--left != none {
       border-left: $c-TabBar__tab__active__border--right--left;
       border-right: $c-TabBar__tab__active__border--right--left;
     }
-    */
     @include border-top-left-radius($c-TabBar__tab__borderRadius);
     @include border-top-right-radius($c-TabBar__tab__borderRadius);
   }
