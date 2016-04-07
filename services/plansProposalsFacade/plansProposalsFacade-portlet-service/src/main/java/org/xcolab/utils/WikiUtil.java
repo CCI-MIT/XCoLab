@@ -31,24 +31,36 @@ public final class WikiUtil {
         return stringToHaveSpecialCharacterRemoved.replace(":", "").replace(",","").replace(";","");
     }
 
+    public static void updateContestWiki(Contest contest, String oldWikiTitle)
+            throws SystemException, PortalException, UnsupportedEncodingException {
+
+        String newWikiTitle = getWikiPageTitle(contest);
+        if (!oldWikiTitle.equals(newWikiTitle)) {
+            updateWikiPageTitleIfExists(oldWikiTitle, newWikiTitle);
+            updateContestResourceUrl(contest, newWikiTitle);
+        }
+    }
+
     public static void updateWikiPageTitleIfExists(String oldTitleRaw, String newTitleRaw)
             throws PortalException, SystemException {
         String oldTitle = removeSpecialChars(oldTitleRaw);
         String newTitle = removeSpecialChars(newTitleRaw);
-        if(isWikiPageCreatedForContest(removeSpecialChars(oldTitle))){
-            WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil.
-                    getPageResource(WIKI_NODE_ID, oldTitle);
+        if (isWikiPageCreatedForContest(removeSpecialChars(oldTitle))) {
+            WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil
+                    .getPageResource(WIKI_NODE_ID, oldTitle);
             try {
                 WikiPage wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
                 updateWikiPageResourceTitle(wikiPageResource, newTitle);
                 updateWikiPageTitle(wikiPage, wikiPageResource, newTitle);
-            } catch (NoSuchPageException e){
+            } catch (NoSuchPageException e) {
                 updateWikiPageResourceTitle(wikiPageResource, newTitle);
             }
         }
     }
 
-
+    public static String getWikiPageTitle(Contest contest) {
+        return removeSpecialChars(contest.getContestUrlName() + "-" + contest.getContestYear());
+    }
 
     private static void updateWikiPageTitle(WikiPage wikiPage, WikiPageResource wikiPageResource, String newTitle)
             throws SystemException {

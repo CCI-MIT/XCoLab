@@ -27,7 +27,6 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
@@ -72,11 +71,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
-import org.xcolab.helpers.Tuple;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.WikiUtil;
-import org.xcolab.utils.emailnotification.proposal.ContestVoteNotification;
 import org.xcolab.utils.emailnotification.contest.ContestVoteQuestionNotification;
+import org.xcolab.utils.emailnotification.proposal.ContestVoteNotification;
 import org.xcolab.utils.judging.ProposalRatingWrapper;
 import org.xcolab.utils.judging.ProposalReview;
 import org.xcolab.utils.judging.ProposalReviewCsvExporter;
@@ -1228,12 +1226,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     // No year suffix detected - add new one
                     newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
                 }
-                String oldContestName = contest.getContestShortName();
+                String oldWikiTitle = WikiUtil.getWikiPageTitle(contest);
                 contest.setContestShortName(newContestShortName);
                 contest.persist();
-                WikiUtil.updateWikiPageTitleIfExists(oldContestName, newContestShortName);
                 try {
-                    WikiUtil.updateContestResourceUrl(contest, newContestShortName);
+                    WikiUtil.updateContestWiki(contest, oldWikiTitle);
                 } catch (UnsupportedEncodingException ignored) {
                 }
             }

@@ -16,22 +16,18 @@ import org.xcolab.utils.WikiUtil;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by Thomas on 2/15/2015.
- */
 public class WikiPageWrapper {
 
     private WikiPage wikiPage;
     private WikiPageResource wikiPageResource;
-    private final String contestTitle;
+    private final String wikiPageTitle;
     private final Contest contest;
     private final Long loggedInUserId;
 
     public WikiPageWrapper(Contest contest, Long loggedInUserId)
             throws SystemException, UnsupportedEncodingException, PortalException {
         this.contest = contest;
-        String contestTitle = contest.getContestUrlName() + "-" + contest.getContestYear();
-        this.contestTitle = WikiUtil.removeSpecialChars(contestTitle);
+        this.wikiPageTitle = WikiUtil.getWikiPageTitle(contest);
         this.loggedInUserId = loggedInUserId;
         initWikiPageResourceAndCreateIfNoneExistsForThisContest();
         initWikiPageAndCreateIfNoneExistsForThisContest();
@@ -58,14 +54,14 @@ public class WikiPageWrapper {
 
     private void initWikiPageResourceAndCreateIfNoneExistsForThisContest() throws SystemException, PortalException {
         try {
-            wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WikiUtil.WIKI_NODE_ID, contestTitle);
+            wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WikiUtil.WIKI_NODE_ID, wikiPageTitle);
         } catch (NoSuchPageResourceException e) {
             createWikiPageResource();
         }
     }
 
     private void createWikiPageResource() throws SystemException {
-        wikiPageResource = WikiPageResourceLocalServiceUtil.addPageResource(WikiUtil.WIKI_NODE_ID, contestTitle);
+        wikiPageResource = WikiPageResourceLocalServiceUtil.addPageResource(WikiUtil.WIKI_NODE_ID, wikiPageTitle);
     }
 
     private void initWikiPageAndCreateIfNoneExistsForThisContest()
@@ -90,7 +86,7 @@ public class WikiPageWrapper {
         final boolean minorEdit = false;
         final boolean head = true;
 
-        wikiPage = WikiPageLocalServiceUtil.addPage(loggedInUserId, WikiUtil.WIKI_NODE_ID, contestTitle,
+        wikiPage = WikiPageLocalServiceUtil.addPage(loggedInUserId, WikiUtil.WIKI_NODE_ID, wikiPageTitle,
                 version, content, summary, minorEdit, "html", head, "", "", serviceContext);
         wikiPage.setGroupId(WikiUtil.WIKI_GROUP_ID);
         wikiPage.setResourcePrimKey(resourcePrimaryKey);
