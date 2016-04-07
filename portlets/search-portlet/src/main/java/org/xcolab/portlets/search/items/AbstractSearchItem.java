@@ -36,10 +36,10 @@ public abstract class AbstractSearchItem {
             return new DiscussionSearchItem();
         }
         if (ProposalSearchItem.class == clazz) {
-            return new BlogSearchItem();
+            return new ProposalSearchItem();
         }
         if (UserSearchItem.class == clazz) {
-            return new BlogSearchItem();
+            return new UserSearchItem();
         }
         throw new IllegalArgumentException("Invalid class name provided to factory method: " + clazz.getName());
     }
