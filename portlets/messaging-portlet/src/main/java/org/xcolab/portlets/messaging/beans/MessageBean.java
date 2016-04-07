@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.util.HumanTime;
+import org.xcolab.utils.HtmlUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ public class MessageBean implements Serializable {
     }
 
     public String getContent() {
+        if (!message.getContent().contains("<br/>")) {
+            return HtmlUtil.addHtmlLineBreaks(message.getContent());
+        }
         return message.getContent();
     }
 
