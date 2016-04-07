@@ -17,7 +17,7 @@ function proposalCopy_loadContests(moveType) {
 				html.push('/');
 				html.push(currentProposal.version);
 				html.push('/');
-				html.push(obj.contestPK);
+				html.push(currentProposal.contestPK);
 			} else {
 				html.push('/c/proposal/');
 				html.push(currentProposal.proposalId);

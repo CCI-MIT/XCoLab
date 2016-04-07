@@ -252,10 +252,11 @@
 		</div>
 	</div>
     <script>
-		currentProposal = {
+		var currentProposal = {
 				proposalId: ${proposal.proposalId},
 				version: ${proposal.version},
-                contestPhaseId :  ${proposal.contestPhase.contestPhasePK}
+                contestPhaseId :  ${proposal.contestPhase.contestPhasePK},
+                contestPK: ${proposal.contestPK}
 		}
 	</script>
 
