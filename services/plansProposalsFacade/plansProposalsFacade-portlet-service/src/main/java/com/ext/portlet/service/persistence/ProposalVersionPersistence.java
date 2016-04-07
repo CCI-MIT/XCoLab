@@ -137,8 +137,7 @@ public interface ProposalVersionPersistence extends BasePersistence<ProposalVers
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVersion[] findByProposalId_PrevAndNext(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK,
-        long proposalId,
+        ProposalVersionPK proposalVersionPK, long proposalId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchProposalVersionException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -185,7 +184,7 @@ public interface ProposalVersionPersistence extends BasePersistence<ProposalVers
     * @return the new proposal version
     */
     public com.ext.portlet.model.ProposalVersion create(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK);
+        ProposalVersionPK proposalVersionPK);
 
     /**
     * Removes the proposal version with the primary key from the database. Also notifies the appropriate model listeners.
@@ -196,7 +195,7 @@ public interface ProposalVersionPersistence extends BasePersistence<ProposalVers
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVersion remove(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK)
+        ProposalVersionPK proposalVersionPK)
         throws com.ext.portlet.NoSuchProposalVersionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -213,7 +212,7 @@ public interface ProposalVersionPersistence extends BasePersistence<ProposalVers
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVersion findByPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK)
+        ProposalVersionPK proposalVersionPK)
         throws com.ext.portlet.NoSuchProposalVersionException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -225,7 +224,7 @@ public interface ProposalVersionPersistence extends BasePersistence<ProposalVers
     * @throws SystemException if a system exception occurred
     */
     public com.ext.portlet.model.ProposalVersion fetchByPrimaryKey(
-        com.ext.portlet.service.persistence.ProposalVersionPK proposalVersionPK)
+        ProposalVersionPK proposalVersionPK)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

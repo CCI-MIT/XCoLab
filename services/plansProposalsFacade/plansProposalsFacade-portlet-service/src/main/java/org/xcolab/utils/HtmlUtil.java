@@ -1,5 +1,6 @@
 package org.xcolab.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -62,6 +63,9 @@ public final class HtmlUtil {
      * @return input text without html tags other than those on the whitelist
      */
     public static String clean(String text, Whitelist whitelist, String baseUri) {
+        if (StringUtils.isEmpty(text)) {
+            return "";
+        }
         Document doc = Jsoup.parse(text, baseUri);
         doc = new Cleaner(whitelist).clean(doc);
         // Adjust escape mode, http://stackoverflow.com/questions/8683018/jsoup-clean-without-adding-html-entities

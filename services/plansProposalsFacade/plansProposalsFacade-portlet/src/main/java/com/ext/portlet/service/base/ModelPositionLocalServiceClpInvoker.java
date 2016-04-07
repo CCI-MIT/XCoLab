@@ -41,14 +41,14 @@ public class ModelPositionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName512;
-    private String[] _methodParameterTypes512;
-    private String _methodName513;
-    private String[] _methodParameterTypes513;
     private String _methodName518;
     private String[] _methodParameterTypes518;
     private String _methodName519;
     private String[] _methodParameterTypes519;
+    private String _methodName524;
+    private String[] _methodParameterTypes524;
+    private String _methodName525;
+    private String[] _methodParameterTypes525;
 
     public ModelPositionLocalServiceClpInvoker() {
         _methodName0 = "addModelPosition";
@@ -133,21 +133,21 @@ public class ModelPositionLocalServiceClpInvoker {
                 "com.ext.portlet.model.ModelPosition"
             };
 
-        _methodName512 = "getBeanIdentifier";
+        _methodName518 = "getBeanIdentifier";
 
-        _methodParameterTypes512 = new String[] {  };
+        _methodParameterTypes518 = new String[] {  };
 
-        _methodName513 = "setBeanIdentifier";
+        _methodName519 = "setBeanIdentifier";
 
-        _methodParameterTypes513 = new String[] { "java.lang.String" };
+        _methodParameterTypes519 = new String[] { "java.lang.String" };
 
-        _methodName518 = "getModelPositionsByModelId";
+        _methodName524 = "getModelPositionsByModelId";
 
-        _methodParameterTypes518 = new String[] { "java.lang.Long" };
+        _methodParameterTypes524 = new String[] { "java.lang.Long" };
 
-        _methodName519 = "setModelPositions";
+        _methodName525 = "setModelPositions";
 
-        _methodParameterTypes519 = new String[] {
+        _methodParameterTypes525 = new String[] {
                 "java.lang.Long", "java.util.List"
             };
     }
@@ -241,25 +241,25 @@ public class ModelPositionLocalServiceClpInvoker {
             return ModelPositionLocalServiceUtil.updateModelPosition((com.ext.portlet.model.ModelPosition) arguments[0]);
         }
 
-        if (_methodName512.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return ModelPositionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName513.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             ModelPositionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName524.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
             return ModelPositionLocalServiceUtil.getModelPositionsByModelId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName525.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
             ModelPositionLocalServiceUtil.setModelPositions((java.lang.Long) arguments[0],
                 (java.util.List<java.lang.Long>) arguments[1]);
 

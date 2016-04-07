@@ -66,6 +66,7 @@ import com.ext.portlet.model.Proposal2PhaseClp;
 import com.ext.portlet.model.ProposalAttributeClp;
 import com.ext.portlet.model.ProposalClp;
 import com.ext.portlet.model.ProposalContestPhaseAttributeClp;
+import com.ext.portlet.model.ProposalMoveHistoryClp;
 import com.ext.portlet.model.ProposalRatingClp;
 import com.ext.portlet.model.ProposalRatingTypeClp;
 import com.ext.portlet.model.ProposalRatingValueClp;
@@ -436,6 +437,10 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     ProposalContestPhaseAttributeClp.class.getName())) {
             return translateInputProposalContestPhaseAttribute(oldModel);
+        }
+
+        if (oldModelClassName.equals(ProposalMoveHistoryClp.class.getName())) {
+            return translateInputProposalMoveHistory(oldModel);
         }
 
         if (oldModelClassName.equals(ProposalRatingClp.class.getName())) {
@@ -1184,6 +1189,17 @@ public class ClpSerializer {
         ProposalContestPhaseAttributeClp oldClpModel = (ProposalContestPhaseAttributeClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getProposalContestPhaseAttributeRemoteModel();
+
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+        return newModel;
+    }
+
+    public static Object translateInputProposalMoveHistory(
+        BaseModel<?> oldModel) {
+        ProposalMoveHistoryClp oldClpModel = (ProposalMoveHistoryClp) oldModel;
+
+        BaseModel<?> newModel = oldClpModel.getProposalMoveHistoryRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -3631,6 +3647,41 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
+                    "com.ext.portlet.model.impl.ProposalMoveHistoryImpl")) {
+            return translateOutputProposalMoveHistory(oldModel);
+        } else if (oldModelClassName.endsWith("Clp")) {
+            try {
+                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+                Method getClpSerializerClassMethod = oldModelClass.getMethod(
+                        "getClpSerializerClass");
+
+                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
+
+                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+                        BaseModel.class);
+
+                Class<?> oldModelModelClass = oldModel.getModelClass();
+
+                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+                        oldModelModelClass.getSimpleName() + "RemoteModel");
+
+                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
+                        oldRemoteModel);
+
+                return newModel;
+            } catch (Throwable t) {
+                if (_log.isInfoEnabled()) {
+                    _log.info("Unable to translate " + oldModelClassName, t);
+                }
+            }
+        }
+
+        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.ProposalRatingImpl")) {
             return translateOutputProposalRating(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
@@ -4551,6 +4602,11 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchProposalContestPhaseAttributeException();
         }
 
+        if (className.equals(
+                    "com.ext.portlet.NoSuchProposalMoveHistoryException")) {
+            return new com.ext.portlet.NoSuchProposalMoveHistoryException();
+        }
+
         if (className.equals("com.ext.portlet.NoSuchProposalRatingException")) {
             return new com.ext.portlet.NoSuchProposalRatingException();
         }
@@ -5294,6 +5350,17 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalContestPhaseAttributeRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputProposalMoveHistory(
+        BaseModel<?> oldModel) {
+        ProposalMoveHistoryClp newModel = new ProposalMoveHistoryClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setProposalMoveHistoryRemoteModel(oldModel);
 
         return newModel;
     }

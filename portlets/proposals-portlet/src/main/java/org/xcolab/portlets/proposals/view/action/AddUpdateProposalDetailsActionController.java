@@ -1,90 +1,62 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.NoSuchProposal2PhaseException;
-import com.ext.portlet.PlanSectionTypeKeys;
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
+import org.xcolab.portlets.proposals.utils.edit.ProposalCreationUtil;
+import org.xcolab.portlets.proposals.utils.edit.ProposalMoveUtil;
+import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.utils.HtmlUtil;
-import org.xcolab.utils.LinkUtils;
-import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 @Controller
 @RequestMapping("view")
 public class AddUpdateProposalDetailsActionController {
-	
-    public final static String PROPOSAL_ANALYTICS_KEY = "CONTEST_ENTRY_UPDATE";
-    public final static String PROPOSAL_ANALYTICS_CATEGORY = "User";
-    public final static String PROPOSAL_ANALYTICS_ACTION = "Contest entry update";
-    public final static String PROPOSAL_ANALYTICS_LABEL = "";
-    private final static Set<String> attributesNotToBeCopiedFromBaseProposal = new HashSet<>();
-    static {
-    	attributesNotToBeCopiedFromBaseProposal.add(ProposalAttributeKeys.SECTION);
-    	attributesNotToBeCopiedFromBaseProposal.add(ProposalAttributeKeys.DESCRIPTION);
-    	attributesNotToBeCopiedFromBaseProposal.add(ProposalAttributeKeys.NAME);
-    	attributesNotToBeCopiedFromBaseProposal.add(ProposalAttributeKeys.PITCH);
-    	attributesNotToBeCopiedFromBaseProposal.add(ProposalAttributeKeys.TEAM);
-    }
 
     @Autowired
     private ProposalsContext proposalsContext;
-    
+
     @RequestMapping(params = {"action=updateProposalDetails"})
     public void show(ActionRequest request, Model model,
-            ActionResponse response, @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result) 
+            ActionResponse response, @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
-        if (proposalsContext.getProposal(request) != null && ! proposalsContext.getPermissions(request).getCanEdit()) {
+        final Proposal proposal = proposalsContext.getProposal(request);
+        if (proposal != null && !proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
-                    proposalsContext.getUser(request).getUserId() + ", proposal: " + proposalsContext.getProposal(request).getProposalId());
+                    proposalsContext.getUser(request).getUserId() + ", proposal: " + proposal.getProposalId());
         }
-        if (proposalsContext.getProposal(request) == null && ! proposalsContext.getPermissions(request).getCanCreate()) {
+        final Contest contest = proposalsContext.getContest(request);
+        if (proposal == null && !proposalsContext.getPermissions(request).getCanCreate()) {
             throw new ProposalsAuthorizationException("User is not allowed to create proposal, user: " +
-                    proposalsContext.getUser(request).getUserId() + ", contest: " + proposalsContext.getContest(request).getContestPK());
+                    proposalsContext.getUser(request).getUserId() + ", contest: " + contest
+                    .getContestPK());
         }
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         long userId = themeDisplay.getUserId();
-        
+
         if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("action", "updateProposalDetails");
@@ -92,248 +64,52 @@ public class AddUpdateProposalDetailsActionController {
             request.setAttribute("ACTION_ERROR", true);
             return;
         }
-        ProposalWrapper proposal;
+        ProposalWrapper proposalWrapper;
         boolean createNew = false;
-        if (proposalsContext.getProposal(request) != null) {
-            proposal = proposalsContext.getProposalWrapped(request);
-            if (updateProposalSectionsBean.isMove() && updateProposalSectionsBean.getMoveToContestPhaseId() > 0) {
-                // Find creation phase for contest
-                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(proposalsContext.getContestPhase(request).getContestPK());
-                ContestPhase targetPhase=null;
-                for (ContestPhase c : contestPhases){
-                    if(ContestPhaseTypeLocalServiceUtil.getContestPhaseType(c.getContestPhaseType()).getStatus().equalsIgnoreCase("OPEN_FOR_SUBMISSION")){
-                        targetPhase = c;
-                        break;
-                    }
-                }
-                if (targetPhase == null) {
-                    throw new SystemException("No Proposal creation phase is associated with target contest.");
-                }
-
-                //check if the proposal is already in the target phase
-                try {
-                    if (Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), targetPhase.getContestPhasePK()) != null) {
-                        throw new SystemException("The proposal is already associated with the target contest.");
-                    }
-                } catch (NoSuchProposal2PhaseException e) {
-                    //this is the expected behaviour.
-                }
-
-            	if (updateProposalSectionsBean.isHideOnMove()) {
-                    // make proposal invisible in all contest phases to which it belonged to
-
-                    for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
-                        // only handle phases of the current contest and remove these. this allows for more advanced proposal movement
-                        if (ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK() != updateProposalSectionsBean.getBaseProposalContestId()) {
-                            continue;
-                        }
-
-                        // Set end version if it was not set already
-                        if (p2p.getVersionTo() < 0) {
-                            p2p.setVersionTo(proposal.getCurrentVersion());
-                            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
-                        }
-
-                        if (updateProposalSectionsBean.getMoveFromContestPhaseId() != null) {
-                            if (!ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate().before(
-                                    ContestPhaseLocalServiceUtil.getContestPhase(updateProposalSectionsBean.getMoveFromContestPhaseId()).getPhaseStartDate())) {
-                                // remove proposal from this contest in all phases that come after the selected one
-                                Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(p2p);
-                            }
-                        }
-                    }
-                } else {
-                    // Conclude last P2P mapping to prevent concurrent editing
-                    for (Proposal2Phase p2p: Proposal2PhaseLocalServiceUtil.getByProposalId(proposal.getProposalId())) {
-                        if (p2p.getVersionTo() < 0) {
-                            p2p.setVersionTo(proposal.getCurrentVersion());
-                            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
-                        }
-                    }
-                }
-
-            	// associate proposal with creation phase
-            	Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), targetPhase.getContestPhasePK(),
-            			proposal.getCurrentVersion(), -1);
-                ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), proposalsContext.getContestPhase(request).getContestPhasePK(),
-                        ProposalContestPhaseAttributeKeys.VISIBLE, 1);
+        final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        if (proposal != null) {
+            proposalWrapper = proposalsContext.getProposalWrapped(request);
+            if (updateProposalSectionsBean.getIsMove() && updateProposalSectionsBean.getMoveToContestId() > 0) {
+                ProposalMoveUtil.moveProposal(updateProposalSectionsBean,
+                        proposalWrapper, contestPhase, contest, themeDisplay);
             }
         } else {
-            // create
             createNew = true;
-            Proposal newProposal = ProposalLocalServiceUtil.create(proposalsContext.getUser(request).getUserId(),
-                    proposalsContext.getContestPhase(request).getContestPhasePK());
-            Proposal2Phase newProposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(newProposal.getProposalId(), 
-                    proposalsContext.getContestPhase(request).getContestPhasePK());
-            
-            proposal = new ProposalWrapper(
-                    newProposal,  
-                    0, 
-                    proposalsContext.getContest(request), 
-                    proposalsContext.getContestPhase(request), 
-                    newProposal2Phase) ;
-            
-            if (updateProposalSectionsBean.getBaseProposalId() > 0) {
-            	// we have a base proposal
-            	ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID, updateProposalSectionsBean.getBaseProposalId());
-            	ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, updateProposalSectionsBean.getBaseProposalContestId());
-            	
-            	 
-            	
-            	for (ProposalAttribute attribute : ProposalAttributeLocalServiceUtil.getAttributes(updateProposalSectionsBean.getBaseProposalId())) {
-            		if (attributesNotToBeCopiedFromBaseProposal.contains(attribute.getName())) {
-            			continue;
-            		}
-            		ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), attribute.getName(), attribute.getAdditionalId(), attribute.getStringValue(), attribute.getNumericValue(), attribute.getRealValue());
-            	}
-            }
-        }
-        
-        boolean filledAll = true;
-        
-        
-        if (updateProposalSectionsBean.getName() != null && (proposal.getName() == null || !updateProposalSectionsBean.getName().equals(proposal.getName()))) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
-        } else {
-        	filledAll = false;
-        }
-        
-        if (updateProposalSectionsBean.getPitch() != null && (proposal.getName() == null || !updateProposalSectionsBean.getPitch().equals(proposal.getPitch()))) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.PITCH, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(), LinkUtils.getBaseUri(request)));
-        } else {
-        	filledAll = false;
-        }
-
-        if (updateProposalSectionsBean.getDescription() != null && (proposal.getName() == null || !updateProposalSectionsBean.getDescription().equals(proposal.getDescription()))) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.DESCRIPTION, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(), LinkUtils.getBaseUri(request)));
-        } else {
-        	filledAll = false;
-        }
-
-        if (updateProposalSectionsBean.getTeam() != null && !updateProposalSectionsBean.getTeam().equals(proposal.getTeam())) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.TEAM, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
-        } else {
-        	filledAll = false;
-        }
-
-        if (updateProposalSectionsBean.getImageId() > 0 && updateProposalSectionsBean.getImageId() != proposal.getImageId()) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.IMAGE_ID, updateProposalSectionsBean.getImageId());
-        } else {
-        	filledAll = false;
-        }
-
-        boolean updateProposalReferences = false;
-        for (ProposalSectionWrapper section: proposal.getSections()) {
-            String newSectionValue = updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId()); 
-            if (section.getType() == PlanSectionTypeKeys.TEXT
-                    || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
-                    || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU) {
-                if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
-                    if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
-                        updateProposalReferences = true;
-                    }
-                } else {
-                	filledAll = false;
-                }
-            }
-            if (section.getType() == PlanSectionTypeKeys.ONTOLOGY_REFERENCE) {
-                // value 
-                if (StringUtils.isNumeric(newSectionValue)) {
-                    long newNumericVal = Long.parseLong(newSectionValue);
-                    if (newNumericVal != section.getNumericValue()) {
-                        ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(),
-                                proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericVal);
-                    }
-                } else {
-                	filledAll = false;
-                }
-            }
-            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_REFERENCE) {
-                if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
-                    final long newNumericValue = Long.parseLong(newSectionValue);
-                    if (section.getNumericValue() != newNumericValue) {
-                        ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericValue);
-                        updateProposalReferences = true;
-                    }
-                } else if (StringUtils.isBlank(newSectionValue)) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
-                }
-            }
-            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
-                // check if all parts are numeric
-                StringBuilder cleanedReferences = new StringBuilder();
-                if (StringUtils.isNotBlank(newSectionValue)){
-                    String[]referencedProposals = newSectionValue.split(",");
-                    for (String referencedProposal : referencedProposals) {
-                        if (StringUtils.isNotBlank(referencedProposal) && StringUtils.isNumeric(referencedProposal)) {
-                            cleanedReferences.append(referencedProposal).append(",");
-                        }
-                    }
-                    //if (cleanedReferences.substring(cleanedReferences.length()-2,cleanedReferences.length()-1).equalsIgnoreCase(",")) cleanedReferences = cleanedReferences.substring(0, cleanedReferences.length() - 2);
-                }
-                if (!section.getStringValue().equals(cleanedReferences.toString())) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposal.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.toString());
-                    updateProposalReferences = true;
-                }
-            }
+            proposalWrapper = ProposalCreationUtil
+                    .createProposal(userId, updateProposalSectionsBean, contest, themeDisplay, contestPhase);
         }
 
         final Proposal2Phase p2p = proposalsContext.getProposal2Phase(request);
-        if (p2p != null && p2p.getVersionTo() != -1) {
-            // we are in a completed phase - need to adjust the end version
-            final Proposal updatedProposal = ProposalLocalServiceUtil.fetchProposal(proposal.getProposalId());
-            p2p.setVersionTo(updatedProposal.getCurrentVersion());
-            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
-        }
-
-        if (updateProposalReferences) {
-            ProposalReferenceLocalServiceUtil.populateTableWithProposal(proposal.getWrapped());
-        }
-
-        int analyticsValue;
-        
-        if (filledAll) {
-        	analyticsValue = 3;
-        } else {
-        	analyticsValue = 2;
-        }
-        
-        AnalyticsUtil.publishEvent(request, userId, PROPOSAL_ANALYTICS_KEY + analyticsValue,
-                PROPOSAL_ANALYTICS_CATEGORY,
-                PROPOSAL_ANALYTICS_ACTION,
-                PROPOSAL_ANALYTICS_LABEL,
-                analyticsValue);
+        ProposalUpdateHelper proposalUpdateHelper = new ProposalUpdateHelper(updateProposalSectionsBean, request,
+                themeDisplay, proposalWrapper, p2p, userId);
+        proposalUpdateHelper.updateProposal();
 
         if (createNew) {
-            // Send email notification to author
-            ServiceContext serviceContext = new ServiceContext();
-            serviceContext.setPortalURL(themeDisplay.getPortalURL());
-            Contest contest = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(proposalsContext.getContestPhase(request).getContestPhasePK()));
-            final Proposal updatedProposal = ProposalLocalServiceUtil.fetchProposal(proposal.getProposalId());
-            new ProposalCreationNotification(updatedProposal, contest, serviceContext).sendMessage();
+            ProposalCreationUtil.sendAuthorNotification(themeDisplay, proposalWrapper, contestPhase);
         }
-        
+
         proposalsContext.invalidateContext(request);
-        
+
         request.setAttribute("ACTION_REDIRECTING", true);
-        response.sendRedirect(proposal.getProposalUrl());
+        response.sendRedirect(proposalWrapper.getProposalUrl());
     }
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
-    public String reportError(PortletRequest request, Model model, 
-            @ModelAttribute("updateProposalSectionsBean") @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result) throws PortalException, SystemException {
+    public String reportError(PortletRequest request, Model model,
+            @ModelAttribute("updateProposalSectionsBean") @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
+            BindingResult result) throws PortalException, SystemException {
         ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
 
         Proposal proposal = ProposalLocalServiceUtil.createProposal(0);
         proposal.setAuthorId(proposalsContext.getUser(request).getUserId());
-        
+
         if (proposalWrapped == null) {
-            proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request), proposalsContext.getContestPhase(request), null);
+            proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request),
+                    proposalsContext.getContestPhase(request), null);
             model.addAttribute("proposal", proposalWrapped);
         }
-        
-        model.addAttribute("updateProposalSectionsBean",updateProposalSectionsBean);
+
+        model.addAttribute("updateProposalSectionsBean", updateProposalSectionsBean);
         return "proposalDetails_edit";
     }
 }

@@ -160,6 +160,15 @@ create index IX_EAA7A52A on xcolab_ProposalContestPhaseAttribute (contestPhaseId
 create index IX_68DFE42A on xcolab_ProposalContestPhaseAttribute (proposalId, contestPhaseId);
 create index IX_8F351DBF on xcolab_ProposalContestPhaseAttribute (proposalId, contestPhaseId, name, additionalId);
 
+create index IX_101B90C3 on xcolab_ProposalMoveHistory (sourceContestId);
+create index IX_A0D3722A on xcolab_ProposalMoveHistory (sourcePhaseId);
+create index IX_A98333DD on xcolab_ProposalMoveHistory (sourceProposalId);
+create index IX_E78B9567 on xcolab_ProposalMoveHistory (sourceProposalId, sourceContestId);
+create index IX_9920218D on xcolab_ProposalMoveHistory (targetContestId);
+create index IX_FA79AD74 on xcolab_ProposalMoveHistory (targetPhaseId);
+create index IX_4110BC53 on xcolab_ProposalMoveHistory (targetProposalId);
+create index IX_6001D87B on xcolab_ProposalMoveHistory (targetProposalId, targetContestId);
+
 create index IX_3C82622A on xcolab_ProposalReference (proposalId);
 create index IX_AABA9B94 on xcolab_ProposalReference (subProposalId);
 

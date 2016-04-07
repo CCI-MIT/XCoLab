@@ -77,7 +77,6 @@ public class ProposalsPermissions {
      * @throws PortalException
      */
     public boolean getCanEdit() throws SystemException, PortalException {
-        // guests aren't allowed to edit
         return !user.isDefaultUser()
                 && (getCanAdminAll() || planIsEditable
                     && (isProposalOpen() || isProposalMember())
@@ -90,8 +89,8 @@ public class ProposalsPermissions {
     }
     
     public boolean getCanCreate() {
-        // guests aren't allowed to create proposals
-        return !user.isDefaultUser() && getIsCreationAllowedByPhase();
+        return !user.isDefaultUser() && getIsCreationAllowedByPhase()
+                || getCanAdminAll();
     }
 
     public boolean getIsCreationAllowedByPhase() {
@@ -217,9 +216,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) throws PortalException, SystemException {
-        //getViewContestPhaseId
-        if (Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()) {
-            // Proposal is currently associated with a different contest and is active there
+        if (wasProposalMovedElsewhere()) {
             return false;
         }
 
@@ -236,35 +233,31 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanMoveProposal() throws SystemException, PortalException {
-        if(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()){
-            // Proposal is currently associated with a different contest and is active there (i.e. has been moved before) (3)
+        if (wasProposalMovedElsewhere()){
             return false;
         }
-        // In Submission Phase, owner and admin should be able to move
+
         if (getIsCreationAllowedByPhase()){
             return getCanAdminProposal();
         }
 
-        // Otherwise just the admin should be able to move between contests
     	return getCanAdminAll();
     }
 
     public boolean getCanCopyProposal() throws SystemException, PortalException {
-        /**
-         * Allow this type of movement if:
-         *   The proposal is not currently in a creation phase
-         * Do not move if:
-         *   Proposal has been moved before and is active in a different contest
-         */
+        return !wasProposalMovedElsewhere()
+                && !getIsCreationAllowedByPhase() && getCanAdminProposal();
+    }
 
-        if (Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestPK() != contestPhase.getContestPK()) {
-            // Proposal is currently associated with a different contest and is active there (i.e. has been moved before) (3)
-            return false;
-        }
-
-        // allow copy only if the current contest is not in creation phase anymore, in this case "move" should be used instead of "copy"
-        return !getIsCreationAllowedByPhase()
+    public boolean getCanForkProposal() throws SystemException, PortalException {
+        return !wasProposalMovedElsewhere()
                 && getCanAdminProposal();
+    }
+
+    private boolean wasProposalMovedElsewhere() throws SystemException, PortalException {
+        final long currentContestId = Proposal2PhaseLocalServiceUtil
+                .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
+        return currentContestId != contestPhase.getContestPK();
     }
 
     public User getUser() {

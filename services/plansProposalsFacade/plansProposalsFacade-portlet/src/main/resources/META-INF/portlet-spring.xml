@@ -216,6 +216,9 @@
 	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeLocalService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalContestPhaseAttributeService" class="com.ext.portlet.service.impl.ProposalContestPhaseAttributeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistence" class="com.ext.portlet.service.persistence.ProposalContestPhaseAttributePersistenceImpl" parent="basePersistence" />
+	<bean id="com.ext.portlet.service.ProposalMoveHistoryLocalService" class="com.ext.portlet.service.impl.ProposalMoveHistoryLocalServiceImpl" />
+	<bean id="com.ext.portlet.service.ProposalMoveHistoryService" class="com.ext.portlet.service.impl.ProposalMoveHistoryServiceImpl" />
+	<bean id="com.ext.portlet.service.persistence.ProposalMoveHistoryPersistence" class="com.ext.portlet.service.persistence.ProposalMoveHistoryPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ProposalRatingLocalService" class="com.ext.portlet.service.impl.ProposalRatingLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalRatingService" class="com.ext.portlet.service.impl.ProposalRatingServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalRatingPersistence" class="com.ext.portlet.service.persistence.ProposalRatingPersistenceImpl" parent="basePersistence" />

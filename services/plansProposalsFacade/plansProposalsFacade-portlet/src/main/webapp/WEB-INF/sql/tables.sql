@@ -682,6 +682,19 @@ create table xcolab_ProposalContestPhaseAttribute (
 	realValue DOUBLE
 );
 
+create table xcolab_ProposalMoveHistory (
+	id_ LONG not null primary key,
+	sourceProposalId LONG,
+	sourceContestId LONG,
+	sourcePhaseId LONG,
+	targetProposalId LONG,
+	targetContestId LONG,
+	targetPhaseId LONG,
+	movingUserId LONG,
+	moveDate DATE null,
+	moveType VARCHAR(75) null
+);
+
 create table xcolab_ProposalRating (
 	id_ LONG not null primary key,
 	proposalId LONG,

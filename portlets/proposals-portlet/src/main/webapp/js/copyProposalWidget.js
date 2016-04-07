@@ -1,4 +1,4 @@
-function proposalCopy_loadContests(move, hideOnMove) {
+function proposalCopy_loadContests(moveType) {
     jQuery.getJSON('/api/jsonws/plansProposalsFacade-portlet.contest/get-contests-open-for-proposals', function(data) {
     	var html = ["<table>"];
     	jQuery(data).each(function(idx, obj) {
@@ -9,27 +9,22 @@ function proposalCopy_loadContests(move, hideOnMove) {
     		html.push(obj.contestName);
     		html.push("</td>");
     		html.push("<td>");
-    		html.push('<div class="c-Button__primary"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName + '/');
+    		html.push('<div class="c-Button__primary"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName);
 
-    		if (move && hideOnMove) {
-    			html.push('/c/proposal/');
-    			html.push(currentProposal.proposalId);
-                html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
-    			html.push("/moveAndHide");
-    		} else if (move && !hideOnMove) {
-                html.push('/c/proposal/');
-                html.push(currentProposal.proposalId);
-                html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
-                html.push("/moveAndKeep");
-            } else {
-    			html.push('/createProposal/basedOn/');
-    			html.push(currentProposal.proposalId);
-    			html.push('/');
-    			html.push(currentProposal.version);
-    			html.push('/');
-    			html.push(obj.contestPK);
-    		}
-    		html.push('">Select</a></div>');
+			if (moveType == "FORK") {
+				html.push('/createProposal/basedOn/');
+				html.push(currentProposal.proposalId);
+				html.push('/');
+				html.push(currentProposal.version);
+				html.push('/');
+				html.push(currentProposal.contestPK);
+			} else {
+				html.push('/c/proposal/');
+				html.push(currentProposal.proposalId);
+				html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
+				html.push("/move/" + moveType);
+			}
+			html.push('">Select</a></div>');
     		html.push("</td></tr>");
     	});
     	html.push("</table>");
@@ -110,8 +105,8 @@ jQuery(function() {
 	});
 });
 
-function showCopyProposalPopup(move, hideOnMove) {
-	proposalCopy_loadContests(move, hideOnMove);
+function showCopyProposalPopup(moveType) {
+	proposalCopy_loadContests(moveType);
 	jQuery("#copyProposalContainer").show();
 	updatePopupSize();
 }

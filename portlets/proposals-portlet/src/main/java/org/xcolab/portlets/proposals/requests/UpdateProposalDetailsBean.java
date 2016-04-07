@@ -3,6 +3,7 @@ package org.xcolab.portlets.proposals.requests;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.NotBlank;
+import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateProposalDetailsBean {
-    private Map<Long, String> sectionsContent = new HashMap<Long, String>();
+    private Map<Long, String> sectionsContent = new HashMap<>();
     private String pitch;
 
     @NotBlank
@@ -21,13 +22,14 @@ public class UpdateProposalDetailsBean {
     private long imageId;
     private long baseProposalId;
     private long baseProposalContestId;
-    private Long moveToContestPhaseId;
+    private Long moveToContestId;
     private long moveFromContestPhaseId;
-    private boolean hideOnMove;
+
+    private boolean isMove;
+    private MoveType moveType;
 
     // legacy
     private String description;
-	private boolean move;
 
 
     public UpdateProposalDetailsBean(ProposalWrapper proposal) throws PortalException, SystemException {
@@ -54,13 +56,13 @@ public class UpdateProposalDetailsBean {
         baseProposalContestId = baseProposal.getContestPK();
     }
     
-    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal, boolean move) throws PortalException, SystemException {
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal, boolean isMove, MoveType moveType) throws PortalException, SystemException {
     	this(proposal, baseProposal);
-    	this.move = move;
+    	this.isMove = isMove;
+        this.moveType = moveType;
     }
 
-    public UpdateProposalDetailsBean() {
-    }
+    public UpdateProposalDetailsBean() { }
 
     public Map<Long, String> getSectionsContent() {
         return sectionsContent;
@@ -126,29 +128,21 @@ public class UpdateProposalDetailsBean {
 		this.baseProposalContestId = baseProposalContestId;
 	}
 
-	public boolean isMove() {
-		return move;
+	public boolean getIsMove() {
+		return isMove;
 	}
 
-	public void setMove(boolean move) {
-		this.move = move;
+	public void setIsMove(boolean move) {
+		this.isMove = move;
 	}
 
-	public long getMoveToContestPhaseId() {
-		return moveToContestPhaseId == null ? -1 : moveToContestPhaseId;
+	public long getMoveToContestId() {
+		return moveToContestId == null ? -1 : moveToContestId;
 	}
 
-	public void setMoveToContestPhaseId(long moveToContestPhaseId) {
-		this.moveToContestPhaseId = moveToContestPhaseId;
+	public void setMoveToContestId(long moveToContestId) {
+		this.moveToContestId = moveToContestId;
 	}
-
-    public boolean isHideOnMove() {
-        return hideOnMove;
-    }
-
-    public void setHideOnMove(boolean hideOnMove) {
-        this.hideOnMove = hideOnMove;
-    }
 
     public Long getMoveFromContestPhaseId() {
         return moveFromContestPhaseId;
@@ -158,4 +152,11 @@ public class UpdateProposalDetailsBean {
         this.moveFromContestPhaseId = moveFromContestPhaseId;
     }
 
+    public MoveType getMoveType() {
+        return moveType;
+    }
+
+    public void setMoveType(MoveType moveType) {
+        this.moveType = moveType;
+    }
 }

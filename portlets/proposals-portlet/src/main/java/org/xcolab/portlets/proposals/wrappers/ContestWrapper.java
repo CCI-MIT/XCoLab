@@ -36,6 +36,10 @@ public class ContestWrapper extends BaseContestWrapper {
     private Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<BaseContestPhaseWrapper> visiblePhases;
 
+    public ContestWrapper(long contestId) throws PortalException, SystemException {
+        super(contestId);
+    }
+
     public ContestWrapper(Contest contest) {
         super(contest);
     }

@@ -810,6 +810,18 @@
 		</field>
 		<field name="realValue" type="double" />
 	</model>
+	<model name="com.ext.portlet.model.ProposalMoveHistory">
+		<field name="id_" type="long" />
+		<field name="sourceProposalId" type="long" />
+		<field name="sourceContestId" type="long" />
+		<field name="sourcePhaseId" type="long" />
+		<field name="targetProposalId" type="long" />
+		<field name="targetContestId" type="long" />
+		<field name="targetPhaseId" type="long" />
+		<field name="movingUserId" type="long" />
+		<field name="moveDate" type="Date" />
+		<field name="moveType" type="String" />
+	</model>
 	<model name="com.ext.portlet.model.ProposalRating">
 		<field name="id" type="long" />
 		<field name="proposalId" type="long" />

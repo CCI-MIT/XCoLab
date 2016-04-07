@@ -224,7 +224,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                     // rethrow the exception, if it wasn't check if there is a connection and any phase for given contest if there is such connection
                     // fetch most recent one
                     // if proposal is being moved ignore missing p2p mapping
-                    if (request.getParameter("move")==null){
+                    if (request.getParameter("isMove") == null) {
                         if (phaseId <= 0) {
                             _log.info("Can't find association between proposal " + proposalId + " and phase " + contestPhase.getContestPhasePK());
                             ContestPhase mostRecentPhaseInRequestedContest = null;
@@ -245,7 +245,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                             }
                             if (mostRecentPhaseInRequestedContest == null) {
 
-                                if(mostRecentPhaseInOtherContest == null){
+                                if (mostRecentPhaseInOtherContest == null) {
                                     handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
                                 } else {
                                     contestPhase = mostRecentPhaseInOtherContest;

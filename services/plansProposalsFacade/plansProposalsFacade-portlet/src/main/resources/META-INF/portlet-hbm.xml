@@ -69,6 +69,7 @@
 	<import class="com.ext.portlet.model.Proposal2Phase" />
 	<import class="com.ext.portlet.model.ProposalAttribute" />
 	<import class="com.ext.portlet.model.ProposalContestPhaseAttribute" />
+	<import class="com.ext.portlet.model.ProposalMoveHistory" />
 	<import class="com.ext.portlet.model.ProposalRating" />
 	<import class="com.ext.portlet.model.ProposalRatingType" />
 	<import class="com.ext.portlet.model.ProposalRatingValue" />
@@ -882,6 +883,21 @@
 		<property name="numericValue" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="stringValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="realValue" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+	</class>
+	<class name="com.ext.portlet.model.impl.ProposalMoveHistoryImpl" table="xcolab_ProposalMoveHistory">
+		<cache usage="read-write" />
+		<id name="id_" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="sourceProposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="sourceContestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="sourcePhaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="targetProposalId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="targetContestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="targetPhaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="movingUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="moveDate" type="org.hibernate.type.TimestampType" />
+		<property name="moveType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ProposalRatingImpl" table="xcolab_ProposalRating">
 		<cache usage="read-write" />

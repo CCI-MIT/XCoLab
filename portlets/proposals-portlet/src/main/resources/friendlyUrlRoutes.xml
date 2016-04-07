@@ -168,25 +168,14 @@
     </route>
 
     <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndHide</pattern>
+        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/move/{moveType}</pattern>
         <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
         <generated-parameter name="proposalId">{proposalId}</generated-parameter>
-        <generated-parameter name="move">true</generated-parameter>
+        <generated-parameter name="isMove">true</generated-parameter>
         <generated-parameter name="moveFromContestPhaseId">{moveFromContestPhaseId}</generated-parameter>
-        <generated-parameter name="hideOnMove">true</generated-parameter>
-    </route>
-
-    <route>
-        <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/moveAndKeep</pattern>
-        <generated-parameter name="pageToDisplay">proposalDetails</generated-parameter>
-        <generated-parameter name="contestYear">{contestYear}</generated-parameter>
-        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
-        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
-        <generated-parameter name="move">true</generated-parameter>
-        <generated-parameter name="moveFromContestPhaseId">{moveFromContestPhaseId}</generated-parameter>
-        <generated-parameter name="hideOnMove">false</generated-parameter>
+        <generated-parameter name="moveType">{moveType}</generated-parameter>
     </route>
 
     <route>
