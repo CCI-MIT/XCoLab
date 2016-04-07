@@ -136,7 +136,13 @@ $p-About__left__li__a__padding--left: 15px;
 $p-About__left__li__a__current__border--left: 5px solid $t-Color__secondary ;
 $p-About__left__li__a__current__padding--left: 10px;
 $p-About__left__li__a__current__textColor: $t-Color__black;
-$p-About__checkout__backgroundColor: $t-Color__grey;
+$p-About__checkout__backgroundColor: $t-Color__pattern__gray--light;
+$p-About__contribute__background: url(../images/about/getinvolved-top_illustration.png) no-repeat !default;
+$p-About__ge1__background: url(../images/about/getinvolved-row-01.png) no-repeat 50px 15px !default;
+$p-About__ge2__background: url(../images/about/getinvolved-row-02.png) no-repeat 45px 0px !default;
+$p-About__ge3__background: url(../images/about/getinvolved-row-03.png) no-repeat 40px 0px !default;
+$p-About__ge4__background: url(../images/about/getinvolved-row-04.png) no-repeat 45px 15px !default;
+$p-About__getinvolved__backgroundColor: white;
 
 $p-Contests__contestFlag__capitalization: uppercase;
 $p-Contests__contestFlag__boxShadow: 0px 0px 5px $t-Color__grey--light;
