@@ -2,6 +2,7 @@ $p-About__left__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
 $p-About__left__li__a__padding--left: 4px !default;
 $p-About__left__li__a__current__border--left: none !default;
 $p-About__left__li__a__current__padding--left: 4px !default;
+$p-About__left__li__ul__li__a__padding--left: 28px !default;
 $p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
 $p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
 $p-About__contribute__background: url(../images/about/getinvolved-top_illustration.jpg) no-repeat !default;
@@ -77,7 +78,7 @@ $p-About__getinvolved__backgroundColor: $t-Color__grey--lightest !default;
 .about-left li ul li a {
   width: 182px;
   height: 21px;
-  padding: 6px 0 1px 28px;
+  padding: 6px 0 1px $p-About__left__li__ul__li__a__padding--left;
   font-size: 14px;
   color: $t-Color__primary;
   border-bottom: none;
