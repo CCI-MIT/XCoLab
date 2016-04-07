@@ -21,20 +21,12 @@
   opacity: 0;
   filter: alpha(opacity=0);
   cursor: pointer;
-  width: 219px;
-  height: 30px;
   z-index: 100000;
 }
 
-.uploadWidget.optional {
-  background: url(/proposals-portlet/img/image_upload-button.png) no-repeat;
-}
-
 .uploadWidget {
-  background: url(/proposals-portlet/img/image_upload_not_optional-button.png) no-repeat;
   width: 219px;
-  height: 30px;
-  margin-top: 12px;
+  margin-top: 16px;
   cursor: pointer;
   float: left;
 }

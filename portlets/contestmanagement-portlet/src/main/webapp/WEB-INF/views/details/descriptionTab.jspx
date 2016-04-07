@@ -120,7 +120,7 @@
                         <div class="clearfix"><!-- --></div>
                     </div>
 
-                    <div id="contestImageUploadWidget" class="uploadWidget"><!--  --></div>
+                    <div id="contestImageUploadWidget" class="uploadWidget">Upload an image</div>
                     <div class="clear"><!--  --></div>
                 </div>
             </div>
@@ -150,7 +150,7 @@
                         <form:input path="sponsorLogoId" cssStyle="display: none;" id="logoImageId"/>
                     </div>
 
-                    <div id="logoImageUploadWidget" class="uploadWidget optional"><!--  --></div>
+                    <div id="logoImageUploadWidget" class="uploadWidget optional">Upload an image (optional)</div>
                     <div class="clear"><!--  --></div>
                 </div>
             </div>
