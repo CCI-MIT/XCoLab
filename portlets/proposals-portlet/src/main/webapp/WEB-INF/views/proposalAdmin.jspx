@@ -160,7 +160,7 @@
 			<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
 				<strong>Fork ${contestType.proposalName} in different ${contestType.contestName}</strong>
 				<div>
-					<a class="primary-button" href="javascript:;"
+					<a class="c-Button__primary" href="javascript:;"
 					   onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup('FORK')">
 						<span>Fork</span> this ${contestType.proposalName}
 					</a>
