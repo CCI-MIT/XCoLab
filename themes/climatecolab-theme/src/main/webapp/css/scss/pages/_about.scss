@@ -11,6 +11,7 @@ $p-About__ge2__background: url(../images/about/getinvolved-row-02.png) no-repeat
 $p-About__ge3__background: url(../images/about/getinvolved-row-03.png) no-repeat 10px 0 !default;
 $p-About__ge4__background: url(../images/about/getinvolved-row-04.png) no-repeat 20px 15px !default;
 $p-About__getinvolved__backgroundColor: $t-Color__grey--lightest !default;
+$p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !default;
 
 /* ABOUT ------------------------------------------------------------------------------------- */
 
@@ -389,4 +390,38 @@ $p-About__getinvolved__backgroundColor: $t-Color__grey--lightest !default;
 
 .checkout a {
   font-weight: $b-Typography__fontWeight--bold;
+}
+
+.p-About__approachIllustration {
+  margin-top: 30px;
+  background: $t-Color__grey--lightest;
+  border-top: 1px solid $t-Color__grey--medium;
+  border-bottom: 1px solid $t-Color__grey--medium;
+
+  h3 {
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  p {
+    text-align: center;
+    font-weight: $p-About__approachIllustration__p__fontWeight;
+  }
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .p-About__approachIllustration__col {
+    display: inline-block;
+    width: 230px;
+    padding-bottom: 30px;
+
+    &:first-of-type {
+      margin-left: 15px;
+    }
+  }
+
 }
