@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -15,9 +14,6 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by Thomas on 2/8/2015.
- */
 public class ContestDescriptionBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:.,;'’0-9äöüÄÖÜ?! ]*$";
@@ -65,15 +61,15 @@ public class ContestDescriptionBean implements Serializable {
     }
 
     public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
-        String oldContestTitle = contest.getContestShortName();
+        String oldWikiPageTitle = WikiUtil.getWikiPageTitle(contest);
         updateContestDescription(contest);
         updateContestSchedule(contest, scheduleTemplateId);
-        updateContestWiki(contest, oldContestTitle);
 
-        if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestTitle)) {
+        if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldWikiPageTitle)) {
             contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
             contest.persist();
         }
+        WikiUtil.updateContestWiki(contest, oldWikiPageTitle);
     }
 
     public Long getContestPK() {
@@ -156,16 +152,6 @@ public class ContestDescriptionBean implements Serializable {
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.persist();
-    }
-
-    public static void updateContestWiki(Contest contest, String oldContestTitle)
-            throws SystemException, PortalException, UnsupportedEncodingException {
-
-        String newContestTitle = contest.getContestShortName();
-        if (!oldContestTitle.equals(newContestTitle)) {
-            WikiUtil.updateWikiPageTitleIfExists(oldContestTitle, newContestTitle);
-            WikiUtil.updateContestResourceUrl(contest, newContestTitle);
-        }
     }
 
     public static void updateContestSchedule(Contest contest, Long contestScheduleId)
