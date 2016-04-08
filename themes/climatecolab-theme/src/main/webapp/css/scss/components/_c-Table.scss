@@ -5,6 +5,8 @@ $c-Table__borderColor: $t-Color__primary__grey !default;
 $c-Table__title__backgroundColor: $t-Color__primary__grey--light !default;
 $c-Table__title__fontColor: $t-Color__grey--darkest !default;
 
+$c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
+
 .c-Table {
 }
 
@@ -26,6 +28,7 @@ $c-Table__title__fontColor: $t-Color__grey--darkest !default;
   font-weight: $b-Typography__fontWeight--bold;
 
   a {
+    font-weight: $c-Table__row__fontWeight;
     color: $c-Table__title__fontColor;
   }
 }

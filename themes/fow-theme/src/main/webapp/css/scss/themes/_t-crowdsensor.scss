@@ -214,6 +214,7 @@ $c-Table__shadebar__background: none;
 $c-Table__borderColor: $t-Color__grey;
 $c-Table__title__backgroundColor: $t-Color__primary;
 $c-Table__title__fontColor: white;
+$c-Table__row__fontWeight: $b-Typography__fontWeight--regular;
 
 $p-ContestProposals__list__element--proposalname__width: 605px;
 $p-ContestProposals__list__element__border: 1px solid;
@@ -263,7 +264,7 @@ $c-TabBar__tab__fontSize: 17px;
 $c-TabBar__tab__textColor: $t-Color__primary;
 $c-TabBar__tab__textColor--active: $t-Color__grey--darkest;
 $b-TabBar__tab__marginRight: 0;
-$c-TabBar__tab--first__margin--left: 60px;
+$c-TabBar__tab--first__margin--left: 30px;
 $c-TabBar__tab__active__border--right: 1px solid $t-Color__grey--medium;
 $c-TabBar__tab__active__border--right--left: none;
 
