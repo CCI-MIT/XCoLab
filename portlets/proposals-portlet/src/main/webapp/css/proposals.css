@@ -376,14 +376,6 @@ table.judgingForm {
   color: #900;
 }
 
-.propbox.judgement-actions.featured .title-author {
-  width: 455px;
-}
-
-.propbox.judgement-actions .title-author {
-  width: 485px;
-}
-
 #advanceDecision {
   width: 100%;
   font-size: 14px;

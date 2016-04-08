@@ -1,6 +1,8 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          version="2.0">
+          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+
+    <liferay-theme:defineObjects />
 
     <!--@elvariable id="isGlobalContest" type="java.lang.Boolean"-->
     <!--@elvariable id="consolidationPossible" type="java.lang.Boolean"-->
@@ -49,7 +51,7 @@
                         <label for="${model.key }"> ${model.value[0] }</label>
 
 						<span class="fieldWithTooltip">
-							<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"/>
+							<img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png"/>
 						</span>
 
                         <div class="c-Tooltip" style="display: none; opacity: 1.0;">

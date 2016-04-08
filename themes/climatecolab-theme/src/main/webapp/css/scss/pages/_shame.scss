@@ -86,7 +86,7 @@ fieldset {
 //TODO: where are these used?
 #invalidFieldsList li {
   margin-bottom: 10px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 body.colab {

@@ -1,8 +1,12 @@
+$p-community__left__lineHeight: 21px !default;
+$p-community__colab__th__background: #E7F1F5 !default;
+$p-community__colab__th__textColor: $t-Color__grey--darkest !default;
+
 .community-left {
   float: left;
   width: 736px;
   font-size: 16px;
-  line-height: 21px;
+  line-height: $p-community__left__lineHeight;
   color: black;
   position: relative;
 }
@@ -37,7 +41,7 @@
   width: 500px;
   font-size: 21px;
   color: $t-Color__grey--medium;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 /*.wf-active .comm_date { font-size:23px; }*/
@@ -52,7 +56,7 @@
 
 .comm_icons a {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   padding-bottom: 0;
   border-bottom: none;
 }
@@ -86,7 +90,7 @@
 .comm_disc-title h2 span {
   color: #666;
   font-size: 21px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   padding-right: 5px;
   font-style: normal;
 }
@@ -114,7 +118,7 @@
 .comm_info-left span {
   color: $t-Color__secondary;
   font-size: 30px;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   padding-right: 5px;
   font-style: normal;
 }
@@ -161,7 +165,7 @@
 }
 
 .comm_list li.c {
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .colab .colabRow {
@@ -195,10 +199,10 @@
 
 .colab th.Hdr, .colab .ColGrpHdrRow th {
   height: 27px;
-  background: #E7F1F5;
+  background: $p-community__colab__th__background;
   border-top: 1px solid #A7D7FB;
   border-bottom: 1px solid #9CBCCA;
-  color: $t-Color__grey--darkest;
+  color: $p-community__colab__th__textColor;
   padding-top: 10px;
   padding-left: 5px;
 }
@@ -213,7 +217,7 @@
   border: 1px solid $t-Color__grey--light;
   color: $t-Color__grey--dark;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 .wf-active .comm_search {
@@ -231,7 +235,7 @@
   cursor: pointer;
   color: white;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 .wf-active .comm_submit {
@@ -276,7 +280,7 @@
 }
 
 .comm_member td.b {
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .comm_member .memdiv {
@@ -328,6 +332,7 @@
 }
 
 /** PAGER **/
+//TODO: probably unused?
 .iceDatPgrTbl td {
   padding: 0 4px 0 4px;
 }
@@ -337,11 +342,11 @@
 }
 
 .iceDatPgrScrCol {
-  font-weight: bold;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .iceDatPgr .iceDatPgrScrBtn {
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   padding: 0 4px 0 4px;
 }
 
@@ -380,7 +385,7 @@ input.comm_search {
   border: 1px solid #BCB6B1;
   color: $t-Color__grey--dark;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   margin-top: 5px;
 }
 

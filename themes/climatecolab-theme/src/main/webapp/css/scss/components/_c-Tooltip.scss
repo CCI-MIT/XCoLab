@@ -21,6 +21,7 @@ $c-Tooltip__actions__bottom__background: url(../images/actions_tooltip-bottom.pn
   @include border-radius($c-Tooltip__borderRadius);
   color: $c-Tooltip__textColor;
   font: 13px Arial, Helvetica, sans-serif;
+  text-transform: none;
 }
 
 .c-Tooltip__arrow { //tt-arrow

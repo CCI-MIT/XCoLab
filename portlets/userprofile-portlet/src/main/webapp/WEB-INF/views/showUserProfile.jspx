@@ -104,7 +104,7 @@
 						</td>
 						<td class="b points_box left_border top_border" width="45%">
 							${colabShortName} Points (actual)
-							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
+							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" /></a>
 							<br />
 							<div style="display: none;" class="profilehelp">
 								${colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
@@ -124,7 +124,7 @@
 						</td>
 						<td class="b points_box left_border bottom_border" width="43%">
 							${colabShortName} Points (max. potential)
-							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" /></a>
+							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" /></a>
 							<br />
 							<div style="display: none;" class="profilehelp">
 								The maximum number of ${colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.

@@ -20,6 +20,7 @@
 }
 
 .lfr-pagination .pager li {
+  list-style: none;
   background: none;
   float: left;
 }
@@ -115,7 +116,7 @@ header.portlet-topper {
   margin: 0 10px 0 10px;
   border-radius: 6px;
   padding: 2px;
-  font-weight: bold;
+  font-weight: $b-Typography__fontWeight--bold;
   height: 15px;
   border-bottom: none;
   font-size: 10pt;

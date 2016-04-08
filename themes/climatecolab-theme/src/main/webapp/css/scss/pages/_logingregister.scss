@@ -35,7 +35,7 @@
 .popupreg_txt {
   float: left;
   text-align: right;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   width: 220px;
   height: 27px;
   padding: 6px 20px 0 0;
@@ -53,7 +53,7 @@
   height: 33px;
   padding: 2px 0 0 8px;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
 }
 
 .popupreg_form {
@@ -118,7 +118,7 @@
   padding: 17px 0 10px 13px;
   font-size: 14px;
   color: $t-Color__grey--dark;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .c-Popup .login_popup_box .c-Header__login__username, .c-Popup .login_popup_box .c-Header__login__password {
@@ -143,7 +143,7 @@
 
 .inputLimitContainer.overflow {
   color: #b00;
-  font-weight: bold;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .login-box-table {

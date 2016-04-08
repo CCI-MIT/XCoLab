@@ -1,0 +1,65 @@
+//TODO: perhaps combine this with c-Table
+
+$c-TableList__background--odd: $t-Color__primary__grey--light !default;
+
+.c-TableList {
+
+  //for jquery UI data tables
+  & td {
+    padding: 5px;
+  }
+
+  &.fullWidth {
+    width: 100%;
+  }
+}
+
+.c-TableList--noBorder {
+  @extend .c-TableList;
+
+  //for jquery UI data tables
+  &, & tr, & td, & tbody, & thead {
+    border: none;
+  }
+}
+
+.c-TableList__row { //.activitiesbox
+  font-size: 14px;
+  color: $t-Color__grey--dark;
+
+  border-bottom: 1px solid $t-Color__grey--light;
+
+  &.odd { //.blu
+    background: $c-TableList__background--odd;
+  }
+
+  @extend .clearfix;
+}
+
+.c-TableList__row--last, .c-TableList__row--noBorder {
+  @extend .c-TableList__row;
+  border-bottom: none;
+}
+
+.c-TableList__item {
+  float: left;
+
+  &.right {
+    float: right;
+  }
+}
+
+//jqeruy UI data table styled as a borderless TableList
+.ui-datatable-even {
+  @extend .c-TableList__row--noBorder;
+  background: $c-TableList__background--odd;
+}
+
+.ui-datatable-odd {
+  @extend .c-TableList__row--noBorder;
+}
+
+.ui-widget-content {
+  border: none;
+  background: none;
+}

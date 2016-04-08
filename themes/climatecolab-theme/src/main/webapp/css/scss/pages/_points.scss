@@ -148,7 +148,7 @@ td.left.small .points-container, td.left.small .arrow-down {
 
   .highlighted {
     color: $t-Color__secondary;
-    font-weight: 700;
+    font-weight: $b-Typography__fontWeight--bold;
     text-align: center;
   }
   span.highlighted {
@@ -184,7 +184,7 @@ td.left.small .points-container, td.left.small .arrow-down {
     cursor: pointer;
   }
   .error {
-    font-weight: bold;
+    font-weight: $b-Typography__fontWeight--bold;
     color: $t-Color__alert;
   }
 

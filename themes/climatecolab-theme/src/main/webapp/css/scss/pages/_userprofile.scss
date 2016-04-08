@@ -1,4 +1,6 @@
-/** User profile */
+$p-userprofile__comm_rightcol-title2__height: 22px !default;
+$p-userprofile__comm_rightcol-title2__padding--bottom: 0px !default;
+
 .profile_input {
   border: none;
   background: url(../images/profile_input.gif) no-repeat;
@@ -6,7 +8,7 @@
   height: 28px;
   padding: 2px 0 0 8px;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   margin: 5px 0 10px 0;
 }
 
@@ -15,7 +17,7 @@
   height: 28px;
   padding: 2px 0 0 8px;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   margin: 5px 0 10px 0;
   border: 1px solid;
   border-color: #BFBFBF #DEDEDE #DEDEDE #BFBFBF;
@@ -77,19 +79,19 @@
 
 .comm_rightcol-title {
   font-size: 19px;
-  font-weight: bold;
+  font-weight: $b-Typography__fontWeight--bold;
   margin-bottom: 15px;
 }
 
 .comm_rightcol-title2 {
   text-transform: uppercase;
   background: $t-Color__primary__grey--light;
-  height: 22px;
-  padding: 10px 0 0 8px;
+  height: $p-userprofile__comm_rightcol-title2__height;
+  padding: 10px 0 $p-userprofile__comm_rightcol-title2__padding--bottom 8px;
   font-size: 12px;
   line-height: normal;
-  font-weight: 600;
-  color: #444;
+  font-weight: $b-Typography__fontWeight--bold;
+  color: contrasting-color($t-Color__primary__grey--light);
   margin-bottom: 5px;
 }
 

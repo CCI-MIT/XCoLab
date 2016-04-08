@@ -5,6 +5,7 @@ $c-Footer__menu__background: url(../images/bg-noise.png) !default;
 $c-Footer__menu__backgroundGradient: simple-gradient($t-Color__grey--dark) !default;
 
 $c-Footer__menu__li__a--hover__color: $t-Color__accent !default;
+$c-Footer__menu__boxShadow: none !default;
 
 #c-Footer { //#footer
   height: 190px;
@@ -14,6 +15,10 @@ $c-Footer__menu__li__a--hover__color: $t-Color__accent !default;
 #c-Footer__menu { //#footmenu
   height: 49px;
   @include background($c-Footer__menu__background, $c-Footer__menu__backgroundGradient);
+
+  -moz-box-shadow: $c-Footer__menu__boxShadow;
+  -webkit-box-shadow: $c-Footer__menu__boxShadow;
+  box-shadow: $c-Footer__menu__boxShadow;
 
   li {
     padding: 0;
@@ -43,14 +48,14 @@ $c-Footer__menu__li__a--hover__color: $t-Color__accent !default;
 //TODO: unused in source code - verify if used elsewhere
 #footleft {
   float: left;
-  width: 213px;
+  width: 420px;
   padding-top: 21px;
 }
 
 //TODO: unused in source code - verify if used elsewhere
 #footright {
   float: right;
-  width: 490px;
+  width: 510px;
   padding-top: 34px;
 
   #cc {
@@ -59,7 +64,7 @@ $c-Footer__menu__li__a--hover__color: $t-Color__accent !default;
 
   #txt {
     float: left;
-    width: 380px;
+    width: 400px;
     margin-right: 16px;
     font-size: 13px;
     color: $t-Color__grey--dark;
@@ -69,7 +74,7 @@ $c-Footer__menu__li__a--hover__color: $t-Color__accent !default;
       padding-bottom: 2px;
       border-bottom: 1px solid $t-Color__grey--light;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: $b-Typography__fontWeight--bold;
       color: black;
 
       &:hover {
@@ -80,8 +85,9 @@ $c-Footer__menu__li__a--hover__color: $t-Color__accent !default;
 }
 
 //TODO: unused in source code - verify if used elsewhere
+//TODO: experimentally removed, breaks tab bar on community page
 .portlet-journal-content ul, .portlet-journal-content ol, .portlet-wiki ul, .portlet-wiki ol {
-  margin-bottom: 15px;
+  //margin-bottom: 15px;
 }
 
 //TODO: unused in source code - verify if used elsewhere

@@ -1,134 +1,57 @@
 @import "compass";
 
-//reset styles
+//basic styles and functions
 @import 'base/b-reset';
-
-//import functions
 @import "base/b-mixins";
 
 //import variables
 @import "themes/t-climateColab";
 
-//import custom mixins
-@import 'components/c-Button';
-
-/* --[global/fonts]------------------------------------------------ */
-
 @import 'base/b-typography';
-
-/* --[/END global/fonts]--[global/layout]-------------------------- */
-
+@import "base/b-Spacing";
 @import 'base/layout';
 
-/* --[/END global/layout]--[components/header]--------------------- */
-
-@import 'components/c-Header';
-
-/* --[/END components/header]--[components/headline]--------------- */
-
-@import 'components/c-Headline';
-
-@import 'components/c-Table';
-
-@import 'components/c-TitleBar';
-
-@import 'pages/homepage';
-
-/* --[/END pages/homepage]--[pages/about]-------------------------- */
-
-@import 'pages/about';
-
-/* --[/END pages/about]--[pages/contests]-------------------------- */
-
-@import 'pages/contests';
-
-/* --[/END pages/contests]--[pages/proposals]---------------------- */
-
-@import 'pages/proposals';
-
-/* --[/END pages/proposals]--[components/tooltips]-------------- */
-
-@import 'components/c-Tooltip';
-
-/* --[/END components/tooltips]--[components/popups]--------------- */
-
-@import 'components/c-Popup';
-
-/* --[/END components/popups]--[components/footer]----------------- */
-
-@import 'components/c-Footer';
-
-/* --[/END components/footer]--[pages/modeling]-------------------- */
-
-@import 'pages/modeling';
-
-/* --[/END pages/modeling]--[components/comments]------------------ */
-
-@import 'components/c-Comment';
-
-/* --[/END components/comments]--[components/wiki]----------------- */
-
-@import 'liferay/wiki';
-
-/* --[/END components/wiki]--[pages/community]--------------------- */
-
-@import 'pages/community';
-
-/* --[/END pages/community]--[pages/points]-------------------------- */
-
-@import 'pages/points';
-
-/* --[/END pages/points]--[pages/blog]-------------------------- */
-
-@import 'liferay/blog';
-
-/* --[/END pages/blog]--[components/helpbox]----------------------- */
-
-@import 'components/c-Helpbox';
-
-/* --[/END components/helpbox]--[pages/userprofile]---------------- */
-
-@import 'pages/userprofile';
-
-/* --[/END pages/userprofile]--[pages/search]---------------------- */
-
-@import 'pages/search';
-
-/* --[/END pages/search]--[components/messaging]------------------- */
-
-@import 'components/c-Message';
-
-/* --[/END components/messaging]--[pages/logingregister]----------- */
-
-@import "pages/logingregister";
-
-/* --[/END pages/logingregister]--[components/forms]--------------- */
-
+//components
+@import 'components/c-Button';
 @import 'components/c-Form';
-
-/* --[/END components/forms]--[components/alert]------------------- */
-
+@import 'components/c-Message';
 @import 'components/c-Alert';
-
-/* --[/END components/alert]--[components/badges]------------------ */
-
 @import 'components/c-Badge';
+@import "components/c-TableList";
+@import 'components/c-Header';
+@import 'components/c-Headline';
+@import 'components/c-Table';
+@import 'components/c-TitleBar';
+@import 'components/c-Tooltip';
+@import 'components/c-Popup';
+@import 'components/c-Footer';
+@import 'components/c-Comment';
+@import 'components/c-Helpbox';
+@import 'components/c-Box';
+@import 'components/c-Count';
+@import 'components/c-TabBar';
 
-/* --[/END components/badges]--[contest_manager]------------------- */
-
-@import 'pages/contest_manager';
-
-/* --[/END contest_manager]--[components/liferay]------------------ */
-
-@import "liferay/liferay";
-
-/* --[/END components/liferay]------------------------------------- */
+//page styles
 
 @import "pages/p-ContestProposals";
 @import "pages/p-Members";
 
-/* --[misc styles]------------------------------------- */
+//old pages
+@import "pages/logingregister";
+@import 'pages/search';
+@import 'pages/contest_manager';
+@import 'pages/community';
+@import 'pages/userprofile';
+@import 'pages/points';
+@import 'pages/modeling';
+@import 'pages/homepage';
+@import 'pages/about';
+@import 'pages/contests';
+@import 'pages/proposals';
 
+
+// misc styles
+@import "liferay/liferay";
+@import 'liferay/wiki';
+@import 'liferay/blog';
 @import "pages/shame";
-
-/* --[/END misc styles]------------------------------------- */

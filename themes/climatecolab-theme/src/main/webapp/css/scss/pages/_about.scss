@@ -1,3 +1,18 @@
+$p-About__left__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
+$p-About__left__li__a__padding--left: 4px !default;
+$p-About__left__li__a__current__border--left: none !default;
+$p-About__left__li__a__current__padding--left: 4px !default;
+$p-About__left__li__ul__li__a__padding--left: 28px !default;
+$p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
+$p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
+$p-About__contribute__background: url(../images/about/getinvolved-top_illustration.jpg) no-repeat !default;
+$p-About__ge1__background: url(../images/about/getinvolved-row-01.png) no-repeat 42px 0 !default;
+$p-About__ge2__background: url(../images/about/getinvolved-row-02.png) no-repeat 31px 20px !default;
+$p-About__ge3__background: url(../images/about/getinvolved-row-03.png) no-repeat 10px 0 !default;
+$p-About__ge4__background: url(../images/about/getinvolved-row-04.png) no-repeat 20px 15px !default;
+$p-About__getinvolved__backgroundColor: $t-Color__grey--lightest !default;
+$p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !default;
+
 /* ABOUT ------------------------------------------------------------------------------------- */
 
 /* columns  ------------- */
@@ -33,14 +48,23 @@
   height: 30px;
   padding: 11px 0 0 4px;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: $p-About__left__li__a__fontWeight;
   color: $t-Color__primary;
   border-bottom: 1px solid #ccc;
   display: inline-block;
+
+  padding-left: $p-About__left__li__a__padding--left;
 }
 
 .about-left li a:hover {
   color: $t-Color__grey--medium;
+}
+
+.about-left ul li a:hover, .about-left ul li.c > a {
+  background: #F2F1E9;
+  border-left: $p-About__left__li__a__current__border--left;
+  padding-left: $p-About__left__li__a__current__padding--left;
+  color: $p-About__left__li__a__current__textColor;
 }
 
 .about-left li ul {
@@ -55,7 +79,7 @@
 .about-left li ul li a {
   width: 182px;
   height: 21px;
-  padding: 6px 0 1px 28px;
+  padding: 6px 0 1px $p-About__left__li__ul__li__a__padding--left;
   font-size: 14px;
   color: $t-Color__primary;
   border-bottom: none;
@@ -63,6 +87,7 @@
 
 .about-left li ul li a:hover, .about-left li ul li.c > a {
   background: $t-Color__grey--lightest;
+  padding-left: 28px;
 }
 
 .about-right p {
@@ -88,7 +113,7 @@
 
 .about-right h2.ex {
   font-size: 24px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   font-style: italic;
   margin-top: 18px;
 }
@@ -146,7 +171,7 @@
   display: inline-block;
   background: $t-Color__primary__grey--light;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   text-align: center;
   vertical-align: middle;
   @include border-radius(12px);
@@ -241,13 +266,13 @@
 }
 
 .one a, .two a, .three a, .four a, .five a, .six a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .contribute {
   width: 365px;
   height: 131px;
-  background: url(../images/about/getinvolved-top_illustration.jpg) no-repeat;
+  background: $p-About__contribute__background;
   padding: 34px 0 0 320px;
   margin-top: 55px;
 }
@@ -265,27 +290,27 @@
 }
 
 .ge1 {
-  background: url(../images/about/getinvolved-row-01.png) no-repeat 42px 0;
+  background: $p-About__ge1__background;
   width: 182px;
 }
 
 .ge2 {
-  background: url(../images/about/getinvolved-row-02.png) no-repeat 31px 20px;
+  background: $p-About__ge2__background;
   width: 180px;
 }
 
 .ge3 {
-  background: url(../images/about/getinvolved-row-03.png) no-repeat 10px 0;
+  background: $p-About__ge3__background;
   width: 182px;
 }
 
 .ge4 {
-  background: url(../images/about/getinvolved-row-04.png) no-repeat 20px 15px;
+  background: $p-About__ge4__background;
   width: 148px;
 }
 
 .getinvolved {
-  background: $t-Color__grey--lightest;
+  background: $p-About__getinvolved__backgroundColor;
   padding: 42px 22px 2px;
   margin-top: -40px;
 }
@@ -350,7 +375,7 @@
 }
 
 .checkout {
-  background: url(../images/pattern-6x6-white.png) $t-Color__primary__grey--light;
+  background: url(../images/pattern-6x6-white.png) $p-About__checkout__backgroundColor;
   width: 505px;
   padding: 24px 16px 26px 32px;
   font-size: 17px;
@@ -364,9 +389,39 @@
 }
 
 .checkout a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
-.about-left ul li a:hover, .about-left ul li.c > a {
-  background: #F2F1E9;
+.p-About__approachIllustration {
+  margin-top: 30px;
+  background: $t-Color__grey--lightest;
+  border-top: 1px solid $t-Color__grey--medium;
+  border-bottom: 1px solid $t-Color__grey--medium;
+
+  h3 {
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  p {
+    text-align: center;
+    font-weight: $p-About__approachIllustration__p__fontWeight;
+  }
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .p-About__approachIllustration__col {
+    display: inline-block;
+    width: 230px;
+    padding-bottom: 30px;
+
+    &:first-of-type {
+      margin-left: 15px;
+    }
+  }
+
 }

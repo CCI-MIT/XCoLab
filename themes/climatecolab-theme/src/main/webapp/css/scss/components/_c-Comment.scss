@@ -5,7 +5,10 @@ $c-Comment__special__highlight: $t-Color__alert--light !default;
 
 $c-Comment__box__border: 2px solid $t-Color__grey--light !default;
 
-$c-Comment__count__background: url(../images/icon-proposal-comments.png) no-repeat 11px 5px $t-Color__grey--lightest !default;
+$c-Comment__count__backgroundColor: $t-Color__grey--lightest !default;
+$c-Comment__count__background: url(../images/icon-proposal-comments.png) no-repeat 11px 5px $c-Comment__count__backgroundColor !default;
+$c-Comment__count__a__fontWeight: 700 !default;
+$c-Comment__count__a__margin--left: 0px !default;
 
 $c-Comment__commentor__backgroundImage: url(../images/pattern-6x6.png) !default;
 $c-Comment__commentor__textColor: black !default;
@@ -67,7 +70,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   }
 
   strong {
-    font-weight: 600;
+    font-weight: $b-Typography__fontWeight--bold;
   }
 }
 
@@ -94,6 +97,11 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
 .c-Comment__count { //.commbox
   background: $c-Comment__count__background;
   margin-right: 18px;
+
+  a {
+    font-weight: $c-Comment__count__a__fontWeight;
+    margin-left: $c-Comment__count__a__margin--left;
+  }
 }
 
 .c-Comment__list { //.comments
@@ -121,7 +129,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   color: $c-Comment__commentor__textColor;
 
   a {
-    font-weight: 700;
+    font-weight: $b-Typography__fontWeight--bold;
   }
 
   img {
@@ -129,7 +137,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   }
 
   span {
-    font-weight: 700;
+    font-weight: $b-Typography__fontWeight--bold;
   }
 }
 
@@ -186,7 +194,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   height: 26px;
   padding: 6px 0 0 101px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   color: #444;
 }
 
@@ -205,7 +213,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
 //TODO: unused in source code - verify if used elsewhere
 .featured_expert-name {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: $b-Typography__fontWeight--bold;
   padding: 9px 0 20px 103px;
   line-height: 20px;
 }

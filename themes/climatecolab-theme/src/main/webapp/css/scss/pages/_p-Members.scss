@@ -1,16 +1,20 @@
+$p-Members__list__element--user__width: 262px !default;
+$p-Members__list__element--seniority: 101px !default;
+
+$p-Members__list__element__fontWeight: $b-Typography__fontWeight--bold !default;
+
 %p-Members__list__element {
   float: left;
   height: 37px;
   a {
-    font-weight: bold;
-    margin-left: 10px;
+    font-weight: $p-Members__list__element__fontWeight;
     display: inline-block;
   }
 }
 
 .p-Members__list__element--user { //.blueheaderbar .user
   @extend %p-Members__list__element;
-  width: 320px;
+  width: $p-Members__list__element--user__width;
 }
 
 .p-Members__list__element--points { //.blueheaderbar .points
@@ -21,19 +25,15 @@
 
 .p-Members__list__element--activity { //.blueheaderbar .activity
   @extend %p-Members__list__element;
-  width: 70px;
+  width: 63px;
 }
 
 .p-Members__list__element--category { //.blueheaderbar .category
   @extend %p-Members__list__element;
-  width: 100px;
-
-  a {
-    margin-left: 15px;
-  }
+  width: 73px;
 }
 
 .p-Members__list__element--seniority { //.blueheaderbar .seniority
   @extend %p-Members__list__element;
-  width: 110px;
+  width: $p-Members__list__element--seniority;
 }

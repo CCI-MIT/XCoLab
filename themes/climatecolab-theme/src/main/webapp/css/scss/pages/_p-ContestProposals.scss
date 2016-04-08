@@ -1,3 +1,12 @@
+$p-ContestProposals__list__element--proposalname__width: 635px !default;
+$p-ContestProposals__list__element--contributor__width: 115px !default;
+$p-ContestProposals__list__element--comments__background__top: 8px !default;
+$p-ContestProposals__list__element__border: none !default;
+$p-ContestProposals__list__element--judgeFellow__width: 159px !default;
+$p-ContestProposals__list__element--judgeFellow__border--left: none !default;
+$p-ContestProposals__list__element--contributor__width: 106px !default;
+$p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !default;
+
 .p-ContestProposals__list {
 
 }
@@ -9,15 +18,16 @@
 
 .p-ContestProposals__list__element--proposalname { //.blueheaderbar .proposalname
   @extend %p-ContestProposals__list__element;
-  width: 645px;
+  width: $p-ContestProposals__list__element--proposalname__width;
   padding-left: 9px;
+  border-right: $p-ContestProposals__list__element__border;
 
   &.completed { //.blueheaderbar.completed .proposalname
     width: 765px;
   }
 
   &.judgeActions {
-    width: 489px;
+    width: $p-ContestProposals__list__element--proposalname__judgeActions__width;
   }
 }
 
@@ -26,6 +36,7 @@
   width: 67px;
   position: relative;
   text-align: center;
+  border-right: $p-ContestProposals__list__element__border;
 
   a {
     background: url(../images/icon-proposal-vote.png) no-repeat 0 7px;
@@ -37,6 +48,10 @@
 
 .p-ContestProposals__list__element--votes { //.blueheaderbar .votes a
   @extend %p-ContestProposals__list__element;
+  width: 67px;
+  text-align: center;
+  border-right: $p-ContestProposals__list__element__border;
+
   a {
     background: url(../images/icon-proposal-vote.png) no-repeat 0 7px;
     width: 20px;
@@ -50,9 +65,10 @@
   width: 65px;
   position: relative;
   text-align: center;
+  border-right: $p-ContestProposals__list__element__border;
 
   a {
-    background: url(../images/icon-list-comment.png) no-repeat 0 8px;
+    background: url(../images/icon-list-comment.png) no-repeat 0 $p-ContestProposals__list__element--comments__background__top;
     width: 24px;
     height: 37px;
     display: inline-block;
@@ -63,19 +79,21 @@
   @extend %p-ContestProposals__list__element;
   width: 85px;
   text-align: center;
+  border-right: $p-ContestProposals__list__element__border;
 }
 
 .p-ContestProposals__list__element--contributor { //.blueheaderbar .contributor
   @extend %p-ContestProposals__list__element;
-  width: 106px;
+  width: $p-ContestProposals__list__element--contributor__width;
   text-align: center;
 }
 
 .p-ContestProposals__list__element--judgeFellow { //.blueheaderbar .judgefellow {
   @extend %p-ContestProposals__list__element;
-  width: 159px;
+  width: $p-ContestProposals__list__element--judgeFellow__width;
   position: relative;
   text-align: center;
+  border-left: $p-ContestProposals__list__element--judgeFellow__border--left;
 
   a {
     font-size: 0.9em

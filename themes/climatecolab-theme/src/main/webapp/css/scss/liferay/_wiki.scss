@@ -29,7 +29,7 @@
 
 .wiki-body h2.ex {
   font-size: 24px;
-  font-weight: 400;
+  font-weight: $b-Typography__fontWeight;
   font-style: italic;
   margin-top: 18px;
 }
@@ -57,7 +57,7 @@
   padding-left: 27px;
   padding-top: 6px;
   font-size: 21px;
-  font-weight: bold;
+  font-weight: $b-Typography__fontWeight--bold;
   padding-bottom: 5px;
   color: #66B035;
 }

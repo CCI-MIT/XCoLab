@@ -42,7 +42,7 @@
 
 .contest-count span.count {
   font: 16px "proxima-nova", Arial, Helvetica, sans-serif;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   color: black;
   padding: 10px 0 20px 10px;
 }
@@ -123,7 +123,7 @@
   text-align: center;
   vertical-align: middle;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   color: $t-Color__grey--medium;
 }
 
@@ -483,7 +483,7 @@
   text-align: center;
   vertical-align: middle;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   color: $t-Color__grey--medium;
 }
 

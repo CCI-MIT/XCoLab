@@ -1,6 +1,13 @@
+$c-Table__shadebar__background: url(../images/tableshade.png) repeat-x !default;
+
+$c-Table__borderColor: $t-Color__primary__grey !default;
+
+$c-Table__title__backgroundColor: $t-Color__primary__grey--light !default;
+$c-Table__title__fontColor: $t-Color__grey--darkest !default;
+
+$c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
 
 .c-Table {
-
 }
 
 .c-Table__row {
@@ -10,15 +17,20 @@
 }
 
 .c-Table__row--title { //thead.blueheaderbar
-  background: $t-Color__primary__grey--light;
-  border-bottom: 1px solid $t-Color__primary__grey;
-  color: $t-Color__grey--darkest;
+  background: $c-Table__title__backgroundColor;
+  border-bottom: 1px solid $c-Table__borderColor;
+  color: $c-Table__title__fontColor;
   position: -webkit-sticky;
   position: sticky;
 
   height: 30px;
   line-height: 30px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
+
+  a {
+    font-weight: $c-Table__row__fontWeight;
+    color: $c-Table__title__fontColor;
+  }
 }
 
 %c-Table__cell {
@@ -29,7 +41,7 @@
   @extend %c-Table__cell;
   font-size: 14px;
   line-height: 20px;
-  border-bottom: 1px solid $t-Color__grey--lightest;
+  border-bottom: 1px solid $c-Table__borderColor;
 
   &.odd {
     background-image: url(../images/pattern-tbl-6x6.png);
@@ -47,7 +59,7 @@
 //TODO: port
 .shadebar {
   content: '';
-  background: url(../images/tableshade.png) repeat-x;
+  background: $c-Table__shadebar__background;
   height: 4px;
   position: relative;
   z-index: 9;

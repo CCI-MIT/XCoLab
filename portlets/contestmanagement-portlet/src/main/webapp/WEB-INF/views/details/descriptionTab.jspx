@@ -37,7 +37,7 @@
                 <label>
                     <strong>Title</strong>
                     <a class="helpTrigger" href="javascript:;"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">Two to five words very broadly describing the contest topic, such as
@@ -70,7 +70,7 @@
                 <label>
                     <strong>Question</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">The key question to be answered through the contest. The most successful
@@ -120,7 +120,7 @@
                         <div class="clearfix"><!-- --></div>
                     </div>
 
-                    <div id="contestImageUploadWidget" class="uploadWidget"><!--  --></div>
+                    <div id="contestImageUploadWidget" class="uploadWidget">Upload an image</div>
                     <div class="clear"><!--  --></div>
                 </div>
             </div>
@@ -150,7 +150,7 @@
                         <form:input path="sponsorLogoId" cssStyle="display: none;" id="logoImageId"/>
                     </div>
 
-                    <div id="logoImageUploadWidget" class="uploadWidget optional"><!--  --></div>
+                    <div id="logoImageUploadWidget" class="uploadWidget optional">Upload an image (optional)</div>
                     <div class="clear"><!--  --></div>
                 </div>
             </div>
@@ -159,7 +159,7 @@
                 <label>
                     <strong>Description</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address
@@ -187,7 +187,7 @@
                 <label>
                     <strong>Proposal template</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">Select the proposal template associated with your contest. Templates hold the
@@ -211,7 +211,7 @@
                 <label>
                     <strong>Schedule template</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">Select the schedule associated with your contest. If you would like any changes

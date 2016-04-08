@@ -1,8 +1,35 @@
-/*  HOMEPAGE  ------------------------------------------------------------------------------ */
+$p-homepage__content__h2__fontSize: 20px !default;
+$p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
 
+$p-homepage__learn__backgroundColor: $t-Color__primary !default;
+$p-homepage__learn__borderColor: $t-Color__primary--darkest !default;
+$p-homepage__learn__imageUrl: url(../images/homespot/light-bulb-white.png) !default;
+
+$p-homepage__get__backgroundColor: $t-Color__secondary !default;
+$p-homepage__get__borderColor: $t-Color__secondary--darkest !default;
+$p-homepage__get__imageUrl: url(../images/homespot/people-white.png) !default;
+
+//unused in Climate CoLab
+$p-homepage__join__backgroundColor: $t-Color__accent !default;
+$p-homepage__join__borderColor: none !default;
+$p-homepage__join__imageUrl: none !default;
+
+//TODO: legacy for climate colab
 .homespot {
   background: url(../images/bg-noise.png) $t-Color__grey--lightest;
   padding-bottom: 5px;
+}
+
+.p-Homepage__homespot { //.homespot
+  background: url(../images/bg-noise.png) $t-Color__grey--lightest;
+  padding-bottom: 5px;
+}
+
+.p-Homepage__homespot__background { //.earth
+  background: url(../images/homespot/background.png) no-repeat right 0 center;
+  @include background-size(contain);
+  width: 100%;
+  min-height: 336px;
 }
 
 .topshade {
@@ -12,6 +39,7 @@
   z-index: 5;
 }
 
+//TODO: legacy for climate colab
 .earth {
   background: url(../images/homespot/earth.png) no-repeat 500px top;
   @include background-size(contain);
@@ -25,7 +53,7 @@
   float: left;
   width: 530px;
   padding-left: 10px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__text--dark;
   position: relative;
   font-size: 16px;
 }
@@ -44,13 +72,19 @@
 }
 
 a.learn {
-  @include theme-button($t-Color__primary, $t-Color__primary--darkest, url(../images/homespot/light-bulb-white.png));
+  @include theme-button($p-homepage__learn__backgroundColor, $p-homepage__learn__borderColor, $p-homepage__learn__imageUrl);
   text-transform: uppercase;
   margin-right: 15px;
 }
 
 a.get {
-  @include theme-button($t-Color__secondary, $t-Color__secondary--darkest, url(../images/homespot/people-white.png));
+  @include theme-button($p-homepage__get__backgroundColor, $p-homepage__get__borderColor, $p-homepage__get__imageUrl);
+  text-transform: uppercase;
+  margin-right: 15px;
+}
+
+a.join {
+  @include theme-button($p-homepage__join__backgroundColor, $p-homepage__join__borderColor, $p-homepage__join__imageUrl);
   text-transform: uppercase;
   margin-right: 15px;
 }
@@ -207,7 +241,7 @@ a.get {
 
 .conference-days {
   color: $t-Color__accent;
-  font-weight: bold;
+  font-weight: $b-Typography__fontWeight--bold;
   margin: 16px 0 0 60px;
   display: block;
 }
@@ -339,8 +373,8 @@ a.get {
 }
 
 .home #content h2 {
-  font-size: 20px;
-  color: $t-Color__grey--darkest;
+  font-size: $p-homepage__content__h2__fontSize;
+  color: $p-homepage__content__h2__textColor;
   margin-bottom: 18px;
 }
 
@@ -358,80 +392,35 @@ a.get {
   width: 20px;
 }
 
-/* homepage activity boxes ------------- */
-.activitybox {
-  border-bottom: 1px solid $t-Color__grey--light;
-  font-size: 14px;
-  color: $t-Color__grey--dark;
+.p-Homepage__activitybox__comment {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-comment.png) no-repeat center;
 }
 
-.activitybox:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
+.p-Homepage__activitybox__edit {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-edit.png) no-repeat center;
 }
 
-.activitybox {
-  display: inline-block;
+.p-Homepage__activitybox__new {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-new_proposal.png) no-repeat center;
 }
 
-* html .activitybox {
-  height: 1%;
+.p-Homepage__activitybox__up {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-thumbs_up.png) no-repeat center;
 }
 
-.activitybox {
-  display: block;
+.p-Homepage__activitybox__new_user {
+  @extend %p-Homepage__activitybox__image;
+  background: url(../images/icon-activity-new_user.png) no-repeat center;
 }
 
-.activitybox.blu {
-  background: $t-Color__primary__grey--light;
-}
-
-.activitybox.bottom {
-  border-bottom: none;
-}
-
-.activitybox .status {
-  float: left;
+%p-Homepage__activitybox__image {
   width: 50px;
   height: 50px;
-}
-
-.activitybox .text {
-  float: left;
-  width: 85%;
-  line-height: 20px;
-}
-
-.activitybox h3 {
-  font-size: 14px;
-  color: $t-Color__grey--dark;
-}
-
-.activitybox .status {
-  margin-left: 5px;
-}
-
-.activitybox .comment {
-  background: url(../images/icon-activity-comment.png) no-repeat left 12px;
-}
-
-.activitybox .edit {
-  background: url(../images/icon-activity-edit.png) no-repeat left 12px;
-}
-
-.activitybox .new {
-  background: url(../images/icon-activity-new_proposal.png) no-repeat left 12px;
-}
-
-.activitybox .up {
-  background: url(../images/icon-activity-thumbs_up.png) no-repeat left 11px;
-}
-
-.activitybox .new_user {
-  background: url(../images/icon-activity-new_user.png) no-repeat left 10px;
+  background-size: 25px;
 }
 
 .home #c-Header {
@@ -439,7 +428,7 @@ a.get {
 }
 
 .home #c-Header__menu li:hover {
-  background: url(../images/bg-noise.jpg);
+  background: url(../images/bg-noise.png);
 }
 
 .home #c-Header__menu li a:hover {

@@ -1,9 +1,51 @@
+$p-proposal__header__background: url(../images/pattern-6x6-blue.png) !default;
+$p-proposal__header__h1__textColor: $b-Typography__textColor !default;
+$p-proposal__header__h1__capitalization: $b-Typography__capitalization--none !default;
+$p-proposal__header__borderBottomColor: $t-Color__grey--medium !default;
+$p-proposal__propbox__padding: 0 0 8px 14px !default;
+$p-proposal__propbox__h4__fontWeight: 700 !default;
+$p-proposal__propbox__titleAuthor__width: 632px !default;
+
+$p-proposal__votebox__shade__background: $t-Color__grey--light !default;
+$p-proposal__votebox__top__left: 5px !default;
+$p-proposal__votebox__marginTop: 0px !default;
+
+$p-proposal__left__h2__textColor: $t-Color__secondary !default;
+$p-proposal__left__h2__capitalization: $b-Typography__capitalization--none !default;
+$p-proposal__left__h2__fontWeight: initial !default;
+
+$p-proposal__right__h5__topbox__backgroundColor: $t-Color__grey--lightest !default;
+$p-proposal__right__h5__topbox__padding--top: 10px !default;
+$p-proposal__right__h5__topbox__font-size: 13px !default;
+$p-proposal__right__h5__topbox__fontWeight: bold !default;
+$p-proposal__right__h5__topbox__border--top: 1px dotted $t-Color__grey--medium !default;
+$p-proposal__title__addProp__fontWeight: 700 !default;
+$p-proposal__settings__padding--bottom: 10px !default;
+$p-proposal__settings__backgroundColor: $t-Color__grey--lightest !default;
+$p-proposal__contest__backgroundColor: $t-Color__grey--lightest !default;
+$p-proposal__contest__padding--top--bottom: 12px !default;
+
+$p-proposal__thumbbox__backgroundColor: $t-Color__grey--lightest !default;
+$p-proposal__thumbbox__a__fontWeight: 700 !default;
+$p-proposal__thumbbox__background--top: 5px !default;
+$p-proposal__thumbbox__a__margin--left: 0px !default;
+
+$p-proposal__history__item__textColor: $t-Color__primary !default;
+
+$p-proposal__propbox__judgementActions__featured__titleAuthor__width: 455px !default;
+$p-proposal__propbox__judgementActions__titleAuthor__width: 476px !default;
+
+$p-Proposal__subscribe__capitalization: none !default;
+
+$p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
+$p-Proposal__box__offColor: $t-Color__primary__grey--light !default;
+
 /* PROPOSALS ----------------------------------------------------------------------------- */
 
 /* proposal HEADER */
 .proposal-head {
   padding-top: 28px;
-  background: url(../images/pattern-6x6-blue.png);
+  background: $p-proposal__header__background;
   border-bottom: 1px solid $t-Color__grey--medium;
 }
 
@@ -46,71 +88,13 @@
 }
 
 .prop-description a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .proposal-head h1 {
   font-size: 29px;
-}
-
-/* proposal TABS */
-.prop-tabs {
-  margin-top: 8px;
-}
-
-.prop-tabs ul {
-  height: 37px;
-}
-
-.prop-tabs li {
-  float: left;
-  list-style: none;
-  height: 37px;
-  margin-right: 6px;
-}
-
-.prop-tabs li a {
-  height: 24px;
-  padding: 13px 12px 0;
-  display: inline-block;
-  font-size: 13px;
-  color: white;
-  background: $t-Color__primary;
-  text-transform: uppercase;
-  font-weight: 700;
-  @include border-top-left-radius(5px);
-  @include border-top-right-radius(5px);
-  @include box-sizing(content-box);
-}
-
-.prop-tabs li a:hover {
-  height: 24px;
-  padding: 12px 11px 1px;
-  background: $t-Color__primary--darkest;
-  border-top: 1px solid $t-Color__grey--medium;
-  border-left: 1px solid $t-Color__grey--medium;
-  border-right: 1px solid $t-Color__grey--medium;
-}
-
-.prop-tabs li.c a {
-  height: 25px;
-  padding: 12px 11px 0;
-  color: $t-Color__primary;
-  background: white;
-  border-top: 1px solid $t-Color__grey--medium;
-  border-left: 1px solid $t-Color__grey--medium;
-  border-right: 1px solid $t-Color__grey--medium;
-}
-
-.prop-tabs li a div {
-  display: inline;
-  text-align: center;
-  font: 12px Arial, Helvetica, sans-serif;
-  color: white;
-  background: $t-Color__primary--darkest;
-  padding: 0 5px;
-  margin-left: 5px;
-  @include border-radius(8px);
+  color: $p-proposal__header__h1__textColor;
+  text-transform: $p-proposal__header__h1__capitalization;
 }
 
 .discussion-button-badge {
@@ -147,7 +131,7 @@
 }
 
 .edit-prop a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .edit-prop-butts {
@@ -160,7 +144,7 @@
   padding: 3px 10px 0;
   margin-right: 5px;
   display: inline-block;
-  background: $t-Color__primary--darkest;
+  background: $p-Proposal__edit__button__backgroundColor;
   font-size: 14px;
   color: white;
   @include border-radius(3px);
@@ -168,7 +152,7 @@
 
 .edit-prop-butts span {
   background: $t-Color__grey--light;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .lastedited {
@@ -192,9 +176,11 @@
 
 .prop-left h2 {
   font-size: 27px;
-  color: $t-Color__secondary;
+  color: $p-proposal__left__h2__textColor;
   margin: 10px 0 16px;
   text-align: justify;
+  text-transform: $p-proposal__left__h2__capitalization;
+  font-weight: $p-proposal__left__h2__fontWeight;
 }
 
 .prop-left h3 {
@@ -232,7 +218,7 @@
 /*  the Table-like rows of proposals */
 .propbox {
   clear: both;
-  padding: 0 0 8px 14px;
+  padding: $p-proposal__propbox__padding;
   border-bottom: 1px solid $t-Color__grey--lightest;
 }
 
@@ -258,7 +244,7 @@
 
 .propbox .title-author {
   float: left;
-  width: 632px;
+  width: $p-proposal__propbox__titleAuthor__width;
   margin-top: 12px;
 }
 
@@ -279,7 +265,7 @@
 .propbox h4 {
   float: left;
   display: inline;
-  font-weight: 700;
+  font-weight: $p-proposal__propbox__h4__fontWeight;
   color: $t-Color__grey--darkest;
 }
 
@@ -291,15 +277,20 @@
   float: left;
   width: 30px;
   height: 22px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   color: black;
   padding: 4px 0 0 31px;
   @include border-radius(3px);
 }
 
 .thumbbox {
-  background: url(../images/icon-proposal-support.png) no-repeat 11px 5px $t-Color__grey--lightest;
+  background: url(../images/icon-proposal-support.png) no-repeat 11px $p-proposal__thumbbox__background--top $p-proposal__thumbbox__backgroundColor;
   margin-right: 6px;
+
+  a {
+    font-weight: $p-proposal__thumbbox__a__fontWeight;
+    margin-left: $p-proposal__thumbbox__a__margin--left;
+  }
 }
 
 .voteboxsmall {
@@ -338,35 +329,10 @@
 }
 
 /* right column */
-.votebox-wrap {
-  width: 334px;
-  margin-top: -34px;
-}
-
-/* increase negative top margin for edit proposal button block */
-.votebox-wrap.ep {
-  width: 334px;
-  margin-top: -87px;
-}
-
-.votebox-shade {
-  width: 331px;
-  background: $t-Color__grey--light;
-  margin: 3px 0 0 3px;
-}
-
-.votebox {
-  width: 331px;
-  background: $t-Color__grey--lightest;
-  border: 1px solid $t-Color__grey--light;
-  position: relative;
-  top: -5px;
-  left: -5px;
-}
 
 .votebox-top {
   border-bottom: 1px dotted $t-Color__grey--medium;
-  padding: 10px 10px 20px 18px;
+  margin-bottom: 10px;
 }
 
 .votebox-top .vote {
@@ -380,7 +346,7 @@
 .votebox-top .vote span {
   font-size: 33px;
   color: $t-Color__secondary;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .votebox-top .vote img {
@@ -395,41 +361,17 @@
 
 .votebox-top .c-Button__primary {
   margin-top: 5px;
-  font-weight: 400;
-}
-
-.votebox-bottom {
-  font-size: 16px;
-  color: $t-Color__grey--dark;
-  background: $t-Color__grey--lightest;
-  padding: 14px 0 17px 18px;
+  font-weight: $b-Typography__fontWeight;
 }
 
 .votebox-bottom span {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
-.votebox-bottom a {
-  font-weight: 700;
-  margin-left: 5px;
-}
-
-.votebox-bottom img {
-  padding-right: 6px;
-  vertical-align: -3px;
-}
-
-.prop-right .share {
-  margin: 17px 0 36px 17px;
-}
-
-.prop-right .share a {
-  margin-right: 15px;
-}
-
-.prop-right .share img {
-  vertical-align: middle;
+.p-Proposal__subscribe {
+  text-transform: $p-Proposal__subscribe__capitalization;
+  line-height: 34px;
 }
 
 .prop-right h5 {
@@ -444,12 +386,13 @@
 }
 
 .prop-right h5.topbox {
-  padding: 10px 0 10px 12px;
+  padding: $p-proposal__right__h5__topbox__padding--top 0 10px 12px;
   margin-bottom: 9px;
-  background: $t-Color__grey--lightest;
-  font-size: 13px;
+  background: $p-proposal__right__h5__topbox__backgroundColor;
+  font-size: $p-proposal__right__h5__topbox__font-size;
   color: $t-Color__grey--medium;
-  border-top: 1px dotted $t-Color__grey--medium;
+  border-top: $p-proposal__right__h5__topbox__border--top;
+  font-weight: $p-proposal__right__h5__topbox__fontWeight;
 }
 
 .prop-title {
@@ -463,7 +406,7 @@
 .prop-title.addprop {
   background: none;
   border-bottom: none;
-  font-weight: 700;
+  font-weight: $p-proposal__title__addProp__fontWeight;
   padding: 0 18px 9px 12px;
 }
 
@@ -478,23 +421,23 @@
 }
 
 .prop-contest {
-  background: $t-Color__grey--lightest;
+  background: $p-proposal__contest__backgroundColor;
   border-top: 1px solid $t-Color__grey--light;
   border-bottom: 1px solid $t-Color__grey--light;
   font-size: 13px;
   line-height: 18px;
   color: black;
-  padding: 10px 18px 12px 12px;
+  padding: $p-proposal__contest__padding--top--bottom 18px $p-proposal__contest__padding--top--bottom 12px;
   margin-bottom: 3px;
 }
 
 .prop-settings {
-  background: $t-Color__grey--lightest;
+  background: $p-proposal__settings__backgroundColor;
   border-bottom: 1px solid $t-Color__grey--light;
   font-size: 13px;
   line-height: 18px;
   color: black;
-  padding: 8px 18px 10px 12px;
+  padding: 8px 18px $p-proposal__settings__padding--bottom 12px;
 }
 
 .prop-results {
@@ -509,12 +452,12 @@
 }
 
 .prop-title a, .prop-avatar a, .prop-contest a, .prop-results a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 /* contributors table */
 .contributors a {
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
 }
 
 .contributors td {
@@ -566,12 +509,13 @@
   height: 1%;
 }
 
+//TODO: port to c-Box
 .addpropbox {
   display: block;
 }
 
 .addpropbox.blue {
-  background: $t-Color__primary__grey--light;
+  background: $p-Proposal__box__offColor;
 }
 
 /* form fields */
@@ -623,7 +567,7 @@
 .addpropform .upload a {
   padding-top: 20px;
   font-size: 17px;
-  font-weight: 700;
+  font-weight: $b-Typography__fontWeight--bold;
   display: inline-block;
 }
 
@@ -661,27 +605,6 @@
   height: 18px;
   background: url(/climatecolab-theme/images/arrows.png) 0 0;
   vertical-align: top;
-}
-
-.historyTable, .historyTable tr, .historyTable td {
-  border: 0;
-}
-
-.historyTable {
-  font-weight: 700;
-}
-
-.historyTable td {
-  padding: 5px;
-}
-
-.historyTable .even td, #proposalPickerTable .ui-datatable-odd {
-  background-color: $t-Color__grey--lightest;
-
-}
-
-.historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
-  color: $t-Color__secondary !important;
 }
 
 #proposalPickerTable td {
@@ -781,4 +704,46 @@
   background: none;
   padding: 0;
   margin-left: 0;
+}
+
+.ui-widget-content a {
+  color: $p-proposal__history__item__textColor;
+}
+
+.historyTable {
+  font-weight: $b-Typography__fontWeight--bold;
+}
+
+.historyTable td {
+  padding: 5px;
+}
+
+//TODO: does this really need to be different?
+#proposalPickerTable .ui-datatable-odd {
+  background-color: $t-Color__grey--lightest;
+}
+
+.historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
+  color: $t-Color__secondary !important;
+}
+
+.historyTable table {
+  width: 617px;
+  margin-top: 10px;
+}
+
+.ui-datatable table {
+  width: auto;
+}
+
+.ui-widget-header {
+  background: none;
+}
+
+.propbox.judgement-actions.featured .title-author {
+  width: $p-proposal__propbox__judgementActions__featured__titleAuthor__width;
+}
+
+.propbox.judgement-actions .title-author {
+  width: $p-proposal__propbox__judgementActions__titleAuthor__width;
 }
