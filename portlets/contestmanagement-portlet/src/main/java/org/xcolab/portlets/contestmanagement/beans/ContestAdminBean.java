@@ -7,6 +7,7 @@ import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.utils.WikiUtil;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -50,7 +51,10 @@ public class ContestAdminBean implements Serializable {
     }
 
     public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
-        updateContestDescription(contest);
+
+        String oldWikiPageTitle = WikiUtil.getWikiPageTitle(contest);
+        updateContest(contest);
+        WikiUtil.updateContestWiki(contest, oldWikiPageTitle);
 
         DiscussionCategoryGroup dcg =
                 DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
@@ -119,7 +123,7 @@ public class ContestAdminBean implements Serializable {
         this.hideRibbons = hideRibbons;
     }
 
-    private void updateContestDescription(Contest contest) throws SystemException, PortalException {
+    private void updateContest(Contest contest) throws SystemException, PortalException {
         contest.setContestUrlName(contestUrlName);
         contest.setContestYear(contestYear);
         contest.setEmailTemplateUrl(emailTemplateUrl);
