@@ -134,4 +134,7 @@ public class CategoryWrapper implements Serializable {
         return "/web/guest/discussion/-/discussion/category/"+wrapped.getCategoryId();
     }
 
+    public boolean isSubscribed(long userId) throws SystemException, PortalException {
+        return DiscussionCategoryLocalServiceUtil.isSubscribed(userId, wrapped.getCategoryGroupId(), getId());
+    }
 }

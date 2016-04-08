@@ -3,7 +3,6 @@ package org.xcolab.jspTags.discussion.wrappers;
 import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionCategoryWrapper;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
@@ -13,8 +12,6 @@ import org.xcolab.jspTags.discussion.ThreadSortColumn;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 public class DiscussionCategoryGroupWrapper {
@@ -78,5 +75,9 @@ public class DiscussionCategoryGroupWrapper {
 
     public DiscussionCategoryGroup getWrapped() {
         return discussionCategoryGroup;
+    }
+
+    public boolean isSubscribed(long userId) throws SystemException, PortalException {
+        return DiscussionCategoryGroupLocalServiceUtil.isSubscribed(userId, getId());
     }
 }

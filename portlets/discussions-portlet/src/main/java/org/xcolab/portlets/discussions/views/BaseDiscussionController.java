@@ -13,9 +13,6 @@ import org.xcolab.portlets.discussions.DiscussionPreferences;
 
 import javax.portlet.PortletRequest;
 
-/**
- * Created by johannes on 12/5/15.
- */
 @Controller
 @RequestMapping("view")
 public abstract class BaseDiscussionController {

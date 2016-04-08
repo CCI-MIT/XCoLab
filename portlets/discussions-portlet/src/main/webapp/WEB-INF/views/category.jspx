@@ -10,6 +10,7 @@
     <!--@elvariable id="threads" type="java.util.List<org.xcolab.jspTags.discussion.wrappers.ThreadWrapper>"-->
     <!--@elvariable id="sortAscending" type="java.lang.Boolean"-->
     <!--@elvariable id="sortColumn" type="java.lang.String"-->
+    <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
 
     <script type="text/javascript">
         var hash = window.location.hash;
@@ -133,8 +134,17 @@
         </div>
 
         <div class="c-Comment__threads__sidebar">
-            <a class="subscribeLinkSmall">
-                <img src="/climatecolab-theme/images/subscribe_small_2.png" /> Subscribe
+            <portlet:actionURL var="subscribeUrl">
+                <portlet:param name="action" value="subscribeCategory" />
+                <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.id : '0'}"/>
+            </portlet:actionURL>
+            <portlet:actionURL var="unsubscribeUrl">
+                <portlet:param name="action" value="unsubscribeCategory" />
+                <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.id : '0'}"/>
+            </portlet:actionURL>
+            <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
+               onclick="if(!deferUntilLogin()) return false;">
+                <img src="/climatecolab-theme/images/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
             </a>
             <div class="comm_list">
                 <h2>Categories</h2>

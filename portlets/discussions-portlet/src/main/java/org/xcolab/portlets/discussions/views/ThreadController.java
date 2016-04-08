@@ -37,6 +37,8 @@ public class ThreadController extends BaseDiscussionController {
                              @RequestParam long threadId)
             throws SystemException, PortalException, DiscussionAuthorizationException {
 
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
         DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
         DiscussionMessage thread = DiscussionMessageLocalServiceUtil.getDiscussionMessage(threadId);
 
@@ -45,7 +47,9 @@ public class ThreadController extends BaseDiscussionController {
                         threadId, thread.getCategoryGroupId(), categoryGroupWrapper.getId()),
                 categoryGroupWrapper.getWrapped(), threadId);
 
-        model.addAttribute("thread", new ThreadWrapper(thread));
+        final ThreadWrapper threadWrapper = new ThreadWrapper(thread);
+        model.addAttribute("thread", threadWrapper);
+        model.addAttribute("isSubscribed", threadWrapper.isSubscribed(themeDisplay.getUserId()));
 
         return "thread";
     }
@@ -81,6 +85,42 @@ public class ThreadController extends BaseDiscussionController {
                 categoryId, title, body, themeDisplay.getUser());
 
         response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
+    }
+
+    @ActionMapping(params = "action=subscribeThread")
+    public void subscribeThread(ActionRequest request, ActionResponse response, @RequestParam long threadId)
+            throws DiscussionAuthorizationException, PortalException, SystemException {
+
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        checkCanView(request, "You do not have permissions to view this category", categoryGroupWrapper.getWrapped(), 0L);
+
+        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
+
+        if (!themeDisplay.getUser().isDefaultUser()) {
+            if (threadId > 0) {
+                DiscussionMessageLocalServiceUtil.subscribe(themeDisplay.getUserId(),
+                        categoryGroupWrapper.getId(), threadWrapper.getCategory().getId(), threadId);
+            }
+        }
+    }
+
+    @ActionMapping(params = "action=unsubscribeThread")
+    public void unsubscribeThread(ActionRequest request, ActionResponse response, @RequestParam long threadId)
+            throws DiscussionAuthorizationException, PortalException, SystemException {
+
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        checkCanView(request, "You do not have permissions to view this category", categoryGroupWrapper.getWrapped(), 0L);
+
+        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
+
+        if (!themeDisplay.getUser().isDefaultUser()) {
+            if (threadId > 0) {
+                DiscussionMessageLocalServiceUtil.unsubscribe(themeDisplay.getUserId(),
+                        categoryGroupWrapper.getId(), threadWrapper.getCategory().getId(), threadId);
+            }
+        }
     }
 
     @Override

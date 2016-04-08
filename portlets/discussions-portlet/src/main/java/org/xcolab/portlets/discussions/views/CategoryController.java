@@ -1,6 +1,7 @@
 package org.xcolab.portlets.discussions.views;
 
 import com.ext.portlet.model.DiscussionCategory;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -46,6 +47,8 @@ public class CategoryController extends BaseDiscussionController {
                                  @RequestParam boolean sortAscending)
             throws SystemException, PortalException {
 
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
         ThreadSortColumn threadSortColumn;
         try {
             threadSortColumn = ThreadSortColumn.from(sortColumn);
@@ -72,6 +75,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("threads", threads);
         model.addAttribute("sortColumn", threadSortColumn);
         model.addAttribute("sortAscending", sortAscending);
+        model.addAttribute("isSubscribed", categoryGroupWrapper.isSubscribed(themeDisplay.getUserId()));
 
         return "category";
     }
@@ -81,6 +85,8 @@ public class CategoryController extends BaseDiscussionController {
                                @RequestParam long categoryId, @RequestParam(required = false) String sortColumn,
                                @RequestParam(required = false) boolean sortAscending)
             throws SystemException, PortalException, DiscussionAuthorizationException {
+
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -101,6 +107,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("threads", currentCategory.getThreads());
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
+        model.addAttribute("isSubscribed", currentCategory.isSubscribed(themeDisplay.getUserId()));
 
         return "category";
     }
@@ -150,6 +157,44 @@ public class CategoryController extends BaseDiscussionController {
         final DiscussionCategory category = DiscussionCategoryLocalServiceUtil.createDiscussionCategory(categoryGroupWrapper.getId(), title, description, themeDisplay.getUser());
 
         response.sendRedirect(new CategoryWrapper(category).getLinkUrl());
+    }
+
+    @ActionMapping(params = "action=subscribeCategory")
+    public void subscribeCategory(ActionRequest request, ActionResponse response, @RequestParam long categoryId)
+            throws SystemException, DiscussionAuthorizationException, PortalException {
+
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        checkCanView(request, "You do not have permissions to view this category", categoryGroupWrapper.getWrapped(), 0L);
+
+        if (!themeDisplay.getUser().isDefaultUser()) {
+            if (categoryId > 0) {
+                DiscussionCategoryLocalServiceUtil.subscribe(themeDisplay.getUserId(),
+                        categoryGroupWrapper.getId(), categoryId);
+            } else {
+                DiscussionCategoryGroupLocalServiceUtil.subscribe(themeDisplay.getUserId(),
+                        categoryGroupWrapper.getId());
+            }
+        }
+    }
+
+    @ActionMapping(params = "action=unsubscribeCategory")
+    public void unsubscribeCategory(ActionRequest request, ActionResponse response, @RequestParam long categoryId)
+            throws SystemException, DiscussionAuthorizationException, PortalException {
+
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        checkCanView(request, "You do not have permissions to view this category", categoryGroupWrapper.getWrapped(), 0L);
+
+        if (!themeDisplay.getUser().isDefaultUser()) {
+            if (categoryId > 0) {
+                DiscussionCategoryLocalServiceUtil.unsubscribe(themeDisplay.getUserId(),
+                        categoryGroupWrapper.getId(), categoryId);
+            } else {
+                DiscussionCategoryGroupLocalServiceUtil.unsubscribe(themeDisplay.getUserId(),
+                        categoryGroupWrapper.getId());
+            }
+        }
     }
 
     @Override

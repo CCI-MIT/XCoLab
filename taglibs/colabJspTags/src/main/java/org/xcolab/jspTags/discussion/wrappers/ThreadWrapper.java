@@ -1,9 +1,9 @@
 package org.xcolab.jspTags.discussion.wrappers;
 
-import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -155,5 +155,9 @@ public class ThreadWrapper {
                 return sortAscending ? -ret : ret;
             }
         };
+    }
+
+    public boolean isSubscribed(long userId) throws SystemException, PortalException {
+        return DiscussionCategoryLocalServiceUtil.isSubscribed(userId, dcg.getId(), getThreadId());
     }
 }
