@@ -4,6 +4,7 @@ import com.ext.portlet.NoSuchDiscussionCategoryException;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
@@ -139,5 +140,23 @@ public class DiscussionCategoryLocalServiceImpl extends DiscussionCategoryLocalS
     @Override
     public DiscussionCategoryGroup getCategoryGroup(DiscussionCategory dCategory) throws PortalException, SystemException {
         return DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(dCategory.getCategoryGroupId());
+    }
+
+    @Override
+    public void subscribe(long userId, long categoryGroupId, long categoryId) throws SystemException, PortalException {
+        ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, categoryGroupId,
+                0, Long.toString(categoryId), userId);
+    }
+
+    @Override
+    public void unsubscribe(long userId, long discussionCategoryGroupId, long categoryId) throws SystemException {
+        ActivitySubscriptionLocalServiceUtil.deleteSubscription(userId,
+                DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, Long.toString(categoryId));
+    }
+
+    @Override
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId, long categoryId) throws PortalException, SystemException {
+        return ActivitySubscriptionLocalServiceUtil.isSubscribed(
+                userId, DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, Long.toString(categoryId));
     }
 }

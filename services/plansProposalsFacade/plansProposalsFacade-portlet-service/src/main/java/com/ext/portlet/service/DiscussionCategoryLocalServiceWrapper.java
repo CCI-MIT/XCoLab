@@ -361,6 +361,31 @@ public class DiscussionCategoryLocalServiceWrapper
         return _discussionCategoryLocalService.getCategoryGroup(dCategory);
     }
 
+    @Override
+    public void subscribe(long userId, long categoryGroupId, long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _discussionCategoryLocalService.subscribe(userId, categoryGroupId,
+            categoryId);
+    }
+
+    @Override
+    public void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _discussionCategoryLocalService.unsubscribe(userId,
+            discussionCategoryGroupId, categoryId);
+    }
+
+    @Override
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionCategoryLocalService.isSubscribed(userId,
+            discussionCategoryGroupId, categoryId);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

@@ -302,4 +302,16 @@ public interface DiscussionCategoryGroupLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public int getUserMessages(long userId)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void subscribe(long userId, long discussionCategoryGroupId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void unsubscribe(long userId, long discussionCategoryGroupId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

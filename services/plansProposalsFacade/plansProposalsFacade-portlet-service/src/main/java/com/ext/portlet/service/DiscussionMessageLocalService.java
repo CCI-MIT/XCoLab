@@ -367,4 +367,19 @@ public interface DiscussionMessageLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
         long authorId)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void subscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

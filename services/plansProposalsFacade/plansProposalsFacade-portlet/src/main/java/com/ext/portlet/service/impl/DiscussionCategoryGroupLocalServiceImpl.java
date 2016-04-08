@@ -7,6 +7,7 @@ import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
@@ -226,5 +227,23 @@ public class DiscussionCategoryGroupLocalServiceImpl
     @Override
     public int getUserMessages(long userId) throws SystemException {
     	return discussionMessagePersistence.countByAuthorId(userId);
+    }
+
+    @Override
+    public void subscribe(long userId, long discussionCategoryGroupId) throws SystemException, PortalException {
+        ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, discussionCategoryGroupId,
+                0, "", userId);
+    }
+
+    @Override
+    public void unsubscribe(long userId, long discussionCategoryGroupId) throws SystemException {
+        ActivitySubscriptionLocalServiceUtil.deleteSubscription(userId,
+                DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, "");
+    }
+
+    @Override
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId) throws PortalException, SystemException {
+        return ActivitySubscriptionLocalServiceUtil.isSubscribed(
+                userId, DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, "");
     }
 }

@@ -8,6 +8,7 @@ import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.DiscussionMessageFlag;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageFlagLocalServiceUtil;
@@ -346,5 +347,29 @@ public class DiscussionMessageLocalServiceImpl
     @Override
     public List<DiscussionMessage> getByAuthorId(long authorId) throws SystemException {
         return discussionMessagePersistence.findByAuthorId(authorId);
+    }
+
+    @Override
+    public void subscribe(long userId, long discussionCategoryGroupId, long categoryId, long threadId)
+            throws SystemException, PortalException {
+        String extraData = String.valueOf(categoryId) + "," + threadId;
+        ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, discussionCategoryGroupId,
+                0, extraData, userId);
+    }
+
+    @Override
+    public void unsubscribe(long userId, long discussionCategoryGroupId, long categoryId, long threadId)
+            throws SystemException {
+        String extraData = String.valueOf(categoryId) + "," + threadId;
+        ActivitySubscriptionLocalServiceUtil.deleteSubscription(userId,
+                DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, "");
+    }
+
+    @Override
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId, long categoryId, long threadId)
+            throws PortalException, SystemException {
+        String extraData = String.valueOf(categoryId) + "," + threadId;
+        return ActivitySubscriptionLocalServiceUtil.isSubscribed(
+                userId, DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, "");
     }
 }

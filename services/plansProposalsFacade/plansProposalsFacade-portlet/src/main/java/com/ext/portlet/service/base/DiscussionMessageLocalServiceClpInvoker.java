@@ -97,6 +97,12 @@ public class DiscussionMessageLocalServiceClpInvoker {
     private String[] _methodParameterTypes548;
     private String _methodName550;
     private String[] _methodParameterTypes550;
+    private String _methodName551;
+    private String[] _methodParameterTypes551;
+    private String _methodName552;
+    private String[] _methodParameterTypes552;
+    private String _methodName553;
+    private String[] _methodParameterTypes553;
 
     public DiscussionMessageLocalServiceClpInvoker() {
         _methodName0 = "addDiscussionMessage";
@@ -329,6 +335,18 @@ public class DiscussionMessageLocalServiceClpInvoker {
         _methodName550 = "getByAuthorId";
 
         _methodParameterTypes550 = new String[] { "long" };
+
+        _methodName551 = "subscribe";
+
+        _methodParameterTypes551 = new String[] { "long", "long", "long", "long" };
+
+        _methodName552 = "unsubscribe";
+
+        _methodParameterTypes552 = new String[] { "long", "long", "long", "long" };
+
+        _methodName553 = "isSubscribed";
+
+        _methodParameterTypes553 = new String[] { "long", "long", "long", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -593,6 +611,34 @@ public class DiscussionMessageLocalServiceClpInvoker {
         if (_methodName550.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes550, parameterTypes)) {
             return DiscussionMessageLocalServiceUtil.getByAuthorId(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName551.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes551, parameterTypes)) {
+            DiscussionMessageLocalServiceUtil.subscribe(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Long) arguments[2]).longValue(),
+                ((Long) arguments[3]).longValue());
+
+            return null;
+        }
+
+        if (_methodName552.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes552, parameterTypes)) {
+            DiscussionMessageLocalServiceUtil.unsubscribe(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Long) arguments[2]).longValue(),
+                ((Long) arguments[3]).longValue());
+
+            return null;
+        }
+
+        if (_methodName553.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes553, parameterTypes)) {
+            return DiscussionMessageLocalServiceUtil.isSubscribed(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Long) arguments[2]).longValue(),
+                ((Long) arguments[3]).longValue());
         }
 
         throw new UnsupportedOperationException();

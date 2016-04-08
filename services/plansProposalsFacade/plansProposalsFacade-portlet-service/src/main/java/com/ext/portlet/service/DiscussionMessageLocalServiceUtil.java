@@ -433,6 +433,30 @@ public class DiscussionMessageLocalServiceUtil {
         return getService().getByAuthorId(authorId);
     }
 
+    public static void subscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .subscribe(userId, discussionCategoryGroupId, categoryId, threadId);
+    }
+
+    public static void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .unsubscribe(userId, discussionCategoryGroupId, categoryId, threadId);
+    }
+
+    public static boolean isSubscribed(long userId,
+        long discussionCategoryGroupId, long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .isSubscribed(userId, discussionCategoryGroupId, categoryId,
+            threadId);
+    }
+
     public static void clearService() {
         _service = null;
     }

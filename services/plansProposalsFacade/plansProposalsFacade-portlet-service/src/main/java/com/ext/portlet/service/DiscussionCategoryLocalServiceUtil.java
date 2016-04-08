@@ -337,6 +337,27 @@ public class DiscussionCategoryLocalServiceUtil {
         return getService().getCategoryGroup(dCategory);
     }
 
+    public static void subscribe(long userId, long categoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().subscribe(userId, categoryGroupId, categoryId);
+    }
+
+    public static void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService().unsubscribe(userId, discussionCategoryGroupId, categoryId);
+    }
+
+    public static boolean isSubscribed(long userId,
+        long discussionCategoryGroupId, long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .isSubscribed(userId, discussionCategoryGroupId, categoryId);
+    }
+
     public static void clearService() {
         _service = null;
     }

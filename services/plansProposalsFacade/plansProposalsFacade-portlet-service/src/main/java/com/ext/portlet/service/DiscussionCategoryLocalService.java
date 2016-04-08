@@ -294,4 +294,18 @@ public interface DiscussionCategoryLocalService extends BaseLocalService,
         com.ext.portlet.model.DiscussionCategory dCategory)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    public void subscribe(long userId, long categoryGroupId, long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }
