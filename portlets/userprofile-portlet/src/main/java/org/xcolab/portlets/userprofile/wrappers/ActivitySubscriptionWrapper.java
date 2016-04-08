@@ -14,7 +14,8 @@ public class ActivitySubscriptionWrapper implements Serializable {
     private boolean selected;
     private long subscriptionPk;
 
-    public ActivitySubscriptionWrapper() { }
+    public ActivitySubscriptionWrapper() {
+    }
 
     public ActivitySubscriptionWrapper(ActivitySubscription subscription) {
         this.subscription = subscription;

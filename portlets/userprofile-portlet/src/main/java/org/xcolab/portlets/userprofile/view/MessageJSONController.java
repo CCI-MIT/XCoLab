@@ -41,7 +41,8 @@ public class MessageJSONController extends JSONHelper {
     @Autowired
     private SmartValidator validator;
 
-    public MessageJSONController() { }
+    public MessageJSONController() {
+    }
 
     @InitBinder("messageBean")
     public void initMessageBeanBinder(WebDataBinder binder) {
