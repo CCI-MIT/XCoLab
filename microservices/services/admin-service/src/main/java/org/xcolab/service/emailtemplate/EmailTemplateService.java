@@ -24,4 +24,13 @@ public class EmailTemplateService {
     public ContestEmailTemplate getEmailTemplate(String emailTemplateId) {
         return this.emailTemplateDao.getEmailTemplate(emailTemplateId);
     }
+
+    public void createEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
+        this.emailTemplateDao.createEmailTemplate(contestEmailTemplate);
+    }
+
+    public void updateEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
+        this.emailTemplateDao.updateEmailTemplate(contestEmailTemplate);
+    }
+
 }

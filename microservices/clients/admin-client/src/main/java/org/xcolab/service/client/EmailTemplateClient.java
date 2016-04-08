@@ -28,9 +28,9 @@ public class EmailTemplateClient {
         return response.getBody();
     }
 
-    public static ContestEmailTemplate getContestEmailTemplate(String contestEmailTemplateId) {
+    public static ContestEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/emailTemplates/" + contestEmailTemplateId + "");
+                EUREKA_APPLICATION_ID + "/emailTemplates/" + emailTemplateType + "");
         return restTemplate.getForObject(uriBuilder.build().toString(), ContestEmailTemplate.class);
     }
 }

@@ -10,4 +10,8 @@ public interface EmailTemplateDao {
     List<ContestEmailTemplate> listAllEmailTemplates();
 
     ContestEmailTemplate getEmailTemplate(String emailTemplateId);
+
+    void updateEmailTemplate(ContestEmailTemplate contestEmailTemplate);
+
+    void createEmailTemplate(ContestEmailTemplate contestEmailTemplate);
 }
