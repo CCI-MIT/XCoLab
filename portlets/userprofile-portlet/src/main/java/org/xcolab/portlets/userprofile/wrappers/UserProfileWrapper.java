@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
@@ -27,6 +26,7 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 import org.xcolab.enums.Plurality;
 import org.xcolab.legacy.enums.MemberRole;
+import org.xcolab.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.pojo.User_;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
@@ -34,11 +34,9 @@ import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.service.client.MembersClient;
 import org.xcolab.utils.EntityGroupingUtil;
-import org.xcolab.utils.SendMessagePermissionChecker;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
-import javax.portlet.PortletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,6 +44,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.portlet.PortletRequest;
 
 public class UserProfileWrapper implements Serializable {
 
@@ -88,7 +88,8 @@ public class UserProfileWrapper implements Serializable {
         if (user.isActive()) {
             User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
             if (loggedInUser != null) {
-                messagePermissionChecker = new SendMessagePermissionChecker(loggedInUser);
+                User_ logUser = MembersClient.getMember(loggedInUser.getUserId());
+                messagePermissionChecker = new SendMessagePermissionChecker(logUser);
                 if (loggedInUser.getUserId() == user.getUserId()) {
                     viewingOwnProfile = true;
                 }
@@ -175,11 +176,11 @@ public class UserProfileWrapper implements Serializable {
         return viewingOwnProfile;
     }
 
-    public User getUser() {
+    public User_ getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(User_ user) {
         this.user = user;
     }
 
@@ -259,7 +260,7 @@ public class UserProfileWrapper implements Serializable {
         this.messagingPortletId = messagingPortletId;
     }
 
-    public User getWrapped() {
+    public User_ getWrapped() {
         return user;
     }
 

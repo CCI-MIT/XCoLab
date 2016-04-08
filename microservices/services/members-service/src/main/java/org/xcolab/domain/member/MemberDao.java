@@ -57,4 +57,6 @@ public interface MemberDao {
     Integer getMemberActivityCount(Long memberId);
 
     User_ getMember(Long userId);
+
+    void updateMember(User_ user);
 }

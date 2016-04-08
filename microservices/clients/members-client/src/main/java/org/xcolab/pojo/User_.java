@@ -564,6 +564,28 @@ public class User_ implements Serializable {
         return MembersClient.getMemberRoles(this.getUserId());
     }
 
+    public boolean getFemale() {
+        return !this.getMale();
+    }
+
+    public boolean getMale() {
+        return this.getContact().getMale();
+    }
+
+    public Contact_ getContact() {
+        Contact_ var2;
+            var2 = MembersClient.getContact(this.getContactId());
+        return var2;
+    }
+
+    public String getPassword() {
+        return this.password_==null?"":this.password_;
+    }
+
+    public void setPassword(String password) {
+        this.password_=this.password_;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("User_ (");

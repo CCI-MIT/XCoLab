@@ -293,8 +293,57 @@ public class MemberDaoImpl implements MemberDao {
     public User_ getMember(Long userId) {
         return this.dslContext.selectDistinct()
                 .from(USER_)
-                .where(USER_.USER_ID.equal(userId)).fetchOne(0, User_.class);
+                .where(USER_.USER_ID.equal(userId)).fetchAny().into(User_.class);
 
+    }
+
+    public void updateMember(User_ user) {
+
+        this.dslContext.update(USER_)
+                .set(USER_.UUID_, user.getUuid_())
+                //.set(USER_.USER_ID ,user.getUserId())
+                .set(USER_.COMPANY_ID, user.getCompanyId())
+                .set(USER_.CREATE_DATE, user.getCreateDate())
+                .set(USER_.MODIFIED_DATE, user.getModifiedDate())
+                .set(USER_.DEFAULT_USER, user.getDefaultUser())
+                .set(USER_.CONTACT_ID, user.getContactId())
+                .set(USER_.PASSWORD_, user.getPassword_())
+                .set(USER_.PASSWORD_ENCRYPTED, user.getPasswordEncrypted())
+                .set(USER_.PASSWORD_RESET, user.getPasswordReset())
+                .set(USER_.PASSWORD_MODIFIED_DATE, user.getPasswordModifiedDate())
+                .set(USER_.REMINDER_QUERY_QUESTION, user.getReminderQueryQuestion())
+                .set(USER_.REMINDER_QUERY_ANSWER, user.getReminderQueryAnswer())
+                .set(USER_.GRACE_LOGIN_COUNT, user.getGraceLoginCount())
+                .set(USER_.SCREEN_NAME, user.getScreenName())
+                .set(USER_.EMAIL_ADDRESS, user.getEmailAddress())
+                .set(USER_.OPEN_ID, user.getOpenId())
+                .set(USER_.PORTRAIT_ID, user.getPortraitId())
+                .set(USER_.LANGUAGE_ID, user.getLanguageId())
+                .set(USER_.TIME_ZONE_ID, user.getTimeZoneId())
+                .set(USER_.GREETING, user.getGreeting())
+                .set(USER_.COMMENTS, user.getComments())
+                .set(USER_.FIRST_NAME, user.getFirstName())
+                .set(USER_.MIDDLE_NAME, user.getMiddleName())
+                .set(USER_.LAST_NAME, user.getLastName())
+                .set(USER_.JOB_TITLE, user.getJobTitle())
+                .set(USER_.LOGIN_DATE, user.getLoginDate())
+                .set(USER_.LOGIN_IP, user.getLoginIP())
+                .set(USER_.LAST_LOGIN_DATE, user.getLastLoginDate())
+                .set(USER_.LAST_LOGIN_IP, user.getLastLoginIP())
+                .set(USER_.LAST_FAILED_LOGIN_DATE, user.getLastFailedLoginDate())
+                .set(USER_.FAILED_LOGIN_ATTEMPTS, user.getFailedLoginAttempts())
+                .set(USER_.LOCKOUT, user.getLockout())
+                .set(USER_.LOCKOUT_DATE, user.getLockoutDate())
+                .set(USER_.AGREED_TO_TERMS_OF_USE, user.getAgreedToTermsOfUse())
+                .set(USER_.SOCIAL_CONTRIBUTION_EQUITY, user.getSocialContributionEquity())
+                .set(USER_.SOCIAL_PARTICIPATION_EQUITY, user.getSocialParticipationEquity())
+                .set(USER_.SOCIAL_PERSONAL_EQUITY, user.getSocialPersonalEquity())
+                .set(USER_.FACEBOOK_ID, user.getFacebookId())
+                .set(USER_.DIGEST, user.getDigest())
+                .set(USER_.EMAIL_ADDRESS_VERIFIED, user.getEmailAddressVerified())
+                .set(USER_.STATUS, user.getStatus())
+                .set(USER_.LDAP_SERVER_ID, user.getLdapServerId())
+                .where(USER_.USER_ID.equal(user.getUserId()));
     }
 
     @Override

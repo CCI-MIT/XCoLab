@@ -125,7 +125,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>User_|Users_Roles|Role_|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory</includes>
+							<includes>User_|Users_Roles|Role_|Contact_|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory</includes>
 						</database>
 					</generator>
 				</configuration>
