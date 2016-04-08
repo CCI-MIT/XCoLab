@@ -12,12 +12,12 @@ import org.xcolab.service.emailtemplate.EmailTemplateService;
 import java.util.List;
 
 @RestController
-public class EmailsTemplateController {
+public class EmailTemplateController {
 
     @Autowired
     private EmailTemplateService emailTemplateService;
 
-    @RequestMapping("/emailTemplates")
+    @RequestMapping(value = "/emailTemplates", method = RequestMethod.GET)
     public List<ContestEmailTemplate> listEmailTemplates() {
 
         return this.emailTemplateService.listAllEmailTemplate();
@@ -38,7 +38,7 @@ public class EmailsTemplateController {
             return "Email template not found";
     }
 
-    @RequestMapping(value = "/emailTemplates/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/emailTemplates", method = RequestMethod.PUT)
     public ContestEmailTemplate createEmailTemplates(@RequestBody ContestEmailTemplate contestEmailTemplate) {
         this.emailTemplateService.createEmailTemplate(contestEmailTemplate);
         return this.emailTemplateService.getEmailTemplate(contestEmailTemplate.getType_());

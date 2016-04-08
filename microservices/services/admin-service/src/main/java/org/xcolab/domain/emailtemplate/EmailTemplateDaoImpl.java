@@ -25,7 +25,7 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
         return this.dslContext.select()
                 .from(CONTEST_EMAIL_TEMPLATE)
                 .where(CONTEST_EMAIL_TEMPLATE.TYPE_.equal(emailTemplateId))
-                .fetchOne().into(ContestEmailTemplate.class);
+                .fetchOneInto(ContestEmailTemplate.class);
     }
     public void updateEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
          this.dslContext.update(CONTEST_EMAIL_TEMPLATE)
@@ -33,14 +33,16 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
                 .set(CONTEST_EMAIL_TEMPLATE.SUBJECT, contestEmailTemplate.getSubject())
                 .set(CONTEST_EMAIL_TEMPLATE.HEADER, contestEmailTemplate.getHeader())
                 .set(CONTEST_EMAIL_TEMPLATE.FOOTER, contestEmailTemplate.getFooter())
-                .where(CONTEST_EMAIL_TEMPLATE.TYPE_.equal(contestEmailTemplate.getType_()));
+                .where(CONTEST_EMAIL_TEMPLATE.TYPE_.equal(contestEmailTemplate.getType_()))
+                .execute();
     }
     public void createEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
         this.dslContext.insertInto(CONTEST_EMAIL_TEMPLATE)
                 .set(CONTEST_EMAIL_TEMPLATE.TYPE_, contestEmailTemplate.getType_())
                 .set(CONTEST_EMAIL_TEMPLATE.SUBJECT, contestEmailTemplate.getSubject())
                 .set(CONTEST_EMAIL_TEMPLATE.HEADER, contestEmailTemplate.getHeader())
-                .set(CONTEST_EMAIL_TEMPLATE.FOOTER, contestEmailTemplate.getFooter());
+                .set(CONTEST_EMAIL_TEMPLATE.FOOTER, contestEmailTemplate.getFooter())
+                .execute();
     }
 
 }
