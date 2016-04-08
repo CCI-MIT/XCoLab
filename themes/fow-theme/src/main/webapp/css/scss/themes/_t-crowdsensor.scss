@@ -167,13 +167,13 @@ $p-Contests__contestDetail__heading__background: url(../images/bg-noise.png) $t-
 $p-homepage__content__h2__fontSize: 26pt;
 $p-homepage__content__h2__textColor: $t-Color__primary;
 
-$p-homepage__learn__backgroundColor: white;
+$p-homepage__learn__backgroundColor: $t-Color__primary;
 $p-homepage__learn__borderColor: none;
 $p-homepage__learn__imageUrl: none;
-$p-homepage__get__backgroundColor: $t-Color__primary;
+$p-homepage__get__backgroundColor: $t-Color__secondary;
 $p-homepage__get__borderColor: none;
 $p-homepage__get__imageUrl: none;
-$p-homepage__join__backgroundColor: $t-Color__secondary;
+$p-homepage__join__backgroundColor: white;
 $p-homepage__join__borderColor: none;
 $p-homepage__join__imageUrl: none;
 
