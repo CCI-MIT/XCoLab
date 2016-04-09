@@ -20,6 +20,7 @@ import org.xcolab.portlets.messaging.beans.MessagingBean;
 import org.xcolab.portlets.messaging.beans.SendMessageBean;
 import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.portlets.messaging.utils.MessagingPermissions;
+import org.xcolab.service.client.MessagingClient;
 import org.xcolab.utils.LinkUtils;
 
 import javax.mail.internet.AddressException;
@@ -89,11 +90,7 @@ public class MessagingController {
         for (MessageBean item : items) {
             if (item.isSelected()) {
                 Message message = item.getMessage();
-                if (!MessageLocalServiceUtil.isArchived(message,
-                        user.getUserId())) {
-                    MessageLocalServiceUtil.setArchived(message,
-                            user.getUserId());
-                }
+                MessagingClient.setArchived(message.getMessageId(), user.getUserId(), true);
             }
         }
     }

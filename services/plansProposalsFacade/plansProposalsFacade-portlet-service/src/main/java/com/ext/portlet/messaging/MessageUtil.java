@@ -1,10 +1,7 @@
 package com.ext.portlet.messaging;
 
-import com.ext.portlet.model.Message;
 import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.model.MessagingUserPreferences;
-import com.ext.portlet.service.MessageLocalServiceUtil;
-import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -17,7 +14,11 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.joda.time.DateTime;
+import org.xcolab.legacy.enums.MessageConstants;
 import org.xcolab.legacy.enums.MessageType;
+import org.xcolab.pojo.Message;
+import org.xcolab.service.client.MessagingClient;
 import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.TemplateReplacementUtil;
 
@@ -25,10 +26,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.PortletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public final class MessageUtil {
@@ -37,46 +37,31 @@ public final class MessageUtil {
 
     private MessageUtil() { }
 
-    public static int countMessages(long userId,  MessageType type) throws SystemException, PortalException {
+    public static int countMessages(long userId,  MessageType type) {
 
         switch(type) {
             case INBOX:
-                return MessageRecipientStatusLocalServiceUtil.countInboxMessagesForUser(userId);
+                return MessagingClient.getMessageCountForUser(userId, false);
             case ARCHIVED:
-                return MessageRecipientStatusLocalServiceUtil.countArchivedMessagesForUser(userId);
+                return MessagingClient.getMessageCountForUser(userId, true);
             case SENT:
-                return MessageLocalServiceUtil.countSentMessage(userId);
+                return MessagingClient.getSentMessageCountForUser(userId);
             default:
                 return 0;
         }
     }
 
-    public static List<Message> getMessages(long userId, int pagerStart, int pagerNext, MessageType type)
-            throws SystemException, PortalException {
+    public static List<Message> getMessages(long userId, int pagerStart, int pagerNext, MessageType type) {
         switch (type) {
             case INBOX:
-                List<MessageRecipientStatus> messages = MessageRecipientStatusLocalServiceUtil.findInboxMessagesForUser(
-                        userId, pagerStart, pagerNext);
-                return convertToMessages(messages);
+                return MessagingClient.getMessagesForUser(pagerStart, pagerNext, userId, false);
             case ARCHIVED:
-                List<MessageRecipientStatus> archivedMessages =
-                        MessageRecipientStatusLocalServiceUtil.findArchivedMessagesForUser(
-                                userId, pagerStart, pagerNext);
-                return convertToMessages(archivedMessages);
+                return MessagingClient.getMessagesForUser(pagerStart, pagerNext, userId, true);
             case SENT:
-                return MessageLocalServiceUtil.findSentMessages(userId,pagerStart,pagerNext);
+                return MessagingClient.getSentMessagesForUser(pagerStart, pagerNext, userId);
             default:
                 return Collections.emptyList();
         }
-    }
-
-    public static List<Message> convertToMessages(List<MessageRecipientStatus> statuses)
-            throws SystemException, PortalException {
-        List<Message> result = new ArrayList<>();
-        for (MessageRecipientStatus status:statuses) {
-            result.add(MessageLocalServiceUtil.getMessage(status.getMessageId()));
-        }
-        return result;
     }
 
     public static boolean checkLimitAndSendMessage(String subject, String content,
@@ -106,40 +91,28 @@ public final class MessageUtil {
 
     public static void sendMessage(String subject, String content, Long fromId,
             Long replyToId, Collection<Long> recipientIds, PortletRequest request)
-            throws SystemException, PortalException, MailEngineException, AddressException,
-            UnsupportedEncodingException {
+            throws MailEngineException, AddressException,
+            UnsupportedEncodingException, SystemException, PortalException {
         long nextId = CounterLocalServiceUtil.increment(Message.class.getName());
-        Message m = MessageLocalServiceUtil.createMessage(nextId);
-        m.setSubject(StringEscapeUtils.unescapeXml(subject));
-        m.setContent(content);
-        m.setFromId(fromId);
-        m.setCreateDate(new Date());
-        m.setRepliesTo(replyToId);
-        MessageLocalServiceUtil.updateMessage(m);
+        Message message = new Message();
+        message.setMessageId(nextId);
+        message.setSubject(StringEscapeUtils.unescapeXml(subject));
+        message.setContent(content);
+        message.setFromId(fromId);
+        message.setCreateDate(new Timestamp(DateTime.now().getMillis()));
+        message.setRepliesTo(replyToId);
+        MessagingClient.createMessage(message);
         for (long user : recipientIds) {
             createRecipient(nextId, user);
             if (getMessagingPreferences(user).getEmailOnReceipt()) {
-                copyRecipient(user, m, request);
+                copyRecipient(user, message, request);
             }
         }
-        if (getMessagingPreferences(fromId).getEmailOnSend()) {
-            copySender(m, request);
-        }
     }
 
-    public static MessageRecipientStatus createRecipient(long messageId, long userid) throws SystemException {
-        long nextid = CounterLocalServiceUtil.increment(MessageRecipientStatus.class.getName());
-        MessageRecipientStatus result = MessageRecipientStatusLocalServiceUtil.createMessageRecipientStatus(nextid);
-        result.setMessageId(messageId);
-        result.setUserId(userid);
-        result.setArchived(false);
-        result.setOpened(false);
-        MessageRecipientStatusLocalServiceUtil.updateMessageRecipientStatus(result);
-        return result;
-    }
-
-    public static void copySender(Message m, PortletRequest request) throws SystemException {
-        //tbd
+    public static void createRecipient(long messageId, long recipientId) throws SystemException {
+        long nextId = CounterLocalServiceUtil.increment(MessageRecipientStatus.class.getName());
+        MessagingClient.createRecipient(messageId, nextId, recipientId);
     }
 
     public static void copyRecipient(Long userId, Message m, PortletRequest request)

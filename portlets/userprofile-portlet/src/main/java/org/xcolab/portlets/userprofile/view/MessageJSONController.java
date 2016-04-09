@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.pojo.User_;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
+import org.xcolab.service.client.MembersClient;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -88,13 +90,13 @@ public class MessageJSONController extends JSONHelper {
         if (userSender != null && messageBean != null && userRecipient != null) {
             this.userSender = userSender;
             this.messageBean = messageBean;
-            messageBean.addRecipientUser(userRecipient);
+            messageBean.addRecipientUser(MembersClient.getMember(userRecipient.getUserId()));
         }
     }
 
     private void sendMessageToRecipientsInMessageBean() throws Exception {
         List<Long> recipients = new ArrayList<>();
-        for (User recipient : messageBean.getTo()) {
+        for (User_ recipient : messageBean.getTo()) {
             recipients.add(recipient.getUserId());
         }
         boolean sendSuccess = MessageUtil.checkLimitAndSendMessage(

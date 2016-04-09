@@ -1,13 +1,13 @@
 package org.xcolab.portlets.userprofile.beans;
 
 import com.ext.portlet.model.Message;
-import com.ext.portlet.model.MessageRecipientStatus;
-import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.hibernate.validator.constraints.NotBlank;
+import org.xcolab.pojo.User_;
+import org.xcolab.service.client.MessagingClient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.Random;
 public class MessageBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private final List<User> recipients = new ArrayList<>();
+    private List<User_> recipients = new ArrayList<>();
     @NotBlank
     private String messageSubject;
     @NotBlank
@@ -34,9 +34,7 @@ public class MessageBean implements Serializable {
 
     public MessageBean(Message message) throws PortalException, SystemException {
         this.message = message;
-        for (MessageRecipientStatus recipient : MessageLocalServiceUtil.getRecipients(message)) {
-            recipients.add(UserLocalServiceUtil.getUser(recipient.getUserId()));
-        }
+        this.recipients = MessagingClient.getMessageRecipients(message.getMessageId());
     }
 
     public String getMessageSubject() {
@@ -102,11 +100,11 @@ public class MessageBean implements Serializable {
         return message;
     }
 
-    public List<User> getTo() {
+    public List<User_> getTo() {
         return recipients;
     }
 
-    public void addRecipientUser(User recipientUser) {
+    public void addRecipientUser(User_ recipientUser) {
         recipients.add(recipientUser);
     }
 
