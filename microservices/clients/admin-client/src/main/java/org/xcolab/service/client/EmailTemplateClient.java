@@ -1,7 +1,10 @@
 package org.xcolab.service.client;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,9 +38,18 @@ public class EmailTemplateClient {
     }
 
     public static void updateContestEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
+
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/emailTemplates/" + contestEmailTemplate.getType_() + "");
-        restTemplate.getForObject(uriBuilder.build().toString(), ContestEmailTemplate.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity entity = new HttpEntity(contestEmailTemplate, headers);
+
+
+        ResponseEntity<String> out = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.POST, entity,
+                String.class);
     }
 
 }
