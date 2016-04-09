@@ -87,6 +87,7 @@ public class MessageDaoImpl implements MessageDao {
         return dslContext.select()
                 .from(MESSAGE_RECIPIENT_STATUS)
                 .join(USER_).on(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(USER_.USER_ID))
+                .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId))
                 .fetchInto(User_.class);
     }
 
