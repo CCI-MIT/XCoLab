@@ -240,39 +240,4 @@ public interface MessageRecipientStatusLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public int countByMessageId(long messageId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public java.util.List<com.ext.portlet.model.MessageRecipientStatus> findByMessageId(
-        long messageId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public int countArchivedMessagesForUser(long userid)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public java.util.List<com.ext.portlet.model.MessageRecipientStatus> findArchivedMessagesForUser(
-        long userid, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public int countInboxMessagesForUser(long userid)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public java.util.List<com.ext.portlet.model.MessageRecipientStatus> findInboxMessagesForUser(
-        long userid, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.MessageRecipientStatus findByMessageRecipient(
-        long userid, long messageid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public int countUnreadMessages(long userId)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public boolean didReceiveJudgeCommentForProposal(
-        com.ext.portlet.model.Proposal p, com.liferay.portal.model.User judge)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

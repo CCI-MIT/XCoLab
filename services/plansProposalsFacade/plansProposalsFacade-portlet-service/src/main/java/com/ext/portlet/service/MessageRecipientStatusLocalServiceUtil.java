@@ -263,59 +263,6 @@ public class MessageRecipientStatusLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static int countByMessageId(long messageId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().countByMessageId(messageId);
-    }
-
-    public static java.util.List<com.ext.portlet.model.MessageRecipientStatus> findByMessageId(
-        long messageId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByMessageId(messageId, start, end);
-    }
-
-    public static int countArchivedMessagesForUser(long userid)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().countArchivedMessagesForUser(userid);
-    }
-
-    public static java.util.List<com.ext.portlet.model.MessageRecipientStatus> findArchivedMessagesForUser(
-        long userid, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findArchivedMessagesForUser(userid, start, end);
-    }
-
-    public static int countInboxMessagesForUser(long userid)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().countInboxMessagesForUser(userid);
-    }
-
-    public static java.util.List<com.ext.portlet.model.MessageRecipientStatus> findInboxMessagesForUser(
-        long userid, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findInboxMessagesForUser(userid, start, end);
-    }
-
-    public static com.ext.portlet.model.MessageRecipientStatus findByMessageRecipient(
-        long userid, long messageid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByMessageRecipient(userid, messageid);
-    }
-
-    public static int countUnreadMessages(long userId)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().countUnreadMessages(userId);
-    }
-
-    public static boolean didReceiveJudgeCommentForProposal(
-        com.ext.portlet.model.Proposal p, com.liferay.portal.model.User judge)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().didReceiveJudgeCommentForProposal(p, judge);
-    }
-
     public static void clearService() {
         _service = null;
     }

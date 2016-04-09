@@ -1,11 +1,9 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.NoSuchMessageRecipientStatusException;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.base.ContestServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -15,6 +13,7 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
 import com.liferay.portal.security.auth.PrincipalException;
+import org.xcolab.service.client.MessagingClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,11 +89,7 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
      public int getNumberOfUnreadMessages() throws SystemException, PrincipalException {
         int unreadMessages = 0;
         if (getUserId() != 0) {
-            try {
-                unreadMessages = MessageRecipientStatusLocalServiceUtil.countUnreadMessages(getUserId());
-            } catch (NoSuchMessageRecipientStatusException | SystemException e) {
-                e.printStackTrace();
-            }
+            unreadMessages = MessagingClient.getUnreadMessageCountForUser(getUserId());
         }
 
         return unreadMessages;

@@ -236,38 +236,4 @@ public interface MessageLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public int countSentMessage(long userid)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public java.util.List<com.ext.portlet.model.Message> findSentMessages(
-        long userid, int pagerstart, int pagerend)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.MessageRecipientStatus> getRecipients(
-        com.ext.portlet.model.Message msg)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public boolean hasReciever(com.ext.portlet.model.Message msg, long userid)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public boolean isOpened(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public void setOpened(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public boolean isArchived(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public void setArchived(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException;
 }
