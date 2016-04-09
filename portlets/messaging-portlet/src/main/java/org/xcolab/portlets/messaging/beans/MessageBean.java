@@ -1,11 +1,11 @@
 package org.xcolab.portlets.messaging.beans;
 
-import com.ext.portlet.model.Message;
-import com.ext.portlet.service.MessageLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.pojo.Message;
 import org.xcolab.pojo.User_;
 import org.xcolab.service.client.MessagingClient;
 import org.xcolab.util.HumanTime;
@@ -77,7 +77,7 @@ public class MessageBean implements Serializable {
 
     public Message getMessage() throws SystemException, PortalException {
         if (message == null) {
-            message = MessageLocalServiceUtil.getMessage(messageId);
+            message = MessagingClient.getMessage(messageId);
         }
         return message;
     }

@@ -1,14 +1,13 @@
 package org.xcolab.portlets.messaging.beans;
 
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.MessageRecipientStatus;
-import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.portlets.messaging.paging.MessageDataPage;
 import org.xcolab.portlets.messaging.paging.PageLinkWrapper;
+import org.xcolab.service.client.MessagingClient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -62,14 +61,7 @@ public class MessagingBean implements Serializable {
     }
 
     public void markMessageAsOpened(long messageId) throws PortalException, SystemException {
-        List<MessageRecipientStatus> statuses =
-                MessageRecipientStatusLocalServiceUtil.findByMessageId(messageId, 0, Integer.MAX_VALUE);
-        for (MessageRecipientStatus mr : statuses) {
-            if (mr.getUserId() == user.getUserId()) {
-                mr.setOpened(true);
-                MessageRecipientStatusLocalServiceUtil.updateMessageRecipientStatus(mr);
-            }
-        }
+        MessagingClient.setOpened(messageId, user.getUserId(), true);
     }
 
     public int getPageNumber() {

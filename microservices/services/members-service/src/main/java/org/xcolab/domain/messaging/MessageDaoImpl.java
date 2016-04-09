@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.model.tables.pojos.User_;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 import static org.xcolab.model.Tables.MESSAGE;
@@ -117,7 +119,9 @@ public class MessageDaoImpl implements MessageDao {
                 .set(MESSAGE.FROM_ID, senderId)
                 .set(MESSAGE.REPLIES_TO, repliesToId)
                 .set(MESSAGE.SUBJECT, subject)
-                .set(MESSAGE.CONTENT, content);
+                .set(MESSAGE.CONTENT, content)
+                .set(MESSAGE.CREATE_DATE, new Timestamp(Instant.now().toEpochMilli()))
+                .execute();
     }
 
     @Override
@@ -128,6 +132,7 @@ public class MessageDaoImpl implements MessageDao {
                 .set(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID, messageId)
                 .set(MESSAGE_RECIPIENT_STATUS.USER_ID, recipientId)
                 .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, (byte) 0)
-                .set(MESSAGE_RECIPIENT_STATUS.OPENED, (byte) 0);
+                .set(MESSAGE_RECIPIENT_STATUS.OPENED, (byte) 0)
+                .execute();
     }
 }

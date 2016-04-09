@@ -1,12 +1,12 @@
 package org.xcolab.portlets.messaging.paging;
 
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.Message;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.legacy.enums.MessageType;
+import org.xcolab.pojo.Message;
+import org.xcolab.portlets.messaging.beans.MessageBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,9 @@ public class MessageDataPage {
             throws PortalException, SystemException {
         this.user = user;
 
-        List<Message> messagesRaw = MessageUtil.getMessages(user.getUserId(),
-                pageSize * (pageNumber - 1), pageSize * pageNumber, messageType);
+        final int firstMessage = pageSize * (pageNumber - 1);
+        final int lastMessage = pageSize * pageNumber;
+        List<Message> messagesRaw = MessageUtil.getMessages(user.getUserId(), firstMessage, lastMessage, messageType);
 
         this.messages = new ArrayList<>();
         for (Message message : messagesRaw) {

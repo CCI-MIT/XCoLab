@@ -1,6 +1,5 @@
 package com.ext.portlet.messaging;
 
-import com.ext.portlet.model.MessageRecipientStatus;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -93,7 +92,7 @@ public final class MessageUtil {
             Long replyToId, Collection<Long> recipientIds, PortletRequest request)
             throws MailEngineException, AddressException,
             UnsupportedEncodingException, SystemException, PortalException {
-        long nextId = CounterLocalServiceUtil.increment(Message.class.getName());
+        long nextId = CounterLocalServiceUtil.increment("com.ext.portlet.model.Message");
         Message message = new Message();
         message.setMessageId(nextId);
         message.setSubject(StringEscapeUtils.unescapeXml(subject));
@@ -111,7 +110,7 @@ public final class MessageUtil {
     }
 
     public static void createRecipient(long messageId, long recipientId) throws SystemException {
-        long nextId = CounterLocalServiceUtil.increment(MessageRecipientStatus.class.getName());
+        long nextId = CounterLocalServiceUtil.increment("com.ext.portlet.model.MessageRecipientStatus");
         MessagingClient.createRecipient(messageId, nextId, recipientId);
     }
 

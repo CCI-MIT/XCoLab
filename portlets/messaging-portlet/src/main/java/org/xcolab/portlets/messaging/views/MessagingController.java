@@ -1,7 +1,5 @@
 package org.xcolab.portlets.messaging.views;
 
-import com.ext.portlet.model.Message;
-import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -15,10 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.xcolab.legacy.enums.MessageType;
+import org.xcolab.pojo.Message;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.portlets.messaging.beans.MessagingBean;
 import org.xcolab.portlets.messaging.beans.SendMessageBean;
-import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.portlets.messaging.utils.MessagingPermissions;
 import org.xcolab.service.client.MessagingClient;
 import org.xcolab.utils.LinkUtils;
@@ -71,7 +70,7 @@ public class MessagingController {
 
         model.addAttribute("user", user);
 
-        final MessageBean messageBean = new MessageBean(MessageLocalServiceUtil.getMessage(messageId));
+        final MessageBean messageBean = new MessageBean(MessagingClient.getMessage(messageId));
         final SendMessageBean sendMessageBean = new SendMessageBean(messageBean);
         model.addAttribute("sendMessageBean", sendMessageBean);
         model.addAttribute("messageBean", messageBean);

@@ -9,9 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.pojo.Message;
 import org.xcolab.pojo.User_;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class MessagingClient {
 
@@ -20,6 +18,12 @@ public final class MessagingClient {
     private static final RestTemplate restTemplate = new RestTemplate();
 
     private MessagingClient() { }
+
+    public static Message getMessage(long messageId) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Message.class);
+    }
 
     public static List<Message> getMessagesForUser(int firstMessage, int lastMessage, long userId, boolean isArchived) {
 
@@ -71,26 +75,20 @@ public final class MessagingClient {
         return restTemplate.getForObject(uriBuilder.build().toString(), Integer.class);
     }
 
-    public static boolean createMessage(Message message) {
+    public static void createMessage(Message message) {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages");
 
-        final ResponseEntity<String> responseEntity =
-                restTemplate.postForEntity(uriBuilder.build().toString(), message, String.class);
-        return responseEntity.getStatusCode().is2xxSuccessful();
+        restTemplate.postForEntity(uriBuilder.build().toString(), message, String.class);
     }
 
-    public static boolean createRecipient(long messageId, long recipientStatusId, long recipientId) {
+    public static void createRecipient(long messageId, long recipientStatusId, long recipientId) {
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients");
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients")
+                .queryParam("recipientStatusId", recipientStatusId)
+                .queryParam("recipientId", recipientId);
 
-        Map<String, Long> uriVars = new HashMap<>();
-        uriVars.put("recipientStatusId", recipientStatusId);
-        uriVars.put("recipientId", recipientId);
-
-        final ResponseEntity<String> responseEntity =
-                restTemplate.postForEntity(uriBuilder.build().toString(), null, String.class, uriVars);
-        return responseEntity.getStatusCode().is2xxSuccessful();
+        restTemplate.postForEntity(uriBuilder.build().toString(), null, String.class);
     }
 
     public static List<User_> getMessageRecipients(long messageId) {
@@ -104,12 +102,20 @@ public final class MessagingClient {
 
     public static void setArchived(long messageId, long memberId, boolean isArchived) {
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients");
-        Map<String, Object> uriVars = new HashMap<>();
-        uriVars.put("memberId", memberId);
-        uriVars.put("isArchived", isArchived);
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients")
+                .queryParam("memberId", memberId)
+                .queryParam("isArchived", isArchived);
 
-        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PATCH, null, String.class, uriVars);
+        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PATCH, null, String.class);
+    }
+
+    public static void setOpened(long messageId, long memberId, boolean isOpened) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients")
+                .queryParam("memberId", memberId)
+                .queryParam("isOpened", isOpened);
+
+        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PATCH, null, String.class);
     }
 
 }
