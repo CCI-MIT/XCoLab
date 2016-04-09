@@ -1,11 +1,12 @@
 package org.xcolab.domain.member;
 
-
 import org.xcolab.model.tables.pojos.User_;
 
 import java.util.List;
 
 public interface MemberDao {
+
+    User_ getMember(long memberId);
 
     List<User_> listMembersSortByActivityCount(int startRecord, int limitRecord,
                                                String filter, boolean isAscOrder);

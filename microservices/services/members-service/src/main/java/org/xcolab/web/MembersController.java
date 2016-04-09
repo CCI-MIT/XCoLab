@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.xcolab.exceptions.NotFoundException;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.model.tables.pojos.User_;
 import org.xcolab.service.member.MemberService;
@@ -24,6 +25,15 @@ public class MembersController {
 
     @Autowired
     private RoleService roleService;
+
+    @RequestMapping("/members/{memberId}")
+    public User_ getMember(@PathVariable("memberId") Long memberId) throws NotFoundException {
+        if (memberId == null || memberId == 0) {
+            throw new NotFoundException("No message id given");
+        } else {
+            return memberService.getMember(memberId);
+        }
+    }
 
     @RequestMapping("/members")
     public List<User_> listMembers(@RequestParam String firstRecord,

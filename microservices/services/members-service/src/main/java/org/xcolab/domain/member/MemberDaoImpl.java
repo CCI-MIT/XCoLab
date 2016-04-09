@@ -65,6 +65,14 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
+    public User_ getMember(long memberId) {
+        return dslContext.select()
+                .from(USER_)
+                .where(USER_.USER_ID.eq(memberId))
+                .fetchOne().into(User_.class);
+    }
+
+    @Override
     public List<User_> listMembersSortByActivityCount(int startRecord, int limitRecord, String filter,
                                                       boolean isAscOrder) {
         Field<Object> activityCount = this.dslContext.selectCount()

@@ -19,6 +19,12 @@ public final class MembersClient {
 
     private MembersClient() { }
 
+    public static User_ getMember(long memberId) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/" + memberId);
+        return restTemplate.getForObject(uriBuilder.build().toString(), User_.class);
+    }
+
     public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstUser, int lastUser) {
 

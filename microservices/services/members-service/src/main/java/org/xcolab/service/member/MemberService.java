@@ -17,6 +17,10 @@ public class MemberService {
         this.memberDao = memberDao;
     }
 
+    public User_ getMember(long memberId) {
+        return memberDao.getMember(memberId);
+    }
+
     public List<User_> listMembersSortByScreenName(int firstUser, int lastUser,
                                                    String screenNameFilter, boolean isAscOrder) {
         return this.memberDao.listMembersSortByScreenName(firstUser, lastUser, screenNameFilter,
