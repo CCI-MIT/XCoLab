@@ -11,12 +11,13 @@ import org.xcolab.pojo.User_;
 
 import java.util.List;
 
-public class MembersClient {
+public final class MembersClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/members-service";
 
+    private static final RestTemplate restTemplate = new RestTemplate();
 
-    static RestTemplate restTemplate = new RestTemplate();
+    private MembersClient() { }
 
     public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstUser, int lastUser) {

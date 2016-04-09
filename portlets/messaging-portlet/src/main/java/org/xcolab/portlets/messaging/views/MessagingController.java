@@ -18,7 +18,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.portlets.messaging.beans.MessagingBean;
 import org.xcolab.portlets.messaging.beans.SendMessageBean;
-import org.xcolab.portlets.messaging.enums.MessageType;
+import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.portlets.messaging.utils.MessagingPermissions;
 import org.xcolab.utils.LinkUtils;
 

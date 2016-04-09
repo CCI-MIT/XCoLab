@@ -6,7 +6,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import org.xcolab.portlets.messaging.beans.MessageBean;
-import org.xcolab.portlets.messaging.enums.MessageType;
+import org.xcolab.legacy.enums.MessageType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class MessageDataPage {
         this.user = user;
 
         List<Message> messagesRaw = MessageUtil.getMessages(user.getUserId(),
-                pageSize * (pageNumber - 1), pageSize * pageNumber, messageType.getTypeStr());
+                pageSize * (pageNumber - 1), pageSize * pageNumber, messageType);
 
         this.messages = new ArrayList<>();
         for (Message message : messagesRaw) {

@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2010. M.I.T. All Rights Reserved
- * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
- * or the license.txt file included in this distribution for the full text of the license.
- */
-
 package com.ext.portlet.messaging;
 
 import com.ext.portlet.model.Message;
@@ -23,6 +17,7 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.TemplateReplacementUtil;
 
@@ -36,47 +31,47 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author jintrone
- * @date 01/19/2010
- * @version 1.0
- */
 public final class MessageUtil {
 
     private static final Log _log = LogFactoryUtil.getLog(MessageUtil.class);
 
     private MessageUtil() { }
 
-    public static int countMessages(long userId,  String type) throws SystemException, PortalException {
+    public static int countMessages(long userId,  MessageType type) throws SystemException, PortalException {
 
-        if (MessageConstants.INBOX.equals(type)) {
-            return MessageRecipientStatusLocalServiceUtil.countInboxMessagesForUser(userId);
+        switch(type) {
+            case INBOX:
+                return MessageRecipientStatusLocalServiceUtil.countInboxMessagesForUser(userId);
+            case ARCHIVED:
+                return MessageRecipientStatusLocalServiceUtil.countArchivedMessagesForUser(userId);
+            case SENT:
+                return MessageLocalServiceUtil.countSentMessage(userId);
+            default:
+                return 0;
         }
-        if (MessageConstants.ARCHIVED.equals(type)) {
-            return MessageRecipientStatusLocalServiceUtil.countArchivedMessagesForUser(userId);
-        }
-        if (MessageConstants.SENT.equals(type)) {
-            return MessageLocalServiceUtil.countSentMessage(userId);
-        }
-        return 0;
     }
 
-    public static List<Message> getMessages(long userId, int pagerStart, int pagerNext, String type) throws SystemException, PortalException {
-        if (MessageConstants.INBOX.equals(type)) {
-            List<MessageRecipientStatus> result = MessageRecipientStatusLocalServiceUtil.findInboxMessagesForUser(userId,pagerStart,pagerNext);
-            return convertToMessages(result);
+    public static List<Message> getMessages(long userId, int pagerStart, int pagerNext, MessageType type)
+            throws SystemException, PortalException {
+        switch (type) {
+            case INBOX:
+                List<MessageRecipientStatus> messages = MessageRecipientStatusLocalServiceUtil.findInboxMessagesForUser(
+                        userId, pagerStart, pagerNext);
+                return convertToMessages(messages);
+            case ARCHIVED:
+                List<MessageRecipientStatus> archivedMessages =
+                        MessageRecipientStatusLocalServiceUtil.findArchivedMessagesForUser(
+                                userId, pagerStart, pagerNext);
+                return convertToMessages(archivedMessages);
+            case SENT:
+                return MessageLocalServiceUtil.findSentMessages(userId,pagerStart,pagerNext);
+            default:
+                return Collections.emptyList();
         }
-        if (MessageConstants.ARCHIVED.equals(type)) {
-            List<MessageRecipientStatus> result = MessageRecipientStatusLocalServiceUtil.findArchivedMessagesForUser(userId,pagerStart,pagerNext);
-            return convertToMessages(result);
-        }
-        if (MessageConstants.SENT.equals(type)) {
-            return MessageLocalServiceUtil.findSentMessages(userId,pagerStart,pagerNext);
-        }
-        return Collections.emptyList();
     }
 
-    public static List<Message> convertToMessages(List<MessageRecipientStatus> statuses) throws SystemException, PortalException {
+    public static List<Message> convertToMessages(List<MessageRecipientStatus> statuses)
+            throws SystemException, PortalException {
         List<Message> result = new ArrayList<>();
         for (MessageRecipientStatus status:statuses) {
             result.add(MessageLocalServiceUtil.getMessage(status.getMessageId()));
@@ -98,7 +93,8 @@ public final class MessageUtil {
                 if (MessageLimitManager.shouldSendValidationErrorMessage(fromUser)) {
                     recipientIds.clear();
                     recipientIds.add(1011659L); //patrick
-                    sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  "+content, fromId, fromId, recipientIds, null);
+                    sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  " + content,
+                            fromId, fromId, recipientIds, null);
                 }
                 return false;
             }
@@ -108,7 +104,10 @@ public final class MessageUtil {
         }
     }
 
-    public static void sendMessage(String subject, String content, Long fromId, Long replyToId, Collection<Long> recipientIds, PortletRequest request) throws SystemException, PortalException, MailEngineException, AddressException, UnsupportedEncodingException {
+    public static void sendMessage(String subject, String content, Long fromId,
+            Long replyToId, Collection<Long> recipientIds, PortletRequest request)
+            throws SystemException, PortalException, MailEngineException, AddressException,
+            UnsupportedEncodingException {
         long nextId = CounterLocalServiceUtil.increment(Message.class.getName());
         Message m = MessageLocalServiceUtil.createMessage(nextId);
         m.setSubject(StringEscapeUtils.unescapeXml(subject));
@@ -143,23 +142,27 @@ public final class MessageUtil {
         //tbd
     }
 
-    public static void copyRecipient(Long userId, Message m, PortletRequest request) throws SystemException, PortalException, AddressException, MailEngineException, UnsupportedEncodingException {
+    public static void copyRecipient(Long userId, Message m, PortletRequest request)
+            throws SystemException, PortalException, AddressException, MailEngineException,
+            UnsupportedEncodingException {
         User from = UserLocalServiceUtil.getUser(m.getFromId());
         User to = UserLocalServiceUtil.getUser(userId);
         String subject = m.getSubject();
         if (subject.length() < 3) {
-            subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName());
+            subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(
+                    MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName());
             subject = TemplateReplacementUtil.replacePlatformConstants(subject);
         }
         String message = TemplateReplacementUtil.replacePlatformConstants(
-                MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName())
-                .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL,createMessageURL(m, request)).replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT,m.getSubject())
+                MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(
+                        MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName())
+                .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL,createMessageURL(m, request))
+                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT,m.getSubject())
                 .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,m.getContent().replaceAll("\n" ,"<br />")));
 
         InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
         InternetAddress toEmail = new InternetAddress(to.getEmailAddress());
         MailEngine.send(fromEmail, toEmail, subject, message, true);
-
     }
 
     public static String createMessageURL(Message m, PortletRequest request) {

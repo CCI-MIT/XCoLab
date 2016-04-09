@@ -3,7 +3,6 @@ package org.xcolab.portlets.userprofile.wrappers;
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Message;
@@ -26,6 +25,7 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.enums.Plurality;
+import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -280,7 +280,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() throws SystemException, PortalException {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : MessageUtil.getMessages(this.user.getUserId(), 0, 2, MessageConstants.INBOX)) {
+            for (Message msg : MessageUtil.getMessages(this.user.getUserId(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }

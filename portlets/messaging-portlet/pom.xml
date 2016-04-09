@@ -146,6 +146,14 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!-- Microservice dependencies -->
+
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>members-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
 	</dependencies>
 
 	<repositories>
