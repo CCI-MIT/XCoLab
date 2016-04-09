@@ -99,7 +99,8 @@ public class MessageDaoImpl implements MessageDao {
         dslContext.update(MESSAGE_RECIPIENT_STATUS)
                 .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, isArchivedByte)
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId)
-                        .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(memberId)));
+                        .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(memberId)))
+                .execute();
     }
 
     @Override
@@ -108,7 +109,8 @@ public class MessageDaoImpl implements MessageDao {
         dslContext.update(MESSAGE_RECIPIENT_STATUS)
                 .set(MESSAGE_RECIPIENT_STATUS.OPENED, isOpenedByte)
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId)
-                        .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(memberId)));
+                        .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(memberId)))
+                .execute();
     }
 
     @Override

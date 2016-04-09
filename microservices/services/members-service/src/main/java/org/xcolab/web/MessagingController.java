@@ -110,7 +110,8 @@ public class MessagingController {
         messagingService.createRecipient(recipientStatusId, messageId, recipientId);
     }
 
-    @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.PATCH)
+    //TODO: patch doesn't work
+    @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.PUT)
     public void patchMessage(@PathVariable("messageId") Long messageId,
             @RequestParam Long memberId,
             @RequestParam(required = false) Boolean isArchived,

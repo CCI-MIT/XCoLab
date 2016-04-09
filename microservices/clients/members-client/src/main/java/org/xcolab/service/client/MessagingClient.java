@@ -102,20 +102,20 @@ public final class MessagingClient {
 
     public static void setArchived(long messageId, long memberId, boolean isArchived) {
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients")
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId)
                 .queryParam("memberId", memberId)
                 .queryParam("isArchived", isArchived);
 
-        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PATCH, null, String.class);
+        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PUT, null, String.class);
     }
 
     public static void setOpened(long messageId, long memberId, boolean isOpened) {
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients")
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId)
                 .queryParam("memberId", memberId)
                 .queryParam("isOpened", isOpened);
 
-        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PATCH, null, String.class);
+        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PUT, null, String.class);
     }
 
 }
