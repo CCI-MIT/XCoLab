@@ -67,6 +67,10 @@ public class MessageBean implements Serializable {
         return UserLocalServiceUtil.getUser(message.getFromId());
     }
 
+    public void markMessageAsOpened(long userId) throws PortalException, SystemException {
+        MessagingClient.setOpened(messageId, userId, true);
+    }
+
     public boolean isSelected() {
         return selected;
     }

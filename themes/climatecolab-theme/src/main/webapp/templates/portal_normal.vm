@@ -126,8 +126,6 @@
   </ul>
 
 #if ($themeDisplay.signedIn)
-  #set($messageService = $serviceLocator.findService("plansProposalsFacade-portlet","com.ext.portlet.service.MessageRecipientStatusLocalService"))
-  #set($unreadMessages = $messageService.countUnreadMessages($user.userId))
     <ul id="c-Header__menu__right">
    <li class="user"><a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a>
     #if ($unreadMessages > 0)

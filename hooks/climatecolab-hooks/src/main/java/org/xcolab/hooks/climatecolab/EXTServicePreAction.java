@@ -22,6 +22,7 @@ import com.liferay.portal.model.Theme;
 import com.liferay.portal.service.ThemeLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.service.client.MessagingClient;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,6 +54,8 @@ public class EXTServicePreAction extends Action {
                 themeTimestamp = String.valueOf(theme.getTimestamp());
             }
         }
+
+        vmVariables.put("unreadMessages", MessagingClient.getUnreadMessageCountForUser(themeDisplay.getUserId()));
 
         //Decide whether to show contest menu items
         try {

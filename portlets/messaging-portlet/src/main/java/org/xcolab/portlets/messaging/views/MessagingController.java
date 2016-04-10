@@ -71,6 +71,7 @@ public class MessagingController {
         model.addAttribute("user", user);
 
         final MessageBean messageBean = new MessageBean(MessagingClient.getMessage(messageId));
+        messageBean.markMessageAsOpened(user.getUserId());
         final SendMessageBean sendMessageBean = new SendMessageBean(messageBean);
         model.addAttribute("sendMessageBean", sendMessageBean);
         model.addAttribute("messageBean", messageBean);

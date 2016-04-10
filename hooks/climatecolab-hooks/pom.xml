@@ -7,7 +7,6 @@
         <groupId>org.xcolab.hooks</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>org.xcolab.hooks</groupId>
     <artifactId>climatecolab-hooks</artifactId>
     <packaging>war</packaging>
     <name>climatecolab-hooks Hook</name>
@@ -107,6 +106,25 @@
 			<version>1.3.10</version>
 		</dependency>
 
+        <!-- spring is needed for microservice clients-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.2.5.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>4.2.5.RELEASE</version>
+        </dependency>
+
+        <!-- microservice dependencies -->
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>members-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 </project>

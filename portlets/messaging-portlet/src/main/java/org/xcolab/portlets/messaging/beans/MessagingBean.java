@@ -7,7 +7,6 @@ import com.liferay.portal.model.User;
 import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.portlets.messaging.paging.MessageDataPage;
 import org.xcolab.portlets.messaging.paging.PageLinkWrapper;
-import org.xcolab.service.client.MessagingClient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -58,10 +57,6 @@ public class MessagingBean implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public void markMessageAsOpened(long messageId) throws PortalException, SystemException {
-        MessagingClient.setOpened(messageId, user.getUserId(), true);
     }
 
     public int getPageNumber() {
