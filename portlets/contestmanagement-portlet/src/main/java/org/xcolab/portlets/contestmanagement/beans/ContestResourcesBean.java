@@ -3,9 +3,11 @@ package org.xcolab.portlets.contestmanagement.beans;
 import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -14,6 +16,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
+import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -64,14 +67,14 @@ public class ContestResourcesBean implements Serializable {
             SECTION_HELP_TEXT_REFERENCES
     };
 
-    private static final String OVERVIEW_SUBMIT_PROPOSALS_TITLE = "Submit proposals:";
+    private static final String OVERVIEW_SUBMIT_PROPOSALS_TITLE = "Submit <proposals/>:";
     private final static String OVERVIEW_SUBMIT_PROPOSALS_CONTENT =
-            "<a href=\"http://climatecolab.org<contest-link-url/>\" target=\"_blank\">http://climatecolab.org<contest-link-url/></a>";
+            "<a href=\"<colab-url/><contest-link-url/>\" target=\"_blank\"><colab-url/><contest-link-url/></a>";
     private static final String OVERVIEW_RULES_TITLE = "Rules:";
     private static final String OVERVIEW_DEADLINE_TITLE = "Deadline:";
     private static final String OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE = "Judging Criteria & Prizes:";
     private static final String OVERVIEW_RULES_CONTENT =
-            "All entrants must agree to the <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Contest+rules\" target=\"_blank\">Contest Rules</a> and <a href=\"http://climatecolab.org/web/guest/resources/-/wiki/Main/Terms+of+use\" target=\"_blank\">Terms of Use</a>";
+            "All entrants must agree to the <a href=\"<colab-url/>/web/guest/resources/-/wiki/Main/Contest+rules\" target=\"_blank\"><contest/> Rules</a> and <a href=\"<colab-url/>/web/guest/resources/-/wiki/Main/Terms+of+use\" target=\"_blank\">Terms of Use</a>";
 
 
     private final List<SectionDefinitionWrapper> baseSections;
@@ -91,12 +94,12 @@ public class ContestResourcesBean implements Serializable {
     }
 
     public void splitSections() {
-        int startOfAdditionalSections = START_INDEX_OF_BOTTOM_SECTIONS;
         int endOfAdditionalSections = numberOfSections - START_INDEX_OF_BOTTOM_SECTIONS;
         List<SectionDefinitionWrapper> baseSectionsTop = sections.subList(0, START_INDEX_OF_BOTTOM_SECTIONS);
         List<SectionDefinitionWrapper> baseSectionBottom = sections.subList(endOfAdditionalSections, sections.size());
         baseSections.addAll(baseSectionsTop);
         baseSections.addAll(baseSectionBottom);
+        int startOfAdditionalSections = START_INDEX_OF_BOTTOM_SECTIONS;
         additionalSections = sections.subList(startOfAdditionalSections, endOfAdditionalSections);
     }
 
@@ -233,6 +236,7 @@ public class ContestResourcesBean implements Serializable {
 
     public void fillOverviewSectionContent(Contest contest)
             throws SystemException, ParseException, NoSuchConfigurationAttributeException {
+        final ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
         List<ContestPhase> contestPhaseList = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
         String proposalSubmissionEndDate = "";
         for (ContestPhase contestPhase : contestPhaseList) {
@@ -253,11 +257,18 @@ public class ContestResourcesBean implements Serializable {
         }
         overviewSectionValues = new LinkedHashMap<>();
         overviewSectionValues.put("Question:", contest.getContestName());
+
         final String contestLinkUrl = ContestLocalServiceUtil.getContestLinkUrl(contest);
-        overviewSectionValues.put(OVERVIEW_SUBMIT_PROPOSALS_TITLE,
-                OVERVIEW_SUBMIT_PROPOSALS_CONTENT.replace("<contest-link-url/>", contestLinkUrl));
-        overviewSectionValues.put(OVERVIEW_RULES_TITLE,
-                OVERVIEW_RULES_CONTENT);
+        final String overviewSubmitProposalsContent = TemplateReplacementUtil.replaceContestTypeStrings(
+                TemplateReplacementUtil.replacePlatformConstants(OVERVIEW_SUBMIT_PROPOSALS_CONTENT), contestType);
+        overviewSectionValues.put(
+                TemplateReplacementUtil.replaceContestTypeStrings(OVERVIEW_SUBMIT_PROPOSALS_TITLE, contestType),
+                overviewSubmitProposalsContent.replace("<contest-link-url/>", contestLinkUrl));
+
+        final String overviewRulesContent = TemplateReplacementUtil.replaceContestTypeStrings(
+                TemplateReplacementUtil.replacePlatformConstants(OVERVIEW_RULES_CONTENT), contestType);
+        overviewSectionValues.put(OVERVIEW_RULES_TITLE, overviewRulesContent);
+
         overviewSectionValues.put(OVERVIEW_DEADLINE_TITLE, proposalSubmissionEndDate);
         overviewSectionValues.put(OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE, "See below.");
     }

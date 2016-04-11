@@ -11,9 +11,6 @@ import org.xcolab.enums.ConfigurationAttributeKey;
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by johannes on 1/26/16.
- */
 public final class TemplateReplacementUtil {
 
     public final static String COLAB_NAME_PLACEHOLDER = "<colab-name/>";
