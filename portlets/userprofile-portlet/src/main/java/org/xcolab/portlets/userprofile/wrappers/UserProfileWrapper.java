@@ -273,7 +273,7 @@ public class UserProfileWrapper implements Serializable {
         return themeDisplay;
     }
 
-    public boolean getCanSendMessage() throws SystemException, MemberRole.NoSuchMemberRoleException {
+    public boolean getCanSeeSendMessageButton() throws SystemException, MemberRole.NoSuchMemberRoleException {
         if (messagePermissionChecker != null) {
             return messagePermissionChecker.canSendToUser(this.user);
         }
