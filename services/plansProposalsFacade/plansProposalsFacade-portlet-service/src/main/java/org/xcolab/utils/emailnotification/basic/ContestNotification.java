@@ -31,7 +31,7 @@ public class ContestNotification extends EmailNotification {
     private static final String CONTEST_DEADLINE_SECTION_PLACEHOLDER = "contest-deadline-section";
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
-    private static final DateTimeFormatter customDateFormat = DateTimeFormat.forPattern("MMMM dd, HH:mm:ss a z");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("MMMM dd, HH:mm:ss a z");
     protected final Contest contest;
     protected final String templateName;
     private final User recipient;
@@ -111,7 +111,7 @@ public class ContestNotification extends EmailNotification {
                     if (Validator.isNull(phaseDeadline)) {
                         return new TextNode("", "");
                     } else {
-                        final DateTimeFormatter dateTimeFormatterWithTimeZone = customDateFormat.withZone(
+                        final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMATTER.withZone(
                                 DateTimeZone.forID(ConfigurationAttributeLocalServiceUtil
                                         .getAttributeStringValue(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.name(),
                                                 0L)));
