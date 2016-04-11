@@ -64,7 +64,8 @@ public class MessageDaoImpl implements MessageDao {
                 .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.equal(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
                 .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
                         .and(MESSAGE_RECIPIENT_STATUS.ARCHIVED.equal(isArchivedByte))
-                ).limit(startRecord, limitRecord).fetchInto(Message.class);
+                ).orderBy(MESSAGE.CREATE_DATE.desc())
+                .limit(startRecord, limitRecord).fetchInto(Message.class);
     }
 
     @Override
@@ -73,6 +74,7 @@ public class MessageDaoImpl implements MessageDao {
                 .from(MESSAGE)
                 .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.equal(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
                 .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId))
+                .orderBy(MESSAGE.CREATE_DATE.desc())
                 .limit(startRecord, limitRecord).fetchInto(Message.class);
     }
 
@@ -81,6 +83,7 @@ public class MessageDaoImpl implements MessageDao {
         return dslContext.select()
                 .from(MESSAGE)
                 .where(MESSAGE.FROM_ID.equal(userId))
+                .orderBy(MESSAGE.CREATE_DATE.desc())
                 .limit(startRecord, limitRecord).fetchInto(Message.class);
     }
 
