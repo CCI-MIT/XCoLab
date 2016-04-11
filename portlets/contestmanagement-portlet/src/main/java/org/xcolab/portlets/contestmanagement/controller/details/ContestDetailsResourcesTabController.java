@@ -27,10 +27,6 @@ import javax.portlet.PortletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 
-/**
- * Created by Thomas on 2/13/2015.
- */
-
 @Controller
 @RequestMapping("view")
 public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabController {
