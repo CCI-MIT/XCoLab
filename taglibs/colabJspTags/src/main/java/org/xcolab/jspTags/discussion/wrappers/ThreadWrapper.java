@@ -158,6 +158,6 @@ public class ThreadWrapper {
     }
 
     public boolean isSubscribed(long userId) throws SystemException, PortalException {
-        return DiscussionCategoryLocalServiceUtil.isSubscribed(userId, dcg.getId(), getThreadId());
+        return DiscussionCategoryLocalServiceUtil.isSubscribed(userId, getCategoryGroup().getId(), getThreadId());
     }
 }
