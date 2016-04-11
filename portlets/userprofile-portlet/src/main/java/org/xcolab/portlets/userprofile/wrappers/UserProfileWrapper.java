@@ -273,8 +273,11 @@ public class UserProfileWrapper implements Serializable {
         return themeDisplay;
     }
 
-    public boolean getCanSendMessage() throws SystemException, MemberRole.NoSuchMemberRoleException {
-        return messagePermissionChecker != null && messagePermissionChecker.canSendToUser(this.user);
+    public boolean getCanSeeSendMessageButton() throws SystemException, MemberRole.NoSuchMemberRoleException {
+        if (messagePermissionChecker != null) {
+            return messagePermissionChecker.canSendToUser(this.user);
+        }
+        return true;
     }
 
     public List<MessageBean> getMessages() throws SystemException, PortalException {
