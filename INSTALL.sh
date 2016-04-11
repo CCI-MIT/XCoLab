@@ -71,6 +71,33 @@ cd services/plansProposalsFacade
 mvn install -N
 cd ../..
 
+cd microservices
+mvn install -N
+cd ..
+
+cd microservices/clients
+mvn install -N
+cd ../..
+
+cd microservices/services
+mvn install -N
+cd ../..
+
+cd microservices/jooq-config
+mvn clean compile package install clean
+cd ../..
+
+cd microservices/clients
+for D in *; do
+    if [ -d "${D}" ]; then
+        cd $D
+		pwd
+		mvn clean compile package install clean
+		cd ..
+    fi
+done
+cd ../..
+
 cd services/plansProposalsFacade/plansProposalsFacade-portlet-service
 mvn clean compile package install clean
 cd ../../..
