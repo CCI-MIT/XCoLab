@@ -12,6 +12,7 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -21,8 +22,8 @@ public class SubscribeContestActionController {
     private ProposalsContext proposalsContext;
     
     @RequestMapping(params = {"action=subscribeContest"})
-    public void handleAction(ActionRequest request, Model model, ActionResponse response) 
-                    throws PortalException, SystemException, ProposalsAuthorizationException {
+    public void handleAction(ActionRequest request, Model model, ActionResponse response)
+            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         
         if (proposalsContext.getPermissions(request).getCanSubscribeContest()) {
             long contestId = proposalsContext.getContest(request).getContestPK();
@@ -33,6 +34,7 @@ public class SubscribeContestActionController {
             else {
                 ContestLocalServiceUtil.subscribe(contestId, userId);
             }
+            response.sendRedirect(ContestLocalServiceUtil.getContestLinkUrl(contestId));
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to subscribe contest");
