@@ -6,9 +6,7 @@
 
 package org.xcolab.hooks.climatecolab;
 
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.events.Action;
@@ -64,10 +62,10 @@ public class EXTServicePreAction extends Action {
             _log.error("Could not retrieve contest types to populate menu items", e);
         }
         try {
-            vmVariables.put("_colab_name", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
-            vmVariables.put("_colab_short_name", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
-        } catch (NoSuchConfigurationAttributeException | SystemException e) {
-            _log.error("Could not retrieve required ConfigurationAttributes", e);
+            vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+            vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
+        } catch (SystemException e) {
+            _log.error("Error retrieving ConfigurationAttributes for colab names", e);
         }
 
         String contestIdStr = req.getParameter("_collab_paramcontestId");

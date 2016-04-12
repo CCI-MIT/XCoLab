@@ -6,7 +6,6 @@ import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
@@ -132,8 +131,8 @@ public class ContestsIndexController extends BaseProposalsController {
         boolean showContestManagementLink = permissionChecker.isOmniadmin();
         model.addAttribute("showContestManagementLink", showContestManagementLink);
 
-        model.addAttribute("showContestDisplayOptions", ConfigurationAttributeLocalServiceUtil.getAttributeBooleanValue(
-                ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.name(), 0L));
+        model.addAttribute("showContestDisplayOptions",
+                ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.getBooleanValue());
 
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
         

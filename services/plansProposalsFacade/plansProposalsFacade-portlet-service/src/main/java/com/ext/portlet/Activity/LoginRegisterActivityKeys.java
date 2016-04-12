@@ -1,7 +1,6 @@
 package com.ext.portlet.Activity;
 
 import com.ext.portlet.community.CommunityUtil;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -41,8 +40,7 @@ public enum LoginRegisterActivityKeys {
     }
 
     public String getBody(User user) throws SystemException {
-        String colabName = ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                ConfigurationAttributeKey.COLAB_NAME.name(), 0L, "");
+        String colabName = ConfigurationAttributeKey.COLAB_NAME.getStringValue();
         return String.format(body, getUserLink(user), colabName);
     }
 

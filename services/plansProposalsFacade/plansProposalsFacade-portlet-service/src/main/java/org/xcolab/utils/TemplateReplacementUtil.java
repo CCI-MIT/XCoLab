@@ -1,8 +1,6 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -28,33 +26,24 @@ public final class TemplateReplacementUtil {
     private TemplateReplacementUtil() { }
 
     public static String replacePlatformConstants(String text) throws SystemException {
-        try {
-            final String colabName = ConfigurationAttributeLocalServiceUtil
-                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L);
-            final String colabShortName = ConfigurationAttributeLocalServiceUtil
-                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L);
-            final String colabUrl = ConfigurationAttributeLocalServiceUtil
-                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_URL.name(), 0L);
-            final String adminEmail = ConfigurationAttributeLocalServiceUtil
-                    .getAttributeStringValue(ConfigurationAttributeKey.ADMIN_EMAIL.name(), 0L);
-            final String adminFromEmail = ConfigurationAttributeLocalServiceUtil
-                    .getAttributeStringValue(ConfigurationAttributeKey.ADMIN_FROM_EMAIL.name(), 0L);
+        final String colabName = ConfigurationAttributeKey.COLAB_NAME.getStringValue();
+        final String colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue();
+        final String colabUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue();
+        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.getStringValue();
+        final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
 
-            return text.replaceAll(COLAB_NAME_PLACEHOLDER, colabName)
-                    .replaceAll(COLAB_SHORT_NAME_PLACEHOLDER, colabShortName)
-                    .replaceAll(COLAB_URL, colabUrl)
-                    .replaceAll(ADMIN_EMAIL_PLACEHOLDER, adminEmail)
-                    .replaceAll(ADMIN_FROM_EMAIL_PLACEHOLDER, adminFromEmail);
-        } catch (NoSuchConfigurationAttributeException e) {
-            throw new SystemException("ConfigurationAttributeKey(s) missing", e);
-        }
+        return text.replaceAll(COLAB_NAME_PLACEHOLDER, colabName)
+                .replaceAll(COLAB_SHORT_NAME_PLACEHOLDER, colabShortName)
+                .replaceAll(COLAB_URL, colabUrl)
+                .replaceAll(ADMIN_EMAIL_PLACEHOLDER, adminEmail)
+                .replaceAll(ADMIN_FROM_EMAIL_PLACEHOLDER, adminFromEmail);
     }
 
     public static String replaceContestTypeStrings(String text, ContestType contestType) throws SystemException {
         try {
             if (contestType == null) {
-                contestType = ContestTypeLocalServiceUtil.getContestType(ConfigurationAttributeLocalServiceUtil
-                        .getAttributeLongValue(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.name(), 0L));
+                contestType = ContestTypeLocalServiceUtil.getContestType(
+                        ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
 
             }
             return text.replaceAll(PROPOSAL_PLACEHOLDER, contestType.getProposalName())
@@ -67,13 +56,8 @@ public final class TemplateReplacementUtil {
     }
 
     public static InternetAddress getAdminFromEmailAddress() throws SystemException, UnsupportedEncodingException {
-        try {
-            final String adminFromEmail = ConfigurationAttributeLocalServiceUtil
-                    .getAttributeStringValue(ConfigurationAttributeKey.ADMIN_FROM_EMAIL.name(), 0L);
-            return new InternetAddress(adminFromEmail,
-                    TemplateReplacementUtil.replacePlatformConstants("The <colab-name/> Team"));
-        } catch (NoSuchConfigurationAttributeException e) {
-            throw new SystemException("Admin email not configured in ConfigurationAttribute table", e);
-        }
+        final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
+        return new InternetAddress(adminFromEmail,
+                TemplateReplacementUtil.replacePlatformConstants("The <colab-name/> Team"));
     }
 }

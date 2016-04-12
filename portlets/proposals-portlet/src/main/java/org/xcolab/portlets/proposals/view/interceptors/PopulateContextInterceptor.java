@@ -1,11 +1,8 @@
 package org.xcolab.portlets.proposals.view.interceptors;
 
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
@@ -63,14 +60,8 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject(MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID, proposalsContext.getViewContestPhaseId(request));
             modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSALS_PREFERENCES, proposalsContext.getProposalsPreferences(request));
             modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_TYPE, proposalsContext.getContestType(request));
-            try {
-                modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_NAME, ConfigurationAttributeLocalServiceUtil
-                        .getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
-                modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_SHORT_NAME, ConfigurationAttributeLocalServiceUtil
-                        .getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
-            } catch (NoSuchConfigurationAttributeException e) {
-                throw new SystemException("Required ConfigurationAttributes not set", e);
-            }
+            modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_NAME, ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+            modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_SHORT_NAME, ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         }
     }
 }

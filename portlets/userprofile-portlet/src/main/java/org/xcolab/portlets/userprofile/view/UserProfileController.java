@@ -4,7 +4,6 @@ import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.MessagingUserPreferences;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.portal.PwdEncryptorException;
 import com.liferay.portal.UserPortraitSizeException;
@@ -231,10 +230,8 @@ public class UserProfileController {
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-            model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil
-                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
-            model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil
-                    .getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
+            model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+            model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         } catch (PortalException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";

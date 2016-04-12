@@ -5,7 +5,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -86,10 +85,9 @@ public class CreateProposalController extends BaseProposalsController {
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_LABEL,
     			1);
 
-        request.setAttribute("imageUploadServiceUrl", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.name(), 0L));
-        request.setAttribute("imageUploadHelpText", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.name(), 0L));
+        request.setAttribute("imageUploadServiceUrl",
+                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.getStringValue());
+        request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.getStringValue());
         
         return "proposalDetails_edit";
     }

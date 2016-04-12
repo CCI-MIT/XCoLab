@@ -35,9 +35,9 @@
 	</div>
 
 	<c:if test="${memberCategory == 'Staff'}">
-		<p>The ${colabName} <a href="http://climatecolab.org/web/guest/project-staff1/-/wiki/Main/Project%20staff">Staff
+		<p>The ${colabName} <a href="/web/guest/project-staff1/-/wiki/Main/Project%20staff">Staff
         </a> includes researchers affiliated with the
-            <a href="http://www.climatecolab.org/web/guest/resources/-/wiki/Main/Project%20staff" target="_blank">MIT
+            <a href="/web/guest/resources/-/wiki/Main/Project%20staff" target="_blank">MIT
                 Center for Collective Intelligence</a>. Members of the staff work together to develop a long-term vision
             for the ${colabName} and oversee its day-to-day operations.</p>
 	</c:if>
@@ -67,7 +67,7 @@
     <c:if test="${memberCategory == 'Catalyst'}">
         <p>
             ${colabName} <a
-                href="http://climatecolab.org/resources/-/wiki/Main/Climate+CoLab+Catalysts">Catalysts</a>
+                href="/resources/-/wiki/Main/Climate+CoLab+Catalysts">Catalysts</a>
             are knowledgeable professionals who have committed to providing feedback to proposals submitted in ${colabShortName} contests. They have applied to and been selected by the ${colabName} as members with expertise and
             qualifications that would be valuable contributions to proposal authors.
         </p>
@@ -77,7 +77,7 @@
     <c:if test="${memberCategory == 'Judges'}">
         <p>
             ${colabName} <a
-                href="http://climatecolab.org/web/guest/judges/-/wiki/Main/Climate+CoLab+Judges">Judges</a>
+                href="/web/guest/judges/-/wiki/Main/Climate+CoLab+Judges">Judges</a>
             are subject matter experts who have a high level of experience in the field, and provide feedback on and
             select the contest's most promising proposals.
         </p>

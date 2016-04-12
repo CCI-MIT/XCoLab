@@ -1,6 +1,5 @@
 package org.xcolab.portlets.users;
 
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -94,10 +93,8 @@ public class MembersController {
         model.addAttribute("memberCategories", MemberCategoryLocalServiceUtil
                 .getVisibleMemberCategories());
 
-        model.addAttribute("colabName", ConfigurationAttributeLocalServiceUtil.
-                getAttributeStringValue(ConfigurationAttributeKey.COLAB_NAME.name(), 0L));
-        model.addAttribute("colabShortName", ConfigurationAttributeLocalServiceUtil.
-                getAttributeStringValue(ConfigurationAttributeKey.COLAB_SHORT_NAME.name(), 0L));
+        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         return "users";
     }
 }

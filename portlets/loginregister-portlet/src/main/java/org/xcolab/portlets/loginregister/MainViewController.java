@@ -6,7 +6,6 @@ import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
@@ -147,8 +146,7 @@ public class MainViewController {
             }
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
-        model.addAttribute("generateScreenName", ConfigurationAttributeLocalServiceUtil.getAttributeBooleanValue(
-                ConfigurationAttributeKey.GENERATE_SCREEN_NAME.name(), 0L));
+        model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.getBooleanValue());
         return "view";
     }
 

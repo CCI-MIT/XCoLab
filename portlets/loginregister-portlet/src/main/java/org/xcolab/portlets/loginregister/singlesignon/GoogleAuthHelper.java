@@ -1,7 +1,6 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
 import com.ext.portlet.NoSuchConfigurationAttributeException;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
@@ -55,11 +54,8 @@ public final class GoogleAuthHelper {
     public GoogleAuthHelper(String redirectURI) throws SystemException, NoSuchConfigurationAttributeException {
         this.redirectUri = redirectURI;
         flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
-                JSON_FACTORY,
-                ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                        ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_ID.name(), 0L),
-                ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                        ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_SECRET.name(), 0L),
+                JSON_FACTORY, ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_ID.getStringValue(),
+                ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_SECRET.getStringValue(),
                 SCOPE).build();
 
         generateStateToken();
