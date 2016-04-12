@@ -103,8 +103,7 @@ public class SpamReportController {
                             +
                             "http://climatecolab.org/resources/-/wiki/Main/Community+philosophy+and+policies</a>";
             MessageUtil.sendMessage("Message from Climate CoLab Administrator", content,
-                    permissions.getCurrentUser().getUserId(), permissions.getCurrentUser().getUserId(), recipients,
-                    request);
+                    permissions.getCurrentUser().getUserId(), permissions.getCurrentUser().getUserId(), recipients);
         } catch (MailEngineException | AddressException e) {
             throw new SystemException("Failed to send message to user", e);
         }

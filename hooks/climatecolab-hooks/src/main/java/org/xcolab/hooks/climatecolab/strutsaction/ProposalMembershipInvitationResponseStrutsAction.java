@@ -84,8 +84,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 
 	public void sendMessage(long sender, List<Long> recipients, String subject, String content) {
 		try{
-			MessageUtil.sendMessage(subject, content, sender,
-					sender, recipients, null);
+			MessageUtil.sendMessage(subject, content, sender, sender, recipients);
 		} catch (AddressException | SystemException | PortalException | MailEngineException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

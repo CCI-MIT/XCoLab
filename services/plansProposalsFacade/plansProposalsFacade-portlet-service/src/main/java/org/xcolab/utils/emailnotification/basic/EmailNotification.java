@@ -227,8 +227,8 @@ public abstract class EmailNotification {
         try {
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");
-            MessageUtil.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID,
-                    recipients, null);
+            MessageUtil.sendMessage(template.getSubject(), content,
+                    ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients);
         } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
             throw new SystemException(e);
         }

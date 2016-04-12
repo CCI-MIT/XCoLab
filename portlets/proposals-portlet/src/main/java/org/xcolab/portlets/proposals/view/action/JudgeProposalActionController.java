@@ -325,7 +325,8 @@ public class JudgeProposalActionController {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             String exceptionAsString = sw.toString();
-            MessageUtil.sendMessage("Exception thrown when fellow rated proposal", e.getMessage()+"\n\n"+exceptionAsString, 1010458L, 1010458L, recipientIds, null);
+            MessageUtil.sendMessage("Exception thrown when fellow rated proposal",
+                    e.getMessage()+"\n\n"+exceptionAsString, 1010458L, 1010458L, recipientIds);
             throw e;
         }
     }

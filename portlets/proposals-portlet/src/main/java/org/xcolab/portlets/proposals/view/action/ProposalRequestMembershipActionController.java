@@ -204,8 +204,7 @@ public class ProposalRequestMembershipActionController {
         recipients.add(recipient);
 
         try{
-            MessageUtil.sendMessage(subject, content, sender,
-                    sender,recipients , null);
+            MessageUtil.sendMessage(subject, content, sender, sender,recipients);
         } catch (PortalException | SystemException | AddressException
                 | MailEngineException | UnsupportedEncodingException e) {
             e.printStackTrace();

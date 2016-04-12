@@ -1,5 +1,6 @@
 package com.ext.portlet.messaging;
 
+import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -9,11 +10,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.joda.time.DateTime;
+import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.legacy.enums.MessageConstants;
 import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.pojo.Message;
@@ -23,7 +24,6 @@ import org.xcolab.utils.TemplateReplacementUtil;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.portlet.PortletRequest;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -78,18 +78,18 @@ public final class MessageUtil {
                     recipientIds.clear();
                     recipientIds.add(1011659L); //patrick
                     sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  " + content,
-                            fromId, fromId, recipientIds, null);
+                            fromId, fromId, recipientIds);
                 }
                 return false;
             }
 
-            sendMessage(subject, content, fromId, fromId, recipientIds, null);
+            sendMessage(subject, content, fromId, fromId, recipientIds);
             return true;
         }
     }
 
     public static void sendMessage(String subject, String content, Long fromId,
-            Long replyToId, Collection<Long> recipientIds, PortletRequest request)
+            Long replyToId, Collection<Long> recipientIds)
             throws MailEngineException, AddressException,
             UnsupportedEncodingException, SystemException, PortalException {
         long nextId = CounterLocalServiceUtil.increment("com.ext.portlet.model.Message");
@@ -104,17 +104,17 @@ public final class MessageUtil {
         for (long user : recipientIds) {
             createRecipient(nextId, user);
             if (getMessagingPreferences(user).getEmailOnReceipt()) {
-                copyRecipient(user, message, request);
+                copyRecipient(user, message);
             }
         }
     }
 
-    public static void createRecipient(long messageId, long recipientId) throws SystemException {
+    private static void createRecipient(long messageId, long recipientId) throws SystemException {
         long nextId = CounterLocalServiceUtil.increment("com.ext.portlet.model.MessageRecipientStatus");
         MessagingClient.createRecipient(messageId, nextId, recipientId);
     }
 
-    public static void copyRecipient(Long userId, Message m, PortletRequest request)
+    private static void copyRecipient(Long userId, Message m)
             throws SystemException, PortalException, AddressException, MailEngineException,
             UnsupportedEncodingException {
         User from = UserLocalServiceUtil.getUser(m.getFromId());
@@ -128,7 +128,7 @@ public final class MessageUtil {
         String message = TemplateReplacementUtil.replacePlatformConstants(
                 MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(
                         MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName())
-                .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL,createMessageURL(m, request))
+                .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL,createMessageURL(m))
                         .replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT,m.getSubject())
                 .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,m.getContent().replaceAll("\n" ,"<br />")));
 
@@ -137,13 +137,9 @@ public final class MessageUtil {
         MailEngine.send(fromEmail, toEmail, subject, message, true);
     }
 
-    public static String createMessageURL(Message m, PortletRequest request) {
-        String home = "http://climatecolab.org";
-        if (request != null) {
-            int port = PortalUtil.getPortalPort();
-            home = "http://" + PortalUtil.getHost(request) + (port != 80 ? ":" + port : "");
-        }
-
+    private static String createMessageURL(Message m)
+            throws SystemException, NoSuchConfigurationAttributeException {
+        String home = ConfigurationAttributeKey.COLAB_URL.getStringValue();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
     }
 

@@ -1071,7 +1071,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);
         if (Validator.isNotNull(messageBody)) {
-            MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal), request);
+            MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
         }
     }
 

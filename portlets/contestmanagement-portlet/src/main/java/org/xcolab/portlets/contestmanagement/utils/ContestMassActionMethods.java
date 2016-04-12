@@ -91,7 +91,7 @@ public class ContestMassActionMethods {
         final String messageSubject = massMessageBean.getSubject();
         final String messageBody = massMessageBean.getBody();
         MessageUtil.sendMessage(messageSubject, messageBody,
-                CLIMATE_COLAB_TEAM_USER_ID, CLIMATE_COLAB_TEAM_USER_ID, recipientIds, request);
+                CLIMATE_COLAB_TEAM_USER_ID, CLIMATE_COLAB_TEAM_USER_ID, recipientIds);
 
         final String emailSubject = "Mass message: " + messageSubject;
         final String emailBody =

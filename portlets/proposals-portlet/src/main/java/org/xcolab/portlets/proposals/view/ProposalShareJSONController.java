@@ -199,8 +199,7 @@ public class ProposalShareJSONController {
 					return;
 				}
 			}
-            MessageUtil.sendMessage(subject, body, userId,
-                    userId, recipientIds, null);
+            MessageUtil.sendMessage(subject, body, userId, userId, recipientIds);
         } catch (com.liferay.portal.kernel.exception.SystemException | AddressException | MailEngineException e) {
             sendResponseJSON(false, "We were unable to share this proposal. Please try again later.", response);
 			return;

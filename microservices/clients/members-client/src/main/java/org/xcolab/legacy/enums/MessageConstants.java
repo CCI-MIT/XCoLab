@@ -14,7 +14,7 @@ public class MessageConstants {
     public static final String EMAIL_MESSAGE_VAR_MESSAGE = "$MESSAGE";
     public static final String EMAIL_MESSAGE_VAR_URL = "$URL";
 
-    public static final String EMAIL_MESSAGE_URL_TEMPLATE = "/web/guest/messaging?p_p_id=messaging_WAR_messagingportlet_INSTANCE_3LAh&messageId=";
+    public static final String EMAIL_MESSAGE_URL_TEMPLATE = "/web/guest/messaging/-/messaging/message/";
 
 
     public static final String EMAIL_MESSAGE_VAR_SUBJECT = "$SUBJECT" ;
