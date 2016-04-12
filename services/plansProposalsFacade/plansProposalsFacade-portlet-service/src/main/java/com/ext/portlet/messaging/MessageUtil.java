@@ -34,11 +34,12 @@ public final class MessageUtil {
 
     private static final Log _log = LogFactoryUtil.getLog(MessageUtil.class);
 
-    private MessageUtil() { }
+    private MessageUtil() {
+    }
 
-    public static int countMessages(long userId,  MessageType type) {
+    public static int countMessages(long userId, MessageType type) {
 
-        switch(type) {
+        switch (type) {
             case INBOX:
                 return MessagingClient.getMessageCountForUser(userId, false);
             case ARCHIVED:
@@ -77,7 +78,7 @@ public final class MessageUtil {
                 if (MessageLimitManager.shouldSendValidationErrorMessage(fromUser)) {
                     recipientIds.clear();
                     recipientIds.add(1011659L); //patrick
-                    sendMessage("VALIDATION PROBLEM  "+subject, "VALIDATION PROBLEM  " + content,
+                    sendMessage("VALIDATION PROBLEM  " + subject, "VALIDATION PROBLEM  " + content,
                             fromId, fromId, recipientIds);
                 }
                 return false;
@@ -114,35 +115,6 @@ public final class MessageUtil {
         MessagingClient.createRecipient(messageId, nextId, recipientId);
     }
 
-    private static void copyRecipient(Long userId, Message m)
-            throws SystemException, PortalException, AddressException, MailEngineException,
-            UnsupportedEncodingException {
-        User from = UserLocalServiceUtil.getUser(m.getFromId());
-        User to = UserLocalServiceUtil.getUser(userId);
-        String subject = m.getSubject();
-        if (subject.length() < 3) {
-            subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(
-                    MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName());
-            subject = TemplateReplacementUtil.replacePlatformConstants(subject);
-        }
-        String message = TemplateReplacementUtil.replacePlatformConstants(
-                MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(
-                        MessageConstants.EMAIL_MESSAGE_VAR_USER,from.getScreenName())
-                .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL,createMessageURL(m))
-                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT,m.getSubject())
-                .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,m.getContent().replaceAll("\n" ,"<br />")));
-
-        InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
-        InternetAddress toEmail = new InternetAddress(to.getEmailAddress());
-        MailEngine.send(fromEmail, toEmail, subject, message, true);
-    }
-
-    private static String createMessageURL(Message m)
-            throws SystemException, NoSuchConfigurationAttributeException {
-        String home = ConfigurationAttributeKey.COLAB_URL.getStringValue();
-        return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
-    }
-
     public static MessagingUserPreferences getMessagingPreferences(long userId) throws SystemException {
         MessagingUserPreferences prefs = MessagingUserPreferencesLocalServiceUtil.findByUser(userId);
         if (prefs == null) {
@@ -155,7 +127,37 @@ public final class MessageUtil {
             prefs.setEmailActivityDailyDigest(true);
             MessagingUserPreferencesLocalServiceUtil.addMessagingUserPreferences(prefs);
         }
-        
+
         return prefs;
+    }
+
+    private static void copyRecipient(Long userId, Message m)
+            throws SystemException, PortalException, AddressException, MailEngineException,
+            UnsupportedEncodingException {
+        User from = UserLocalServiceUtil.getUser(m.getFromId());
+        User to = UserLocalServiceUtil.getUser(userId);
+        String subject = m.getSubject();
+        if (subject.length() < 3) {
+            subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(
+                    MessageConstants.EMAIL_MESSAGE_VAR_USER, from.getScreenName());
+            subject = TemplateReplacementUtil.replacePlatformConstants(subject);
+        }
+        String message = TemplateReplacementUtil.replacePlatformConstants(
+                MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(
+                        MessageConstants.EMAIL_MESSAGE_VAR_USER, from.getScreenName())
+                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL, createMessageURL(m))
+                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT, m.getSubject())
+                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,
+                                m.getContent().replaceAll("\n", "<br />")));
+
+        InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
+        InternetAddress toEmail = new InternetAddress(to.getEmailAddress());
+        MailEngine.send(fromEmail, toEmail, subject, message, true);
+    }
+
+    private static String createMessageURL(Message m)
+            throws SystemException, NoSuchConfigurationAttributeException {
+        String home = ConfigurationAttributeKey.COLAB_URL.getStringValue();
+        return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
     }
 }
