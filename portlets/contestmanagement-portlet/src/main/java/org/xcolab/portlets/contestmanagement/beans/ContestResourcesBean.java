@@ -35,7 +35,7 @@ public class ContestResourcesBean implements Serializable {
 
     private final static String[] BASE_SECTION_TITLES = {
             "Background", "Key Issues", "Judging Criteria",
-            "Prizes", "Resources for Proposal Authors"
+            "Prizes", "Resources for <proposal/> Authors"
     };
     private final static List<String> IGNORE_SECTION_TITLES = Arrays.asList("Overview", "\u00a0");
     private final static int START_INDEX_OF_BOTTOM_SECTIONS = 4;
