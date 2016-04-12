@@ -306,8 +306,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
     }
 
     private String getUserLink(User user) {
-        return "<a style='color: black' href='http://climatecolab.org/web/guest/member/-/member/userId/" + user.getUserId() + "'>"
-                + user.getScreenName() + "</a>";
+        return "<a href='/web/guest/member/-/member/userId/" + user.getUserId() + "'>" + user.getScreenName() + "</a>";
     }
 
 }
