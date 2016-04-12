@@ -1,6 +1,9 @@
 package org.xcolab.domain.messaging;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Record1;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.Message;
@@ -29,6 +32,32 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
+    public int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened) {
+        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
+                .from(MESSAGE).getQuery();
+
+        if (recipientId != null || isArchived != null || isOpened != null) {
+            query.addJoin(MESSAGE_RECIPIENT_STATUS, MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID));
+        }
+        if (senderId != null) {
+            query.addConditions(MESSAGE.FROM_ID.eq(senderId));
+        }
+        if (recipientId != null) {
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(recipientId));
+        }
+        if (isArchived != null) {
+            final byte isArchivedByte = (byte) (isArchived ? 1 : 0);
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.ARCHIVED.eq(isArchivedByte));
+        }
+        if (isOpened != null) {
+            final byte isOpenedByte = (byte) (isOpened ? 1 : 0);
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpenedByte));
+        }
+
+        return query.fetchOne(0, Integer.class);
+    }
+
+    @Override
     public int countBySendingUser(long userId) {
         return dslContext.selectCount()
                 .from(MESSAGE)
@@ -54,6 +83,33 @@ public class MessageDaoImpl implements MessageDao {
                 .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
                         .and(MESSAGE_RECIPIENT_STATUS.OPENED.equal(isOpenedByte))
                 ).fetchOne(0, Integer.class);
+    }
+
+    @Override
+    public List<Message> findByGiven(int startRecord, int limitRecord,
+            Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(MESSAGE).getQuery();
+
+        if (recipientId != null || isArchived != null || isOpened != null) {
+            query.addJoin(MESSAGE_RECIPIENT_STATUS, MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID));
+        }
+        if (senderId != null) {
+            query.addConditions(MESSAGE.FROM_ID.eq(senderId));
+        }
+        if (recipientId != null) {
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(recipientId));
+        }
+        if (isArchived != null) {
+            final byte isArchivedByte = (byte) (isArchived ? 1 : 0);
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.ARCHIVED.eq(isArchivedByte));
+        }
+        if (isOpened != null) {
+            final byte isOpenedByte = (byte) (isOpened ? 1 : 0);
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpenedByte));
+        }
+        query.addLimit(startRecord, limitRecord);
+        return query.fetchInto(Message.class);
     }
 
     @Override

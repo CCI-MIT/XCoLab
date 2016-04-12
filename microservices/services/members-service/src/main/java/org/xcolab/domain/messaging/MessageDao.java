@@ -9,9 +9,13 @@ public interface MessageDao {
 
     Message getMessage(long messageId);
 
+    int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened);
     int countBySendingUser(long userId);
     int countByReceivingUserArchived(long userId, boolean isArchived);
     int countByReceivingUserOpened(long userId, boolean isOpened);
+
+    List<Message> findByGiven(int startRecord, int limitRecord,
+            Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened);
     List<Message> findByReceivingUserArchived(int startRecord, int limitRecord, long userId, boolean isArchived);
     List<Message> findByReceivingUser(int startRecord, int limitRecord, long userId);
     List<Message> findBySendingUser(int startRecord, int limitRecord, long userId);

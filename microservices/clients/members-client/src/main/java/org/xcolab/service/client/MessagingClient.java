@@ -2,6 +2,7 @@ package org.xcolab.service.client;
 
 import org.omg.CORBA.SystemException;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -28,7 +29,8 @@ public final class MessagingClient {
     public static List<Message> getMessagesForUser(int firstMessage, int lastMessage, long userId, boolean isArchived) {
 
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/" + userId + "/messages/")
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
+                        .queryParam("recipientId", userId)
                         .queryParam("firstRecord", firstMessage)
                         .queryParam("lastRecord", lastMessage);
 
@@ -43,7 +45,8 @@ public final class MessagingClient {
 
     public static List<Message> getSentMessagesForUser(int firstMessage, int lastMessage, long userId) throws SystemException {
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/" + userId + "/messagesSent/")
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
+                        .queryParam("senderId", userId)
                         .queryParam("firstRecord", firstMessage)
                         .queryParam("lastRecord", lastMessage);
 
@@ -56,23 +59,42 @@ public final class MessagingClient {
 
     public static int getMessageCountForUser(long userId, boolean isArchived) {
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/" + userId + "/messages/count");
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
+                        .queryParam("recipientId", userId);
         if (isArchived) {
             uriBuilder.queryParam("isArchived", true);
         }
-        return restTemplate.getForObject(uriBuilder.build().toString(), Integer.class);
+        final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.build().toString());
+        final List<String> countHeaders = httpHeaders.get("X-Total-Count");
+        if (countHeaders.isEmpty()) {
+            return 0;
+        }
+        return Integer.valueOf(countHeaders.get(0));
     }
 
     public static int getUnreadMessageCountForUser(long userId) {
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/" + userId + "/messages/countUnread");
-        return restTemplate.getForObject(uriBuilder.build().toString(), Integer.class);
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
+                        .queryParam("recipientId", userId)
+                        .queryParam("isOpened", false);
+        final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.build().toString());
+        final List<String> countHeaders = httpHeaders.get("X-Total-Count");
+        if (countHeaders.isEmpty()) {
+            return 0;
+        }
+        return Integer.valueOf(countHeaders.get(0));
     }
 
     public static int getSentMessageCountForUser(long userId) throws SystemException {
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/" + userId + "/messages/countSent");
-        return restTemplate.getForObject(uriBuilder.build().toString(), Integer.class);
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
+                        .queryParam("senderId", userId);
+        final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.build().toString());
+        final List<String> countHeaders = httpHeaders.get("X-Total-Count");
+        if (countHeaders.isEmpty()) {
+            return 0;
+        }
+        return Integer.valueOf(countHeaders.get(0));
     }
 
     public static void createMessage(Message message) {

@@ -7,93 +7,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.xcolab.domain.messaging.MessageDao;
 import org.xcolab.exceptions.NotFoundException;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.model.tables.pojos.User_;
 import org.xcolab.service.messaging.MessagingService;
 
-import java.util.Collections;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
 public class MessagingController {
 
+    private static final int DEFAULT_PAGE_SIZE = 20;
+
     @Autowired
     private MessagingService messagingService;
 
-    @RequestMapping(value = "/members/{memberId}/messages/count", method = RequestMethod.GET)
-    public Integer getMemberMessageCount(@PathVariable("memberId") Long memberId,
-            @RequestParam(required = false) boolean isArchived,
-            @RequestParam(required = false) boolean isOpened) {
-        if (memberId == null || memberId == 0) {
-            return 0;
-        } else {
-            if (isArchived) {
-                return messagingService.countArchivedMessagesForUser(memberId);
-            }
-            return messagingService.countMessagesForUser(memberId);
-        }
-    }
+    @Autowired
+    private MessageDao messageDao;
 
-    @RequestMapping(value = "/members/{memberId}/messages/countUnread", method = RequestMethod.GET)
-    public Integer getMemberMessageCountUnread(@PathVariable("memberId") Long memberId) {
-        if (memberId == null || memberId == 0) {
-            return 0;
-        } else {
-            return messagingService.countUnreadMessagesForUser(memberId);
-        }
-    }
+    @RequestMapping(value = "/messages", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Message> getMemberMessages(HttpServletResponse response,
+            @RequestParam(required = false) Integer firstRecord,
+            @RequestParam(required = false) Integer lastRecord,
+            @RequestParam(required = false) Long recipientId,
+            @RequestParam(required = false) Long senderId,
+            @RequestParam(required = false) Boolean isArchived,
+            @RequestParam(required = false) Boolean isOpened,
+            @RequestParam(required = false, defaultValue = "true") boolean includeCount) {
 
-    @RequestMapping(value = "/members/{memberId}/messages/countSent", method = RequestMethod.GET)
-    public Integer getMemberMessageCountSent(@PathVariable("memberId") Long memberId) {
-        if (memberId == null || memberId == 0) {
-            return 0;
-        } else {
-            return messagingService.countSentMessagesForUser(memberId);
-        }
-    }
+        final int firstRecordUnwrapped = firstRecord != null ? firstRecord : 0;
+        final int lastRecordUnwrapped = lastRecord != null ? lastRecord : firstRecordUnwrapped + DEFAULT_PAGE_SIZE;
 
-    @RequestMapping(value = "/members/{memberId}/messages", method = RequestMethod.GET)
-    public List<Message> getMemberMessages(@PathVariable("memberId") Long memberId,
-            @RequestParam int firstRecord,
-            @RequestParam int lastRecord,
-            @RequestParam(required = false) boolean isArchived) {
-        if (memberId == null || memberId == 0) {
-            return Collections.emptyList();
-        } else {
-            if (isArchived) {
-                return messagingService.findArchivedMessagesForUser(firstRecord, lastRecord, memberId);
-            }
-            return messagingService.findMessagesForUser(firstRecord, lastRecord, memberId);
+        if (includeCount) {
+            response.setHeader("X-Total-Count",
+                    Integer.toString(messageDao.countByGiven(senderId, recipientId, isArchived, isOpened)));
         }
-    }
-
-    @RequestMapping(value = "/members/{memberId}/messagesSent", method = RequestMethod.GET)
-    public List<Message> getMemberMessagesSent(@PathVariable("memberId") Long memberId,
-            @RequestParam int firstRecord,
-            @RequestParam int lastRecord) {
-        if (memberId == null || memberId == 0) {
-            return Collections.emptyList();
-        } else {
-            return messagingService.findSentMessagesForUser(firstRecord, lastRecord, memberId);
-        }
+        return messageDao.findByGiven(firstRecordUnwrapped, lastRecordUnwrapped, senderId, recipientId, isArchived, isOpened);
     }
 
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)
-    public Message getMessage(@PathVariable("messageId") Long messageId) throws NotFoundException {
-        if (messageId == null || messageId == 0) {
+    public Message getMessage(@PathVariable("messageId") long messageId) throws NotFoundException {
+        if (messageId == 0) {
             throw new NotFoundException("No message id given");
         } else {
-            return messagingService.getMessage(messageId);
+            return messageDao.getMessage(messageId);
         }
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
-    public List<User_> getMessageRecipients(@PathVariable("messageId") Long messageId) throws NotFoundException {
-        if (messageId == null || messageId == 0) {
+    public List<User_> getMessageRecipients(@PathVariable("messageId") long messageId) throws NotFoundException {
+        if (messageId == 0) {
             throw new NotFoundException("No message id given");
         } else {
-            return messagingService.getRecipients(messageId);
+            return messageDao.getRecipients(messageId);
         }
     }
 
@@ -104,7 +72,7 @@ public class MessagingController {
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.POST)
-    public void createMessageRecipient(@PathVariable("messageId") Long messageId,
+    public void createMessageRecipient(@PathVariable("messageId") long messageId,
             @RequestParam long recipientStatusId, //TODO: liferay generated id
             @RequestParam long recipientId) {
         messagingService.createRecipient(recipientStatusId, messageId, recipientId);
@@ -112,15 +80,15 @@ public class MessagingController {
 
     //TODO: patch doesn't work
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.PUT)
-    public void patchMessage(@PathVariable("messageId") Long messageId,
+    public void patchMessage(@PathVariable("messageId") long messageId,
             @RequestParam Long memberId,
             @RequestParam(required = false) Boolean isArchived,
             @RequestParam(required = false) Boolean isOpened) {
         if (isOpened != null) {
-            messagingService.setOpened(messageId, memberId, isOpened);
+            messageDao.setOpened(messageId, memberId, isOpened);
         }
         if (isArchived != null) {
-            messagingService.setArchived(messageId, memberId, isArchived);
+            messageDao.setArchived(messageId, memberId, isArchived);
         }
     }
 }
