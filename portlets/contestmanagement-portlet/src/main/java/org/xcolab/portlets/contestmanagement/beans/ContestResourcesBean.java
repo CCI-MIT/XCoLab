@@ -8,6 +8,7 @@ import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -79,16 +80,24 @@ public class ContestResourcesBean implements Serializable {
 
     private final List<SectionDefinitionWrapper> baseSections;
     private final ContestResourcesHtmlParserUtil contestResourcesHtmlParserUtil;
+    private final ContestType contestType;
     private List<SectionDefinitionWrapper> additionalSections;
     private List<SectionDefinitionWrapper> sections;
     private HashMap<String, String> overviewSectionValues;
     private int numberOfSections;
 
-    public ContestResourcesBean() {
+    @SuppressWarnings("unused")
+    public ContestResourcesBean() throws SystemException, PortalException {
+        this(ContestTypeLocalServiceUtil.getContestType(ConfigurationAttributeLocalServiceUtil.getAttributeLongValue(
+                ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.name(), 0L)));
+    }
+
+    public ContestResourcesBean(ContestType contestType) throws SystemException {
+        this.contestType = contestType;
         sections = new ArrayList<>();
         baseSections = new ArrayList<>();
         additionalSections = new ArrayList<>();
-        contestResourcesHtmlParserUtil = new ContestResourcesHtmlParserUtil();
+        contestResourcesHtmlParserUtil = new ContestResourcesHtmlParserUtil(contestType);
         contestResourcesHtmlParserUtil.setBaseSectionTitles(BASE_SECTION_TITLES);
         contestResourcesHtmlParserUtil.setIgnoreSectionTitles(IGNORE_SECTION_TITLES);
     }
@@ -236,7 +245,6 @@ public class ContestResourcesBean implements Serializable {
 
     public void fillOverviewSectionContent(Contest contest)
             throws SystemException, ParseException, NoSuchConfigurationAttributeException {
-        final ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
         List<ContestPhase> contestPhaseList = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
         String proposalSubmissionEndDate = "";
         for (ContestPhase contestPhase : contestPhaseList) {
@@ -244,13 +252,13 @@ public class ContestResourcesBean implements Serializable {
             if (contestPhaseType == 1L) {
                 final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMAT.withZone(
                         DateTimeZone.forID(ConfigurationAttributeLocalServiceUtil
-                                .getAttributeStringValue(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.name(),
-                                        0L)));
+                                .getAttributeStringValue(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.name(), 0L)));
                 boolean phaseHasNoEnd = (contestPhase.getPhaseEndDate() == null);
                 if (phaseHasNoEnd) {
                     proposalSubmissionEndDate = "This contest has no deadline.";
                 } else {
-                    proposalSubmissionEndDate = new DateTime(contestPhase.getPhaseEndDate()).toString(dateTimeFormatterWithTimeZone);
+                    proposalSubmissionEndDate = new DateTime(contestPhase.getPhaseEndDate())
+                            .toString(dateTimeFormatterWithTimeZone);
                 }
                 break;
             }

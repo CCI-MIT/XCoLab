@@ -1,6 +1,8 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
@@ -34,7 +36,8 @@ public class WikiPageWrapper {
     }
 
     public ContestResourcesBean getContestResourcesBean() throws Exception {
-        ContestResourcesBean contestResourcesBean = new ContestResourcesBean();
+        final ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
+        ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
         String resourcesContent = wikiPage.getContent();
         contestResourcesBean.fillSectionsWithContent(resourcesContent);
         return contestResourcesBean;

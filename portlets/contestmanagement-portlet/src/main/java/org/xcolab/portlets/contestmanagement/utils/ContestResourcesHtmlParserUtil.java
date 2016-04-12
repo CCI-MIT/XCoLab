@@ -1,5 +1,7 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
+import com.ext.portlet.model.ContestType;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
@@ -7,26 +9,26 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
+import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-/**
- * Created by Thomas on 2/14/2015.
- */
 public class ContestResourcesHtmlParserUtil {
 
     private final static String SECTION_DELIMITER_TAG = "h2";
+    private final ContestType contestType;
 
     private HashMap<String, String> baseSections;
     private HashMap<String, String> additionalSections;
     private List<String> ignoreSectionTitles;
 
-    public ContestResourcesHtmlParserUtil() {
+    public ContestResourcesHtmlParserUtil(ContestType contestType) {
+        this.contestType = contestType;
     }
 
-    public void setBaseSectionTitles(String[] baseSectionTitles) {
+    public void setBaseSectionTitles(String[] baseSectionTitles) throws SystemException {
         createSections(baseSectionTitles);
     }
 
@@ -58,15 +60,15 @@ public class ContestResourcesHtmlParserUtil {
         return additionalSections;
     }
 
-    private void createSections(String[] baseSectionTitles) {
+    private void createSections(String[] baseSectionTitles) throws SystemException {
         createBaseSections(baseSectionTitles);
         additionalSections = new LinkedHashMap<>();
     }
 
-    private void createBaseSections(String[] baseSectionTitles) {
+    private void createBaseSections(String[] baseSectionTitles) throws SystemException {
         baseSections = new LinkedHashMap<>();
         for (String baseSectionTitle : baseSectionTitles) {
-            baseSections.put(baseSectionTitle, "");
+            baseSections.put(TemplateReplacementUtil.replaceContestTypeStrings(baseSectionTitle, contestType), "");
         }
     }
 
@@ -91,7 +93,7 @@ public class ContestResourcesHtmlParserUtil {
         return getSectionAsHtmlString(sectionDefinitionWrapper.getTitle(), sectionDefinitionWrapper.getContent());
     }
 
-    public static String getSectionAsHtmlString(String title, String content) {
+    private static String getSectionAsHtmlString(String title, String content) {
         Document doc = Jsoup.parse("");
         Element bodyElement = doc.body();
         Element titleElement = createElementWithTextContent("h2", title);
