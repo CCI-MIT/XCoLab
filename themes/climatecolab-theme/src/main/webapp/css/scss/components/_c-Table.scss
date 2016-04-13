@@ -3,9 +3,14 @@ $c-Table__shadebar__background: url(../images/tableshade.png) repeat-x !default;
 $c-Table__borderColor: $t-Color__primary__grey !default;
 
 $c-Table__title__backgroundColor: $t-Color__primary__grey--light !default;
-$c-Table__title__fontColor: $t-Color__grey--darkest !default;
+$c-Table__title__fontColor: $t-Color__primary !default;
+$c-Table__title__textColor--hover: $t-Color__grey--dark !default;
 
 $c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
+$c-Table__cell--title__borderRight: none !default;
+$c-Table__cell--odd__background: url(../images/pattern-tbl-6x6.png) !default;
+$c-Table__row--title__borderBottom: 1px solid $c-Table__borderColor !default;
+$c-Table__cell--title__a__capitalization: $b-Typography__capitalization--none !default;
 
 .c-Table {
 }
@@ -18,7 +23,7 @@ $c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
 
 .c-Table__row--title { //thead.blueheaderbar
   background: $c-Table__title__backgroundColor;
-  border-bottom: 1px solid $c-Table__borderColor;
+  border-bottom: $c-Table__row--title__borderBottom;
   color: $c-Table__title__fontColor;
   position: -webkit-sticky;
   position: sticky;
@@ -30,11 +35,15 @@ $c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
   a {
     font-weight: $c-Table__row__fontWeight;
     color: $c-Table__title__fontColor;
+
+    &:hover {
+      color: $c-Table__title__textColor--hover;
+    }
   }
 }
 
 %c-Table__cell {
-  padding: 5px;
+  padding: 10px;
 }
 
 .c-Table__cell {
@@ -44,12 +53,72 @@ $c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
   border-bottom: 1px solid $c-Table__borderColor;
 
   &.odd {
-    background-image: url(../images/pattern-tbl-6x6.png);
+    background: $c-Table__cell--odd__background;
+  }
+
+  &.user {
+    min-width: 200px;
+  }
+
+  &.points {
+    text-align: right;
+  }
+
+  &.activity {
+    text-align: right;
+  }
+
+  &.category {
+    text-align: left;
+  }
+
+  &.member-since {
+    text-align: center;
   }
 }
 
 .c-Table__cell--title {
   @extend %c-Table__cell;
+
+  border-right: $c-Table__cell--title__borderRight;
+
+  &:last-of-type {
+    border-right: none;
+  }
+
+  &.user {
+    min-width: 200px;
+  }
+
+  &.points {
+    text-align: center;
+  }
+
+  &.activity {
+    text-align: center;
+  }
+
+  &.category {
+    text-align: center;
+    width: 80px;
+  }
+
+  &.member-since {
+    text-align: center;
+  }
+
+  a {
+    text-transform: $c-Table__cell--title__a__capitalization;
+  }
+
+  .tooltipAbove {
+    text-align: left;
+
+    img {
+      top: 2px;
+      position: relative;
+    }
+  }
 }
 
 .c-Table__sortArrow {
