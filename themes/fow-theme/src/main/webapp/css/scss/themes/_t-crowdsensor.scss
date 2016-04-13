@@ -157,9 +157,26 @@ $p-Contests__detailsButton__borderRadius: 20px;
 $p-Contests__detailsButton__padding: 12px 15px 5px 15px;
 $p-Contests__detailsButton__borderColor: $t-Color__grey;
 $p-Contests__detailsButton__backgroundColor: white;
+$p-Contests__userslist__td--g__background: url(../images/bg-noise.png) $t-Color__pattern__gray--lightest;
+$p-Contests__usersFilter__paddingRight: 0px;
 
 $p-community__colab__th__background: $t-Color__primary;
 $p-community__colab__th__textColor: white;
+$p-community__commList__marginTop: 7px;
+$p-community__c-Message__column__width: 204px;
+$p-community__commList__h2__paddingBottom: 6px;
+$p-community__commList__h2__borderBottom: 1px solid $t-Color__grey--light;
+$p-community__commList__h2__fontWeight: $b-Typography__fontWeight--regular;
+$p-community__discHead__width: 680px;
+$p-community__infoLeft__fontStyle: normal;
+$p-community__infoLeft__capitalization: uppercase;
+$p-community__infoLeft__fontSize: 20px;
+$p-community__infoLeft__fontWeight: $b-Typography__fontWeight--light;
+$p-community__infoLeft__paddingTop: 10px;
+$p-community__infoLeft__span__fontSize: 20px;
+$p-community__infoLeft__span__textColor: $t-Color__primary;
+$p-community__infoLeft__span__paddingRight: 0px;
+$p-community__infoLeft__span__fontWeight: $b-Typography__fontWeight--regular;
 
 $p-Contests__contestDetail__backgroundColor: $t-Color__pattern__gray--lightest;
 $p-Contests__contestDetail__heading__background: url(../images/bg-noise.png) $t-Color__pattern__gray--light;
@@ -274,3 +291,12 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--regular;
 
 $p-userprofile__comm_rightcol-title2__height: auto ;
 $p-userprofile__comm_rightcol-title2__padding--bottom: 10px;
+
+$c-Helpbox__borderRadius: 0px;
+$c-Helpbox__borderColor: $t-Color__grey--dark;
+$c-Helpbox__header__padding: 8px 10px 4px 19px;
+$c-Helpbox__header__background: url(../images/bg-noise.png) $t-Color__grey--dark;
+$c-Helpbox__header__title__textColor: white;
+$c-Helpbox__header__title__capitalization: uppercase;
+$c-Helpbox__text__fontWeight: $b-Typography__fontWeight--light;
+$c-Helpbox__header__close__marginTop: 0px;
