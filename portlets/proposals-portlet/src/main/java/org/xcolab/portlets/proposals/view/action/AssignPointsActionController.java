@@ -52,21 +52,22 @@ public class AssignPointsActionController {
                                 ActionResponse response, @Valid AssignPointsBean assignPointsBean,
                                 BindingResult result, PortletRequest portletRequest)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+        final User currentUser = proposalsContext.getUser(request);
+        final Proposal proposal = proposalsContext.getProposal(request);
+        final Contest contest = proposalsContext.getContest(request);
+        final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+
         if (result.hasErrors()) {
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/POINTS");
             return;
         }
 
         // Security handling
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         if (!ProposalTab.POINTS.getCanEdit(permissions, proposalsContext, portletRequest)) {
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/POINTS");
             return;
         }
-
-
-        final User currentUser = proposalsContext.getUser(request);
-        final Proposal proposal = proposalsContext.getProposal(request);
-        final Contest contest = proposalsContext.getContest(request);
-        final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
         //first, delete the existing configuration
         PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());

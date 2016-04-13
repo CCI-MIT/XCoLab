@@ -35,8 +35,8 @@ public class UpdateProposalScenarioActionController {
     @RequestMapping(params = {"action=updateProposalScenario"})
     public void show(ActionRequest request, Model model,
             ActionResponse response,
-                     @RequestParam(required = true) long scenarioId,
-                     @RequestParam(required = true) long modelId,
+                     @RequestParam long scenarioId,
+                     @RequestParam long modelId,
                      @RequestParam(required = false) String region,
                      @RequestParam(required = false) String impactAuthorComment,
                      @RequestParam(required = false) String impactIAFComment,
@@ -74,7 +74,7 @@ public class UpdateProposalScenarioActionController {
                 }
         }
         proposalsContext.invalidateContext(request);
-
+        response.sendRedirect(proposal.getProposalUrl() + "/tab/IMPACT");
     }
 
 

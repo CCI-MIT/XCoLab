@@ -10,8 +10,6 @@
 	<jsp:directive.include file="./header.jspx"/>
 
 	<portlet:actionURL var="updateContestOntologyURL">
-		<portlet:param name="action_forwardToPage" value="ontologyTab" />
-		<portlet:param name="action_errorForwardToPage" value="ontologyTab" />
 		<portlet:param name="tab" value="ONTOLOGY" />
 		<portlet:param name="contestId" value="${contestWrapper.contestPK }" />
 		<portlet:param name="action" value="updateContestOntology" />

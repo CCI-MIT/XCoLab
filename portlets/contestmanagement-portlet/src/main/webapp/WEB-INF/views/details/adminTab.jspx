@@ -14,8 +14,6 @@
 	<jsp:directive.include file="./header.jspx"/>
 
 	<portlet:actionURL var="updateContestAdminURL">
-		<portlet:param name="action_forwardToPage" value="adminTab" />
-		<portlet:param name="action_errorForwardToPage" value="adminTab" />
 		<portlet:param name="tab" value="ADMIN" />
 		<portlet:param name="contestId" value="${contestWrapper.contestPK }" />
 		<portlet:param name="action" value="updateContestAdmin" />

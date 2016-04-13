@@ -33,6 +33,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -56,7 +57,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +70,9 @@ public class JudgeProposalActionController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = {"action=sendComment"})
-    public void sendComment(ActionRequest request, Model model, ActionResponse response) throws SystemException, PortalException, AddressException, MailEngineException, UnsupportedEncodingException {
+    public void sendComment(ActionRequest request, Model model, ActionResponse response,
+            @RequestParam String forwardToTab)
+            throws SystemException, PortalException, AddressException, MailEngineException, IOException {
         // Security handling
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         if (!permissions.getCanAdminAll()) {
@@ -81,6 +83,7 @@ public class JudgeProposalActionController {
         ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(proposal.getWrapped(), proposalsContext.getContestPhase(request), request);
         ProposalLocalServiceUtil.contestPhasePromotionCommentNotifyProposalContributors(proposal.getWrapped(), proposalsContext.getContestPhase(request));
 
+        response.sendRedirect(proposal.getProposalUrl() + "/tab/"+forwardToTab);
     }
 
     @RequestMapping(params = {"action=saveAdvanceDetails"})
@@ -88,11 +91,6 @@ public class JudgeProposalActionController {
                                 ActionResponse response, @Valid ProposalAdvancingBean proposalAdvancingBean,
                                 BindingResult result)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
-
-        if (result.hasErrors()) {
-            return;
-        }
-
         Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         long proposalId = proposal.getProposalId();
@@ -100,24 +98,28 @@ public class JudgeProposalActionController {
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
+        if (result.hasErrors()) {
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/ADVANCING");
+            return;
+        }
+
         // Security handling
         if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
                 !permissions.getCanAdminAll()) {
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/ADVANCING");
             return;
         }
 
         //check if advancement was frozen
-        boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
-                proposalId,
-                contestPhase.getContestPhasePK(),
-                ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
-                0
-        );
+        boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(proposalId,
+                contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0);
 
-        boolean isUndecided = (proposalAdvancingBean.getAdvanceDecision() == JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue());
+        boolean isUndecided = (proposalAdvancingBean.getAdvanceDecision()
+                == JudgingSystemActions.AdvanceDecision.NO_DECISION.getAttributeValue());
 
         //disallow saving when frozen for non-admins
         if (isFrozen && !permissions.getCanAdminAll()) {
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/ADVANCING");
             return;
         }
 
@@ -138,24 +140,17 @@ public class JudgeProposalActionController {
         }
 
         //freeze the advancement
-        if (!isUndecided && request.getParameter("isFreeze") != null && request.getParameter("isFreeze").equals("true")) {
-            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
-                    proposalId,
-                    contestPhase.getContestPhasePK(),
-                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
-                    0,
-                    "true"
-            );
+        if (!isUndecided && request.getParameter("isFreeze") != null
+                && request.getParameter("isFreeze").equals("true")) {
+            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(proposalId, contestPhase.getContestPhasePK(),
+                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0, "true");
         }
 
         //unfreeze the advancement
-        if (permissions.getCanAdminAll() && request.getParameter("isUnfreeze") != null && request.getParameter("isUnfreeze").equals("true")) {
-            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(
-                    proposalId,
-                    contestPhase.getContestPhasePK(),
-                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
-                    0,
-                    "false"
+        if (permissions.getCanAdminAll() && request.getParameter("isUnfreeze") != null
+                && request.getParameter("isUnfreeze").equals("true")) {
+            ProposalContestPhaseAttributeLocalServiceUtil.persistAttribute(proposalId, contestPhase.getContestPhasePK(),
+                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0, "false"
             );
         }
 
@@ -214,7 +209,7 @@ public class JudgeProposalActionController {
             return;
         }
 
-        long contestId = proposalsContext.getContest(request).getContestPK();
+        final Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         User currentUser = proposalsContext.getUser(request);
@@ -243,14 +238,17 @@ public class JudgeProposalActionController {
         this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), currentUser.getUserId(), isPublicRating);
 
 
-         response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(ContestLocalServiceUtil.fetchContest(contestId), proposal.getWrapped(), contestPhase));
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest,
+                proposal.getWrapped(), contestPhase));
     }
 
     @RequestMapping(params = {"action=saveScreening"})
     public void saveScreening(ActionRequest request, Model model,
-                                 ActionResponse response,
-                                 @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
-                                 BindingResult result) throws PortalException, SystemException, ProposalsAuthorizationException, IOException, AddressException, MailEngineException {
+            ActionResponse response,
+            @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
+            BindingResult result)
+            throws PortalException, SystemException, ProposalsAuthorizationException, AddressException,
+            MailEngineException, IOException {
         try {
             if (result.hasErrors()) {
                 SessionErrors.clear(request);
@@ -258,7 +256,6 @@ public class JudgeProposalActionController {
                 return;
             }
 
-            long contestId = proposalsContext.getContest(request).getContestPK();
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
             ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -269,7 +266,6 @@ public class JudgeProposalActionController {
                     !permissions.getCanAdminAll()) {
                 return;
             }
-
 
             // save selection of judges
             if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
@@ -300,10 +296,12 @@ public class JudgeProposalActionController {
                 //save fellow action comment
                 ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), ContestPhaseLocalServiceUtil.fetchContestPhase(contestPhaseId));
 
-                if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()) {
-                    commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
-                } else if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()
-                        || fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER.getAttributeValue()) {
+                if (fellowProposalScreeningBean.getFellowScreeningAction()
+                        == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()
+                        || fellowProposalScreeningBean.getFellowScreeningAction()
+                        == JudgingSystemActions.FellowAction.OFFTOPIC.getAttributeValue()
+                        || fellowProposalScreeningBean.getFellowScreeningAction()
+                        == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER.getAttributeValue()) {
                     commentHelper.setScreeningComment(fellowProposalScreeningBean.getFellowScreeningActionCommentBody());
                 }
             }
