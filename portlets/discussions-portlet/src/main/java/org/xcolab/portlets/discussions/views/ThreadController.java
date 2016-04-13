@@ -32,6 +32,8 @@ import java.util.List;
 @RequestMapping("view")
 public class ThreadController extends BaseDiscussionController {
 
+    public static final String CREATE_THREAD_URL = "/web/guest/discussion/-/discussion/threads/create";
+
     @RenderMapping(params = "action=showThread")
     public String showThread(PortletRequest request, PortletResponse response, Model model,
                              @RequestParam long threadId)
@@ -87,7 +89,7 @@ public class ThreadController extends BaseDiscussionController {
 
             response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
         } else {
-            response.sendRedirect("/web/guest/discussion/-/discussion/threads/create");
+            response.sendRedirect(CREATE_THREAD_URL);
         }
     }
 
