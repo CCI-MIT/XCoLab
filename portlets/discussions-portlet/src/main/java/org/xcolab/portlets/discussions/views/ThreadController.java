@@ -81,10 +81,14 @@ public class ThreadController extends BaseDiscussionController {
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
                 categoryGroupWrapper.getWrapped(), 0L);
 
-        final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.addThread(categoryGroupWrapper.getId(),
-                categoryId, title, body, themeDisplay.getUser());
+        if (title.length() > 0 && body.length() > 0) {
+            final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.addThread(categoryGroupWrapper.getId(),
+                    categoryId, title, body, themeDisplay.getUser());
 
-        response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
+            response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
+        } else {
+            response.sendRedirect("/web/guest/discussion/-/discussion/threads/create");
+        }
     }
 
     @ActionMapping(params = "action=subscribeThread")
