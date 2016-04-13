@@ -64,7 +64,7 @@ public class ProposalRequestMembershipActionController {
     @RequestMapping(params = {"action=requestMembership"})
     public void show(ActionRequest request, Model model,
             ActionResponse response, @Valid RequestMembershipBean requestMembershipBean, BindingResult result, @RequestParam("requestComment") String comment)
-            throws PortalException, SystemException {
+            throws PortalException, SystemException, IOException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
     	if (result.hasErrors()) {
@@ -92,18 +92,19 @@ public class ProposalRequestMembershipActionController {
                 serviceContext).sendMessage();
 
         SessionMessages.add(request, "membershipRequestSent");
-        
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/tab/TEAM");
     }
 
     @RequestMapping(params = {"action=inviteMember"})
     public void invite(ActionRequest request, Model model,
                      ActionResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
-            throws PortalException, SystemException {
+            throws PortalException, SystemException, IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
                 WebKeys.THEME_DISPLAY);
 
         String input = requestMembershipInviteBean.getInviteRecipient();
         if (input == null || input.equals("")) {
+            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getProposal(request).getProposalId()) + "/tab/TEAM");
             return;
         }
 
@@ -142,6 +143,7 @@ public class ProposalRequestMembershipActionController {
 		} catch (NoSuchUserException e) {
 			SessionErrors.add(request, "memberInviteRecipientError");
 		}
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getProposal(request).getProposalId()) + "/tab/TEAM");
     }
 
     @ResourceMapping("inviteMembers-validateRecipient")
@@ -162,12 +164,11 @@ public class ProposalRequestMembershipActionController {
     }
 
     @RequestMapping(params = {"action=replyToMembershipRequest"})
-    public void respond(ActionRequest request, Model model,
-                        ActionResponse response,
+    public void respond(ActionRequest request, Model model, ActionResponse response,
                         @RequestParam("approve") String approve,
                         @RequestParam("comment") String comment,
                         @RequestParam("requestId") long requestId)
-            throws PortalException, SystemException {
+            throws PortalException, SystemException, IOException {
         if (PortalUtil.getUser(request) == null) {
             return;
         }
@@ -196,10 +197,10 @@ public class ProposalRequestMembershipActionController {
             ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
             sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_RESPONSE_SUBJECT,MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
         }
-
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId) + "/tab/ADMIN");
     }
 
-    public void sendMessage(long sender, long recipient, String subject, String content) {
+    private void sendMessage(long sender, long recipient, String subject, String content) {
         List<Long> recipients = new ArrayList<>();
         recipients.add(recipient);
 

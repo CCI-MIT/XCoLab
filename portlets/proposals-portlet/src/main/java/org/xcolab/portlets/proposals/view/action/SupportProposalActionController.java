@@ -3,16 +3,19 @@ package org.xcolab.portlets.proposals.view.action;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -28,8 +31,9 @@ public class SupportProposalActionController {
 
     
     @RequestMapping(params = {"action=supportProposalAction"})
-    public synchronized void handleAction(ActionRequest request, Model model, ActionResponse response)
-                    throws PortalException, SystemException, ProposalsAuthorizationException {
+    public synchronized void handleAction(ActionRequest request, Model model, ActionResponse response,
+            @RequestParam(required = false) String forwardToTab)
+            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         
         if (proposalsContext.getPermissions(request).getCanSupportProposal()) {
             long userId = proposalsContext.getUser(request).getUserId();
@@ -50,10 +54,15 @@ public class SupportProposalActionController {
             			analyticsValue);
                 }
             }
+            String proposalLinkUrl = ProposalLocalServiceUtil.getProposalLinkUrl(proposalId);
+            if (!StringUtils.isBlank(forwardToTab)) {
+                proposalLinkUrl += "/tab/" + forwardToTab;
+            }
+            response.sendRedirect(proposalLinkUrl);
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to toggle support for proposal");
         }
     }
-    
+
 }

@@ -28,15 +28,14 @@
         	<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
             	<strong>This ${contestType.proposalName} can be edited by:</strong>
             	<div>            		
-            		<portlet:actionURL var="deleteProposalURL">
-                    	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
+            		<portlet:actionURL var="toggleProposalOpenURL">
 	                    <portlet:param name="contestId" value="${contest.contestPK }" />
 						<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
     	                <portlet:param name="proposalId" value="${proposal.proposalId }" />
         	            <portlet:param name="action" value="toggleProposalOpen" />
             		</portlet:actionURL >
 
-            		<form action="${deleteProposalURL }" method="post">
+            		<form action="${toggleProposalOpenURL }" method="post">
             			<![CDATA[
             				<input type='radio' value='false' name='planOpen' ${not proposal.open ? "checked='checked'" : ''} />Team members only<br />
             				<input type='radio' value='true' name='planOpen' ${proposal.open ? "checked='checked'" : ''} />Anyone<br />
@@ -56,7 +55,6 @@
             	<strong>${contestType.proposalName} ribbon in ${contestType.contestName} phase</strong>
             	<div><!--  -->
             		<portlet:actionURL var="assignRibbonURL">
-                    	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
 	                    <portlet:param name="contestId" value="${contest.contestPK }" />
 						<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
     	                <portlet:param name="proposalId" value="${proposal.proposalId }" />
@@ -90,7 +88,6 @@
             	<strong>Owner actions</strong>
             	<div>            		
             		<portlet:actionURL var="deleteProposalURL">
-                    	<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
 	                    <portlet:param name="contestId" value="${contest.contestPK }" />
 						<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
     	                <portlet:param name="proposalId" value="${proposal.proposalId }" />
@@ -112,7 +109,6 @@
 		<c:if test="${ proposalsPermissions.canPromoteProposalToNextPhase }">
 
 			<portlet:actionURL var="promoteProposalURL">
-				<portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
 				<portlet:param name="contestId" value="${contest.contestPK }" />
 				<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
 				<portlet:param name="proposalId" value="${proposal.proposalId }" />
@@ -178,7 +174,6 @@
                     <div><i>No new requests</i></div>
                 </c:if>
                 <portlet:actionURL var="replyToMembershipRequest">
-                    <portlet:param name="action_forwardToPage" value="proposalDetails_ADMIN" />
                     <portlet:param name="contestId" value="${contest.contestPK }" />
 					<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
                     <portlet:param name="proposalId" value="${proposal.proposalId }" />

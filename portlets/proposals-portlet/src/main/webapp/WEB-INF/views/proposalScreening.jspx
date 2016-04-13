@@ -22,7 +22,6 @@
 
         This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
         <portlet:actionURL var="saveScreeningURL">
-            <portlet:param name="action_forwardToPage" value="proposalDetails_SCREENING"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
             <portlet:param name="proposalId" value="${proposal.proposalId }"/>
@@ -30,7 +29,7 @@
         </portlet:actionURL>
 
         <portlet:actionURL var="sendEmailURL">
-            <portlet:param name="action_forwardToPage" value="proposalDetails_SCREENING"/>
+            <portlet:param name="forwardToTab" value="SCREENING"/>
             <portlet:param name="contestId" value="${contest.contestPK }"/>
             <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
             <portlet:param name="proposalId" value="${proposal.proposalId }"/>

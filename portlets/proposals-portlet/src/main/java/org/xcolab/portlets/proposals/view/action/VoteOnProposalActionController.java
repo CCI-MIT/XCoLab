@@ -96,7 +96,7 @@ public class VoteOnProposalActionController {
         } else {
             if (user == null || user.getUserId() == 10115) {
                 /* User is not logged in - don't count vote and let user log in*/
-                request.setAttribute("promptLoginWindow","true");
+                request.setAttribute("promptLoginWindow", "true");
                 return;
             } else {
                 throw new ProposalsAuthorizationException("User isn't allowed to vote on proposal ");
