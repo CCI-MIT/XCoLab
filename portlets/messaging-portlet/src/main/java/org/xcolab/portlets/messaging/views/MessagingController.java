@@ -93,7 +93,7 @@ public class MessagingController {
     @RequestMapping(params = {"action=archiveMessages"})
     public void archiveMessages(ActionRequest request, ActionResponse response, Model model,
             @ModelAttribute("messagingBean") MessagingBean messagingBean)
-            throws PortalException, SystemException {
+            throws PortalException, SystemException, MessageNotFoundException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         User user = themeDisplay.getUser();
 

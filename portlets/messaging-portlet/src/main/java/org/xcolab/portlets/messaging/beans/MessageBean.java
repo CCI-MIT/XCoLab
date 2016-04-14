@@ -79,7 +79,7 @@ public class MessageBean implements Serializable {
         this.selected = selected;
     }
 
-    public Message getMessage() throws SystemException, PortalException {
+    public Message getMessage() throws SystemException, PortalException, MessageNotFoundException {
         if (message == null) {
             message = MessagingClient.getMessage(messageId);
         }
