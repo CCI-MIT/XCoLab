@@ -73,13 +73,6 @@
             $("#expand-help-text").click(function() {
                 var $helpTextElement = $("#help-text");
                 $helpTextElement.slideToggle("fast");
-                /*
-                if ($helpTextElement.is(":visible")) {
-                    $helpTextElement.fadeOut('fast');
-                } else {
-                    $helpTextElement.fadeIn('fast');
-                }
-                */
             });
         </script>
     </div>
