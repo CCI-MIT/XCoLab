@@ -2,6 +2,7 @@ package org.xcolab.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,7 @@ public class MembersController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping("/members/{memberId}")
+    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
     public User_ getMember(@PathVariable("memberId") Long memberId) throws NotFoundException {
         if (memberId == null || memberId == 0) {
             throw new NotFoundException("No message id given");
@@ -114,10 +115,7 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
-    public User_ getMember(@PathVariable("memberId") Long memberId) {
-        return memberService.getMember(memberId);
-    }
+
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
     public String updateMember(@RequestBody User_ user, @PathVariable("memberId") Long memberId) {
