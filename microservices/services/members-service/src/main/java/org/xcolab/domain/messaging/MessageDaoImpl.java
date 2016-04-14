@@ -6,6 +6,7 @@ import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.xcolab.exceptions.NotFoundException;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.model.tables.pojos.User_;
 
@@ -24,11 +25,15 @@ public class MessageDaoImpl implements MessageDao {
     private DSLContext dslContext;
 
     @Override
-    public Message getMessage(long messageId) {
-        return dslContext.select()
+    public Message getMessage(long messageId) throws NotFoundException {
+        final Record record = dslContext.select()
                 .from(MESSAGE)
                 .where(MESSAGE.MESSAGE_ID.eq(messageId))
-                .fetchOne().into(Message.class);
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException("Message with id " + messageId + "does not exist");
+        }
+        return record.into(Message.class);
     }
 
     @Override

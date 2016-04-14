@@ -4,9 +4,12 @@ import org.omg.CORBA.SystemException;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.xcolab.exceptions.MessageNotFoundException;
 import org.xcolab.pojo.Message;
 import org.xcolab.pojo.User_;
 
@@ -20,10 +23,17 @@ public final class MessagingClient {
 
     private MessagingClient() { }
 
-    public static Message getMessage(long messageId) {
+    public static Message getMessage(long messageId) throws MessageNotFoundException {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId);
-        return restTemplate.getForObject(uriBuilder.build().toString(), Message.class);
+        try {
+            return restTemplate.getForObject(uriBuilder.build().toString(), Message.class);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new MessageNotFoundException(messageId);
+            }
+            throw e;
+        }
     }
 
     public static List<Message> getMessagesForUser(int firstMessage, int lastMessage, long userId, boolean isArchived) {
