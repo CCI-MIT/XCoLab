@@ -56,4 +56,8 @@ public interface MemberDao {
     Integer getMemberMaterializedPoints(Long memberId);
 
     Integer getMemberActivityCount(Long memberId);
+
+    User_ getMember(Long userId);
+
+    void updateMember(User_ user);
 }

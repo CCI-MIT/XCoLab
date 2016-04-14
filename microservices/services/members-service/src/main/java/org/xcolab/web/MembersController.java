@@ -114,6 +114,22 @@ public class MembersController {
         }
     }
 
+    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
+    public User_ getMember(@PathVariable("memberId") Long memberId) {
+        return memberService.getMember(memberId);
+    }
+
+    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
+    public String updateMember(@RequestBody User_ user, @PathVariable("memberId") Long memberId) {
+        if (memberService.getMember(memberId) != null) {
+            memberService.updateMember(user);
+            return "Updated successfully";
+        }else{
+            return "Member not found";
+        }
+
+    }
+
     @RequestMapping(value = "/members/{memberId}/activityCount", method = RequestMethod.GET)
     public Integer getMemberActivityCount(@PathVariable("memberId") Long memberId) {
         if (memberId == null) {

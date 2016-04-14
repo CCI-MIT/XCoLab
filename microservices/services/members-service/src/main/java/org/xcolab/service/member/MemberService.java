@@ -102,4 +102,13 @@ public class MemberService {
     public Integer getMemberActivityCount(Long memberId) {
         return this.memberDao.getMemberActivityCount(memberId);
     }
+
+    public User_ getMember(Long userId) {
+        return this.memberDao.getMember(userId);
+    }
+
+    public void updateMember(User_ user) {
+        this.memberDao.updateMember(user);
+    }
+
 }

@@ -4,9 +4,9 @@ import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.enums.ConfigurationAttributeKey;
 
-import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 
 public final class TemplateReplacementUtil {
@@ -23,7 +23,8 @@ public final class TemplateReplacementUtil {
     public final static String PROPOSALS_PLACEHOLDER = "<proposals/>";
     public final static String CONTESTS_PLACEHOLDER = "<contests/>";
 
-    private TemplateReplacementUtil() { }
+    private TemplateReplacementUtil() {
+    }
 
     public static String replacePlatformConstants(String text) throws SystemException {
         final String colabName = ConfigurationAttributeKey.COLAB_NAME.getStringValue();

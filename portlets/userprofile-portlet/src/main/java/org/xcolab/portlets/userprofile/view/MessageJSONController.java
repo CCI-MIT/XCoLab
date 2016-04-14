@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,10 +22,11 @@ import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
 import org.xcolab.service.client.MembersClient;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 /**
  * Created by Thomas on 1/12/2015.
@@ -41,7 +43,8 @@ public class MessageJSONController extends JSONHelper {
     @Autowired
     private SmartValidator validator;
 
-    public MessageJSONController() { }
+    public MessageJSONController() {
+    }
 
     @InitBinder("messageBean")
     public void initMessageBeanBinder(WebDataBinder binder) {
@@ -64,6 +67,7 @@ public class MessageJSONController extends JSONHelper {
         if (!result.hasErrors()) {
             try {
                 User userSender = com.liferay.portal.util.PortalUtil.getUser(request);
+                userSender.getPassword();
                 User recipientUser = UserLocalServiceUtil.getUser(userIdRecipient);
                 sendMessage(messageBean, userSender, recipientUser);
                 this.writeSuccessResultResponseJSON(true, response);

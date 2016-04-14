@@ -1,29 +1,45 @@
 package org.xcolab.service.client;
 
+import net.spy.memcached.MemcachedClient;
+
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.xcolab.pojo.Contact_;
 import org.xcolab.pojo.MemberCategory;
 import org.xcolab.pojo.Role_;
 import org.xcolab.pojo.User_;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.List;
 
 public final class MembersClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/members-service";
 
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final int MEMCACHED_TIMEOUT = 3;
 
+    private static MemcachedClient memcached;
+
+    static {
+        try {
+            memcached = new MemcachedClient(new InetSocketAddress("127.0.0.1", 11211));
+            ;
+        } catch (IOException ignored) {
+            memcached = null;
+        }
+    }
+
+    static RestTemplate restTemplate = new RestTemplate();
     private MembersClient() { }
 
-    public static User_ getMember(long memberId) {
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/" + memberId);
-        return restTemplate.getForObject(uriBuilder.build().toString(), User_.class);
-    }
 
     public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstUser, int lastUser) {
@@ -90,5 +106,42 @@ public final class MembersClient {
                 EUREKA_APPLICATION_ID + "/membercategories/" + roleId + "");
 
         return restTemplate.getForObject(uriBuilder.build().toString(), MemberCategory.class);
+    }
+
+    public static User_ getMember(Long memberId) {
+        User_ ret = null;
+        if (memcached != null) {
+            ret = (User_) memcached.get("member_" + memberId);
+            if (ret != null) return ret;
+        }
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "");
+        ret = restTemplate.getForObject(uriBuilder.build().toString(), User_.class);
+
+        if (memcached != null) {
+            memcached.add("member_" + memberId, MEMCACHED_TIMEOUT, ret);
+        }
+        return ret;
+    }
+
+    public static void updateMember(User_ user) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + user.getUserId() + "");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity entity = new HttpEntity(user, headers);
+
+
+        ResponseEntity<String> out = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.POST, entity,
+                String.class);
+
+    }
+
+    public static Contact_ getContact(Long contactId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contact/" + contactId + "");
+        return restTemplate.getForObject(uriBuilder.build().toString(), Contact_.class);
     }
 }

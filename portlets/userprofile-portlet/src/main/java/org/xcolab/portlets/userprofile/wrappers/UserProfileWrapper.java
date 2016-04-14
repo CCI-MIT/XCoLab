@@ -17,25 +17,26 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-import org.xcolab.enums.MemberRole;
+
 import org.xcolab.enums.Plurality;
+import org.xcolab.legacy.enums.MemberRole;
+import org.xcolab.legacy.utils.SendMessagePermissionChecker;
+import org.xcolab.pojo.User_;
 import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.pojo.Message;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
+import org.xcolab.service.client.MembersClient;
 import org.xcolab.utils.EntityGroupingUtil;
-import org.xcolab.utils.SendMessagePermissionChecker;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
-import javax.portlet.PortletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +44,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.portlet.PortletRequest;
 
 public class UserProfileWrapper implements Serializable {
 
@@ -53,7 +56,7 @@ public class UserProfileWrapper implements Serializable {
     private static final boolean FIRE_GOOGLE_EVENT = false;
     private static final boolean DISPLAY_EMAIL_ERROR_MESSAGE = false;
 
-    private User user;
+    private User_ user;
     private UserBean userBean;
     private String realName;
     private Boolean attendsConference;
@@ -81,11 +84,12 @@ public class UserProfileWrapper implements Serializable {
     public UserProfileWrapper(String userIdString, PortletRequest request) throws PortalException, SystemException {
         Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        user = UserLocalServiceUtil.getUser(userId);
+        user = MembersClient.getMember(userId);
         if (user.isActive()) {
             User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
             if (loggedInUser != null) {
-                messagePermissionChecker = new SendMessagePermissionChecker(loggedInUser);
+                User_ logUser = MembersClient.getMember(loggedInUser.getUserId());
+                messagePermissionChecker = new SendMessagePermissionChecker(logUser);
                 if (loggedInUser.getUserId() == user.getUserId()) {
                     viewingOwnProfile = true;
                 }
@@ -94,7 +98,7 @@ public class UserProfileWrapper implements Serializable {
         }
     }
 
-    private void init(User user) throws PortalException, SystemException {
+    private void init(User_ user) throws PortalException, SystemException {
         this.user = user;
 
         userBean = new UserBean(user);
@@ -112,7 +116,10 @@ public class UserProfileWrapper implements Serializable {
                         CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
         badges = new BadgeBean(user.getUserId());
 
-        role = MemberRole.getHighestRole(user.getRoles());
+        try {
+            role = MemberRole.getHighestRole(user.getRoles());
+        } catch (MemberRole.NoSuchMemberRoleException ignored) {
+        }
 
         userSubscriptions = new UserSubscriptionsWrapper(user);
         supportedProposals.clear();
@@ -169,11 +176,11 @@ public class UserProfileWrapper implements Serializable {
         return viewingOwnProfile;
     }
 
-    public User getUser() {
+    public User_ getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(User_ user) {
         this.user = user;
     }
 
@@ -253,7 +260,7 @@ public class UserProfileWrapper implements Serializable {
         this.messagingPortletId = messagingPortletId;
     }
 
-    public User getWrapped() {
+    public User_ getWrapped() {
         return user;
     }
 
