@@ -1,4 +1,4 @@
-package org.xcolab;
+package org.xcolab.util;
 
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import javax.mail.Message;
 
@@ -18,16 +20,27 @@ public class EmailUtil {
     @Autowired
     private Environment env;
 
-    public void sendEmailToRecipient(String senderName, String senderEmail, String subject, String htmlBody,
-                                     String txtBody, String toEmail) {
+    public void sendEmailToRecipient(String from, List<String> toEmails, String subject, String htmlBody,
+                                     boolean isHtml, String replyTo) {
         final Email email = new Email();
 
-        email.setFromAddress(senderName, senderEmail);
+        email.setFromAddress(null, from);
         email.setSubject(subject);
-        email.addRecipient(null, toEmail, Message.RecipientType.TO);
-        if (txtBody != null && !txtBody.isEmpty())
-            email.setText(txtBody);
-        email.setTextHTML(htmlBody);
+
+        if (replyTo != null && !replyTo.isEmpty()) {
+            email.setReplyToAddress(null, replyTo);
+        }
+
+        for(String emailTo : toEmails) {
+            email.addRecipient(null, emailTo, Message.RecipientType.TO);
+        }
+
+        if (isHtml) {
+            email.setTextHTML(htmlBody);
+        } else {
+            email.setText(htmlBody);
+        }
+
         String smtpHost = env.getRequiredProperty("mail.smtp.host");
         String smtpPort = env.getRequiredProperty("mail.smtp.port");
         String userName = env.getRequiredProperty("mail.smtp.user");

@@ -30,8 +30,8 @@ import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,10 +51,16 @@ import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
+import org.xcolab.service.client.EmailClient;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Map;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -62,10 +68,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -77,7 +79,8 @@ public class UserProfileController {
     @Autowired
     private SmartValidator validator;
 
-    public UserProfileController() { }
+    public UserProfileController() {
+    }
 
     @InitBinder("userBean")
     public void initUserWrapperBeanBinder(WebDataBinder binder) {
@@ -101,7 +104,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam(required = true) String userId)
+                                      @RequestParam(required = true) String userId)
             throws SystemException, PortalException {
         return showUserProfileOrNotInitialized(request, model, userId);
     }
@@ -127,7 +130,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=edit")
     public String showUserProfileEdit(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam(required = true) String userId)
+                                      @RequestParam(required = true) String userId)
             throws SystemException {
 
         try {
@@ -149,8 +152,8 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=subscriptions")
     public String showUserProfileSubscriptions(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam(required = true) String userId,
-            @RequestParam(required = false, defaultValue = "1") int paginationId) {
+                                               @RequestParam(required = true) String userId,
+                                               @RequestParam(required = false, defaultValue = "1") int paginationId) {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             populateUserWrapper(currentUserProfile, model);
@@ -164,8 +167,8 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=subscriptionsManage")
     public String showUserSubscriptionsManage(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam(required = true) String userId,
-            @RequestParam(required = false) String typeFilter)
+                                              @RequestParam(required = true) String userId,
+                                              @RequestParam(required = false) String typeFilter)
             throws SystemException {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
@@ -187,7 +190,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "action=navigateSubscriptions")
     public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
-            @RequestParam(required = true) String paginationAction)
+                                      @RequestParam(required = true) String paginationAction)
             throws SystemException, PortalException, IOException {
 
         Integer paginationPageId = 1;
@@ -212,9 +215,9 @@ public class UserProfileController {
 
     @RequestMapping(params = "updateError=true")
     public String updateProfileError(PortletRequest request, Model model,
-            @RequestParam(required = false) boolean emailError,
-            @RequestParam(required = false) boolean passwordError,
-            @RequestParam(required = true) String userId)
+                                     @RequestParam(required = false) boolean emailError,
+                                     @RequestParam(required = false) boolean passwordError,
+                                     @RequestParam(required = true) String userId)
             throws SystemException {
         model.addAttribute("updateError", true);
         if (emailError) {
@@ -245,7 +248,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "updateSuccess=true")
     public String updateProfileSuccess(PortletRequest request, Model model,
-            @RequestParam(required = true) String userId) throws SystemException {
+                                       @RequestParam(required = true) String userId) throws SystemException {
 
         model.addAttribute("updateSuccess", true);
         try {
@@ -260,7 +263,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "action=update")
     public void updateUserProfile(ActionRequest request, Model model, ActionResponse response,
-            @ModelAttribute UserBean updatedUserBean, BindingResult result)
+                                  @ModelAttribute UserBean updatedUserBean, BindingResult result)
             throws IOException, UserProfileAuthorizationException, SystemException, PortalException {
         Long loggedInUserId = Long.parseLong(request.getRemoteUser());
         if (!loggedInUserId.equals(updatedUserBean.getUserId())) {
@@ -525,11 +528,12 @@ public class UserProfileController {
                 "Thank you for engaging on the <colab-name/>!\n");
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
-        InternetAddress[] addressTo = {new InternetAddress(user.getEmailAddress())};
 
-        InternetAddress[] replyTo = {addressFrom};
-        MailEngine.send(addressFrom, addressTo, null, null, null,
-                messageSubject, messageBody, false, replyTo, null, null);
+
+        EmailClient.sendEmail(addressFrom.getAddress(), user.getEmailAddress(), messageSubject,
+                messageBody, false, addressFrom.getAddress());
+
+
     }
 
     @RequestMapping(params = "action=deleteProfile")

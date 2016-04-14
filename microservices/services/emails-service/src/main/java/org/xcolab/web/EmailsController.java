@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.EmailUtil;
+import org.xcolab.util.EmailUtil;
 
 import java.util.List;
 
@@ -16,16 +16,16 @@ public class EmailsController {
     private EmailUtil emailUtil;
 
     @RequestMapping(value = "/sendEmail", method = RequestMethod.PUT)
-    public String listEmailTemplates(@RequestParam String senderName,
-                                     @RequestParam String senderEmail,
-                                     @RequestParam String subject,
-                                     @RequestParam String emailBody,
-                                     @RequestParam(required = false, defaultValue = "") String emailTxt,
-                                     @RequestParam List<String> recipients) {
+    public String sendEmail(@RequestParam String from,
+                            @RequestParam("to[]") List<String> to,
+                            @RequestParam String subject,
+                            @RequestParam String emailBody,
+                            @RequestParam Boolean isHtml,
+                            @RequestParam(required = false, defaultValue = "") String replyTo) {
 
-        for (String recipient : recipients) {
-            emailUtil.sendEmailToRecipient(senderName, senderEmail, subject, emailBody, emailTxt, recipient);
-        }
+
+        emailUtil.sendEmailToRecipient(from, to, subject, emailBody, isHtml, replyTo);
+
         return "Email sent successfully";
     }
-}
+}/**/
