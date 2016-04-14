@@ -8,7 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.pojo.Contact_;
@@ -38,7 +37,9 @@ public final class MembersClient {
     }
 
     static RestTemplate restTemplate = new RestTemplate();
-    private MembersClient() { }
+
+    private MembersClient() {
+    }
 
 
     public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
@@ -109,10 +110,12 @@ public final class MembersClient {
     }
 
     public static User_ getMember(Long memberId) {
-        User_ ret = null;
+        User_ ret;
         if (memcached != null) {
             ret = (User_) memcached.get("member_" + memberId);
-            if (ret != null) return ret;
+            if (ret != null) {
+                return ret;
+            }
         }
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "");
@@ -130,10 +133,10 @@ public final class MembersClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity entity = new HttpEntity(user, headers);
+        HttpEntity<User_> entity = new HttpEntity(user, headers);
 
 
-        ResponseEntity<String> out = restTemplate.exchange(uriBuilder.build().toString(),
+        restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.POST, entity,
                 String.class);
 
