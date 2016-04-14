@@ -16,6 +16,8 @@ public class Message implements Serializable {
 	private Timestamp createdate;
 	private String    subject;
 	private String    content;
+	private Boolean opened;
+	private Boolean archived;
 
 	public Message() {}
 
@@ -28,20 +30,29 @@ public class Message implements Serializable {
 		this.content = value.content;
 	}
 
+	public Message(Message value, Boolean opened, Boolean archived) {
+		this(value);
+		this.opened = opened;
+		this.archived = archived;
+	}
+
 	public Message(
-		Long      messageid,
-		Long      fromid,
-		Long      repliesto,
-		Timestamp createdate,
-		String    subject,
-		String    content
-	) {
+			Long messageid,
+			Long fromid,
+			Long repliesto,
+			Timestamp createdate,
+			String subject,
+			String content,
+			Boolean opened,
+			Boolean archived) {
 		this.messageid = messageid;
 		this.fromid = fromid;
 		this.repliesto = repliesto;
 		this.createdate = createdate;
 		this.subject = subject;
 		this.content = content;
+		this.opened = opened;
+		this.archived = archived;
 	}
 
 	public Long getMessageId() {
@@ -102,8 +113,26 @@ public class Message implements Serializable {
 		sb.append(", ").append(createdate);
 		sb.append(", ").append(subject);
 		sb.append(", ").append(content);
+		sb.append(", ").append(opened);
+		sb.append(", ").append(archived);
 
 		sb.append(")");
 		return sb.toString();
+	}
+
+	public Boolean getOpened() {
+		return opened;
+	}
+
+	public void setOpened(Boolean opened) {
+		this.opened = opened;
+	}
+
+	public Boolean getArchived() {
+		return archived;
+	}
+
+	public void setArchived(Boolean archived) {
+		this.archived = archived;
 	}
 }

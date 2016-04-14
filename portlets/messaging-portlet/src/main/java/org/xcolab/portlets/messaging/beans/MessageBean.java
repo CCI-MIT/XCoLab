@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.exceptions.MessageNotFoundException;
 import org.xcolab.pojo.Message;
 import org.xcolab.pojo.User_;
 import org.xcolab.service.client.MessagingClient;
@@ -67,8 +68,12 @@ public class MessageBean implements Serializable {
         return UserLocalServiceUtil.getUser(message.getFromId());
     }
 
-    public void markMessageAsOpened(long userId) throws PortalException, SystemException {
+    public void markMessageAsOpened(long userId) {
         MessagingClient.setOpened(messageId, userId, true);
+    }
+
+    public boolean getIsOpened() throws MessageNotFoundException, PortalException, SystemException {
+        return getMessage().getOpened();
     }
 
     public boolean isSelected() {
