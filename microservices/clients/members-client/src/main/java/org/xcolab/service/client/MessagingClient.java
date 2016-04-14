@@ -76,7 +76,8 @@ public final class MessagingClient {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
                         .queryParam("recipientId", userId)
-                        .queryParam("isOpened", false);
+                        .queryParam("isOpened", false)
+                        .queryParam("isArchived", false);
         final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.build().toString());
         final List<String> countHeaders = httpHeaders.get("X-Total-Count");
         if (countHeaders.isEmpty()) {
