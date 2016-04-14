@@ -70,10 +70,8 @@ public final class MessagingClient {
     public static int getMessageCountForUser(long userId, boolean isArchived) {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
-                        .queryParam("recipientId", userId);
-        if (isArchived) {
-            uriBuilder.queryParam("isArchived", true);
-        }
+                        .queryParam("recipientId", userId)
+                        .queryParam("isArchived", isArchived);
         final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.build().toString());
         final List<String> countHeaders = httpHeaders.get("X-Total-Count");
         if (countHeaders.isEmpty()) {
