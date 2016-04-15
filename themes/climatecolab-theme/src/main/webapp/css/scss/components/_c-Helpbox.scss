@@ -2,12 +2,18 @@ $c-Helpbox__borderRadius: 10px !default;
 $c-Helpbox__backgroundColor: white !default;
 $c-Helpbox__borderColor: $t-Color__primary__grey--dark !default;
 
-$c-Helpbox__header_background: url(../images/grid_t.gif) !default;
+$c-Helpbox__header__padding: 14px 10px 0 19px !default;
+
+$c-Helpbox__header__background: url(../images/grid_t.gif) !default;
 
 $c-Helpbox__header__title__textColor: $t-Color__secondary !default;
+$c-Helpbox__header__title__fontWeight: $b-Typography__fontWeight--bold !default;
+$c-Helpbox__header__title__capitalization: $b-Typography__capitalization--none !default;
 
-$c-Helpbox__text__textColor: $t-Color__grey--darkest;
+$c-Helpbox__text__textColor: $t-Color__grey--darkest !default;
+$c-Helpbox__text__fontWeight: $b-Typography__fontWeight !default;
 
+$c-Helpbox__header__close__marginTop: -5px !default;
 
 .c-Helpbox {
   width: 970px;
@@ -18,9 +24,9 @@ $c-Helpbox__text__textColor: $t-Color__grey--darkest;
 }
 
 .c-Helpbox__header {
-  background: $c-Helpbox__header_background;
+  background: $c-Helpbox__header__background;
   height: 24px;
-  padding: 14px 10px 0 19px;
+  padding: $c-Helpbox__header__padding;
   color: black;
   font-size: 15px;
 
@@ -31,15 +37,16 @@ $c-Helpbox__text__textColor: $t-Color__grey--darkest;
 }
 
 .c-Helpbox__header__title {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $c-Helpbox__header__title__fontWeight;
   color: $c-Helpbox__header__title__textColor;
+  text-transform: $c-Helpbox__header__title__capitalization;
 }
 
 .c-Helpbox__header__close {
   float: right;
   height: 20px;
   width: 20px;
-  margin-top: -5px;
+  margin-top: $c-Helpbox__header__close__marginTop;
 }
 
 .c-Helpbox__text {
@@ -47,6 +54,7 @@ $c-Helpbox__text__textColor: $t-Color__grey--darkest;
   color: $c-Helpbox__text__textColor;
   padding: 15px 20px 18px 20px;
   line-height: 24px;
+  font-weight: $c-Helpbox__text__fontWeight;
 
   //Typekit
   .wf-active & {

@@ -16,6 +16,9 @@ $p-Contests__detailsButton__padding: 8px 5px 0px 5px !default;
 $p-Contests__detailsButton__backgroundColor: $t-Color__primary__grey--light !default;
 $p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
 
+$p-Contests__userslist__td--g__background: url(../images/pattern-tbl-6x6.png) !default;
+$p-Contests__usersFilter__paddingRight: 0px !default;
+
 /* CONTESTS ------------------------------------------------------------------------------------- */
 
 /* columns  ------------- */
@@ -160,7 +163,7 @@ $p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
 
 .users-filter {
   float: right;
-  padding-right: 240px;
+  padding-right: $p-Contests__usersFilter__paddingRight;
   height: 27px;
 }
 
@@ -179,8 +182,10 @@ $p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
 
 .users-pagination {
   float: left;
-  margin-top: 40px;
-  margin-left: 10px;
+  width: 100%;
+  border-bottom: 1px solid $t-Color__grey--light;
+  padding-bottom: 40px;
+  padding-top: 40px;
 }
 
 /* contest boxes - rounded corners ------------- */
@@ -418,7 +423,7 @@ $p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
 }
 
 .userslist td.g {
-  background-image: url(../images/pattern-tbl-6x6.png);
+  background: $p-Contests__userslist__td--g__background;
 }
 
 .userslist.featured td {
