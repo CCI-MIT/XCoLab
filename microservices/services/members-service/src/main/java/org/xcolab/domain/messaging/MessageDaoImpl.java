@@ -6,8 +6,10 @@ import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.xcolab.exceptions.NotFoundException;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.model.tables.pojos.User_;
+import org.xcolab.wrappers.MessageReceived;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -24,11 +26,15 @@ public class MessageDaoImpl implements MessageDao {
     private DSLContext dslContext;
 
     @Override
-    public Message getMessage(long messageId) {
-        return dslContext.select()
+    public Message getMessage(long messageId) throws NotFoundException {
+        final Record record = dslContext.select()
                 .from(MESSAGE)
                 .where(MESSAGE.MESSAGE_ID.eq(messageId))
-                .fetchOne().into(Message.class);
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException("Message with id " + messageId + "does not exist");
+        }
+        return record.into(Message.class);
     }
 
     @Override
@@ -108,8 +114,9 @@ public class MessageDaoImpl implements MessageDao {
             final byte isOpenedByte = (byte) (isOpened ? 1 : 0);
             query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpenedByte));
         }
+        query.addOrderBy(MESSAGE.CREATE_DATE.desc());
         query.addLimit(startRecord, limitRecord);
-        return query.fetchInto(Message.class);
+        return query.fetchInto(recipientId != null ? MessageReceived.class : Message.class);
     }
 
     @Override
@@ -121,7 +128,7 @@ public class MessageDaoImpl implements MessageDao {
                 .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
                         .and(MESSAGE_RECIPIENT_STATUS.ARCHIVED.equal(isArchivedByte))
                 ).orderBy(MESSAGE.CREATE_DATE.desc())
-                .limit(startRecord, limitRecord).fetchInto(Message.class);
+                .limit(startRecord, limitRecord).fetchInto(MessageReceived.class);
     }
 
     @Override
@@ -131,7 +138,7 @@ public class MessageDaoImpl implements MessageDao {
                 .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.equal(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
                 .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId))
                 .orderBy(MESSAGE.CREATE_DATE.desc())
-                .limit(startRecord, limitRecord).fetchInto(Message.class);
+                .limit(startRecord, limitRecord).fetchInto(MessageReceived.class);
     }
 
     @Override

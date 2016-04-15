@@ -1,5 +1,6 @@
 package org.xcolab.domain.messaging;
 
+import org.xcolab.exceptions.NotFoundException;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.model.tables.pojos.User_;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface MessageDao {
 
-    Message getMessage(long messageId);
+    Message getMessage(long messageId) throws NotFoundException;
 
     int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened);
     int countBySendingUser(long userId);

@@ -58,7 +58,7 @@
                                             <form:hidden path="dataPage.messages[${x.index}].messageId" />
                                         </c:if>
                                     </td>
-                                    <td class="c-Table__cell">
+                                    <td class="c-Table__cell ${messagingBean.type != 'SENT' and !message.isOpened ? 'highlight' : ''}">
                                         <a href="${message.linkUrl}">${message.subject}</a>
                                     </td>
                                     <td class="c-Table__cell">

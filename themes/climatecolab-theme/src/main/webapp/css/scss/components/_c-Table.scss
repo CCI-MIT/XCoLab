@@ -6,6 +6,7 @@ $c-Table__title__backgroundColor: $t-Color__primary__grey--light !default;
 $c-Table__title__fontColor: $t-Color__grey--darkest !default;
 
 $c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
+$c-Table__cell__fontWeight--active: $b-Typography__fontWeight--bold !default;
 
 .c-Table {
 }
@@ -45,6 +46,10 @@ $c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
 
   &.odd {
     background-image: url(../images/pattern-tbl-6x6.png);
+  }
+
+  &.highlight a{
+    font-weight: $c-Table__cell__fontWeight--active;
   }
 }
 

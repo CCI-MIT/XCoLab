@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.xcolab.exceptions.MessageNotFoundException;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.legacy.enums.MessageType;
 import org.xcolab.pojo.Message;
 import org.xcolab.portlets.messaging.beans.MessageBean;
@@ -63,15 +65,24 @@ public class MessagingController {
     @RenderMapping(params = {"page=viewMessage"})
     public String showMessage(RenderRequest request, RenderResponse response, Model model,
             @RequestParam(required = false) Integer messageId)
-            throws SystemException, PortalException {
+            throws SystemException, PortalException, MessageNotFoundException, DiscussionAuthorizationException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
         User user = themeDisplay.getUser();
 
         model.addAttribute("user", user);
-
         final MessageBean messageBean = new MessageBean(MessagingClient.getMessage(messageId));
-        messageBean.markMessageAsOpened(user.getUserId());
+
+        final MessagingPermissions messagingPermissions = new MessagingPermissions(request, messageBean);
+        if (!messagingPermissions.getCanViewMessage()) {
+            throw new DiscussionAuthorizationException("User " + user.getUserId()
+                    + " is not authorized to view message " + messageId);
+        }
+
+        if (messagingPermissions.isRecipient()) {
+            messageBean.markMessageAsOpened(user.getUserId());
+        }
         final SendMessageBean sendMessageBean = new SendMessageBean(messageBean);
         model.addAttribute("sendMessageBean", sendMessageBean);
         model.addAttribute("messageBean", messageBean);
@@ -82,7 +93,7 @@ public class MessagingController {
     @RequestMapping(params = {"action=archiveMessages"})
     public void archiveMessages(ActionRequest request, ActionResponse response, Model model,
             @ModelAttribute("messagingBean") MessagingBean messagingBean)
-            throws PortalException, SystemException {
+            throws PortalException, SystemException, MessageNotFoundException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         User user = themeDisplay.getUser();
 
