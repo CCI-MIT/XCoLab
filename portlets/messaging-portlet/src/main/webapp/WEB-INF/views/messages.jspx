@@ -107,16 +107,17 @@
                     </li>
                 </ul>
 
-                <c:if test="${messagingBean.type == 'INBOX'}">
-                    <br />
-                    <h3>Actions</h3>
-                    <p>
-                        <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#archiveMessagesForm').submit()">
-                            Archive
-                        </a>
-                    </p>
+                <c:if test="${messagingBean.messagesCount > 0}">
+                    <c:if test="${messagingBean.type == 'INBOX'}">
+                        <br />
+                        <h3>Actions</h3>
+                        <p>
+                            <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#archiveMessagesForm').submit()">
+                                Archive
+                            </a>
+                        </p>
+                    </c:if>
                 </c:if>
-
             </div>
         </div>
     </div>

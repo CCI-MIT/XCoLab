@@ -97,11 +97,13 @@ public class MessagingController {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         User user = themeDisplay.getUser();
 
-        List<MessageBean> items = messagingBean.getDataPage().getMessages();
-        for (MessageBean item : items) {
-            if (item.isSelected()) {
-                Message message = item.getMessage();
-                MessagingClient.setArchived(message.getMessageId(), user.getUserId(), true);
+        if (messagingBean.getDataPage() != null) {
+            List<MessageBean> items = messagingBean.getDataPage().getMessages();
+            for (MessageBean item : items) {
+                if (item.isSelected()) {
+                    Message message = item.getMessage();
+                    MessagingClient.setArchived(message.getMessageId(), user.getUserId(), true);
+                }
             }
         }
     }
