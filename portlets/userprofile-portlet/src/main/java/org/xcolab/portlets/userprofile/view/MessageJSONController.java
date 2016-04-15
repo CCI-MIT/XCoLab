@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.pojo.User_;
+import org.xcolab.client.members.pojo.User_;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
-import org.xcolab.service.client.MembersClient;
+import org.xcolab.client.members.MembersClient;
 
 import java.util.ArrayList;
 import java.util.List;

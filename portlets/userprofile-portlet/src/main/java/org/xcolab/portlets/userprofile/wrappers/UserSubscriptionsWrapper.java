@@ -5,7 +5,7 @@ import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.xcolab.pojo.User_;
+import org.xcolab.client.members.pojo.User_;
 
 import java.io.Serializable;
 import java.util.ArrayList;

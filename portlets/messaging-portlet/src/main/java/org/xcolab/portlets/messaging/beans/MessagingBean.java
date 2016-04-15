@@ -4,7 +4,7 @@ import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import org.xcolab.legacy.enums.MessageType;
+import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.portlets.messaging.paging.MessageDataPage;
 import org.xcolab.portlets.messaging.paging.PageLinkWrapper;
 

@@ -6,7 +6,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.xcolab.pojo.User_;
+import org.xcolab.client.members.pojo.User_;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.utils.MessageLimitManager;
 

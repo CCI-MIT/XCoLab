@@ -4,8 +4,8 @@ import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import org.xcolab.legacy.enums.MessageType;
-import org.xcolab.pojo.Message;
+import org.xcolab.client.members.legacy.enums.MessageType;
+import org.xcolab.client.members.pojo.Message;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 
 import java.util.ArrayList;

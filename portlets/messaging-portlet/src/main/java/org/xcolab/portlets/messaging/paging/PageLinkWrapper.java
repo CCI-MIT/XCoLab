@@ -2,7 +2,7 @@ package org.xcolab.portlets.messaging.paging;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.portlets.messaging.beans.MessagingBean;
-import org.xcolab.legacy.enums.MessageType;
+import org.xcolab.client.members.legacy.enums.MessageType;
 
 public class PageLinkWrapper {
 
