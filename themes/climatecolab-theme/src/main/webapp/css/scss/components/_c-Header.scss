@@ -87,7 +87,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 #c-Header__menu { //#menu
   float: left;
-  width: 450px;
+  width: 445px;
   height: 67px;
 
   li {
@@ -204,6 +204,10 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
           margin-left: 10px;
           vertical-align: -9px;
         }
+      }
+
+      &.small a {
+        font-size: 13px;
       }
     }
 
