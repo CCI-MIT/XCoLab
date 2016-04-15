@@ -32,6 +32,8 @@ import java.util.List;
 @RequestMapping("view")
 public class ThreadController extends BaseDiscussionController {
 
+    public static final String CREATE_THREAD_URL = "/web/guest/discussion/-/discussion/threads/create";
+
     @RenderMapping(params = "action=showThread")
     public String showThread(PortletRequest request, PortletResponse response, Model model,
                              @RequestParam long threadId)
@@ -81,10 +83,14 @@ public class ThreadController extends BaseDiscussionController {
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
                 categoryGroupWrapper.getWrapped(), 0L);
 
-        final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.addThread(categoryGroupWrapper.getId(),
-                categoryId, title, body, themeDisplay.getUser());
+        if (title.length() > 0 && body.length() > 0) {
+            final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.addThread(categoryGroupWrapper.getId(),
+                    categoryId, title, body, themeDisplay.getUser());
 
-        response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
+            response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
+        } else {
+            response.sendRedirect(CREATE_THREAD_URL);
+        }
     }
 
     @ActionMapping(params = "action=subscribeThread")
