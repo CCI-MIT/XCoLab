@@ -68,16 +68,4 @@ public class ContestServiceSoap {
             throw new RemoteException(e.getMessage());
         }
     }
-
-    public static int getNumberOfUnreadMessages() throws RemoteException {
-        try {
-            int returnValue = ContestServiceUtil.getNumberOfUnreadMessages();
-
-            return returnValue;
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
 }

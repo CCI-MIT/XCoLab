@@ -63,12 +63,6 @@ public class ContestServiceUtil {
         return getService().getContestsOpenForProposals();
     }
 
-    public static int getNumberOfUnreadMessages()
-        throws com.liferay.portal.kernel.exception.SystemException,
-            com.liferay.portal.security.auth.PrincipalException {
-        return getService().getNumberOfUnreadMessages();
-    }
-
     public static void clearService() {
         _service = null;
     }
