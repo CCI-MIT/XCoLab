@@ -29,7 +29,6 @@ import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,7 @@ import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.service.client.MembersClient;
+import org.xcolab.service.client.EmailClient;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.ModelAttributeUtil;
@@ -509,11 +509,12 @@ public class UserProfileController {
                 "Thank you for engaging on the <colab-name/>!\n");
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
-        InternetAddress[] addressTo = {new InternetAddress(user.getEmailAddress())};
 
-        InternetAddress[] replyTo = {addressFrom};
-        MailEngine.send(addressFrom, addressTo, null, null, null,
-                messageSubject, messageBody, false, replyTo, null, null);
+
+        EmailClient.sendEmail(addressFrom.getAddress(), user.getEmailAddress(), messageSubject,
+                messageBody, false, addressFrom.getAddress());
+
+
     }
 
     @RequestMapping(params = "action=deleteProfile")

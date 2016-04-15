@@ -3,16 +3,19 @@ package org.xcolab.portlets.proposals.view.action;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.service.client.EmailClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
@@ -43,14 +46,13 @@ public class SuggestContestActionController {
 
     public void sendContestSuggestion(String message, User u) throws MailEngineException, AddressException, NumberFormatException, PortalException, SystemException {
         String[] recipients = {"lfi@mit.edu", "pdeboer@MIT.EDU", "rjl@MIT.EDU"};
-        InternetAddress[] addressTo = new InternetAddress[recipients.length];
+        List<String> addressTo = new ArrayList<>();
         for (int i=0; i < recipients.length; i++) {
-            addressTo[i] = new InternetAddress(recipients[i]);
+            addressTo.add(recipients[i]);
         }
-        InternetAddress addressFrom = new InternetAddress("admin@climatecolab.org");
-        InternetAddress[] replyTo = {new InternetAddress(u.getEmailAddress())};
         final String messageSubject = "New contest suggestion";
-        MailEngine.send(addressFrom, addressTo, null, null, null, messageSubject, message, false, replyTo, null, null);
+        EmailClient.sendEmail("admin@climatecolab.org", addressTo, messageSubject, message, false, u.getEmailAddress());
+
     }
 
 

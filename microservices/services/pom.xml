@@ -17,6 +17,8 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>admin-service</module>
+        <module>emails-service</module>
         <module>members-service</module>
         <module>eureka-service</module>
     </modules>

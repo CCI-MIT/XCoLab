@@ -159,6 +159,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>emails-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
