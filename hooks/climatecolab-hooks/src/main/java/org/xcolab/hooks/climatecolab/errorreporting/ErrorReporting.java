@@ -54,20 +54,22 @@ public class ErrorReporting implements Filter {
         String stackTrace = request.getParameter("stackTrace");
         String userScreenName = "no user was logged in";
 
-        try {
-            final User user = PortalUtil.getUser(request);
-            if (user != null) {
-                userScreenName = user.getScreenName();
+        if (!stackTrace.equals("${exception.stackTrace}")) {
+            try {
+                final User user = PortalUtil.getUser(request);
+                if (user != null) {
+                    userScreenName = user.getScreenName();
 
-                if (email.isEmpty()) {
-                    email = user.getEmailAddress();
+                    if (email.isEmpty()) {
+                        email = user.getEmailAddress();
+                    }
                 }
-            }
-        } catch (PortalException | SystemException ignored) { /* no user logged in */}
+            } catch (PortalException | SystemException ignored) { /* no user logged in */}
 
-        if (Validator.isNotNull(url)) {
-            String body = buildErrorReportBody(url, userScreenName, email, stackTrace, descriptionInHtmlFormat);
-            new EmailToAdminDispatcher(EMAIL_SUBJECT, body).sendMessage();
+            if (Validator.isNotNull(url)) {
+                String body = buildErrorReportBody(url, userScreenName, email, stackTrace, descriptionInHtmlFormat);
+                new EmailToAdminDispatcher(EMAIL_SUBJECT, body).sendMessage();
+            }
         }
         response.sendRedirect("/");
     }
