@@ -12,8 +12,6 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
-import com.liferay.portal.security.auth.PrincipalException;
-import org.xcolab.service.client.MessagingClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,18 +79,5 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
         }
 
     	return returnList;
-    }
-
-    @Override
-    @JSONWebService
-     @AccessControlled(guestAccessEnabled=true)
-     public int getNumberOfUnreadMessages() throws SystemException, PrincipalException {
-        int unreadMessages = 0;
-        if (getUserId() != 0) {
-            unreadMessages = MessagingClient.getUnreadMessageCountForUser(getUserId());
-        }
-
-        return unreadMessages;
-
     }
 }

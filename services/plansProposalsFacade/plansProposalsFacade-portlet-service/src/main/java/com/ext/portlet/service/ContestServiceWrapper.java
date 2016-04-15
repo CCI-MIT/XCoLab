@@ -57,13 +57,6 @@ public class ContestServiceWrapper implements ContestService,
         return _contestService.getContestsOpenForProposals();
     }
 
-    @Override
-    public int getNumberOfUnreadMessages()
-        throws com.liferay.portal.kernel.exception.SystemException,
-            com.liferay.portal.security.auth.PrincipalException {
-        return _contestService.getNumberOfUnreadMessages();
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
