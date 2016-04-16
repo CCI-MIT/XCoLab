@@ -34,8 +34,9 @@ public class EmailTemplateController {
         if (this.emailTemplateService.getEmailTemplate(emailTemplateType) != null) {
             this.emailTemplateService.updateEmailTemplate(contestEmailTemplate);
             return "Email template updated successfully";
-        } else
+        } else {
             return "Email template not found";
+        }
     }
 
     @RequestMapping(value = "/emailTemplates", method = RequestMethod.PUT)

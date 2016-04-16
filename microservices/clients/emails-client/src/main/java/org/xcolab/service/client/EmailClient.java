@@ -8,11 +8,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmailClient {
+public final class EmailClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/emails-service";
 
-    static RestTemplate restTemplate = new RestTemplate();
+    private static RestTemplate restTemplate = new RestTemplate();
+
+
+    private EmailClient() {
+    }
 
     public static void sendEmail(String from, String to, String subject, String emailBody, Boolean isHtml, String replyTo) {
 
@@ -26,7 +30,7 @@ public class EmailClient {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/sendEmail");
         uriBuilder.queryParam("from", from);
-        for(String emailTo : to) {
+        for (String emailTo : to) {
             uriBuilder.queryParam("to[]", emailTo);
         }
         uriBuilder.queryParam("subject", subject);

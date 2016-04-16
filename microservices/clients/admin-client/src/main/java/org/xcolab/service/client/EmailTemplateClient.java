@@ -12,11 +12,12 @@ import org.xcolab.pojo.ContestEmailTemplate;
 
 import java.util.List;
 
-public class EmailTemplateClient {
+public final class EmailTemplateClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/admin-service";
 
-    static RestTemplate restTemplate = new RestTemplate();
+    private static RestTemplate restTemplate = new RestTemplate();
+
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
 
@@ -44,10 +45,10 @@ public class EmailTemplateClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity entity = new HttpEntity(contestEmailTemplate, headers);
+        HttpEntity<ContestEmailTemplate> entity = new HttpEntity(contestEmailTemplate, headers);
 
 
-        ResponseEntity<String> out = restTemplate.exchange(uriBuilder.build().toString(),
+        restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.POST, entity,
                 String.class);
     }
