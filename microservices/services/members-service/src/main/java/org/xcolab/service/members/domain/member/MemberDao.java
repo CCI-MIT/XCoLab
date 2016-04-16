@@ -60,4 +60,7 @@ public interface MemberDao {
     User_ getMember(Long userId);
 
     void updateMember(User_ user);
+
+    boolean isScreenNameTaken(String screenName);
+    boolean isEmailUsed(String email);
 }

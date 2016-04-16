@@ -355,6 +355,22 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
+    public boolean isScreenNameTaken(String screenName) {
+        return dslContext.selectCount()
+                .from(USER_)
+                .where(USER_.SCREEN_NAME.eq(screenName))
+                .fetchOne(0, Integer.class) > 0;
+    }
+
+    @Override
+    public boolean isEmailUsed(String email) {
+        return dslContext.selectCount()
+                .from(USER_)
+                .where(USER_.EMAIL_ADDRESS.eq(email))
+                .fetchOne(0, Integer.class) > 0;
+    }
+
+    @Override
     public List<User_> listMembersSortByMemberSinceFilteredByCategory(int startRecord, int limitRecord,
                                                                       String filter, boolean isAscOrder, String roleName) {
         return listMembersSortByFieldFilteredByCategory(startRecord, limitRecord, filter,
