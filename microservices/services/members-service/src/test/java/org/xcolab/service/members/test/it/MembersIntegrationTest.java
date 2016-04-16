@@ -1,4 +1,4 @@
-package org.xcolab.test.it;
+package org.xcolab.service.members.test.it;
 
 //TODO: broken test
 //@RunWith(SpringJUnit4ClassRunner.class)

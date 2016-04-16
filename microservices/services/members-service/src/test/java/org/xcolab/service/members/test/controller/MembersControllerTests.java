@@ -1,4 +1,4 @@
-package org.xcolab.test.controller;
+package org.xcolab.service.members.test.controller;
 
 import org.junit.Before;
 import org.junit.Test;
