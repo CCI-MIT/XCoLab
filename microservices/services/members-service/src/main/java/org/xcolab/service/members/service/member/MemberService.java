@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.model.tables.pojos.User_;
+import org.xcolab.service.members.util.UsernameGenerator;
 
 import java.util.List;
 
 @Service
 public class MemberService {
+
+    private final static int MAX_SCREEN_NAME_LENGTH = 26;
 
     private final MemberDao memberDao;
 
@@ -109,6 +112,17 @@ public class MemberService {
 
     public void updateMember(User_ user) {
         this.memberDao.updateMember(user);
+    }
+
+
+    public String generateScreenName(String[] inputData) {
+        UsernameGenerator usernameGenerator = new UsernameGenerator(inputData, true, MAX_SCREEN_NAME_LENGTH);
+
+        String username;
+        do {
+            username = usernameGenerator.getNext();
+        } while (memberDao.isScreenNameTaken(username));
+        return username;
     }
 
 }

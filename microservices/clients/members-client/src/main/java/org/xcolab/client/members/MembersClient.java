@@ -36,11 +36,10 @@ public final class MembersClient {
         }
     }
 
-    static RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     private MembersClient() {
     }
-
 
     public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstUser, int lastUser) {
@@ -133,7 +132,7 @@ public final class MembersClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<User_> entity = new HttpEntity(user, headers);
+        HttpEntity<User_> entity = new HttpEntity<>(user, headers);
 
 
         restTemplate.exchange(uriBuilder.build().toString(),
@@ -146,5 +145,26 @@ public final class MembersClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contact/" + contactId + "");
         return restTemplate.getForObject(uriBuilder.build().toString(), Contact_.class);
+    }
+
+    public static boolean isScreenNameUsed(String screenName) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/isUsed")
+                    .queryParam("screenName", screenName);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
+
+    public static boolean isEmailUsed(String email) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/isUsed")
+                    .queryParam("email", email);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
+
+    public static String generateScreenName(String lastName, String firstName) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/generateScreenName")
+                    .queryParam("values", lastName, firstName);
+        return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
     }
 }

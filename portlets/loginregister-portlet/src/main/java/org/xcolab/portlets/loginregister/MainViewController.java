@@ -47,7 +47,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.mail.ConnectorEmmaAPI;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
@@ -438,7 +440,7 @@ public class MainViewController {
         User loggedInUser = ((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
 
         if (!loggedInUser.getScreenName().equals(screenName)) {
-            if (StringUtils.isNotEmpty(screenName) && UserCreationUtil.isUsernameAvailable(screenName)
+            if (StringUtils.isNotEmpty(screenName) && MembersClient.isScreenNameUsed(screenName)
                     && UserCreationUtil.isUsernameValid(screenName)) {
                 loggedInUser.setScreenName(screenName);
                 json.getJSONObject("screenName").put("success", true);
@@ -474,9 +476,9 @@ public class MainViewController {
         final String lastName = request.getParameter("lastName");
 
         try {
-            json.put("screenName", UserCreationUtil.generateUsername(firstName, lastName));
+            json.put("screenName", MembersClient.generateScreenName(lastName, firstName));
             json.put("success", true);
-        } catch (SystemException | PortalException e) {
+        } catch (HttpClientErrorException e) {
             _log.warn("Failed to generate user name ", e);
             json.put("success", false);
             json.put("error", e.toString());
