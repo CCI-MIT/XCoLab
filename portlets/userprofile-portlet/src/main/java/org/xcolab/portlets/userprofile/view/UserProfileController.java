@@ -5,7 +5,6 @@ import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
-import com.liferay.portal.PwdEncryptorException;
 import com.liferay.portal.UserPortraitSizeException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -46,7 +45,6 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.User_;
-import org.xcolab.commons.utils.PwdEncryptor;
 import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
@@ -284,7 +282,7 @@ public class UserProfileController {
 
                 if (!result.hasErrors()) {
                     currentUserProfile.getUser()
-                            .setPassword(PwdEncryptor.encrypt(updatedUserBean.getPassword().trim()));
+                            .setPassword(MembersClient.hashPasword(updatedUserBean.getPassword().trim()));
                     changedUserPart = true;
                 } else {
                     validationError = true;
@@ -387,15 +385,7 @@ public class UserProfileController {
     }
 
     private boolean isPasswordMatchingExistingPassword(UserProfileWrapper currentUserProfile, String password) {
-        boolean existing = false;
-        try {
-            final String existingPassword = currentUserProfile.getUser().getPassword();
-            final String existingPasswordWithoutSHA1 = currentUserProfile.getUser().getPassword().substring(7);
-            existing = PwdEncryptor.encrypt(password).equals(existingPassword) ||
-                    PwdEncryptor.encrypt(password).equals(existingPasswordWithoutSHA1);
-        } catch (PwdEncryptorException ignored) {
-        }
-        return existing;
+        return MembersClient.validatePassword(password, currentUserProfile.getUser().getPassword());
     }
 
     private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean)

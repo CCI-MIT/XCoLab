@@ -167,4 +167,27 @@ public final class MembersClient {
                     .queryParam("values", lastName, firstName);
         return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
     }
+
+    public static String hashPasword(String password) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/hashPassword")
+                .queryParam("password", password);
+        return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
+    }
+
+    public static boolean validatePassword(String password, String hash) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/generateScreenName")
+                .queryParam("password", password)
+                .queryParam("hash", hash);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
+
+    public static boolean validatePassword(String password, long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/generateScreenName")
+                .queryParam("password", password)
+                .queryParam("memberId", memberId);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
 }

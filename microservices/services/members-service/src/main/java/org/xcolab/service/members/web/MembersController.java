@@ -14,6 +14,7 @@ import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,25 +120,6 @@ public class MembersController {
         }
     }
 
-    @RequestMapping("/members/isUsed")
-    public boolean isUsed(
-            @RequestParam(required = false) String screenName,
-            @RequestParam(required = false) String email) {
-        boolean ret = false;
-        if (screenName != null) {
-            ret = memberDao.isScreenNameTaken(screenName);
-        }
-        if (email != null) {
-            ret = ret || memberDao.isEmailUsed(email);
-        }
-        return ret;
-    }
-
-    @RequestMapping("members/generateScreenName")
-    public String generateScreenName(@RequestParam String[] values) {
-        return memberService.generateScreenName(values);
-    }
-
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
     public String updateMember(@RequestBody User_ user, @PathVariable("memberId") Long memberId) {
         if (memberService.getMember(memberId) != null) {
@@ -177,5 +159,46 @@ public class MembersController {
             return this.roleService.getMemberRoles(memberId);
         }
 
+    }
+
+    @RequestMapping("/members/isUsed")
+    public boolean isUsed(
+            @RequestParam(required = false) String screenName,
+            @RequestParam(required = false) String email) {
+        boolean ret = false;
+        if (screenName != null) {
+            ret = memberDao.isScreenNameTaken(screenName);
+        }
+        if (email != null) {
+            ret = ret || memberDao.isEmailUsed(email);
+        }
+        return ret;
+    }
+
+    @RequestMapping("/members/generateScreenName")
+    public String generateScreenName(@RequestParam String[] values) {
+        return memberService.generateScreenName(values);
+    }
+
+    @RequestMapping("/members/hashPassword")
+    public String hashPassword(@RequestParam String password) throws NoSuchAlgorithmException {
+        return memberService.hashPassword(password);
+    }
+
+    @RequestMapping("/members/validatePassword")
+    public Boolean validatePassword(
+            @RequestParam String password,
+            @RequestParam(required = false) String hash,
+            @RequestParam(required = false) Long memberId)
+            throws NoSuchAlgorithmException, NotFoundException {
+
+        if (hash != null) {
+            return memberService.validatePassword(password, hash);
+        }
+
+        if (memberId != null) {
+            return memberService.validatePassword(password, memberService.getMember(memberId).getPassword_());
+        }
+        throw new NotFoundException("The endpoint you requested is not available for the given attributes");
     }
 }
