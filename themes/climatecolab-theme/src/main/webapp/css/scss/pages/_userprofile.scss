@@ -111,3 +111,7 @@ $p-userprofile__comm_rightcol-title2__padding--bottom: 0px !default;
   margin-bottom: 15px;
   font: 12px/21px Verdana, Geneva, sans-serif;
 }
+
+.lowercase {
+  text-transform: $b-Typography__capitalization--no-capitalize;
+}
