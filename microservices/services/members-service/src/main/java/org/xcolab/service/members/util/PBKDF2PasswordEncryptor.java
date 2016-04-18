@@ -6,6 +6,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,9 +18,9 @@ public class PBKDF2PasswordEncryptor {
     private static final int _SALT_BYTES_LENGTH = 8;
     private static final Pattern _pattern = Pattern.compile("^.*/?([0-9]+)?/([0-9]+)$");
 
-    public String doEncrypt(String algorithm, String plainTextPassword, String encryptedPassword) throws Exception {
+    public String doEncrypt(String algorithm, String plainTextPassword, String encryptedPassword)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
 
-        try {
             PBKDF2EncryptionConfiguration pbkdf2EncryptionConfiguration = new PBKDF2EncryptionConfiguration();
 
             pbkdf2EncryptionConfiguration.configure(algorithm, encryptedPassword);
@@ -51,9 +53,6 @@ public class PBKDF2PasswordEncryptor {
             byteBuffer.put(saltBytes);
             byteBuffer.put(secretKeyBytes);
             return Base64.getEncoder().encodeToString(byteBuffer.array());
-        } catch (Exception e) {
-            throw new Exception(e.getMessage(), e);
-        }
     }
 
     private class PBKDF2EncryptionConfiguration {
@@ -62,7 +61,7 @@ public class PBKDF2PasswordEncryptor {
         private int _rounds = _ROUNDS;
         private final byte[] _saltBytes = new byte[_SALT_BYTES_LENGTH];
 
-        public void configure(String algorithm, String encryptedPassword) throws Exception {
+        public void configure(String algorithm, String encryptedPassword) {
             if (StringUtils.isEmpty(encryptedPassword)) {
                 Matcher matcher = _pattern.matcher(algorithm);
 
@@ -83,13 +82,8 @@ public class PBKDF2PasswordEncryptor {
             } else {
                 byte[] bytes = new byte[16];
 
-                try {
-                    byte[] encryptedPasswordBytes = Base64.getDecoder().decode(encryptedPassword);
-
-                    System.arraycopy(encryptedPasswordBytes, 0, bytes, 0, bytes.length);
-                } catch (Exception e) {
-                    throw new Exception("Unable to extract salt from encrypted password " + e.getMessage(), e);
-                }
+                byte[] encryptedPasswordBytes = Base64.getDecoder().decode(encryptedPassword);
+                System.arraycopy(encryptedPasswordBytes, 0, bytes, 0, bytes.length);
 
                 ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
 

@@ -2,10 +2,12 @@ package org.xcolab.service.members.service.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.model.tables.pojos.User_;
+import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.UsernameGenerator;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -125,4 +127,16 @@ public class MemberService {
         return username;
     }
 
+    public String hashPassword(String password) throws NoSuchAlgorithmException {
+        SHA1PasswordEncryptor sha1PasswordEncryptor = new SHA1PasswordEncryptor();
+        return "{SHA-1}" + sha1PasswordEncryptor.doEncrypt("SHA-1", password);
+    }
+
+    public boolean validatePassword(String password, String hash) throws NoSuchAlgorithmException {
+        SHA1PasswordEncryptor sha1PasswordEncryptor = new SHA1PasswordEncryptor();
+        if (hash.startsWith("{SHA-1}")) {
+            return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash.substring(7));
+        }
+        return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash);
+    }
 }
