@@ -15,9 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.portlets.redballoon.utils.BalloonUtils;
 import org.xcolab.portlets.redballoon.web.beans.UserEmailBean;
-import org.xcolab.service.client.EmailClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,7 +103,6 @@ public class ProcessUserEmailAction {
         for (int i = 0; i < recipients.length; i++) {
             addressTo.add(recipients[i]);
         }
-
 
 
         EmailClient.sendEmail(FROM_ADDRESS, addressTo, messageSubject, messageBody, true, FROM_ADDRESS);

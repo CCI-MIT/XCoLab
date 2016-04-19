@@ -15,11 +15,11 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.service.client.EmailClient;
 import org.xcolab.utils.HtmlUtil;
 
 import java.io.UnsupportedEncodingException;
