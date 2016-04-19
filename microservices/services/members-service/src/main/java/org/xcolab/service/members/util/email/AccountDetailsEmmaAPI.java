@@ -1,12 +1,10 @@
-package org.xcolab.mail;
+package org.xcolab.service.members.util.email;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.utils.PropertiesUtils;
+import org.xcolab.enums.ConfigurationAttributeKey;
 
-/**
- * Created by Thomas on 1/14/2015.
- */
 public class AccountDetailsEmmaAPI {
 
     private String accountId;
@@ -15,16 +13,11 @@ public class AccountDetailsEmmaAPI {
     private String privateApiKey;
     private final String encodedAuthorization;
 
-    private final static String ACCOUNT_ID_PROPERTY_NAME = "com.xcolab.mail.e2ma.accountId";
-    private final static String GROUP_ID_PROPERTY_NAME = "com.xcolab.mail.e2ma.groupId";
-    private final static String PUBLIC_API_KEY_PROPERTY_NAME = "com.xcolab.mail.e2ma.publicApiKey";
-    private final static String PRIVATE_API_KEY_PROPERTY_NAME = "com.xcolab.mail.e2ma.privateApiKey";
-
-    public AccountDetailsEmmaAPI() {
-        accountId = PropertiesUtils.get(ACCOUNT_ID_PROPERTY_NAME);
-        groupId = PropertiesUtils.get(GROUP_ID_PROPERTY_NAME);
-        publicApiKey = PropertiesUtils.get(PUBLIC_API_KEY_PROPERTY_NAME);
-        privateApiKey = PropertiesUtils.get(PRIVATE_API_KEY_PROPERTY_NAME);
+    public AccountDetailsEmmaAPI() throws SystemException {
+        accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
+        groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
+        publicApiKey = ConfigurationAttributeKey.MY_EMMA_PUBLIC_API_KEY.getStringValue();
+        privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY.getStringValue();
         encodedAuthorization = "Basic " + new Base64().encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
     }
 
@@ -70,5 +63,4 @@ public class AccountDetailsEmmaAPI {
                 && StringUtils.isNotBlank(publicApiKey)
                 && StringUtils.isNotBlank(privateApiKey);
     }
-
 }

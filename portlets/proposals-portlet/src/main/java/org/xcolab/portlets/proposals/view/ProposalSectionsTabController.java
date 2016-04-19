@@ -21,7 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
@@ -130,10 +130,10 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
 
         if (editValidated || isMove) {
-            request.setAttribute("imageUploadServiceUrl", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                    ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.name(), 0L));
-            request.setAttribute("imageUploadHelpText", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                    ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.name(), 0L));
+            request.setAttribute("imageUploadServiceUrl",
+                    ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.getStringValue());
+            request.setAttribute("imageUploadHelpText",
+                    ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.getStringValue());
 
             return "proposalDetails_edit";
         }

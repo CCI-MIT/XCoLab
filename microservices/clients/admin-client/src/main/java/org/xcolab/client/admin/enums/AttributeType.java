@@ -1,8 +1,5 @@
-package org.xcolab.enums;
+package org.xcolab.client.admin.enums;
 
-/**
- * Created by johannes on 1/26/16.
- */
 public enum AttributeType {
     NUMERIC,
     BOOLEAN,

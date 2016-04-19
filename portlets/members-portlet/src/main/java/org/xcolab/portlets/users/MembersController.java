@@ -7,11 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.enums.ConfigurationAttributeKey;
-import org.xcolab.client.members.pojo.User_;
-import org.xcolab.portlets.users.utils.MemberItem;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.User_;
+import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.portlets.users.utils.MemberItem;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;

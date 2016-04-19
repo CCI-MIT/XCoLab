@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import jodd.util.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 
 import java.io.IOException;
 import java.security.SecureRandom;

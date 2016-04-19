@@ -15,9 +15,8 @@ import java.util.List;
 public final class EmailTemplateClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/admin-service";
-
-    private static RestTemplate restTemplate = new RestTemplate();
-
+    
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
 
