@@ -8,7 +8,6 @@ import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.UsernameGenerator;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 @Service
 public class MemberService {
@@ -22,100 +21,13 @@ public class MemberService {
         this.memberDao = memberDao;
     }
 
-    public User_ getMember(long memberId) {
-        return memberDao.getMember(memberId);
-    }
-
-    public List<User_> listMembersSortByScreenName(int firstUser, int lastUser,
-                                                   String screenNameFilter, boolean isAscOrder) {
-        return this.memberDao.listMembersSortByScreenName(firstUser, lastUser, screenNameFilter,
-                isAscOrder);
-    }
-
-    public List<User_> listMembersSortByPoint(int firstUser, int lastUser, String screenNameFilter,
-                                              boolean isAscOrder) {
-        return this.memberDao.listMembersSortByPoint(firstUser, lastUser,
-                screenNameFilter, isAscOrder);
-    }
-
-    public List<User_> listMembersSortByPointFilteredByCategory(int startRecord,
-                                                                int limitRecord,
-                                                                String filter,
-                                                                boolean isAscOrder,
-                                                                String roleName) {
-        return this.memberDao.listMembersSortByPointFilteredByCategory(startRecord,
-                limitRecord, filter, isAscOrder, roleName);
-    }
-
-    public List<User_> listMembersSortByActivityCount(int firstUser, int lastUser,
-                                                      String screenNameFilter, boolean isAscOrder) {
-        return this.memberDao.listMembersSortByActivityCount(firstUser, lastUser,
-                screenNameFilter, isAscOrder);
-    }
-
-    public List<User_> listMembersSortByActivityCountFilteredByCategory(int firstUser, int lastUser,
-                                                                        String screenNameFilter,
-                                                                        boolean isAscOrder,
-                                                                        String roleName) {
-        return this.memberDao.listMembersSortByActivityCountFilteredByCategory(firstUser, lastUser,
-                screenNameFilter, isAscOrder, roleName);
-    }
-
-    public List<User_> listMembersSortByMemberSince(int firstUser, int lastUser,
-                                                    String screenNameFilter, boolean isAscOrder) {
-        return this.memberDao.listMembersSortByMemberSince(firstUser, lastUser,
-                screenNameFilter, isAscOrder);
-    }
-
-    public List<User_> listMembersSortByRoleName(int firstUser, int lastUser,
-                                                 String screenNameFilter, boolean isAscOrder) {
-        return this.memberDao.listMembersSortByRoleName(firstUser, lastUser,
-                screenNameFilter, isAscOrder);
-    }
-
-    public List<User_> listMembersSortByRoleNameFilteredByCategory(int firstUser, int lastUser, String screenNameFilter,
-                                                                   boolean isAscOrder, String roleName) {
-        return this.memberDao.listMembersSortByRoleNameFilteredByCategory(firstUser,
-                lastUser, screenNameFilter, isAscOrder, roleName);
-    }
-
-
-    public List<User_> listMembersSortByScreenNameFilteredByCategory(int firstUser, int lastUser,
-                                                                     String screenNameFilter, boolean isAscOrder, String roleName) {
-        return this.memberDao.listMembersSortByScreenNameFilteredByCategory(firstUser, lastUser,
-                screenNameFilter, isAscOrder, roleName);
-    }
-
-    public List<User_> listMembersSortByMemberSinceFilteredByCategory(int firstUser, int lastUser,
-                                                                      String screenNameFilter, boolean isAscOrder, String roleName) {
-        return this.memberDao.listMembersSortByMemberSinceFilteredByCategory(firstUser, lastUser,
-                screenNameFilter, isAscOrder, roleName);
-    }
-
-    public Integer countMembers(String filter) {
-        return this.memberDao.countMembers(filter);
-    }
-
-    public Integer countMembersFilteredByCategory(String filter, String roleName) {
-        return this.memberDao.countMembersFilteredByCategory(filter, roleName);
-    }
-
-    public Integer getMemberMaterializedPoints(Long memberId) {
-        return this.memberDao.getMemberMaterializedPoints(memberId);
-    }
-
     public Integer getMemberActivityCount(Long memberId) {
         return this.memberDao.getMemberActivityCount(memberId);
-    }
-
-    public User_ getMember(Long userId) {
-        return this.memberDao.getMember(userId);
     }
 
     public void updateMember(User_ user) {
         this.memberDao.updateMember(user);
     }
-
 
     public String generateScreenName(String[] inputData) {
         UsernameGenerator usernameGenerator = new UsernameGenerator(inputData, true, MAX_SCREEN_NAME_LENGTH);

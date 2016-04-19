@@ -37,7 +37,7 @@ public class MembersController {
         if (memberId == null || memberId == 0) {
             throw new NotFoundException("No message id given");
         } else {
-            return memberService.getMember(memberId);
+            return memberDao.getMember(memberId);
         }
     }
 
@@ -70,42 +70,42 @@ public class MembersController {
         switch (sort) {
             case "USER_NAME":
                 if (category == null) {
-                    return memberService.listMembersSortByScreenName(firstRecordInt, lastRecordInt, screenName, isAsc);
+                    return memberDao.listMembersSortByScreenName(firstRecordInt, lastRecordInt, screenName, isAsc);
                 } else {
-                    return memberService.listMembersSortByScreenNameFilteredByCategory(firstRecordInt,
+                    return memberDao.listMembersSortByScreenNameFilteredByCategory(firstRecordInt,
                             lastRecordInt, screenName, isAsc, category);
                 }
             case "POINTS":
                 if (category == null) {
-                    return memberService.listMembersSortByPoint(firstRecordInt, lastRecordInt, screenName, isAsc);
+                    return memberDao.listMembersSortByPoint(firstRecordInt, lastRecordInt, screenName, isAsc);
                 } else {
-                    return memberService.listMembersSortByPointFilteredByCategory(firstRecordInt, lastRecordInt,
+                    return memberDao.listMembersSortByPointFilteredByCategory(firstRecordInt, lastRecordInt,
                             screenName, isAsc, category);
                 }
             case "ACTIVITY":
                 if (category == null) {
-                    return memberService
+                    return memberDao
                             .listMembersSortByActivityCount(firstRecordInt, lastRecordInt, screenName, isAsc);
                 } else {
-                    return memberService.listMembersSortByActivityCountFilteredByCategory(firstRecordInt,
+                    return memberDao.listMembersSortByActivityCountFilteredByCategory(firstRecordInt,
                             lastRecordInt, screenName, isAsc, category);
                 }
             case "CATEGORY":
                 if (category == null) {
-                    return memberService.listMembersSortByRoleName(firstRecordInt, lastRecordInt, screenName, isAsc);
+                    return memberDao.listMembersSortByRoleName(firstRecordInt, lastRecordInt, screenName, isAsc);
                 } else {
-                    return memberService.listMembersSortByRoleNameFilteredByCategory(firstRecordInt, lastRecordInt,
+                    return memberDao.listMembersSortByRoleNameFilteredByCategory(firstRecordInt, lastRecordInt,
                             screenName, isAsc, category);
                 }
             case "MEMBER_SINCE":
                 if (category == null) {
-                    return memberService.listMembersSortByMemberSince(firstRecordInt, lastRecordInt, screenName, isAsc);
+                    return memberDao.listMembersSortByMemberSince(firstRecordInt, lastRecordInt, screenName, isAsc);
                 } else {
-                    return memberService.listMembersSortByMemberSinceFilteredByCategory(firstRecordInt,
+                    return memberDao.listMembersSortByMemberSinceFilteredByCategory(firstRecordInt,
                             lastRecordInt, screenName, isAsc, category);
                 }
             default:
-                return memberService.listMembersSortByPoint(firstRecordInt, lastRecordInt, screenName, isAsc);
+                return memberDao.listMembersSortByPoint(firstRecordInt, lastRecordInt, screenName, isAsc);
         }
     }
 
@@ -114,15 +114,15 @@ public class MembersController {
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
         if (category != null && !category.isEmpty()) {
-            return memberService.countMembersFilteredByCategory(screenName, category);
+            return memberDao.countMembersFilteredByCategory(screenName, category);
         } else {
-            return memberService.countMembers(screenName);
+            return memberDao.countMembers(screenName);
         }
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
     public String updateMember(@RequestBody User_ user, @PathVariable("memberId") Long memberId) {
-        if (memberService.getMember(memberId) != null) {
+        if (memberDao.getMember(memberId) != null) {
             memberService.updateMember(user);
             return "Updated successfully";
         } else {
@@ -135,7 +135,7 @@ public class MembersController {
         if (memberId == null) {
             return 0;
         } else {
-            Integer ret = this.memberService.getMemberActivityCount(memberId);
+            Integer ret = memberDao.getMemberActivityCount(memberId);
             return ((ret == null) ? (0) : (ret));
         }
     }
@@ -145,7 +145,7 @@ public class MembersController {
         if (memberId == null) {
             return 0;
         } else {
-            Integer ret = this.memberService.getMemberMaterializedPoints(memberId);
+            Integer ret = memberDao.getMemberMaterializedPoints(memberId);
             return ((ret == null) ? (0) : (ret));
         }
 
