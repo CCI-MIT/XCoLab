@@ -183,7 +183,7 @@
 			<c:forEach var="contestTypeProposalWrapper" items="${currentUserProfile.contestTypeProposalWrappersByContestTypeId}">
 				<h2 style="margin-top: 20px;">${contestTypeProposalWrapper.contestType.proposalNamePlural}</h2>
 				<c:if test="${empty contestTypeProposalWrapper.proposals}">
-						${userBean.firstName} has not yet contributed to any ${contestTypeProposalWrapper.contestType.proposalNamePlural}.
+						${userBean.firstName} has not yet contributed to any <span class="lowercase">${contestTypeProposalWrapper.contestType.proposalNamePlural}</span>.
 				</c:if>
 
 				<table class="colab">
@@ -198,7 +198,7 @@
 
 			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString} Links</h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
-					There are no proposals linking to this user's ${currentUserProfile.proposalsString} yet.
+					There are no proposals linking to this member's <span class="lowercase">${currentUserProfile.proposalsString}</span> yet.
 			</c:if>
 
 			<table class="colab">
@@ -214,7 +214,7 @@
 
 			<h2>Supporting</h2>
 			<c:if test="${empty currentUserProfile.supportedProposals}">
-					${userBean.firstName} has not yet supported any ${currentUserProfile.proposalsString}.
+					${userBean.firstName} has not yet supported any <span class="lowercase">${currentUserProfile.proposalsString}</span>.
 			</c:if>
 
 			<table class="colab">
