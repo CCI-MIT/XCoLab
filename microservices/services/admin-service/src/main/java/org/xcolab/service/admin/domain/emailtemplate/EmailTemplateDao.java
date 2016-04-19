@@ -1,4 +1,4 @@
-package org.xcolab.domain.emailtemplate;
+package org.xcolab.service.admin.domain.emailtemplate;
 
 
 import org.xcolab.model.tables.pojos.ContestEmailTemplate;

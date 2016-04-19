@@ -1,4 +1,4 @@
-package org.xcolab.persistence;
+package org.xcolab.service.admin.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -17,7 +17,8 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.xcolab.exceptions.JOOQToSpringExceptionTransformer;
+import org.xcolab.service.admin.exceptions.JOOQToSpringExceptionTransformer;
+
 
 import javax.sql.DataSource;
 

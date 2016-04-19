@@ -1,4 +1,4 @@
-package org.xcolab.domain.emailtemplate;
+package org.xcolab.service.admin.domain.emailtemplate;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;

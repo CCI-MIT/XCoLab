@@ -102,12 +102,14 @@
                             <ul class="subproposals">
                                 <c:forEach var="proposal" items="${subProposals}">
                                     <li>
-                                        <span class="highlighted">
-                                            <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100/subProposals.size()}"/>%
-                                        </span>
-                                        <a href="${proposal.proposalUrl}" target="_blank">
-                                            <c:out value="${proposal.name}"/>
-                                        </a>
+                                        <label class="percentageInput">
+                                            <span class="highlighted">
+                                                <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${parentPercentageOfTotalPoints*100/subProposals.size()}"/>%
+                                            </span>
+                                            <a href="${proposal.proposalUrl}" target="_blank">
+                                                <c:out value="${proposal.name}"/>
+                                            </a>
+                                        </label>
                                     </li>
                                 </c:forEach>
                             </ul>

@@ -1,4 +1,4 @@
-package org.xcolab.util;
+package org.xcolab.service.emails.util;
 
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 import javax.mail.Message;
 
@@ -20,25 +18,24 @@ public class EmailUtil {
     @Autowired
     private Environment env;
 
-    public void sendEmailToRecipient(String from, List<String> toEmails, String subject, String htmlBody,
-                                     boolean isHtml, String replyTo) {
+    public void sendEmailToRecipient(org.xcolab.service.emails.pojo.Email emailPojo) {
         final Email email = new Email();
 
-        email.setFromAddress(null, from);
-        email.setSubject(subject);
+        email.setFromAddress(null, emailPojo.getFrom());
+        email.setSubject(emailPojo.getSubject());
 
-        if (replyTo != null && !replyTo.isEmpty()) {
-            email.setReplyToAddress(null, replyTo);
+        if (emailPojo.getReplyTo() != null && !emailPojo.getReplyTo().isEmpty()) {
+            email.setReplyToAddress(null, emailPojo.getReplyTo());
         }
 
-        for(String emailTo : toEmails) {
+        for (String emailTo : emailPojo.getTo()) {
             email.addRecipient(null, emailTo, Message.RecipientType.TO);
         }
 
-        if (isHtml) {
-            email.setTextHTML(htmlBody);
+        if (emailPojo.isHtml()) {
+            email.setTextHTML(emailPojo.getEmailBody());
         } else {
-            email.setText(htmlBody);
+            email.setText(emailPojo.getEmailBody());
         }
 
         String smtpHost = env.getRequiredProperty("mail.smtp.host");

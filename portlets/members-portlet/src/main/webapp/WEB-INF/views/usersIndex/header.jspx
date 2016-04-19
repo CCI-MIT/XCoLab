@@ -20,7 +20,7 @@
 			<span class="c-Helpbox__header__title">Registration and Contacting Members</span>
 			<div class="c-Helpbox__header__close">
 				<a href="javascript:;" onclick="jQuery.cookie('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()">
-				<img src="/climatecolab-theme/images/help_close.png" width="20" height="20" alt="X" /></a>
+				<img src="${themeDisplay.pathThemeImages}/helpbox_close.png" width="20" height="20" alt="X" /></a>
 			</div>
 		</div>
 		<div class="c-Helpbox__text">

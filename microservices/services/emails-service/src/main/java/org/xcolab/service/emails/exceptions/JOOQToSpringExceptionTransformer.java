@@ -1,4 +1,4 @@
-package org.xcolab.exceptions;
+package org.xcolab.service.emails.exceptions;
 
 import org.jooq.ExecuteContext;
 import org.jooq.SQLDialect;

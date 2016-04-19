@@ -1,9 +1,9 @@
-package org.xcolab.service.emailtemplate;
+package org.xcolab.service.admin.service.emailtemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xcolab.domain.emailtemplate.EmailTemplateDao;
 import org.xcolab.model.tables.pojos.ContestEmailTemplate;
+import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 
 import java.util.List;
 

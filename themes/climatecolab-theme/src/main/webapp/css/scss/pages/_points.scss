@@ -48,16 +48,6 @@ td.left.small .points-container, td.left.small .arrow-down {
     max-width: 100%;
   }
 
-  ul.subproposals li {
-    > a {
-      display: inline-block;
-      width: 80%;
-    }
-    > span {
-      display: inline-block;
-      vertical-align: top;
-    }
-  }
   label.username-picker {
     display: block;
     margin: 1.5em 0;
@@ -129,23 +119,6 @@ td.left.small .points-container, td.left.small .arrow-down {
     background: none;
   }
 
-  ul.userDistributionInputs {
-    list-style-type: none;
-    li {
-      padding: 0;
-      margin: 0;
-      background: none;
-      clear: both;
-    }
-    li.header {
-      padding-bottom: 10px;
-      padding-top: 15px;
-    }
-    li.error {
-      padding-top: 10px;
-    }
-  }
-
   .highlighted {
     color: $t-Color__secondary;
     font-weight: $b-Typography__fontWeight--bold;
@@ -153,26 +126,6 @@ td.left.small .points-container, td.left.small .arrow-down {
   }
   span.highlighted {
     padding-right: 5px;
-  }
-  .percentageInput {
-    input {
-      width: 50px;
-      margin-left: 5px;
-      margin-right: 15px;
-      float: none;
-    }
-    span, input, .input {
-      display: inline-block;
-      vertical-align: baseline;
-    }
-    span.input {
-      text-align: center;
-      height: 24px;
-      width: 75px;
-      margin-right: 5px;
-      margin-left: 0;
-      float: none;
-    }
   }
   .deleteListItem {
     float: right;
@@ -187,23 +140,82 @@ td.left.small .points-container, td.left.small .arrow-down {
     font-weight: $b-Typography__fontWeight--bold;
     color: $t-Color__alert;
   }
+}
+
+ul.userDistributionInputs {
+  list-style-type: none;
+
+  li {
+    padding: 0;
+    margin: 0;
+    background: none;
+    clear: both;
+  }
+
+  li.header {
+    padding-bottom: 10px;
+    padding-top: 15px;
+  }
+
+  li.error {
+    padding-top: 10px;
+  }
 
   .header .percentage {
     padding-left: 30px;
   }
+
   .header .name {
-    padding-left: 41px;
+    padding-left: 39px;
   }
-  .totalRow .percentage {
+}
+
+.totalRow .percentage {
+  width: 75px;
+  margin-right: 2px;
+  display: inline-block;
+  text-align: center;
+}
+
+.totalRow .percentage.smaller {
+  width: 51px;
+  margin-right: 6px;
+  margin-left: 11px;
+}
+
+ul.subproposals {
+  list-style-type: none;
+
+  li {
+    > a {
+      display: inline-block;
+      width: 80%;
+    }
+    > span {
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+}
+
+.percentageInput {
+  input {
+    width: 50px;
+    margin-left: 5px;
+    margin-right: 15px;
+    float: none;
+  }
+  span, input, .input {
+    display: inline-block;
+    vertical-align: baseline;
+  }
+  span.input {
+    text-align: center;
+    height: 24px;
     width: 75px;
     margin-right: 5px;
-    display: inline-block;
-    text-align: center;
-  }
-  .totalRow .percentage.smaller {
-    width: 51px;
-    margin-right: 6px;
-    margin-left: 11px;
+    margin-left: 0;
+    float: none;
   }
 }
 

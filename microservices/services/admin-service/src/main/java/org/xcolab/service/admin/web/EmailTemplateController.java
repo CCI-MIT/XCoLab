@@ -1,4 +1,4 @@
-package org.xcolab.web;
+package org.xcolab.service.admin.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ContestEmailTemplate;
-import org.xcolab.service.emailtemplate.EmailTemplateService;
+import org.xcolab.service.admin.service.emailtemplate.EmailTemplateService;
 
 import java.util.List;
 
@@ -34,8 +34,9 @@ public class EmailTemplateController {
         if (this.emailTemplateService.getEmailTemplate(emailTemplateType) != null) {
             this.emailTemplateService.updateEmailTemplate(contestEmailTemplate);
             return "Email template updated successfully";
-        } else
+        } else {
             return "Email template not found";
+        }
     }
 
     @RequestMapping(value = "/emailTemplates", method = RequestMethod.PUT)

@@ -1,5 +1,5 @@
 #!/bin/sh
-for D in *; do
+for D in *-service; do
     if [ -d "${D}" ]; then
         cd $D
                 pwd

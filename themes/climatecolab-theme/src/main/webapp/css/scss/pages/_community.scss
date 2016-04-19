@@ -1,6 +1,22 @@
 $p-community__left__lineHeight: 21px !default;
 $p-community__colab__th__background: #E7F1F5 !default;
 $p-community__colab__th__textColor: $t-Color__grey--darkest !default;
+$p-community__commList__marginTop: 26px !default;
+$p-community__commList__h2__paddingBottom: 0px !default;
+$p-community__commList__h2__borderBottom: none !default;
+$p-community__commList__h2__fontWeight: $b-Typography__fontWeight__h2 !default;
+$p-community__discHead__width: 680px !default;
+$p-community__infoLeft__fontStyle: italic !default;
+$p-community__infoLeft__capitalization: $b-Typography__capitalization--none !default;
+$p-community__infoLeft__fontSize: initial !default;
+$p-community__infoLeft__fontWeight: $b-Typography__fontWeight !default;
+$p-community__infoLeft__paddingTop: 0px !default;
+$p-community__infoLeft__span__textColor: $t-Color__secondary !default;
+$p-community__infoLeft__span__fontSize: 32px !default;
+$p-community__infoLeft__span__paddingRight: 5px !default;
+$p-community__infoLeft__span__fontWeight: $b-Typography__fontWeight--bold !default;
+
+$p-community__c-Message__column__width: 204px !default;
 
 .community-left {
   float: left;
@@ -71,6 +87,7 @@ $p-community__colab__th__textColor: $t-Color__grey--darkest !default;
 .comm_disc-head {
   margin: 0 10px 10px 0;
   height: 40px;
+  width: $p-community__discHead__width;
 }
 
 .comm_disc-title {
@@ -102,7 +119,11 @@ $p-community__colab__th__textColor: $t-Color__grey--darkest !default;
 .comm_info-left {
   float: right;
   width: 340px;
-  font-style: italic;
+  font-style: $p-community__infoLeft__fontStyle;
+  text-transform: $p-community__infoLeft__capitalization;
+  font-size: $p-community__infoLeft__fontSize;
+  font-weight: $p-community__infoLeft__fontWeight;
+  padding-top: $p-community__infoLeft__paddingTop;
 }
 
 .comm_info-left.members {
@@ -116,15 +137,15 @@ $p-community__colab__th__textColor: $t-Color__grey--darkest !default;
 }
 
 .comm_info-left span {
-  color: $t-Color__secondary;
+  color: $p-community__infoLeft__span__textColor;
   font-size: 30px;
-  font-weight: $b-Typography__fontWeight--bold;
-  padding-right: 5px;
+  font-weight: $p-community__infoLeft__span__fontWeight;
+  padding-right: $p-community__infoLeft__span__paddingRight;
   font-style: normal;
 }
 
 .wf-active .comm_info-left span {
-  font-size: 32px;
+  font-size: $p-community__infoLeft__span__fontSize;
 }
 
 .comm_info-left img {
@@ -138,13 +159,17 @@ $p-community__colab__th__textColor: $t-Color__grey--darkest !default;
 
 .comm_list {
   line-height: normal;
-  margin-top: 26px;
+  margin-top: $p-community__commList__marginTop;
 }
 
 .comm_list h2 {
   font-size: 20px;
   color: $t-Color__grey--darkest;
   margin-bottom: 18px;
+  padding-bottom: $p-community__commList__h2__paddingBottom;
+  border-bottom: $p-community__commList__h2__borderBottom;
+  font-weight: $p-community__commList__h2__fontWeight;
+
 }
 
 .wf-active .comm_list h3 {
@@ -323,7 +348,7 @@ $p-community__colab__th__textColor: $t-Color__grey--darkest !default;
 
 .c-Message__column {
   float: left;
-  width: 204px;
+  width: $p-community__c-Message__column__width;
   margin: 0 0 0 40px;
 }
 
