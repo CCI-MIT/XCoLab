@@ -14,11 +14,11 @@ import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.joda.time.DateTime;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.legacy.enums.MessageConstants;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.MessagingClient;
 import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.TemplateReplacementUtil;
 

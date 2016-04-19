@@ -1,5 +1,6 @@
-package org.xcolab.mail;
+package org.xcolab.service.members.util.email;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -19,9 +20,6 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-/**
- * Created by Thomas on 1/12/2015.
- */
 public class ConnectorEmmaAPI {
 
     private final String charset = java.nio.charset.StandardCharsets.UTF_8.name();
@@ -30,13 +28,12 @@ public class ConnectorEmmaAPI {
 
     private final AccountDetailsEmmaAPI accountDetailsEmmaAPI;
 
-    public ConnectorEmmaAPI() {
+    public ConnectorEmmaAPI() throws SystemException {
         accountDetailsEmmaAPI = new AccountDetailsEmmaAPI();
         myEmmaApiBaseUrl = "https://api.e2ma.net/" + accountDetailsEmmaAPI.getAccountId();
     }
 
     public boolean unSubscribeMemberWithEmail(String email) throws IOException {
-
         JSONObject memberDetails = getMemberJSONfromEmail(email);
         return !memberDetails.has("member_id") || unSubscribeMemberWithMemberId(memberDetails.getString("member_id"));
     }

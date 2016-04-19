@@ -120,7 +120,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_ContestEmailTemplate</includes>
+                            <includes>xcolab_ContestEmailTemplate|xcolab_ConfigurationAttribute</includes>
                         </database>
                     </generator>
                 </configuration>

@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Theme;
 import com.liferay.portal.service.ThemeLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,12 +61,8 @@ public class EXTServicePreAction extends Action {
         } catch (SystemException e) {
             _log.error("Could not retrieve contest types to populate menu items", e);
         }
-        try {
-            vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-            vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
-        } catch (SystemException e) {
-            _log.error("Error retrieving ConfigurationAttributes for colab names", e);
-        }
+        vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
 
         String contestIdStr = req.getParameter("_collab_paramcontestId");
         if (contestIdStr != null) {

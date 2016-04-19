@@ -1,4 +1,4 @@
-package org.xcolab.service.client;
+package org.xcolab.client.admin;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.xcolab.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class EmailTemplateClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/admin-service";
 
-    static RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
 

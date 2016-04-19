@@ -21,12 +21,14 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
                 .fetchInto(ContestEmailTemplate.class);
     }
 
+    @Override
     public ContestEmailTemplate getEmailTemplate(String emailTemplateId) {
         return this.dslContext.select()
                 .from(CONTEST_EMAIL_TEMPLATE)
                 .where(CONTEST_EMAIL_TEMPLATE.TYPE_.equal(emailTemplateId))
                 .fetchOneInto(ContestEmailTemplate.class);
     }
+    @Override
     public void updateEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
          this.dslContext.update(CONTEST_EMAIL_TEMPLATE)
                 .set(CONTEST_EMAIL_TEMPLATE.TYPE_, contestEmailTemplate.getType_())
@@ -36,6 +38,7 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
                 .where(CONTEST_EMAIL_TEMPLATE.TYPE_.equal(contestEmailTemplate.getType_()))
                 .execute();
     }
+    @Override
     public void createEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
         this.dslContext.insertInto(CONTEST_EMAIL_TEMPLATE)
                 .set(CONTEST_EMAIL_TEMPLATE.TYPE_, contestEmailTemplate.getType_())
