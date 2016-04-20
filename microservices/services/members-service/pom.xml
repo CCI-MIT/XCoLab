@@ -94,8 +94,26 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
         </dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+		</dependency>
 
-    </dependencies>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160212</version>
+		</dependency>
+
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>admin-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
+	</dependencies>
 	
 	<build>
 		<plugins>

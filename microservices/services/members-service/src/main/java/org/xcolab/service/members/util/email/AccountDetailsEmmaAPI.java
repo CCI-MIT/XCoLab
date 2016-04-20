@@ -1,11 +1,20 @@
 package org.xcolab.service.members.util.email;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 
+@Component
+@PropertySource({"classpath:application.properties", "file:${user.home}/.xcolab.application.properties"})
 public class AccountDetailsEmmaAPI {
+
+    @Autowired
+    private Environment env;
 
     private String accountId;
     private String groupId;
@@ -13,11 +22,18 @@ public class AccountDetailsEmmaAPI {
     private String privateApiKey;
     private final String encodedAuthorization;
 
-    public AccountDetailsEmmaAPI() throws SystemException {
-        accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
-        groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
-        publicApiKey = ConfigurationAttributeKey.MY_EMMA_PUBLIC_API_KEY.getStringValue();
-        privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY.getStringValue();
+    public AccountDetailsEmmaAPI() {
+        try {
+            accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
+            groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
+            publicApiKey = ConfigurationAttributeKey.MY_EMMA_PUBLIC_API_KEY.getStringValue();
+            privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY.getStringValue();
+        } catch (ConfigurationAttributeNotFoundException e) {
+            accountId = "";
+            groupId = "";
+            publicApiKey = "";
+            privateApiKey = "";
+        }
         encodedAuthorization = "Basic " + new Base64().encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
     }
 
@@ -61,6 +77,7 @@ public class AccountDetailsEmmaAPI {
         return StringUtils.isNotBlank(accountId)
                 && StringUtils.isNotBlank(groupId)
                 && StringUtils.isNotBlank(publicApiKey)
-                && StringUtils.isNotBlank(privateApiKey);
+                && StringUtils.isNotBlank(privateApiKey)
+                && "production".equalsIgnoreCase(env.getProperty("environment"));
     }
 }

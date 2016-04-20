@@ -14,7 +14,7 @@ public class MemberServiceTest {
 
     @Before
     public void setUp() {
-        memberService = new MemberService(new MemberDaoImpl());
+        memberService = new MemberService(new MemberDaoImpl(), null);
     }
 
     @Test

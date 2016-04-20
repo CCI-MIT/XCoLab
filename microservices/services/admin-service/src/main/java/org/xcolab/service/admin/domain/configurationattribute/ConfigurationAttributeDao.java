@@ -1,4 +1,4 @@
-package org.xcolab.domain.configurationattribute;
+package org.xcolab.service.admin.domain.configurationattribute;
 
 import org.xcolab.model.tables.pojos.ConfigurationAttribute;
 

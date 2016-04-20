@@ -137,7 +137,7 @@ public class UserProfileController {
             populateUserWrapper(currentUserProfile, model);
             if (currentUserProfile.isViewingOwnProfile()) {
                 model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored()));
+                        new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -229,7 +229,7 @@ public class UserProfileController {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             if (currentUserProfile.isViewingOwnProfile()) {
                 model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored()));
+                        new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -500,11 +500,8 @@ public class UserProfileController {
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
-
         EmailClient.sendEmail(addressFrom.getAddress(), user.getEmailAddress(), messageSubject,
                 messageBody, false, addressFrom.getAddress());
-
-
     }
 
     @RequestMapping(params = "action=deleteProfile")

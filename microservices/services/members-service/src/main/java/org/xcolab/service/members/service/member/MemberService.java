@@ -1,12 +1,15 @@
 package org.xcolab.service.members.service.member;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xcolab.model.tables.pojos.User_;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.UsernameGenerator;
+import org.xcolab.service.members.util.email.ConnectorEmmaAPI;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 @Service
@@ -16,9 +19,12 @@ public class MemberService {
 
     private final MemberDao memberDao;
 
+    private final ConnectorEmmaAPI connectorEmmaAPI;
+
     @Autowired
-    public MemberService(MemberDao memberDao) {
+    public MemberService(MemberDao memberDao, ConnectorEmmaAPI connectorEmmaAPI) {
         this.memberDao = memberDao;
+        this.connectorEmmaAPI = connectorEmmaAPI;
     }
 
     public Integer getMemberActivityCount(Long memberId) {
@@ -50,5 +56,29 @@ public class MemberService {
             return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash.substring(7));
         }
         return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash);
+    }
+    public boolean isSubscribedToNewsletter(long memberId) throws IOException {
+        final String email = memberDao.getMember(memberId).getEmailAddress();
+        JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);
+        return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, false);
+    }
+
+    public boolean subscribeToNewsletter(long memberId) {
+        final String email = memberDao.getMember(memberId).getEmailAddress();
+        try {
+            JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
+            return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, true);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public boolean unsubscribeFromNewsletter(long memberId) {
+        final String email = memberDao.getMember(memberId).getEmailAddress();
+        try {
+            return connectorEmmaAPI.unSubscribeMemberWithEmail(email);
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

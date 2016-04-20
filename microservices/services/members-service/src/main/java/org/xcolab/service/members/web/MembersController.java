@@ -14,6 +14,7 @@ import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -200,5 +201,19 @@ public class MembersController {
             return memberService.validatePassword(password, memberService.getMember(memberId).getPassword_());
         }
         throw new NotFoundException("The endpoint you requested is not available for the given attributes");
+    }
+    @RequestMapping(value = "/members/{memberId}/subscribe", method = RequestMethod.PUT)
+    public boolean subscribe(@PathVariable long memberId) {
+        return memberService.subscribeToNewsletter(memberId);
+    }
+
+    @RequestMapping(value = "/members/{memberId}/unsubscribe", method = RequestMethod.PUT)
+    public boolean unsubscribe(@PathVariable long memberId) {
+        return memberService.unsubscribeFromNewsletter(memberId);
+    }
+
+    @RequestMapping(value = "/members/{memberId}/isSubscribed", method = RequestMethod.GET)
+    public boolean isSubscribed(@PathVariable long memberId) throws IOException {
+        return memberService.isSubscribedToNewsletter(memberId);
     }
 }

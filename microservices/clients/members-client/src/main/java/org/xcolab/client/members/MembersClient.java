@@ -203,4 +203,21 @@ public final class MembersClient {
                 .queryParam("memberId", memberId);
         return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
     }
+    public static boolean subscribeToNewsletter(long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/subscribe");
+        return restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PUT, null, Boolean.class).getBody();
+    }
+
+    public static boolean unsubscribeFromNewsletter(long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/unsubscribe");
+        return restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PUT, null, Boolean.class).getBody();
+    }
+
+    public static boolean isSubscribedToNewsletter(long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/isSubscribed");
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
 }
