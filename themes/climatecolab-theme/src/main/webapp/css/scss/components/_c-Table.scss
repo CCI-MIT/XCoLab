@@ -12,8 +12,8 @@ $c-Table__cell--title__borderRight: none !default;
 $c-Table__cell--odd__background: url(../images/pattern-tbl-6x6.png) !default;
 $c-Table__row--title__borderBottom: 1px solid $c-Table__borderColor !default;
 $c-Table__cell--title__a__capitalization: $b-Typography__capitalization--none !default;
-
-$p-proposal__thumbbox__backgroundColor: $t-Color__grey--lightest !default;
+$c-Table__cell__count__top: 2px !default;
+$c-Table__cell__count__backgroundColor: $t-Color__grey--lightest !default;
 
 .c-Table {
 }
@@ -53,7 +53,7 @@ $p-proposal__thumbbox__backgroundColor: $t-Color__grey--lightest !default;
   img {
     margin-right: 10px;
     position: relative;
-    top: 2px;
+    top: $c-Table__cell__count__top;
   }
 
   a {
@@ -139,7 +139,7 @@ $p-proposal__thumbbox__backgroundColor: $t-Color__grey--lightest !default;
   }
 
   .highlight {
-    background-color: $p-proposal__thumbbox__backgroundColor;
+    background-color: $c-Table__cell__count__backgroundColor;
     @include border-radius(3px);
     padding: 3px;
   }
@@ -149,6 +149,8 @@ $p-proposal__thumbbox__backgroundColor: $t-Color__grey--lightest !default;
   @extend %c-Table__cell;
 
   border-right: $c-Table__cell--title__borderRight;
+  font-weight: $c-Table__row__fontWeight;
+  text-transform: $c-Table__cell--title__a__capitalization;
 
   &:last-of-type {
     border-right: none;
@@ -200,7 +202,7 @@ $p-proposal__thumbbox__backgroundColor: $t-Color__grey--lightest !default;
   }
 
   &.advancing-status {
-    width: 175px;
+    width: 195px;
   }
 
   a {
