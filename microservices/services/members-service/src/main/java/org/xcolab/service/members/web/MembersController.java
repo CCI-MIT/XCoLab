@@ -198,10 +198,21 @@ public class MembersController {
         }
 
         if (memberId != null) {
-            return memberService.validatePassword(password, memberService.getMember(memberId).getPassword_());
+            return memberService.validatePassword(password, memberDao.getMember(memberId).getPassword_());
         }
         throw new NotFoundException("The endpoint you requested is not available for the given attributes");
     }
+
+    @RequestMapping(value = "/members", method = RequestMethod.POST)
+    public User_ register(@RequestBody User_ member) {
+        return null;
+    }
+
+    @RequestMapping(value = "/members/{memberId}/login", method = RequestMethod.POST)
+    public boolean login(@PathVariable long memberId, @RequestBody String password) {
+        return false;
+    }
+
     @RequestMapping(value = "/members/{memberId}/subscribe", method = RequestMethod.PUT)
     public boolean subscribe(@PathVariable long memberId) {
         return memberService.subscribeToNewsletter(memberId);

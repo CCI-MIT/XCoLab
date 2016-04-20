@@ -282,7 +282,7 @@ public class UserProfileController {
 
                 if (!result.hasErrors()) {
                     currentUserProfile.getUser()
-                            .setPassword(MembersClient.hashPasword(updatedUserBean.getPassword().trim()));
+                            .setPassword(MembersClient.hashPassword(updatedUserBean.getPassword().trim()));
                     changedUserPart = true;
                 } else {
                     validationError = true;

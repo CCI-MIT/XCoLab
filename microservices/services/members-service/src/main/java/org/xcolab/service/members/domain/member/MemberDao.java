@@ -59,7 +59,12 @@ public interface MemberDao {
 
     User_ getMember(Long userId);
 
+    User_ findOneByScreenName(String screenName);
+    User_ findOneByEmail(String email);
+
     void updateMember(User_ user);
+    void createMember(String screenName, String password, String email, String firstName, String lastName,
+            String shortBio, String country, Long facebookId, String openId);
 
     boolean isScreenNameTaken(String screenName);
     boolean isEmailUsed(String email);

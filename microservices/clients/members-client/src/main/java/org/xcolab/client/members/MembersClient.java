@@ -1,15 +1,17 @@
 package org.xcolab.client.members;
 
 import net.spy.memcached.MemcachedClient;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
@@ -139,6 +141,28 @@ public final class MembersClient {
         return ret;
     }
 
+    public static User_ findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
+        try {
+            return null;
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new MemberNotFoundException("Member with email " + emailAddress + " does not exist");
+            }
+            throw e;
+        }
+    }
+
+    public static User_ findMemberByScreenName(String screenName) throws MemberNotFoundException {
+        try {
+            return null;
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
+            }
+            throw e;
+        }
+    }
+
     public static void updateMember(User_ user) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + user.getUserId() + "");
@@ -181,7 +205,7 @@ public final class MembersClient {
         return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
     }
 
-    public static String hashPasword(String password) {
+    public static String hashPassword(String password) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/hashPassword")
                 .queryParam("password", password);
@@ -190,7 +214,7 @@ public final class MembersClient {
 
     public static boolean validatePassword(String password, String hash) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/generateScreenName")
+                EUREKA_APPLICATION_ID + "/members/validatePassword")
                 .queryParam("password", password)
                 .queryParam("hash", hash);
         return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
@@ -198,11 +222,24 @@ public final class MembersClient {
 
     public static boolean validatePassword(String password, long memberId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/generateScreenName")
+                EUREKA_APPLICATION_ID + "/members/validatePassword")
                 .queryParam("password", password)
                 .queryParam("memberId", memberId);
         return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
     }
+
+    public static User_ register(User_ member) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members");
+        return restTemplate.postForObject(uriBuilder.build().toString(), member, User_.class);
+    }
+
+    public static boolean login(long memberId, String password) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/login");
+        return restTemplate.postForObject(uriBuilder.build().toString(), password, Boolean.class);
+    }
+
     public static boolean subscribeToNewsletter(long memberId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "/subscribe");
