@@ -13,6 +13,8 @@ $c-Table__cell--odd__background: url(../images/pattern-tbl-6x6.png) !default;
 $c-Table__row--title__borderBottom: 1px solid $c-Table__borderColor !default;
 $c-Table__cell--title__a__capitalization: $b-Typography__capitalization--none !default;
 
+$p-proposal__thumbbox__backgroundColor: $t-Color__grey--lightest !default;
+
 .c-Table {
 }
 
@@ -47,6 +49,18 @@ $c-Table__cell--title__a__capitalization: $b-Typography__capitalization--none !d
   padding: 10px;
 }
 
+%c-Table__cell__count {
+  img {
+    margin-right: 10px;
+    position: relative;
+    top: 2px;
+  }
+
+  a {
+    font-weight: $c-Table__row__fontWeight;
+  }
+}
+
 .c-Table__cell {
   @extend %c-Table__cell;
   font-size: 14px;
@@ -77,8 +91,57 @@ $c-Table__cell--title__a__capitalization: $b-Typography__capitalization--none !d
     text-align: center;
   }
 
+  &.propname-authors {
+    img {
+      float: left;
+      margin-right: 10px;
+    }
+
+    h4 {
+      a {
+        font-weight: $c-Table__row__fontWeight;
+      }
+    }
+  }
+
+  &.votes {
+    @extend %c-Table__cell__count;
+  }
+
+  &.supporters {
+    @extend %c-Table__cell__count;
+  }
+
+  &.comments {
+    @extend %c-Table__cell__count;
+  }
+
+  &.modified {
+  }
+
+  &.contributors {
+  }
+
+  &.advancing-status {
+    img {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+
   &.highlight a {
     font-weight: $c-Table__cell__fontWeight--active;
+  }
+
+  &.no-border {
+    border-bottom: none;
+    padding-bottom: 0px;
+  }
+
+  .highlight {
+    background-color: $p-proposal__thumbbox__backgroundColor;
+    @include border-radius(3px);
+    padding: 3px;
   }
 }
 
@@ -110,6 +173,34 @@ $c-Table__cell--title__a__capitalization: $b-Typography__capitalization--none !d
 
   &.member-since {
     text-align: center;
+  }
+
+  &.propname-authors {
+
+  }
+
+  &.votes {
+    width: 70px;
+  }
+
+  &.supporters {
+    width: 70px;
+  }
+
+  &.comments {
+    width: 70px;
+  }
+
+  &.modified {
+    width: 70px;
+  }
+
+  &.contributors {
+    width: 95px;
+  }
+
+  &.advancing-status {
+    width: 175px;
   }
 
   a {
