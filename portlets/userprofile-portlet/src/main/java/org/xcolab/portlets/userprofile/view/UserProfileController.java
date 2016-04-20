@@ -29,6 +29,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,16 +56,17 @@ import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Map;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -135,7 +137,7 @@ public class UserProfileController {
             populateUserWrapper(currentUserProfile, model);
             if (currentUserProfile.isViewingOwnProfile()) {
                 model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored()));
+                        new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -227,7 +229,7 @@ public class UserProfileController {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             if (currentUserProfile.isViewingOwnProfile()) {
                 model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored()));
+                        new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -498,11 +500,8 @@ public class UserProfileController {
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
-
         EmailClient.sendEmail(addressFrom.getAddress(), user.getEmailAddress(), messageSubject,
                 messageBody, false, addressFrom.getAddress());
-
-
     }
 
     @RequestMapping(params = "action=deleteProfile")

@@ -7,6 +7,7 @@
 
     <!--@elvariable id="colabShortName" type="java.lang.String"-->
     <!--@elvariable id="colabName" type="java.lang.String"-->
+	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
 
 	<c:if test="${updateError}">
 		<script type="text/javascript" >
@@ -27,15 +28,8 @@
 	<portlet:resourceURL var="updateUserSendEmailOnActivitySettings" id="updateUserSendEmailOnActivitySettings"/>
 	<portlet:resourceURL var="updateUserSendDailyEmailOnActivitySettings" id="updateUserSendDailyEmailOnActivitySettings"/>
 
-	<portlet:resourceURL var="newsletterSubscribtionStatus" id="newsletterSubscribtionStatus" >
-		<portlet:param name="email" value="${userBean.emailStored}"/>
-	</portlet:resourceURL>
-	<portlet:resourceURL var="newsletterSubscribe" id="newsletterSubscribe" >
-		<portlet:param name="email" value="${userBean.emailStored}"/>
-	</portlet:resourceURL>
-	<portlet:resourceURL var="newsletterUnSubscribe" id="newsletterUnSubscribe" >
-		<portlet:param name="email" value="${userBean.emailStored}"/>
-	</portlet:resourceURL>
+	<portlet:resourceURL var="newsletterSubscribe" id="newsletterSubscribe" />
+	<portlet:resourceURL var="newsletterUnSubscribe" id="newsletterUnSubscribe" />
 
 	<portlet:actionURL var="updateUserProfileForm">
 		<portlet:param name="action" value="update" />
