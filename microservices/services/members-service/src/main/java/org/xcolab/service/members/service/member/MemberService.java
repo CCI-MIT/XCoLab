@@ -57,6 +57,33 @@ public class MemberService {
         }
         return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash);
     }
+
+    public User_ register(String screenName, String password, String email, String firstName, String lastName,
+            String shortBio, String country, String fbIdString, String openId, String imageId) {
+        //TODO: activate create statement when moving creation away from liferay
+        //memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
+//                    shortBio, country, Long.parseLong(fbIdString), openId);
+        final User_ member = memberDao.findOneByScreenName(screenName);
+
+        //TODO: will be done in create statement
+        member.setFacebookId(Long.parseLong(fbIdString));
+        member.setOpenId(openId);
+        memberDao.updateMember(member);
+
+        subscribeToNewsletter(member.getUserId());
+        return member;
+    }
+
+    public boolean login(User_ member, String password) {
+        try {
+            if (validatePassword(password, member.getPassword_())) {
+                //do login
+                return true;
+            }
+        } catch (NoSuchAlgorithmException ignored) {}
+        return false;
+    }
+
     public boolean isSubscribedToNewsletter(long memberId) throws IOException {
         final String email = memberDao.getMember(memberId).getEmailAddress();
         JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);

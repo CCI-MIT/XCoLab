@@ -1,12 +1,7 @@
 package org.xcolab.portlets.loginregister;
 
-import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
 import com.ext.portlet.model.BalloonUserTracking;
-import com.ext.portlet.model.MessagingIgnoredRecipients;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
-import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
-import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.PasswordExpiredException;
@@ -25,13 +20,13 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.xcolab.liferay.LoginRegisterUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -44,7 +39,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "view", params = "isLoggingIn=true")
 public class LoginController {
-    public static final long companyId = 10112L;
     private final static Log _log = LogFactoryUtil.getLog(LoginController.class);
 
     @ActionMapping
@@ -75,24 +69,8 @@ public class LoginController {
         User user = null;
         try {
             String login = request.getParameter("login");
-            if (!StringUtils.isBlank(login) && login.contains("@")) {
-                // search for user by email and after that take his/her screen name for logging in
-                user = UserLocalServiceUtil.getUserByEmailAddress(companyId, login);
 
-                if (user != null) {
-                    login = user.getScreenName();
-                }
-            }
-
-            AuthenticationServiceUtil.logUserIn(request, response, login, request.getParameter("password"));
-            //LoginUtil.logUserIn(request, response, login, request.getParameter("password"));
-
-            if (user == null) {
-                user = UserLocalServiceUtil.getUserByScreenName(companyId, login);
-            }
-
-            LoginLogLocalServiceUtil
-                    .createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
+            user = LoginRegisterUtil.login(request, response, login, request.getParameter("password"));
 
         } catch (Exception e) {
             if (e instanceof AuthException) {
@@ -121,20 +99,6 @@ public class LoginController {
                 PortalUtil.sendError(e, request, response);
             }
         }
-
-        if (user != null) {
-            try {
-                //display message if user is in the ignored recipients list
-                MessagingIgnoredRecipients r =
-                        MessagingIgnoredRecipientsLocalServiceUtil.findByEmail(user.getEmailAddress());
-                if (r.getUserId() == 0) {
-                    redirect = "/web/guest/member/-/member/userId/" + user.getUserId();
-                }
-            } catch (NoSuchMessagingIgnoredRecipientsException e) { /* Case is fine, user is not in ignored rec. list */ } catch (SystemException e) {
-                _log.error("System exception while trying to log user in", e);
-            }
-        }
-
 
         if (!SessionErrors.isEmpty(request)) {
             // url parameters

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.User_;
 import org.xcolab.model.tables.records.User_Record;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 import static org.jooq.impl.DSL.countDistinct;
@@ -298,6 +300,7 @@ public class MemberDaoImpl implements MemberDao {
         }
     }
 
+    @Override
     public User_ getMember(Long userId) {
         return this.dslContext.selectDistinct()
                 .from(USER_)
@@ -305,6 +308,23 @@ public class MemberDaoImpl implements MemberDao {
 
     }
 
+    @Override
+    public User_ findOneByScreenName(String screenName) {
+        return dslContext.select()
+                .from(USER_)
+                .where(USER_.SCREEN_NAME.eq(screenName))
+                .fetchOne().into(User_.class);
+    }
+
+    @Override
+    public User_ findOneByEmail(String email) {
+        return dslContext.select()
+                .from(USER_)
+                .where(USER_.EMAIL_ADDRESS.eq(email))
+                .fetchOne().into(User_.class);
+    }
+
+    @Override
     public void updateMember(User_ user) {
 
         this.dslContext.update(USER_)
@@ -352,6 +372,23 @@ public class MemberDaoImpl implements MemberDao {
                 .set(USER_.STATUS, user.getStatus())
                 .set(USER_.LDAP_SERVER_ID, user.getLdapServerId())
                 .where(USER_.USER_ID.equal(user.getUserId()));
+    }
+
+    @Override
+    public void createMember(String screenName, String hashedPassword, String email, String firstName, String lastName,
+            String shortBio, String country, Long facebookId, String openId) {
+        //TODO: shortBio and country are still handled by expando
+        //TODO: relies on currently non-existent autoincrement index
+        this.dslContext.insertInto(USER_)
+            .set(USER_.SCREEN_NAME, screenName)
+            .set(USER_.PASSWORD_, hashedPassword)
+            .set(USER_.EMAIL_ADDRESS, email)
+            .set(USER_.FIRST_NAME, firstName)
+            .set(USER_.LAST_NAME, lastName)
+            .set(USER_.FACEBOOK_ID, facebookId)
+            .set(USER_.OPEN_ID, openId)
+            .set(USER_.CREATE_DATE, new Timestamp(Instant.now().toEpochMilli()))
+            .execute();
     }
 
     @Override
