@@ -94,12 +94,25 @@ public final class MembersClient {
     public static List<Role_> getMemberRoles(Long memberId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "/roles");
-
+        List<Role_> ret;
         ResponseEntity<List<Role_>> response = restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Role_>>() {
                 });
 
-        return response.getBody();
+        if (memcached != null) {
+            ret = (List<Role_>) memcached.get("member_roles_" + memberId);
+            if (ret != null) {
+                return ret;
+            }
+        }
+
+        ret = response.getBody();
+
+        if (memcached != null) {
+            memcached.add("member_roles_" + memberId, MEMCACHED_TIMEOUT, ret);
+        }
+
+        return ret;
     }
 
     public static MemberCategory getMemberCategory(Long roleId) {

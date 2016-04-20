@@ -24,4 +24,5 @@ public class RoleDaoImpl implements RoleDao {
                 .join(ROLE_).on(ROLE_.ROLE_ID.eq(USERS_ROLES.ROLE_ID))
                 .where(USERS_ROLES.USER_ID.equal(memberId)).fetchInto(Role_.class);
     }
+
 }
