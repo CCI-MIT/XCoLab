@@ -1,21 +1,19 @@
 package org.xcolab.client.members;
 
 import net.spy.memcached.MemcachedClient;
+
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.client.members.pojo.Member;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -190,17 +188,12 @@ public final class MembersClient {
         }
     }
 
-    public static void updateMember(Member user) {
+    public static void updateMember(Member member) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + user.getId_() + "");
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+                EUREKA_APPLICATION_ID + "/members/" + member.getId_() + "");
 
-        HttpEntity<Member> entity = new HttpEntity<>(user, headers);
-
-        restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.POST, entity,
-                String.class);
+        restTemplate.postForObject(uriBuilder.build().toString(),
+                member, String.class);
     }
 
     public static Contact_ getContact(Long contactId) {
@@ -231,18 +224,15 @@ public final class MembersClient {
     }
 
     public static String hashPassword(String password) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/hashPassword")
-                .queryParam("password", password);
-        return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
+        return hashPassword(password, false);
     }
 
-    public static boolean validatePassword(String password, String hash) {
+    public static String hashPassword(String password, boolean liferayCompatible) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/validatePassword")
+                EUREKA_APPLICATION_ID + "/members/hashPassword")
                 .queryParam("password", password)
-                .queryParam("hash", hash);
-        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+                .queryParam("liferayCompatible", liferayCompatible);
+        return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
     }
 
     public static boolean validatePassword(String password, long memberId) {

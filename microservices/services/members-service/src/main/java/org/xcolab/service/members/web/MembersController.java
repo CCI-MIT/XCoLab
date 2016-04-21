@@ -125,7 +125,7 @@ public class MembersController {
     public String updateMember(@RequestBody Member member, @PathVariable("memberId") Long memberId)
             throws NotFoundException {
         if (memberDao.getMember(memberId) != null) {
-            memberService.updateMember(member);
+            memberDao.updateMember(member);
             return "Updated successfully";
         } else {
             return "Member not found";
@@ -181,8 +181,8 @@ public class MembersController {
     }
 
     @RequestMapping("/members/hashPassword")
-    public String hashPassword(@RequestParam String password) throws NoSuchAlgorithmException {
-        return memberService.hashPassword(password);
+    public String hashPassword(@RequestParam String password, @RequestParam(required = false) Boolean liferayCompatible) throws NoSuchAlgorithmException {
+        return memberService.hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
     }
 
     @RequestMapping("/members/validatePassword")

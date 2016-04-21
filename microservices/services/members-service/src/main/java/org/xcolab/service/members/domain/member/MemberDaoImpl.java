@@ -339,7 +339,8 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.LOGIN_DATE, member.getLoginDate())
                 .set(MEMBER.LOGIN_IP, member.getLoginIP())
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
-                .where(MEMBER.ID_.equal(member.getId_()));
+                .where(MEMBER.ID_.equal(member.getId_()))
+                .execute();
     }
 
     @Override
