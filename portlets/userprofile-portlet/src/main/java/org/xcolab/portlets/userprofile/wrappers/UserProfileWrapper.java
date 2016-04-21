@@ -245,7 +245,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public boolean getHasFacebookId() {
-        return user.getFacebookId() != 0;
+        return user.getFacebookId() != null && user.getFacebookId() != 0;
     }
 
     public boolean getHasOpenId() {

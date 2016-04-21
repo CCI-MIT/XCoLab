@@ -18,8 +18,8 @@ public class MemberServiceTest {
     }
 
     @Test
-    public void hashPassword() throws NoSuchAlgorithmException {
-        final String hash = memberService.hashPassword("colab123");
+    public void hashPassword_liferayCompatible() throws NoSuchAlgorithmException {
+        final String hash = memberService.hashPassword("colab123", true);
         Assert.assertEquals("{SHA-1}NS2PVQOqtxe9YlFzf3xNa8/6XDo=", hash);
     }
 

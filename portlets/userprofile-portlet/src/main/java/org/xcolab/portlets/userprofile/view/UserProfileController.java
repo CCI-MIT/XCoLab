@@ -281,7 +281,13 @@ public class UserProfileController {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
-                    currentUserProfile.getUser().setPassword(updatedUserBean.getPassword().trim());
+                    currentUserProfile.getUser().setHashedPassword(
+                            MembersClient.hashPassword(updatedUserBean.getPassword().trim()));
+                    //TODO: remove, currently needed to update password for liferay
+                    final User liferayUser = UserLocalServiceUtil.getUser(currentUserProfile.getUserId());
+                    liferayUser.setPassword
+                            (MembersClient.hashPassword(updatedUserBean.getPassword().trim(), true));
+                    UserLocalServiceUtil.updateUser(liferayUser);
                     changedUserPart = true;
                 } else {
                     validationError = true;
@@ -382,7 +388,7 @@ public class UserProfileController {
     }
 
     private boolean isPasswordMatchingExistingPassword(UserProfileWrapper currentUserProfile, String password) {
-        return MembersClient.validatePassword(password, currentUserProfile.getUser().getHashedPassword());
+        return MembersClient.validatePassword(password, currentUserProfile.getUser().getUserId());
     }
 
     private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean)

@@ -26,9 +26,9 @@ public class PBKDF2PasswordEncryptorTest {
     }
 
     @Test
-    public void doEncrypt__matchesLiferay() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public void doEncrypt__matchesKnown() throws NoSuchAlgorithmException, InvalidKeySpecException {
         PBKDF2PasswordEncryptor encryptor = new PBKDF2PasswordEncryptor();
-        final String hashed = "AAAAoAAB9ADzAoRz43N2Y51OLzokXCcy0xn743H07LCx2l5R";
+        final String hashed = "160_128000_JVfncAV0kSs=_khzSQKz4vQxlMVbqv8tQK8buLSE=";
         Assert.assertEquals(hashed, encryptor.doEncrypt(ALGORITHM, "colab123", hashed));
     }
 }

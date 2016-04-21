@@ -204,10 +204,6 @@ public class Member implements Serializable {
         this.hashedPassword = hashedPassword;
     }
 
-    public void setPassword(String password) {
-        this.hashedPassword = MembersClient.hashPassword(password);
-    }
-
     @Override
     public String toString() {
 
