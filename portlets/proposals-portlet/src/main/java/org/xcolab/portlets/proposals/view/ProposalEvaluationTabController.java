@@ -19,14 +19,14 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -39,13 +39,14 @@ import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
-import javax.portlet.PortletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.portlet.PortletRequest;
 
 @Controller
 @RequestMapping("view")
@@ -161,7 +162,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                         ProposalJudgingCommentHelper commentHelper =
                                 new ProposalJudgingCommentHelper(proposal, contestPhase);
                         ProposalRatingsWrapper proposalRating;
-                        if(wasProposalPromotedInContestPhase(proposal, contestPhase)) {
+                        if (wasProposalPromotedInContestPhase(proposal, contestPhase)) {
                             proposalRating = calculateAverageRating(judgeRatingsForProposal);
                         } else {
                             proposalRating = new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
@@ -176,7 +177,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                     try {
                         ProposalRatingsWrapper proposalRating = getProposalPromotionCommentRating(proposal, contestPhase);
                         proposalRatings.add(proposalRating);
-                    } catch (Exception e ){
+                    } catch (Exception e) {
                         _log.warn("Could not create rating wrapper for comment and contest phase", e);
                     }
                 }
@@ -192,7 +193,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                 contestPhase.getContestPhasePK(),
                 ProposalContestPhaseAttributeKeys.JUDGE_DECISION
         );
-        if(Validator.isNotNull(judgingDecisionAttr)){
+        if (Validator.isNotNull(judgingDecisionAttr)) {
             Long judgingDecision = judgingDecisionAttr.getNumericValue();
             return judgingDecision.intValue() == JudgingSystemActions.AdvanceDecision.MOVE_ON.getAttributeValue();
         } else {
@@ -204,7 +205,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         ProposalRatingsWrapper proposalRating = new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String promoComment = reviewContentHelper.getPromotionComment(true);
-        if(!promoComment.trim().isEmpty()) {
+        if (!promoComment.trim().isEmpty()) {
             proposalRating.setComment(promoComment);
             proposalRating.setContestPhase(contestPhase);
             return proposalRating;
@@ -217,7 +218,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         ProposalRatingsWrapper proposalRating = new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, proposalRatings);
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String promoComment = reviewContentHelper.getPromotionComment(true);
-        if(!promoComment.trim().isEmpty()) {
+        if (!promoComment.trim().isEmpty()) {
             proposalRating.setComment(promoComment);
             proposalRating.setContestPhase(contestPhase);
             return proposalRating;
@@ -263,7 +264,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         List<ProposalRating> userRatings = map.get(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
         return new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
-}
+    }
 
     private boolean hasContestPhaseEnded(ContestPhase contestPhase) {
         return contestPhase.getPhaseEndDate().before(new Date());
@@ -288,12 +289,13 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
     private boolean userIsAdmin(PortletRequest request) {
-        boolean isUserAdmin = false;
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        if (themeDisplay.getPermissionChecker().isOmniadmin()) {
-            isUserAdmin = true;
+
+        try {
+            return PermissionsClient.canAdminAll(this.proposalsContext.getUser(request).getUserId());
+        } catch (PortalException | SystemException ignored) {
+            return false;
         }
-        return isUserAdmin;
+
     }
 
 }

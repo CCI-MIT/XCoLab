@@ -92,13 +92,8 @@ public final class MembersClient {
     }
 
     public static List<Role_> getMemberRoles(Long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/roles");
-        List<Role_> ret;
-        ResponseEntity<List<Role_>> response = restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Role_>>() {
-                });
 
+        List<Role_> ret;
         if (memcached != null) {
             ret = (List<Role_>) memcached.get("member_roles_" + memberId);
             if (ret != null) {
@@ -106,6 +101,11 @@ public final class MembersClient {
             }
         }
 
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/roles");
+        ResponseEntity<List<Role_>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Role_>>() {
+                });
         ret = response.getBody();
 
         if (memcached != null) {
@@ -114,6 +114,31 @@ public final class MembersClient {
 
         return ret;
     }
+
+    public static List<Role_> getMemberRolesInContest(Long memberId, Long contestId) {
+
+        List<Role_> ret;
+        if (memcached != null) {
+            ret = (List<Role_>) memcached.get("member_roles_contest_" + memberId + "_" + contestId);
+            if (ret != null) {
+                return ret;
+            }
+        }
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/roles/contests/" + contestId);
+        ResponseEntity<List<Role_>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Role_>>() {
+                });
+        ret = response.getBody();
+
+        if (memcached != null) {
+            memcached.add("member_roles_contest_" + memberId + "_" + contestId, MEMCACHED_TIMEOUT, ret);
+        }
+
+        return ret;
+    }
+
 
     public static MemberCategory getMemberCategory(Long roleId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +

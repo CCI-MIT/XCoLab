@@ -159,4 +159,14 @@ public class MembersController {
         }
 
     }
+
+    @RequestMapping(value = "/members/{memberId}/roles/contests/{contestId}", method = RequestMethod.GET)
+    public List<Role_> getMemberRoles(@PathVariable("memberId") Long memberId,@PathVariable("contestId") Long contestId) {
+        if (memberId == null || contestId == null) {
+            return new ArrayList<>();
+        } else {
+            return this.roleService.getMemberRolesInContest(memberId,contestId);
+        }
+
+    }
 }
