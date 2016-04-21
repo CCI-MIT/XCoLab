@@ -1,7 +1,6 @@
 package org.xcolab.portlets.userprofile.view;
 
 import com.ext.portlet.NoSuchConfigurationAttributeException;
-import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
@@ -12,7 +11,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Image;
@@ -27,9 +25,9 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -395,6 +393,7 @@ public class UserProfileController {
             throws Exception {
 
         boolean changedDetails = false;
+        Member member = currentUserProfile.getUser();
 
         long companyId = CompanyThreadLocal.getCompanyId();
         if (companyId == 0) {
@@ -402,31 +401,25 @@ public class UserProfileController {
             changedDetails = true;
         }
 
-        String existingBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
-                User.class.getName(), CommunityConstants.EXPANDO,
-                CommunityConstants.BIO, currentUserProfile.getUser().getId_(), StringPool.BLANK);
+        String existingBio = member.getShortBio();
+        if (existingBio == null) {
+            existingBio = "";
+        }
 
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
-            ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
-                    CommunityConstants.EXPANDO, CommunityConstants.BIO,
-                    currentUserProfile.getUser().getId_(), HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
+            member.setShortBio(HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
             changedDetails = true;
         }
 
-        String existingCountry = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
-                User.class.getName(), CommunityConstants.EXPANDO,
-                CommunityConstants.COUNTRY, currentUserProfile.getUser().getId_(), StringPool.BLANK);
-        if (!existingCountry.isEmpty()) {
+        String existingCountry = member.getCountry();
+        if (!StringUtils.isEmpty(existingCountry)) {
             if (CountryUtil.getCodeForCounty(existingCountry) != null) {
                 existingCountry = CountryUtil.getCodeForCounty(existingCountry);
             }
         }
 
         if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)) {
-            ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
-                    CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-                    currentUserProfile.getUser().getId_(),
-                    CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
+            member.setCountry(CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
             changedDetails = true;
         }
 
@@ -447,9 +440,7 @@ public class UserProfileController {
                 UserServiceUtil.updatePortrait(currentUserProfile.getUser().getId_(), bytes);
 //                currentUserProfile.getUser().setPortraitId(0L);
 
-                MembersClient.updateMember(currentUserProfile.getUser());
                 UserServiceUtil.updatePortrait(currentUserProfile.getUser().getId_(), bytes);
-                currentUserProfile.setUser(MembersClient.getMember(currentUserProfile.getUser().getId_()));
                 changedDetails = true;
             }
         }
@@ -479,6 +470,10 @@ public class UserProfileController {
             prefs.setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
+        }
+
+        if (changedDetails) {
+            MembersClient.updateMember(currentUserProfile.getUser());
         }
 
         return changedDetails;
