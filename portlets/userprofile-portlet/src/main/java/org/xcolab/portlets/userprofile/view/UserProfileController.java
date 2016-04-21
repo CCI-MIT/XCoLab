@@ -434,7 +434,7 @@ public class UserProfileController {
 
         if (updatedUserBean.getImageId() != currentUserProfile.getUserBean().getImageId()) {
             Image img = ImageLocalServiceUtil.getImage(updatedUserBean.getImageId());
-            // we need to set permission checker for liferay
+            //TODO: we need to set permission checker for liferay, NO IDEIA WHAT THIS DOES remove after liferay transition
             PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
                     .create(UserLocalServiceUtil.getUser(currentUserProfile.getUser().getUserId()), true);
             PermissionThreadLocal

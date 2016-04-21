@@ -20,4 +20,8 @@ public class RoleService {
     public List<Role_> getMemberRoles(Long memberId) {
         return this.roleDao.getMemberRoles(memberId);
     }
+
+    public List<Role_> getMemberRolesInContest(Long memberId, Long contestId){
+        return this.roleDao.getMemberRolesInContest( memberId, contestId);
+    }
 }

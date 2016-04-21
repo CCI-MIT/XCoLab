@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface RoleDao {
     List<Role_> getMemberRoles(Long memberId);
+
+    List<Role_> getMemberRolesInContest(Long memberId, Long contestId);
 }
