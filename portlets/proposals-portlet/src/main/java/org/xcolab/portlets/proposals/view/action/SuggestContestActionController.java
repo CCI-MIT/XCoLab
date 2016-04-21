@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.service.client.EmailClient;
 
 import java.util.ArrayList;
 import java.util.List;

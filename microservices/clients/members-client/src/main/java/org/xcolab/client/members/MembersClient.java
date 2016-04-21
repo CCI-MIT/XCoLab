@@ -1,19 +1,21 @@
 package org.xcolab.client.members;
 
 import net.spy.memcached.MemcachedClient;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -36,13 +38,12 @@ public final class MembersClient {
         }
     }
 
-    static RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     private MembersClient() {
     }
 
-
-    public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
+    public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstUser, int lastUser) {
 
         UriComponentsBuilder uriBuilder =
@@ -60,8 +61,8 @@ public final class MembersClient {
             uriBuilder.queryParam("category", categoryFilterValue);
         }
 
-        ResponseEntity<List<User_>> response = restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<User_>>() {
+        ResponseEntity<List<Member>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Member>>() {
                 });
 
         return response.getBody();
@@ -147,17 +148,17 @@ public final class MembersClient {
         return restTemplate.getForObject(uriBuilder.build().toString(), MemberCategory.class);
     }
 
-    public static User_ getMember(Long memberId) {
-        User_ ret;
+    public static Member getMember(Long memberId) {
+        Member ret;
         if (memcached != null) {
-            ret = (User_) memcached.get("member_" + memberId);
+            ret = (Member) memcached.get("member_" + memberId);
             if (ret != null) {
                 return ret;
             }
         }
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "");
-        ret = restTemplate.getForObject(uriBuilder.build().toString(), User_.class);
+        ret = restTemplate.getForObject(uriBuilder.build().toString(), Member.class);
 
         if (memcached != null) {
             memcached.add("member_" + memberId, MEMCACHED_TIMEOUT, ret);
@@ -165,13 +166,35 @@ public final class MembersClient {
         return ret;
     }
 
-    public static void updateMember(User_ user) {
+    public static Member findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
+        try {
+            return null;
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new MemberNotFoundException("Member with email " + emailAddress + " does not exist");
+            }
+            throw e;
+        }
+    }
+
+    public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
+        try {
+            return null;
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
+            }
+            throw e;
+        }
+    }
+
+    public static void updateMember(Member user) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + user.getUserId() + "");
+                EUREKA_APPLICATION_ID + "/members/" + user.getId() + "");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<User_> entity = new HttpEntity(user, headers);
+        HttpEntity<Member> entity = new HttpEntity<>(user, headers);
 
 
         restTemplate.exchange(uriBuilder.build().toString(),
@@ -184,5 +207,79 @@ public final class MembersClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contact/" + contactId + "");
         return restTemplate.getForObject(uriBuilder.build().toString(), Contact_.class);
+    }
+
+    public static boolean isScreenNameUsed(String screenName) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/isUsed")
+                    .queryParam("screenName", screenName);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
+
+    public static boolean isEmailUsed(String email) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/isUsed")
+                    .queryParam("email", email);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
+
+    public static String generateScreenName(String lastName, String firstName) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/generateScreenName")
+                    .queryParam("values", lastName, firstName);
+        return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
+    }
+
+    public static String hashPassword(String password) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/hashPassword")
+                .queryParam("password", password);
+        return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
+    }
+
+    public static boolean validatePassword(String password, String hash) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/validatePassword")
+                .queryParam("password", password)
+                .queryParam("hash", hash);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
+
+    public static boolean validatePassword(String password, long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/validatePassword")
+                .queryParam("password", password)
+                .queryParam("memberId", memberId);
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
+    }
+
+    public static Member register(Member member) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members");
+        return restTemplate.postForObject(uriBuilder.build().toString(), member, Member.class);
+    }
+
+    public static boolean login(long memberId, String password) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/login");
+        return restTemplate.postForObject(uriBuilder.build().toString(), password, Boolean.class);
+    }
+
+    public static boolean subscribeToNewsletter(long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/subscribe");
+        return restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PUT, null, Boolean.class).getBody();
+    }
+
+    public static boolean unsubscribeFromNewsletter(long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/unsubscribe");
+        return restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PUT, null, Boolean.class).getBody();
+    }
+
+    public static boolean isSubscribedToNewsletter(long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId + "/isSubscribed");
+        return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
     }
 }

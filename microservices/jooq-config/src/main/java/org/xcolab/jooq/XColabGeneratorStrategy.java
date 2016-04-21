@@ -4,29 +4,20 @@ import org.jooq.tools.StringUtils;
 import org.jooq.util.DefaultGeneratorStrategy;
 import org.jooq.util.Definition;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
 
 
-    private Properties properties;
+    private static final String[] TABLE_PREFIXES = {"xcolab_", "members_"};
 
-    private String schema;
+    public XColabGeneratorStrategy() {
+    }
 
-    private static final String TABLE_PREFIX = "xcolab_";
-
-    public XColabGeneratorStrategy(){
-
-        InputStream input = null;
-        try {
-            input = new FileInputStream("aplication.properties");
-            properties.load(input);
-            schema = properties.getProperty("db.schema");
-        } catch (IOException ignored) {
-            schema = null;
+    private static String toUpperCase(String string) {
+        if (string != null && !string.isEmpty()) {
+            return Character.toUpperCase(string.charAt(0))
+                    + string.substring(1);
+        } else {
+            return string;
         }
     }
 
@@ -37,7 +28,8 @@ public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
 
         final String unprefixedTableName = cleanUpSchemeAndPrefix(definition.getOutputName());
         final String underscoreSeparatedName = StringUtils.join(
-                unprefixedTableName.split("(?<=[a-z0-9])(?=[A-Z0-9])|(?<=[A-Z0-9])(?=[A-Z0-9][a-z0-9])"), "_");
+                unprefixedTableName
+                        .split("(?<=[a-z0-9])(?=[A-Z0-9])|(?<=[A-Z0-9])(?=[A-Z0-9][a-z0-9])"), "_");
         return underscoreSeparatedName.toUpperCase();
     }
 
@@ -54,7 +46,7 @@ public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
     @Override
     public String getJavaClassName(Definition definition, Mode mode) {
         StringBuilder result = new StringBuilder();
-        if (definition.getOutputName().startsWith(TABLE_PREFIX)) {
+        if (containsPrefix(definition.getOutputName())) {
             result.append(cleanUpSchemeAndPrefix(definition.getOutputName()));
             if (mode == Mode.DEFAULT) {
                 result.append("Table");
@@ -72,15 +64,21 @@ public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
 
         return result.toString();
     }
-    private String cleanUpSchemeAndPrefix(String val){
-        if (schema !=null && TABLE_PREFIX.contains(schema)){
-            return val.replace(schema, "").replace(TABLE_PREFIX, "");
-        }else {
-            return val.replace(TABLE_PREFIX, "");
+
+    private boolean containsPrefix(String string) {
+        for (String prefix : TABLE_PREFIXES) {
+            if (string.startsWith(prefix)) {
+                return true;
+            }
         }
+        return false;
     }
 
-    private static String toUpperCase(String string) {
-        return string != null && !string.isEmpty()?Character.toUpperCase(string.charAt(0)) + string.substring(1):string;
+    private String cleanUpSchemeAndPrefix(String val) {
+        String ret = val;
+        for (String prefix : TABLE_PREFIXES) {
+            ret = ret.replace(prefix, "");
+        }
+        return ret;
     }
 }
