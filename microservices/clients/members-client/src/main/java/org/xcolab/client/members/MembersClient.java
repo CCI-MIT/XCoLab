@@ -168,6 +168,7 @@ public final class MembersClient {
 
     public static Member findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
         try {
+            //TODO: add API call
             return null;
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
@@ -179,6 +180,7 @@ public final class MembersClient {
 
     public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
         try {
+            //TODO: add API call
             return null;
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
@@ -190,17 +192,15 @@ public final class MembersClient {
 
     public static void updateMember(Member user) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + user.getId() + "");
+                EUREKA_APPLICATION_ID + "/members/" + user.getId_() + "");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Member> entity = new HttpEntity<>(user, headers);
 
-
         restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.POST, entity,
                 String.class);
-
     }
 
     public static Contact_ getContact(Long contactId) {

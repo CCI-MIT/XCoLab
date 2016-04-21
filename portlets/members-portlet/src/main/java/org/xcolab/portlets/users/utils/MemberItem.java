@@ -23,7 +23,7 @@ public class MemberItem implements Serializable {
 
     public MemberItem(Member user, String memberCategoryParam) throws PortalException, SystemException {
 
-        userId = user.getId();
+        userId = user.getId_();
         activityCount = MembersClient.getMemberActivityCount(userId);
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.User_;
 import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.UsernameGenerator;
 import org.xcolab.service.members.util.email.ConnectorEmmaAPI;
@@ -60,13 +61,13 @@ public class MemberService {
     }
 
     public Member register(String screenName, String password, String email, String firstName, String lastName,
-            String shortBio, String country, String fbIdString, String openId, String imageId, long liferayUserId)
+            String shortBio, String country, Long facebookId, String openId, Long imageId, Long liferayUserId)
             throws NoSuchAlgorithmException {
         memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
-                    shortBio, country, Long.parseLong(fbIdString), openId, liferayUserId);
+                    shortBio, country, facebookId, openId, liferayUserId);
         final Member member = memberDao.findOneByScreenName(screenName);
 
-        subscribeToNewsletter(member.getId_());
+        subscribeToNewsletter(member.getEmailAddress());
         return member;
     }
 
@@ -80,14 +81,18 @@ public class MemberService {
         return false;
     }
 
-    public boolean isSubscribedToNewsletter(long memberId) throws IOException {
+    public boolean isSubscribedToNewsletter(long memberId) throws IOException, NotFoundException {
         final String email = memberDao.getMember(memberId).getEmailAddress();
         JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);
         return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, false);
     }
 
-    public boolean subscribeToNewsletter(long memberId) {
+    public boolean subscribeToNewsletter(long memberId) throws NotFoundException {
         final String email = memberDao.getMember(memberId).getEmailAddress();
+        return subscribeToNewsletter(email);
+    }
+
+    public boolean subscribeToNewsletter(String email) {
         try {
             JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
             return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, true);
@@ -96,7 +101,7 @@ public class MemberService {
         }
     }
 
-    public boolean unsubscribeFromNewsletter(long memberId) {
+    public boolean unsubscribeFromNewsletter(long memberId) throws NotFoundException {
         final String email = memberDao.getMember(memberId).getEmailAddress();
         try {
             return connectorEmmaAPI.unSubscribeMemberWithEmail(email);
