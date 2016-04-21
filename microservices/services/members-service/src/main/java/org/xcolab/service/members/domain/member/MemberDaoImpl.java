@@ -339,6 +339,8 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.LOGIN_DATE, member.getLoginDate())
                 .set(MEMBER.LOGIN_IP, member.getLoginIP())
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
+                .set(MEMBER.SHORT_BIO, member.getShortBio())
+                .set(MEMBER.COUNTRY, member.getCountry())
                 .where(MEMBER.ID_.equal(member.getId_()))
                 .execute();
     }

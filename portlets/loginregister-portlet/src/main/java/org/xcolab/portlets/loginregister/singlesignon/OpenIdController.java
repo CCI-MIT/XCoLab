@@ -14,23 +14,27 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
+
+import java.io.IOException;
+import java.util.Locale;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Locale;
 
 @Controller
 @RequestMapping(value = "view", params = "SSO=google")
@@ -130,9 +134,11 @@ public class OpenIdController {
                         throw nsue;
                     }
                     user = UserLocalServiceUtil.getUserByEmailAddress(themeDisplay.getCompanyId(), emailAddress);
+                    Member member = MembersClient.getMember(user.getUserId());
                     user.setOpenId(openId);
                     if (Validator.isNotNull(country)) {
-                        setExpandoValue(user, CommunityConstants.COUNTRY, country);
+                        member.setCountry(country);
+                        MembersClient.updateMember(member);
                     }
 
                     UserLocalServiceUtil.updateUser(user);
