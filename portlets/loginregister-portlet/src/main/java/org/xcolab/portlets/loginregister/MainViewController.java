@@ -29,6 +29,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,9 @@ import org.xcolab.utils.LinkUtils;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.UserCreationUtil;
 
+import java.io.IOException;
+import java.util.Date;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
@@ -64,8 +68,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.Date;
 
 @Controller
 @RequestMapping("view")
@@ -136,8 +138,7 @@ public class MainViewController {
             try {
                 userBean.setCountry(
                         getCountryCodeFromRemoteAddress(PortalUtil.getHttpServletRequest(request).getRemoteAddr()));
-            } catch (UserLocationNotResolvableException e) {
-                _log.warn(e);
+            } catch (UserLocationNotResolvableException ignored) {
             }
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
@@ -307,7 +308,7 @@ public class MainViewController {
                     BalloonUserTracking but =
                             BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
                     but.setRegistrationDate(new Date());
-                    but.setUserId(user.getId());
+                    but.setUserId(user.getId_());
                     BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
                 } catch (NoSuchBalloonUserTrackingException e) {
                     _log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
@@ -320,8 +321,8 @@ public class MainViewController {
 
 
             SocialActivityLocalServiceUtil
-                    .addActivity(user.getId(), themeDisplay.getScopeGroupId(), User.class.getName(),
-                            user.getId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
+                    .addActivity(user.getId_(), themeDisplay.getScopeGroupId(), User.class.getName(),
+                            user.getId_(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
 
             request.getPortletSession().setAttribute("collab_user_has_registered", true);
             PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);

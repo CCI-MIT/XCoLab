@@ -101,7 +101,7 @@ public class MessageJSONController extends JSONHelper {
     private void sendMessageToRecipientsInMessageBean() throws Exception {
         List<Long> recipients = new ArrayList<>();
         for (Member recipient : messageBean.getTo()) {
-            recipients.add(recipient.getId());
+            recipients.add(recipient.getId_());
         }
         boolean sendSuccess = MessageUtil.checkLimitAndSendMessage(
                 messageBean.getMessageSubject(), messageBean.getMessageText(), userSender, recipients);

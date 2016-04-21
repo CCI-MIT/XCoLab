@@ -48,7 +48,7 @@ public class MessagingPermissions {
     public boolean isRecipient() {
         if (isRecipient == null) {
             for (Member recipient : message.getTo()) {
-                if (recipient.getId() == user.getUserId()) {
+                if (recipient.getId_() == user.getUserId()) {
                     isRecipient = true;
                     return true;
                 }

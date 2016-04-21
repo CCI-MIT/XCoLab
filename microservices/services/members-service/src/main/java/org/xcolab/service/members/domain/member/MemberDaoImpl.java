@@ -12,6 +12,7 @@ import static org.xcolab.model.Tables.USER_;
 
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.Record;
 import org.jooq.Record2;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.records.MemberRecord;
+import org.xcolab.service.members.exceptions.NotFoundException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -68,11 +70,15 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Member getMember(long memberId) {
-        return dslContext.select()
+    public Member getMember(long memberId) throws NotFoundException {
+        final Record memberRecord = dslContext.select()
                 .from(MEMBER)
                 .where(MEMBER.ID_.eq(memberId))
-                .fetchOne().into(Member.class);
+                .fetchOne();
+        if (memberRecord == null) {
+            throw new NotFoundException("Member with id " + memberId + " does not exist");
+        }
+        return memberRecord.into(Member.class);
     }
 
     @Override
@@ -338,7 +344,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public void createMember(String screenName, String hashedPassword, String email, String firstName, String lastName,
-            String shortBio, String country, Long facebookId, String openId, long liferayUserId) {
+            String shortBio, String country, Long facebookId, String openId, Long liferayUserId) {
         this.dslContext.insertInto(MEMBER)
                 .set(MEMBER.ID_, liferayUserId)
                 .set(MEMBER.SCREEN_NAME, screenName)
