@@ -307,3 +307,17 @@ $c-Helpbox__header__title__textColor: white;
 $c-Helpbox__header__title__capitalization: uppercase;
 $c-Helpbox__text__fontWeight: $b-Typography__fontWeight--light;
 $c-Helpbox__header__close__marginTop: 0px;
+
+$b-Spacing__paddingBottom: 10px;
+$c-Count__fontSize: 17px;
+$c-Count__capitalization: uppercase;
+$c-Count__number__color: $t-Color__primary;
+$c-Count__number__fontSize: 20px;
+$c-Count__number__fontWeight: $b-Typography__fontWeight--regular;
+$c-Count__number__verticalAlign: baseline;
+
+$p-Discussion__right__subscribeLinkSmall__capitalization: uppercase;
+$p-Discussion__right__borderBottom__marginTop: 8px !default;
+$p-Discussion__right__borderBottom__paddingBottom: 11px !default;
+
+$b-Spacing__inline--large__capitalization: uppercase;
