@@ -15,7 +15,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -43,7 +43,7 @@ public final class MembersClient {
     private MembersClient() {
     }
 
-    public static List<User_> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
+    public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstUser, int lastUser) {
 
         UriComponentsBuilder uriBuilder =
@@ -61,8 +61,8 @@ public final class MembersClient {
             uriBuilder.queryParam("category", categoryFilterValue);
         }
 
-        ResponseEntity<List<User_>> response = restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<User_>>() {
+        ResponseEntity<List<Member>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Member>>() {
                 });
 
         return response.getBody();
@@ -110,17 +110,17 @@ public final class MembersClient {
         return restTemplate.getForObject(uriBuilder.build().toString(), MemberCategory.class);
     }
 
-    public static User_ getMember(Long memberId) {
-        User_ ret;
+    public static Member getMember(Long memberId) {
+        Member ret;
         if (memcached != null) {
-            ret = (User_) memcached.get("member_" + memberId);
+            ret = (Member) memcached.get("member_" + memberId);
             if (ret != null) {
                 return ret;
             }
         }
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "");
-        ret = restTemplate.getForObject(uriBuilder.build().toString(), User_.class);
+        ret = restTemplate.getForObject(uriBuilder.build().toString(), Member.class);
 
         if (memcached != null) {
             memcached.add("member_" + memberId, MEMCACHED_TIMEOUT, ret);
@@ -128,7 +128,7 @@ public final class MembersClient {
         return ret;
     }
 
-    public static User_ findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
+    public static Member findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
         try {
             return null;
         } catch (HttpClientErrorException e) {
@@ -139,7 +139,7 @@ public final class MembersClient {
         }
     }
 
-    public static User_ findMemberByScreenName(String screenName) throws MemberNotFoundException {
+    public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
         try {
             return null;
         } catch (HttpClientErrorException e) {
@@ -150,13 +150,13 @@ public final class MembersClient {
         }
     }
 
-    public static void updateMember(User_ user) {
+    public static void updateMember(Member user) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + user.getUserId() + "");
+                EUREKA_APPLICATION_ID + "/members/" + user.getId() + "");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<User_> entity = new HttpEntity<>(user, headers);
+        HttpEntity<Member> entity = new HttpEntity<>(user, headers);
 
 
         restTemplate.exchange(uriBuilder.build().toString(),
@@ -215,10 +215,10 @@ public final class MembersClient {
         return restTemplate.getForObject(uriBuilder.build().toString(), Boolean.class);
     }
 
-    public static User_ register(User_ member) {
+    public static Member register(Member member) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members");
-        return restTemplate.postForObject(uriBuilder.build().toString(), member, User_.class);
+        return restTemplate.postForObject(uriBuilder.build().toString(), member, Member.class);
     }
 
     public static boolean login(long memberId, String password) {

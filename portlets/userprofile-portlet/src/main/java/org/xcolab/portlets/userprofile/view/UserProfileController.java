@@ -45,7 +45,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -281,20 +281,19 @@ public class UserProfileController {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
-                    currentUserProfile.getUser()
-                            .setPassword(MembersClient.hashPassword(updatedUserBean.getPassword().trim()));
+                    currentUserProfile.getUser().setPassword(updatedUserBean.getPassword().trim());
                     changedUserPart = true;
                 } else {
                     validationError = true;
                     response.setRenderParameter("passwordError", "true");
-                    _log.warn("CompareStrings password failed for userId: " + currentUserProfile.getUser().getUserId());
+                    _log.warn("CompareStrings password failed for userId: " + currentUserProfile.getUser().getId());
                 }
             } else {
                 result.addError(
                         new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
                 validationError = true;
                 response.setRenderParameter("passwordError", "true");
-                _log.warn("Current password wrong for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn("Current password wrong for userId: " + currentUserProfile.getUser().getId());
             }
         }
 
@@ -310,7 +309,7 @@ public class UserProfileController {
             } else {
                 validationError = true;
                 response.setRenderParameter("emailError", "true");
-                _log.warn("Email change failed for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn("Email change failed for userId: " + currentUserProfile.getUser().getId());
             }
         }
 
@@ -322,7 +321,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getId());
             }
         }
         if (updatedUserBean.getLastName() != null
@@ -333,7 +332,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getId());
             }
         }
 
@@ -341,7 +340,7 @@ public class UserProfileController {
             changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
         } catch (Exception e) {
             _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser()
-                    .getUserId());
+                    .getId());
             _log.warn(e);
             if (e instanceof UserPortraitSizeException) {
                 model.addAttribute("imageSizeError", true);
@@ -361,9 +360,7 @@ public class UserProfileController {
 
             updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
 
-
             MembersClient.updateMember(currentUserProfile.getUser());
-
 
             if (eMailChanged) {
                 updatedUserBean.setEmailStored(updatedUserBean.getEmail());
@@ -371,7 +368,7 @@ public class UserProfileController {
                     sendUpdatedEmail(currentUserProfile.getUser());
                 } catch (MailEngineException | AddressException | NoSuchConfigurationAttributeException e) {
                     _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile
-                            .getUser().getUserId());
+                            .getUser().getId());
                     _log.warn(e);
                 }
             }
@@ -385,7 +382,7 @@ public class UserProfileController {
     }
 
     private boolean isPasswordMatchingExistingPassword(UserProfileWrapper currentUserProfile, String password) {
-        return MembersClient.validatePassword(password, currentUserProfile.getUser().getPassword());
+        return MembersClient.validatePassword(password, currentUserProfile.getUser().getHashedPassword());
     }
 
     private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean)
@@ -401,18 +398,18 @@ public class UserProfileController {
 
         String existingBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
                 User.class.getName(), CommunityConstants.EXPANDO,
-                CommunityConstants.BIO, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
+                CommunityConstants.BIO, currentUserProfile.getUser().getId(), StringPool.BLANK);
 
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.BIO,
-                    currentUserProfile.getUser().getUserId(), HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
+                    currentUserProfile.getUser().getId(), HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
             changedDetails = true;
         }
 
         String existingCountry = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
                 User.class.getName(), CommunityConstants.EXPANDO,
-                CommunityConstants.COUNTRY, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
+                CommunityConstants.COUNTRY, currentUserProfile.getUser().getId(), StringPool.BLANK);
         if (!existingCountry.isEmpty()) {
             if (CountryUtil.getCodeForCounty(existingCountry) != null) {
                 existingCountry = CountryUtil.getCodeForCounty(existingCountry);
@@ -422,7 +419,7 @@ public class UserProfileController {
         if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)) {
             ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
                     CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-                    currentUserProfile.getUser().getUserId(),
+                    currentUserProfile.getUser().getId(),
                     CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
             changedDetails = true;
         }
@@ -436,43 +433,43 @@ public class UserProfileController {
             Image img = ImageLocalServiceUtil.getImage(updatedUserBean.getImageId());
             // we need to set permission checker for liferay
             PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
-                    .create(UserLocalServiceUtil.getUser(currentUserProfile.getUser().getUserId()), true);
+                    .create(UserLocalServiceUtil.getUser(currentUserProfile.getUser().getId()), true);
             PermissionThreadLocal
                     .setPermissionChecker(permissionChecker);
             if (img != null) {
                 byte[] bytes = img.getTextObj();
-                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getUserId(), bytes);
-                currentUserProfile.getUser().setPortraitId(0L);
+                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getId(), bytes);
+//                currentUserProfile.getUser().setPortraitId(0L);
 
                 MembersClient.updateMember(currentUserProfile.getUser());
-                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getUserId(), bytes);
-                currentUserProfile.setUser(MembersClient.getMember(currentUserProfile.getUser().getUserId()));
+                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getId(), bytes);
+                currentUserProfile.setUser(MembersClient.getMember(currentUserProfile.getUser().getId()));
                 changedDetails = true;
             }
         }
 
         if (updatedUserBean.getSendEmailOnMessage() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailOnReceipt()) {
+                .getMessagingPreferences(currentUserProfile.getUser().getId()).getEmailOnReceipt()) {
             MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId());
             prefs.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
 
         if (updatedUserBean.getSendEmailOnActivity() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailOnActivity()) {
+                .getMessagingPreferences(currentUserProfile.getUser().getId()).getEmailOnActivity()) {
             MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId());
             prefs.setEmailOnActivity(updatedUserBean.getSendEmailOnActivity());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
 
         if (updatedUserBean.getSendDailyEmailOnActivity() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailActivityDailyDigest()) {
+                .getMessagingPreferences(currentUserProfile.getUser().getId()).getEmailActivityDailyDigest()) {
             MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId());
             prefs.setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
@@ -481,7 +478,7 @@ public class UserProfileController {
         return changedDetails;
     }
 
-    private void sendUpdatedEmail(User_ user) throws MailEngineException, AddressException, UnsupportedEncodingException,
+    private void sendUpdatedEmail(Member user) throws MailEngineException, AddressException, UnsupportedEncodingException,
             SystemException, NoSuchConfigurationAttributeException {
         String messageSubject = TemplateReplacementUtil
                 .replacePlatformConstants("Your email address on the <colab-name/> has been updated");

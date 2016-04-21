@@ -22,19 +22,21 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.xcolab.liferay.LoginRegisterUtil;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "view", params = "isLoggingIn=true")
@@ -44,8 +46,7 @@ public class LoginController {
     @ActionMapping
     public void doLogin(ActionRequest request, ActionResponse response) throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
-                WebKeys.THEME_DISPLAY);
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         HttpServletRequest httpRequest = PortletUtils.getOryginalRequest(request);
 
@@ -79,8 +80,7 @@ public class LoginController {
                 if (cause instanceof PasswordExpiredException ||
                         cause instanceof UserLockoutException) {
 
-                    SessionErrors.add(
-                            request, cause.getClass().getName());
+                    SessionErrors.add(request, cause.getClass().getName());
                 } else {
                     SessionErrors.add(request, e.getClass().getName());
                 }
