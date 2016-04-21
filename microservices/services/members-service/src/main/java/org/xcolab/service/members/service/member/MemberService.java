@@ -3,6 +3,7 @@ package org.xcolab.service.members.service.member;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.User_;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.util.SHA1PasswordEncryptor;
@@ -31,8 +32,8 @@ public class MemberService {
         return this.memberDao.getMemberActivityCount(memberId);
     }
 
-    public void updateMember(User_ user) {
-        this.memberDao.updateMember(user);
+    public void updateMember(Member member) {
+        this.memberDao.updateMember(member);
     }
 
     public String generateScreenName(String[] inputData) {
@@ -58,19 +59,14 @@ public class MemberService {
         return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash);
     }
 
-    public User_ register(String screenName, String password, String email, String firstName, String lastName,
-            String shortBio, String country, String fbIdString, String openId, String imageId) {
-        //TODO: activate create statement when moving creation away from liferay
-        //memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
-//                    shortBio, country, Long.parseLong(fbIdString), openId);
-        final User_ member = memberDao.findOneByScreenName(screenName);
+    public Member register(String screenName, String password, String email, String firstName, String lastName,
+            String shortBio, String country, String fbIdString, String openId, String imageId, long liferayUserId)
+            throws NoSuchAlgorithmException {
+        memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
+                    shortBio, country, Long.parseLong(fbIdString), openId, liferayUserId);
+        final Member member = memberDao.findOneByScreenName(screenName);
 
-        //TODO: will be done in create statement
-        member.setFacebookId(Long.parseLong(fbIdString));
-        member.setOpenId(openId);
-        memberDao.updateMember(member);
-
-        subscribeToNewsletter(member.getUserId());
+        subscribeToNewsletter(member.getId_());
         return member;
     }
 

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.model.tables.pojos.User_;
 import org.xcolab.service.members.domain.member.MemberDao;
@@ -34,7 +35,7 @@ public class MembersController {
     private RoleService roleService;
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
-    public User_ getMember(@PathVariable("memberId") Long memberId) throws NotFoundException {
+    public Member getMember(@PathVariable("memberId") Long memberId) throws NotFoundException {
         if (memberId == null || memberId == 0) {
             throw new NotFoundException("No message id given");
         } else {
@@ -43,7 +44,7 @@ public class MembersController {
     }
 
     @RequestMapping("/members")
-    public List<User_> listMembers(@RequestParam String firstRecord,
+    public List<Member> listMembers(@RequestParam String firstRecord,
                                    @RequestParam String lastRecord,
                                    @RequestParam(required = false) String sort,
                                    @RequestParam(required = false) String screenName,
@@ -122,9 +123,9 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
-    public String updateMember(@RequestBody User_ user, @PathVariable("memberId") Long memberId) {
+    public String updateMember(@RequestBody Member member, @PathVariable("memberId") Long memberId) {
         if (memberDao.getMember(memberId) != null) {
-            memberService.updateMember(user);
+            memberService.updateMember(member);
             return "Updated successfully";
         } else {
             return "Member not found";
@@ -149,7 +150,6 @@ public class MembersController {
             Integer ret = memberDao.getMemberMaterializedPoints(memberId);
             return ((ret == null) ? (0) : (ret));
         }
-
     }
 
     @RequestMapping(value = "/members/{memberId}/roles", method = RequestMethod.GET)
@@ -159,7 +159,6 @@ public class MembersController {
         } else {
             return this.roleService.getMemberRoles(memberId);
         }
-
     }
 
     @RequestMapping("/members/isUsed")
@@ -198,7 +197,7 @@ public class MembersController {
         }
 
         if (memberId != null) {
-            return memberService.validatePassword(password, memberDao.getMember(memberId).getPassword_());
+            return memberService.validatePassword(password, memberDao.getMember(memberId).getHashedPassword());
         }
         throw new NotFoundException("The endpoint you requested is not available for the given attributes");
     }

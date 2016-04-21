@@ -20,7 +20,7 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 
@@ -38,7 +38,7 @@ public final class LoginRegisterUtil {
     private LoginRegisterUtil() {
     }
 
-    public static User_ register(String screenName, String password, String email, String firstName, String lastName,
+    public static Member register(String screenName, String password, String email, String firstName, String lastName,
             String shortBio, String country, String fbIdString, String openId, String imageId,
             Locale liferayLocale, ServiceContext liferayServiceContext)
             throws Exception {

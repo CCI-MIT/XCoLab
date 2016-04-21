@@ -7,7 +7,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.utils.MessageLimitManager;
 
@@ -47,8 +47,8 @@ public class MessagingPermissions {
 
     public boolean isRecipient() {
         if (isRecipient == null) {
-            for (User_ recipient : message.getTo()) {
-                if (recipient.getUserId() == user.getUserId()) {
+            for (Member recipient : message.getTo()) {
+                if (recipient.getId() == user.getUserId()) {
                     isRecipient = true;
                     return true;
                 }

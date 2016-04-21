@@ -1,5 +1,15 @@
 package org.xcolab.service.members.domain.member;
 
+import static org.jooq.impl.DSL.countDistinct;
+import static org.jooq.impl.DSL.max;
+import static org.jooq.impl.DSL.sum;
+import static org.xcolab.model.Tables.MEMBER;
+import static org.xcolab.model.Tables.POINTS;
+import static org.xcolab.model.Tables.ROLES_CATEGORY;
+import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
+import static org.xcolab.model.Tables.USERS_ROLES;
+import static org.xcolab.model.Tables.USER_;
+
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record2;
@@ -7,21 +17,12 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.User_;
-import org.xcolab.model.tables.records.User_Record;
+import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.records.MemberRecord;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-
-import static org.jooq.impl.DSL.countDistinct;
-import static org.jooq.impl.DSL.max;
-import static org.jooq.impl.DSL.sum;
-import static org.xcolab.model.Tables.POINTS;
-import static org.xcolab.model.Tables.ROLES_CATEGORY;
-import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
-import static org.xcolab.model.Tables.USERS_ROLES;
-import static org.xcolab.model.Tables.USER_;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
@@ -30,24 +31,24 @@ public class MemberDaoImpl implements MemberDao {
     private DSLContext dslContext;
 
     @Override
-    public List<User_> listMembersSortByScreenName(int startRecord, int limitRecord, String filter,
+    public List<Member> listMembersSortByScreenName(int startRecord, int limitRecord, String filter,
                                                    boolean isAscOrder) {
-        return listMembersSortByField(startRecord, limitRecord, filter, USER_.SCREEN_NAME, isAscOrder);
+        return listMembersSortByField(startRecord, limitRecord, filter, MEMBER.SCREEN_NAME, isAscOrder);
     }
 
-    private List<User_> listMembersSortByField(int startRecord, int limitRecord, String filter,
-                                               TableField<User_Record, ?> field, boolean isAscOrder) {
+    private List<Member> listMembersSortByField(int startRecord, int limitRecord, String filter,
+                                               TableField<MemberRecord, ?> field, boolean isAscOrder) {
         if (filter != null && !filter.isEmpty()) {
             return this.dslContext.selectDistinct()
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                    .where(USER_.SCREEN_NAME.contains(filter))
-                    .or(USER_.FIRST_NAME.contains(filter))
-                    .or(USER_.LAST_NAME.contains(filter))
+                    .where(MEMBER.SCREEN_NAME.contains(filter))
+                    .or(MEMBER.FIRST_NAME.contains(filter))
+                    .or(MEMBER.LAST_NAME.contains(filter))
                     .and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%"))
                     .orderBy((isAscOrder ? (field.asc()) : (field.desc())))
-                    .limit(startRecord, limitRecord).fetchInto(User_.class);
+                    .limit(startRecord, limitRecord).fetchInto(Member.class);
 
         } else {
             return this.dslContext.selectDistinct()
@@ -56,70 +57,70 @@ public class MemberDaoImpl implements MemberDao {
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                     .where(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%"))
                     .orderBy((isAscOrder ? (field.asc()) : (field.desc())))
-                    .limit(startRecord, limitRecord).fetchInto(User_.class);
+                    .limit(startRecord, limitRecord).fetchInto(Member.class);
         }
     }
 
     @Override
-    public List<User_> listMembersSortByMemberSince(int startRecord, int limitRecord, String filter,
+    public List<Member> listMembersSortByMemberSince(int startRecord, int limitRecord, String filter,
                                                     boolean isAscOrder) {
-        return listMembersSortByField(startRecord, limitRecord, filter, USER_.CREATE_DATE, isAscOrder);
+        return listMembersSortByField(startRecord, limitRecord, filter, MEMBER.CREATE_DATE, isAscOrder);
     }
 
     @Override
-    public User_ getMember(long memberId) {
+    public Member getMember(long memberId) {
         return dslContext.select()
-                .from(USER_)
-                .where(USER_.USER_ID.eq(memberId))
-                .fetchOne().into(User_.class);
+                .from(MEMBER)
+                .where(MEMBER.ID_.eq(memberId))
+                .fetchOne().into(Member.class);
     }
 
     @Override
-    public List<User_> listMembersSortByActivityCount(int startRecord, int limitRecord, String filter,
+    public List<Member> listMembersSortByActivityCount(int startRecord, int limitRecord, String filter,
                                                       boolean isAscOrder) {
         Field<Object> activityCount = this.dslContext.selectCount()
                 .from(SOCIAL_ACTIVITY)
                 .where(SOCIAL_ACTIVITY.USER_ID.equal(USER_.USER_ID))
                 .asField("activityCount");
         return this.dslContext
-                .select(USER_.fields())
+                .select(MEMBER.fields())
                 .select(activityCount)
-                .from(USER_)
-                .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                .from(MEMBER)
+                .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                .where(USER_.SCREEN_NAME.contains(filter))
-                .or(USER_.FIRST_NAME.contains(filter))
-                .or(USER_.LAST_NAME.contains(filter))
+                .where(MEMBER.SCREEN_NAME.contains(filter))
+                .or(MEMBER.FIRST_NAME.contains(filter))
+                .or(MEMBER.LAST_NAME.contains(filter))
                 .and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%"))
                 .orderBy((isAscOrder ? (activityCount.asc()) : (activityCount.desc())))
-                .limit(startRecord, limitRecord).fetchInto(User_.class);
+                .limit(startRecord, limitRecord).fetchInto(Member.class);
     }
 
     @Override
-    public List<User_> listMembersSortByActivityCountFilteredByCategory(int startRecord, int limitRecord,
+    public List<Member> listMembersSortByActivityCountFilteredByCategory(int startRecord, int limitRecord,
                                                                         String filter, boolean isAscOrder,
                                                                         String roleName) {
         Field<Object> activityCount =
                 this.dslContext.selectCount()
                         .from(SOCIAL_ACTIVITY)
-                        .where(SOCIAL_ACTIVITY.USER_ID.equal(USER_.USER_ID))
+                        .where(SOCIAL_ACTIVITY.USER_ID.equal(MEMBER.ID_))
                         .asField("activityCount");
         return this.dslContext
-                .select(USER_.fields())
+                .select(MEMBER.fields())
                 .select(activityCount)
-                .from(USER_)
-                .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                .from(MEMBER)
+                .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                .where(USER_.SCREEN_NAME.contains(filter))
-                .or(USER_.FIRST_NAME.contains(filter))
-                .or(USER_.LAST_NAME.contains(filter))
+                .where(MEMBER.SCREEN_NAME.contains(filter))
+                .or(MEMBER.FIRST_NAME.contains(filter))
+                .or(MEMBER.LAST_NAME.contains(filter))
                 .and(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
                 .orderBy((isAscOrder ? (activityCount.asc()) : (activityCount.desc())))
-                .limit(startRecord, limitRecord).fetchInto(User_.class);
+                .limit(startRecord, limitRecord).fetchInto(Member.class);
     }
 
     @Override
-    public List<User_> listMembersSortByRoleName(int startRecord, int limitRecord, String filter,
+    public List<Member> listMembersSortByRoleName(int startRecord, int limitRecord, String filter,
                                                  boolean isAscOrder) {
 
         Field<Long> userIdOriginalRoleSelect = USERS_ROLES.USER_ID.as("userIdOrdinalSelect");
@@ -132,21 +133,21 @@ public class MemberDaoImpl implements MemberDao {
                 .where(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%"))
                 .groupBy(USERS_ROLES.USER_ID).asTable("originalRoleSelect");
 
-        org.xcolab.model.tables.User_ user = USER_.as("user");
+        org.xcolab.model.tables.MemberTable member = MEMBER.as("member");
         return this.dslContext
-                .selectDistinct(user.fields())
-                .from(user)
-                .join(originalRoleSelect).on(user.USER_ID.eq(userIdOriginalRoleSelect))
+                .selectDistinct(member.fields())
+                .from(member)
+                .join(originalRoleSelect).on(member.ID_.eq(userIdOriginalRoleSelect))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ORDINAL.equal(roleOrdinalRoleSelect))
-                .where(user.SCREEN_NAME.contains(filter))
-                .or(user.FIRST_NAME.contains(filter))
-                .or(user.LAST_NAME.contains(filter))
+                .where(member.SCREEN_NAME.contains(filter))
+                .or(member.FIRST_NAME.contains(filter))
+                .or(member.LAST_NAME.contains(filter))
                 .orderBy((isAscOrder ? (roleOrdinalRoleSelect.asc()) : (roleOrdinalRoleSelect.desc())))
-                .limit(startRecord, limitRecord).fetchInto(User_.class);
+                .limit(startRecord, limitRecord).fetchInto(Member.class);
     }
 
     @Override
-    public List<User_> listMembersSortByRoleNameFilteredByCategory(int startRecord, int limitRecord,
+    public List<Member> listMembersSortByRoleNameFilteredByCategory(int startRecord, int limitRecord,
                                                                    String filter, boolean isAscOrder,
                                                                    String roleName) {
 
@@ -160,83 +161,83 @@ public class MemberDaoImpl implements MemberDao {
                 .where(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
                 .groupBy(USERS_ROLES.USER_ID).asTable("originalRoleSelect");
 
-        org.xcolab.model.tables.User_ user = USER_.as("user");
+        org.xcolab.model.tables.MemberTable member = MEMBER.as("member");
         return this.dslContext
-                .selectDistinct(user.fields())
-                .from(user)
-                .join(originalRoleSelect).on(user.USER_ID.eq(userIdOriginalRoleSelect))
+                .selectDistinct(member.fields())
+                .from(member)
+                .join(originalRoleSelect).on(member.ID_.eq(userIdOriginalRoleSelect))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ORDINAL.equal(roleOrdinalRoleSelect))
-                .where(user.SCREEN_NAME.contains(filter))
-                .or(user.FIRST_NAME.contains(filter))
-                .or(user.LAST_NAME.contains(filter))
+                .where(member.SCREEN_NAME.contains(filter))
+                .or(member.FIRST_NAME.contains(filter))
+                .or(member.LAST_NAME.contains(filter))
                 .orderBy((isAscOrder ? (roleOrdinalRoleSelect.asc()) : (roleOrdinalRoleSelect.desc())))
-                .limit(startRecord, limitRecord).fetchInto(User_.class);
+                .limit(startRecord, limitRecord).fetchInto(Member.class);
     }
 
     @Override
-    public List<User_> listMembersSortByPoint(int startRecord, int limitRecord, String filter,
+    public List<Member> listMembersSortByPoint(int startRecord, int limitRecord, String filter,
                                               boolean isAscOrder) {
 
         Field<Object> points =
                 this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
                         .from(POINTS)
-                        .where(POINTS.USER_ID.equal(USER_.USER_ID))
+                        .where(POINTS.USER_ID.equal(MEMBER.ID_))
                         .asField("points");
 
         return this.dslContext
-                .selectDistinct(USER_.fields())
+                .selectDistinct(MEMBER.fields())
                 .select(points)
-                .from(USER_)
-                .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                .from(MEMBER)
+                .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                .where(USER_.SCREEN_NAME.contains(filter))
-                .or(USER_.FIRST_NAME.contains(filter))
-                .or(USER_.LAST_NAME.contains(filter))
+                .where(MEMBER.SCREEN_NAME.contains(filter))
+                .or(MEMBER.FIRST_NAME.contains(filter))
+                .or(MEMBER.LAST_NAME.contains(filter))
                 .and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%"))
                 .orderBy((isAscOrder ? (points.asc()) : (points.desc())))
-                .limit(startRecord, limitRecord).fetchInto(User_.class);
+                .limit(startRecord, limitRecord).fetchInto(Member.class);
 
     }
 
     @Override
-    public List<User_> listMembersSortByPointFilteredByCategory(int startRecord, int limitRecord,
+    public List<Member> listMembersSortByPointFilteredByCategory(int startRecord, int limitRecord,
                                                                 String filter, boolean isAscOrder,
                                                                 String roleName) {
         Field<Object> points = this.dslContext
                 .select(sum(POINTS.MATERIALIZED_POINTS))
                 .from(POINTS)
-                .where(POINTS.USER_ID.equal(USER_.USER_ID))
+                .where(POINTS.USER_ID.equal(MEMBER.ID_))
                 .asField("points");
 
         return this.dslContext
-                .selectDistinct(USER_.fields())
+                .selectDistinct(MEMBER.fields())
                 .select(points)
-                .from(USER_)
-                .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                .from(MEMBER)
+                .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                .where(USER_.SCREEN_NAME.contains(filter))
-                .or(USER_.FIRST_NAME.contains(filter))
-                .or(USER_.LAST_NAME.contains(filter))
+                .where(MEMBER.SCREEN_NAME.contains(filter))
+                .or(MEMBER.FIRST_NAME.contains(filter))
+                .or(MEMBER.LAST_NAME.contains(filter))
                 .and(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
                 .orderBy((isAscOrder ? (points.asc()) : (points.desc())))
-                .limit(startRecord, limitRecord).fetchInto(User_.class);
+                .limit(startRecord, limitRecord).fetchInto(Member.class);
     }
 
     @Override
     public Integer countMembers(String filter) {
         if (filter != null && !filter.isEmpty()) {
-            return this.dslContext.select(countDistinct(USER_.USER_ID))
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+            return this.dslContext.select(countDistinct(MEMBER.ID_))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                    .where(USER_.SCREEN_NAME.contains(filter))
-                    .or(USER_.FIRST_NAME.contains(filter))
-                    .or(USER_.LAST_NAME.contains(filter))
+                    .where(MEMBER.SCREEN_NAME.contains(filter))
+                    .or(MEMBER.FIRST_NAME.contains(filter))
+                    .or(MEMBER.LAST_NAME.contains(filter))
                     .and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%")).fetchOne(0, Integer.class);
         } else {
-            return this.dslContext.select(countDistinct(USER_.USER_ID))
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+            return this.dslContext.select(countDistinct(MEMBER.ID_))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                     .where(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%")).fetchOne(0, Integer.class);
         }
@@ -245,20 +246,20 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public Integer countMembersFilteredByCategory(String filter, String roleName) {
         if (filter != null && !filter.isEmpty()) {
-            return this.dslContext.select(countDistinct(USER_.USER_ID))
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+            return this.dslContext.select(countDistinct(MEMBER.ID_))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                    .where(USER_.SCREEN_NAME.contains(filter))
-                    .or(USER_.FIRST_NAME.contains(filter))
-                    .or(USER_.LAST_NAME.contains(filter))
+                    .where(MEMBER.SCREEN_NAME.contains(filter))
+                    .or(MEMBER.FIRST_NAME.contains(filter))
+                    .or(MEMBER.LAST_NAME.contains(filter))
                     .and(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
                     .fetchOne(0, Integer.class);
 
         } else {
-            return this.dslContext.select(countDistinct(USER_.USER_ID))
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+            return this.dslContext.select(countDistinct(MEMBER.ID_))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                     .where(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
                     .fetchOne(0, Integer.class);
@@ -266,152 +267,115 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public List<User_> listMembersSortByScreenNameFilteredByCategory(int startRecord,
+    public List<Member> listMembersSortByScreenNameFilteredByCategory(int startRecord,
                                                                      int limitRecord, String filter,
                                                                      boolean isAscOrder,
                                                                      String roleName) {
         return listMembersSortByFieldFilteredByCategory(startRecord, limitRecord, filter,
-                USER_.SCREEN_NAME, isAscOrder, roleName);
+                MEMBER.SCREEN_NAME, isAscOrder, roleName);
     }
 
-    private List<User_> listMembersSortByFieldFilteredByCategory(int startRecord, int limitRecord,
+    private List<Member> listMembersSortByFieldFilteredByCategory(int startRecord, int limitRecord,
                                                                  String filter,
-                                                                 TableField<User_Record, ?> field,
+                                                                 TableField<MemberRecord, ?> field,
                                                                  boolean isAscOrder, String roleName) {
         if (filter != null && !filter.isEmpty()) {
             return this.dslContext.selectDistinct()
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                    .where(USER_.SCREEN_NAME.contains(filter))
-                    .or(USER_.FIRST_NAME.contains(filter))
-                    .or(USER_.LAST_NAME.contains(filter))
+                    .where(MEMBER.SCREEN_NAME.contains(filter))
+                    .or(MEMBER.FIRST_NAME.contains(filter))
+                    .or(MEMBER.LAST_NAME.contains(filter))
                     .and(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
                     .orderBy((isAscOrder ? (field.asc()) : (field.desc())))
-                    .limit(startRecord, limitRecord).fetchInto(User_.class);
+                    .limit(startRecord, limitRecord).fetchInto(Member.class);
         } else {
             return this.dslContext.selectDistinct()
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                     .where(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
                     .orderBy((isAscOrder ? (field.asc()) : (field.desc())))
-                    .limit(startRecord, limitRecord).fetchInto(User_.class);
+                    .limit(startRecord, limitRecord).fetchInto(Member.class);
         }
     }
 
     @Override
-    public User_ getMember(Long userId) {
-        return this.dslContext.selectDistinct()
-                .from(USER_)
-                .where(USER_.USER_ID.equal(userId)).fetchAny().into(User_.class);
-
-    }
-
-    @Override
-    public User_ findOneByScreenName(String screenName) {
+    public Member findOneByScreenName(String screenName) {
         return dslContext.select()
-                .from(USER_)
-                .where(USER_.SCREEN_NAME.eq(screenName))
-                .fetchOne().into(User_.class);
+                .from(MEMBER)
+                .where(MEMBER.SCREEN_NAME.eq(screenName))
+                .fetchOne().into(Member.class);
     }
 
     @Override
-    public User_ findOneByEmail(String email) {
+    public Member findOneByEmail(String email) {
         return dslContext.select()
-                .from(USER_)
-                .where(USER_.EMAIL_ADDRESS.eq(email))
-                .fetchOne().into(User_.class);
+                .from(MEMBER)
+                .where(MEMBER.EMAIL_ADDRESS.eq(email))
+                .fetchOne().into(Member.class);
     }
 
     @Override
-    public void updateMember(User_ user) {
+    public void updateMember(Member member) {
 
-        this.dslContext.update(USER_)
-                .set(USER_.UUID_, user.getUuid_())
-                //.set(USER_.USER_ID ,user.getUserId())
-                .set(USER_.COMPANY_ID, user.getCompanyId())
-                .set(USER_.CREATE_DATE, user.getCreateDate())
-                .set(USER_.MODIFIED_DATE, user.getModifiedDate())
-                .set(USER_.DEFAULT_USER, user.getDefaultUser())
-                .set(USER_.CONTACT_ID, user.getContactId())
-                .set(USER_.PASSWORD_, user.getPassword_())
-                .set(USER_.PASSWORD_ENCRYPTED, user.getPasswordEncrypted())
-                .set(USER_.PASSWORD_RESET, user.getPasswordReset())
-                .set(USER_.PASSWORD_MODIFIED_DATE, user.getPasswordModifiedDate())
-                .set(USER_.REMINDER_QUERY_QUESTION, user.getReminderQueryQuestion())
-                .set(USER_.REMINDER_QUERY_ANSWER, user.getReminderQueryAnswer())
-                .set(USER_.GRACE_LOGIN_COUNT, user.getGraceLoginCount())
-                .set(USER_.SCREEN_NAME, user.getScreenName())
-                .set(USER_.EMAIL_ADDRESS, user.getEmailAddress())
-                .set(USER_.OPEN_ID, user.getOpenId())
-                .set(USER_.PORTRAIT_ID, user.getPortraitId())
-                .set(USER_.LANGUAGE_ID, user.getLanguageId())
-                .set(USER_.TIME_ZONE_ID, user.getTimeZoneId())
-                .set(USER_.GREETING, user.getGreeting())
-                .set(USER_.COMMENTS, user.getComments())
-                .set(USER_.FIRST_NAME, user.getFirstName())
-                .set(USER_.MIDDLE_NAME, user.getMiddleName())
-                .set(USER_.LAST_NAME, user.getLastName())
-                .set(USER_.JOB_TITLE, user.getJobTitle())
-                .set(USER_.LOGIN_DATE, user.getLoginDate())
-                .set(USER_.LOGIN_IP, user.getLoginIP())
-                .set(USER_.LAST_LOGIN_DATE, user.getLastLoginDate())
-                .set(USER_.LAST_LOGIN_IP, user.getLastLoginIP())
-                .set(USER_.LAST_FAILED_LOGIN_DATE, user.getLastFailedLoginDate())
-                .set(USER_.FAILED_LOGIN_ATTEMPTS, user.getFailedLoginAttempts())
-                .set(USER_.LOCKOUT, user.getLockout())
-                .set(USER_.LOCKOUT_DATE, user.getLockoutDate())
-                .set(USER_.AGREED_TO_TERMS_OF_USE, user.getAgreedToTermsOfUse())
-                .set(USER_.SOCIAL_CONTRIBUTION_EQUITY, user.getSocialContributionEquity())
-                .set(USER_.SOCIAL_PARTICIPATION_EQUITY, user.getSocialParticipationEquity())
-                .set(USER_.SOCIAL_PERSONAL_EQUITY, user.getSocialPersonalEquity())
-                .set(USER_.FACEBOOK_ID, user.getFacebookId())
-                .set(USER_.DIGEST, user.getDigest())
-                .set(USER_.EMAIL_ADDRESS_VERIFIED, user.getEmailAddressVerified())
-                .set(USER_.STATUS, user.getStatus())
-                .set(USER_.LDAP_SERVER_ID, user.getLdapServerId())
-                .where(USER_.USER_ID.equal(user.getUserId()));
+        this.dslContext.update(MEMBER)
+                .set(MEMBER.CREATE_DATE, member.getCreateDate())
+                .set(MEMBER.MODIFIED_DATE, member.getModifiedDate())
+                .set(MEMBER.HASHED_PASSWORD, member.getHashedPassword())
+                .set(MEMBER.PASSWORD_MODIFIED_DATE, member.getPasswordModifiedDate())
+                .set(MEMBER.SCREEN_NAME, member.getScreenName())
+                .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
+                .set(MEMBER.OPEN_ID, member.getOpenId())
+                .set(MEMBER.FIRST_NAME, member.getFirstName())
+                .set(MEMBER.LAST_NAME, member.getLastName())
+                .set(MEMBER.LOGIN_DATE, member.getLoginDate())
+                .set(MEMBER.LOGIN_IP, member.getLoginIP())
+                .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
+                .where(MEMBER.ID_.equal(member.getId_()));
     }
 
     @Override
     public void createMember(String screenName, String hashedPassword, String email, String firstName, String lastName,
-            String shortBio, String country, Long facebookId, String openId) {
-        //TODO: shortBio and country are still handled by expando
-        //TODO: relies on currently non-existent autoincrement index
-        this.dslContext.insertInto(USER_)
-            .set(USER_.SCREEN_NAME, screenName)
-            .set(USER_.PASSWORD_, hashedPassword)
-            .set(USER_.EMAIL_ADDRESS, email)
-            .set(USER_.FIRST_NAME, firstName)
-            .set(USER_.LAST_NAME, lastName)
-            .set(USER_.FACEBOOK_ID, facebookId)
-            .set(USER_.OPEN_ID, openId)
-            .set(USER_.CREATE_DATE, new Timestamp(Instant.now().toEpochMilli()))
-            .execute();
+            String shortBio, String country, Long facebookId, String openId, long liferayUserId) {
+        this.dslContext.insertInto(MEMBER)
+                .set(MEMBER.ID_, liferayUserId)
+                .set(MEMBER.SCREEN_NAME, screenName)
+                .set(MEMBER.HASHED_PASSWORD, hashedPassword)
+                .set(MEMBER.EMAIL_ADDRESS, email)
+                .set(MEMBER.FIRST_NAME, firstName)
+                .set(MEMBER.LAST_NAME, lastName)
+                .set(MEMBER.FACEBOOK_ID, facebookId)
+                .set(MEMBER.OPEN_ID, openId)
+                .set(MEMBER.SHORT_BIO, shortBio)
+                .set(MEMBER.COUNTRY, country)
+                .set(MEMBER.CREATE_DATE, new Timestamp(Instant.now().toEpochMilli()))
+                .set(MEMBER.MODIFIED_DATE, new Timestamp(Instant.now().toEpochMilli()))
+                .execute();
     }
 
     @Override
     public boolean isScreenNameTaken(String screenName) {
         return dslContext.selectCount()
-                .from(USER_)
-                .where(USER_.SCREEN_NAME.eq(screenName))
+                .from(MEMBER)
+                .where(MEMBER.SCREEN_NAME.eq(screenName))
                 .fetchOne(0, Integer.class) > 0;
     }
 
     @Override
     public boolean isEmailUsed(String email) {
         return dslContext.selectCount()
-                .from(USER_)
-                .where(USER_.EMAIL_ADDRESS.eq(email))
+                .from(MEMBER)
+                .where(MEMBER.EMAIL_ADDRESS.eq(email))
                 .fetchOne(0, Integer.class) > 0;
     }
 
     @Override
-    public List<User_> listMembersSortByMemberSinceFilteredByCategory(int startRecord, int limitRecord,
+    public List<Member> listMembersSortByMemberSinceFilteredByCategory(int startRecord, int limitRecord,
                                                                       String filter, boolean isAscOrder, String roleName) {
         return listMembersSortByFieldFilteredByCategory(startRecord, limitRecord, filter,
-                USER_.CREATE_DATE, isAscOrder, roleName);
+                MEMBER.CREATE_DATE, isAscOrder, roleName);
     }
 
     @Override

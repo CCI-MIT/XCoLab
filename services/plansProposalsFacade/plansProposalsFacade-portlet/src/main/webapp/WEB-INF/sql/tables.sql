@@ -810,6 +810,15 @@ create table xcolab_StaffMember (
 );
 
 
+create table xcolab_TestTable (
+	name VARCHAR(75) not null,
+	additionalId LONG not null,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE,
+	primary key (name, additionalId)
+);
+
 create table xcolab_TrackedVisit (
 	id_ LONG not null primary key,
 	uuid_ VARCHAR(36) null,
@@ -830,14 +839,20 @@ create table xcolab_TrackedVisitor2User (
 	createDate DATE null
 );
 
-create table xcolab_User_ (
-	userId LONG not null primary key,
-	createDate DATE null,
-	screenName VARCHAR(75) null
-);
-
-create table xcolab_Users_Roles (
-	roleId LONG not null,
-	userId LONG not null,
-	primary key (roleId, userId)
+create table members_Member (
+	id_ BIGINT(20) not null PRIMARY KEY,
+	screenName VARCHAR(42),
+	emailAddress  VARCHAR(75),
+	hashedPassword VARCHAR(75),
+	createDate datetime,
+	modifiedDate datetime,
+	passwordModifiedDate datetime,
+	firstName VARCHAR(75),
+	lastName VARCHAR(75),
+  country VARCHAR(75),
+  shortBio TEXT,
+	facebookId LONG,
+	openId VARCHAR(255),
+	loginIP VARCHAR(75),
+  loginDate datetime
 );

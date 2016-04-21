@@ -44,7 +44,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
@@ -289,7 +289,7 @@ public class MainViewController {
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
         try {
-            final User_ user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
+            final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                             newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                             newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, openId,
                             newAccountBean.getImageId(), themeDisplay.getLocale(), serviceContext);
@@ -307,7 +307,7 @@ public class MainViewController {
                     BalloonUserTracking but =
                             BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
                     but.setRegistrationDate(new Date());
-                    but.setUserId(user.getUserId());
+                    but.setUserId(user.getId());
                     BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
                 } catch (NoSuchBalloonUserTrackingException e) {
                     _log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
@@ -320,8 +320,8 @@ public class MainViewController {
 
 
             SocialActivityLocalServiceUtil
-                    .addActivity(user.getUserId(), themeDisplay.getScopeGroupId(), User.class.getName(),
-                            user.getUserId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
+                    .addActivity(user.getId(), themeDisplay.getScopeGroupId(), User.class.getName(),
+                            user.getId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
 
             request.getPortletSession().setAttribute("collab_user_has_registered", true);
             PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);

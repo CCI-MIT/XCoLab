@@ -5,7 +5,7 @@ import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,14 +16,14 @@ public class UserSubscriptionsWrapper implements Serializable {
      *
      */
     private static final long serialVersionUID = 1L;
-    private User_ user;
+    private Member user;
     private List<ActivitySubscriptionWrapper> subscriptions;
     private SubscriptionType typeFilter;
 
     public UserSubscriptionsWrapper() {
     }
 
-    public UserSubscriptionsWrapper(User_ user) throws SystemException {
+    public UserSubscriptionsWrapper(Member user) throws SystemException {
         this.user = user;
         getSubscriptions();
     }
@@ -34,7 +34,7 @@ public class UserSubscriptionsWrapper implements Serializable {
                 subscriptions = new ArrayList<>();
 
                 for (ActivitySubscription subscription : ActivitySubscriptionLocalServiceUtil
-                        .findByUser(user.getUserId())) {
+                        .findByUser(user.getId())) {
 
                     if (typeFilter == null || typeFilter == SubscriptionType.getSubscriptionType(subscription)) {
                         subscriptions.add(new ActivitySubscriptionWrapper(subscription));
