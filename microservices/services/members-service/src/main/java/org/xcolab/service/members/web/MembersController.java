@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
-import org.xcolab.model.tables.pojos.User_;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
@@ -123,9 +122,10 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
-    public String updateMember(@RequestBody Member member, @PathVariable("memberId") Long memberId) {
+    public String updateMember(@RequestBody Member member, @PathVariable("memberId") Long memberId)
+            throws NotFoundException {
         if (memberDao.getMember(memberId) != null) {
-            memberService.updateMember(member);
+            memberDao.updateMember(member);
             return "Updated successfully";
         } else {
             return "Member not found";
@@ -181,8 +181,8 @@ public class MembersController {
     }
 
     @RequestMapping("/members/hashPassword")
-    public String hashPassword(@RequestParam String password) throws NoSuchAlgorithmException {
-        return memberService.hashPassword(password);
+    public String hashPassword(@RequestParam String password, @RequestParam(required = false) Boolean liferayCompatible) throws NoSuchAlgorithmException {
+        return memberService.hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
     }
 
     @RequestMapping("/members/validatePassword")
@@ -203,27 +203,32 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members", method = RequestMethod.POST)
-    public User_ register(@RequestBody User_ member) {
-        return null;
+    public Member register(@RequestBody Member member) throws NoSuchAlgorithmException {
+        return memberService.register(member.getScreenName(), member.getHashedPassword(),
+                member.getEmailAddress(), member.getFirstName(), member.getLastName(),
+                member.getShortBio(), member.getCountry(), member.getFacebookId(),
+                member.getOpenId(), 0L, member.getId_());
     }
 
     @RequestMapping(value = "/members/{memberId}/login", method = RequestMethod.POST)
-    public boolean login(@PathVariable long memberId, @RequestBody String password) {
-        return false;
+    public boolean login(@PathVariable long memberId, @RequestBody String password)
+            throws NoSuchAlgorithmException, NotFoundException {
+        final Member member = memberDao.getMember(memberId);
+        return memberService.validatePassword(password, member.getHashedPassword());
     }
 
     @RequestMapping(value = "/members/{memberId}/subscribe", method = RequestMethod.PUT)
-    public boolean subscribe(@PathVariable long memberId) {
+    public boolean subscribe(@PathVariable long memberId) throws NotFoundException {
         return memberService.subscribeToNewsletter(memberId);
     }
 
     @RequestMapping(value = "/members/{memberId}/unsubscribe", method = RequestMethod.PUT)
-    public boolean unsubscribe(@PathVariable long memberId) {
+    public boolean unsubscribe(@PathVariable long memberId) throws NotFoundException {
         return memberService.unsubscribeFromNewsletter(memberId);
     }
 
     @RequestMapping(value = "/members/{memberId}/isSubscribed", method = RequestMethod.GET)
-    public boolean isSubscribed(@PathVariable long memberId) throws IOException {
+    public boolean isSubscribed(@PathVariable long memberId) throws IOException, NotFoundException {
         return memberService.isSubscribedToNewsletter(memberId);
     }
 

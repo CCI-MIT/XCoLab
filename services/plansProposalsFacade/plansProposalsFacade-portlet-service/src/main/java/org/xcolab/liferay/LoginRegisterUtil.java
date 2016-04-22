@@ -1,6 +1,5 @@
 package org.xcolab.liferay;
 
-import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -15,13 +14,10 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 
 import java.util.Locale;
@@ -47,16 +43,21 @@ public final class LoginRegisterUtil {
                 0L, "", liferayLocale, HtmlUtil.cleanAll(firstName), "", HtmlUtil.cleanAll(lastName),
                 0, 0, true, 1, 1, 1970, "", new long[]{}, new long[]{}, new long[]{},
                 new long[]{}, true, liferayServiceContext);
+        Member member = new Member();
+        member.setId_(liferayUser.getUserId());
+        member.setScreenName(screenName);
+        member.setEmailAddress(email);
+        member.setFirstName(firstName);
+        member.setHashedPassword(password);
+        member.setLastName(lastName);
+        member.setOpenId(openId);
+        try {
+            member.setFacebookId(Long.parseLong(fbIdString));
+        } catch (NumberFormatException ignored) { }
 
-        //TODO: need to be moved to database
-        if (shortBio != null && !shortBio.isEmpty()) {
-            setExpandoValue(liferayUser, CommunityConstants.BIO,
-                    HtmlUtil.cleanSome(shortBio, ConfigurationAttributeKey.COLAB_URL.getStringValue()));
-        }
-        if (country != null && !country.isEmpty()) {
-            setExpandoValue(liferayUser, CommunityConstants.COUNTRY,
-                    CountryUtil.getCountryForCode(country));
-        }
+        member.setShortBio(shortBio);
+        member.setCountry(country);
+        MembersClient.register(member);
 
         if (imageId != null && !imageId.isEmpty()) {
             Image img = ImageLocalServiceUtil.getImage(Long.parseLong(imageId));
@@ -101,16 +102,5 @@ public final class LoginRegisterUtil {
             return user.getScreenName();
         }
         return login;
-    }
-
-    private static void setExpandoValue(User user, String valueName, Object data)
-            throws SystemException, PortalException {
-        ExpandoValueLocalServiceUtil.addValue(
-                user.getCompanyId(),
-                User.class.getName(),
-                CommunityConstants.EXPANDO,
-                valueName,
-                user.getUserId(),
-                data);
     }
 }

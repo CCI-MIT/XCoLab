@@ -90,7 +90,7 @@ public class UserProfileWrapper implements Serializable {
             if (loggedInUser != null) {
                 Member logUser = MembersClient.getMember(loggedInUser.getUserId());
                 messagePermissionChecker = new SendMessagePermissionChecker(logUser);
-                if (loggedInUser.getUserId() == user.getId()) {
+                if (loggedInUser.getUserId() == user.getId_()) {
                     viewingOwnProfile = true;
                 }
             }
@@ -113,8 +113,8 @@ public class UserProfileWrapper implements Serializable {
 
         attendsConference = ExpandoValueLocalServiceUtil
                 .getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO,
-                        CommunityConstants.CONFERENCE2014, user.getId(), "").equals("1");
-        badges = new BadgeBean(user.getId());
+                        CommunityConstants.CONFERENCE2014, user.getId_(), "").equals("1");
+        badges = new BadgeBean(user.getId_());
 
         try {
             role = MemberRole.getHighestRole(user.getRoles());
@@ -124,12 +124,12 @@ public class UserProfileWrapper implements Serializable {
         userSubscriptions = new UserSubscriptionsWrapper(user);
         supportedProposals.clear();
         userActivities.clear();
-        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(user.getId())) {
+        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(user.getId_())) {
             supportedProposals.add(new SupportedProposalWrapper(ps));
         }
 
         for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
-                .getUserActivities(user.getId(), 0, MAX_ACTIVITIES_COUNT))) {
+                .getUserActivities(user.getId_(), 0, MAX_ACTIVITIES_COUNT))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
             if (a.getBody() != null && !a.getBody().equals("")) {
@@ -137,7 +137,7 @@ public class UserProfileWrapper implements Serializable {
             }
         }
 
-        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getId());
+        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getId_());
         Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil.groupByContestType(proposals);
         for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId
@@ -245,7 +245,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public boolean getHasFacebookId() {
-        return user.getFacebookId() != 0;
+        return user.getFacebookId() != null && user.getFacebookId() != 0;
     }
 
     public boolean getHasOpenId() {
@@ -290,7 +290,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() throws SystemException, PortalException {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : MessageUtil.getMessages(this.user.getId(), 0, 2, MessageType.INBOX)) {
+            for (Message msg : MessageUtil.getMessages(this.user.getId_(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }
@@ -301,7 +301,7 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
             for (SocialActivity activity : ActivityUtil.groupActivities(
-                    ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getId(), 0, 1000))) {
+                    ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getId_(), 0, 1000))) {
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
         }
@@ -337,7 +337,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public Long getUserId() {
-        return user.getId();
+        return user.getId_();
     }
 
     public String getActualPointsFormatted() {

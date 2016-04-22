@@ -1,6 +1,9 @@
 package org.xcolab.client.members.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.xcolab.client.members.MembersClient;
 
@@ -9,6 +12,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class Member implements Serializable {
 
     private static final long serialVersionUID = 343994517;
@@ -51,11 +55,12 @@ public class Member implements Serializable {
         this.status = value.status;
     }
 
-    public Long getId() {
+    public Long getId_() {
         return this.id_;
     }
 
     //For liferay/jsp compatibility
+    @JsonIgnore
     public Long getUserId() {
         return this.id_;
     }
@@ -176,16 +181,19 @@ public class Member implements Serializable {
         this.status = status;
     }
 
-    public boolean isActive() {
-        return this.getStatus() == 0;
+    @JsonIgnore
+    public Boolean isActive() {
+        return this.status != null && this.status == 0;
     }
 
+    @JsonIgnore
     public String getFullName() {
         return this.getFirstName() + " " + this.getLastName();
     }
 
+    @JsonIgnore
     public List<Role_> getRoles() {
-        return MembersClient.getMemberRoles(this.getId());
+        return MembersClient.getMemberRoles(this.getId_());
     }
 
     public String getHashedPassword() {
@@ -194,10 +202,6 @@ public class Member implements Serializable {
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
-    }
-
-    public void setPassword(String password) {
-        this.hashedPassword = MembersClient.hashPassword(password);
     }
 
     @Override

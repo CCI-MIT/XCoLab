@@ -74,7 +74,7 @@ public class UserBean implements Serializable {
     public UserBean() { }
 
     public UserBean(Member member) throws PortalException, SystemException {
-        userId = member.getId();
+        userId = member.getId_();
         screenName = member.getScreenName();
         firstName = member.getFirstName();
         lastName = member.getLastName();
@@ -85,9 +85,9 @@ public class UserBean implements Serializable {
         //TODO: still relies on liferay
         imageId = UserLocalServiceUtil.getUser(userId).getPortraitId();
 
-        sendEmailOnMessage = MessageUtil.getMessagingPreferences(member.getId()).getEmailOnReceipt();
-        sendEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId()).getEmailOnActivity();
-        sendDailyEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId()).getEmailActivityDailyDigest();
+        sendEmailOnMessage = MessageUtil.getMessagingPreferences(member.getId_()).getEmailOnReceipt();
+        sendEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId_()).getEmailOnActivity();
+        sendDailyEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId_()).getEmailActivityDailyDigest();
     }
 
     public String getPortrait() {

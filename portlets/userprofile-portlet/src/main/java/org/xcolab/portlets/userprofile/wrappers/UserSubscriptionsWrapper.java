@@ -34,7 +34,7 @@ public class UserSubscriptionsWrapper implements Serializable {
                 subscriptions = new ArrayList<>();
 
                 for (ActivitySubscription subscription : ActivitySubscriptionLocalServiceUtil
-                        .findByUser(user.getId())) {
+                        .findByUser(user.getId_())) {
 
                     if (typeFilter == null || typeFilter == SubscriptionType.getSubscriptionType(subscription)) {
                         subscriptions.add(new ActivitySubscriptionWrapper(subscription));
