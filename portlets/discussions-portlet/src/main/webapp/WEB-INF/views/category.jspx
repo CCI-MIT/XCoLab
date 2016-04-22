@@ -36,26 +36,45 @@
     </div>
 
     <div class="c-Comment__threads">
-        <div class="c-Comment__threads__container">
+        <div>
             <h3>${empty currentCategory ? 'All Discussions' : currentCategory.title}</h3>
+            <div class="p-Discussion__row">
+                <div class="p-Discussion__left">
+                    <div class="b-Spacing separatorBelow">
 
-            <div class="b-Spacing separatorBelow">
+                        <span class="c-Count"><span class="c-Count__number">${threads.size()}</span> discussions</span>
 
-                <span class="c-Count"><span class="c-Count__number">${threads.size()}</span> discussions</span>
+                        <a class="b-Spacing__inline--large" href="/web/guest/discussion/-/discussion/threads/create">
+                            <img style="vertical-align: middle;" height="30"
+                                 src="${themeDisplay.pathThemeImages}/icon_new-topic.png" /> new discussion
+                        </a>
+                    </div>
 
-                <a class="b-Spacing__inline--large" href="/web/guest/discussion/-/discussion/threads/create">
-                    <img style="vertical-align: middle;" height="30"
-                         src="${themeDisplay.pathThemeImages}/icon_new-topic.png" /> new discussion
-                </a>
-            </div>
+                    <c:if test="${not empty currentCategory}">
+                        <div class="b-Spacing">
+                            ${currentCategory.description}
+                        </div>
+                    </c:if>
 
-            <c:if test="${not empty currentCategory}">
-                <div class="b-Spacing">
-                    ${currentCategory.description}
                 </div>
-            </c:if>
-
-            <table class="c-Table">
+                <div class="p-Discussion__right border-bottom">
+                    <portlet:actionURL var="subscribeUrl">
+                        <portlet:param name="action" value="subscribeCategory" />
+                        <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.id : '0'}"/>
+                    </portlet:actionURL>
+                    <portlet:actionURL var="unsubscribeUrl">
+                        <portlet:param name="action" value="unsubscribeCategory" />
+                        <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.id : '0'}"/>
+                    </portlet:actionURL>
+                    <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
+                       onclick="if(!deferUntilLogin()) return false;">
+                        <img src="${themeDisplay.pathThemeImages}/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="p-Discussion__row">
+            <table class="p-Discussion__left c-Table">
                 <thead>
                     <tr class="c-Table__row--title">
                         <th class="c-Table__cell--title">
@@ -132,29 +151,17 @@
                     </tr>
                 </c:forEach>
             </table>
-        </div>
 
-        <div class="c-Comment__threads__sidebar">
-            <portlet:actionURL var="subscribeUrl">
-                <portlet:param name="action" value="subscribeCategory" />
-                <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.id : '0'}"/>
-            </portlet:actionURL>
-            <portlet:actionURL var="unsubscribeUrl">
-                <portlet:param name="action" value="unsubscribeCategory" />
-                <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.id : '0'}"/>
-            </portlet:actionURL>
-            <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
-               onclick="if(!deferUntilLogin()) return false;">
-                <img src="/climatecolab-theme/images/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
-            </a>
-            <div class="comm_list">
-                <h5>Categories</h5>
-                <ul class="discussionCategories">
-                    <li><a href="/web/guest/discussion">All Discussions</a></li>
-                    <c:forEach var="category" items="${categories}">
-                        <li><a href="${category.linkUrl}">${category.title}</a></li>
-                    </c:forEach>
-                </ul>
+            <div class="p-Discussion__right c-Comment__threads__sidebar">
+                <div class="comm_list">
+                    <h2>Categories</h2>
+                    <ul class="discussionCategories">
+                        <li><a href="/web/guest/discussion">All Discussions</a></li>
+                        <c:forEach var="category" items="${categories}">
+                            <li><a href="${category.linkUrl}">${category.title}</a></li>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
