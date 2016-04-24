@@ -339,7 +339,7 @@
     </c:choose>
 
     <script>
-        // String contants
+        // String constants
         var FORM_DATA_INVALID = "Data seems invalid!";
         var FORM_DATA_VALID = "Data seems valid!";
 

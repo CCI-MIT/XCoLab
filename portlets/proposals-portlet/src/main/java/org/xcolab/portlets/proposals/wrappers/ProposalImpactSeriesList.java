@@ -19,8 +19,6 @@ import java.util.Map;
 
 /**
  * A collection of ProposalImpactSeries representing all data series of each sector-region pair.
- *
- * Created by kmang on 12/03/15.
  */
 public class ProposalImpactSeriesList {
     private final List<ProposalImpactSeries> impactSerieses;

@@ -1,9 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-/**
- * Created by kmang on 23/03/15.
- */
-
 import com.ext.portlet.model.ImpactIteration;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -23,11 +19,7 @@ import java.util.Set;
  */
 public class ProposalImpactSeriesValues {
     private final static Log _log = LogFactoryUtil.getLog(ProposalImpactSeriesValues.class);
-    private Map<Integer, Double> yearToValueMap;
-
-    public ProposalImpactSeriesValues() {
-        yearToValueMap = new HashMap<>();
-    }
+    private final Map<Integer, Double> yearToValueMap = new HashMap<>();
 
     public Map<Integer, Double> getYearToValueMap() {
         return yearToValueMap;
@@ -74,7 +66,7 @@ public class ProposalImpactSeriesValues {
 
     }
 
-    public JSONObject toJSONObect() {
+    public JSONObject toJSONObject() {
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
         for (Map.Entry<Integer, Double> entry : yearToValueMap.entrySet()) {

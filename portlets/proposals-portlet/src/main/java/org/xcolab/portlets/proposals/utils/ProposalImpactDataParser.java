@@ -28,8 +28,6 @@ import java.util.Map;
  * ProposalImpactSeriesList object.
  *
  * Used for the IAF fellow impact series edit feature
- *
- * Created by kmang on 04/06/15.
  */
 public class ProposalImpactDataParser {
     private static final Log _log = LogFactoryUtil.getLog(ProposalImpactDataParser.class);
