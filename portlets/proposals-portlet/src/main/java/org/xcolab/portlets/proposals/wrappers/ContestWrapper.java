@@ -12,6 +12,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
@@ -325,5 +326,11 @@ public class ContestWrapper extends BaseContestWrapper {
             return false;
         }
         return true;
+    }
+
+    public String getNewProposalLinkUrl() throws SystemException {
+        final String portletUrl = getContestType().getPortletUrl();
+        return String.format("%s/%s/%s/createProposal",
+                portletUrl, contest.getContestYear(), contest.getContestUrlName());
     }
 }
