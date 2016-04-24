@@ -15,8 +15,6 @@ public class ContestServiceClpInvoker {
     private String[] _methodParameterTypes503;
     private String _methodName508;
     private String[] _methodParameterTypes508;
-    private String _methodName509;
-    private String[] _methodParameterTypes509;
 
     public ContestServiceClpInvoker() {
         _methodName502 = "getBeanIdentifier";
@@ -30,10 +28,6 @@ public class ContestServiceClpInvoker {
         _methodName508 = "getContestsOpenForProposals";
 
         _methodParameterTypes508 = new String[] {  };
-
-        _methodName509 = "getNumberOfUnreadMessages";
-
-        _methodParameterTypes509 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -53,11 +47,6 @@ public class ContestServiceClpInvoker {
         if (_methodName508.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
             return ContestServiceUtil.getContestsOpenForProposals();
-        }
-
-        if (_methodName509.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
-            return ContestServiceUtil.getNumberOfUnreadMessages();
         }
 
         throw new UnsupportedOperationException();

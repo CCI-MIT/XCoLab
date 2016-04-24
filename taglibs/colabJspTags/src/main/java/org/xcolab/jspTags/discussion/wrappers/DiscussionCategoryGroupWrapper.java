@@ -21,7 +21,13 @@ public class DiscussionCategoryGroupWrapper {
     public DiscussionCategoryGroupWrapper(DiscussionCategoryGroup discussionCategoryGroup) {
         this.discussionCategoryGroup = discussionCategoryGroup;
     }
-    
+
+    public DiscussionCategoryGroupWrapper(long discussionCategoryGroupId) throws SystemException, PortalException {
+        this.discussionCategoryGroup =
+                DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionCategoryGroupId);
+    }
+
+
     public List<DiscussionMessageWrapper> getComments() throws SystemException, NoSuchDiscussionMessageException {
         List<DiscussionMessageWrapper> comments = new ArrayList<>();
         long commentsThread = discussionCategoryGroup.getCommentsThread();

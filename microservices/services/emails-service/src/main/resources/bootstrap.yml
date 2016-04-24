@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: emails-service
+  jmx:
+    default-domain: ${spring.application.name}

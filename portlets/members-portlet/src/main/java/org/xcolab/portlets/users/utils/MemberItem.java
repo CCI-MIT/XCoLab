@@ -3,10 +3,10 @@ package org.xcolab.portlets.users.utils;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.xcolab.legacy.enums.MemberRole;
-import org.xcolab.pojo.Role_;
-import org.xcolab.pojo.User_;
-import org.xcolab.service.client.MembersClient;
+import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.MembersClient;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

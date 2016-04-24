@@ -71,11 +71,7 @@
             });
             $("#expand-help-text").click(function() {
                 var $helpTextElement = $("#help-text");
-                if ($helpTextElement.is(":visible")) {
-                    $helpTextElement.fadeOut('fast');
-                } else {
-                    $helpTextElement.fadeIn('fast');
-                }
+                $helpTextElement.slideToggle("fast");
             });
         </script>
     </div>

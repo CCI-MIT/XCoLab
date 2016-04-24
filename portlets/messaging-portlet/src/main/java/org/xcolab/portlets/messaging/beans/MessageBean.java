@@ -5,9 +5,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.pojo.Message;
-import org.xcolab.pojo.User_;
-import org.xcolab.service.client.MessagingClient;
+import org.xcolab.client.members.exceptions.MessageNotFoundException;
+import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.HumanTime;
 import org.xcolab.utils.HtmlUtil;
 
@@ -67,8 +68,12 @@ public class MessageBean implements Serializable {
         return UserLocalServiceUtil.getUser(message.getFromId());
     }
 
-    public void markMessageAsOpened(long userId) throws PortalException, SystemException {
+    public void markMessageAsOpened(long userId) {
         MessagingClient.setOpened(messageId, userId, true);
+    }
+
+    public boolean getIsOpened() throws MessageNotFoundException, PortalException, SystemException {
+        return getMessage().getOpened();
     }
 
     public boolean isSelected() {
@@ -79,7 +84,7 @@ public class MessageBean implements Serializable {
         this.selected = selected;
     }
 
-    public Message getMessage() throws SystemException, PortalException {
+    public Message getMessage() throws SystemException, PortalException, MessageNotFoundException {
         if (message == null) {
             message = MessagingClient.getMessage(messageId);
         }

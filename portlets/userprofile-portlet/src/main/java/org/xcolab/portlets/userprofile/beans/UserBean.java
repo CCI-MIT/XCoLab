@@ -10,6 +10,7 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.xcolab.client.members.pojo.User_;
 import org.xcolab.portlets.userprofile.validators.UniqueEmail;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.validation.CompareStrings;
@@ -75,7 +76,7 @@ public class UserBean implements Serializable {
 
     public UserBean() { }
 
-    public UserBean(User user) throws PortalException, SystemException {
+    public UserBean(User_ user) throws PortalException, SystemException {
         userId = user.getUserId();
         screenName = user.getScreenName();
         firstName = user.getFirstName();

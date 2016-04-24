@@ -60,9 +60,6 @@ function initializeTextEditors() {
 		else {
 			eventsToBind = {
 				keypress: function(event) {
-					if (! shouldAllowMoreCharacters(thiz)) {
-						//event.preventDefault();
-					}
 					if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
 						updateCharacterCounter(thiz);
 					}

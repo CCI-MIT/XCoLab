@@ -7,6 +7,7 @@ import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
 
 import java.util.ArrayList;

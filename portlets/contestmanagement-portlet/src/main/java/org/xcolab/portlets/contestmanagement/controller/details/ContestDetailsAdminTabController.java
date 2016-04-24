@@ -10,8 +10,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestAdminBean;
@@ -35,7 +35,10 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.mail.internet.AddressException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -43,9 +46,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -150,9 +150,9 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             String emailRecipients = "pdeboer@mit.edu,lfi@mit.edu";
             String[] recipients = emailRecipients.split(",");
 
-            InternetAddress[] addressTo = new InternetAddress[recipients.length];
+            List<String> addressTo = new ArrayList<>();
             for (int i = 0; i < recipients.length; i++) {
-                addressTo[i] = new InternetAddress(recipients[i]);
+                addressTo.add(recipients[i]);
             }
 
             String subject = "<contest/> draft was submitted from the <contest/> management tool!";
@@ -161,8 +161,9 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, null);
             body = TemplateReplacementUtil.replaceContestTypeStrings(body, null);
 
-            MailEngine.send(fromEmail, addressTo, subject, body, true);
-        } catch (SystemException | PortalException | AddressException | MailEngineException e) {
+            EmailClient.sendEmail(fromEmail.getAddress(), addressTo, subject, body, true, null);
+
+        } catch (SystemException | PortalException e) {
             success = false;
         }
         ObjectMapper mapper = new ObjectMapper();

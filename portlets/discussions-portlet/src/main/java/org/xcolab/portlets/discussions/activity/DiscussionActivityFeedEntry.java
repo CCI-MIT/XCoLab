@@ -31,6 +31,7 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
+import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
 import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
 import org.xcolab.utils.IdListUtil;
 
@@ -200,7 +201,8 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
 
         String linkText;
         if (Validator.isNull(thread.getSubject())) {
-            linkText = "climatecolab.org";
+            linkText = "Discussion in "
+                    + new DiscussionCategoryGroupWrapper(thread.getCategoryGroupId()).getDescription();
         } else {
             linkText = thread.getSubject();
         }
@@ -220,8 +222,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             threadId = comment.getMessageId();
         }
         ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
-        return String.format(
-                HYPERLINK_FORMAT,
+        return String.format(HYPERLINK_FORMAT,
                 StringEscapeUtils.escapeHtml4(threadWrapper.getLinkUrl()), text);
     }
 

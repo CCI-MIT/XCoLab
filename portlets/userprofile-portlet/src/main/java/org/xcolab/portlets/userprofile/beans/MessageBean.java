@@ -5,9 +5,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.hibernate.validator.constraints.NotBlank;
-import org.xcolab.pojo.Message;
-import org.xcolab.pojo.User_;
-import org.xcolab.service.client.MessagingClient;
+import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.MessagingClient;
 
 import java.io.Serializable;
 import java.util.ArrayList;

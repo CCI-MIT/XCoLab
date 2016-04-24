@@ -25,7 +25,6 @@ $p-proposal__settings__backgroundColor: $t-Color__grey--lightest !default;
 $p-proposal__contest__backgroundColor: $t-Color__grey--lightest !default;
 $p-proposal__contest__padding--top--bottom: 12px !default;
 
-$p-proposal__thumbbox__backgroundColor: $t-Color__grey--lightest !default;
 $p-proposal__thumbbox__a__fontWeight: 700 !default;
 $p-proposal__thumbbox__background--top: 5px !default;
 $p-proposal__thumbbox__a__margin--left: 0px !default;
@@ -39,6 +38,8 @@ $p-Proposal__subscribe__capitalization: none !default;
 
 $p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
 $p-Proposal__box__offColor: $t-Color__primary__grey--light !default;
+
+$p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor;
 
 /* PROPOSALS ----------------------------------------------------------------------------- */
 
@@ -456,9 +457,12 @@ $p-Proposal__box__offColor: $t-Color__primary__grey--light !default;
 }
 
 /* contributors table */
+
+/*
 .contributors a {
   font-weight: $b-Typography__fontWeight--bold;
 }
+*/
 
 .contributors td {
   color: $t-Color__grey--dark;

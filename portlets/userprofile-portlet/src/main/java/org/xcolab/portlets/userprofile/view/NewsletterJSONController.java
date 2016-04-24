@@ -2,6 +2,7 @@ package org.xcolab.portlets.userprofile.view;
 
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONObject;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,16 +11,17 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.mail.ConnectorEmmaAPI;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
 
+import java.io.IOException;
+
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
-import java.io.IOException;
 
 /**
  * Created by Thomas on 1/12/2015.
  */
 @Controller
 @RequestMapping("view")
-public class NewsletterJSONController extends JSONHelper {
+public class                                                                                        NewsletterJSONController extends JSONHelper {
 
     private final static String MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
     private ConnectorEmmaAPI connectorEmmaAPI;

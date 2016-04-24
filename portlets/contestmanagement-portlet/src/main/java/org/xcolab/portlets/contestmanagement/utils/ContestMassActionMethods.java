@@ -13,23 +13,25 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.utils.HtmlUtil;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.portlet.PortletRequest;
-import javax.portlet.ResourceResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.portlet.PortletRequest;
+import javax.portlet.ResourceResponse;
 
 /**
  * Created by Thomas on 3/5/2015.
@@ -43,7 +45,7 @@ public class ContestMassActionMethods {
                     "Last Name", "Email Address", "Role", "Last phase");
 
     public static void reportOfPeopleInCurrentPhase(List<Long> contestList, Object ResourceResponseObject,
-            PortletRequest request) throws Exception {
+                                                    PortletRequest request) throws Exception {
 
         ResourceResponse response = (ResourceResponse) ResourceResponseObject;
         CsvExportHelper csvExportHelper = new CsvExportHelper();
@@ -101,12 +103,14 @@ public class ContestMassActionMethods {
 
         InternetAddress adminEmail = new InternetAddress("admin@climatecolab.org");
         InternetAddress[] adminEmailArray = {adminEmail};
-        MailEngine.send(adminEmail, adminEmailArray, null, null, null,
-                emailSubject, emailBody, true, null, null, null);
+
+        EmailClient.sendEmail(adminEmail.getAddress(), adminEmail.getAddress(), emailSubject,
+                emailBody, true, null);
+
     }
 
     public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject,
-            PortletRequest request) throws PortalException, SystemException {
+                                                PortletRequest request) throws PortalException, SystemException {
         Long loggedInUserId = PortalUtil.getUserId(request);
         for (Long contestId : contestList) {
             Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
