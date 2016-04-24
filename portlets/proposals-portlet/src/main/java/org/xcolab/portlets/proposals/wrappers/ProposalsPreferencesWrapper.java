@@ -6,13 +6,15 @@ import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.utils.judging.EmailTemplateWrapper;
+
+import java.io.IOException;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
-import java.io.IOException;
 
 public class ProposalsPreferencesWrapper {
 
@@ -20,9 +22,7 @@ public class ProposalsPreferencesWrapper {
     private final static String CALL_TO_ACTION = "CALL_TO_ACTION";
     private final static String CONTEST_TYPE_ID = "CONTEST_TYPE_ID";
 
-    private final static String CALL_TO_ACTION_DEFAULT = "The public voting period is open until September 12!" +
-            "<a href=\"/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2\">" +
-            " See a list of all contest Finalists and how to vote.</a>";
+    private final static String CALL_TO_ACTION_DEFAULT = "";
 
     private String termsOfService;
     private String callToAction;
@@ -31,14 +31,13 @@ public class ProposalsPreferencesWrapper {
 
     private String proposalIdsToBeMoved;
     private long moveFromContestId;
-    private long moveToContestPhaseId;
+    private long moveToContestId;
 
     private long ribbonId = -1;
 
     private EmailTemplateWrapper termsOfServiceTemplateWrapper;
 
     public ProposalsPreferencesWrapper() {
-
     }
 
     public ProposalsPreferencesWrapper(PortletRequest request) throws SystemException, PortalException {
@@ -49,7 +48,7 @@ public class ProposalsPreferencesWrapper {
         contestType = ContestTypeLocalServiceUtil.fetchContestType(Long.parseLong(contestTypeId));
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
-        moveToContestPhaseId = -1;
+        moveToContestId = -1;
     }
 
     private EmailTemplateWrapper getTermsOfServiceTemplateWrapper() {
@@ -60,9 +59,7 @@ public class ProposalsPreferencesWrapper {
         try {
             termsOfServiceTemplateWrapper = new EmailTemplateWrapper(
                     ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TERMS_OF_SERVICE_PREF),
-                    "",
-                    ""
-            );
+                    "", "");
         } catch (SystemException e) {
             e.printStackTrace();
         }
@@ -93,12 +90,12 @@ public class ProposalsPreferencesWrapper {
         this.ribbonId = ribbonId;
     }
 
-    public long getMoveToContestPhaseId() {
-        return moveToContestPhaseId;
+    public long getMoveToContestId() {
+        return moveToContestId;
     }
 
-    public void setMoveToContestPhaseId(long moveToContestPhaseId) {
-        this.moveToContestPhaseId = moveToContestPhaseId;
+    public void setMoveToContestId(long moveToContestId) {
+        this.moveToContestId = moveToContestId;
     }
 
     public String getProposalIdsToBeMoved() {
