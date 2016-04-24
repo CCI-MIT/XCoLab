@@ -45,8 +45,10 @@ public class EmailUtil {
         switch (env.getRequiredProperty("mail.smtp.transport.strategy")) {
             case "TLS":
                 new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password, TransportStrategy.SMTP_TLS).sendMail(email);
+                break;
             case "SSL":
                 new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password, TransportStrategy.SMTP_SSL).sendMail(email);
+                break;
             default:
                 new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password).sendMail(email);
         }
