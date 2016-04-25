@@ -130,7 +130,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes></includes>
+                            <includes>xcolab_ContentArticle|xcolab_ContentArticleVersion|xcolab_ContentFolder</includes>
                         </database>
                     </generator>
                 </configuration>
