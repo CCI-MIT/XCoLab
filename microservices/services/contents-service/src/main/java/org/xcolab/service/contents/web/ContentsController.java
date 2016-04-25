@@ -26,7 +26,7 @@ public class ContentsController {
     @Autowired
     private ContentFolderService contentFolderService;
 
-    @RequestMapping(value = "/contentArticles/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/contentArticles/", method = RequestMethod.POST)
     public ContentArticle createContentArticle(@RequestBody ContentArticle contentArticle) {
 
         return this.contentArticleService.create(contentArticle);
@@ -41,7 +41,7 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.PUT)
     public String updateContentArticle(@RequestBody ContentArticle contentArticle,
                                        @PathVariable("articleId") Long articleId) throws NotFoundException {
 
@@ -76,7 +76,7 @@ public class ContentsController {
 
     }
 
-    @RequestMapping(value = "/contentArticleVersions/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/contentArticleVersions/", method = RequestMethod.POST)
     public ContentArticleVersion createContentArticleVersion(@RequestBody ContentArticleVersion contentArticleVersion) {
 
         return this.contentArticleVersionService.create(contentArticleVersion);
@@ -91,7 +91,7 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.PUT)
     public String updateContentArticle(@RequestBody ContentArticleVersion contentArticleVersion,
                                        @PathVariable("articleVersionId") Long articleVersionId) throws NotFoundException {
 
@@ -108,7 +108,7 @@ public class ContentsController {
 
     }
 
-    @RequestMapping(value = "/contentFolders/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/contentFolders/", method = RequestMethod.POST)
     public ContentFolder createContentFolder(@RequestBody ContentFolder contentFolder) {
 
         return this.contentFolderService.create(contentFolder);
@@ -123,7 +123,7 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.PUT)
     public String updateContentFolder(@RequestBody ContentFolder contentFolder,
                                        @PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
 

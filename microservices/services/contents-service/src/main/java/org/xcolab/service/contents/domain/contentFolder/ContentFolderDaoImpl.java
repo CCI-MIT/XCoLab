@@ -9,7 +9,7 @@ import org.xcolab.model.tables.records.ContentFolderRecord;
 import static org.xcolab.model.Tables.CONTENT_FOLDER;
 
 @Repository
-public class ContentFolderDaoImpl {
+public class ContentFolderDaoImpl implements ContentFolderDao{
     @Autowired
     private DSLContext dslContext;
 

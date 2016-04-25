@@ -2,13 +2,15 @@ package org.xcolab.service.contents.domain.contentarticleversion;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.records.ContentArticleVersionRecord;
 
 import static org.xcolab.model.Tables.CONTENT_ARTICLE;
 import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
 
-public class ContentArticleVersionDaoImpl {
+@Repository
+public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
 
     @Autowired
     private DSLContext dslContext;

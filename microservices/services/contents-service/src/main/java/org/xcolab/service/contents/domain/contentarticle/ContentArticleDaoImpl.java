@@ -9,7 +9,7 @@ import org.xcolab.model.tables.records.ContentArticleRecord;
 import static org.xcolab.model.Tables.CONTENT_ARTICLE;
 
 @Repository
-public class ContentArticleDaoImpl {
+public class ContentArticleDaoImpl implements ContentArticleDao {
 
     @Autowired
     private DSLContext dslContext;
