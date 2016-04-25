@@ -26,14 +26,20 @@ public class ConnectorEmmaAPI {
     private final static String EMMA_MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
     private final String charset = java.nio.charset.StandardCharsets.UTF_8.name();
     private final String contentType = "application/json";
-    private final String myEmmaApiBaseUrl;
+    private String myEmmaApiBaseUrl;
 
     private final AccountDetailsEmmaAPI accountDetailsEmmaAPI;
 
     @Autowired
     public ConnectorEmmaAPI(AccountDetailsEmmaAPI accountDetailsEmmaAPI) {
         this.accountDetailsEmmaAPI = accountDetailsEmmaAPI;
-        myEmmaApiBaseUrl = "https://api.e2ma.net/" + accountDetailsEmmaAPI.getAccountId();
+    }
+
+    private String getMyEmmaApiBaseUrl() {
+        if (myEmmaApiBaseUrl == null) {
+            myEmmaApiBaseUrl = "https://api.e2ma.net/" + accountDetailsEmmaAPI.getAccountId();
+        }
+        return myEmmaApiBaseUrl;
     }
 
     public boolean unSubscribeMemberWithEmail(String email) throws IOException {
@@ -46,7 +52,7 @@ public class ConnectorEmmaAPI {
 
         if (accountDetailsEmmaAPI.isEnabled()) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-                HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(myEmmaApiBaseUrl + "/members/" + emmaMemberId,
+                HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(getMyEmmaApiBaseUrl() + "/members/" + emmaMemberId,
                         contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
 
                 try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
@@ -73,7 +79,7 @@ public class ConnectorEmmaAPI {
             jsonSubscribeInformation.put("group_ids", groupIds);
 
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-                HttpUriRequest newsletterSubscribeRequest = createPostWithAuthorizationForJSONObject(myEmmaApiBaseUrl + "/members/add",
+                HttpUriRequest newsletterSubscribeRequest = createPostWithAuthorizationForJSONObject(getMyEmmaApiBaseUrl() + "/members/add",
                         contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization(), jsonSubscribeInformation);
 
                 try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
@@ -92,7 +98,7 @@ public class ConnectorEmmaAPI {
         JSONObject memberDetails = new JSONObject();
         if (accountDetailsEmmaAPI.isEnabled()) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-                HttpGet getMemberDetails = createGetWithAuthorization(myEmmaApiBaseUrl + "/members/email/" + email,
+                HttpGet getMemberDetails = createGetWithAuthorization(getMyEmmaApiBaseUrl() + "/members/email/" + email,
                         contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
 
                 try (CloseableHttpResponse getMemberDetailsResponse = httpclient.execute(getMemberDetails)) {

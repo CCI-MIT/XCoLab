@@ -202,7 +202,6 @@ public class MemberDaoImpl implements MemberDao {
                 .and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%"))
                 .orderBy((isAscOrder ? (points.asc()) : (points.desc())))
                 .limit(startRecord, limitRecord).fetchInto(Member.class);
-
     }
 
     @Override
