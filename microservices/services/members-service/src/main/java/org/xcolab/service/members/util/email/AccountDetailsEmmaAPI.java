@@ -16,28 +16,33 @@ public class AccountDetailsEmmaAPI {
     @Autowired
     private Environment env;
 
+    private boolean initialized;
     private String accountId;
     private String groupId;
     private String publicApiKey;
     private String privateApiKey;
-    private final String encodedAuthorization;
+    private String encodedAuthorization;
 
-    public AccountDetailsEmmaAPI() {
-        try {
-            accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
-            groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
-            publicApiKey = ConfigurationAttributeKey.MY_EMMA_PUBLIC_API_KEY.getStringValue();
-            privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY.getStringValue();
-        } catch (ConfigurationAttributeNotFoundException e) {
-            accountId = "";
-            groupId = "";
-            publicApiKey = "";
-            privateApiKey = "";
+    private void init() {
+        if (!initialized) {
+            try {
+                accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
+                groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
+                publicApiKey = ConfigurationAttributeKey.MY_EMMA_PUBLIC_API_KEY.getStringValue();
+                privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY.getStringValue();
+            } catch (ConfigurationAttributeNotFoundException e) {
+                accountId = "";
+                groupId = "";
+                publicApiKey = "";
+                privateApiKey = "";
+            }
+            encodedAuthorization = "Basic " + new Base64().encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
+            initialized = true;
         }
-        encodedAuthorization = "Basic " + new Base64().encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
     }
 
     public String getAccountId() {
+        init();
         return accountId;
     }
 
@@ -46,6 +51,7 @@ public class AccountDetailsEmmaAPI {
     }
 
     public String getGroupId() {
+        init();
         return groupId;
     }
 
@@ -54,6 +60,7 @@ public class AccountDetailsEmmaAPI {
     }
 
     public String getPublicApiKey() {
+        init();
         return publicApiKey;
     }
 
@@ -62,6 +69,7 @@ public class AccountDetailsEmmaAPI {
     }
 
     public String getPrivateApiKey() {
+        init();
         return privateApiKey;
     }
 
@@ -70,10 +78,12 @@ public class AccountDetailsEmmaAPI {
     }
 
     public String getEncodedAuthorization() {
+        init();
         return encodedAuthorization;
     }
 
     public boolean isEnabled() {
+        init();
         return StringUtils.isNotBlank(accountId)
                 && StringUtils.isNotBlank(groupId)
                 && StringUtils.isNotBlank(publicApiKey)
