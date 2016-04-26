@@ -180,7 +180,6 @@
 
     <route>
         <pattern>/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/vote</pattern>
-        <generated-parameter name="action_forwardToPage">proposalDetails</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
         <generated-parameter name="proposalId">{proposalId}</generated-parameter>

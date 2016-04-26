@@ -32,11 +32,7 @@
             </h2>
             <div class="right">
                 <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
-                    <portlet:renderURL var="createProposalURL">
-                        <portlet:param name="contestYear" value="${contest.contestYear}" />
-                        <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
-                        <portlet:param name="pageToDisplay" value="createProposal" />
-                    </portlet:renderURL>
+                    <c:set var="createProposalURL" value="${contest.newProposalLinkUrl}"/>
                     <a class="c-Button__primary large" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                        onclick="if(!deferUntilLoginTargeted('${createProposalURL}')) return false;">
                         <span>CREATE</span> ${contestType.proposalName}

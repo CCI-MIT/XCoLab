@@ -23,28 +23,6 @@
 		<property name="interceptors">
 			<list>
 				<bean class="org.xcolab.portlets.proposals.view.interceptors.PopulateContextInterceptor" />
-				<bean class="org.xcolab.portlets.proposals.view.interceptors.ParametersMappingInterceptor">
-					<property name="parameters">
-						<map>
-							<entry key="action_forwardToPage" value="pageToDisplay"/>
-							<entry key="action_errorForwardToPage" value="pageToDisplay"/>
-						</map>
-					</property>
-					<property name="ignoreOnError">
-						<list>
-							<value>action_forwardToPage</value>
-							<value>action</value>
-							<value>isMove</value>
-						</list>
-					</property>
-					<property name="ignoreOnSuccess">
-						<list>
-							<value>action_errorForwardToPage</value>
-							<value>action</value>
-						</list>
-					</property>
-					<property name="mapAll" value="true" />
-				</bean>
 				<bean class="org.xcolab.portlets.proposals.view.interceptors.ValidateTabPermissionsInterceptor" />
 			</list>
 		</property>
