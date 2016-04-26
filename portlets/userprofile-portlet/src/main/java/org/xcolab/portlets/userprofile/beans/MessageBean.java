@@ -6,7 +6,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.MessagingClient;
 
 import java.io.Serializable;
@@ -18,7 +18,7 @@ import java.util.Random;
 public class MessageBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private List<User_> recipients = new ArrayList<>();
+    private List<Member> recipients = new ArrayList<>();
     @NotBlank
     private String messageSubject;
     @NotBlank
@@ -100,11 +100,11 @@ public class MessageBean implements Serializable {
         return message;
     }
 
-    public List<User_> getTo() {
+    public List<Member> getTo() {
         return recipients;
     }
 
-    public void addRecipientUser(User_ recipientUser) {
+    public void addRecipientUser(Member recipientUser) {
         recipients.add(recipientUser);
     }
 

@@ -4,7 +4,6 @@ import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
@@ -14,7 +13,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.utils.TemplateReplacementUtil;
@@ -88,8 +87,8 @@ public class ContestResourcesBean implements Serializable {
 
     @SuppressWarnings("unused")
     public ContestResourcesBean() throws SystemException, PortalException {
-        this(ContestTypeLocalServiceUtil.getContestType(ConfigurationAttributeLocalServiceUtil.getAttributeLongValue(
-                ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.name(), 0L)));
+        this(ContestTypeLocalServiceUtil.getContestType(
+                ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue()));
     }
 
     public ContestResourcesBean(ContestType contestType) throws SystemException {
@@ -251,8 +250,7 @@ public class ContestResourcesBean implements Serializable {
             Long contestPhaseType = contestPhase.getContestPhaseType();
             if (contestPhaseType == 1L) {
                 final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMAT.withZone(
-                        DateTimeZone.forID(ConfigurationAttributeLocalServiceUtil
-                                .getAttributeStringValue(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.name(), 0L)));
+                        DateTimeZone.forID(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.getStringValue()));
                 boolean phaseHasNoEnd = (contestPhase.getPhaseEndDate() == null);
                 if (phaseHasNoEnd) {
                     proposalSubmissionEndDate = "This contest has no deadline.";

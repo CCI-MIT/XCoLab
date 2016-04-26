@@ -6,7 +6,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 
 public enum LoginRegisterActivityKeys {
     USER_REGISTERED(1, "New account created", "%s joined the %s community");

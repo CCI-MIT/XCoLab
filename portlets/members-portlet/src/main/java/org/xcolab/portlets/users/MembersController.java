@@ -7,11 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.enums.ConfigurationAttributeKey;
-import org.xcolab.client.members.pojo.User_;
-import org.xcolab.portlets.users.utils.MemberItem;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.portlets.users.utils.MemberItem;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -63,14 +63,14 @@ public class MembersController {
             sortFilterPage.setSortColumn("POINTS");
             sortFilterPage.setSortAscending(false);
         }
-        List<User_> dbUsersMicro = MembersClient.listMembers(memberCategoryParam, filterParam, sortColumn,
+        List<Member> dbUsersMicro = MembersClient.listMembers(memberCategoryParam, filterParam, sortColumn,
                 sortFilterPage.isSortAscending(), firstUser, endUser);
 
 
         request.getPortletSession().setAttribute("previousSortColumn", sortColumn);
         request.getPortletSession().setAttribute("previousSortOrder", sortFilterPage.isSortAscending());
 
-        for (User_ user : dbUsersMicro) {
+        for (Member user : dbUsersMicro) {
             MemberItem memberItem = new MemberItem(user, memberCategoryParam);
             users.add(memberItem);
         }

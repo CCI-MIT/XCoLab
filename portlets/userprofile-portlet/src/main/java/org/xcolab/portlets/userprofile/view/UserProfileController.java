@@ -1,11 +1,9 @@
 package org.xcolab.portlets.userprofile.view;
 
 import com.ext.portlet.NoSuchConfigurationAttributeException;
-import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
-import com.liferay.portal.PwdEncryptorException;
 import com.liferay.portal.UserPortraitSizeException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -13,7 +11,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Image;
@@ -28,9 +25,9 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,11 +40,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.User_;
-import org.xcolab.commons.utils.PwdEncryptor;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -139,7 +135,7 @@ public class UserProfileController {
             populateUserWrapper(currentUserProfile, model);
             if (currentUserProfile.isViewingOwnProfile()) {
                 model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored()));
+                        new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -231,7 +227,7 @@ public class UserProfileController {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
             if (currentUserProfile.isViewingOwnProfile()) {
                 model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getEmailStored()));
+                        new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -283,20 +279,25 @@ public class UserProfileController {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
-                    currentUserProfile.getUser()
-                            .setPassword(PwdEncryptor.encrypt(updatedUserBean.getPassword().trim()));
+                    currentUserProfile.getUser().setHashedPassword(
+                            MembersClient.hashPassword(updatedUserBean.getPassword().trim()));
+                    //TODO: remove, currently needed to update password for liferay
+                    final User liferayUser = UserLocalServiceUtil.getUser(currentUserProfile.getUserId());
+                    liferayUser.setPassword
+                            (MembersClient.hashPassword(updatedUserBean.getPassword().trim(), true));
+                    UserLocalServiceUtil.updateUser(liferayUser);
                     changedUserPart = true;
                 } else {
                     validationError = true;
                     response.setRenderParameter("passwordError", "true");
-                    _log.warn("CompareStrings password failed for userId: " + currentUserProfile.getUser().getUserId());
+                    _log.warn("CompareStrings password failed for userId: " + currentUserProfile.getUser().getId_());
                 }
             } else {
                 result.addError(
                         new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
                 validationError = true;
                 response.setRenderParameter("passwordError", "true");
-                _log.warn("Current password wrong for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn("Current password wrong for userId: " + currentUserProfile.getUser().getId_());
             }
         }
 
@@ -312,7 +313,7 @@ public class UserProfileController {
             } else {
                 validationError = true;
                 response.setRenderParameter("emailError", "true");
-                _log.warn("Email change failed for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn("Email change failed for userId: " + currentUserProfile.getUser().getId_());
             }
         }
 
@@ -324,7 +325,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getId_());
             }
         }
         if (updatedUserBean.getLastName() != null
@@ -335,7 +336,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getUserId());
+                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getId_());
             }
         }
 
@@ -343,7 +344,7 @@ public class UserProfileController {
             changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
         } catch (Exception e) {
             _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser()
-                    .getUserId());
+                    .getId_());
             _log.warn(e);
             if (e instanceof UserPortraitSizeException) {
                 model.addAttribute("imageSizeError", true);
@@ -363,9 +364,7 @@ public class UserProfileController {
 
             updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
 
-
             MembersClient.updateMember(currentUserProfile.getUser());
-
 
             if (eMailChanged) {
                 updatedUserBean.setEmailStored(updatedUserBean.getEmail());
@@ -373,7 +372,7 @@ public class UserProfileController {
                     sendUpdatedEmail(currentUserProfile.getUser());
                 } catch (MailEngineException | AddressException | NoSuchConfigurationAttributeException e) {
                     _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile
-                            .getUser().getUserId());
+                            .getUser().getId_());
                     _log.warn(e);
                 }
             }
@@ -387,21 +386,14 @@ public class UserProfileController {
     }
 
     private boolean isPasswordMatchingExistingPassword(UserProfileWrapper currentUserProfile, String password) {
-        boolean existing = false;
-        try {
-            final String existingPassword = currentUserProfile.getUser().getPassword();
-            final String existingPasswordWithoutSHA1 = currentUserProfile.getUser().getPassword().substring(7);
-            existing = PwdEncryptor.encrypt(password).equals(existingPassword) ||
-                    PwdEncryptor.encrypt(password).equals(existingPasswordWithoutSHA1);
-        } catch (PwdEncryptorException ignored) {
-        }
-        return existing;
+        return MembersClient.validatePassword(password, currentUserProfile.getUser().getUserId());
     }
 
     private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean)
             throws Exception {
 
         boolean changedDetails = false;
+        Member member = currentUserProfile.getUser();
 
         long companyId = CompanyThreadLocal.getCompanyId();
         if (companyId == 0) {
@@ -409,31 +401,25 @@ public class UserProfileController {
             changedDetails = true;
         }
 
-        String existingBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
-                User.class.getName(), CommunityConstants.EXPANDO,
-                CommunityConstants.BIO, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
+        String existingBio = member.getShortBio();
+        if (existingBio == null) {
+            existingBio = "";
+        }
 
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
-            ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
-                    CommunityConstants.EXPANDO, CommunityConstants.BIO,
-                    currentUserProfile.getUser().getUserId(), HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
+            member.setShortBio(HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
             changedDetails = true;
         }
 
-        String existingCountry = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID,
-                User.class.getName(), CommunityConstants.EXPANDO,
-                CommunityConstants.COUNTRY, currentUserProfile.getUser().getUserId(), StringPool.BLANK);
-        if (!existingCountry.isEmpty()) {
+        String existingCountry = member.getCountry();
+        if (!StringUtils.isEmpty(existingCountry)) {
             if (CountryUtil.getCodeForCounty(existingCountry) != null) {
                 existingCountry = CountryUtil.getCodeForCounty(existingCountry);
             }
         }
 
         if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)) {
-            ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID, User.class.getName(),
-                    CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-                    currentUserProfile.getUser().getUserId(),
-                    CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
+            member.setCountry(CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
             changedDetails = true;
         }
 
@@ -444,54 +430,56 @@ public class UserProfileController {
 
         if (updatedUserBean.getImageId() != currentUserProfile.getUserBean().getImageId()) {
             Image img = ImageLocalServiceUtil.getImage(updatedUserBean.getImageId());
-            // we need to set permission checker for liferay
+            //TODO: we need to set permission checker for liferay, NO IDEIA WHAT THIS DOES remove after liferay transition
             PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
-                    .create(UserLocalServiceUtil.getUser(currentUserProfile.getUser().getUserId()), true);
+                    .create(UserLocalServiceUtil.getUser(currentUserProfile.getUser().getId_()), true);
             PermissionThreadLocal
                     .setPermissionChecker(permissionChecker);
             if (img != null) {
                 byte[] bytes = img.getTextObj();
-                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getUserId(), bytes);
-                currentUserProfile.getUser().setPortraitId(0L);
+                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getId_(), bytes);
+//                currentUserProfile.getUser().setPortraitId(0L);
 
-                MembersClient.updateMember(currentUserProfile.getUser());
-                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getUserId(), bytes);
-                currentUserProfile.setUser(MembersClient.getMember(currentUserProfile.getUser().getUserId()));
+                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getId_(), bytes);
                 changedDetails = true;
             }
         }
 
         if (updatedUserBean.getSendEmailOnMessage() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailOnReceipt()) {
+                .getMessagingPreferences(currentUserProfile.getUser().getId_()).getEmailOnReceipt()) {
             MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
             prefs.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
 
         if (updatedUserBean.getSendEmailOnActivity() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailOnActivity()) {
+                .getMessagingPreferences(currentUserProfile.getUser().getId_()).getEmailOnActivity()) {
             MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
             prefs.setEmailOnActivity(updatedUserBean.getSendEmailOnActivity());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
 
         if (updatedUserBean.getSendDailyEmailOnActivity() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getUserId()).getEmailActivityDailyDigest()) {
+                .getMessagingPreferences(currentUserProfile.getUser().getId_()).getEmailActivityDailyDigest()) {
             MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getUserId());
+                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
             prefs.setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
             MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
             changedDetails = true;
         }
 
+        if (changedDetails) {
+            MembersClient.updateMember(currentUserProfile.getUser());
+        }
+
         return changedDetails;
     }
 
-    private void sendUpdatedEmail(User_ user) throws MailEngineException, AddressException, UnsupportedEncodingException,
+    private void sendUpdatedEmail(Member user) throws MailEngineException, AddressException, UnsupportedEncodingException,
             SystemException, NoSuchConfigurationAttributeException {
         String messageSubject = TemplateReplacementUtil
                 .replacePlatformConstants("Your email address on the <colab-name/> has been updated");
@@ -510,11 +498,8 @@ public class UserProfileController {
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
-
         EmailClient.sendEmail(addressFrom.getAddress(), user.getEmailAddress(), messageSubject,
                 messageBody, false, addressFrom.getAddress());
-
-
     }
 
     @RequestMapping(params = "action=deleteProfile")

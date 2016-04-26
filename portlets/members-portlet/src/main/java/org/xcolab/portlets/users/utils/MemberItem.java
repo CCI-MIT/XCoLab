@@ -5,7 +5,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.MembersClient;
 
 import java.io.Serializable;
@@ -21,9 +21,9 @@ public class MemberItem implements Serializable {
     private String screenName;
     private int points;
 
-    public MemberItem(User_ user, String memberCategoryParam) throws PortalException, SystemException {
+    public MemberItem(Member user, String memberCategoryParam) throws PortalException, SystemException {
 
-        userId = user.getUserId();
+        userId = user.getId_();
         activityCount = MembersClient.getMemberActivityCount(userId);
         screenName = user.getScreenName();
         joinDate = user.getCreateDate();

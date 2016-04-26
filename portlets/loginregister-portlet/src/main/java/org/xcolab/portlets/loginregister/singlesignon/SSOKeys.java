@@ -1,12 +1,5 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 27/11/13
- * Time: 11:50
- * To change this template use File | Settings | File Templates.
- */
 public class SSOKeys {
 
     public final static String GOOGLE_ENDPOINT = "https://www.google.com/accounts/o8/id";

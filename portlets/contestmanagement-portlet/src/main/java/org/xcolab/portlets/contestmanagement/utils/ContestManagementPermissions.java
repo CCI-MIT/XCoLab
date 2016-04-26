@@ -4,9 +4,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.interfaces.TabPermissions;
 
@@ -16,7 +17,7 @@ import javax.portlet.PortletRequest;
  * Created by Thomas on 2/9/2015.
  */
 public class ContestManagementPermissions implements TabPermissions {
-    private final PermissionChecker permissionChecker;
+
     private final String portletId;
     private final String primKey;
     private final User user;
@@ -26,7 +27,7 @@ public class ContestManagementPermissions implements TabPermissions {
     public ContestManagementPermissions(PortletRequest request) throws PortalException, SystemException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        permissionChecker = themeDisplay.getPermissionChecker();
+
         portletId = (String) request.getAttribute(WebKeys.PORTLET_ID);
         primKey = themeDisplay.getPortletDisplay().getResourcePK();
         scopeGroupId = themeDisplay.getScopeGroupId();
@@ -53,7 +54,7 @@ public class ContestManagementPermissions implements TabPermissions {
 
     @Override
     public boolean getCanAdmin() {
-        return !isUserNotLoggedIn && permissionChecker.isOmniadmin();
+        return !isUserNotLoggedIn && PermissionsClient.canAdminAll(user.getUserId());
     }
 
     @Override
@@ -86,7 +87,7 @@ public class ContestManagementPermissions implements TabPermissions {
     }
 
     public boolean getCanAdminAll() {
-        return permissionChecker.hasPermission(scopeGroupId, portletId, primKey, "ADMIN_ALL");
+        return PermissionsClient.canAdminAll(user.getUserId());
     }
 
 }

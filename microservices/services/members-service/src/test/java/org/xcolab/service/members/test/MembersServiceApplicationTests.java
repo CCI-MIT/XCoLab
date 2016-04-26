@@ -1,4 +1,4 @@
-package org.xcolab.test;
+package org.xcolab.service.members.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
