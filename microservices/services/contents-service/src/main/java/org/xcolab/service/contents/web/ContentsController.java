@@ -37,7 +37,7 @@ public class ContentsController {
         if (articleId == null || articleId == 0) {
             throw new NotFoundException("No content article with id given");
         } else {
-            return this.contentArticleService.get(articleId);//contentArticleService.getMember(memberId);
+            return this.contentArticleService.get(articleId);
         }
     }
 
@@ -49,7 +49,7 @@ public class ContentsController {
             throw new NotFoundException("No content article with id given");
         } else {
             if (this.contentArticleService.get(articleId) != null) {
-                this.contentArticleService.update(contentArticle);// contentArticleService.getMember(memberId);
+                this.contentArticleService.update(contentArticle);
                 return "Content article updated successfully";
             } else {
                 throw new NotFoundException("No content article with id given");
@@ -67,7 +67,7 @@ public class ContentsController {
             ContentArticle contentArticle = this.contentArticleService.get(articleId);
             if ( contentArticle!= null) {
                 contentArticle.setVisible(false);
-                this.contentArticleService.update(contentArticle);// contentArticleService.getMember(memberId);
+                this.contentArticleService.update(contentArticle);
                 return "Content article updated successfully";
             } else {
                 throw new NotFoundException("No content article with id given");
@@ -87,7 +87,7 @@ public class ContentsController {
         if (articleVersionId == null || articleVersionId == 0) {
             throw new NotFoundException("No content article version with id given");
         } else {
-            return this.contentArticleVersionService.get(articleVersionId);//contentArticleService.getMember(memberId);
+            return this.contentArticleVersionService.get(articleVersionId);
         }
     }
 
@@ -99,7 +99,7 @@ public class ContentsController {
             throw new NotFoundException("No content article version with id given");
         } else {
             if (this.contentArticleVersionService.get(articleVersionId) != null) {
-                this.contentArticleVersionService.update(contentArticleVersion);// contentArticleService.getMember(memberId);
+                this.contentArticleVersionService.update(contentArticleVersion);
                 return "Content article version updated successfully";
             } else {
                 throw new NotFoundException("No content article version with id given");
@@ -115,11 +115,20 @@ public class ContentsController {
     }
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.GET)
-    public ContentArticleVersion getContentFolder(@PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
+    public ContentFolder getContentFolder(@PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
         if (contentFolderId == null || contentFolderId == 0) {
             throw new NotFoundException("No content folder with id given");
         } else {
-            return this.contentArticleVersionService.get(contentFolderId);//contentArticleService.getMember(memberId);
+            return this.contentFolderService.get(contentFolderId);
+        }
+    }
+
+    @RequestMapping(value = "/contentFolders/{contentFolderId}/contentArticles/", method = RequestMethod.GET)
+    public ContentArticleVersion getContentFolderArticles(@PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
+        if (contentFolderId == null || contentFolderId == 0) {
+            throw new NotFoundException("No content folder with id given");
+        } else {
+            return this.contentArticleVersionService.getByFolderId(contentFolderId);
         }
     }
 
@@ -131,7 +140,7 @@ public class ContentsController {
             throw new NotFoundException("No content folder with id given");
         } else {
             if (this.contentFolderService.get(contentFolderId) != null) {
-                this.contentFolderService.update(contentFolder);// contentArticleService.getMember(memberId);
+                this.contentFolderService.update(contentFolder);
                 return "Content folder updated successfully";
             } else {
                 throw new NotFoundException("No content folder with id given");

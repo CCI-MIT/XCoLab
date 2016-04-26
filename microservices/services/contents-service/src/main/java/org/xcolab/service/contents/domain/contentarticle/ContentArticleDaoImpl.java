@@ -51,4 +51,6 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
                 .where(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(contentArticleId))
                 .fetchOneInto(ContentArticle.class);
     }
+
+
 }

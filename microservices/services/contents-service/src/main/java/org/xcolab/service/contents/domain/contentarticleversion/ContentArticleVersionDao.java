@@ -9,4 +9,6 @@ public interface ContentArticleVersionDao {
     void update(ContentArticleVersion contentArticleVersion);
 
     ContentArticleVersion get(Long contentArticleId);
+
+    ContentArticleVersion getByFolderId(Long contentFolderId) ;
 }

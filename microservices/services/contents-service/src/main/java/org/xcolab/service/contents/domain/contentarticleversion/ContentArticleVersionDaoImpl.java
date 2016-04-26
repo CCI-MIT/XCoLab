@@ -53,4 +53,11 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.eq(contentArticleId))
                 .fetchOneInto(ContentArticleVersion.class);
     }
+
+    public ContentArticleVersion getByFolderId(Long contentFolderId) {
+        return this.dslContext.select()
+                .from(CONTENT_ARTICLE_VERSION)
+                .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))
+                .fetchOneInto(ContentArticleVersion.class);
+    }
 }

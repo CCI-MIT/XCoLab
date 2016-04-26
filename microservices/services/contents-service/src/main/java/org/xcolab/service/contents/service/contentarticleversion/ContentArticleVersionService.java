@@ -26,4 +26,7 @@ public class ContentArticleVersionService {
     public ContentArticleVersion get(Long contentArticleId) {
         return this.contentArticleVersionDao.get(contentArticleId);
     }
+    public ContentArticleVersion getByFolderId(Long contentFolderId) {
+        return this.contentArticleVersionDao.getByFolderId(contentFolderId);
+    }
 }
