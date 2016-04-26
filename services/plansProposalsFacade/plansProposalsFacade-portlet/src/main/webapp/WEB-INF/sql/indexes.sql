@@ -196,3 +196,10 @@ create index IX_81E78E6E on xcolab_SpamReport (spamUserId, discussionMessageId);
 create index IX_9C5CE364 on xcolab_StaffMember (userId);
 
 create index IX_21569857 on xcolab_TrackedVisit (uuid_);
+
+create unique index IX_XCOLAB_MEMBERS_SCREEN_NAME on members_Member (screenName);
+create unique index IX_XCOLAB_MEMBERS_EMAIL_ADDRESS on members_Member (emailAddress);
+create index IX_XCOLAB_MEMBERS_CREATE_DATE on members_Member (createDate, modifiedDate);
+create index IX_XCOLAB_MEMBERS_MODIFIED_DATE on members_Member (modifiedDate);
+create index IX_XCOLAB_MEMBERS_FACEBOOK_ID on members_Member (facebookId);
+create index IX_XCOLAB_MEMBERS_OPEN_ID on members_Member (openId);

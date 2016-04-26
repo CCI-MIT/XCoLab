@@ -6,7 +6,6 @@ import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
-import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.kernel.captcha.CaptchaException;
@@ -22,20 +21,15 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.security.permission.PermissionThreadLocal;
-import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,16 +41,21 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.enums.ConfigurationAttributeKey;
-import org.xcolab.mail.ConnectorEmmaAPI;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
-import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.UserCreationUtil;
+
+import java.io.IOException;
+import java.util.Date;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -69,8 +68,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.Date;
 
 @Controller
 @RequestMapping("view")
@@ -141,8 +138,7 @@ public class MainViewController {
             try {
                 userBean.setCountry(
                         getCountryCodeFromRemoteAddress(PortalUtil.getHttpServletRequest(request).getRemoteAddr()));
-            } catch (UserLocationNotResolvableException e) {
-                _log.warn(e);
+            } catch (UserLocationNotResolvableException ignored) {
             }
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
@@ -294,30 +290,17 @@ public class MainViewController {
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
         try {
-            User user = UserServiceUtil.addUserWithWorkflow(
-                    DEFAULT_COMPANY_ID, false,
-                    newAccountBean.getPassword(),
-                    newAccountBean.getRetypePassword(), false,
-                    newAccountBean.getScreenName(),
-                    newAccountBean.getEmail(), 0L, "",
-                    themeDisplay.getLocale(),
-                    HtmlUtil.cleanAll(newAccountBean.getFirstName()), "",
-                    HtmlUtil.cleanAll(newAccountBean.getLastName()), 0, 0, true, 1, 1,
-                    1970, "", new long[]{}, new long[]{},
-                    new long[]{}, new long[]{}, true, serviceContext);
+            final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
+                            newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
+                            newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, openId,
+                            newAccountBean.getImageId(), themeDisplay.getLocale(), serviceContext);
 
-            new ConnectorEmmaAPI().subscribeMemberWithEmail(newAccountBean.getEmail());
-
-            if (newAccountBean.getShortBio() != null
-                    && !newAccountBean.getShortBio().isEmpty()) {
-                setExpandoValue(user, CommunityConstants.BIO,
-                        HtmlUtil.cleanSome(newAccountBean.getShortBio(), LinkUtils.getBaseUri(request)));
+            // SSO
+            if (StringUtils.isNotBlank(fbIdString)) {
+                portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID, PortletSession.APPLICATION_SCOPE);
             }
-
-            if (newAccountBean.getCountry() != null
-                    && !newAccountBean.getCountry().isEmpty()) {
-                setExpandoValue(user, CommunityConstants.COUNTRY,
-                        CountryUtil.getCountryForCode(newAccountBean.getCountry()));
+            if (StringUtils.isNotBlank(openId)) {
+                portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID, PortletSession.APPLICATION_SCOPE);
             }
 
             if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
@@ -325,62 +308,21 @@ public class MainViewController {
                     BalloonUserTracking but =
                             BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
                     but.setRegistrationDate(new Date());
-                    but.setUserId(user.getUserId());
+                    but.setUserId(user.getId_());
                     BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
                 } catch (NoSuchBalloonUserTrackingException e) {
                     _log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
                 }
             }
 
-            // SSO
-            if (StringUtils.isNotBlank(fbIdString)) {
-                try {
-                    long fbId = Long.parseLong(fbIdString);
-                    user.setFacebookId(fbId);
-                    UserLocalServiceUtil.updateUser(user);
-                    portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID, PortletSession.APPLICATION_SCOPE);
-                } catch (SystemException | NumberFormatException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (StringUtils.isNotBlank(openId)) {
-                try {
-                    user.setOpenId(openId);
-                    UserLocalServiceUtil.updateUser(user);
-                    portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID, PortletSession.APPLICATION_SCOPE);
-                } catch (SystemException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (newAccountBean.getImageId() != null
-                    && !newAccountBean.getImageId().isEmpty()) {
-                Image img = ImageLocalServiceUtil.getImage(Long
-                        .parseLong(newAccountBean.getImageId()));
-                // we need to set permission checker for liferay
-                PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
-                        .create(user);
-                PermissionThreadLocal
-                        .setPermissionChecker(permissionChecker);
-                if (img != null) {
-                    byte[] bytes = img.getTextObj();
-                    UserServiceUtil.updatePortrait(user.getUserId(), bytes);
-                    user.setPortraitId(0L);
-                    UserLocalServiceUtil.updateUser(user);
-                    UserServiceUtil.updatePortrait(user.getUserId(), bytes);
-                    user = UserLocalServiceUtil.getUser(user.getUserId());
-                }
-            }
-
-            AuthenticationServiceUtil
-                    .logUserIn(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
+            LoginRegisterUtil.login(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
 
             httpReq.getSession().setAttribute("collab_user_has_registered", true);
 
 
             SocialActivityLocalServiceUtil
-                    .addActivity(user.getUserId(), themeDisplay.getScopeGroupId(), User.class.getName(),
-                            user.getUserId(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
+                    .addActivity(user.getId_(), themeDisplay.getScopeGroupId(), User.class.getName(),
+                            user.getId_(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
 
             request.getPortletSession().setAttribute("collab_user_has_registered", true);
             PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
@@ -398,17 +340,6 @@ public class MainViewController {
             setCreateUserBeanSessionVariables(newAccountBean, portletSession);
             response.sendRedirect("/web/guest/loginregister");
         }
-    }
-
-    private static void setExpandoValue(User user, String valueName, Object data)
-            throws SystemException, PortalException {
-        ExpandoValueLocalServiceUtil.addValue(
-                user.getCompanyId(),
-                User.class.getName(),
-                CommunityConstants.EXPANDO,
-                valueName,
-                user.getUserId(),
-                data);
     }
 
     private static void setCreateUserBeanSessionVariables(CreateUserBean createUserBean,
@@ -438,7 +369,7 @@ public class MainViewController {
         User loggedInUser = ((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
 
         if (!loggedInUser.getScreenName().equals(screenName)) {
-            if (StringUtils.isNotEmpty(screenName) && UserCreationUtil.isUsernameAvailable(screenName)
+            if (StringUtils.isNotEmpty(screenName) && MembersClient.isScreenNameUsed(screenName)
                     && UserCreationUtil.isUsernameValid(screenName)) {
                 loggedInUser.setScreenName(screenName);
                 json.getJSONObject("screenName").put("success", true);
@@ -474,9 +405,9 @@ public class MainViewController {
         final String lastName = request.getParameter("lastName");
 
         try {
-            json.put("screenName", UserCreationUtil.generateUsername(firstName, lastName));
+            json.put("screenName", MembersClient.generateScreenName(lastName, firstName));
             json.put("success", true);
-        } catch (SystemException | PortalException e) {
+        } catch (HttpClientErrorException e) {
             _log.warn("Failed to generate user name ", e);
             json.put("success", false);
             json.put("error", e.toString());

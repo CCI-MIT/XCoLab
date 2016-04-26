@@ -22,6 +22,7 @@ public enum MemberRole {
     EXPERT(44201L, "Experts"),
     JUDGE(1251483L, "Judges", "Judge"),
     STAFF(31704L, new Long[]{10118L}, "Staff", "Moderator", "Administrator"),
+    ADMINISTRATOR(10118L, "Administrator"),
     MODERATOR(31213L, "Staff"),
     CATALYST(1430078L, "Catalyst"),
     CONTEST_MANAGER(1958405L, "Contest Manager"),

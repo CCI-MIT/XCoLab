@@ -161,16 +161,23 @@
 			<groupId>net.sf.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
 			<version>2.3</version>
-	</dependency>
+		</dependency>
 
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.7.2</version>
         </dependency>
+
+		<!-- microservice dependencies -->
 		<dependency>
 			<groupId>org.xcolab.microservices.clients</groupId>
 			<artifactId>members-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>admin-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>	

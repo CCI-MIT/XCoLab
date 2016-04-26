@@ -15,15 +15,15 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.util.PortalUtil;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
@@ -32,9 +32,6 @@ import org.xcolab.portlets.proposals.wrappers.OntologySpaceWrapper;
 import org.xcolab.portlets.proposals.wrappers.OntologyTermWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.servlet.http.Cookie;
 
 @Controller
 @RequestMapping("view")
@@ -127,8 +128,9 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("showActiveContests", showActiveContests);
         model.addAttribute("showAllContests", showAllContests);
 
-        PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
-        boolean showContestManagementLink = permissionChecker.isOmniadmin();
+        //PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
+
+        boolean showContestManagementLink = PermissionsClient.canAdminAll(proposalsContext.getUser(request).getUserId()) ; //permissionChecker.isOmniadmin();
         model.addAttribute("showContestManagementLink", showContestManagementLink);
 
         model.addAttribute("showContestDisplayOptions",

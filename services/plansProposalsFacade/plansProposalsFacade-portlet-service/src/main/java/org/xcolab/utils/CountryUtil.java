@@ -272,7 +272,7 @@ public final class CountryUtil {
 
     public static String getCodeForCounty(String country) {
         for (Map.Entry entry: codeToCountryMap.entrySet()) {
-            if (country.equals(entry.getValue())) {
+            if (entry.getValue().equals(country)) {
                 return (String) entry.getKey();
             }
         }

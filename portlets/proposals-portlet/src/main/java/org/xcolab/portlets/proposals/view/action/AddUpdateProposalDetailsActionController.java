@@ -4,7 +4,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -16,7 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -113,10 +112,10 @@ public class AddUpdateProposalDetailsActionController {
 
         model.addAttribute("updateProposalSectionsBean",updateProposalSectionsBean);
 
-        request.setAttribute("imageUploadServiceUrl", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.name(), 0L));
-        request.setAttribute("imageUploadHelpText", ConfigurationAttributeLocalServiceUtil.getAttributeStringValue(
-                ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.name(), 0L));
+        request.setAttribute("imageUploadServiceUrl",
+                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.getStringValue());
+        request.setAttribute("imageUploadHelpText",
+                ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.getStringValue());
         return "proposalDetails_edit";
     }
 }

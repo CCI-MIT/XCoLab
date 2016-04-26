@@ -2,7 +2,7 @@ package org.xcolab.client.members.legacy.utils;
 
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -19,7 +19,7 @@ public class SendMessagePermissionChecker {
      * roles a user cannot send a message to
      */
     private final Map<MemberRole, List<MemberRole>> blacklistedRolesMap;
-    private final User_ originator;
+    private final Member originator;
 
     /**
      * IMPORTANT This flag indicates whether the permission checker is active or not. Set this flag
@@ -28,7 +28,7 @@ public class SendMessagePermissionChecker {
      */
     private static final boolean ACTIVATED = false;
 
-    public SendMessagePermissionChecker(User_ origin) {
+    public SendMessagePermissionChecker(Member origin) {
         this.originator = origin;
 
         // Set up blacklist
@@ -45,7 +45,7 @@ public class SendMessagePermissionChecker {
      *
      * @param user The recipient user object
      */
-    public boolean canSendToUser(User_ user) throws MemberRole.NoSuchMemberRoleException {
+    public boolean canSendToUser(Member user) throws MemberRole.NoSuchMemberRoleException {
         if (!ACTIVATED) {
             return true;
         }

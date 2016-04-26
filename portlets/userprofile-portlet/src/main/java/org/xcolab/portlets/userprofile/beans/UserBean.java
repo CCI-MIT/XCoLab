@@ -1,16 +1,14 @@
 package org.xcolab.portlets.userprofile.beans;
 
-import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.User;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.userprofile.validators.UniqueEmail;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.validation.CompareStrings;
@@ -64,39 +62,32 @@ public class UserBean implements Serializable {
     private String shortBio;
 
     @NotBlank(message = "please select your country from the list")
-    @Length(min = 0, max = 300)
+    @Length(max = 300)
     private String countryCode;
 
     private long userId;
     private long imageId;
-    private boolean isFemale;
     private boolean sendEmailOnMessage;
     private boolean sendEmailOnActivity;
     private boolean sendDailyEmailOnActivity;
 
     public UserBean() { }
 
-    public UserBean(User_ user) throws PortalException, SystemException {
-        userId = user.getUserId();
-        screenName = user.getScreenName();
-        firstName = user.getFirstName();
-        lastName = user.getLastName();
-        emailStored = user.getEmailAddress();
-        imageId = user.getPortraitId();
-        isFemale = user.getFemale();
+    public UserBean(Member member) throws PortalException, SystemException {
+        userId = member.getId_();
+        screenName = member.getScreenName();
+        firstName = member.getFirstName();
+        lastName = member.getLastName();
+        emailStored = member.getEmailAddress();
+        countryCode = CountryUtil.getCodeForCounty(member.getCountry());
+        shortBio = member.getShortBio();
 
-        countryCode = CountryUtil.getCodeForCounty(ExpandoValueLocalServiceUtil.getData(User.class.getName(),
-                CommunityConstants.EXPANDO, CommunityConstants.COUNTRY,
-                user.getUserId(), StringPool.BLANK));
+        //TODO: still relies on liferay
+        imageId = UserLocalServiceUtil.getUser(userId).getPortraitId();
 
-        shortBio = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(),
-                CommunityConstants.EXPANDO, CommunityConstants.BIO,
-                user.getUserId(), StringPool.BLANK);
-
-        sendEmailOnMessage = MessageUtil.getMessagingPreferences(user.getUserId()).getEmailOnReceipt();
-        sendEmailOnActivity = MessageUtil.getMessagingPreferences(user.getUserId()).getEmailOnActivity();
-        sendDailyEmailOnActivity = MessageUtil.getMessagingPreferences(user.getUserId()).getEmailActivityDailyDigest();
-
+        sendEmailOnMessage = MessageUtil.getMessagingPreferences(member.getId_()).getEmailOnReceipt();
+        sendEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId_()).getEmailOnActivity();
+        sendDailyEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId_()).getEmailActivityDailyDigest();
     }
 
     public String getPortrait() {
@@ -104,8 +95,7 @@ public class UserBean implements Serializable {
     }
 
     private String getPortraitString() {
-        return "/user_" + (this.isFemale ? "female" : "male") + "_portrait?img_id="
-                + this.imageId;
+        return "/user_male_portrait?img_id=" + this.imageId;
     }
 
     public long getImageId() {

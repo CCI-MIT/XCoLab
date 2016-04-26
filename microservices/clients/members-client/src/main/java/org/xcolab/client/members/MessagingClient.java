@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 
 import java.util.List;
 
@@ -122,11 +122,11 @@ public final class MessagingClient {
         restTemplate.postForEntity(uriBuilder.build().toString(), null, String.class);
     }
 
-    public static List<User_> getMessageRecipients(long messageId) {
+    public static List<Member> getMessageRecipients(long messageId) {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients");
-        ResponseEntity<List<User_>> response = restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<User_>>() {
+        ResponseEntity<List<Member>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Member>>() {
                 });
         return response.getBody();
     }
