@@ -1,3 +1,8 @@
+$p-Homepage__homespot__background: url(../images/bg-noise.png) $t-Color__grey--lightest !default;
+$p-Homepage__homespot__background__minHeight: 336px !default;
+$p-Homepage__homespot__background__minWidth: 900px !default;
+$p-Homepage__homespot__background__background: url(../images/homespot/background.png) no-repeat right 0 center !default;
+
 $p-homepage__content__h2__fontSize: 20px !default;
 $p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
 
@@ -16,7 +21,7 @@ $p-homepage__join__imageUrl: none !default;
 
 //TODO: legacy for climate colab
 .homespot {
-  background: url(../images/bg-noise.png) $t-Color__grey--lightest;
+  background: $p-Homepage__homespot__background;
   padding-bottom: 5px;
 }
 
@@ -26,10 +31,11 @@ $p-homepage__join__imageUrl: none !default;
 }
 
 .p-Homepage__homespot__background { //.earth
-  background: url(../images/homespot/background.png) no-repeat right 0 center;
+  background: $p-Homepage__homespot__background__background;
   @include background-size(contain);
   width: 100%;
-  min-height: 336px;
+  min-height: $p-Homepage__homespot__background__minHeight;
+  min-width: $p-Homepage__homespot__background__minWidth;
 }
 
 .topshade {

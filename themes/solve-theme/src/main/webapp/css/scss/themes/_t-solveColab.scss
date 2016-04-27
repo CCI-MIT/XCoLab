@@ -1,21 +1,23 @@
 @import "compass";
 
-$t-Color__black: #060606;
+$t-Color__black: black;
 $t-Color__grey--dark: #354046;
-$t-Color__grey: #ACACAC;
-$t-Color__red: #D71A11;
-$t-Color__red--dark: #960800;
-$t-Color__green: #54BD14;
+$t-Color__grey: #999999;
+$t-Color__blue: #3D88C7;
+$t-Color__make__blue: #4596E1;
+$t-Color__fuel__red: #F54004;
+$t-Color__learn__yellow: #E9B519;
+$t-Color__cure__green: #6CC8A6;
 
 $t-Color__pattern__gray: #68696D;
 $t-Color__pattern__gray--light: #D7D9DA;
 $t-Color__pattern__gray--lightest: #F5F5F4;
 
 //main colors:
-$t-Color__primary: $t-Color__red; $__hex: #D71A11;
-$t-Color__secondary: $t-Color__green; $__hex: #54BD14;
-$t-Color__accent: $t-Color__green; $__hex: #54BD14; //not using accent for now
-$t-Color__auxiliary: $t-Color__green; $__hex: #54BD14; // 4th color when needed (e.g. ontology) -- not used for now
+$t-Color__primary: $t-Color__blue; $__hex: #3D88C7;
+$t-Color__secondary: $t-Color__blue; $__hex: #54BD14;
+$t-Color__accent: $t-Color__blue; $__hex: #54BD14; //not using accent for now
+$t-Color__auxiliary: $t-Color__blue; $__hex: #54BD14; // 4th color when needed (e.g. ontology) -- not used for now
 
 //lightness variations
 $t-Color__primary--light: lighten($t-Color__primary, 15); $__hex: #f04e47;
@@ -87,16 +89,16 @@ $c-Header__box-shadow: 0px 6px 5px #D7D9DA;
 $c-Header__menu__li__a__width: 75px;
 $c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__li__a__textAlign: center;
-$c-Header__menu__li__isCurrent__boxShadow: inset 0 -8px 0px $t-Color__red !default;
+$c-Header__menu__li__isCurrent__boxShadow: inset 0 -8px 0px $t-Color__blue !default;
 $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__li__a__textColor: $t-Color__grey--medium;
-$c-Header__menu__li__hoverColor: $t-Color__red;
+$c-Header__menu__li__hoverColor: $t-Color__blue;
 $c-Header__search__submit__borderRadius: 0;
 $c-Header__search__submit__fontWeight: $b-Typography__fontWeight--light;
 $c-Header__search__pop__positionLeft: 474px;
 
-$c-Headline__days-left__span__textColor: $t-Color__red;
-$c-Headline__h2__span__textColor: $t-Color__red;
+$c-Headline__days-left__span__textColor: $t-Color__blue;
+$c-Headline__h2__span__textColor: $t-Color__blue;
 $c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
 
 $c-Footer__backgroundColor: white;
@@ -115,7 +117,7 @@ $c-Button__theme__textShadow: none;
 $c-Button__primary__borderColor: none;
 $c-Button__grey__borderColor: none;
 
-$c-TitleBar__backgroundColor: $t-Color__red;
+$c-TitleBar__backgroundColor: $t-Color__blue;
 $c-TitleBar__borderBottom: none;
 $c-TitleBar__element--active__capitalization: uppercase;
 $c-TitleBar__separator__color: white;
@@ -195,7 +197,7 @@ $p-homepage__join__borderColor: none;
 $p-homepage__join__imageUrl: none;
 
 $p-proposal__header__background: transparent;
-$p-proposal__header__h1__textColor: $t-Color__red;
+$p-proposal__header__h1__textColor: $t-Color__blue;
 $p-proposal__propbox__h4__fontWeight: $b-Typography__fontWeight--regular;
 $p-proposal__propbox__titleAuthor__width: 602px;
 $p-proposal__propbox__padding: 15px 0px 30px 14px;
@@ -276,7 +278,7 @@ $c-TabBar__tab__paddingTop: 20px;
 $c-TabBar__tab__paddingBottom: 19px;
 $c-TabBar__tab__paddingSides: 25px;
 $c-TabBar__tab__background: rgba(255, 255, 255, 0);
-$c-TabBar__tab__shadow--active: inset 0 -4px 0 $t-Color__green;
+$c-TabBar__tab__shadow--active: inset 0 -4px 0 $t-Color__secondary;
 $c-TabBar__tab__fontWeight: $b-Typography__fontWeight--regular;
 $c-TabBar__tab__borderRadius: 0px;
 $c-TabBar__tab__borderTop: none;
@@ -321,3 +323,9 @@ $p-Discussion__right__borderBottom__marginTop: 8px !default;
 $p-Discussion__right__borderBottom__paddingBottom: 11px !default;
 
 $b-Spacing__inline--large__capitalization: uppercase;
+
+//solve colab additions
+$p-Homepage__homespot__background: none;
+$p-Homepage__homespot__background__minHeight: 470px;
+$p-Homepage__homespot__background__minWidth: 1080px;
+$p-Homepage__homespot__background__background: url(../images/homespot/background.png) no-repeat center center;
