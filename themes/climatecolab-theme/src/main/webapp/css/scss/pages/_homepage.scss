@@ -26,7 +26,7 @@ $p-homepage__join__imageUrl: none !default;
 }
 
 .p-Homepage__homespot { //.homespot
-  background: url(../images/bg-noise.png) $t-Color__grey--lightest;
+  background: $p-Homepage__homespot__background;
   padding-bottom: 5px;
 }
 
