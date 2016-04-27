@@ -1,0 +1,8 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          version="2.0">
+
+    <h2>Content Editor</h2>
+
+    <p>Hello World</p>
+</jsp:root>
