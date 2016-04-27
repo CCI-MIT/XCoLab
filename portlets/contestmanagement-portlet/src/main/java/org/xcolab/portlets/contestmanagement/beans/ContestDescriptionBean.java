@@ -4,15 +4,17 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
 import org.hibernate.validator.constraints.Length;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.utils.WikiUtil;
 import org.xcolab.wrappers.BaseContestWrapper;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class ContestDescriptionBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -22,14 +24,14 @@ public class ContestDescriptionBean implements Serializable {
     private Long contestLogoId;
     private Long sponsorLogoId;
 
-    @Length(min = 5, max = 150, message = "The contest question must be at least 5 characters and not more than 150 characters.")
+    @Length(min = 3, max = 150, message = "The contest question must be at least 3 characters and not more than 150 characters.")
     private String contestName;
 
-    @Length(min = 5, max = 70, message = "The contest title must be at least 5 characters and not more than 70 characters.")
+    @Length(min = 3, max = 70, message = "The contest title must be at least 3 characters and not more than 70 characters.")
     @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not contain special characters.")
     private String contestShortName;
 
-    @Length(min = 0, max = 3000, message = "The contest description must have not more than 3000 characters (including html tags).")
+    @Length(max = 3000, message = "The contest description must have not more than 3000 characters (including html tags).")
     private String contestDescription;
 
     @NotNull(message = "A plan template must be selected.")
