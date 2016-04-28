@@ -3,8 +3,9 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>contentdisplay</portlet-name>
+		<portlet-name>contentdisplay-portlet</portlet-name>
 		<instanceable>true</instanceable>
+		<requires-namespaced-parameters>false</requires-namespaced-parameters>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

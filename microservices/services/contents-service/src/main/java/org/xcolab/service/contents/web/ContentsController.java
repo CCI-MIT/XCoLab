@@ -36,7 +36,7 @@ public class ContentsController {
     @RequestMapping(value = "/contentArticles/", method = RequestMethod.POST)
     public ContentArticle createContentArticle(@RequestBody ContentArticle contentArticle) {
 
-        return this.contentArticleService.create(contentArticle);
+        return this.contentArticleDao.create(contentArticle);
     }
 
     @RequestMapping(value = "/contentArticles", method = RequestMethod.GET)
@@ -52,7 +52,7 @@ public class ContentsController {
         if (articleId == null || articleId == 0) {
             throw new NotFoundException("No content article with id given");
         } else {
-            return this.contentArticleService.get(articleId);
+            return this.contentArticleDao.get(articleId);
         }
     }
 
@@ -63,8 +63,8 @@ public class ContentsController {
         if (articleId == null || articleId == 0) {
             throw new NotFoundException("No content article with id given");
         } else {
-            if (this.contentArticleService.get(articleId) != null) {
-                this.contentArticleService.update(contentArticle);
+            if (this.contentArticleDao.get(articleId) != null) {
+                this.contentArticleDao.update(contentArticle);
                 return "Content article updated successfully";
             } else {
                 throw new NotFoundException("No content article with id given");
@@ -79,10 +79,10 @@ public class ContentsController {
         if (articleId == null || articleId == 0) {
             throw new NotFoundException("No content article with id given");
         } else {
-            ContentArticle contentArticle = this.contentArticleService.get(articleId);
+            ContentArticle contentArticle = this.contentArticleDao.get(articleId);
             if ( contentArticle!= null) {
                 contentArticle.setVisible(false);
-                this.contentArticleService.update(contentArticle);
+                this.contentArticleDao.update(contentArticle);
                 return "Content article updated successfully";
             } else {
                 throw new NotFoundException("No content article with id given");
