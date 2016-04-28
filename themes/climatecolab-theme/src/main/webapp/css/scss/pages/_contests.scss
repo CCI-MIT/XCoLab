@@ -12,7 +12,7 @@ $p-Contests__userslist__a__fontWeight: 700 !default;
 
 $p-Contests__detailsButton__fontWeight: 700 !default;
 $p-Contests__detailsButton__borderRadius: 5px !default;
-$p-Contests__detailsButton__padding: 8px 5px 0px 5px !default;
+$p-Contests__detailsButton__padding: 5px 5px 0px 5px !default;
 $p-Contests__detailsButton__backgroundColor: $t-Color__primary__grey--light !default;
 $p-Contests__detailsButton__borderColor: $t-Color__primary__grey--dark !default;
 
@@ -388,6 +388,7 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   padding: $p-Contests__detailsButton__padding;
   width: 115px;
   height: 27px;
+  line-height: 27px;
   display: inline-block;
   margin-left: 3px;
   background: $p-Contests__detailsButton__backgroundColor;

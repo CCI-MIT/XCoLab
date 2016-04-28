@@ -102,11 +102,11 @@ $c-Footer__menu__li__a--hover__color: $t-Color__primary;
 $c-Footer__menu__backgroundGradient: linear-gradient(top, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
 $c-Footer__menu__boxShadow: inset 0px 5px 12px lighten($t-Color__grey--dark, 10%);
 
-$c-Button__padding: 10px 15px;
-$c-Button__padding--small: 8px 12px;
-$c-Button__padding--large: 15px 25px;
+$c-Button__padding: 7px 15px;
+$c-Button__padding--small: 5px 10px;
+$c-Button__padding--large: 7px 15px;
 $c-Button__fontWeight: $b-Typography__fontWeight--regular;
-$c-Button__borderRadius: 25px;
+$c-Button__borderRadius: 0;
 $c-Button__capitalization: uppercase;
 $c-Button__theme__textShadow: none;
 
@@ -136,11 +136,11 @@ $p-About__left__li__a__current__border--left: 5px solid $t-Color__secondary ;
 $p-About__left__li__a__current__padding--left: 10px;
 $p-About__left__li__a__current__textColor: $t-Color__black;
 $p-About__checkout__backgroundColor: $t-Color__pattern__gray--light;
-$p-About__contribute__background: url(../images/about/getinvolved-top_illustration.png) no-repeat !default;
-$p-About__ge1__background: url(../images/about/getinvolved-row-01.png) no-repeat 50px 15px !default;
-$p-About__ge2__background: url(../images/about/getinvolved-row-02.png) no-repeat 45px 0px !default;
-$p-About__ge3__background: url(../images/about/getinvolved-row-03.png) no-repeat 40px 0px !default;
-$p-About__ge4__background: url(../images/about/getinvolved-row-04.png) no-repeat 45px 15px !default;
+$p-About__contribute__background: url(../images/about/getinvolved-top_illustration.png) no-repeat;
+$p-About__ge1__background: url(../images/about/getinvolved-row-01.png) no-repeat 50px 15px;
+$p-About__ge2__background: url(../images/about/getinvolved-row-02.png) no-repeat 45px 0px;
+$p-About__ge3__background: url(../images/about/getinvolved-row-03.png) no-repeat 40px 0px;
+$p-About__ge4__background: url(../images/about/getinvolved-row-04.png) no-repeat 45px 15px;
 $p-About__getinvolved__backgroundColor: white;
 $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight--light;
 
@@ -151,8 +151,8 @@ $p-Contests__contestBox__border--bottom: 1px solid $t-Color__grey;
 $p-Contests__contestBox--hover__boxShadow: 0 0 15px $t-Color__grey--light;
 $p-Contests__userslist__a__fontWeight: $b-Typography__fontWeight--regular;
 $p-Contests__detailsButton__fontWeight: $b-Typography__fontWeight--regular;
-$p-Contests__detailsButton__borderRadius: 20px;
-$p-Contests__detailsButton__padding: 12px 15px 5px 15px;
+$p-Contests__detailsButton__borderRadius: 0;
+$p-Contests__detailsButton__padding: 5px 10px 5px 10px;
 $p-Contests__detailsButton__borderColor: $t-Color__grey;
 $p-Contests__detailsButton__backgroundColor: white;
 $p-Contests__userslist__td--g__background: url(../images/bg-noise.png) $t-Color__pattern__gray--lightest;
@@ -220,7 +220,7 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
 $p-Proposal__subscribe__capitalization: uppercase;
 $p-Proposal__edit__button__backgroundColor: $t-Color__primary;
-$p-Proposal__box__offColor: $t-Color__pattern__gray--light !default;
+$p-Proposal__box__offColor: $t-Color__pattern__gray--light;
 
 $p-community__left__lineHeight: default;
 
