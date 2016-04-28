@@ -219,7 +219,7 @@ public final class MembersClient {
     public static String generateScreenName(String lastName, String firstName) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/generateScreenName")
-                    .queryParam("values", lastName, firstName);
+                    .queryParam("values", firstName, lastName);
         return restTemplate.getForObject(uriBuilder.build().toString(), String.class);
     }
 
