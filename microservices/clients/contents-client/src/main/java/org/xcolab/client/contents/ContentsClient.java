@@ -1,14 +1,18 @@
 package org.xcolab.client.contents;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
+
+import java.util.List;
 
 public final class ContentsClient {
 
@@ -19,6 +23,17 @@ public final class ContentsClient {
     private static final RestTemplate restTemplate = new RestTemplate();
 
     private ContentsClient() {
+    }
+
+    public static List<ContentArticle> getContentArticles(Long folderId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentArticles")
+                .queryParam("folderId", folderId);
+        ResponseEntity<List<ContentArticle>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentArticle>>() {
+                });
+
+        return response.getBody();
     }
 
     public static ContentArticle getContentArticle(Long contentArticleId) {

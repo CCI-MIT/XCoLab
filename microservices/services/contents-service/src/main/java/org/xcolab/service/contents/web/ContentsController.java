@@ -5,14 +5,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.pojos.ContentFolder;
+import org.xcolab.service.contents.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.contents.service.contentarticle.ContentArticleService;
 import org.xcolab.service.contents.service.contentarticleversion.ContentArticleVersionService;
 import org.xcolab.service.contents.service.contentfolder.ContentFolderService;
+
+import java.util.List;
 
 @RestController
 public class ContentsController {
@@ -26,10 +30,21 @@ public class ContentsController {
     @Autowired
     private ContentFolderService contentFolderService;
 
+    @Autowired
+    private ContentArticleDao contentArticleDao;
+
     @RequestMapping(value = "/contentArticles/", method = RequestMethod.POST)
     public ContentArticle createContentArticle(@RequestBody ContentArticle contentArticle) {
 
         return this.contentArticleService.create(contentArticle);
+    }
+
+    @RequestMapping(value = "/contentArticles", method = RequestMethod.GET)
+    public List<ContentArticle> getContentArticles(@RequestParam(required = false) Long folderId) {
+        if (folderId != null) {
+            return contentArticleDao.getArticlesInFolder(folderId);
+        }
+        return contentArticleDao.getArticles();
     }
 
     @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.GET)
@@ -78,7 +93,6 @@ public class ContentsController {
 
     @RequestMapping(value = "/contentArticleVersions/", method = RequestMethod.POST)
     public ContentArticleVersion createContentArticleVersion(@RequestBody ContentArticleVersion contentArticleVersion) {
-
         return this.contentArticleVersionService.create(contentArticleVersion);
     }
 

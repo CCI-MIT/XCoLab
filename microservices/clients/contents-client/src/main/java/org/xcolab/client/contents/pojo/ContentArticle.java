@@ -1,11 +1,14 @@
 package org.xcolab.client.contents.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class ContentArticle implements Serializable {
 
     private static final long serialVersionUID = -2076774009;
@@ -17,12 +20,15 @@ public class ContentArticle implements Serializable {
     private Long editRoleGroupId;
     private Long viewRoleGroupId;
     private Boolean visible;
+    private String title;
+    private Long folderId;
 
     public ContentArticle() {
     }
 
     public ContentArticle(Long contentArticleId, Long authorId, Timestamp createDate,
-            Long maxVersion, Long editRoleGroupId, Long viewRoleGroupId, Boolean visible) {
+            Long maxVersion, Long editRoleGroupId, Long viewRoleGroupId, Boolean visible,
+            String title, Long folderId) {
         this.contentArticleId = contentArticleId;
         this.authorId = authorId;
         this.createDate = createDate;
@@ -30,6 +36,8 @@ public class ContentArticle implements Serializable {
         this.editRoleGroupId = editRoleGroupId;
         this.viewRoleGroupId = viewRoleGroupId;
         this.visible = visible;
+        this.title = title;
+        this.folderId = folderId;
     }
 
     public Long getContentArticleId() {
@@ -86,6 +94,22 @@ public class ContentArticle implements Serializable {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(long folderId) {
+        this.folderId = folderId;
     }
 
     @Override
