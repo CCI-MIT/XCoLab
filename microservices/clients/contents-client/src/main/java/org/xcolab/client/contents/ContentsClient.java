@@ -16,10 +16,9 @@ public final class ContentsClient {
 
     private static final int MEMCACHED_TIMEOUT = 3;
 
-    static RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     private ContentsClient() {
-
     }
 
     public static ContentArticle getContentArticle(Long contentArticleId) {
@@ -35,12 +34,10 @@ public final class ContentsClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<ContentArticle> entity = new HttpEntity(contentArticle, headers);
+        HttpEntity<ContentArticle> entity = new HttpEntity<>(contentArticle, headers);
 
-        ContentArticle ret = restTemplate.postForObject(uriBuilder.build().toString(),  entity,
+        return restTemplate.postForObject(uriBuilder.build().toString(),  entity,
                 ContentArticle.class);
-
-        return ret;
     }
 
     public static void updateContentArticle(ContentArticle contentArticle){
@@ -50,11 +47,10 @@ public final class ContentsClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<ContentArticle> entity = new HttpEntity(contentArticle, headers);
+        HttpEntity<ContentArticle> entity = new HttpEntity<>(contentArticle, headers);
 
         restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.PUT, entity,
-                String.class);
+                HttpMethod.PUT, entity, String.class);
     }
 
     public static ContentArticleVersion getContentArticleVersion(Long contentArticleVersionId) {
@@ -71,12 +67,10 @@ public final class ContentsClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<ContentArticle> entity = new HttpEntity(contentArticleVersion, headers);
+        HttpEntity<ContentArticleVersion> entity = new HttpEntity<>(contentArticleVersion, headers);
 
-        ContentArticleVersion ret = restTemplate.postForObject(uriBuilder.build().toString(),  entity,
+        return restTemplate.postForObject(uriBuilder.build().toString(),  entity,
                 ContentArticleVersion.class);
-
-        return ret;
     }
     public static void updateContentArticleVersion(ContentArticleVersion contentArticleVersion){
 
@@ -85,11 +79,10 @@ public final class ContentsClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<ContentArticleVersion> entity = new HttpEntity(contentArticleVersion, headers);
+        HttpEntity<ContentArticleVersion> entity = new HttpEntity<>(contentArticleVersion, headers);
 
         restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.PUT, entity,
-                String.class);
+                HttpMethod.PUT, entity, String.class);
     }
 
     public static ContentFolder getContentFolder(Long contentFolderId) {
@@ -105,12 +98,10 @@ public final class ContentsClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<ContentArticle> entity = new HttpEntity(contentFolder, headers);
+        HttpEntity<ContentFolder> entity = new HttpEntity<>(contentFolder, headers);
 
-        ContentFolder ret = restTemplate.postForObject(uriBuilder.build().toString(),  entity,
+        return restTemplate.postForObject(uriBuilder.build().toString(),  entity,
                 ContentFolder.class);
-
-        return ret;
     }
     public static void updateContentFolder(ContentFolder contentFolder){
 
@@ -119,10 +110,9 @@ public final class ContentsClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<ContentArticleVersion> entity = new HttpEntity(contentFolder, headers);
+        HttpEntity<ContentFolder> entity = new HttpEntity<>(contentFolder, headers);
 
         restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.PUT, entity,
-                String.class);
+                HttpMethod.PUT, entity, String.class);
     }
 }
