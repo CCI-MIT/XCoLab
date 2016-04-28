@@ -851,8 +851,9 @@ create table members_Member (
 	lastName VARCHAR(75),
   country VARCHAR(75),
   shortBio TEXT,
-	facebookId LONG,
+	facebookId BIGINT(20),
 	openId VARCHAR(255),
 	loginIP VARCHAR(75),
-  loginDate datetime
+  loginDate datetime,
+	status int(11) DEFAULT 0
 );
