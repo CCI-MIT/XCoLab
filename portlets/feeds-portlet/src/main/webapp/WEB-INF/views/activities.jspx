@@ -84,7 +84,9 @@
 					<div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}"><!--  --></div>
 					<div class="c-TableList__item">
 						<h5>${activity.activityDateAgo}</h5>
-						<c:out value="${activity.body}" escapeXml="false" />
+						<div style="width: 410px;">
+							<c:out value="${activity.body}" escapeXml="false" />
+						</div>
 					</div>
 				</div>
 			</c:forEach>
