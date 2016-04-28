@@ -19,14 +19,16 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Theme;
 import com.liferay.portal.service.ThemeLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class EXTServicePreAction extends Action {
     private static final String COLLABORATORIUM_THEME_NAME = "climatecolab-theme";
@@ -63,6 +65,14 @@ public class EXTServicePreAction extends Action {
         }
         vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
         vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
+
+        final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW
+                .getBooleanValue();
+        vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);
+        if (mitHeaderBarShow) {
+            vmVariables.put("mitHeaderBarLinkText", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.getStringValue());
+            vmVariables.put("mitHeaderBarLinkUrl", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.getStringValue());
+        }
 
         String contestIdStr = req.getParameter("_collab_paramcontestId");
         if (contestIdStr != null) {
