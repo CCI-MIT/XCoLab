@@ -11,7 +11,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.xcolab.microservices.services</groupId>
     <artifactId>contents-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
