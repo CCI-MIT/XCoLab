@@ -1,8 +1,119 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-          version="2.0">
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://java.sun.com/portlet_2_0 "
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"><!-- --></script>
+    <script src="${pageContext.request.contextPath}/js/tree.jquery.js"><!-- --></script>
+    <script src="${pageContext.request.contextPath}/js/ckeditor/ckeditor.js"><!-- --></script>
+    <portlet:defineObjects />
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jqtree.css"><!-- --></link>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"><!-- --></link>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"><!-- --></link>
+
+    <portlet:resourceURL var="contentEditorListFolderURL" id="contentEditorListFolder">
+    ></portlet:resourceURL>
+
 
     <h2>Content Editor</h2>
 
-    <p>Hello World</p>
+
+    <script>
+        <![CDATA[
+        var data = [
+            {
+                label: 'node1',
+                kind: 'folder',
+                children: [
+                    { label: 'child1', kind: 'article', id:1 },
+                    { label: 'child2', kind: 'article',id:2 }
+                ]
+            },
+            {
+                label: 'node2',
+                kind: 'folder',
+                children: [
+                    { label: 'child3', kind: 'article',id:3 }
+                ]
+            }
+        ];
+        jQuery(document).ready(function () {
+            $('#tree-view').tree({
+                                     //data:data,
+                                     dragAndDrop: true});
+            $('#tree-view').bind(
+                    'tree.click',
+                    function(event) {
+                        // The clicked node is 'event.node'
+                        var node = event.node;
+                        if(node.kind == "article"){
+                            loadArticle(node.id);
+                        }
+                        //alert(node.name);
+                    }
+            );
+        });
+        function loadArticle(id) {
+            //AJAX CALL TO GET DATA.
+
+            var data = [{articleVersionId:3, articleVersionDateCreated: "10/01/2016 00:00:00"},
+                {articleVersionId:2, articleVersionDateCreated: "5/01/2016 00:00:00"},
+                {articleVersionId:1, articleVersionDateCreated: "1/01/2016 00:00:00"}];
+
+            var ul = $('<ul>');
+            for(var i = 0 ; i < data.length; i++){
+                ul.append(addVersionEntry(data[i].articleVersionDateCreated, data[i].articleVersionId))
+            }
+            $("#versions-view").empty().append(ul);
+            $(".articleVersionClass").click(function (event){
+
+                loadArticleVersionContent(event.target.id);
+            });
+        }
+        function addVersionEntry(dateOfEdit, versionId){
+            var cell = $('<li>');
+            cell.attr("id","articleVersionId_"+versionId);
+            cell.attr("class","articleVersionClass");
+            cell.html(dateOfEdit)
+            return cell;
+        }
+        function loadArticleVersionContent(id){
+            var articleId = id.replace("articleVersionId_","");
+
+            //AJAX CALL TO GET DATA
+            var data = { title: "Page title to be displayed", content: "<h1>Should appear on the editor  "+id+"</h2>"}
+            var textarea = $('<textarea>');
+            textarea.attr("id","articleVersionContent");
+            textarea.attr("name","articleVersionContent");
+            textarea.attr("rows","10");
+            textarea.attr("cols","80");
+
+            textarea.html(data.content);
+
+            var input = $('<input>');
+            input.attr("id","articleVersionId");
+            input.attr("value",id);
+            input.attr("type","hidden");
+
+            $("#article-view").empty().append(textarea);
+            $("#article-view").append(input);
+
+
+            CKEDITOR.replace( 'articleVersionContent' );
+
+
+        }
+        function saveArticle(){
+            var data = CKEDITOR.instances.editor1.getData();
+            //disable
+            CKEDITOR.instances['TEXTAREA_NAME'].setReadOnly(true);
+        }
+        ]]>
+    </script>
+    <div>
+        <div><h3>Content Folders</h3><div id="tree-view" data-url="${contentEditorListFolderURL}" style="width:350px"><!-- --></div></div>
+        <div id="versions-view"><!-- --></div>
+        <div id="article-view"><!-- --></div>
+    </div>
+
 </jsp:root>

@@ -5,6 +5,11 @@
 
     <route>
         <pattern>/</pattern>
+
+    </route>
+    <route>
+        <pattern>/editor</pattern>
+
     </route>
 
 </routes>

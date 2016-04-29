@@ -11,7 +11,7 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-    <context:component-scan base-package="org.xcolab.portlets.contenteditor" />
+    <context:component-scan base-package="org.xcolab" />
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -19,7 +19,8 @@
         <property name="suffix" value=".jspx"/>
     </bean>
 
-    <bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
     <mvc:annotation-driven/>
 
 </beans>
