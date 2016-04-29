@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.client.contents.ContentsClient;
 
 import java.io.IOException;
 
@@ -41,6 +42,8 @@ public class ContentEditorController {
             throws IOException , SystemException, PortalException {
 
         JSONArray responseArray = JSONFactoryUtil.createJSONArray();
+
+        ContentsClient.getContentArticle()
         responseArray.put(folderNode("WebContent", "1"));
         responseArray.put(folderNode("Wiki", "2"));
         responseArray.put(folderNode("Blog", "3"));

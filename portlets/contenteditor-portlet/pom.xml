@@ -119,8 +119,8 @@
 
 		<!-- microservice dependencies -->
 		<dependency>
-			<groupId>org.xcolab.microservices.content</groupId>
-			<artifactId>members-client</artifactId>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>contents-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
