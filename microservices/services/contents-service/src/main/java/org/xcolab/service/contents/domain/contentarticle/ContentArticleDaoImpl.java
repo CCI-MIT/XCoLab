@@ -1,12 +1,16 @@
 package org.xcolab.service.contents.domain.contentarticle;
 
+import static org.xcolab.model.Tables.CONTENT_ARTICLE;
+import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
+
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.records.ContentArticleRecord;
+import org.xcolab.service.contents.wrappers.ContentArticleWrapper;
 
-import static org.xcolab.model.Tables.CONTENT_ARTICLE;
+import java.util.List;
 
 @Repository
 public class ContentArticleDaoImpl implements ContentArticleDao {
@@ -14,6 +18,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     @Autowired
     private DSLContext dslContext;
 
+    @Override
     public ContentArticle create(ContentArticle contentArticle) {
         ContentArticleRecord ret = this.dslContext.insertInto(CONTENT_ARTICLE)
                 .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())
@@ -33,6 +38,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
 
     }
 
+    @Override
     public void update(ContentArticle contentArticle) {
         this.dslContext.update(CONTENT_ARTICLE)
                 .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())
@@ -45,6 +51,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
                 .execute();
     }
 
+    @Override
     public ContentArticle get(Long contentArticleId) {
         return this.dslContext.select()
                 .from(CONTENT_ARTICLE)
@@ -52,5 +59,24 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
                 .fetchOneInto(ContentArticle.class);
     }
 
+    @Override
+    public List<ContentArticle> getArticles() {
+        return dslContext.select()
+                .from(CONTENT_ARTICLE)
+                .join(CONTENT_ARTICLE_VERSION).on(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID
+                        .eq(CONTENT_ARTICLE.CONTENT_ARTICLE_ID))
+                .fetchInto(ContentArticleWrapper.class);
+    }
 
+    @Override
+    public List<ContentArticle> getArticlesInFolder(long folderId) {
+        return dslContext.select()
+                .from(CONTENT_ARTICLE)
+                .join(CONTENT_ARTICLE_VERSION).on(
+                        CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID
+                                .eq(CONTENT_ARTICLE.CONTENT_ARTICLE_ID)
+                        .and(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(folderId))
+                ).fetchInto(ContentArticleWrapper.class);
+
+    }
 }
