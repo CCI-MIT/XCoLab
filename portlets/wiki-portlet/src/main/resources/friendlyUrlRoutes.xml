@@ -3,6 +3,21 @@
 "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
 <routes>
     <route>
-        <pattern>/</pattern>
+        <pattern>/page/{pageTitle}</pattern>
+        <generated-parameter name="pageTitle">{pageTitle}</generated-parameter>
+        <implicit-parameter name="show">wiki</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/resource/{contestUrlName}</pattern>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <implicit-parameter name="show">resource</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/resource/{contestUrlName}/year/{contestYear}</pattern>
+        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
+        <generated-parameter name="contestYear">{contestYear}</generated-parameter>
+        <implicit-parameter name="show">resource</implicit-parameter>
     </route>
 </routes>

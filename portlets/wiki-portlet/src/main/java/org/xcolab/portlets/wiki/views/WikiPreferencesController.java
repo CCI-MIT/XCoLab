@@ -6,9 +6,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.portlets.wiki.util.WikiPreferences;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -25,7 +28,8 @@ public class WikiPreferencesController {
     public String showPreferences(RenderRequest request, RenderResponse response, Model model)
             throws SystemException, PortalException {
         model.addAttribute("preferences", new WikiPreferences(request));
-
+        final List<ContentFolder> folders = ContentsClient.getContentFolders();
+        model.addAttribute("folders", folders);
         return "preferences";
     }
 

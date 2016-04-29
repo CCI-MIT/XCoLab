@@ -23,6 +23,8 @@ import java.util.List;
 @RestController
 public class ContentsController {
 
+    private static final int DEFAULT_PAGE_SIZE = 20;
+
     @Autowired
     private ContentArticleService contentArticleService;
 
@@ -55,20 +57,29 @@ public class ContentsController {
         return contentArticleDao.getArticles();
     }
 
+    @RequestMapping(value = "/contentArticleVersions", method = RequestMethod.GET)
+    public List<ContentArticleVersion> getContentArticles(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) Long folderId,
+            @RequestParam(required = false) Long contentArticleId,
+            @RequestParam(required = false) Long contentArticleVersion,
+            @RequestParam(required = false) String title) {
+        final int startRecordUnwrapped = startRecord != null ? startRecord : 0;
+        final int limitRecordUnwrapped = limitRecord != null ?
+                limitRecord : startRecordUnwrapped + DEFAULT_PAGE_SIZE;
+        return contentArticleVersionDao.findByGiven(contentArticleId, contentArticleVersion,
+                folderId, title, startRecordUnwrapped, limitRecordUnwrapped);
+    }
+
+
+
     @RequestMapping(value = "/contentFolders", method = RequestMethod.GET)
     public List<ContentFolder> getContentFolders(@RequestParam(required = false) Long parentFolderId) {
         if (parentFolderId != null) {
             return contentFolderDao.getFoldersInFolder(parentFolderId);
         }
         return contentFolderDao.getFolders();
-    }
-
-    @RequestMapping(value = "/contentArticleVersions", method = RequestMethod.GET)
-    public List<ContentArticleVersion> getContentArticleVersions(@RequestParam(required = false) Long articleId) {
-        if (articleId != null) {
-            return contentArticleVersionDao.getVersionsForArticle(articleId);
-        }
-        return contentArticleVersionDao.getVersions();
     }
 
     @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.GET)

@@ -4,6 +4,8 @@ import static org.xcolab.model.Tables.CONTENT_ARTICLE;
 import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
@@ -80,5 +82,31 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .from(CONTENT_ARTICLE_VERSION)
                 .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(articleId))
                 .fetchInto(ContentArticleVersion.class);
+    }
+
+    @Override
+    public List<ContentArticleVersion> findByGiven(
+            Long contentArticleId, Long contentArticleVersion,
+            Long folderId, String title, int startRecord, int limitRecord) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(CONTENT_ARTICLE_VERSION).getQuery();
+
+        if (contentArticleId != null) {
+            query.addConditions(
+                    CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleId));
+        }
+        if (contentArticleVersion != null) {
+            query.addConditions(
+                    CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.eq(contentArticleVersion));
+        }
+        if (folderId != null) {
+            query.addConditions(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(folderId));
+        }
+        if (title != null) {
+            query.addConditions(CONTENT_ARTICLE_VERSION.TITLE.eq(title));
+        }
+        query.addOrderBy(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.desc());
+        query.addLimit(startRecord, limitRecord);
+        return query.fetchInto(ContentArticleVersion.class);
     }
 }

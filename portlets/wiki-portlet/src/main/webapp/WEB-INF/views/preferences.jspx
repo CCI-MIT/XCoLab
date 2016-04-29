@@ -16,7 +16,7 @@
             <form:select path="wikiFolderId">
                 <form:option value="0" label="Please select one"/>
                 <c:forEach var="option" items="${folders}">
-                    <form:option value="${option.contentFolderId}" label="${option.contentFolderId} - ${option.contentFolderName}"/>
+                    <form:option value="${option.contentFolderId}" label="${option.parentFolderId} -> ${option.contentFolderId}: ${option.contentFolderName}"/>
                 </c:forEach>
             </form:select>
             <form:errors path="wikiFolderId"/>
