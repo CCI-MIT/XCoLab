@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.pojos.ContentFolder;
+import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.contents.domain.contentarticle.ContentArticleDao;
+import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVersionDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.contents.service.contentarticle.ContentArticleService;
 import org.xcolab.service.contents.service.contentarticleversion.ContentArticleVersionService;
@@ -33,6 +35,12 @@ public class ContentsController {
     @Autowired
     private ContentArticleDao contentArticleDao;
 
+    @Autowired
+    private ContentFolderDao contentFolderDao;
+
+    @Autowired
+    private ContentArticleVersionDao contentArticleVersionDao;
+
     @RequestMapping(value = "/contentArticles/", method = RequestMethod.POST)
     public ContentArticle createContentArticle(@RequestBody ContentArticle contentArticle) {
 
@@ -45,6 +53,22 @@ public class ContentsController {
             return contentArticleDao.getArticlesInFolder(folderId);
         }
         return contentArticleDao.getArticles();
+    }
+
+    @RequestMapping(value = "/contentFolders", method = RequestMethod.GET)
+    public List<ContentFolder> getContentFolders(@RequestParam(required = false) Long parentFolderId) {
+        if (parentFolderId != null) {
+            return contentFolderDao.getFoldersInFolder(parentFolderId);
+        }
+        return contentFolderDao.getFolders();
+    }
+
+    @RequestMapping(value = "/contentArticleVersions", method = RequestMethod.GET)
+    public List<ContentArticleVersion> getContentArticleVersions(@RequestParam(required = false) Long articleId) {
+        if (articleId != null) {
+            return contentArticleVersionDao.getVersionsForArticle(articleId);
+        }
+        return contentArticleVersionDao.getVersions();
     }
 
     @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.GET)
@@ -93,7 +117,7 @@ public class ContentsController {
 
     @RequestMapping(value = "/contentArticleVersions/", method = RequestMethod.POST)
     public ContentArticleVersion createContentArticleVersion(@RequestBody ContentArticleVersion contentArticleVersion) {
-        return this.contentArticleVersionService.create(contentArticleVersion);
+        return this.contentArticleVersionDao.create(contentArticleVersion);
     }
 
     @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.GET)
@@ -101,7 +125,7 @@ public class ContentsController {
         if (articleVersionId == null || articleVersionId == 0) {
             throw new NotFoundException("No content article version with id given");
         } else {
-            return this.contentArticleVersionService.get(articleVersionId);
+            return this.contentArticleVersionDao.get(articleVersionId);
         }
     }
 
@@ -112,8 +136,8 @@ public class ContentsController {
         if (articleVersionId == null || articleVersionId == 0) {
             throw new NotFoundException("No content article version with id given");
         } else {
-            if (this.contentArticleVersionService.get(articleVersionId) != null) {
-                this.contentArticleVersionService.update(contentArticleVersion);
+            if (this.contentArticleVersionDao.get(articleVersionId) != null) {
+                this.contentArticleVersionDao.update(contentArticleVersion);
                 return "Content article version updated successfully";
             } else {
                 throw new NotFoundException("No content article version with id given");
@@ -125,7 +149,7 @@ public class ContentsController {
     @RequestMapping(value = "/contentFolders/", method = RequestMethod.POST)
     public ContentFolder createContentFolder(@RequestBody ContentFolder contentFolder) {
 
-        return this.contentFolderService.create(contentFolder);
+        return this.contentFolderDao.create(contentFolder);
     }
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.GET)
@@ -133,7 +157,7 @@ public class ContentsController {
         if (contentFolderId == null || contentFolderId == 0) {
             throw new NotFoundException("No content folder with id given");
         } else {
-            return this.contentFolderService.get(contentFolderId);
+            return this.contentFolderDao.get(contentFolderId);
         }
     }
 
@@ -142,7 +166,7 @@ public class ContentsController {
         if (contentFolderId == null || contentFolderId == 0) {
             throw new NotFoundException("No content folder with id given");
         } else {
-            return this.contentArticleVersionService.getByFolderId(contentFolderId);
+            return this.contentArticleVersionDao.getByFolderId(contentFolderId);
         }
     }
 
@@ -153,8 +177,8 @@ public class ContentsController {
         if (contentFolderId == null || contentFolderId == 0) {
             throw new NotFoundException("No content folder with id given");
         } else {
-            if (this.contentFolderService.get(contentFolderId) != null) {
-                this.contentFolderService.update(contentFolder);
+            if (this.contentFolderDao.get(contentFolderId) != null) {
+                this.contentFolderDao.update(contentFolder);
                 return "Content folder updated successfully";
             } else {
                 throw new NotFoundException("No content folder with id given");

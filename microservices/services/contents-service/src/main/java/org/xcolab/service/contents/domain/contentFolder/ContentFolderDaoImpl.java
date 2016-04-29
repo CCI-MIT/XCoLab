@@ -1,18 +1,21 @@
 package org.xcolab.service.contents.domain.contentFolder;
 
+import static org.xcolab.model.Tables.CONTENT_FOLDER;
+
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.model.tables.records.ContentFolderRecord;
 
-import static org.xcolab.model.Tables.CONTENT_FOLDER;
+import java.util.List;
 
 @Repository
 public class ContentFolderDaoImpl implements ContentFolderDao{
     @Autowired
     private DSLContext dslContext;
 
+    @Override
     public ContentFolder create(ContentFolder contentFolder) {
         ContentFolderRecord ret = this.dslContext.insertInto(CONTENT_FOLDER)
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
@@ -29,6 +32,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao{
 
     }
 
+    @Override
     public void update(ContentFolder contentFolder) {
         this.dslContext.update(CONTENT_FOLDER)
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
@@ -38,10 +42,26 @@ public class ContentFolderDaoImpl implements ContentFolderDao{
                 .execute();
     }
 
+    @Override
     public ContentFolder get(Long contentFolderId) {
         return this.dslContext.select()
                 .from(CONTENT_FOLDER)
                 .where(CONTENT_FOLDER.CONTENT_FOLDER_ID.eq(contentFolderId))
                 .fetchOneInto(ContentFolder.class);
+    }
+
+    @Override
+    public List<ContentFolder> getFolders() {
+        return dslContext.select()
+                .from(CONTENT_FOLDER)
+                .fetchInto(ContentFolder.class);
+    }
+
+    @Override
+    public List<ContentFolder> getFoldersInFolder(long parentFolderId) {
+        return dslContext.select()
+                .from(CONTENT_FOLDER)
+                .where(CONTENT_FOLDER.PARENT_FOLDER_ID.eq(parentFolderId))
+                .fetchInto(ContentFolder.class);
     }
 }

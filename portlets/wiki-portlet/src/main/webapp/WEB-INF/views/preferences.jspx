@@ -12,14 +12,14 @@
     <form:form commandName="preferences" action="${saveURL}">
         <h2>Select wiki folder to display:</h2>
         <p>
-            <label for="wikiFolder">Wiki folder:</label>
-            <form:select path="wikiFolder">
+            <label for="wikiFolderId">Wiki folder:</label>
+            <form:select path="wikiFolderId">
                 <form:option value="0" label="Please select one"/>
                 <c:forEach var="option" items="${folders}">
                     <form:option value="${option.contentFolderId}" label="${option.contentFolderId} - ${option.contentFolderName}"/>
                 </c:forEach>
             </form:select>
-            <form:errors path="wikiFolder"/>
+            <form:errors path="wikiFolderId"/>
             <br />
             <input type="submit" value="Save" />
         </p>

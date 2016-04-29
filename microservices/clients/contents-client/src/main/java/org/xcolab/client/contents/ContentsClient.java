@@ -36,6 +36,28 @@ public final class ContentsClient {
         return response.getBody();
     }
 
+    public static List<ContentArticleVersion> getContentArticleVersions(Long contentArticleId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentArticleVersions")
+                .queryParam("parentFolderId", contentArticleId);
+        ResponseEntity<List<ContentArticleVersion>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentArticleVersion>>() {
+                });
+
+        return response.getBody();
+    }
+
+    public static List<ContentFolder> getContentFolders(Long parentFolderId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentFolders")
+                .queryParam("parentFolderId", parentFolderId);
+        ResponseEntity<List<ContentFolder>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentFolder>>() {
+                });
+
+        return response.getBody();
+    }
+
     public static ContentArticle getContentArticle(Long contentArticleId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contentArticles/" + contentArticleId + "");

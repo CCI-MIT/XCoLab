@@ -10,30 +10,30 @@ import javax.portlet.ValidatorException;
 
 public class WikiPreferences {
 
-    private final static String CONTENT_ARTICLE_ID = "CONTENT_ARTICLE_ID";
+    private final static String WIKI_FOLDER_ID = "WIKI_FOLDER_ID";
 
-    private String wikiFolder;
+    private String wikiFolderId;
 
     public WikiPreferences() {
     }
 
     public WikiPreferences(PortletRequest request) {
         PortletPreferences preferences = request.getPreferences();
-        wikiFolder = preferences.getValue(CONTENT_ARTICLE_ID, "0");
+        wikiFolderId = preferences.getValue(WIKI_FOLDER_ID, "0");
     }
 
-    public String getWikiFolder() {
-        return wikiFolder;
+    public String getWikiFolderId() {
+        return wikiFolderId;
     }
 
-    public void setWikiFolder(String wikiFolder) {
-        this.wikiFolder = wikiFolder;
+    public void setWikiFolderId(String wikiFolderId) {
+        this.wikiFolderId = wikiFolderId;
     }
 
     public void store(PortletRequest request)
             throws ReadOnlyException, ValidatorException, IOException {
         PortletPreferences preferences = request.getPreferences();
-        preferences.setValue(CONTENT_ARTICLE_ID, wikiFolder);
+        preferences.setValue(WIKI_FOLDER_ID, wikiFolderId);
         preferences.store();
     }
 }
