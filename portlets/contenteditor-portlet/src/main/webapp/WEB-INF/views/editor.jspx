@@ -12,14 +12,18 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"><!-- --></link>
 
     <portlet:resourceURL var="contentEditorListFolderURL" id="contentEditorListFolder">
-    ></portlet:resourceURL>
+    </portlet:resourceURL>
 
+
+    <portlet:resourceURL var="getArticleVersionURL" id="contentEditorGetLatestArticleVersion">
+    </portlet:resourceURL>
 
     <h2>Content Editor</h2>
 
 
     <script>
         <![CDATA[
+        var getArticleVersionURL = '${getArticleVersionURL}';
         var data = [
             {
                 label: 'node1',
@@ -47,7 +51,7 @@
                         // The clicked node is 'event.node'
                         var node = event.node;
                         if(node.kind == "article"){
-                            loadArticle(node.id);
+                            loadArticleVersionContent(node.id);
                         }
                         //alert(node.name);
                     }
@@ -80,30 +84,44 @@
         function loadArticleVersionContent(id){
             var articleId = id.replace("articleVersionId_","");
 
-            //AJAX CALL TO GET DATA
-            var data = { title: "Page title to be displayed", content: "<h1>Should appear on the editor  "+id+"</h2>"}
-            var textarea = $('<textarea>');
-            textarea.attr("id","articleVersionContent");
-            textarea.attr("name","articleVersionContent");
-            textarea.attr("rows","10");
-            textarea.attr("cols","80");
+            var url = getArticleVersionURL;
 
-            textarea.html(data.content);
+            var parameters={};
 
-            var input = $('<input>');
-            input.attr("id","articleVersionId");
-            input.attr("value",id);
-            input.attr("type","hidden");
+            $.post(url ,parameters , function (response) {
+                var responseData = JSON.parse(response);
+                var data = { title: "Page title to be displayed", content: "<h1>Should appear on the editor  "+id+"</h2>"}
+                var textarea = $('<textarea>');
+                textarea.attr("id","articleVersionContent");
+                textarea.attr("name","articleVersionContent");
+                textarea.attr("rows","10");
+                textarea.attr("cols","80");
 
-            $("#article-view").empty().append(textarea);
-            $("#article-view").append(input);
+                textarea.html(data.content);
+
+                var input = $('<input>');
+                input.attr("id","articleVersionId");
+                input.attr("value",id);
+                input.attr("type","hidden");
+
+                var input1 = $('<input>');
+                input1.attr("id","articleVersionTitle");
+                input1.attr("value",data.title);
+                input1.attr("type","text");
+
+                $("#article-view").empty().append(textarea);
+                $("#article-view").append(input);
+
+                CKEDITOR.replace( 'articleVersionContent' );
+            });
 
 
-            CKEDITOR.replace( 'articleVersionContent' );
 
 
         }
         function saveArticle(){
+            //articleVersionId
+            //articleVersionTitle
             var data = CKEDITOR.instances.editor1.getData();
             //disable
             CKEDITOR.instances['TEXTAREA_NAME'].setReadOnly(true);
@@ -111,9 +129,8 @@
         ]]>
     </script>
     <div>
-        <div><h3>Content Folders</h3><div id="tree-view" data-url="${contentEditorListFolderURL}" style="width:350px"><!-- --></div></div>
-        <div id="versions-view"><!-- --></div>
-        <div id="article-view"><!-- --></div>
+        <div style="float:left"><h3>Content Folders</h3><div id="tree-view" data-url="${contentEditorListFolderURL}" style="width:350px"><!-- --></div></div>
+        <div style="float:left" id="article-view"><!-- --></div>
     </div>
 
 </jsp:root>

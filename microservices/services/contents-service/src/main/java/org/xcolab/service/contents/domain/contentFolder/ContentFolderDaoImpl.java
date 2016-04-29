@@ -6,10 +6,12 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.model.tables.records.ContentFolderRecord;
 
+import java.util.List;
+
 import static org.xcolab.model.Tables.CONTENT_FOLDER;
 
 @Repository
-public class ContentFolderDaoImpl implements ContentFolderDao{
+public class ContentFolderDaoImpl implements ContentFolderDao {
     @Autowired
     private DSLContext dslContext;
 
@@ -17,7 +19,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao{
         ContentFolderRecord ret = this.dslContext.insertInto(CONTENT_FOLDER)
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_DESCRIPTION, contentFolder.getContentFolderDescription())
-                .set(CONTENT_FOLDER.CONTENT_FOLDER_ID,contentFolder.getParentFolderId())
+                .set(CONTENT_FOLDER.CONTENT_FOLDER_ID, contentFolder.getParentFolderId())
                 .returning(CONTENT_FOLDER.CONTENT_FOLDER_ID)
                 .fetchOne();
         if (ret != null) {
@@ -43,5 +45,19 @@ public class ContentFolderDaoImpl implements ContentFolderDao{
                 .from(CONTENT_FOLDER)
                 .where(CONTENT_FOLDER.CONTENT_FOLDER_ID.eq(contentFolderId))
                 .fetchOneInto(ContentFolder.class);
+    }
+
+    public List<ContentFolder> getChildFolders(Long contentFolderId) {
+        if (contentFolderId == null) {
+            return this.dslContext.select()
+                    .from(CONTENT_FOLDER)
+                    .where(CONTENT_FOLDER.PARENT_FOLDER_ID.isNull())
+                    .fetch().into(ContentFolder.class);
+        } else {
+            return this.dslContext.select()
+                    .from(CONTENT_FOLDER)
+                    .where(CONTENT_FOLDER.PARENT_FOLDER_ID.eq(contentFolderId))
+                    .fetch().into(ContentFolder.class);
+        }
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 
+import java.util.List;
+
 @Service
 public class ContentFolderService {
     private final ContentFolderDao contentFolderDao;
@@ -24,5 +26,8 @@ public class ContentFolderService {
 
     public ContentFolder get(Long contentFolderId) {
         return this.contentFolderDao.get(contentFolderId);
+    }
+    public List<ContentFolder> getChildFolders(Long contentFolderId) {
+        return this.contentFolderDao.getChildFolders(contentFolderId);
     }
 }

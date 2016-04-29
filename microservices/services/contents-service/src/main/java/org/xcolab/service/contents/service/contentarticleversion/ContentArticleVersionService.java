@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVersionDao;
 
+import java.util.List;
+
 @Service
 public class ContentArticleVersionService {
 
@@ -26,7 +28,12 @@ public class ContentArticleVersionService {
     public ContentArticleVersion get(Long contentArticleId) {
         return this.contentArticleVersionDao.get(contentArticleId);
     }
-    public ContentArticleVersion getByFolderId(Long contentFolderId) {
+
+    public List<ContentArticleVersion> getByFolderId(Long contentFolderId) {
         return this.contentArticleVersionDao.getByFolderId(contentFolderId);
+    }
+
+    public ContentArticleVersion getLatestVersionByContentArticleId(Long contentArticleVersionId) {
+        return this.contentArticleVersionDao.getLatestVersionByContentArticleId(contentArticleVersionId);
     }
 }

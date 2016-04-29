@@ -75,6 +75,13 @@ public final class ContentsClient {
         return restTemplate.getForObject(uriBuilder.build().toString(), ContentArticleVersion.class);
     }
 
+    public static ContentArticleVersion getLatestContentArticleVersionByContentArticleId(Long contentArticleId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentArticles/"+contentArticleId+"/latestContentArticleVersion/");
+
+        return restTemplate.getForObject(uriBuilder.build().toString(), ContentArticleVersion.class);
+    }
+
     public static ContentArticleVersion createContentArticleVersion(ContentArticleVersion contentArticleVersion){
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
@@ -130,4 +137,24 @@ public final class ContentsClient {
         restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.PUT, entity, String.class);
     }
+
+    public static List<ContentFolder> getChildFolders(Long folderId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentFolders/"+folderId+"/childFolders/");
+
+        ResponseEntity<List<ContentFolder>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentFolder>>() {
+                });
+        return response.getBody();
+    }
+    public static List<ContentArticleVersion> getChildArticleVersions(Long folderId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "contentFolders/"+folderId+"/contentArticlesVersions/");
+
+        ResponseEntity<List<ContentArticleVersion>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentArticleVersion>>() {
+                });
+        return response.getBody();
+    }
+
 }

@@ -15,7 +15,7 @@ public class ContentArticleWrapper extends ContentArticle {
     private static final long serialVersionUID = -2076774009;
 
     private String title;
-    private Long folderId;
+
 
     public ContentArticleWrapper() {
     }
@@ -24,10 +24,10 @@ public class ContentArticleWrapper extends ContentArticle {
             Long contentArticleId, Long authorId, Timestamp createDate, Long maxVersion,
             Long editRoleGroupId, Long viewRoleGroupId, Boolean visible,
             String title, Long folderId) {
-        super(contentArticleId, authorId, createDate, maxVersion,
+        super(contentArticleId, authorId, createDate, maxVersion, folderId,
                 editRoleGroupId, viewRoleGroupId, visible);
         this.title = title;
-        this.folderId = folderId;
+
     }
 
     public String getTitle() {
@@ -38,25 +38,21 @@ public class ContentArticleWrapper extends ContentArticle {
         this.title = title;
     }
 
-    public long getFolderId() {
-        return folderId;
-    }
 
-    public void setFolderId(long folderId) {
-        this.folderId = folderId;
-    }
+
+
 
     @Override
     public String toString() {
         return "ContentArticleWrapper (" + getContentArticleId() +
                 ", " + getAuthorId() +
                 ", " + getCreateDate() +
-                ", " + getMaxVersion() +
+                ", " + getMaxVersionId() +
                 ", " + getEditRoleGroupId() +
                 ", " + getViewRoleGroupId() +
                 ", " + getVisible() +
                 ", " + title +
-                ", " + folderId +
+                ", " + getFolderId() +
                 ")";
     }
 }

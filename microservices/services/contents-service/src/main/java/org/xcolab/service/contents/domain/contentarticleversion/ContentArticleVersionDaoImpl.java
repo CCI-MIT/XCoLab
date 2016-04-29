@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.records.ContentArticleVersionRecord;
 
+import java.util.List;
+
 import static org.xcolab.model.Tables.CONTENT_ARTICLE;
 import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
 
@@ -54,10 +56,22 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .fetchOneInto(ContentArticleVersion.class);
     }
 
-    public ContentArticleVersion getByFolderId(Long contentFolderId) {
+    public List<ContentArticleVersion> getByFolderId(Long contentFolderId) {
         return this.dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
+                .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
                 .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))
+                .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID))
+                .fetch()
+                .into(ContentArticleVersion.class);
+    }
+
+    public ContentArticleVersion getLatestVersionByContentArticleId(Long contentArticleVersionId) {
+        return this.dslContext.select()
+                .from(CONTENT_ARTICLE_VERSION)
+                .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
+                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleVersionId))
+                .and(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.equal(CONTENT_ARTICLE.MAX_VERSION_ID))
                 .fetchOneInto(ContentArticleVersion.class);
     }
 }

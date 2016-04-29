@@ -56,6 +56,15 @@ public class ContentsController {
         }
     }
 
+    @RequestMapping(value = "/contentArticles/{articleId}/latestContentArticleVersion/", method = RequestMethod.GET)
+    public ContentArticleVersion getContentArticleVersionByContentArticleId(@PathVariable("articleId") Long articleId) throws NotFoundException {
+        if (articleId == null || articleId == 0) {
+            throw new NotFoundException("No content article with id given");
+        } else {
+            return this.contentArticleVersionService.getLatestVersionByContentArticleId(articleId);
+        }
+    }
+
     @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.PUT)
     public String updateContentArticle(@RequestBody ContentArticle contentArticle,
                                        @PathVariable("articleId") Long articleId) throws NotFoundException {
@@ -80,7 +89,7 @@ public class ContentsController {
             throw new NotFoundException("No content article with id given");
         } else {
             ContentArticle contentArticle = this.contentArticleDao.get(articleId);
-            if ( contentArticle!= null) {
+            if (contentArticle != null) {
                 contentArticle.setVisible(false);
                 this.contentArticleDao.update(contentArticle);
                 return "Content article updated successfully";
@@ -137,8 +146,17 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentFolders/{contentFolderId}/contentArticles/", method = RequestMethod.GET)
-    public ContentArticleVersion getContentFolderArticles(@PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
+    @RequestMapping(value = "/contentFolders/{contentFolderId}/childFolders/", method = RequestMethod.GET)
+    public List<ContentFolder> getChildFolders(@PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
+        if (contentFolderId == null || contentFolderId == 0) {
+            contentFolderId = null;
+        }
+        return this.contentFolderService.getChildFolders(contentFolderId);
+
+    }
+
+    @RequestMapping(value = "/contentFolders/{contentFolderId}/contentArticlesVersions/", method = RequestMethod.GET)
+    public List<ContentArticleVersion> getContentFolderArticles(@PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
         if (contentFolderId == null || contentFolderId == 0) {
             throw new NotFoundException("No content folder with id given");
         } else {

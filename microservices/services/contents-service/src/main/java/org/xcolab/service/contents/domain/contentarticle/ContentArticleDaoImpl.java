@@ -1,8 +1,5 @@
 package org.xcolab.service.contents.domain.contentarticle;
 
-import static org.xcolab.model.Tables.CONTENT_ARTICLE;
-import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
-
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,6 +8,9 @@ import org.xcolab.model.tables.records.ContentArticleRecord;
 import org.xcolab.service.contents.wrappers.ContentArticleWrapper;
 
 import java.util.List;
+
+import static org.xcolab.model.Tables.CONTENT_ARTICLE;
+import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
 
 @Repository
 public class ContentArticleDaoImpl implements ContentArticleDao {
@@ -24,7 +24,8 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
                 .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())
                 .set(CONTENT_ARTICLE.EDIT_ROLE_GROUP_ID, contentArticle.getEditRoleGroupId())
                 .set(CONTENT_ARTICLE.VIEW_ROLE_GROUP_ID, contentArticle.getViewRoleGroupId())
-                .set(CONTENT_ARTICLE.MAX_VERSION, contentArticle.getMaxVersion())
+                .set(CONTENT_ARTICLE.MAX_VERSION_ID, contentArticle.getMaxVersionId())
+                .set(CONTENT_ARTICLE.FOLDER_ID, contentArticle.getFolderId())
                 .set(CONTENT_ARTICLE.CREATE_DATE, contentArticle.getCreateDate())
                 .set(CONTENT_ARTICLE.VISIBLE, contentArticle.getVisible())
                 .returning(CONTENT_ARTICLE.CONTENT_ARTICLE_ID)
@@ -44,7 +45,8 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
                 .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())
                 .set(CONTENT_ARTICLE.EDIT_ROLE_GROUP_ID, contentArticle.getEditRoleGroupId())
                 .set(CONTENT_ARTICLE.VIEW_ROLE_GROUP_ID, contentArticle.getViewRoleGroupId())
-                .set(CONTENT_ARTICLE.MAX_VERSION, contentArticle.getMaxVersion())
+                .set(CONTENT_ARTICLE.MAX_VERSION_ID, contentArticle.getMaxVersionId())
+                .set(CONTENT_ARTICLE.FOLDER_ID, contentArticle.getFolderId())
                 .set(CONTENT_ARTICLE.CREATE_DATE, contentArticle.getCreateDate())
                 .set(CONTENT_ARTICLE.VISIBLE, contentArticle.getVisible())
                 .where(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(contentArticle.getContentArticleId()))
@@ -72,11 +74,8 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     public List<ContentArticle> getArticlesInFolder(long folderId) {
         return dslContext.select()
                 .from(CONTENT_ARTICLE)
-                .join(CONTENT_ARTICLE_VERSION).on(
-                        CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID
-                                .eq(CONTENT_ARTICLE.CONTENT_ARTICLE_ID)
-                        .and(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(folderId))
-                ).fetchInto(ContentArticleWrapper.class);
+                .where(CONTENT_ARTICLE.FOLDER_ID.eq(folderId))
+                .fetchInto(ContentArticleWrapper.class);
 
     }
 }
