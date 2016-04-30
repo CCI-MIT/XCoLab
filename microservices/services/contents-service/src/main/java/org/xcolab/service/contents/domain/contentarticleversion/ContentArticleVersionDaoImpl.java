@@ -57,13 +57,24 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     public List<ContentArticleVersion> getByFolderId(Long contentFolderId) {
-        return this.dslContext.select()
-                .from(CONTENT_ARTICLE_VERSION)
-                .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
-                .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))
-                .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID))
-                .fetch()
-                .into(ContentArticleVersion.class);
+        if (contentFolderId == null) {
+            return this.dslContext.select()
+                    .from(CONTENT_ARTICLE_VERSION)
+                    .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
+                    .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.isNull())
+                    .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID))
+                    .fetch()
+                    .into(ContentArticleVersion.class);
+        }
+        else {
+            return this.dslContext.select()
+                    .from(CONTENT_ARTICLE_VERSION)
+                    .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
+                    .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))
+                    .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID))
+                    .fetch()
+                    .into(ContentArticleVersion.class);
+        }
     }
 
     public ContentArticleVersion getLatestVersionByContentArticleId(Long contentArticleVersionId) {

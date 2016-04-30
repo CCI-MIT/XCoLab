@@ -149,7 +149,7 @@ public final class ContentsClient {
     }
     public static List<ContentArticleVersion> getChildArticleVersions(Long folderId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "contentFolders/"+folderId+"/contentArticlesVersions/");
+                EUREKA_APPLICATION_ID + "/contentFolders/"+folderId+"/contentArticlesVersions/");
 
         ResponseEntity<List<ContentArticleVersion>> response = restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentArticleVersion>>() {

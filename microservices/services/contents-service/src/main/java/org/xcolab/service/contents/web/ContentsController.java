@@ -148,7 +148,7 @@ public class ContentsController {
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}/childFolders/", method = RequestMethod.GET)
     public List<ContentFolder> getChildFolders(@PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
-        if (contentFolderId == null || contentFolderId == 0) {
+        if (contentFolderId == 0) {
             contentFolderId = null;
         }
         return this.contentFolderService.getChildFolders(contentFolderId);
@@ -157,11 +157,11 @@ public class ContentsController {
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}/contentArticlesVersions/", method = RequestMethod.GET)
     public List<ContentArticleVersion> getContentFolderArticles(@PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
-        if (contentFolderId == null || contentFolderId == 0) {
-            throw new NotFoundException("No content folder with id given");
-        } else {
-            return this.contentArticleVersionService.getByFolderId(contentFolderId);
+        if ( contentFolderId == 0) {
+            contentFolderId = null;
         }
+        return this.contentArticleVersionService.getByFolderId(contentFolderId);
+
     }
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.PUT)

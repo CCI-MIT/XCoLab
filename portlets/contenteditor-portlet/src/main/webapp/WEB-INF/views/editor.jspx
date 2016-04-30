@@ -5,8 +5,11 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"><!-- --></script>
     <script src="${pageContext.request.contextPath}/js/tree.jquery.js"><!-- --></script>
     <script src="${pageContext.request.contextPath}/js/ckeditor/ckeditor.js"><!-- --></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"><!-- --></script>
+
     <portlet:defineObjects />
 
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jqtree.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"><!-- --></link>
@@ -18,62 +21,96 @@
     <portlet:resourceURL var="getArticleVersionURL" id="contentEditorGetLatestArticleVersion">
     </portlet:resourceURL>
 
-    <h2>Content Editor</h2>
+    <portlet:resourceURL var="saveArticleVersionURL" id="saveArticleVersion">
+    </portlet:resourceURL>
 
+
+    <portlet:resourceURL var="moveArticleVersionURL" id="moveArticleVersion">
+    </portlet:resourceURL>
 
     <script>
         <![CDATA[
         var getArticleVersionURL = '${getArticleVersionURL}';
-        var data = [
-            {
-                label: 'node1',
-                kind: 'folder',
-                children: [
-                    { label: 'child1', kind: 'article', id:1 },
-                    { label: 'child2', kind: 'article',id:2 }
-                ]
-            },
-            {
-                label: 'node2',
-                kind: 'folder',
-                children: [
-                    { label: 'child3', kind: 'article',id:3 }
-                ]
-            }
-        ];
+        var saveArticleVersionURL = '${saveArticleVersionURL}';
+        var ckEditor = null;
         jQuery(document).ready(function () {
             $('#tree-view').tree({
                                      //data:data,
+                                     onCanSelectNode: function(node) {
+                                         if(node.kind == "folder") return false;
+                                            return true;
+
+                                     },
+                                     onCreateLi: function(node, $li) {
+                                         // Append a link to the jqtree-element div.
+                                         // The link has an url '#node-[id]' and a data property 'node-id'.
+                                         if(node.kind == "folder")
+                                         $li.find('.jqtree-element').append(
+                                                 '<a href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
+                                                 node.id +'"> <small><+ article</small></a>;'
+                                         );
+                                     },
+
+                                     onCanMove: function(node) {
+                                         if (! node.parent.parent) {
+                                             // Example: Cannot move root node
+                                             return false;
+                                         }
+                                         else {
+                                             if(node.kind == "folder") return false;
+                                             else
+                                                 return true;
+                                         }
+                                     },
                                      dragAndDrop: true});
+            $('#tree-view').on(
+                    'click', '.edit',
+                    function(e) {
+                        // Get the id from the 'node-id' data property
+                        var node_id = $(e.target).data('node-id');
+
+                        // Get the node from the tree
+                        var node = $tree.tree('getNodeById', node_id);
+
+                        if (node) {
+                            // Display the node name
+                            alert(node.name);
+                        }
+                    }
+            );
             $('#tree-view').bind(
                     'tree.click',
                     function(event) {
-                        // The clicked node is 'event.node'
                         var node = event.node;
                         if(node.kind == "article"){
                             loadArticleVersionContent(node.id);
                         }
-                        //alert(node.name);
                     }
             );
-        });
-        function loadArticle(id) {
-            //AJAX CALL TO GET DATA.
+            $('#tree-view').bind(
+                    'tree.move',
+                    function(event) {
+                        console.log('moved_node', event.move_info.moved_node);
+                        console.log('target_node', event.move_info.target_node);
+                        console.log('position', event.move_info.position);
+                        console.log('previous_parent', event.move_info.previous_parent);
 
-            var data = [{articleVersionId:3, articleVersionDateCreated: "10/01/2016 00:00:00"},
-                {articleVersionId:2, articleVersionDateCreated: "5/01/2016 00:00:00"},
-                {articleVersionId:1, articleVersionDateCreated: "1/01/2016 00:00:00"}];
+                        event.preventDefault();
+                        if (confirm('Would you like to move the article?')) {
+                            event.move_info.do_move();
+                            //call the save method
+                        }
+                    });
 
-            var ul = $('<ul>');
-            for(var i = 0 ; i < data.length; i++){
-                ul.append(addVersionEntry(data[i].articleVersionDateCreated, data[i].articleVersionId))
-            }
-            $("#versions-view").empty().append(ul);
-            $(".articleVersionClass").click(function (event){
+            ckEditor = CKEDITOR.replace('articleVersionContent');
+            CKEDITOR.instances['articleVersionContent'].setReadOnly(true);
+            $("#infoBox").hide();
 
-                loadArticleVersionContent(event.target.id);
+            $("#saveArticle").click(function(){
+                console.log("Called saveArticle")
+                    saveArticle();
             });
-        }
+        });
         function addVersionEntry(dateOfEdit, versionId){
             var cell = $('<li>');
             cell.attr("id","articleVersionId_"+versionId);
@@ -82,55 +119,107 @@
             return cell;
         }
         function loadArticleVersionContent(id){
-            var articleId = id.replace("articleVersionId_","");
 
             var url = getArticleVersionURL;
 
-            var parameters={};
+            var parameters={articleId : id};
 
             $.post(url ,parameters , function (response) {
                 var responseData = JSON.parse(response);
-                var data = { title: "Page title to be displayed", content: "<h1>Should appear on the editor  "+id+"</h2>"}
-                var textarea = $('<textarea>');
-                textarea.attr("id","articleVersionContent");
-                textarea.attr("name","articleVersionContent");
-                textarea.attr("rows","10");
-                textarea.attr("cols","80");
+                var data = responseData;
+                var textarea = $('#articleVersionContent');
 
-                textarea.html(data.content);
+                //textarea.html(data.content);
+                CKEDITOR.instances['articleVersionContent'].setData(data.content);
 
-                var input = $('<input>');
-                input.attr("id","articleVersionId");
+                var input = $('#contentArticleId');
                 input.attr("value",id);
-                input.attr("type","hidden");
 
-                var input1 = $('<input>');
-                input1.attr("id","articleVersionTitle");
+
+                var input1 = $('#contentArticleTitle');
                 input1.attr("value",data.title);
-                input1.attr("type","text");
 
-                $("#article-view").empty().append(textarea);
-                $("#article-view").append(input);
+                ckEditor.setReadOnly(false);
 
-                CKEDITOR.replace( 'articleVersionContent' );
             });
-
-
-
 
         }
         function saveArticle(){
-            //articleVersionId
-            //articleVersionTitle
-            var data = CKEDITOR.instances.editor1.getData();
-            //disable
-            CKEDITOR.instances['TEXTAREA_NAME'].setReadOnly(true);
+            if($('#contentArticleTitle').val() == ""){
+                alert("Title field is mandatory!");
+                return false;
+            }
+            var url = saveArticleVersionURL;
+
+
+            var articleId = $('#contentArticleId').val();
+            var title = $('#contentArticleTitle').val();
+            var folderId =$('#contentArticleFolderId').val();
+            var content = ckEditor.getData();
+            var parameters={articleId : articleId, title: title, folderId: folderId
+            ,content: content};
+            console.log("Before the SAVE URL call");
+            $.post(url ,parameters , function (response) {
+                var responseData = JSON.parse(response);
+                var data = responseData;
+                $("#infoBox").html("Article updated successfully!");
+                $("#infoBox").show();
+                $("#infoBox").delay(5000).fadeOut('slow');
+
+
+            });
+        }
+        function moveArticle(articleId, folderId){
+
+                if($('#contentArticleTitle').val() == ""){
+                    alert("Title field is mandatory!");
+                    return false;
+                }
+                var url = moveArticleVersionURL;
+
+
+                var articleId = $('#contentArticleId').val();
+                var folderId =$('#contentArticleFolderId').val();
+
+                var parameters={articleId : articleId, folderId: folderId };
+                console.log("Before the SAVE URL call");
+                $.post(url ,parameters , function (response) {
+                    var responseData = JSON.parse(response);
+                    var data = responseData;
+                    $("#infoBox").html("Article updated successfully!");
+                    $("#infoBox").show();
+                    $("#infoBox").delay(5000).fadeOut('slow');
+
+
+                });
+
         }
         ]]>
     </script>
-    <div>
-        <div style="float:left"><h3>Content Folders</h3><div id="tree-view" data-url="${contentEditorListFolderURL}" style="width:350px"><!-- --></div></div>
-        <div style="float:left" id="article-view"><!-- --></div>
-    </div>
+    <style>
+        .contentEditor input {border: 1px solid #DDD; color: #8d8d8d;  font-weight: 200;  margin-bottom: 7px; height: 30px;  font-size: large;  width: 530px;}
+        .contentBody {margin: auto; width: 1022px;  height: 512px;}
+        .treeContainer {    height: 512px; overflow-y: scroll;}
+        #infoBox {padding: 8px 35px 8px 14px;margin-bottom: 20px;}
+    </style>
+    <div class="contentEditor">
+        <div class="contentBody">
+            <h2>Content Editor</h2>
+            <div id="infoBox"><!-- --></div>
+            <div style="height: 400px" class="addpropbox">
+                <div style="float:left"><h3>Content Folders</h3><div id="tree-view" data-url="${contentEditorListFolderURL}" style="width:350px"><!-- --></div></div>
+                <div class="treeContainer">
+                    <div style="float:left" id="article-view">
+                        <h3>Content article</h3>
+                        <div><input type="hidden" id="contentArticleId"/> <input type="hidden" id="contentArticleFolderId"/> Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  /></div>
 
+                        <div>
+                            <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div> <div class="floatRight outerVerticalCenter" id="saveArticle" style="cursor: pointer"><span  class="c-Button__primary" >Save</span></div></div>
+        </div>
+    </div>
 </jsp:root>

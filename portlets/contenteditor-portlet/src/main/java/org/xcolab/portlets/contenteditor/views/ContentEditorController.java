@@ -83,9 +83,18 @@ public class ContentEditorController {
 
         response.getPortletOutputStream().write(articleVersion.toString().getBytes());
     }
+    @ResourceMapping("moveArticleVersion")
+    public void saveContentArticleVersion(ResourceRequest request, ResourceResponse response,
+                                          @RequestParam(required = false) Long articleVersionId,
+                                          @RequestParam(required = false) Long folderId)
+            throws IOException, SystemException, PortalException {
+        ContentArticleVersion contentArticleVersion = ContentsClient.getContentArticleVersion(articleVersionId);
+        ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
 
-    @ResourceMapping("saveNewArticleVersion")
-    public void saveNewArticleVersion(ResourceRequest request, ResourceResponse response,
+
+    }
+    @ResourceMapping("saveContentArticleVersion")
+    public void saveContentArticleVersion(ResourceRequest request, ResourceResponse response,
                                       @RequestParam(required = false) String articleId,
                                       @RequestParam(required = false) String title,
                                       @RequestParam(required = false) String folderId,
@@ -115,20 +124,22 @@ public class ContentEditorController {
         response.getPortletOutputStream().write(articleVersion.toString().getBytes());
     }
 
-    private JSONObject treeNode(String label, String id, String kind) {
+    private JSONObject treeNode(String label, String id, String kind, boolean loadOnDemand) {
         JSONObject folderNode = JSONFactoryUtil.createJSONObject();
         folderNode.put("label", label);
         folderNode.put("id", id);
         folderNode.put("kind", kind);
-        folderNode.put("load_on_demand", "true");
+        if (loadOnDemand) {
+            folderNode.put("load_on_demand", loadOnDemand + "");
+        }
         return folderNode;
     }
 
     private JSONObject articleNode(String label, String id) {
-        return treeNode(label, id, "article");
+        return treeNode(label, id, "article", false);
     }
 
     private JSONObject folderNode(String label, String id) {
-        return treeNode(label, id, "folder");
+        return treeNode(label, id, "folder", true);
     }
 }
