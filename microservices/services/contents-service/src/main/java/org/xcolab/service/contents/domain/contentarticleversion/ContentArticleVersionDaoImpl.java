@@ -29,7 +29,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .fetchOne();
 
         if (ret != null) {
-            contentArticleVersion.setContentArticleId(ret.getValue(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID));
+            contentArticleVersion.setContentArticleVersionId(ret.getValue(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID));
             return contentArticleVersion;
         } else {
             return null;

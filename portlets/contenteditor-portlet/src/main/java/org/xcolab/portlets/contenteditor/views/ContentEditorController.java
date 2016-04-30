@@ -5,6 +5,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,35 +85,51 @@ public class ContentEditorController {
 
         response.getPortletOutputStream().write(articleVersion.toString().getBytes());
     }
-    @ResourceMapping("moveArticleVersion")
-    public void saveContentArticleVersion(ResourceRequest request, ResourceResponse response,
-                                          @RequestParam(required = false) Long articleVersionId,
-                                          @RequestParam(required = false) Long folderId)
-            throws IOException, SystemException, PortalException {
-        ContentArticleVersion contentArticleVersion = ContentsClient.getContentArticleVersion(articleVersionId);
-        ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
 
+    @ResourceMapping("moveArticleVersion")
+    public void moveArticleVersion(ResourceRequest request, ResourceResponse response,
+                                   @RequestParam(required = false) Long articleId,
+                                   @RequestParam(required = false) Long folderId)
+            throws IOException, SystemException, PortalException {
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        Long userId = themeDisplay.getUser().getUserId();
+
+        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersionByContentArticleId(articleId);
+        ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
+        newContentArticleVersion.setTitle(contentArticleVersion.getTitle());
+        newContentArticleVersion.setContent(contentArticleVersion.getContent());
+        newContentArticleVersion.setContentArticleId(contentArticleVersion.getContentArticleId());
+
+        newContentArticleVersion.setAuthorId(userId);
+        newContentArticleVersion.setFolderId(folderId);
+        ContentsClient.createContentArticleVersion(newContentArticleVersion);
+
+        defaultOperationReturnMessage(true, "Article moved successfully", response);
 
     }
+
     @ResourceMapping("saveContentArticleVersion")
     public void saveContentArticleVersion(ResourceRequest request, ResourceResponse response,
-                                      @RequestParam(required = false) String articleId,
-                                      @RequestParam(required = false) String title,
-                                      @RequestParam(required = false) String folderId,
-                                      @RequestParam(required = false) String content
+                                          @RequestParam(required = false) Long articleId,
+                                          @RequestParam(required = false) String title,
+                                          @RequestParam(required = false) Long folderId,
+                                          @RequestParam(required = false) String content
     )
             throws IOException, SystemException, PortalException {
 
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        Long userId = themeDisplay.getUser().getUserId();
+
         ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
-        if (articleId == null) {
-            contentArticleVersion.setContentArticleId(null);
-        } else {
-            contentArticleVersion.setContentArticleId(Long.parseLong(articleId));
-        }
-        contentArticleVersion.setFolderId(Long.parseLong(folderId));
+
+        contentArticleVersion.setContentArticleId(articleId);
+
+        contentArticleVersion.setAuthorId(userId);
+        contentArticleVersion.setFolderId((folderId));
         contentArticleVersion.setTitle(title);
         contentArticleVersion.setContent(content);
         ContentsClient.createContentArticleVersion(contentArticleVersion);
+
 
         defaultOperationReturnMessage(true, "Article version created successfully", response);
     }

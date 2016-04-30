@@ -20,6 +20,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
 
     @Override
     public ContentArticle create(ContentArticle contentArticle) {
+
         ContentArticleRecord ret = this.dslContext.insertInto(CONTENT_ARTICLE)
                 .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())
                 .set(CONTENT_ARTICLE.EDIT_ROLE_GROUP_ID, contentArticle.getEditRoleGroupId())
