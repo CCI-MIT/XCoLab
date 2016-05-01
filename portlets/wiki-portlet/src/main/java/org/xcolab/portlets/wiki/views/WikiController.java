@@ -11,6 +11,8 @@ import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.portlets.wiki.util.WikiPreferences;
 
+import java.util.List;
+
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
@@ -19,8 +21,15 @@ import javax.portlet.PortletResponse;
 public class WikiController {
 
     @RenderMapping
-    public String home() {
-        return "wiki";
+    public String home(PortletRequest request, PortletResponse response, Model model) {
+        final WikiPreferences preferences = new WikiPreferences(request);
+        final long folderId = Long.parseLong(preferences.getWikiFolderId());
+        if (folderId > 0) {
+            final List<ContentArticleVersion> contentArticleVersions = ContentsClient
+                    .getContentArticleVersions(0, Integer.MAX_VALUE, folderId, null, null, null);
+            model.addAttribute("contentArticleVersions", contentArticleVersions);
+        }
+        return "wikiList";
     }
 
     @RequestMapping(params = "show=wiki")
@@ -39,6 +48,8 @@ public class WikiController {
     @RequestMapping(params = "show=resource")
     public String showResourcePage(PortletRequest request, PortletResponse response, Model model,
             @RequestParam String contestUrlName, @RequestParam(required = false) Long contestYear) {
+
+
 
         return "wiki";
     }

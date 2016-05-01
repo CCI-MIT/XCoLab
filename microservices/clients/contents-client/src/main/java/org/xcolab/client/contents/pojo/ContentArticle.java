@@ -1,5 +1,6 @@
 package org.xcolab.client.contents.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -110,6 +111,11 @@ public class ContentArticle implements Serializable {
 
     public void setFolderId(long folderId) {
         this.folderId = folderId;
+    }
+
+    @JsonIgnore
+    public String getLinkUrl() {
+        return "/web/guest/wiki/-/wiki/page/" + title;
     }
 
     @Override
