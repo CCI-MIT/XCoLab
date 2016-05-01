@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: contest-service
+  jmx:
+    default-domain: ${spring.application.name}
