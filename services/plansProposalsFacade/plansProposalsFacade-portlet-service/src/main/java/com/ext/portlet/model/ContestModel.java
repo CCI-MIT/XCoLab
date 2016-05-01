@@ -832,6 +832,20 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setHideRibbons(boolean hideRibbons);
 
+    /**
+     * Returns the resource article ID of this contest.
+     *
+     * @return the resource article ID of this contest
+     */
+    public long getResourceArticleId();
+
+    /**
+     * Sets the resource article ID of this contest.
+     *
+     * @param resourceArticleId the resource article ID of this contest
+     */
+    public void setResourceArticleId(long resourceArticleId);
+
     @Override
     public boolean isNew();
 

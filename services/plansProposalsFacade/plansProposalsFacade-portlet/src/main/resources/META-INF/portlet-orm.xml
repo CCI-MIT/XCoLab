@@ -208,6 +208,7 @@
 			<basic name="show_in_list_view" />
 			<basic name="show_in_outline_view" />
 			<basic name="hideRibbons" />
+			<basic name="resourceArticleId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

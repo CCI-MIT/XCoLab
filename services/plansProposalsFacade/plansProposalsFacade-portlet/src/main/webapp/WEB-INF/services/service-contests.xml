@@ -64,6 +64,8 @@
         <column name="show_in_list_view" type="boolean" />
         <column name="show_in_outline_view" type="boolean" />
         <column name="hideRibbons" type="boolean" />
+
+        <column name="resourceArticleId" type="long" />
         
         <order by="asc">
             <order-column name="weight" />

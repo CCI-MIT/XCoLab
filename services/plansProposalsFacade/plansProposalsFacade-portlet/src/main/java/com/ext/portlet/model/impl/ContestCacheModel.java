@@ -71,10 +71,11 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public boolean show_in_list_view;
     public boolean show_in_outline_view;
     public boolean hideRibbons;
+    public long resourceArticleId;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(101);
+        StringBundler sb = new StringBundler(103);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -176,6 +177,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(show_in_outline_view);
         sb.append(", hideRibbons=");
         sb.append(hideRibbons);
+        sb.append(", resourceArticleId=");
+        sb.append(resourceArticleId);
         sb.append("}");
 
         return sb.toString();
@@ -359,6 +362,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestImpl.setShow_in_list_view(show_in_list_view);
         contestImpl.setShow_in_outline_view(show_in_outline_view);
         contestImpl.setHideRibbons(hideRibbons);
+        contestImpl.setResourceArticleId(resourceArticleId);
 
         contestImpl.resetOriginalValues();
 
@@ -417,6 +421,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         show_in_list_view = objectInput.readBoolean();
         show_in_outline_view = objectInput.readBoolean();
         hideRibbons = objectInput.readBoolean();
+        resourceArticleId = objectInput.readLong();
     }
 
     @Override
@@ -586,5 +591,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         objectOutput.writeBoolean(show_in_list_view);
         objectOutput.writeBoolean(show_in_outline_view);
         objectOutput.writeBoolean(hideRibbons);
+        objectOutput.writeLong(resourceArticleId);
     }
 }

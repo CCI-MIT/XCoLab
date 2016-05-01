@@ -64,61 +64,29 @@ public class Contest implements Serializable {
     private Boolean showInOutlineView;
     private Boolean hideribbons;
 
+    private Long resourceArticleId;
+
     public Contest() {
     }
 
-    public Contest(
-            Long contestpk,
-            Long contesttypeid,
-            String contestname,
-            String contestshortname,
+    public Contest(Long contestpk, Long contesttypeid, String contestname, String contestshortname,
             String contesturlname,
-            Long contestyear,
-            String contestdescription,
-            String contestmodeldescription,
-            String contestpositionsdescription,
-            Timestamp created,
-            Timestamp updated,
-            Long authorid,
-            Boolean contestactive,
-            Long plantemplateid,
-            Long contestscheduleid,
-            String proposalcreationtemplatestring,
-            String votetemplatestring,
-            String proposalvotetemplatestring,
-            String proposalvoteconfirmationtemplatestring,
-            String votequestiontemplatestring,
-            Long focusareaid,
-            Long contesttier,
-            Long contestlogoid,
-            Boolean featured_,
-            Boolean plansopenbydefault,
-            Long sponsorlogoid,
-            String sponsortext,
-            String sponsorlink,
-            Integer flag,
-            String flagtext,
-            String flagtooltip,
-            Long groupid,
-            Long discussiongroupid,
-            Long fellowdiscussiongroupid,
-            Integer weight,
-            String resourcesurl,
-            Boolean contestprivate,
-            Boolean usepermissions,
-            String contestcreationstatus,
-            Long defaultmodelid,
-            String othermodels,
-            String defaultmodelsettings,
-            Double points,
-            Long defaultparentpointtype,
-            String pointdistributionstrategy,
-            String emailtemplateurl,
-            Boolean showInTileView,
-            Boolean showInListView,
-            Boolean showInOutlineView,
-            Boolean hideribbons
-    ) {
+            Long contestyear, String contestdescription, String contestmodeldescription,
+            String contestpositionsdescription, Timestamp created, Timestamp updated,
+            Long authorid, Boolean contestactive, Long plantemplateid, Long contestscheduleid,
+            String proposalcreationtemplatestring, String votetemplatestring,
+            String proposalvotetemplatestring, String proposalvoteconfirmationtemplatestring,
+            String votequestiontemplatestring, Long focusareaid, Long contesttier,
+            Long contestlogoid, Boolean featured_, Boolean plansopenbydefault,
+            Long sponsorlogoid, String sponsortext, String sponsorlink,
+            Integer flag, String flagtext, String flagtooltip, Long groupid,
+            Long discussiongroupid, Long fellowdiscussiongroupid, Integer weight,
+            String resourcesurl, Boolean contestprivate, Boolean usepermissions,
+            String contestcreationstatus, Long defaultmodelid, String othermodels,
+            String defaultmodelsettings, Double points, Long defaultparentpointtype,
+            String pointdistributionstrategy, String emailtemplateurl, Boolean showInTileView,
+            Boolean showInListView, Boolean showInOutlineView, Boolean hideribbons,
+            Long resourceArticleId) {
         this.contestpk = contestpk;
         this.contesttypeid = contesttypeid;
         this.contestname = contestname;
@@ -169,6 +137,7 @@ public class Contest implements Serializable {
         this.showInListView = showInListView;
         this.showInOutlineView = showInOutlineView;
         this.hideribbons = hideribbons;
+        this.resourceArticleId = resourceArticleId;
     }
 
     public Long getContestPK() {
@@ -572,62 +541,68 @@ public class Contest implements Serializable {
         this.hideribbons = hideribbons;
     }
 
+    public Long getResourceArticleId() {
+        return resourceArticleId;
+    }
+
+    public void setResourceArticleId(Long resourceArticleId) {
+        this.resourceArticleId = resourceArticleId;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Contest (");
 
-        sb.append(contestpk);
-        sb.append(", ").append(contesttypeid);
-        sb.append(", ").append(contestname);
-        sb.append(", ").append(contestshortname);
-        sb.append(", ").append(contesturlname);
-        sb.append(", ").append(contestyear);
-        sb.append(", ").append(contestdescription);
-        sb.append(", ").append(contestmodeldescription);
-        sb.append(", ").append(contestpositionsdescription);
-        sb.append(", ").append(created);
-        sb.append(", ").append(updated);
-        sb.append(", ").append(authorid);
-        sb.append(", ").append(contestactive);
-        sb.append(", ").append(plantemplateid);
-        sb.append(", ").append(contestscheduleid);
-        sb.append(", ").append(proposalcreationtemplatestring);
-        sb.append(", ").append(votetemplatestring);
-        sb.append(", ").append(proposalvotetemplatestring);
-        sb.append(", ").append(proposalvoteconfirmationtemplatestring);
-        sb.append(", ").append(votequestiontemplatestring);
-        sb.append(", ").append(focusareaid);
-        sb.append(", ").append(contesttier);
-        sb.append(", ").append(contestlogoid);
-        sb.append(", ").append(featured_);
-        sb.append(", ").append(plansopenbydefault);
-        sb.append(", ").append(sponsorlogoid);
-        sb.append(", ").append(sponsortext);
-        sb.append(", ").append(sponsorlink);
-        sb.append(", ").append(flag);
-        sb.append(", ").append(flagtext);
-        sb.append(", ").append(flagtooltip);
-        sb.append(", ").append(groupid);
-        sb.append(", ").append(discussiongroupid);
-        sb.append(", ").append(fellowdiscussiongroupid);
-        sb.append(", ").append(weight);
-        sb.append(", ").append(resourcesurl);
-        sb.append(", ").append(contestprivate);
-        sb.append(", ").append(usepermissions);
-        sb.append(", ").append(contestcreationstatus);
-        sb.append(", ").append(defaultmodelid);
-        sb.append(", ").append(othermodels);
-        sb.append(", ").append(defaultmodelsettings);
-        sb.append(", ").append(points);
-        sb.append(", ").append(defaultparentpointtype);
-        sb.append(", ").append(pointdistributionstrategy);
-        sb.append(", ").append(emailtemplateurl);
-        sb.append(", ").append(showInTileView);
-        sb.append(", ").append(showInListView);
-        sb.append(", ").append(showInOutlineView);
-        sb.append(", ").append(hideribbons);
-
-        sb.append(")");
-        return sb.toString();
+        return "Contest (" + contestpk +
+                ", " + contesttypeid +
+                ", " + contestname +
+                ", " + contestshortname +
+                ", " + contesturlname +
+                ", " + contestyear +
+                ", " + contestdescription +
+                ", " + contestmodeldescription +
+                ", " + contestpositionsdescription +
+                ", " + created +
+                ", " + updated +
+                ", " + authorid +
+                ", " + contestactive +
+                ", " + plantemplateid +
+                ", " + contestscheduleid +
+                ", " + proposalcreationtemplatestring +
+                ", " + votetemplatestring +
+                ", " + proposalvotetemplatestring +
+                ", " + proposalvoteconfirmationtemplatestring +
+                ", " + votequestiontemplatestring +
+                ", " + focusareaid +
+                ", " + contesttier +
+                ", " + contestlogoid +
+                ", " + featured_ +
+                ", " + plansopenbydefault +
+                ", " + sponsorlogoid +
+                ", " + sponsortext +
+                ", " + sponsorlink +
+                ", " + flag +
+                ", " + flagtext +
+                ", " + flagtooltip +
+                ", " + groupid +
+                ", " + discussiongroupid +
+                ", " + fellowdiscussiongroupid +
+                ", " + weight +
+                ", " + resourcesurl +
+                ", " + contestprivate +
+                ", " + usepermissions +
+                ", " + contestcreationstatus +
+                ", " + defaultmodelid +
+                ", " + othermodels +
+                ", " + defaultmodelsettings +
+                ", " + points +
+                ", " + defaultparentpointtype +
+                ", " + pointdistributionstrategy +
+                ", " + emailtemplateurl +
+                ", " + showInTileView +
+                ", " + showInListView +
+                ", " + showInOutlineView +
+                ", " + hideribbons +
+                ", " + resourceArticleId +
+                ")";
     }
 }
