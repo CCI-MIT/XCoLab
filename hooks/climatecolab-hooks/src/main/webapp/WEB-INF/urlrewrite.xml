@@ -52,9 +52,9 @@
     </rule>
 
     <!-- wiki page redirects -->
-    <rule>
-        <from>^/web/guest/resources/-/wiki/Main/(.*)$</from>
-        <to>/web/guest/wiki/-/wiki/page/$1</to>
-    </rule>
+    <!--<rule>-->
+        <!--<from>^/web/guest/resources/-/wiki/Main/(.*)$</from>-->
+        <!--<to>/web/guest/wiki/-/wiki/page/$1</to>-->
+    <!--</rule>-->
 
 </urlrewrite>
