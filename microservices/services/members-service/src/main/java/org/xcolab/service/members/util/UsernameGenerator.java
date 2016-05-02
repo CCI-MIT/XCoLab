@@ -35,6 +35,7 @@ public class UsernameGenerator {
         StringBuilder sb = new StringBuilder();
         for (int i = 0, inputValuesSize = inputValues.length; i < inputValuesSize; i++) {
             String value = forceLowercase ? inputValues[i].toLowerCase() : inputValues[i];
+            value = value.replaceAll("\\s+", "");
             if (i < fullComponents) {
                 sb.append(value);
             } else {
