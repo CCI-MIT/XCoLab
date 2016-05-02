@@ -1,5 +1,14 @@
 package org.xcolab.service.members.domain.member;
 
+import static org.jooq.impl.DSL.countDistinct;
+import static org.jooq.impl.DSL.max;
+import static org.jooq.impl.DSL.sum;
+import static org.xcolab.model.Tables.MEMBER;
+import static org.xcolab.model.Tables.POINTS;
+import static org.xcolab.model.Tables.ROLES_CATEGORY;
+import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
+import static org.xcolab.model.Tables.USERS_ROLES;
+
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -15,16 +24,6 @@ import org.xcolab.service.members.exceptions.NotFoundException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-
-import static org.jooq.impl.DSL.countDistinct;
-import static org.jooq.impl.DSL.max;
-import static org.jooq.impl.DSL.sum;
-import static org.xcolab.model.Tables.MEMBER;
-import static org.xcolab.model.Tables.POINTS;
-import static org.xcolab.model.Tables.ROLES_CATEGORY;
-import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
-import static org.xcolab.model.Tables.USERS_ROLES;
-import static org.xcolab.model.Tables.USER_;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
@@ -54,8 +53,8 @@ public class MemberDaoImpl implements MemberDao {
 
         } else {
             return this.dslContext.selectDistinct()
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                     .where(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%"))
                     .orderBy((isAscOrder ? (field.asc()) : (field.desc())))

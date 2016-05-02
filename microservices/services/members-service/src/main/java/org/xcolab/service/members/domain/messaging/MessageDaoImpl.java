@@ -4,20 +4,21 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
-import org.xcolab.service.members.exceptions.NotFoundException;
-import org.xcolab.service.members.wrappers.MessageReceived;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Message;
-import org.xcolab.model.tables.pojos.User_;
+import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.service.members.wrappers.MessageReceived;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 
+import static org.xcolab.model.Tables.MEMBER;
 import static org.xcolab.model.Tables.MESSAGE;
 import static org.xcolab.model.Tables.MESSAGE_RECIPIENT_STATUS;
-import static org.xcolab.model.Tables.USER_;
 
 @Repository
 public class MessageDaoImpl implements MessageDao {
@@ -151,12 +152,12 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public List<User_> getRecipients(long messageId) {
+    public List<Member> getRecipients(long messageId) {
         return dslContext.select()
                 .from(MESSAGE_RECIPIENT_STATUS)
-                .join(USER_).on(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(USER_.USER_ID))
+                .join(MEMBER).on(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(MEMBER.ID_))
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId))
-                .fetchInto(User_.class);
+                .fetchInto(Member.class);
     }
 
     @Override

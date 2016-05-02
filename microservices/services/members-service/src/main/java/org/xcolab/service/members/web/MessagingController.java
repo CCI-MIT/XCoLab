@@ -1,8 +1,5 @@
 package org.xcolab.service.members.web;
 
-import org.xcolab.service.members.domain.messaging.MessageDao;
-import org.xcolab.service.members.exceptions.NotFoundException;
-import org.xcolab.service.members.service.messaging.MessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,11 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Message;
-import org.xcolab.model.tables.pojos.User_;
+import org.xcolab.service.members.domain.messaging.MessageDao;
+import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.service.members.service.messaging.MessagingService;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 public class MessagingController {
@@ -57,7 +59,7 @@ public class MessagingController {
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
-    public List<User_> getMessageRecipients(@PathVariable("messageId") long messageId) throws NotFoundException {
+    public List<Member> getMessageRecipients(@PathVariable("messageId") long messageId) throws NotFoundException {
         if (messageId == 0) {
             throw new NotFoundException("No message id given");
         } else {
