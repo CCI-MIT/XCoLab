@@ -25,7 +25,7 @@ public class ContentDisplayController {
             if (contentArticleId > 0) {
                 final ContentArticle contentArticle = ContentsClient
                         .getContentArticle(contentArticleId);
-                final long version = contentArticle.getMaxVersion();
+                final long version = contentArticle.getMaxVersionId();
                 final ContentArticleVersion contentArticleVersion = ContentsClient
                         .getContentArticleVersion(version);
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
