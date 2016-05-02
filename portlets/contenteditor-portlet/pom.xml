@@ -87,11 +87,11 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!--<dependency>-->
-			<!--<groupId>org.hibernate</groupId>-->
-			<!--<artifactId>hibernate-validator</artifactId>-->
-			<!--<version>5.1.1.Final</version>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.1.1.Final</version>
+		</dependency>
 
         <dependency>
             <groupId>javax.validation</groupId>
