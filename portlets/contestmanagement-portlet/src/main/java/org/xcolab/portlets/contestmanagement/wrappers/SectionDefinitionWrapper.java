@@ -32,9 +32,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by Thomas on 2/13/2015.
- */
 public class SectionDefinitionWrapper implements Serializable {
     private final static Log _log = LogFactoryUtil.getLog(SectionDefinitionWrapper.class);
 

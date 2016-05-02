@@ -9,6 +9,8 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -276,7 +278,12 @@ public class ContestResourcesBean implements Serializable {
         overviewSectionValues.put(OVERVIEW_RULES_TITLE, overviewRulesContent);
 
         overviewSectionValues.put(OVERVIEW_DEADLINE_TITLE, proposalSubmissionEndDate);
-        overviewSectionValues.put(OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE, "See below.");
+
+        for (SectionDefinitionWrapper section : sections) {
+            if (section.getTitle().equals("Judging Criteria") && StringUtils.isNotBlank(section.getContent()))  {
+                overviewSectionValues.put(OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE, "See below.");
+            }
+        }
     }
 }
 
