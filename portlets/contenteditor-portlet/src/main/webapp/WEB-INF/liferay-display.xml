@@ -3,6 +3,6 @@
 
 <display>
 	<category name="category.xcolab">
-		<portlet id="contenteditor" />
+		<portlet id="contenteditor-portlet" />
 	</category>
 </display>
