@@ -173,21 +173,6 @@
   top: 0;
 }
 
-li.ui-menu-item {
-  border-bottom: 1px solid #ccc;
-  background: #fff url("/climatecolab-theme/images/contest-icon-cplus-blue.png") 225px;
-  background-size: 20px;
-  background-repeat: no-repeat;
-}
-
-li.ui-menu-item .ui-state-focus {
-  background-size: 20px;
-  background: #FFF url("/climatecolab-theme/images/contest-icon-cplus-green.png") no-repeat 225px;
-  border: 1px solid #ccc;
-  border-radius: 0;
-  color: #000;
-}
-
 .cmsDetailsBox .addSection {
   margin: 20px;
 }
