@@ -136,7 +136,8 @@ create table xcolab_Contest (
 	show_in_tile_view BOOLEAN,
 	show_in_list_view BOOLEAN,
 	show_in_outline_view BOOLEAN,
-	hideRibbons BOOLEAN
+	hideRibbons BOOLEAN,
+	resourceArticleId LONG
 );
 
 create table xcolab_ContestDebate (

@@ -5,14 +5,16 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.hibernate.validator.constraints.Length;
+
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
-import org.xcolab.utils.WikiUtil;
+import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
+
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 
 public class ContestDescriptionBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -61,15 +63,15 @@ public class ContestDescriptionBean implements Serializable {
     }
 
     public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
-        String oldWikiPageTitle = WikiUtil.getWikiPageTitle(contest);
+        String olcContestName = contest.getContestShortName();
         updateContestDescription(contest);
         updateContestSchedule(contest, scheduleTemplateId);
 
-        if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldWikiPageTitle)) {
+        if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(olcContestName)) {
             contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
             contest.persist();
         }
-        WikiUtil.updateContestWiki(contest, oldWikiPageTitle);
+        WikiPageWrapper.updateContestWiki(contest);
     }
 
     public Long getContestPK() {

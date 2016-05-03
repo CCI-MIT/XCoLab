@@ -2,6 +2,7 @@ package org.xcolab.service.contents.service.contentarticleversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVersionDao;
 

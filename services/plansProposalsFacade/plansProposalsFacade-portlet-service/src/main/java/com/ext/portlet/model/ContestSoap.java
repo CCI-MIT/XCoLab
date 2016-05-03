@@ -64,6 +64,7 @@ public class ContestSoap implements Serializable {
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
     private boolean _hideRibbons;
+    private long _resourceArticleId;
 
     public ContestSoap() {
     }
@@ -121,6 +122,7 @@ public class ContestSoap implements Serializable {
         soapModel.setShow_in_list_view(model.getShow_in_list_view());
         soapModel.setShow_in_outline_view(model.getShow_in_outline_view());
         soapModel.setHideRibbons(model.getHideRibbons());
+        soapModel.setResourceArticleId(model.getResourceArticleId());
 
         return soapModel;
     }
@@ -606,5 +608,13 @@ public class ContestSoap implements Serializable {
 
     public void setHideRibbons(boolean hideRibbons) {
         _hideRibbons = hideRibbons;
+    }
+
+    public long getResourceArticleId() {
+        return _resourceArticleId;
+    }
+
+    public void setResourceArticleId(long resourceArticleId) {
+        _resourceArticleId = resourceArticleId;
     }
 }

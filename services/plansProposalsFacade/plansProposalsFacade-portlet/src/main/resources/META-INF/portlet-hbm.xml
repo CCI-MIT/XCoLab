@@ -237,6 +237,7 @@
 		<property name="show_in_list_view" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="show_in_outline_view" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="hideRibbons" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="resourceArticleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ContestDebateImpl" table="xcolab_ContestDebate">
 		<cache usage="read-write" />

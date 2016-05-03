@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
@@ -34,6 +35,80 @@ public final class ContentsClient {
         }
         ResponseEntity<List<ContentArticle>> response = restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentArticle>>() {
+                });
+
+        return response.getBody();
+    }
+
+    public static ContentArticleVersion getContentArticleVersion(long folderId, String title)
+            throws ContentNotFoundException {
+        final List<ContentArticleVersion> contentArticleVersions = getContentArticleVersions(null,
+                null, folderId, null, null, title);
+        if (contentArticleVersions.isEmpty()) {
+            throw new ContentNotFoundException("No ContentArticleVersion with title " + title
+                    + " found in folder " + folderId);
+        }
+        return contentArticleVersions.get(0);
+    }
+
+    public static ContentArticleVersion getLatestContentArticleVersion(long articleId)
+            throws ContentNotFoundException {
+        final List<ContentArticleVersion> contentArticleVersions = getContentArticleVersions(0,
+                1, null, articleId, null, null);
+        if (contentArticleVersions.isEmpty()) {
+            throw new ContentNotFoundException("No ContentArticleVersion for contentArticleID " + articleId);
+        }
+        return contentArticleVersions.get(0);
+    }
+
+    public static List<ContentArticleVersion> getContentArticleVersions(Integer startRecord,
+            Integer limitRecord, Long folderId, Long contentArticleId,
+            Long contentArticleVersion, String title) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentArticleVersions");
+
+        if (startRecord != null) {
+            uriBuilder.queryParam("startRecord", startRecord);
+        }
+        if (limitRecord != null) {
+            uriBuilder.queryParam("limitRecord", limitRecord);
+        }
+        if (contentArticleId != null) {
+            uriBuilder.queryParam("contentArticleId", contentArticleId);
+        }
+        if (folderId != null) {
+            uriBuilder.queryParam("folderId", folderId);
+        }
+        if (contentArticleVersion != null) {
+            uriBuilder.queryParam("contentArticleVersion", contentArticleVersion);
+        }
+        if (title != null) {
+            uriBuilder.queryParam("title", title);
+        }
+
+        ResponseEntity<List<ContentArticleVersion>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentArticleVersion>>() {
+                });
+
+        return response.getBody();
+    }
+
+    public static List<ContentFolder> getContentFolders() {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentFolders");
+        ResponseEntity<List<ContentFolder>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentFolder>>() {
+                });
+
+        return response.getBody();
+    }
+
+    public static List<ContentFolder> getContentFolders(Long parentFolderId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentFolders")
+                .queryParam("parentFolderId", parentFolderId);
+        ResponseEntity<List<ContentFolder>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentFolder>>() {
                 });
 
         return response.getBody();

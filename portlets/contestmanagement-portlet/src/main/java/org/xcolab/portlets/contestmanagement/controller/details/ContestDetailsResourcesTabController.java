@@ -13,6 +13,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -20,12 +21,13 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import java.io.IOException;
+import java.text.ParseException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.text.ParseException;
 
 @Controller
 @RequestMapping("view")
@@ -90,7 +92,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
         try {
             wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (SystemException | ParseException | PortalException | IOException e) {
+        } catch (SystemException | ParseException | IOException e) {
             _log.warn("Update contest resources failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

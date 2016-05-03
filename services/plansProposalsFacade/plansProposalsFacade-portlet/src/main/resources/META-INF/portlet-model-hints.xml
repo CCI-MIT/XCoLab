@@ -203,6 +203,7 @@
 			<hint name="default-value">true</hint>
 		</field>
 		<field name="hideRibbons" type="boolean" />
+		<field name="resourceArticleId" type="long" />
 	</model>
 	<model name="com.ext.portlet.model.ContestDebate">
 		<field name="id" type="long" />

@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
@@ -15,6 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
@@ -159,7 +159,7 @@ public class ContestResourcesBean implements Serializable {
         Collections.rotate(sections.subList(indexOfDummySectionBaseDefinition - 1, sections.size()), -1);
     }
 
-    public void fillSectionsWithContent(String resourcesContent) throws Exception {
+    public void fillSectionsWithContent(String resourcesContent) {
         contestResourcesHtmlParserUtil.parseDocument(resourcesContent);
         fillBaseSectionsWithContent();
         fillAdditionalSectionsWithContent();
@@ -245,7 +245,7 @@ public class ContestResourcesBean implements Serializable {
     }
 
     public void fillOverviewSectionContent(Contest contest)
-            throws SystemException, ParseException, NoSuchConfigurationAttributeException {
+            throws SystemException, ParseException {
         List<ContestPhase> contestPhaseList = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
         String proposalSubmissionEndDate = "";
         for (ContestPhase contestPhase : contestPhaseList) {

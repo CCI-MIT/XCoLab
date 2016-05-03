@@ -71,6 +71,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
     private boolean _hideRibbons;
+    private long _resourceArticleId;
     private BaseModel<?> _contestRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
@@ -167,6 +168,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
         attributes.put("hideRibbons", getHideRibbons());
+        attributes.put("resourceArticleId", getResourceArticleId());
 
         return attributes;
     }
@@ -488,6 +490,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (hideRibbons != null) {
             setHideRibbons(hideRibbons);
+        }
+
+        Long resourceArticleId = (Long) attributes.get("resourceArticleId");
+
+        if (resourceArticleId != null) {
+            setResourceArticleId(resourceArticleId);
         }
     }
 
@@ -1666,6 +1674,29 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    @Override
+    public long getResourceArticleId() {
+        return _resourceArticleId;
+    }
+
+    @Override
+    public void setResourceArticleId(long resourceArticleId) {
+        _resourceArticleId = resourceArticleId;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setResourceArticleId",
+                        long.class);
+
+                method.invoke(_contestRemoteModel, resourceArticleId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestRemoteModel() {
         return _contestRemoteModel;
     }
@@ -1783,6 +1814,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setShow_in_list_view(getShow_in_list_view());
         clone.setShow_in_outline_view(getShow_in_outline_view());
         clone.setHideRibbons(getHideRibbons());
+        clone.setResourceArticleId(getResourceArticleId());
 
         return clone;
     }
@@ -1844,7 +1876,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(101);
+        StringBundler sb = new StringBundler(103);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1946,6 +1978,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getShow_in_outline_view());
         sb.append(", hideRibbons=");
         sb.append(getHideRibbons());
+        sb.append(", resourceArticleId=");
+        sb.append(getResourceArticleId());
         sb.append("}");
 
         return sb.toString();
@@ -1953,7 +1987,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(154);
+        StringBundler sb = new StringBundler(157);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -2158,6 +2192,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>hideRibbons</column-name><column-value><![CDATA[");
         sb.append(getHideRibbons());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>resourceArticleId</column-name><column-value><![CDATA[");
+        sb.append(getResourceArticleId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

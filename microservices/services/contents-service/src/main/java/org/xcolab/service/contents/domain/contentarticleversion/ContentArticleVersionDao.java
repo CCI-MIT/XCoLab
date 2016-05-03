@@ -12,6 +12,12 @@ public interface ContentArticleVersionDao {
 
     ContentArticleVersion get(Long contentArticleId);
 
+    List<ContentArticleVersion> getVersions();
+    List<ContentArticleVersion> getVersionsForArticle(long articleId);
+
+    List<ContentArticleVersion> findByGiven(Long contentArticleId, Long contentArticleVersion,
+            Long folderId, String title, int startRecord, int limitRecord);
+
     List<ContentArticleVersion> getByFolderId(Long contentFolderId);
 
     ContentArticleVersion getLatestVersionByContentArticleId(Long contentArticleVersionId);
