@@ -28,12 +28,7 @@ import javax.portlet.ResourceResponse;
 @Controller
 @RequestMapping("view")
 public class ContentEditorController {
-/*
-    @RequestMapping
-    public String contentEditor() {
-        return "editor";
-    }
-*/
+    private final Integer THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
 
     @RequestMapping
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
@@ -61,7 +56,7 @@ public class ContentEditorController {
         List<ContentArticleVersion> contentArticles = ContentsClient.getChildArticleVersions(folderId);
         if (contentArticles != null) {
             for (ContentArticleVersion ca : contentArticles) {
-                responseArray.put(articleNode(ca.getTitle(), ca.getContentArticleId().toString()));
+                responseArray.put(articleNode(ca.getTitle(), ca.getContentArticleId()));
             }
         }
 
@@ -153,8 +148,8 @@ public class ContentEditorController {
         return folderNode;
     }
 
-    private JSONObject articleNode(String label, String id) {
-        return treeNode(label, id, "article", false);
+    private JSONObject articleNode(String label, Long id) {
+        return treeNode(label, (THRESHOLD_TO_AVOID_NODE_COLISION+id) + "", "article", false);
     }
 
     private JSONObject folderNode(String label, String id) {

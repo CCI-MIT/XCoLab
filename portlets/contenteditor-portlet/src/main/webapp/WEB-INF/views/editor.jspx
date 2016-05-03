@@ -39,6 +39,7 @@
         var saveArticleVersionURL = '${saveArticleVersionURL}';
         var moveArticleVersionURL = '${moveArticleVersionURL}';
         var ckEditor = null;
+        var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
         jQuery(document).ready(function () {
 
             $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
@@ -66,6 +67,7 @@
                                      onCanMove: function(node) {
                                          if (! node.parent.parent) {
                                              // Example: Cannot move root node
+
                                              return false;
                                          }
                                          else {
@@ -87,7 +89,7 @@
 
                         if (node) {
 
-                            $('#tree-view').tree('selectNode', node);
+                            //$('#tree-view').tree('selectNode', node);
                             newArticleAtFolderId(node.id, node.name);
                         }
                     }
@@ -161,6 +163,7 @@
             $('#contentArticleFolderId').focus();
         }
         function loadArticleVersionContent(id, folderName){
+            id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
 
             var url = getArticleVersionURL;
 
