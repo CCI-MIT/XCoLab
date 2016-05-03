@@ -76,7 +76,7 @@ public class ContestResourcesBean implements Serializable {
     private static final String OVERVIEW_DEADLINE_TITLE = "Deadline:";
     private static final String OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE = "Judging Criteria & Prizes:";
     private static final String OVERVIEW_RULES_CONTENT =
-            "All entrants must agree to the <a href=\"<colab-url/>/web/guest/resources/-/wiki/Main/Contest+rules\" target=\"_blank\"><contest/> Rules</a> and <a href=\"<colab-url/>/web/guest/resources/-/wiki/Main/Terms+of+use\" target=\"_blank\">Terms of Use</a>";
+            "All entrants must agree to the <rules-link/> and <a href=\"/web/guest/resources/-/wiki/Main/Terms+of+use\" target=\"_blank\">Terms of Use</a>";
 
 
     private final List<SectionDefinitionWrapper> baseSections;
@@ -273,8 +273,9 @@ public class ContestResourcesBean implements Serializable {
                 TemplateReplacementUtil.replaceContestTypeStrings(OVERVIEW_SUBMIT_PROPOSALS_TITLE, contestType),
                 overviewSubmitProposalsContent.replace("<contest-link-url/>", contestLinkUrl));
 
-        final String overviewRulesContent = TemplateReplacementUtil.replaceContestTypeStrings(
-                TemplateReplacementUtil.replacePlatformConstants(OVERVIEW_RULES_CONTENT), contestType);
+        final String rulesLink = "<a href=\"" + contestType.getRulesPageUrl()
+                + "\" target=\"_blank\">" + contestType.getRulesPageName() + "</a>";
+        final String overviewRulesContent = OVERVIEW_RULES_CONTENT.replace("<rules-link/>", rulesLink);
         overviewSectionValues.put(OVERVIEW_RULES_TITLE, overviewRulesContent);
 
         overviewSectionValues.put(OVERVIEW_DEADLINE_TITLE, proposalSubmissionEndDate);
