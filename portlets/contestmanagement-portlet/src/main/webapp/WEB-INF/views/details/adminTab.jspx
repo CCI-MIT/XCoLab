@@ -145,8 +145,8 @@
 					<div class="clearfix"><!-- --></div>
 					<div class="addpropInputContainer">
 						<form:select path="hideRibbons">
-							<form:option value="1" label="hide" />
-							<form:option value="0" label="show" />
+							<form:option value="true" label="hide" />
+							<form:option value="false" label="show" />
 						</form:select>
 
 						<div class="reg_errors"><!--  -->
