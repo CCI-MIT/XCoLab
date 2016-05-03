@@ -7,7 +7,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.members.PermissionsClient;
-
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.utils.MessageLimitManager;

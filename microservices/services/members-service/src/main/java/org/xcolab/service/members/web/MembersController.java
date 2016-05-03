@@ -239,6 +239,5 @@ public class MembersController {
         } else {
             return this.roleService.getMemberRolesInContest(memberId,contestId);
         }
-
     }
 }

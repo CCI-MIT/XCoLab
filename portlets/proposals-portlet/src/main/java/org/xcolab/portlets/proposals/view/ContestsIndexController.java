@@ -130,7 +130,8 @@ public class ContestsIndexController extends BaseProposalsController {
 
         //PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
 
-        boolean showContestManagementLink = PermissionsClient.canAdminAll(proposalsContext.getUser(request).getUserId()) ; //permissionChecker.isOmniadmin();
+        boolean showContestManagementLink = PermissionsClient
+                .canAdminAll(proposalsContext.getUser(request).getUserId()) ; //permissionChecker.isOmniadmin();
         model.addAttribute("showContestManagementLink", showContestManagementLink);
 
         model.addAttribute("showContestDisplayOptions",

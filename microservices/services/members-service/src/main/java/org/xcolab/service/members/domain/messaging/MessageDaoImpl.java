@@ -53,12 +53,10 @@ public class MessageDaoImpl implements MessageDao {
             query.addConditions(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(recipientId));
         }
         if (isArchived != null) {
-            final byte isArchivedByte = (byte) (isArchived ? 1 : 0);
-            query.addConditions(MESSAGE_RECIPIENT_STATUS.ARCHIVED.eq(isArchivedByte));
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.ARCHIVED.eq(isArchived));
         }
         if (isOpened != null) {
-            final byte isOpenedByte = (byte) (isOpened ? 1 : 0);
-            query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpenedByte));
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpened));
         }
 
         return query.fetchOne(0, Integer.class);
@@ -74,21 +72,20 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public int countByReceivingUserArchived(long userId, boolean isArchived) {
-        final byte isArchivedByte = (byte) (isArchived ? 1 : 0);
+
         return dslContext.selectCount()
                 .from(MESSAGE_RECIPIENT_STATUS)
                 .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
-                        .and(MESSAGE_RECIPIENT_STATUS.ARCHIVED.equal(isArchivedByte))
+                        .and(MESSAGE_RECIPIENT_STATUS.ARCHIVED.equal(isArchived))
                 ).fetchOne(0, Integer.class);
     }
 
     @Override
     public int countByReceivingUserOpened(long userId, boolean isOpened) {
-        final byte isOpenedByte = (byte) (isOpened ? 1 : 0);
         return dslContext.selectCount()
                 .from(MESSAGE_RECIPIENT_STATUS)
                 .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
-                        .and(MESSAGE_RECIPIENT_STATUS.OPENED.equal(isOpenedByte))
+                        .and(MESSAGE_RECIPIENT_STATUS.OPENED.equal(isOpened))
                 ).fetchOne(0, Integer.class);
     }
 
@@ -108,12 +105,10 @@ public class MessageDaoImpl implements MessageDao {
             query.addConditions(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(recipientId));
         }
         if (isArchived != null) {
-            final byte isArchivedByte = (byte) (isArchived ? 1 : 0);
-            query.addConditions(MESSAGE_RECIPIENT_STATUS.ARCHIVED.eq(isArchivedByte));
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.ARCHIVED.eq(isArchived));
         }
         if (isOpened != null) {
-            final byte isOpenedByte = (byte) (isOpened ? 1 : 0);
-            query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpenedByte));
+            query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpened));
         }
         query.addOrderBy(MESSAGE.CREATE_DATE.desc());
         query.addLimit(startRecord, limitRecord);
@@ -122,12 +117,12 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public List<Message> findByReceivingUserArchived(int startRecord, int limitRecord, long userId, boolean isArchived) {
-        final byte isArchivedByte = (byte) (isArchived ? 1 : 0);
+
         return dslContext.select()
                 .from(MESSAGE)
                 .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.equal(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
                 .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
-                        .and(MESSAGE_RECIPIENT_STATUS.ARCHIVED.equal(isArchivedByte))
+                        .and(MESSAGE_RECIPIENT_STATUS.ARCHIVED.equal(isArchived))
                 ).orderBy(MESSAGE.CREATE_DATE.desc())
                 .limit(startRecord, limitRecord).fetchInto(MessageReceived.class);
     }
@@ -162,9 +157,8 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public void setArchived(long messageId, long memberId, boolean isArchived) {
-        final byte isArchivedByte = (byte) (isArchived ? 1 : 0);
         dslContext.update(MESSAGE_RECIPIENT_STATUS)
-                .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, isArchivedByte)
+                .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, isArchived)
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId)
                         .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(memberId)))
                 .execute();
@@ -172,9 +166,8 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public void setOpened(long messageId, long memberId, boolean isOpened) {
-        final byte isOpenedByte = (byte) (isOpened ? 1 : 0);
         dslContext.update(MESSAGE_RECIPIENT_STATUS)
-                .set(MESSAGE_RECIPIENT_STATUS.OPENED, isOpenedByte)
+                .set(MESSAGE_RECIPIENT_STATUS.OPENED, isOpened)
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId)
                         .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(memberId)))
                 .execute();
@@ -200,8 +193,8 @@ public class MessageDaoImpl implements MessageDao {
                 .set(MESSAGE_RECIPIENT_STATUS.MESSAGE_RECIPIENT_ID, messageRecipientStatusId)
                 .set(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID, messageId)
                 .set(MESSAGE_RECIPIENT_STATUS.USER_ID, recipientId)
-                .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, (byte) 0)
-                .set(MESSAGE_RECIPIENT_STATUS.OPENED, (byte) 0)
+                .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, false)
+                .set(MESSAGE_RECIPIENT_STATUS.OPENED, false)
                 .execute();
     }
 }

@@ -3,15 +3,16 @@ package org.xcolab.mail;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
+
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.utils.TemplateReplacementUtil;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 /**
  * Created by Mente on 29/07/15.
@@ -47,20 +48,21 @@ public class EmailToAdminDispatcher {
     public void sendMessage() {
         try {
             InternetAddress fromAddress = TemplateReplacementUtil.getAdminFromEmailAddress();
-            MailEngine.send(fromAddress, getRecipientAddresses(), subject, body, true);
-        } catch (MailEngineException | AddressException | UnsupportedEncodingException | SystemException e) {
+            //MailEngine.send(fromAddress, getRecipientAddresses(), subject, body, true);
+            EmailClient.sendEmail(fromAddress.getAddress(), getRecipientAddresses(), subject, body, true, fromAddress.getAddress());
+        } catch (AddressException | UnsupportedEncodingException | SystemException e) {
             _log.error("Could not send error message", e);
         }
     }
 
-    private InternetAddress[] getRecipientAddresses() throws AddressException {
-        List<InternetAddress> addressTo = new ArrayList<>();
+    private List<String> getRecipientAddresses() throws AddressException {
+        List<String> addressTo = new ArrayList<>();
         for (Recipient recipient : ADMIN_EMAIL_RECIPIENTS) {
             if (recipient.verbosity >= messageVerbosity) {
-                addressTo.add(new InternetAddress(recipient.email));
+                addressTo.add((recipient.email));
             }
         }
-        return addressTo.toArray(new InternetAddress[addressTo.size()]);
+        return addressTo;
     }
 
     private static class Recipient {
