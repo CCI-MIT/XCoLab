@@ -169,6 +169,8 @@
         <column name="menuItemName" type="String"/>
         <column name="hasDiscussion" type="boolean" />
         <column name="suggestionContestId" type="long" />
+        <column name="rulesPageName" type="String" />
+        <column name="rulesPageUrl" type="String" />
     </entity>
     
     <entity name="ContestDebate" local-service="true">

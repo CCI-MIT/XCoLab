@@ -32,10 +32,12 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
     public String menuItemName;
     public boolean hasDiscussion;
     public long suggestionContestId;
+    public String rulesPageName;
+    public String rulesPageUrl;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(id);
@@ -61,6 +63,10 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         sb.append(hasDiscussion);
         sb.append(", suggestionContestId=");
         sb.append(suggestionContestId);
+        sb.append(", rulesPageName=");
+        sb.append(rulesPageName);
+        sb.append(", rulesPageUrl=");
+        sb.append(rulesPageUrl);
         sb.append("}");
 
         return sb.toString();
@@ -129,6 +135,18 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         contestTypeImpl.setHasDiscussion(hasDiscussion);
         contestTypeImpl.setSuggestionContestId(suggestionContestId);
 
+        if (rulesPageName == null) {
+            contestTypeImpl.setRulesPageName(StringPool.BLANK);
+        } else {
+            contestTypeImpl.setRulesPageName(rulesPageName);
+        }
+
+        if (rulesPageUrl == null) {
+            contestTypeImpl.setRulesPageUrl(StringPool.BLANK);
+        } else {
+            contestTypeImpl.setRulesPageUrl(rulesPageUrl);
+        }
+
         contestTypeImpl.resetOriginalValues();
 
         return contestTypeImpl;
@@ -148,6 +166,8 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
         menuItemName = objectInput.readUTF();
         hasDiscussion = objectInput.readBoolean();
         suggestionContestId = objectInput.readLong();
+        rulesPageName = objectInput.readUTF();
+        rulesPageUrl = objectInput.readUTF();
     }
 
     @Override
@@ -211,5 +231,17 @@ public class ContestTypeCacheModel implements CacheModel<ContestType>,
 
         objectOutput.writeBoolean(hasDiscussion);
         objectOutput.writeLong(suggestionContestId);
+
+        if (rulesPageName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(rulesPageName);
+        }
+
+        if (rulesPageUrl == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(rulesPageUrl);
+        }
     }
 }

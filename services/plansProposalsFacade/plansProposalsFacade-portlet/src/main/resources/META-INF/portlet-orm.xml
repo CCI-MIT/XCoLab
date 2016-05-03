@@ -385,6 +385,8 @@
 			<basic name="menuItemName" />
 			<basic name="hasDiscussion" />
 			<basic name="suggestionContestId" />
+			<basic name="rulesPageName" />
+			<basic name="rulesPageUrl" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

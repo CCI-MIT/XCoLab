@@ -246,7 +246,9 @@ create table xcolab_ContestType (
 	friendlyUrlStringProposal VARCHAR(75) null,
 	menuItemName VARCHAR(75) null,
 	hasDiscussion BOOLEAN,
-	suggestionContestId LONG
+	suggestionContestId LONG,
+	rulesPageName VARCHAR(75) null,
+	rulesPageUrl VARCHAR(75) null
 );
 
 create table xcolab_DiscussionCategory (

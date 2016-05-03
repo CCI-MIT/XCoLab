@@ -310,6 +310,8 @@
 		<field name="menuItemName" type="String" />
 		<field name="hasDiscussion" type="boolean" />
 		<field name="suggestionContestId" type="long" />
+		<field name="rulesPageName" type="String" />
+		<field name="rulesPageUrl" type="String" />
 	</model>
 	<model name="com.ext.portlet.model.DiscussionCategory">
 		<field name="pk" type="long" />
