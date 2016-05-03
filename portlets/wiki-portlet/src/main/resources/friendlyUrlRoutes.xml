@@ -9,13 +9,7 @@
     </route>
 
     <route>
-        <pattern>/resource/{contestUrlName}</pattern>
-        <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
-        <implicit-parameter name="show">resource</implicit-parameter>
-    </route>
-
-    <route>
-        <pattern>/resource/{contestUrlName}/year/{contestYear}</pattern>
+        <pattern>/resources/{contestYear}/{contestUrlName}</pattern>
         <generated-parameter name="contestUrlName">{contestUrlName}</generated-parameter>
         <generated-parameter name="contestYear">{contestYear}</generated-parameter>
         <implicit-parameter name="show">resource</implicit-parameter>

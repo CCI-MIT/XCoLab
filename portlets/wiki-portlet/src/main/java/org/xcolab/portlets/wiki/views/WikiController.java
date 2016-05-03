@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
+import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.wiki.util.WikiPreferences;
 
 import java.util.List;
@@ -47,9 +51,18 @@ public class WikiController {
 
     @RequestMapping(params = "show=resource")
     public String showResourcePage(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam String contestUrlName, @RequestParam(required = false) Long contestYear) {
+            @RequestParam String contestUrlName, @RequestParam Long contestYear)
+            throws ContestNotFoundException {
 
+        final Contest contest = ContestClient.getContest(contestUrlName, contestYear);
 
+        if (contest.getResourceArticleId() > 0) {
+            final ContentArticle contentArticle = ContentsClient
+                    .getContentArticle(contest.getResourceArticleId());
+            ContentArticleVersion contentArticleVersion =
+                    ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+            model.addAttribute("contentArticleVersion", contentArticleVersion);
+        }
 
         return "wiki";
     }

@@ -51,6 +51,16 @@ public final class ContentsClient {
         return contentArticleVersions.get(0);
     }
 
+    public static ContentArticleVersion getLatestContentArticleVersion(long articleId)
+            throws ContentNotFoundException {
+        final List<ContentArticleVersion> contentArticleVersions = getContentArticleVersions(0,
+                1, null, articleId, null, null);
+        if (contentArticleVersions.isEmpty()) {
+            throw new ContentNotFoundException("No ContentArticleVersion for contentArticleID " + articleId);
+        }
+        return contentArticleVersions.get(0);
+    }
+
     public static List<ContentArticleVersion> getContentArticleVersions(Integer startRecord,
             Integer limitRecord, Long folderId, Long contentArticleId,
             Long contentArticleVersion, String title) {
