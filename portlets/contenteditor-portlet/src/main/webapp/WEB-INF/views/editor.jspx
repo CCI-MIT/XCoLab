@@ -6,13 +6,18 @@
     <script src="${pageContext.request.contextPath}/js/tree.jquery.js"><!-- --></script>
     <script src="${pageContext.request.contextPath}/js/ckeditor/ckeditor.js"><!-- --></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/spin.min.js"><!-- --></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.loadmask.spin.js"><!-- --></script>
+
 
     <portlet:defineObjects />
+
 
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jqtree.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"><!-- --></link>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery.loadmask.spin.css"><!-- --></link>
 
     <portlet:resourceURL var="contentEditorListFolderURL" id="contentEditorListFolder">
     </portlet:resourceURL>
@@ -35,6 +40,10 @@
         var moveArticleVersionURL = '${moveArticleVersionURL}';
         var ckEditor = null;
         jQuery(document).ready(function () {
+
+            $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
+
+            CKEDITOR.config.contentsCss = '/climatecolab-theme/css/style.css';
             $('#tree-view').tree({
                                      //data:data,
                                      onCanSelectNode: function(node) {
@@ -47,8 +56,10 @@
                                          // The link has an url '#node-[id]' and a data property 'node-id'.
                                          if(node.kind == "folder")
                                          $li.find('.jqtree-element').append(
-                                                 '<a href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
+                                                 '&nbsp;&nbsp;<a href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
                                                  node.id +'">+ article</a>'
+                                                // '&nbsp;&nbsp;<a href="#node-'+ node.id +'" class="addFolder" data-node-id="'+
+                                                // node.id +'">+ folder</a>'
                                          );//<small>
                                      },
 
@@ -82,12 +93,34 @@
                     }
             );
 
+            $('#tree-view').on(
+                    'click', '.addFolder',
+                    function(e) {
+                        // Get the id from the 'node-id' data property
+                        var node_id = $(e.target).data('node-id');
+
+                        // Get the node from the tree
+                        var node = $('#tree-view').tree('getNodeById', node_id);
+
+                        if (node) {
+                            $('#tree-view').tree('selectNode', node);
+
+                            //newArticleAtFolderId(node.id, node.name);
+                        }
+                    }
+            );
             $('#tree-view').bind(
                     'tree.click',
                     function(event) {
                         var node = event.node;
                         if(node.kind == "article"){
+                            $("#article-view").unmask();
+                            $("#article-view").mask()
                             loadArticleVersionContent(node.id, node.parent.name);
+                        }else{
+                            /*
+                            event.preventDefault();
+                            return false;*/
                         }
                     }
             );
@@ -95,7 +128,7 @@
                     'tree.move',
                     function(event) {
                         event.preventDefault();
-                        if (confirm('Would you like to move the article?')) {
+                        if (confirm('Would you like to move the article to folder: '+event.move_info.target_node.name+'?')) {
                             event.move_info.do_move();
                             moveArticle(event.move_info.moved_node.id, event.move_info.target_node.id);
                         }
@@ -119,6 +152,7 @@
             return cell;
         }
         function newArticleAtFolderId(folderId, folderName){
+            $("#article-view").unmask()
             $('#contentArticleId').attr("value", "");
             $("#folderName").html("Parent folder: " +folderName);
             $('#contentArticleFolderId').attr("value",folderId);
@@ -149,15 +183,18 @@
                 input1.attr("value",data.title);
 
                 ckEditor.setReadOnly(false);
+                $("#article-view").unmask()
 
             });
 
         }
         function saveArticle(){
+
             if($('#contentArticleTitle').val() == ""){
                 alert("Title field is mandatory!");
                 return false;
             }
+            $("#article-view").mask()
             var url = saveArticleVersionURL;
 
 
@@ -174,13 +211,14 @@
                 $("#infoBox").html("Article updated successfully!");
                 $("#infoBox").show();
                 $("#infoBox").delay(5000).fadeOut('slow');
+                $("#article-view").unmask()
                 $('#tree-view').tree('reload');
 
             });
         }
         function moveArticle(articleId, folderId){
 
-
+                $(".treeContainer").mask();
                 var url = moveArticleVersionURL;
 
                 var parameters={articleId : articleId, folderId: folderId };
@@ -192,6 +230,7 @@
                     $("#infoBox").show();
                     $("#infoBox").delay(5000).fadeOut('slow');
                     $('#tree-view').tree('reload');
+                    $(".treeContainer").unmask()
 
                 });
 
