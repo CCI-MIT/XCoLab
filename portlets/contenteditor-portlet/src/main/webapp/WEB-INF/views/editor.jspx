@@ -132,7 +132,7 @@
                         event.preventDefault();
                         if (confirm('Would you like to move the article to folder: '+event.move_info.target_node.name+'?')) {
                             event.move_info.do_move();
-                            moveArticle(event.move_info.moved_node.id, event.move_info.target_node.id);
+                            moveArticle(event.move_info.moved_node.id, event.move_info.target_node.id,event.move_info.target_node.name);
                         }
                     });
 
@@ -219,12 +219,12 @@
 
             });
         }
-        function moveArticle(articleId, folderId){
-
+        function moveArticle(articleId, folderId, folderName){
+                var articleIdNoThreshold = articleId - THRESHOLD_TO_AVOID_NODE_COLISION;
                 $(".treeContainer").mask();
                 var url = moveArticleVersionURL;
 
-                var parameters={articleId : articleId, folderId: folderId };
+                var parameters={articleId : articleIdNoThreshold, folderId: folderId };
 
                 $.post(url ,parameters , function (response) {
                     var responseData = JSON.parse(response);
@@ -234,6 +234,7 @@
                     $("#infoBox").delay(5000).fadeOut('slow');
                     $('#tree-view').tree('reload');
                     $(".treeContainer").unmask()
+                    loadArticleVersionContent(articleId, folderName);
 
                 });
 
