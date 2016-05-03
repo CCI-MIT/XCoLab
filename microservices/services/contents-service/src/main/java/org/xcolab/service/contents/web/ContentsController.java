@@ -173,7 +173,7 @@ public class ContentsController {
     }
 
     @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.PUT)
-    public String updateContentArticle(@RequestBody ContentArticleVersion contentArticleVersion,
+    public String updateContentArticleVersion(@RequestBody ContentArticleVersion contentArticleVersion,
                                        @PathVariable("articleVersionId") Long articleVersionId) throws NotFoundException {
 
         if (articleVersionId == null || articleVersionId == 0) {

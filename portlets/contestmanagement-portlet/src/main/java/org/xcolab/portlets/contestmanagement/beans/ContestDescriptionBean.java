@@ -63,11 +63,11 @@ public class ContestDescriptionBean implements Serializable {
     }
 
     public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
-        String olcContestName = contest.getContestShortName();
+        String oldContestName = contest.getContestShortName();
         updateContestDescription(contest);
         updateContestSchedule(contest, scheduleTemplateId);
 
-        if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(olcContestName)) {
+        if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {
             contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
             contest.persist();
         }

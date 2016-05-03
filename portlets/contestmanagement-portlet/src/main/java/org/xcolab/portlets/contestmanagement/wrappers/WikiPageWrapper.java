@@ -51,12 +51,11 @@ public class WikiPageWrapper {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {
-            ContentArticleVersion newVersion = new ContentArticleVersion();
-            newVersion.setTitle(contest.getContestShortName());
-            newVersion.setContent(updatedResourcesContent);
-            newVersion.setContentArticleId(contentArticle.getContentArticleId());
-            newVersion.setAuthorId(loggedInUserId);
-            ContentsClient.createContentArticleVersion(newVersion);
+            contentArticleVersion.setTitle(contest.getContestShortName());
+            contentArticleVersion.setContent(updatedResourcesContent);
+            contentArticleVersion.setContentArticleId(contentArticle.getContentArticleId());
+            contentArticleVersion.setAuthorId(loggedInUserId);
+            ContentsClient.updateContentArticleVersion(contentArticleVersion);
         }
     }
 
