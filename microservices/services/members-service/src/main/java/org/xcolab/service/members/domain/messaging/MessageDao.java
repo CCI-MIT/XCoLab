@@ -1,8 +1,8 @@
 package org.xcolab.service.members.domain.messaging;
 
-import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Message;
-import org.xcolab.model.tables.pojos.User_;
+import org.xcolab.service.members.exceptions.NotFoundException;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public interface MessageDao {
     List<Message> findByReceivingUser(int startRecord, int limitRecord, long userId);
     List<Message> findBySendingUser(int startRecord, int limitRecord, long userId);
 
-    List<User_> getRecipients(long messageId);
+    List<Member> getRecipients(long messageId);
 
     void setArchived(long messageId, long memberId, boolean isArchived);
     void setOpened(long messageId, long memberId, boolean isOpened);

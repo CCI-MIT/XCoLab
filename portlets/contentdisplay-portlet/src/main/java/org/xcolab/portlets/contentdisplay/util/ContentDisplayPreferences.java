@@ -19,7 +19,7 @@ public class ContentDisplayPreferences {
 
     public ContentDisplayPreferences(PortletRequest request) {
         PortletPreferences preferences = request.getPreferences();
-        contentArticleId = preferences.getValue(CONTENT_ARTICLE_ID, "0");
+        contentArticleId = preferences.getValue(CONTENT_ARTICLE_ID, "1");
     }
 
     public String getContentArticleId() {

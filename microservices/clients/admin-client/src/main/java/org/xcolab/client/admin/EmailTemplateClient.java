@@ -44,8 +44,7 @@ public final class EmailTemplateClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<ContestEmailTemplate> entity = new HttpEntity(contestEmailTemplate, headers);
-
+        HttpEntity<ContestEmailTemplate> entity = new HttpEntity<>(contestEmailTemplate, headers);
 
         restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.POST, entity,

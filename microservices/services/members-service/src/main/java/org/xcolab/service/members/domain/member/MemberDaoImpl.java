@@ -8,7 +8,6 @@ import static org.xcolab.model.Tables.POINTS;
 import static org.xcolab.model.Tables.ROLES_CATEGORY;
 import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
 import static org.xcolab.model.Tables.USERS_ROLES;
-import static org.xcolab.model.Tables.USER_;
 
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -54,8 +53,8 @@ public class MemberDaoImpl implements MemberDao {
 
         } else {
             return this.dslContext.selectDistinct()
-                    .from(USER_)
-                    .join(USERS_ROLES).on(USER_.USER_ID.equal(USERS_ROLES.USER_ID))
+                    .from(MEMBER)
+                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                     .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                     .where(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%"))
                     .orderBy((isAscOrder ? (field.asc()) : (field.desc())))
@@ -86,7 +85,7 @@ public class MemberDaoImpl implements MemberDao {
                                                       boolean isAscOrder) {
         Field<Object> activityCount = this.dslContext.selectCount()
                 .from(SOCIAL_ACTIVITY)
-                .where(SOCIAL_ACTIVITY.USER_ID.equal(USER_.USER_ID))
+                .where(SOCIAL_ACTIVITY.USER_ID.equal(MEMBER.ID_))
                 .asField("activityCount");
         return this.dslContext
                 .select(MEMBER.fields())

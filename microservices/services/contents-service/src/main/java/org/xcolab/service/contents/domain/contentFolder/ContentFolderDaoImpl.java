@@ -1,17 +1,18 @@
 package org.xcolab.service.contents.domain.contentFolder;
 
-import static org.xcolab.model.Tables.CONTENT_FOLDER;
-
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.model.tables.records.ContentFolderRecord;
 
 import java.util.List;
 
+import static org.xcolab.model.Tables.CONTENT_FOLDER;
+
 @Repository
-public class ContentFolderDaoImpl implements ContentFolderDao{
+public class ContentFolderDaoImpl implements ContentFolderDao {
     @Autowired
     private DSLContext dslContext;
 
@@ -20,7 +21,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao{
         ContentFolderRecord ret = this.dslContext.insertInto(CONTENT_FOLDER)
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_DESCRIPTION, contentFolder.getContentFolderDescription())
-                .set(CONTENT_FOLDER.CONTENT_FOLDER_ID,contentFolder.getParentFolderId())
+                .set(CONTENT_FOLDER.CONTENT_FOLDER_ID, contentFolder.getParentFolderId())
                 .returning(CONTENT_FOLDER.CONTENT_FOLDER_ID)
                 .fetchOne();
         if (ret != null) {
@@ -58,10 +59,17 @@ public class ContentFolderDaoImpl implements ContentFolderDao{
     }
 
     @Override
-    public List<ContentFolder> getFoldersInFolder(long parentFolderId) {
-        return dslContext.select()
-                .from(CONTENT_FOLDER)
-                .where(CONTENT_FOLDER.PARENT_FOLDER_ID.eq(parentFolderId))
-                .fetchInto(ContentFolder.class);
+    public List<ContentFolder> getChildFolders(Long contentFolderId) {
+        if (contentFolderId == null) {
+            return this.dslContext.select()
+                    .from(CONTENT_FOLDER)
+                    .where(CONTENT_FOLDER.PARENT_FOLDER_ID.isNull())
+                    .fetch().into(ContentFolder.class);
+        } else {
+            return this.dslContext.select()
+                    .from(CONTENT_FOLDER)
+                    .where(CONTENT_FOLDER.PARENT_FOLDER_ID.eq(contentFolderId))
+                    .fetch().into(ContentFolder.class);
+        }
     }
 }

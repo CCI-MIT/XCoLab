@@ -26,10 +26,13 @@ public final class ContentsClient {
     private ContentsClient() {
     }
 
+
     public static List<ContentArticle> getContentArticles(Long folderId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticles")
-                .queryParam("folderId", folderId);
+                EUREKA_APPLICATION_ID + "/contentArticles");
+        if (folderId != null) {
+            uriBuilder.queryParam("folderId", folderId);
+        }
         ResponseEntity<List<ContentArticle>> response = restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentArticle>>() {
                 });
@@ -107,7 +110,8 @@ public final class ContentsClient {
 
         return restTemplate.getForObject(uriBuilder.build().toString(), ContentArticle.class);
     }
-    public static ContentArticle createContentArticle(ContentArticle contentArticle){
+
+    public static ContentArticle createContentArticle(ContentArticle contentArticle) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contentArticles/");
@@ -116,14 +120,14 @@ public final class ContentsClient {
 
         HttpEntity<ContentArticle> entity = new HttpEntity<>(contentArticle, headers);
 
-        return restTemplate.postForObject(uriBuilder.build().toString(),  entity,
+        return restTemplate.postForObject(uriBuilder.build().toString(), entity,
                 ContentArticle.class);
     }
 
-    public static void updateContentArticle(ContentArticle contentArticle){
+    public static void updateContentArticle(ContentArticle contentArticle) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticles/"+ contentArticle.getContentArticleId());
+                EUREKA_APPLICATION_ID + "/contentArticles/" + contentArticle.getContentArticleId());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -140,7 +144,14 @@ public final class ContentsClient {
         return restTemplate.getForObject(uriBuilder.build().toString(), ContentArticleVersion.class);
     }
 
-    public static ContentArticleVersion createContentArticleVersion(ContentArticleVersion contentArticleVersion){
+    public static ContentArticleVersion getLatestContentArticleVersionByContentArticleId(Long contentArticleId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentArticles/" + contentArticleId + "/latestContentArticleVersion/");
+
+        return restTemplate.getForObject(uriBuilder.build().toString(), ContentArticleVersion.class);
+    }
+
+    public static ContentArticleVersion createContentArticleVersion(ContentArticleVersion contentArticleVersion) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contentArticleVersions/");
@@ -149,13 +160,14 @@ public final class ContentsClient {
 
         HttpEntity<ContentArticleVersion> entity = new HttpEntity<>(contentArticleVersion, headers);
 
-        return restTemplate.postForObject(uriBuilder.build().toString(),  entity,
+        return restTemplate.postForObject(uriBuilder.build().toString(), entity,
                 ContentArticleVersion.class);
     }
-    public static void updateContentArticleVersion(ContentArticleVersion contentArticleVersion){
+
+    public static void updateContentArticleVersion(ContentArticleVersion contentArticleVersion) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions/"+ contentArticleVersion.getContentArticleVersionId());
+                EUREKA_APPLICATION_ID + "/contentArticleVersions/" + contentArticleVersion.getContentArticleVersionId());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -171,7 +183,8 @@ public final class ContentsClient {
 
         return restTemplate.getForObject(uriBuilder.build().toString(), ContentFolder.class);
     }
-    public static ContentFolder createContentFolder(ContentFolder contentFolder){
+
+    public static ContentFolder createContentFolder(ContentFolder contentFolder) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contentFolders/");
@@ -180,13 +193,14 @@ public final class ContentsClient {
 
         HttpEntity<ContentFolder> entity = new HttpEntity<>(contentFolder, headers);
 
-        return restTemplate.postForObject(uriBuilder.build().toString(),  entity,
+        return restTemplate.postForObject(uriBuilder.build().toString(), entity,
                 ContentFolder.class);
     }
-    public static void updateContentFolder(ContentFolder contentFolder){
+
+    public static void updateContentFolder(ContentFolder contentFolder) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentFolders/"+ contentFolder.getContentFolderId());
+                EUREKA_APPLICATION_ID + "/contentFolders/" + contentFolder.getContentFolderId());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -195,4 +209,25 @@ public final class ContentsClient {
         restTemplate.exchange(uriBuilder.build().toString(),
                 HttpMethod.PUT, entity, String.class);
     }
+
+    public static List<ContentFolder> getChildFolders(Long folderId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentFolders/" + folderId + "/childFolders/");
+
+        ResponseEntity<List<ContentFolder>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentFolder>>() {
+                });
+        return response.getBody();
+    }
+
+    public static List<ContentArticleVersion> getChildArticleVersions(Long folderId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/contentFolders/" + folderId + "/contentArticlesVersions/");
+
+        ResponseEntity<List<ContentArticleVersion>> response = restTemplate.exchange(uriBuilder.build().toString(),
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ContentArticleVersion>>() {
+                });
+        return response.getBody();
+    }
+
 }

@@ -1,17 +1,18 @@
 package org.xcolab.service.contents.domain.contentarticleversion;
 
-import static org.xcolab.model.Tables.CONTENT_ARTICLE;
-import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
-
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.records.ContentArticleVersionRecord;
 
 import java.util.List;
+
+import static org.xcolab.model.Tables.CONTENT_ARTICLE;
+import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
 
 @Repository
 public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
@@ -32,7 +33,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .fetchOne();
 
         if (ret != null) {
-            contentArticleVersion.setContentArticleId(ret.getValue(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID));
+            contentArticleVersion.setContentArticleVersionId(ret.getValue(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID));
             return contentArticleVersion;
         } else {
             return null;
@@ -62,10 +63,34 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
-    public ContentArticleVersion getByFolderId(Long contentFolderId) {
+    public List<ContentArticleVersion> getByFolderId(Long contentFolderId) {
+        if (contentFolderId == null) {
+            return this.dslContext.select()
+                    .from(CONTENT_ARTICLE_VERSION)
+                    .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
+                    .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.isNull())
+                    .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID))
+                    .fetch()
+                    .into(ContentArticleVersion.class);
+        }
+        else {
+            return this.dslContext.select()
+                    .from(CONTENT_ARTICLE_VERSION)
+                    .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
+                    .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))
+                    .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID))
+                    .fetch()
+                    .into(ContentArticleVersion.class);
+        }
+    }
+
+    @Override
+    public ContentArticleVersion getLatestVersionByContentArticleId(Long contentArticleVersionId) {
         return this.dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
-                .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))
+                .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
+                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleVersionId))
+                .and(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.equal(CONTENT_ARTICLE.MAX_VERSION_ID))
                 .fetchOneInto(ContentArticleVersion.class);
     }
 

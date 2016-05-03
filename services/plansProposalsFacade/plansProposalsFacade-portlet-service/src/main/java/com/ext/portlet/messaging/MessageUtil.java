@@ -10,11 +10,12 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.legacy.enums.MessageConstants;
 import org.xcolab.client.members.legacy.enums.MessageType;
@@ -22,13 +23,14 @@ import org.xcolab.client.members.pojo.Message;
 import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.TemplateReplacementUtil;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 public final class MessageUtil {
 
@@ -152,7 +154,7 @@ public final class MessageUtil {
 
         InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
         InternetAddress toEmail = new InternetAddress(to.getEmailAddress());
-        MailEngine.send(fromEmail, toEmail, subject, message, true);
+        EmailClient.sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject, message, true, fromEmail.getAddress());
     }
 
     private static String createMessageURL(Message m)

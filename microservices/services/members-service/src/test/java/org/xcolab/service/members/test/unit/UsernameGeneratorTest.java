@@ -8,8 +8,8 @@ public class UsernameGeneratorTest {
     @Test
     public void getFull() throws Exception {
         UsernameGenerator usernameGenerator =
-                new UsernameGenerator(new String[]{"john", "doe"}, true, Integer.MAX_VALUE);
-        Assert.assertEquals(usernameGenerator.getFull(), "johndoe");
+                new UsernameGenerator(new String[]{"john steve", "doe"}, true, Integer.MAX_VALUE);
+        Assert.assertEquals(usernameGenerator.getFull(), "johnstevedoe");
     }
 
     @Test

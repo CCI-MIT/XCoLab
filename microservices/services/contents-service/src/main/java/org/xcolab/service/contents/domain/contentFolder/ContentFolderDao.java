@@ -12,5 +12,5 @@ public interface ContentFolderDao {
     ContentFolder get(Long contentFolderId);
 
     List<ContentFolder> getFolders();
-    List<ContentFolder> getFoldersInFolder(long parentFolderId);
+    List<ContentFolder> getChildFolders(Long contentFolderId);
 }
