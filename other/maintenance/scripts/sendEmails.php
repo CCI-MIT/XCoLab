@@ -14,7 +14,7 @@ $message = "Dear Climate CoLab member,\n\n" .
 $from="no-reply@climatecolab.org";
 
 mail($row[1],$subject,$message,"From: $from\n");
-sendEmail($row[1], $from, $subject, $message)
+sendEmail($row[1], $from, $subject, $message);
 }
 echo "Removing users\n\n";
 $r = mysqli_query($c,"DELETE FROM email") or die(mysqli_error($c));
