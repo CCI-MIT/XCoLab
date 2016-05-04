@@ -19,7 +19,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
         ContentFolderRecord ret = this.dslContext.insertInto(CONTENT_FOLDER)
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_DESCRIPTION, contentFolder.getContentFolderDescription())
-                .set(CONTENT_FOLDER.CONTENT_FOLDER_ID, contentFolder.getParentFolderId())
+                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, contentFolder.getParentFolderId())
                 .returning(CONTENT_FOLDER.CONTENT_FOLDER_ID)
                 .fetchOne();
         if (ret != null) {
@@ -60,4 +60,5 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
                     .fetch().into(ContentFolder.class);
         }
     }
+
 }

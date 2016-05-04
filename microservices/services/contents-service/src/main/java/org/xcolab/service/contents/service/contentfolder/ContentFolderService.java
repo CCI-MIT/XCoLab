@@ -30,4 +30,6 @@ public class ContentFolderService {
     public List<ContentFolder> getChildFolders(Long contentFolderId) {
         return this.contentFolderDao.getChildFolders(contentFolderId);
     }
+
+
 }

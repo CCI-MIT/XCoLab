@@ -81,6 +81,21 @@ public class ContentEditorController {
         response.getPortletOutputStream().write(articleVersion.toString().getBytes());
     }
 
+    @ResourceMapping("createArticleFolder")
+    public void createArticleFolder(ResourceRequest request, ResourceResponse response,
+                                   @RequestParam(required = false) String folderName,
+                                   @RequestParam(required = false) Long parentFolderId) throws IOException{
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        Long userId = themeDisplay.getUser().getUserId();
+
+        ContentFolder contentFolder = new ContentFolder();
+        contentFolder.setContentFolderName(folderName);
+        contentFolder.setParentFolderId(parentFolderId);
+
+        ContentsClient.createContentFolder(contentFolder);
+
+        defaultOperationReturnMessage(true, "Folder created successfully", response);
+    }
     @ResourceMapping("moveArticleVersion")
     public void moveArticleVersion(ResourceRequest request, ResourceResponse response,
                                    @RequestParam(required = false) Long articleId,
