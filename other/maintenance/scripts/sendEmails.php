@@ -13,6 +13,7 @@ $message = "Dear Climate CoLab member,\n\n" .
         "Best regards,\nThe Climate CoLab Team";
 $from="no-reply@climatecolab.org";
 
+//mail($row[1],$subject,$message,"From: $from\n");
 sendEmail($row[1], $from, $subject, $message);
 }
 echo "Removing users\n\n";
