@@ -109,7 +109,7 @@
                                 <portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : true }" />
                             </portlet:renderURL>
                             <a href="${sortURL }">
-                                <img src="${themeDisplay.pathThemeImages}/icon-proposal-vote.png" />
+                                <img src="${themeDisplay.pathThemeImages}/icon-proposal-thumb.png" />
                             </a>
                             <div class="c-Tooltip">
                                 click to sort by<br />number of supporters

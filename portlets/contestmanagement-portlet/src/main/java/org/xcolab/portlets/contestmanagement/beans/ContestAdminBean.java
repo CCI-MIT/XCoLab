@@ -7,11 +7,13 @@ import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.utils.WikiUtil;
 
-import javax.validation.constraints.NotNull;
+import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by steve on 12/02/16.
@@ -52,9 +54,8 @@ public class ContestAdminBean implements Serializable {
 
     public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
 
-        String oldWikiPageTitle = WikiUtil.getWikiPageTitle(contest);
         updateContest(contest);
-        WikiUtil.updateContestWiki(contest, oldWikiPageTitle);
+        WikiPageWrapper.updateContestWiki(contest);
 
         DiscussionCategoryGroup dcg =
                 DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());

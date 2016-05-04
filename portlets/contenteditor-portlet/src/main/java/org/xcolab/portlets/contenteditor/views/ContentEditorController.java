@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 
@@ -28,7 +29,7 @@ import javax.portlet.ResourceResponse;
 @Controller
 @RequestMapping("view")
 public class ContentEditorController {
-    private final Integer THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
+    private static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
 
     @RequestMapping
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
@@ -42,7 +43,7 @@ public class ContentEditorController {
             throws IOException, SystemException, PortalException {
 
         JSONArray responseArray = JSONFactoryUtil.createJSONArray();
-        Long folderId = 0l;
+        Long folderId = 0L;
         if (node != null && !node.isEmpty()) {
             folderId = Long.parseLong(node);
         }
@@ -67,10 +68,10 @@ public class ContentEditorController {
     @ResourceMapping("contentEditorGetLatestArticleVersion")
     public void contentEditorGetLatestArticleVersion(ResourceRequest request, ResourceResponse response,
                                                      @RequestParam(required = false) Long articleId)
-            throws IOException, SystemException, PortalException {
+            throws IOException, SystemException, PortalException, ContentNotFoundException {
         JSONObject articleVersion = JSONFactoryUtil.createJSONObject();
 
-        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersionByContentArticleId(articleId);
+        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
         if (contentArticleVersion != null) {
             articleVersion.put("title", contentArticleVersion.getTitle());
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
@@ -164,7 +165,7 @@ public class ContentEditorController {
     }
 
     private JSONObject articleNode(String label, Long id) {
-        return treeNode(label, (THRESHOLD_TO_AVOID_NODE_COLISION+id) + "", "article", false);
+        return treeNode(label, (THRESHOLD_TO_AVOID_NODE_COLLISION +id) + "", "article", false);
     }
 
     private JSONObject folderNode(String label, String id) {

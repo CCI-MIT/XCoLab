@@ -1,5 +1,6 @@
 package org.xcolab.client.contents.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -86,6 +87,11 @@ public class ContentArticleVersion implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @JsonIgnore
+    public String getLinkUrl() {
+        return "/web/guest/wiki/-/wiki/page/" + title.replace(" ", "+");
     }
 
     @Override

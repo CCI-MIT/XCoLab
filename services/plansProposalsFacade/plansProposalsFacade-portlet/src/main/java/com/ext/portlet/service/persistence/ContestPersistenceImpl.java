@@ -10125,6 +10125,7 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setShow_in_list_view(contest.isShow_in_list_view());
         contestImpl.setShow_in_outline_view(contest.isShow_in_outline_view());
         contestImpl.setHideRibbons(contest.isHideRibbons());
+        contestImpl.setResourceArticleId(contest.getResourceArticleId());
 
         return contestImpl;
     }

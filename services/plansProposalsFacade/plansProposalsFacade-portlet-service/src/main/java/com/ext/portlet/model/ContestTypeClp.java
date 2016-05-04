@@ -32,6 +32,8 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
     private String _menuItemName;
     private boolean _hasDiscussion;
     private long _suggestionContestId;
+    private String _rulesPageName;
+    private String _rulesPageUrl;
     private BaseModel<?> _contestTypeRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
@@ -86,6 +88,8 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
         attributes.put("suggestionContestId", getSuggestionContestId());
+        attributes.put("rulesPageName", getRulesPageName());
+        attributes.put("rulesPageUrl", getRulesPageUrl());
 
         return attributes;
     }
@@ -165,6 +169,18 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
         if (suggestionContestId != null) {
             setSuggestionContestId(suggestionContestId);
+        }
+
+        String rulesPageName = (String) attributes.get("rulesPageName");
+
+        if (rulesPageName != null) {
+            setRulesPageName(rulesPageName);
+        }
+
+        String rulesPageUrl = (String) attributes.get("rulesPageUrl");
+
+        if (rulesPageUrl != null) {
+            setRulesPageUrl(rulesPageUrl);
         }
     }
 
@@ -443,6 +459,50 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         }
     }
 
+    @Override
+    public String getRulesPageName() {
+        return _rulesPageName;
+    }
+
+    @Override
+    public void setRulesPageName(String rulesPageName) {
+        _rulesPageName = rulesPageName;
+
+        if (_contestTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setRulesPageName", String.class);
+
+                method.invoke(_contestTypeRemoteModel, rulesPageName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getRulesPageUrl() {
+        return _rulesPageUrl;
+    }
+
+    @Override
+    public void setRulesPageUrl(String rulesPageUrl) {
+        _rulesPageUrl = rulesPageUrl;
+
+        if (_contestTypeRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestTypeRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setRulesPageUrl", String.class);
+
+                method.invoke(_contestTypeRemoteModel, rulesPageUrl);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestTypeRemoteModel() {
         return _contestTypeRemoteModel;
     }
@@ -522,6 +582,8 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         clone.setMenuItemName(getMenuItemName());
         clone.setHasDiscussion(getHasDiscussion());
         clone.setSuggestionContestId(getSuggestionContestId());
+        clone.setRulesPageName(getRulesPageName());
+        clone.setRulesPageUrl(getRulesPageUrl());
 
         return clone;
     }
@@ -571,7 +633,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(getId());
@@ -597,6 +659,10 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(getHasDiscussion());
         sb.append(", suggestionContestId=");
         sb.append(getSuggestionContestId());
+        sb.append(", rulesPageName=");
+        sb.append(getRulesPageName());
+        sb.append(", rulesPageUrl=");
+        sb.append(getRulesPageUrl());
         sb.append("}");
 
         return sb.toString();
@@ -604,7 +670,7 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(40);
+        StringBundler sb = new StringBundler(46);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -657,6 +723,14 @@ public class ContestTypeClp extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>suggestionContestId</column-name><column-value><![CDATA[");
         sb.append(getSuggestionContestId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>rulesPageName</column-name><column-value><![CDATA[");
+        sb.append(getRulesPageName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>rulesPageUrl</column-name><column-value><![CDATA[");
+        sb.append(getRulesPageUrl());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

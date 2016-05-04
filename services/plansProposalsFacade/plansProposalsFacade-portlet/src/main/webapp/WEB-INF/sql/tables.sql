@@ -136,7 +136,8 @@ create table xcolab_Contest (
 	show_in_tile_view BOOLEAN,
 	show_in_list_view BOOLEAN,
 	show_in_outline_view BOOLEAN,
-	hideRibbons BOOLEAN
+	hideRibbons BOOLEAN,
+	resourceArticleId LONG
 );
 
 create table xcolab_ContestDebate (
@@ -245,7 +246,9 @@ create table xcolab_ContestType (
 	friendlyUrlStringProposal VARCHAR(75) null,
 	menuItemName VARCHAR(75) null,
 	hasDiscussion BOOLEAN,
-	suggestionContestId LONG
+	suggestionContestId LONG,
+	rulesPageName VARCHAR(75) null,
+	rulesPageUrl VARCHAR(75) null
 );
 
 create table xcolab_DiscussionCategory (

@@ -100,9 +100,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "show_in_tile_view", Types.BOOLEAN },
             { "show_in_list_view", Types.BOOLEAN },
             { "show_in_outline_view", Types.BOOLEAN },
-            { "hideRibbons", Types.BOOLEAN }
+            { "hideRibbons", Types.BOOLEAN },
+            { "resourceArticleId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,contestTypeId LONG,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestUrlName VARCHAR(75) null,ContestYear LONG,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,proposalVoteTemplateString VARCHAR(75) null,proposalVoteConfirmationTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,fellowDiscussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN,hideRibbons BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,contestTypeId LONG,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestUrlName VARCHAR(75) null,ContestYear LONG,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,proposalVoteTemplateString VARCHAR(75) null,proposalVoteConfirmationTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,fellowDiscussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN,hideRibbons BOOLEAN,resourceArticleId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -199,6 +200,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
     private boolean _hideRibbons;
+    private long _resourceArticleId;
     private long _columnBitmask;
     private Contest _escapedModel;
 
@@ -268,6 +270,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setShow_in_list_view(soapModel.getShow_in_list_view());
         model.setShow_in_outline_view(soapModel.getShow_in_outline_view());
         model.setHideRibbons(soapModel.getHideRibbons());
+        model.setResourceArticleId(soapModel.getResourceArticleId());
 
         return model;
     }
@@ -382,6 +385,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
         attributes.put("hideRibbons", getHideRibbons());
+        attributes.put("resourceArticleId", getResourceArticleId());
 
         return attributes;
     }
@@ -703,6 +707,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (hideRibbons != null) {
             setHideRibbons(hideRibbons);
+        }
+
+        Long resourceArticleId = (Long) attributes.get("resourceArticleId");
+
+        if (resourceArticleId != null) {
+            setResourceArticleId(resourceArticleId);
         }
     }
 
@@ -1486,6 +1496,17 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         _hideRibbons = hideRibbons;
     }
 
+    @JSON
+    @Override
+    public long getResourceArticleId() {
+        return _resourceArticleId;
+    }
+
+    @Override
+    public void setResourceArticleId(long resourceArticleId) {
+        _resourceArticleId = resourceArticleId;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -1567,6 +1588,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setShow_in_list_view(getShow_in_list_view());
         contestImpl.setShow_in_outline_view(getShow_in_outline_view());
         contestImpl.setHideRibbons(getHideRibbons());
+        contestImpl.setResourceArticleId(getResourceArticleId());
 
         contestImpl.resetOriginalValues();
 
@@ -1912,12 +1934,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         contestCacheModel.hideRibbons = getHideRibbons();
 
+        contestCacheModel.resourceArticleId = getResourceArticleId();
+
         return contestCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(101);
+        StringBundler sb = new StringBundler(103);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -2019,6 +2043,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getShow_in_outline_view());
         sb.append(", hideRibbons=");
         sb.append(getHideRibbons());
+        sb.append(", resourceArticleId=");
+        sb.append(getResourceArticleId());
         sb.append("}");
 
         return sb.toString();
@@ -2026,7 +2052,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(154);
+        StringBundler sb = new StringBundler(157);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -2231,6 +2257,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>hideRibbons</column-name><column-value><![CDATA[");
         sb.append(getHideRibbons());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>resourceArticleId</column-name><column-value><![CDATA[");
+        sb.append(getResourceArticleId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

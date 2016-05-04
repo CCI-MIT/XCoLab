@@ -25,6 +25,8 @@ public class ContestTypeSoap implements Serializable {
     private String _menuItemName;
     private boolean _hasDiscussion;
     private long _suggestionContestId;
+    private String _rulesPageName;
+    private String _rulesPageUrl;
 
     public ContestTypeSoap() {
     }
@@ -44,6 +46,8 @@ public class ContestTypeSoap implements Serializable {
         soapModel.setMenuItemName(model.getMenuItemName());
         soapModel.setHasDiscussion(model.getHasDiscussion());
         soapModel.setSuggestionContestId(model.getSuggestionContestId());
+        soapModel.setRulesPageName(model.getRulesPageName());
+        soapModel.setRulesPageUrl(model.getRulesPageUrl());
 
         return soapModel;
     }
@@ -190,5 +194,21 @@ public class ContestTypeSoap implements Serializable {
 
     public void setSuggestionContestId(long suggestionContestId) {
         _suggestionContestId = suggestionContestId;
+    }
+
+    public String getRulesPageName() {
+        return _rulesPageName;
+    }
+
+    public void setRulesPageName(String rulesPageName) {
+        _rulesPageName = rulesPageName;
+    }
+
+    public String getRulesPageUrl() {
+        return _rulesPageUrl;
+    }
+
+    public void setRulesPageUrl(String rulesPageUrl) {
+        _rulesPageUrl = rulesPageUrl;
     }
 }

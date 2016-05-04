@@ -51,6 +51,8 @@ public class ContestTypeWrapper implements ContestType,
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
         attributes.put("suggestionContestId", getSuggestionContestId());
+        attributes.put("rulesPageName", getRulesPageName());
+        attributes.put("rulesPageUrl", getRulesPageUrl());
 
         return attributes;
     }
@@ -130,6 +132,18 @@ public class ContestTypeWrapper implements ContestType,
 
         if (suggestionContestId != null) {
             setSuggestionContestId(suggestionContestId);
+        }
+
+        String rulesPageName = (String) attributes.get("rulesPageName");
+
+        if (rulesPageName != null) {
+            setRulesPageName(rulesPageName);
+        }
+
+        String rulesPageUrl = (String) attributes.get("rulesPageUrl");
+
+        if (rulesPageUrl != null) {
+            setRulesPageUrl(rulesPageUrl);
         }
     }
 
@@ -403,6 +417,46 @@ public class ContestTypeWrapper implements ContestType,
     @Override
     public void setSuggestionContestId(long suggestionContestId) {
         _contestType.setSuggestionContestId(suggestionContestId);
+    }
+
+    /**
+    * Returns the rules page name of this contest type.
+    *
+    * @return the rules page name of this contest type
+    */
+    @Override
+    public java.lang.String getRulesPageName() {
+        return _contestType.getRulesPageName();
+    }
+
+    /**
+    * Sets the rules page name of this contest type.
+    *
+    * @param rulesPageName the rules page name of this contest type
+    */
+    @Override
+    public void setRulesPageName(java.lang.String rulesPageName) {
+        _contestType.setRulesPageName(rulesPageName);
+    }
+
+    /**
+    * Returns the rules page url of this contest type.
+    *
+    * @return the rules page url of this contest type
+    */
+    @Override
+    public java.lang.String getRulesPageUrl() {
+        return _contestType.getRulesPageUrl();
+    }
+
+    /**
+    * Sets the rules page url of this contest type.
+    *
+    * @param rulesPageUrl the rules page url of this contest type
+    */
+    @Override
+    public void setRulesPageUrl(java.lang.String rulesPageUrl) {
+        _contestType.setRulesPageUrl(rulesPageUrl);
     }
 
     @Override

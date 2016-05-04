@@ -36,7 +36,7 @@ public class ContestResourcesHtmlParserUtil {
         this.ignoreSectionTitles = ignoreSectionTitles;
     }
 
-    public void parseDocument(String htmlString) throws Exception {
+    public void parseDocument(String htmlString) {
         Document htmlDocument = Jsoup.parse(htmlString);
         Elements sections = htmlDocument.getElementsByTag(SECTION_DELIMITER_TAG);
         for (Element section : sections) {

@@ -227,6 +227,36 @@ public interface ContestTypeModel extends BaseModel<ContestType> {
      */
     public void setSuggestionContestId(long suggestionContestId);
 
+    /**
+     * Returns the rules page name of this contest type.
+     *
+     * @return the rules page name of this contest type
+     */
+    @AutoEscape
+    public String getRulesPageName();
+
+    /**
+     * Sets the rules page name of this contest type.
+     *
+     * @param rulesPageName the rules page name of this contest type
+     */
+    public void setRulesPageName(String rulesPageName);
+
+    /**
+     * Returns the rules page url of this contest type.
+     *
+     * @return the rules page url of this contest type
+     */
+    @AutoEscape
+    public String getRulesPageUrl();
+
+    /**
+     * Sets the rules page url of this contest type.
+     *
+     * @param rulesPageUrl the rules page url of this contest type
+     */
+    public void setRulesPageUrl(String rulesPageUrl);
+
     @Override
     public boolean isNew();
 
