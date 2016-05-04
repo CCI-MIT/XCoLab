@@ -15,22 +15,24 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 public abstract class EmailNotification {
     protected static final long ADMINISTRATOR_USER_ID = 10144L;
@@ -212,8 +214,9 @@ public abstract class EmailNotification {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
-            MailEngine.send(fromEmail, toEmail, subject, body, true);
-        } catch (MailEngineException | UnsupportedEncodingException e) {
+
+            EmailClient.sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject,body, true, fromEmail.getAddress());
+        } catch (  UnsupportedEncodingException e) {
             _log.error("Could not send vote message", e);
         }
     }
