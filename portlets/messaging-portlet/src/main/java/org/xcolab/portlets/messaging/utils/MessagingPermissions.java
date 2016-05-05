@@ -55,7 +55,7 @@ public class MessagingPermissions {
             }
             isRecipient = false;
         }
-        return false;
+        return isRecipient.booleanValue();
     }
 
     /**
