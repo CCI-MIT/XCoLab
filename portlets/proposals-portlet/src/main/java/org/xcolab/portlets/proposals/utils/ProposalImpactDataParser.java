@@ -221,17 +221,17 @@ public class ProposalImpactDataParser {
 
     private double parseDataValue(String seriesType, String valueString) throws ProposalImpactDataParserException {
         // Remove comma-thousand separators
-        String commaSeparatedValueString = valueString.replaceAll(",", "");
+        String decimalStringValue = valueString.replaceAll(",", "");
 
         // percentage value
-        if (commaSeparatedValueString.contains("%")) {
-            double value =  Double.parseDouble(commaSeparatedValueString.substring(0, commaSeparatedValueString.length() - 1));
+        if (decimalStringValue.contains("%")) {
+            double value =  Double.parseDouble(decimalStringValue.substring(0, decimalStringValue.length() - 1));
             if (value < 0 || value > 100) {
                 throw new ProposalImpactDataParserException("Percentage value '" + value + "' out of bounds!");
             }
             return value;
         } else {
-            double value = Double.parseDouble(commaSeparatedValueString.substring(0, commaSeparatedValueString.length() - 1));
+            double value = Double.parseDouble(decimalStringValue);
 
             // Interpret impact reduction and adoption values as ratios
             if ((seriesType.equals(ProposalImpactAttributeKeys.IMPACT_REDUCTION) || seriesType.equals(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE))) {
