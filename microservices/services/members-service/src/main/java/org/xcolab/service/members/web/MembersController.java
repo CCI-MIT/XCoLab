@@ -13,6 +13,7 @@ import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
+import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -21,8 +22,6 @@ import java.util.List;
 
 @RestController
 public class MembersController {
-
-    private static final Integer NUMBER_OF_RECORDS_PER_REQUEST = 20;
 
     @Autowired
     private MemberService memberService;
@@ -42,72 +41,19 @@ public class MembersController {
         }
     }
 
-    @RequestMapping("/members")
-    public List<Member> listMembers(@RequestParam String firstRecord,
-                                   @RequestParam String lastRecord,
+    @RequestMapping(value = "/members", method = RequestMethod.GET)
+    public List<Member> listMembers(@RequestParam(required = false) Integer startRecord,
+                                   @RequestParam(required = false) Integer limitRecord,
                                    @RequestParam(required = false) String sort,
-                                   @RequestParam(required = false) String screenName,
-                                   @RequestParam(required = false) String category) {
-        boolean isAsc = true;
-        if (sort == null) {
-            sort = "";
-            isAsc = false;
+                                   @RequestParam(required = false) String partialName,
+                                   @RequestParam(required = false) String roleName) {
+        if (partialName == null) {
+            partialName = "";
         }
-        if (sort.startsWith("-")) {
-            sort = sort.substring(1, sort.length());
-            isAsc = false;
-        }
-        if (screenName == null) {
-            screenName = "";
-        }
-        int firstRecordInt = 0;
-        int lastRecordInt = NUMBER_OF_RECORDS_PER_REQUEST;
-        try {
-            firstRecordInt = Integer.parseInt(firstRecord);
-            lastRecordInt = Integer.parseInt(lastRecord);
-        } catch (NumberFormatException e) {
-            //log exeption
-        }
-        switch (sort) {
-            case "USER_NAME":
-                if (category == null) {
-                    return memberDao.listMembersSortByScreenName(firstRecordInt, lastRecordInt, screenName, isAsc);
-                } else {
-                    return memberDao.listMembersSortByScreenNameFilteredByCategory(firstRecordInt,
-                            lastRecordInt, screenName, isAsc, category);
-                }
-            case "POINTS":
-                if (category == null) {
-                    return memberDao.listMembersSortByPoint(firstRecordInt, lastRecordInt, screenName, isAsc);
-                } else {
-                    return memberDao.listMembersSortByPointFilteredByCategory(firstRecordInt, lastRecordInt,
-                            screenName, isAsc, category);
-                }
-            case "ACTIVITY":
-                if (category == null) {
-                    return memberDao
-                            .listMembersSortByActivityCount(firstRecordInt, lastRecordInt, screenName, isAsc);
-                } else {
-                    return memberDao.listMembersSortByActivityCountFilteredByCategory(firstRecordInt,
-                            lastRecordInt, screenName, isAsc, category);
-                }
-            case "CATEGORY":
-                if (category == null) {
-                    return memberDao.listMembersSortByRoleName(firstRecordInt, lastRecordInt, screenName, isAsc);
-                } else {
-                    return memberDao.listMembersSortByRoleNameFilteredByCategory(firstRecordInt, lastRecordInt,
-                            screenName, isAsc, category);
-                }
-            case "MEMBER_SINCE":
-                if (category == null) {
-                    return memberDao.listMembersSortByMemberSince(firstRecordInt, lastRecordInt, screenName, isAsc);
-                } else {
-                    return memberDao.listMembersSortByMemberSinceFilteredByCategory(firstRecordInt,
-                            lastRecordInt, screenName, isAsc, category);
-                }
-            default:
-                return memberDao.listMembersSortByPoint(firstRecordInt, lastRecordInt, screenName, isAsc);
-        }
+
+        PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+
+        return memberDao.findByGiven(paginationHelper, partialName, roleName);
     }
 
     @RequestMapping("/members/count")

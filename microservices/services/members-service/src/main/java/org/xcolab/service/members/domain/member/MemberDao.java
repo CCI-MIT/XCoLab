@@ -2,53 +2,16 @@ package org.xcolab.service.members.domain.member;
 
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
 public interface MemberDao {
 
+    List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
+            String roleName);
+
     Member getMember(long memberId) throws NotFoundException;
-
-    List<Member> listMembersSortByActivityCount(int startRecord, int limitRecord,
-                                               String filter, boolean isAscOrder);
-
-    List<Member> listMembersSortByActivityCountFilteredByCategory(int startRecord,
-                                                                 int limitRecord,
-                                                                 String filter,
-                                                                 boolean isAscOrder,
-                                                                 String roleName);
-
-    List<Member> listMembersSortByMemberSince(int startRecord, int limitRecord, String filter,
-                                             boolean isAscOrder);
-
-    List<Member> listMembersSortByPoint(int startRecord, int limitRecord, String filter,
-                                       boolean isAscOrder);
-
-    List<Member> listMembersSortByPointFilteredByCategory(int startRecord, int limitRecord,
-                                                         String filter, boolean isAscOrder,
-                                                         String roleName);
-
-    List<Member> listMembersSortByRoleName(int startRecord, int limitRecord, String filter,
-                                          boolean isAscOrder);
-
-    List<Member> listMembersSortByRoleNameFilteredByCategory(int startRecord, int limitRecord,
-                                                            String filter, boolean isAscOrder,
-                                                            String roleName);
-
-    List<Member> listMembersSortByScreenName(int startRecord, int limitRecord, String filter,
-                                            boolean isAscOrder);
-
-    List<Member> listMembersSortByMemberSinceFilteredByCategory(int startRecord,
-                                                               int limitRecord,
-                                                               String filter,
-                                                               boolean isAscOrder,
-                                                               String roleName);
-
-    List<Member> listMembersSortByScreenNameFilteredByCategory(int startRecord,
-                                                              int limitRecord,
-                                                              String filter,
-                                                              boolean isAscOrder,
-                                                              String roleName);
 
     Integer countMembersFilteredByCategory(String filter, String roleName);
 

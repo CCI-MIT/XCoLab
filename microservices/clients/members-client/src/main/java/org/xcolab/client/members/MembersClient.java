@@ -42,21 +42,37 @@ public final class MembersClient {
     }
 
     public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
-                                          boolean ascOrder, int firstUser, int lastUser) {
+                                          boolean ascOrder, int firstMember, int lastMember) {
 
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members")
-                        .queryParam("firstRecord", firstUser)
-                        .queryParam("lastRecord", lastUser);
+                        .queryParam("startRecord", firstMember)
+                        .queryParam("limitRecord", lastMember);
 
         if (sortField != null && !sortField.isEmpty()) {
-            uriBuilder.queryParam("sort", ((ascOrder) ? ("") : ("-")) + sortField);
+            final String prefix = (ascOrder) ? ("") : ("-");
+            switch (sortField) {
+                case "USER_NAME": uriBuilder.queryParam("sort", prefix + "screenName");
+                    break;
+                case "MEMBER_SINCE": uriBuilder.queryParam("sort", prefix + "createDate");
+                    break;
+                case "CATEGORY": uriBuilder.queryParam("sort", prefix + "roleName");
+                    break;
+                case "ACTIVITY": uriBuilder.queryParam("sort", prefix + "activityCount");
+                    break;
+                case "POINTS": uriBuilder.queryParam("sort", prefix + "points");
+                    break;
+                default:
+            }
+
         }
         if (screenNameFilterValue != null && !screenNameFilterValue.isEmpty()) {
-            uriBuilder.queryParam("screenName", screenNameFilterValue);
+            uriBuilder.queryParam("partialName", screenNameFilterValue);
         }
         if (categoryFilterValue != null && !categoryFilterValue.isEmpty()) {
-            uriBuilder.queryParam("category", categoryFilterValue);
+            uriBuilder.queryParam("roleName", categoryFilterValue);
+        } else {
+            uriBuilder.queryParam("roleName", "Member");
         }
 
         ResponseEntity<List<Member>> response = restTemplate.exchange(uriBuilder.build().toString(),
