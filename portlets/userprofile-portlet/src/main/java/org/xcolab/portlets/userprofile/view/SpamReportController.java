@@ -17,17 +17,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.SpamReportsWrapper;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 
-import javax.mail.internet.AddressException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 /**
  * Created by johannes on 11/19/15.
@@ -41,8 +44,8 @@ public class SpamReportController {
 
     @RenderMapping(params = "page=spamReport")
     public String showSpamReport(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam(required = true) String userId)
-            throws SystemException, PortalException, UserProfileAuthorizationException {
+            @RequestParam String userId)
+            throws SystemException, PortalException, UserProfileAuthorizationException, MemberNotFoundException {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         permissions.checkCanAdminSpamReports();
 

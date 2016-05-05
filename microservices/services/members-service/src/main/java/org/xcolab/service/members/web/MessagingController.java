@@ -13,6 +13,7 @@ import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.messaging.MessagingService;
+import org.xcolab.service.utils.ControllerUtils;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class MessagingController {
         final int lastRecordUnwrapped = lastRecord != null ? lastRecord : firstRecordUnwrapped + DEFAULT_PAGE_SIZE;
 
         if (includeCount) {
-            response.setHeader("X-Total-Count",
+            response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                     Integer.toString(messageDao.countByGiven(senderId, recipientId, isArchived, isOpened)));
         }
         return messageDao.findByGiven(firstRecordUnwrapped, lastRecordUnwrapped, senderId, recipientId, isArchived, isOpened);

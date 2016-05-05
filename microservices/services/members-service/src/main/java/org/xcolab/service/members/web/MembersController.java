@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.member.MemberDao;
@@ -32,6 +33,17 @@ public class MembersController {
     @Autowired
     private RoleService roleService;
 
+    @RequestMapping(value = "/members", method = RequestMethod.GET)
+    public List<Member> listMembers(@RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String partialName,
+            @RequestParam(required = false) String roleName) {
+        PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+
+        return memberDao.findByGiven(paginationHelper, partialName, roleName);
+    }
+
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
     public Member getMember(@PathVariable("memberId") Long memberId) throws NotFoundException {
         if (memberId == null || memberId == 0) {
@@ -41,22 +53,16 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members", method = RequestMethod.GET)
-    public List<Member> listMembers(@RequestParam(required = false) Integer startRecord,
-                                   @RequestParam(required = false) Integer limitRecord,
-                                   @RequestParam(required = false) String sort,
-                                   @RequestParam(required = false) String partialName,
-                                   @RequestParam(required = false) String roleName) {
-        if (partialName == null) {
-            partialName = "";
+    @RequestMapping(value = "/members/{memberId}/roles", method = RequestMethod.GET)
+    public List<Role_> getMemberRoles(@PathVariable("memberId") Long memberId) {
+        if (memberId == null) {
+            return new ArrayList<>();
+        } else {
+            return this.roleService.getMemberRoles(memberId);
         }
-
-        PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
-
-        return memberDao.findByGiven(paginationHelper, partialName, roleName);
     }
 
-    @RequestMapping("/members/count")
+    @RequestMapping(value = "/members/count", method = RequestMethod.GET)
     public Integer countMembers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
@@ -67,7 +73,15 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/members", method = RequestMethod.POST)
+    public Member register(@RequestBody Member member) throws NoSuchAlgorithmException {
+        return memberService.register(member.getScreenName(), member.getHashedPassword(),
+                member.getEmailAddress(), member.getFirstName(), member.getLastName(),
+                member.getShortBio(), member.getCountry(), member.getFacebookId(),
+                member.getOpenId(), 0L, member.getId_());
+    }
+
+    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.PUT)
     public String updateMember(@RequestBody Member member, @PathVariable("memberId") Long memberId)
             throws NotFoundException {
         if (memberDao.getMember(memberId) != null) {
@@ -98,16 +112,7 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members/{memberId}/roles", method = RequestMethod.GET)
-    public List<Role_> getMemberRoles(@PathVariable("memberId") Long memberId) {
-        if (memberId == null) {
-            return new ArrayList<>();
-        } else {
-            return this.roleService.getMemberRoles(memberId);
-        }
-    }
-
-    @RequestMapping("/members/isUsed")
+    @RequestMapping(value = "/members/isUsed", method = RequestMethod.GET)
     public boolean isUsed(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String email) {
@@ -121,17 +126,20 @@ public class MembersController {
         return ret;
     }
 
-    @RequestMapping("/members/generateScreenName")
+    @RequestMapping(value = "/members/generateScreenName", method = RequestMethod.GET)
     public String generateScreenName(@RequestParam String[] values) {
         return memberService.generateScreenName(values);
     }
 
-    @RequestMapping("/members/hashPassword")
-    public String hashPassword(@RequestParam String password, @RequestParam(required = false) Boolean liferayCompatible) throws NoSuchAlgorithmException {
-        return memberService.hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
+    @RequestMapping(value = "/members/hashPassword", method = RequestMethod.GET)
+    public String hashPassword(@RequestParam String password,
+            @RequestParam(required = false) Boolean liferayCompatible)
+            throws NoSuchAlgorithmException {
+        return memberService
+                .hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
     }
 
-    @RequestMapping("/members/validatePassword")
+    @RequestMapping(value = "/members/validatePassword", method = RequestMethod.GET)
     public Boolean validatePassword(
             @RequestParam String password,
             @RequestParam(required = false) String hash,
@@ -143,17 +151,11 @@ public class MembersController {
         }
 
         if (memberId != null) {
-            return memberService.validatePassword(password, memberDao.getMember(memberId).getHashedPassword());
+            return memberService
+                    .validatePassword(password, memberDao.getMember(memberId).getHashedPassword());
         }
-        throw new NotFoundException("The endpoint you requested is not available for the given attributes");
-    }
-
-    @RequestMapping(value = "/members", method = RequestMethod.POST)
-    public Member register(@RequestBody Member member) throws NoSuchAlgorithmException {
-        return memberService.register(member.getScreenName(), member.getHashedPassword(),
-                member.getEmailAddress(), member.getFirstName(), member.getLastName(),
-                member.getShortBio(), member.getCountry(), member.getFacebookId(),
-                member.getOpenId(), 0L, member.getId_());
+        throw new NotFoundException(
+                "The endpoint you requested is not available for the given attributes");
     }
 
     @RequestMapping(value = "/members/{memberId}/login", method = RequestMethod.POST)
@@ -179,11 +181,12 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}/roles/contests/{contestId}", method = RequestMethod.GET)
-    public List<Role_> getMemberRoles(@PathVariable("memberId") Long memberId,@PathVariable("contestId") Long contestId) {
+    public List<Role_> getMemberRoles(@PathVariable("memberId") Long memberId,
+            @PathVariable("contestId") Long contestId) {
         if (memberId == null || contestId == null) {
             return new ArrayList<>();
         } else {
-            return this.roleService.getMemberRolesInContest(memberId,contestId);
+            return this.roleService.getMemberRolesInContest(memberId, contestId);
         }
     }
 }

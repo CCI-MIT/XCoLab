@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd microservices/util/jooq-config
+cd microservices/util/xcolab-utils
 mvn clean compile package install clean
 cd ../../..
 

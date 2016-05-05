@@ -43,6 +43,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
@@ -70,7 +71,6 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class UserProfileController {
 
-    private static final long DEFAULT_COMPANY_ID = 10112L;
     private final static Log _log = LogFactoryUtil.getLog(UserProfileController.class);
 
     @Autowired
@@ -101,7 +101,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam(required = true) String userId)
+                                      @RequestParam String userId)
             throws SystemException, PortalException {
         return showUserProfileOrNotInitialized(request, model, userId);
     }
@@ -112,7 +112,7 @@ public class UserProfileController {
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
             return "showUserProfile";
-        } catch (PortalException e) {
+        } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
         }
         return "showProfileNotInitialized";
@@ -127,7 +127,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=edit")
     public String showUserProfileEdit(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam(required = true) String userId)
+                                      @RequestParam String userId)
             throws SystemException {
 
         try {
@@ -139,7 +139,7 @@ public class UserProfileController {
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-        } catch (PortalException e) {
+        } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -156,7 +156,7 @@ public class UserProfileController {
             populateUserWrapper(currentUserProfile, model);
             currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
             return "showUserSubscriptions";
-        } catch (SystemException | PortalException e) {
+        } catch (SystemException | PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -177,7 +177,7 @@ public class UserProfileController {
             if (currentUserProfile.isViewingOwnProfile()) {
                 return "showUserSubscriptionsManage";
             }
-        } catch (PortalException e) {
+        } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -188,7 +188,7 @@ public class UserProfileController {
     @RequestMapping(params = "action=navigateSubscriptions")
     public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
                                       @RequestParam(required = true) String paginationAction)
-            throws SystemException, PortalException, IOException {
+            throws SystemException, PortalException, IOException, MemberNotFoundException {
 
         Integer paginationPageId = 1;
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
@@ -233,7 +233,7 @@ public class UserProfileController {
             }
             model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
             model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
-        } catch (PortalException e) {
+        } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -249,7 +249,7 @@ public class UserProfileController {
         try {
             populateUserWrapper(new UserProfileWrapper(request.getRemoteUser(), request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
-        } catch (PortalException e) {
+        } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -259,7 +259,7 @@ public class UserProfileController {
     @RequestMapping(params = "action=update")
     public void updateUserProfile(ActionRequest request, Model model, ActionResponse response,
                                   @ModelAttribute UserBean updatedUserBean, BindingResult result)
-            throws IOException, UserProfileAuthorizationException, SystemException, PortalException {
+            throws IOException, UserProfileAuthorizationException, SystemException, PortalException, MemberNotFoundException {
         Long loggedInUserId = Long.parseLong(request.getRemoteUser());
         if (!loggedInUserId.equals(updatedUserBean.getUserId())) {
             throw new UserProfileAuthorizationException(String.format(

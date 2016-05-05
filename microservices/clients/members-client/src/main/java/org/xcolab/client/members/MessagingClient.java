@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.util.RequestUtils;
 
 import java.util.List;
 
@@ -86,12 +87,7 @@ public final class MessagingClient {
                         .queryParam("recipientId", userId)
                         .queryParam("isOpened", false)
                         .queryParam("isArchived", false);
-        final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.build().toString());
-        final List<String> countHeaders = httpHeaders.get("X-Total-Count");
-        if (countHeaders.isEmpty()) {
-            return 0;
-        }
-        return Integer.valueOf(countHeaders.get(0));
+        return RequestUtils.getCount(uriBuilder);
     }
 
     public static int getSentMessageCountForUser(long userId) {
