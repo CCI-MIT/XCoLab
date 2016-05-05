@@ -40,8 +40,6 @@
     <c:choose>
         <c:when test="${proposal.proposalId > 0 }">
             <portlet:actionURL var="updateProposalSectionsURL">
-                <portlet:param name="action_forwardToPage" value="proposalDetails" />
-                <portlet:param name="action_errorForwardToPage" value="proposalDetails" />
                 <portlet:param name="contestId" value="${contest.contestPK }" />
                 <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
                 <portlet:param name="proposalId" value="${proposal.proposalId }" />
@@ -50,8 +48,6 @@
         </c:when>
         <c:otherwise>
             <portlet:actionURL var="updateProposalSectionsURL">
-                <portlet:param name="action_forwardToPage" value="proposalDetails" />
-                <portlet:param name="action_errorForwardToPage" value="createProposal" />
                 <portlet:param name="contestId" value="${contest.contestPK }" />
                 <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
                 <portlet:param name="action" value="updateProposalDetails" />
@@ -81,7 +77,7 @@
         <p>
             Please complete your ${contestType.proposalName} based on the template below.
             If you have input on the template, please send it in a <a href="/web/guest/feedback" target="_blank">feedback message</a>.
-            To save your ${contestType.proposalName}, you must agree to the <a href="/web/guest/resources/-/wiki/Main/Contest+Rules" target="_blank">${contestType.contestName} rules</a>
+            To save your ${contestType.proposalName}, you must agree to the <a href="${contestType.rulesPageUrl}" target="_blank">${contestType.rulesPageName}</a>
             and <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
             <br/>Please note that you may be automatically logged out of your account after
             30 minutes. Please save all ${contestType.proposalName} content offline before clicking

@@ -3,7 +3,6 @@ $c-Header__border--bottom: 1px solid #aaa9a5 !default;
 $c-Header__box-shadow: none !default;
 
 $c-Header__menu__li__border--left: 1px solid $t-Color__grey--light !default;
-$c-Header__menu__li__hoverColor: $t-Color__grey--darkest !default;
 $c-Header__menu__li__isCurrent__border--left: 1px solid $t-Color__grey--medium !default;
 
 $c-Header__menu__li__a__width: auto !default;
@@ -31,6 +30,7 @@ $c-Header__menu__right__li__user__a__textColor: $t-Color__primary !default;
 $c-Header__menu__right__li__user__a--hover__textColor: #333 !default;
 $c-Header__menu__right__li__user__a__img__border: 1px solid $t-Color__grey--medium !default;
 $c-Header__menu__right__li__a__textColor: $t-Color__grey--dark !default;
+$c-Header__menu__right__li__a__paddingTop: 45px !default;
 $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
 $c-Header__menu__right__li__a--hover__textColor: black !default;
 
@@ -97,10 +97,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
     list-style: none;
     background: none;
     border-left: $c-Header__menu__li__border--left;
-
-    &:hover {
-      color: $c-Header__menu__li__hoverColor;
-    }
 
     &.isCurrent {
       background: white;
@@ -213,7 +209,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
     a {
       height: 22px;
-      padding: 45px 7px 0 7px;
+      padding: $c-Header__menu__right__li__a__paddingTop 7px 0 7px;
       font-size: 10px;
       font-weight: $c-Header__menu__right__li__a__fontWeight;
       color: $c-Header__menu__right__li__a__textColor;

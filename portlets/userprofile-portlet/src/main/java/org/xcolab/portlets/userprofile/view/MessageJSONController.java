@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.client.members.pojo.User_;
+
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
 import org.xcolab.client.members.MembersClient;
@@ -90,7 +92,8 @@ public class MessageJSONController extends JSONHelper {
         sendMessageToRecipientsInMessageBean();
     }
 
-    private void init(MessageBean messageBean, User userSender, User userRecipient) {
+    private void init(MessageBean messageBean, User userSender, User userRecipient)
+            throws MemberNotFoundException {
         if (userSender != null && messageBean != null && userRecipient != null) {
             this.userSender = userSender;
             this.messageBean = messageBean;
@@ -100,8 +103,8 @@ public class MessageJSONController extends JSONHelper {
 
     private void sendMessageToRecipientsInMessageBean() throws Exception {
         List<Long> recipients = new ArrayList<>();
-        for (User_ recipient : messageBean.getTo()) {
-            recipients.add(recipient.getUserId());
+        for (Member recipient : messageBean.getTo()) {
+            recipients.add(recipient.getId_());
         }
         boolean sendSuccess = MessageUtil.checkLimitAndSendMessage(
                 messageBean.getMessageSubject(), messageBean.getMessageText(), userSender, recipients);

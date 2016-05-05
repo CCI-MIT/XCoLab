@@ -2,19 +2,20 @@ package org.xcolab.portlets.userprofile.utils;
 
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+
+import org.xcolab.client.members.PermissionsClient;
 
 import javax.portlet.PortletRequest;
 
 public class UserProfilePermissions {
 
-    private final PermissionChecker permissionChecker;
+
     private final ThemeDisplay themeDisplay;
 
     public UserProfilePermissions(PortletRequest request) {
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        permissionChecker = themeDisplay.getPermissionChecker();
+
     }
 
     public boolean getCanAdminProfile(long userId) {
@@ -22,7 +23,7 @@ public class UserProfilePermissions {
     }
 
     public boolean getCanAdmin() {
-        return permissionChecker.isOmniadmin();
+        return PermissionsClient.canAdminAll(getCurrentUser().getUserId());
     }
 
     public User getCurrentUser() {

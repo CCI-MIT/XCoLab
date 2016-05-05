@@ -125,7 +125,6 @@
 
 
                     <portlet:actionURL var="updateProposalScenarioURL">
-                        <portlet:param name="action_forwardToPage" value="proposalDetails_IMPACT"/>
                         <portlet:param name="contestId" value="${contest.contestPK }"/>
                         <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
                         <portlet:param name="proposalId" value="${proposal.proposalId }"/>

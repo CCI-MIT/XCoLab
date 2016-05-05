@@ -22,10 +22,11 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.enums.Plurality;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
@@ -56,7 +57,7 @@ public class UserProfileWrapper implements Serializable {
     private static final boolean FIRE_GOOGLE_EVENT = false;
     private static final boolean DISPLAY_EMAIL_ERROR_MESSAGE = false;
 
-    private User_ user;
+    private Member user;
     private UserBean userBean;
     private String realName;
     private Boolean attendsConference;
@@ -81,16 +82,17 @@ public class UserProfileWrapper implements Serializable {
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
     private final ThemeDisplay themeDisplay;
 
-    public UserProfileWrapper(String userIdString, PortletRequest request) throws PortalException, SystemException {
+    public UserProfileWrapper(String userIdString, PortletRequest request)
+            throws PortalException, SystemException, MemberNotFoundException {
         Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         user = MembersClient.getMember(userId);
         if (user.isActive()) {
             User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
             if (loggedInUser != null) {
-                User_ logUser = MembersClient.getMember(loggedInUser.getUserId());
+                Member logUser = MembersClient.getMember(loggedInUser.getUserId());
                 messagePermissionChecker = new SendMessagePermissionChecker(logUser);
-                if (loggedInUser.getUserId() == user.getUserId()) {
+                if (loggedInUser.getUserId() == user.getId_()) {
                     viewingOwnProfile = true;
                 }
             }
@@ -98,7 +100,7 @@ public class UserProfileWrapper implements Serializable {
         }
     }
 
-    private void init(User_ user) throws PortalException, SystemException {
+    private void init(Member user) throws PortalException, SystemException {
         this.user = user;
 
         userBean = new UserBean(user);
@@ -113,8 +115,8 @@ public class UserProfileWrapper implements Serializable {
 
         attendsConference = ExpandoValueLocalServiceUtil
                 .getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO,
-                        CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
-        badges = new BadgeBean(user.getUserId());
+                        CommunityConstants.CONFERENCE2014, user.getId_(), "").equals("1");
+        badges = new BadgeBean(user.getId_());
 
         try {
             role = MemberRole.getHighestRole(user.getRoles());
@@ -124,12 +126,12 @@ public class UserProfileWrapper implements Serializable {
         userSubscriptions = new UserSubscriptionsWrapper(user);
         supportedProposals.clear();
         userActivities.clear();
-        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
+        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(user.getId_())) {
             supportedProposals.add(new SupportedProposalWrapper(ps));
         }
 
         for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
-                .getUserActivities(user.getUserId(), 0, MAX_ACTIVITIES_COUNT))) {
+                .getUserActivities(user.getId_(), 0, MAX_ACTIVITIES_COUNT))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
             if (a.getBody() != null && !a.getBody().equals("")) {
@@ -137,7 +139,7 @@ public class UserProfileWrapper implements Serializable {
             }
         }
 
-        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
+        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getId_());
         Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil.groupByContestType(proposals);
         for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId
@@ -176,11 +178,11 @@ public class UserProfileWrapper implements Serializable {
         return viewingOwnProfile;
     }
 
-    public User_ getUser() {
+    public Member getUser() {
         return user;
     }
 
-    public void setUser(User_ user) {
+    public void setUser(Member user) {
         this.user = user;
     }
 
@@ -245,7 +247,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public boolean getHasFacebookId() {
-        return user.getFacebookId() != 0;
+        return user.getFacebookId() != null && user.getFacebookId() != 0;
     }
 
     public boolean getHasOpenId() {
@@ -260,7 +262,7 @@ public class UserProfileWrapper implements Serializable {
         this.messagingPortletId = messagingPortletId;
     }
 
-    public User_ getWrapped() {
+    public Member getWrapped() {
         return user;
     }
 
@@ -290,7 +292,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() throws SystemException, PortalException {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : MessageUtil.getMessages(this.user.getUserId(), 0, 2, MessageType.INBOX)) {
+            for (Message msg : MessageUtil.getMessages(this.user.getId_(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }
@@ -301,7 +303,7 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
             for (SocialActivity activity : ActivityUtil.groupActivities(
-                    ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
+                    ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getId_(), 0, 1000))) {
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
         }
@@ -337,7 +339,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public Long getUserId() {
-        return user.getUserId();
+        return user.getId_();
     }
 
     public String getActualPointsFormatted() {

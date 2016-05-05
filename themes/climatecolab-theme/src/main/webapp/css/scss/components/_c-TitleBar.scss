@@ -1,5 +1,6 @@
 $c-TitleBar__backgroundColor: $t-Color__primary__grey--light !default;
 $c-TitleBar__borderBottom: 1px solid $t-Color__primary__grey !default;
+$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__grey--light !default;
 $c-TitleBar__textColor: $t-Color__grey--darkest !default;
 $c-TitleBar__element--active__capitalization: none !default;
 $c-TitleBar__element--disabled__textColor: $t-Color__grey--medium !default;
@@ -16,8 +17,6 @@ $c-TitleBar__actionButton__backgroundColor: $c-TitleBar__backgroundColor !defaul
 $c-TitleBar__separator__color: #B9E3FF !default;
 
 .c-TitleBar {
-  height: 37px;
-  line-height: 37px;
   background: $c-TitleBar__backgroundColor;
   border-bottom: $c-TitleBar__borderBottom;
   color: $c-TitleBar__textColor;
@@ -35,9 +34,20 @@ $c-TitleBar__separator__color: #B9E3FF !default;
   &.contestSummary {
     background: $c-TitleBar__contestSummary__backgroundColor;
   }
+
+  &.light {
+    background: $c-TitleBar__contestSummary__backgroundColor--light;
+  }
+}
+
+.c-TitleBar__pageMargins {
+  width: 984px;
+  margin: 0 auto;
 }
 
 .c-TitleBar__element {
+  height: 37px;
+  line-height: 37px;
   display: inline-block;
   position: relative;
   padding-left: 10px;

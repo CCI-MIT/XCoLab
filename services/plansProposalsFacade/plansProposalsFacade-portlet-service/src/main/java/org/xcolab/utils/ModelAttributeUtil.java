@@ -2,7 +2,7 @@ package org.xcolab.utils;
 
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.ui.Model;
-import org.xcolab.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 
 public final class ModelAttributeUtil {
 

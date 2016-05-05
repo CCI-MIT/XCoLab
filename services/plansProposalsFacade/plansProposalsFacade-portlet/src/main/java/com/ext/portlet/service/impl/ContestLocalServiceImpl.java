@@ -68,11 +68,11 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.utils.IdListUtil;
-import org.xcolab.utils.WikiUtil;
 import org.xcolab.utils.emailnotification.contest.ContestVoteQuestionNotification;
 import org.xcolab.utils.emailnotification.proposal.ContestVoteNotification;
 import org.xcolab.utils.judging.ProposalRatingWrapper;
@@ -80,7 +80,6 @@ import org.xcolab.utils.judging.ProposalReview;
 import org.xcolab.utils.judging.ProposalReviewCsvExporter;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1226,13 +1225,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                     // No year suffix detected - add new one
                     newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
                 }
-                String oldWikiTitle = WikiUtil.getWikiPageTitle(contest);
                 contest.setContestShortName(newContestShortName);
                 contest.persist();
-                try {
-                    WikiUtil.updateContestWiki(contest, oldWikiTitle);
-                } catch (UnsupportedEncodingException ignored) {
-                }
             }
         } catch (SystemException | PortalException e) {
             _log.error("Could not get latest contest phase of contest '" + contest.getContestPK() + "' to add year suffix or persist contest", e);

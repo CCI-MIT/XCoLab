@@ -93,6 +93,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
         attributes.put("hideRibbons", getHideRibbons());
+        attributes.put("resourceArticleId", getResourceArticleId());
 
         return attributes;
     }
@@ -414,6 +415,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (hideRibbons != null) {
             setHideRibbons(hideRibbons);
+        }
+
+        Long resourceArticleId = (Long) attributes.get("resourceArticleId");
+
+        if (resourceArticleId != null) {
+            setResourceArticleId(resourceArticleId);
         }
     }
 
@@ -1532,6 +1539,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setHideRibbons(boolean hideRibbons) {
         _contest.setHideRibbons(hideRibbons);
+    }
+
+    /**
+    * Returns the resource article ID of this contest.
+    *
+    * @return the resource article ID of this contest
+    */
+    @Override
+    public long getResourceArticleId() {
+        return _contest.getResourceArticleId();
+    }
+
+    /**
+    * Sets the resource article ID of this contest.
+    *
+    * @param resourceArticleId the resource article ID of this contest
+    */
+    @Override
+    public void setResourceArticleId(long resourceArticleId) {
+        _contest.setResourceArticleId(resourceArticleId);
     }
 
     @Override

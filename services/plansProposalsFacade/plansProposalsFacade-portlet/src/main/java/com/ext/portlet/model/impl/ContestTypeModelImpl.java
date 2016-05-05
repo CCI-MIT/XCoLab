@@ -60,9 +60,11 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
             { "friendlyUrlStringProposal", Types.VARCHAR },
             { "menuItemName", Types.VARCHAR },
             { "hasDiscussion", Types.BOOLEAN },
-            { "suggestionContestId", Types.BIGINT }
+            { "suggestionContestId", Types.BIGINT },
+            { "rulesPageName", Types.VARCHAR },
+            { "rulesPageUrl", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestType (id_ LONG not null primary key,contestName VARCHAR(75) null,contestNamePlural VARCHAR(75) null,proposalName VARCHAR(75) null,proposalNamePlural VARCHAR(75) null,portletName VARCHAR(75) null,portletUrl VARCHAR(75) null,friendlyUrlStringContests VARCHAR(75) null,friendlyUrlStringProposal VARCHAR(75) null,menuItemName VARCHAR(75) null,hasDiscussion BOOLEAN,suggestionContestId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestType (id_ LONG not null primary key,contestName VARCHAR(75) null,contestNamePlural VARCHAR(75) null,proposalName VARCHAR(75) null,proposalNamePlural VARCHAR(75) null,portletName VARCHAR(75) null,portletUrl VARCHAR(75) null,friendlyUrlStringContests VARCHAR(75) null,friendlyUrlStringProposal VARCHAR(75) null,menuItemName VARCHAR(75) null,hasDiscussion BOOLEAN,suggestionContestId LONG,rulesPageName VARCHAR(75) null,rulesPageUrl VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestType";
     public static final String ORDER_BY_JPQL = " ORDER BY contestType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestType.id_ ASC";
@@ -94,6 +96,8 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
     private String _menuItemName;
     private boolean _hasDiscussion;
     private long _suggestionContestId;
+    private String _rulesPageName;
+    private String _rulesPageUrl;
     private ContestType _escapedModel;
 
     public ContestTypeModelImpl() {
@@ -124,6 +128,8 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         model.setMenuItemName(soapModel.getMenuItemName());
         model.setHasDiscussion(soapModel.getHasDiscussion());
         model.setSuggestionContestId(soapModel.getSuggestionContestId());
+        model.setRulesPageName(soapModel.getRulesPageName());
+        model.setRulesPageUrl(soapModel.getRulesPageUrl());
 
         return model;
     }
@@ -196,6 +202,8 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         attributes.put("menuItemName", getMenuItemName());
         attributes.put("hasDiscussion", getHasDiscussion());
         attributes.put("suggestionContestId", getSuggestionContestId());
+        attributes.put("rulesPageName", getRulesPageName());
+        attributes.put("rulesPageUrl", getRulesPageUrl());
 
         return attributes;
     }
@@ -275,6 +283,18 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         if (suggestionContestId != null) {
             setSuggestionContestId(suggestionContestId);
+        }
+
+        String rulesPageName = (String) attributes.get("rulesPageName");
+
+        if (rulesPageName != null) {
+            setRulesPageName(rulesPageName);
+        }
+
+        String rulesPageUrl = (String) attributes.get("rulesPageUrl");
+
+        if (rulesPageUrl != null) {
+            setRulesPageUrl(rulesPageUrl);
         }
     }
 
@@ -451,6 +471,36 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         _suggestionContestId = suggestionContestId;
     }
 
+    @JSON
+    @Override
+    public String getRulesPageName() {
+        if (_rulesPageName == null) {
+            return StringPool.BLANK;
+        } else {
+            return _rulesPageName;
+        }
+    }
+
+    @Override
+    public void setRulesPageName(String rulesPageName) {
+        _rulesPageName = rulesPageName;
+    }
+
+    @JSON
+    @Override
+    public String getRulesPageUrl() {
+        if (_rulesPageUrl == null) {
+            return StringPool.BLANK;
+        } else {
+            return _rulesPageUrl;
+        }
+    }
+
+    @Override
+    public void setRulesPageUrl(String rulesPageUrl) {
+        _rulesPageUrl = rulesPageUrl;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -490,6 +540,8 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         contestTypeImpl.setMenuItemName(getMenuItemName());
         contestTypeImpl.setHasDiscussion(getHasDiscussion());
         contestTypeImpl.setSuggestionContestId(getSuggestionContestId());
+        contestTypeImpl.setRulesPageName(getRulesPageName());
+        contestTypeImpl.setRulesPageUrl(getRulesPageUrl());
 
         contestTypeImpl.resetOriginalValues();
 
@@ -623,12 +675,28 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
         contestTypeCacheModel.suggestionContestId = getSuggestionContestId();
 
+        contestTypeCacheModel.rulesPageName = getRulesPageName();
+
+        String rulesPageName = contestTypeCacheModel.rulesPageName;
+
+        if ((rulesPageName != null) && (rulesPageName.length() == 0)) {
+            contestTypeCacheModel.rulesPageName = null;
+        }
+
+        contestTypeCacheModel.rulesPageUrl = getRulesPageUrl();
+
+        String rulesPageUrl = contestTypeCacheModel.rulesPageUrl;
+
+        if ((rulesPageUrl != null) && (rulesPageUrl.length() == 0)) {
+            contestTypeCacheModel.rulesPageUrl = null;
+        }
+
         return contestTypeCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(getId());
@@ -654,6 +722,10 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         sb.append(getHasDiscussion());
         sb.append(", suggestionContestId=");
         sb.append(getSuggestionContestId());
+        sb.append(", rulesPageName=");
+        sb.append(getRulesPageName());
+        sb.append(", rulesPageUrl=");
+        sb.append(getRulesPageUrl());
         sb.append("}");
 
         return sb.toString();
@@ -661,7 +733,7 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(40);
+        StringBundler sb = new StringBundler(46);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestType");
@@ -714,6 +786,14 @@ public class ContestTypeModelImpl extends BaseModelImpl<ContestType>
         sb.append(
             "<column><column-name>suggestionContestId</column-name><column-value><![CDATA[");
         sb.append(getSuggestionContestId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>rulesPageName</column-name><column-value><![CDATA[");
+        sb.append(getRulesPageName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>rulesPageUrl</column-name><column-value><![CDATA[");
+        sb.append(getRulesPageUrl());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

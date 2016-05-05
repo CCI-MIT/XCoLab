@@ -19,13 +19,6 @@ import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 28/10/13
- * Time: 12:06
- * To change this template use File | Settings | File Templates.
- */
 @Controller
 @RequestMapping("view")
 public class SuggestContestActionController {

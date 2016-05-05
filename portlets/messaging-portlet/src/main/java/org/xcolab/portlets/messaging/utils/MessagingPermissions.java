@@ -4,16 +4,17 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.xcolab.client.members.pojo.User_;
+
+import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.utils.MessageLimitManager;
 
 import javax.portlet.PortletRequest;
 
 public class MessagingPermissions {
-    private final PermissionChecker permissionChecker;
+
     private final User user;
     private MessageBean message;
     private Boolean isRecipient;
@@ -22,7 +23,6 @@ public class MessagingPermissions {
             throws PortalException, SystemException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-        permissionChecker = themeDisplay.getPermissionChecker();
         user = themeDisplay.getUser();
     }
 
@@ -47,8 +47,8 @@ public class MessagingPermissions {
 
     public boolean isRecipient() {
         if (isRecipient == null) {
-            for (User_ recipient : message.getTo()) {
-                if (recipient.getUserId() == user.getUserId()) {
+            for (Member recipient : message.getTo()) {
+                if (recipient.getId_() == user.getUserId()) {
                     isRecipient = true;
                     return true;
                 }
@@ -62,7 +62,7 @@ public class MessagingPermissions {
      * Returns true if user is admin (not only proposal contributor)
      */
     public boolean getCanAdminAll() {
-        return permissionChecker.isOmniadmin();
+        return PermissionsClient.canAdminAll(user.getUserId());
     }
 
     public User getUser() {

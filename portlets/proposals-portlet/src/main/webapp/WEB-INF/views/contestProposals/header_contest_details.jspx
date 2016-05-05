@@ -40,8 +40,8 @@
                 <div class="description">
                     <p>
                         ${contest.contestDescription }
-                        <c:if test="${not empty contest.resourcesUrl and contest.contestPK gt 1301102}">
-                            <a href="${contest.resourcesUrl}" id="readMoreLink" style="display: none"> Read more ...</a>
+                        <c:if test="${contest.resourceArticleId > 0}">
+                            <a href="${contest.resourceArticleUrl}" id="readMoreLink" style="display: none"> Read more ...</a>
                         </c:if>
                     </p>
                     <c:if test="${contest.showSubContests}">
@@ -223,9 +223,9 @@
                     </c:if>
                     <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
                         <div>
-                            <c:if test="${not empty contest.resourcesUrl}">
+                            <c:if test="${contest.resourceArticleId > 0}">
                                 <div class="button-wrapper">
-                                    <a class="detailbutton" href="${contest.resourcesUrl}">Resources</a>
+                                    <a class="detailbutton" href="${contest.resourceArticleUrl}">Resources</a>
                                 </div>
                             </c:if>
 

@@ -484,4 +484,13 @@ public class BaseContestWrapper {
     public String getContestUrl() {
         return ContestLocalServiceUtil.getContestLinkUrl(contest);
     }
+
+    public Long getResourceArticleId() {
+        return contest.getResourceArticleId();
+    }
+
+    public String getResourceArticleUrl() {
+        return "/web/guest/wiki/-/wiki/resources/" + contest.getContestYear()
+                + "/" + contest.getContestUrlName();
+    }
 }

@@ -1038,7 +1038,7 @@
             leaveEditMode();
         }
         function leaveEditMode(){
-            window.location = jQuery(".prop-tabs .c a").prop("href");//gets the current link for the impact tab
+            window.location = jQuery(".c-TabBar__tab.active a").prop("href");//gets the current link for the impact tab
         }
         function saveComment(sender) {
 

@@ -1,3 +1,10 @@
+create index IX_XCOLAB_MEMBERS_CREATE_DATE on members_Member (createDate, modifiedDate);
+create unique index IX_XCOLAB_MEMBERS_EMAIL_ADDRESS on members_Member (emailAddress);
+create index IX_XCOLAB_MEMBERS_FACEBOOK_ID on members_Member (facebookId);
+create index IX_XCOLAB_MEMBERS_MODIFIED_DATE on members_Member (modifiedDate);
+create index IX_XCOLAB_MEMBERS_OPEN_ID on members_Member (openId);
+create unique index IX_XCOLAB_MEMBERS_SCREEN_NAME on members_Member (screenName);
+
 create index IX_61FA63BB on xcolab_ActivitySubscription (classNameId, classPK, receiverId);
 create index IX_C2ED8710 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData(50), receiverId);
 create index IX_1413A2B6 on xcolab_ActivitySubscription (classNameId, classPK, type_, receiverId);

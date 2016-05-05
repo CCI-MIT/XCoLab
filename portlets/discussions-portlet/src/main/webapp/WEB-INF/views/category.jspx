@@ -44,7 +44,7 @@
 
                         <span class="c-Count"><span class="c-Count__number">${threads.size()}</span> discussions</span>
 
-                        <a class="b-Spacing__inline--large" href="/web/guest/discussion/-/discussion/threads/create">
+                        <a onclick="if(!deferUntilLogin()){return false}else{return true}" class="b-Spacing__inline--large" href="/web/guest/discussion/-/discussion/threads/create">
                             <img style="vertical-align: middle;" height="30"
                                  src="${themeDisplay.pathThemeImages}/icon_new-topic.png" /> new discussion
                         </a>

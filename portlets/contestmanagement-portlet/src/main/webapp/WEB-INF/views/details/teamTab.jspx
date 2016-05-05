@@ -13,8 +13,6 @@
 		<portlet:param name="tab" value="TEAM" />
 		<portlet:param name="contestId" value="${contestWrapper.contestPK }" />
 		<portlet:param name="action" value="updateContestTeam" />
-		<portlet:param name="action_forwardToPage" value="teamTab" />
-		<portlet:param name="action_errorForwardToPage" value="teamTab" />
 	</portlet:actionURL>
 
 	<script type="text/javascript">

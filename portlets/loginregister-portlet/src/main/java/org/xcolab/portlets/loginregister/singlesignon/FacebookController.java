@@ -22,14 +22,25 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URL;
+import java.util.Locale;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -37,11 +48,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.Locale;
 
 @Controller
 @RequestMapping(value = "view", params = "SSO=facebook")
@@ -290,27 +296,26 @@ public class FacebookController {
 
     private void updateUserAccountInformation(User user, JSONObject jsonObject) throws SystemException {
         try {
-            ExpandoValue country = getExpandoValue(user, CommunityConstants.COUNTRY);
+            Member member = MembersClient.getMember(user.getUserId());
+            String country = member.getCountry();
 
-            if (Validator.isNull(country) || Validator.isNull(country.getString())) {
+            if (StringUtils.isEmpty(country)) {
                 try {
-                    setExpandoValue(user, CommunityConstants.COUNTRY, getCountry(jsonObject));
-                } catch (UserLocationNotResolvableException e) {
-                    _log.warn(e);
-                }
+                    member.setCountry(getCountry(jsonObject));
+                } catch (UserLocationNotResolvableException ignored) { }
             }
 
+            //TODO: do we need this?
             ExpandoValue city = getExpandoValue(user, CommunityConstants.CITY);
 
             if (Validator.isNull(city) || Validator.isNull(city.getString())) {
                 try {
                     setExpandoValue(user, CommunityConstants.CITY, getCountry(jsonObject));
 
-                } catch (UserLocationNotResolvableException e) {
-                    _log.warn(e);
-                }
+                } catch (UserLocationNotResolvableException ignored) {}
             }
-        } catch (PortalException e) {
+            MembersClient.updateMember(member);
+        } catch (PortalException | MemberNotFoundException e) {
             _log.error(e);
         }
     }

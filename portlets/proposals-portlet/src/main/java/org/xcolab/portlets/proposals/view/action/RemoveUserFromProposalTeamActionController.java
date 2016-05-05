@@ -22,6 +22,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,7 +42,7 @@ public class RemoveUserFromProposalTeamActionController {
 
     @RequestMapping(params = {"action=removeUserFromTeam"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response, @RequestParam("member") long memberUserId)
-            throws PortalException, SystemException, ProposalsAuthorizationException {
+            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
         final Proposal proposal = proposalsContext.getProposal(request);
         final User actingUser = proposalsContext.getUser(request);
@@ -86,5 +87,6 @@ public class RemoveUserFromProposalTeamActionController {
         }
 
         ProposalLocalServiceUtil.removeUserFromTeam(proposalId,memberUserId);
+        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId) + "/tab/TEAM");
     }
 }

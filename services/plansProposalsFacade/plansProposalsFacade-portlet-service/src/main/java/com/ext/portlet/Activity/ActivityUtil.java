@@ -82,8 +82,7 @@ public class ActivityUtil {
             try {
                 SocialActivity sa = SocialActivityLocalServiceUtil.getSocialActivity(GetterUtil.getLong(activityDoc.getField("activityId").getValue()));
                 aggregatedSocialActivities.add(sa);
-            } catch (SystemException | PortalException e) {
-                _log.error(e);
+            } catch (SystemException | PortalException ignored) {
             }
         }
         return aggregatedSocialActivities;

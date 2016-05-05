@@ -83,9 +83,9 @@ cd microservices/services
 mvn install -N
 cd ../..
 
-cd microservices/jooq-config
+cd microservices/util/xcolab-utils
 mvn clean compile package install clean
-cd ../..
+cd ../../..
 
 cd microservices/clients
 for D in *; do

@@ -7,7 +7,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.User_;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.HumanTime;
 import org.xcolab.utils.HtmlUtil;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MessageBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private List<User_> recipients = new ArrayList<>();
+    private List<Member> recipients = new ArrayList<>();
     private Message message;
     private long messageId;
     private boolean selected;
@@ -95,7 +95,7 @@ public class MessageBean implements Serializable {
         this.message = message;
     }
 
-    public List<User_> getTo() {
+    public List<Member> getTo() {
         return recipients;
     }
 }

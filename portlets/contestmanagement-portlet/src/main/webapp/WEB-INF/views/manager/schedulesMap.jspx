@@ -15,24 +15,18 @@
     </portlet:actionURL>
 
     <portlet:actionURL var="createContestScheduleURL">
-        <portlet:param name="action_forwardToPage" value="schedulesTab"/>
-        <portlet:param name="action_errorForwardToPage" value="schedulesTab"/>
         <portlet:param name="tab" value="SCHEDULES"/>
         <portlet:param name="manager" value="true"/>
         <portlet:param name="action" value="createContestSchedule"/>
     </portlet:actionURL>
 
     <portlet:actionURL var="updateContestScheduleURL">
-        <portlet:param name="action_forwardToPage" value="schedulesTab"/>
-        <portlet:param name="action_errorForwardToPage" value="schedulesTab"/>
         <portlet:param name="tab" value="SCHEDULES"/>
         <portlet:param name="manager" value="true"/>
         <portlet:param name="action" value="updateContestSchedule"/>
     </portlet:actionURL>
 
     <portlet:actionURL var="deleteContestScheduleURL">
-        <portlet:param name="action_forwardToPage" value="schedulesTab"/>
-        <portlet:param name="action_errorForwardToPage" value="schedulesTab"/>
         <portlet:param name="tab" value="SCHEDULES"/>
         <portlet:param name="scheduleId" value="${contestScheduleWrapper.scheduleId}"/>
         <portlet:param name="manager" value="true"/>

@@ -5,12 +5,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 
 import javax.portlet.PortletRequest;
@@ -27,10 +28,9 @@ public class ContestManagementBaseController {
     public String createContestController(PortletRequest request, Model model, PortletResponse response)
             throws PortalException, SystemException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
         User currentUser = themeDisplay.getUser();
 
-        if (!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
+        if (!currentUser.isDefaultUser() && PermissionsClient.canAdminAll(currentUser.getUserId())) {
             Contest contest = ContestCreatorUtil.createNewContest("created contest "
                     + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"));
             String newContestLink = "/web/guest/cms/-/contestmanagement/contestId/"
