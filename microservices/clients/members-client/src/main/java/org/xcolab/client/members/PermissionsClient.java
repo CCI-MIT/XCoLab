@@ -22,7 +22,7 @@ public final class PermissionsClient {
         return memberHasRoleInContest(memberId, contestId, MemberRole.FELLOW);
     }
 
-    public static boolean canAIF(Long memberId) {
+    public static boolean canIAF(Long memberId) {
         return memberHasRole(memberId, MemberRole.IMPACT_ASSESSMENT_FELLOW);
     }
 

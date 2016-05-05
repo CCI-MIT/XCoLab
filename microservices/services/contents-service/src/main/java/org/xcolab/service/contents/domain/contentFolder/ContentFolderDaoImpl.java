@@ -1,11 +1,15 @@
 package org.xcolab.service.contents.domain.contentFolder;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.model.tables.records.ContentFolderRecord;
+import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.util.List;
 
@@ -52,25 +56,38 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     }
 
     @Override
-    public List<ContentFolder> getFolders() {
-        return dslContext.select()
+    public List<ContentFolder> findByGiven(PaginationHelper paginationHelper,
+            Long parentFolderId) {
+        final SelectQuery<Record> query = dslContext.select()
                 .from(CONTENT_FOLDER)
-                .fetchInto(ContentFolder.class);
-    }
+                .getQuery();
 
-    @Override
-    public List<ContentFolder> getChildFolders(Long contentFolderId) {
-        if (contentFolderId == null) {
-            return this.dslContext.select()
-                    .from(CONTENT_FOLDER)
-                    .where(CONTENT_FOLDER.PARENT_FOLDER_ID.isNull())
-                    .fetch().into(ContentFolder.class);
-        } else {
-            return this.dslContext.select()
-                    .from(CONTENT_FOLDER)
-                    .where(CONTENT_FOLDER.PARENT_FOLDER_ID.eq(contentFolderId))
-                    .fetch().into(ContentFolder.class);
+        if (parentFolderId != null) {
+            query.addConditions(CONTENT_FOLDER.PARENT_FOLDER_ID.eq(parentFolderId));
         }
-    }
 
+        for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
+            switch (sortColumn.getColumnName()) {
+                case "contentFolderName":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTENT_FOLDER.CONTENT_FOLDER_NAME.asc()
+                            : CONTENT_FOLDER.CONTENT_FOLDER_NAME.desc());
+                    break;
+
+                case "parentFolderId":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTENT_FOLDER.PARENT_FOLDER_ID.asc()
+                            : CONTENT_FOLDER.PARENT_FOLDER_ID.desc());
+                    break;
+                default:
+                case "contentFolderId":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTENT_FOLDER.CONTENT_FOLDER_ID.asc()
+                            : CONTENT_FOLDER.CONTENT_FOLDER_ID.desc());
+                    break;
+            }
+        }
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        return query.fetchInto(ContentFolder.class);
+    }
 }

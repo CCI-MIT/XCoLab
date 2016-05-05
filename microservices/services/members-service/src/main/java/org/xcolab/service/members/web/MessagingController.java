@@ -13,6 +13,8 @@ import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.messaging.MessagingService;
+import org.xcolab.service.utils.ControllerUtils;
+import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
@@ -20,8 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class MessagingController {
-
-    private static final int DEFAULT_PAGE_SIZE = 20;
 
     @Autowired
     private MessagingService messagingService;
@@ -31,22 +31,23 @@ public class MessagingController {
 
     @RequestMapping(value = "/messages", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Message> getMemberMessages(HttpServletResponse response,
-            @RequestParam(required = false) Integer firstRecord,
-            @RequestParam(required = false) Integer lastRecord,
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) Long recipientId,
             @RequestParam(required = false) Long senderId,
             @RequestParam(required = false) Boolean isArchived,
             @RequestParam(required = false) Boolean isOpened,
+            @RequestParam(required = false) String sort,
             @RequestParam(required = false, defaultValue = "true") boolean includeCount) {
 
-        final int firstRecordUnwrapped = firstRecord != null ? firstRecord : 0;
-        final int lastRecordUnwrapped = lastRecord != null ? lastRecord : firstRecordUnwrapped + DEFAULT_PAGE_SIZE;
+        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
+                sort);
 
         if (includeCount) {
-            response.setHeader("X-Total-Count",
+            response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                     Integer.toString(messageDao.countByGiven(senderId, recipientId, isArchived, isOpened)));
         }
-        return messageDao.findByGiven(firstRecordUnwrapped, lastRecordUnwrapped, senderId, recipientId, isArchived, isOpened);
+        return messageDao.findByGiven(paginationHelper, senderId, recipientId, isArchived, isOpened);
     }
 
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)

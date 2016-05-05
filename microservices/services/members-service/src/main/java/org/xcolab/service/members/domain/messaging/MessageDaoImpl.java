@@ -11,6 +11,8 @@ import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.wrappers.MessageReceived;
+import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -63,34 +65,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public int countBySendingUser(long userId) {
-        return dslContext.selectCount()
-                .from(MESSAGE)
-                .where(MESSAGE.FROM_ID.equal(userId))
-                .fetchOne(0, Integer.class);
-    }
-
-    @Override
-    public int countByReceivingUserArchived(long userId, boolean isArchived) {
-
-        return dslContext.selectCount()
-                .from(MESSAGE_RECIPIENT_STATUS)
-                .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
-                        .and(MESSAGE_RECIPIENT_STATUS.ARCHIVED.equal(isArchived))
-                ).fetchOne(0, Integer.class);
-    }
-
-    @Override
-    public int countByReceivingUserOpened(long userId, boolean isOpened) {
-        return dslContext.selectCount()
-                .from(MESSAGE_RECIPIENT_STATUS)
-                .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
-                        .and(MESSAGE_RECIPIENT_STATUS.OPENED.equal(isOpened))
-                ).fetchOne(0, Integer.class);
-    }
-
-    @Override
-    public List<Message> findByGiven(int startRecord, int limitRecord,
+    public List<Message> findByGiven(PaginationHelper paginationHelper,
             Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MESSAGE).getQuery();
@@ -110,40 +85,41 @@ public class MessageDaoImpl implements MessageDao {
         if (isOpened != null) {
             query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpened));
         }
+
+        for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
+            switch (sortColumn.getColumnName()) {
+                case "senderId":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? MESSAGE.FROM_ID.asc()
+                            : MESSAGE.FROM_ID.desc());
+                    break;
+                case "recipientId":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? MESSAGE_RECIPIENT_STATUS.MESSAGE_RECIPIENT_ID.asc()
+                            : MESSAGE_RECIPIENT_STATUS.MESSAGE_RECIPIENT_ID.desc());
+                    break;
+                case "isArchived":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? MESSAGE_RECIPIENT_STATUS.ARCHIVED.asc()
+                            : MESSAGE_RECIPIENT_STATUS.ARCHIVED.desc());
+                    break;
+                case "isOpened":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? MESSAGE_RECIPIENT_STATUS.OPENED.asc()
+                            : MESSAGE_RECIPIENT_STATUS.OPENED.desc());
+                    break;
+                case "createDate":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? MESSAGE.CREATE_DATE.asc()
+                            : MESSAGE.CREATE_DATE.desc());
+                    break;
+
+            }
+        }
         query.addOrderBy(MESSAGE.CREATE_DATE.desc());
-        query.addLimit(startRecord, limitRecord);
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+
         return query.fetchInto(recipientId != null ? MessageReceived.class : Message.class);
-    }
-
-    @Override
-    public List<Message> findByReceivingUserArchived(int startRecord, int limitRecord, long userId, boolean isArchived) {
-
-        return dslContext.select()
-                .from(MESSAGE)
-                .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.equal(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
-                .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId)
-                        .and(MESSAGE_RECIPIENT_STATUS.ARCHIVED.equal(isArchived))
-                ).orderBy(MESSAGE.CREATE_DATE.desc())
-                .limit(startRecord, limitRecord).fetchInto(MessageReceived.class);
-    }
-
-    @Override
-    public List<Message> findByReceivingUser(int startRecord, int limitRecord, long userId) {
-        return dslContext.select()
-                .from(MESSAGE)
-                .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.equal(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
-                .where(MESSAGE_RECIPIENT_STATUS.USER_ID.equal(userId))
-                .orderBy(MESSAGE.CREATE_DATE.desc())
-                .limit(startRecord, limitRecord).fetchInto(MessageReceived.class);
-    }
-
-    @Override
-    public List<Message> findBySendingUser(int startRecord, int limitRecord, long userId) {
-        return dslContext.select()
-                .from(MESSAGE)
-                .where(MESSAGE.FROM_ID.equal(userId))
-                .orderBy(MESSAGE.CREATE_DATE.desc())
-                .limit(startRecord, limitRecord).fetchInto(Message.class);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class WikiController {
         final long folderId = Long.parseLong(preferences.getWikiFolderId());
         if (folderId > 0 && StringUtils.isNotBlank(pageTitle)) {
             final ContentArticleVersion contentArticleVersion =
-                    ContentsClient.getContentArticleVersion(folderId, pageTitle);
+                    ContentsClient.getLatestContentArticleVersion(folderId, pageTitle);
             model.addAttribute("contentArticleVersion", contentArticleVersion);
         }
         return "wiki";
@@ -56,12 +56,16 @@ public class WikiController {
 
         final Contest contest = ContestClient.getContest(contestUrlName, contestYear);
 
-        if (contest.getResourceArticleId() > 0) {
-            final ContentArticle contentArticle = ContentsClient
-                    .getContentArticle(contest.getResourceArticleId());
-            ContentArticleVersion contentArticleVersion =
-                    ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
-            model.addAttribute("contentArticleVersion", contentArticleVersion);
+        try {
+            if (contest.getResourceArticleId() > 0) {
+                final ContentArticle contentArticle = ContentsClient
+                        .getContentArticle(contest.getResourceArticleId());
+                ContentArticleVersion contentArticleVersion =
+                        ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+                model.addAttribute("contentArticleVersion", contentArticleVersion);
+            }
+        } catch (ContentNotFoundException e) {
+            //TODO: logging
         }
 
         return "wiki";

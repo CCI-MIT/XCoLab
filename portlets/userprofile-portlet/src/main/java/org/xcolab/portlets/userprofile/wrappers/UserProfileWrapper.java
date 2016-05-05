@@ -22,6 +22,7 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.enums.Plurality;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
@@ -81,7 +82,8 @@ public class UserProfileWrapper implements Serializable {
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
     private final ThemeDisplay themeDisplay;
 
-    public UserProfileWrapper(String userIdString, PortletRequest request) throws PortalException, SystemException {
+    public UserProfileWrapper(String userIdString, PortletRequest request)
+            throws PortalException, SystemException, MemberNotFoundException {
         Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         user = MembersClient.getMember(userId);

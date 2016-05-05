@@ -60,24 +60,28 @@ public class WikiPageWrapper {
     }
 
     private void initWikiPage() throws SystemException {
-        if (contest.getResourceArticleId() > 0) {
-            contentArticle = ContentsClient.getContentArticle(contest.getResourceArticleId());
-            contentArticleVersion =
-                    ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
-        } else {
-            contentArticleVersion = new ContentArticleVersion();
-            contentArticleVersion.setFolderId(2L);
-            contentArticleVersion.setAuthorId(loggedInUserId);
-            contentArticleVersion.setTitle(contest.getContestShortName());
-            contentArticleVersion = ContentsClient
-                    .createContentArticleVersion(contentArticleVersion);
+        try {
+            if (contest.getResourceArticleId() > 0) {
+                contentArticle = ContentsClient.getContentArticle(contest.getResourceArticleId());
+                contentArticleVersion =
+                        ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+            } else {
+                contentArticleVersion = new ContentArticleVersion();
+                contentArticleVersion.setFolderId(2L);
+                contentArticleVersion.setAuthorId(loggedInUserId);
+                contentArticleVersion.setTitle(contest.getContestShortName());
+                contentArticleVersion = ContentsClient
+                        .createContentArticleVersion(contentArticleVersion);
 
-            contentArticle = ContentsClient.getContentArticle(
-                    contentArticleVersion.getContentArticleId());
+                contentArticle = ContentsClient.getContentArticle(
+                        contentArticleVersion.getContentArticleId());
 
-            final long resourceArticleId = contentArticle.getContentArticleId();
-            contest.setResourceArticleId(resourceArticleId);
-            ContestLocalServiceUtil.updateContest(contest);
+                final long resourceArticleId = contentArticle.getContentArticleId();
+                contest.setResourceArticleId(resourceArticleId);
+                ContestLocalServiceUtil.updateContest(contest);
+            }
+        } catch (ContentNotFoundException e) {
+            //TODO: logging
         }
     }
 }

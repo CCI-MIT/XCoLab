@@ -1,9 +1,10 @@
 package org.xcolab.client.members.legacy.enums;
 
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.client.members.MembersClient;
 
 import java.util.Arrays;
 import java.util.List;

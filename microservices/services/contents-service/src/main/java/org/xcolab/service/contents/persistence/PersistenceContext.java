@@ -1,7 +1,5 @@
 package org.xcolab.service.contents.persistence;
 
-import com.zaxxer.hikari.HikariDataSource;
-
 import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
@@ -17,7 +15,9 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import org.xcolab.service.contents.exceptions.JOOQToSpringExceptionTransformer;
+import org.xcolab.service.utils.DataSourceUtil;
 
 import javax.sql.DataSource;
 
@@ -40,23 +40,11 @@ public class PersistenceContext {
     }
 
     public DataSource dataSource() {
-        final HikariDataSource dataSource = new HikariDataSource();
-
-        dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
-        dataSource.setJdbcUrl(env.getRequiredProperty("db.url"));
-        dataSource.setUsername(env.getRequiredProperty("db.username"));
-        dataSource.setPassword(env.getRequiredProperty("db.password"));
-
-        dataSource.setMaximumPoolSize(20);
-        dataSource.setMinimumIdle(5);
-        dataSource.setIdleTimeout(120000);
-
-        //mysql optimizations
-        dataSource.addDataSourceProperty("cachePrepStmts", true);
-        dataSource.addDataSourceProperty("prepStmtCacheSize", 250);
-        dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", 1024);
-
-        return dataSource;
+        return DataSourceUtil.getConfiguredDataSource(
+            env.getRequiredProperty("db.driver"),
+            env.getRequiredProperty("db.url"),
+            env.getRequiredProperty("db.username"),
+            env.getRequiredProperty("db.password"));
     }
 
     @Bean
