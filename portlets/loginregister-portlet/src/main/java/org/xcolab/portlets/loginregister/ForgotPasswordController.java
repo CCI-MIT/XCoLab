@@ -1,6 +1,5 @@
 package org.xcolab.portlets.loginregister;
 
-import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.PasswordExpiredException;
@@ -9,6 +8,7 @@ import com.liferay.portal.UserIdException;
 import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -16,9 +16,11 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.xcolab.utils.GlobalMessagesUtil;
 import org.xcolab.utils.ModelAttributeUtil;
+import org.xcolab.utils.emailnotification.member.MemberForgotPasswordNotification;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -33,9 +40,6 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "view")
@@ -87,9 +91,14 @@ public class ForgotPasswordController {
                     emailParam + "Subject_" + languageId, null);
             String body = preferences.getValue(
                     emailParam + "Body_" + languageId, null);
-
+/*
             AuthenticationServiceUtil
                     .sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
+*/
+            String passwordLink = "http://localhost:18081/c/portal/update_password?p_l_id=44901&amp;ticketKey=89890";
+
+            sendEmailNotificationToForPasswordReset(PortalUtil.getHttpServletRequest(request).getRemoteAddr(), passwordLink , themeDisplay, user);
+
         } catch (Exception e) {
             if (e instanceof AuthException) {
                 Throwable cause = e.getCause();
@@ -137,9 +146,17 @@ public class ForgotPasswordController {
         response.sendRedirect(redirect);
     }
 
+    private static void sendEmailNotificationToForPasswordReset(String memberIp, String link, ThemeDisplay themeDisplay, User recipient)
+            throws PortalException, SystemException {
+        ServiceContext serviceContext = new ServiceContext();
+        serviceContext.setPortalURL(themeDisplay.getPortalURL());
+
+        new MemberForgotPasswordNotification(memberIp, link, recipient, serviceContext).sendEmailNotification();
+    }
+
     @RequestMapping(params = "isError=true")
     public String register(PortletRequest request, PortletResponse response,
-            Model model) throws SystemException {
+                           Model model) throws SystemException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         model.addAttribute("message",
