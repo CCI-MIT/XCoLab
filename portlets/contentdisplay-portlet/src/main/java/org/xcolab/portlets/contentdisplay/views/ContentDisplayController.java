@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
 import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.portlets.contentdisplay.util.ContentDisplayPreferences;
@@ -23,12 +25,16 @@ public class ContentDisplayController {
         if (StringUtils.isNotBlank(contentArticleIdString)) {
             final long contentArticleId = Long.parseLong(contentArticleIdString);
             if (contentArticleId > 0) {
-                final ContentArticle contentArticle = ContentsClient
-                        .getContentArticle(contentArticleId);
-                final long version = contentArticle.getMaxVersionId();
-                final ContentArticleVersion contentArticleVersion = ContentsClient
-                        .getContentArticleVersion(version);
-                model.addAttribute("contentArticleVersion", contentArticleVersion);
+                try {
+                    final ContentArticle contentArticle = ContentsClient
+                            .getContentArticle(contentArticleId);
+                    final long version = contentArticle.getMaxVersionId();
+                    final ContentArticleVersion contentArticleVersion = ContentsClient
+                            .getContentArticleVersion(version);
+                    model.addAttribute("contentArticleVersion", contentArticleVersion);
+                } catch (ContentNotFoundException e) {
+                    //TODO: logging
+                }
             }
         }
         return "content";

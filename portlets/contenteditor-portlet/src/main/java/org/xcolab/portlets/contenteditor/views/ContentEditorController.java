@@ -101,11 +101,11 @@ public class ContentEditorController {
     public void moveArticleVersion(ResourceRequest request, ResourceResponse response,
                                    @RequestParam(required = false) Long articleId,
                                    @RequestParam(required = false) Long folderId)
-            throws IOException, SystemException, PortalException {
+            throws IOException, SystemException, PortalException, ContentNotFoundException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         Long userId = themeDisplay.getUser().getUserId();
 
-        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersionByContentArticleId(articleId);
+        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
         ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
         newContentArticleVersion.setTitle(contentArticleVersion.getTitle());
         newContentArticleVersion.setContent(contentArticleVersion.getContent());

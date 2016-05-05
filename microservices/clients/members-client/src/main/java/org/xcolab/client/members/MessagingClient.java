@@ -1,18 +1,13 @@
 package org.xcolab.client.members;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.util.RequestUtils;
+import org.xcolab.util.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
@@ -20,20 +15,15 @@ public final class MessagingClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/members-service";
 
-    private static final RestTemplate restTemplate = new RestTemplate();
-
     private MessagingClient() { }
 
     public static Message getMessage(long messageId) throws MessageNotFoundException {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId);
         try {
-            return restTemplate.getForObject(uriBuilder.build().toString(), Message.class);
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new MessageNotFoundException(messageId);
-            }
-            throw e;
+            return RequestUtils.get(uriBuilder, Message.class);
+        } catch (EntityNotFoundException e) {
+            throw new MessageNotFoundException(messageId);
         }
     }
 
@@ -47,11 +37,8 @@ public final class MessagingClient {
 
         uriBuilder.queryParam("isArchived", isArchived);
 
-        ResponseEntity<List<Message>> response = restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Message>>() {
-                });
-
-        return response.getBody();
+        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Message>>() {
+        });
     }
 
     public static List<Message> getSentMessagesForUser(int firstMessage, int lastMessage, long userId) {
@@ -61,11 +48,8 @@ public final class MessagingClient {
                         .queryParam("firstRecord", firstMessage)
                         .queryParam("lastRecord", lastMessage);
 
-        ResponseEntity<List<Message>> response = restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Message>>() {
-                });
-
-        return response.getBody();
+        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Message>>() {
+        });
     }
 
     public static int getMessageCountForUser(long userId, boolean isArchived) {
@@ -73,12 +57,7 @@ public final class MessagingClient {
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
                         .queryParam("recipientId", userId)
                         .queryParam("isArchived", isArchived);
-        final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.build().toString());
-        final List<String> countHeaders = httpHeaders.get("X-Total-Count");
-        if (countHeaders.isEmpty()) {
-            return 0;
-        }
-        return Integer.valueOf(countHeaders.get(0));
+        return RequestUtils.getCount(uriBuilder);
     }
 
     public static int getUnreadMessageCountForUser(long userId) {
@@ -94,19 +73,14 @@ public final class MessagingClient {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
                         .queryParam("senderId", userId);
-        final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.build().toString());
-        final List<String> countHeaders = httpHeaders.get("X-Total-Count");
-        if (countHeaders.isEmpty()) {
-            return 0;
-        }
-        return Integer.valueOf(countHeaders.get(0));
+        return RequestUtils.getCount(uriBuilder);
     }
 
     public static void createMessage(Message message) {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages");
 
-        restTemplate.postForEntity(uriBuilder.build().toString(), message, String.class);
+        RequestUtils.post(uriBuilder, message, String.class);
     }
 
     public static void createRecipient(long messageId, long recipientStatusId, long recipientId) {
@@ -115,16 +89,14 @@ public final class MessagingClient {
                 .queryParam("recipientStatusId", recipientStatusId)
                 .queryParam("recipientId", recipientId);
 
-        restTemplate.postForEntity(uriBuilder.build().toString(), null, String.class);
+        RequestUtils.post(uriBuilder, null, String.class);
     }
 
     public static List<Member> getMessageRecipients(long messageId) {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages/" + messageId + "/recipients");
-        ResponseEntity<List<Member>> response = restTemplate.exchange(uriBuilder.build().toString(),
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Member>>() {
-                });
-        return response.getBody();
+        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Member>>() {
+        });
     }
 
     public static void setArchived(long messageId, long memberId, boolean isArchived) {
@@ -133,7 +105,7 @@ public final class MessagingClient {
                 .queryParam("memberId", memberId)
                 .queryParam("isArchived", isArchived);
 
-        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PUT, null, String.class);
+        RequestUtils.put(uriBuilder, null);
     }
 
     public static void setOpened(long messageId, long memberId, boolean isOpened) {
@@ -142,7 +114,7 @@ public final class MessagingClient {
                 .queryParam("memberId", memberId)
                 .queryParam("isOpened", isOpened);
 
-        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.PUT, null, String.class);
+        RequestUtils.put(uriBuilder, null);
     }
 
 }

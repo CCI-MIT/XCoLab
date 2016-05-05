@@ -37,6 +37,41 @@ public final class RequestUtils {
     private RequestUtils() {
     }
 
+    public static <T> T getFirstFromList(UriComponentsBuilder uriBuilder,
+            ParameterizedTypeReference<List<T>> typeReference) throws EntityNotFoundException {
+        return getFirstFromList(uriBuilder, typeReference, null);
+    }
+
+    public static <T> T getFirstFromList(UriComponentsBuilder uriBuilder,
+            ParameterizedTypeReference<List<T>> typeReference, String cacheQueryIdentifier)
+            throws EntityNotFoundException {
+        uriBuilder.queryParam("startRecord", 0);
+        uriBuilder.queryParam("limitRecord", 1);
+
+        final boolean cacheActive = memcached != null && cacheQueryIdentifier != null;
+        final String cachePrefix = "_" + typeReference.getType() + "_listFirst_";
+        T ret;
+        if (cacheActive) {
+            //noinspection unchecked
+            ret = (T) memcached.get(cachePrefix + cacheQueryIdentifier);
+            if (ret != null) {
+                return ret;
+            }
+        }
+
+        final List<T> list = getList(uriBuilder, typeReference);
+        if (list.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        ret = list.get(0);
+
+        if (cacheActive) {
+            memcached.add(cachePrefix + cacheQueryIdentifier, MEMCACHED_TIMEOUT, ret);
+        }
+
+        return ret;
+    }
+
     public static <T> List<T> getList(UriComponentsBuilder uriBuilder,
             ParameterizedTypeReference<List<T>> typeReference) {
         return getList(uriBuilder, typeReference, null);
@@ -44,12 +79,13 @@ public final class RequestUtils {
 
     public static <T> List<T> getList(UriComponentsBuilder uriBuilder,
             ParameterizedTypeReference<List<T>> typeReference,
-            String cacheIdentifier) {
+            String cacheQueryIdentifier) {
         List<T> ret;
-        final boolean cacheActive = memcached != null && cacheIdentifier != null;
+        final boolean cacheActive = memcached != null && cacheQueryIdentifier != null;
+        final String cachePrefix = "_" + typeReference.getType() + "_list_";
         if (cacheActive) {
             //noinspection unchecked
-            ret = (List<T>) memcached.get(cacheIdentifier);
+            ret = (List<T>) memcached.get(cachePrefix + cacheQueryIdentifier);
             if (ret != null) {
                 return ret;
             }
@@ -59,7 +95,7 @@ public final class RequestUtils {
         ret = response.getBody();
 
         if (cacheActive) {
-            memcached.add(cacheIdentifier, MEMCACHED_TIMEOUT, ret);
+            memcached.add(cachePrefix + cacheQueryIdentifier, MEMCACHED_TIMEOUT, ret);
         }
         return ret;
     }
@@ -70,10 +106,10 @@ public final class RequestUtils {
     }
 
     public static <T> T get(UriComponentsBuilder uriBuilder, Class<T> entityType,
-            String cacheIdentifier)
+            String cacheQueryIdentifier)
             throws EntityNotFoundException {
         try {
-            return getUnchecked(uriBuilder, entityType, cacheIdentifier);
+            return getUnchecked(uriBuilder, entityType, cacheQueryIdentifier);
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 if (isNotFoundException(e)) {
@@ -88,20 +124,22 @@ public final class RequestUtils {
     public static <T> T getUnchecked(UriComponentsBuilder uriBuilder, Class<T> entityType) {
         return getUnchecked(uriBuilder, entityType, null);
     }
+
     public static <T> T getUnchecked(UriComponentsBuilder uriBuilder, Class<T> entityType,
-            String cacheIdentifier) {
+            String cacheQueryIdentifier) {
         T ret;
-        final boolean cacheActive = memcached != null && cacheIdentifier != null;
+        final boolean cacheActive = memcached != null && cacheQueryIdentifier != null;
+        final String cachePrefix = "_" + entityType.getSimpleName() + "_";
         if (cacheActive) {
             //noinspection unchecked
-            ret = (T) memcached.get(cacheIdentifier);
+            ret = (T) memcached.get(cachePrefix + cacheQueryIdentifier);
             if (ret != null) {
                 return ret;
             }
         }
         ret = restTemplate.getForObject(uriBuilder.build().toString(), entityType);
         if (cacheActive) {
-            memcached.add(cacheIdentifier, MEMCACHED_TIMEOUT, ret);
+            memcached.add(cachePrefix + cacheQueryIdentifier, MEMCACHED_TIMEOUT, ret);
         }
         return ret;
     }
@@ -138,5 +176,4 @@ public final class RequestUtils {
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.build().toString(), entity, returnType);
     }
-
 }

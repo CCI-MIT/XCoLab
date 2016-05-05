@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.ImageUploadUtils;
@@ -314,7 +315,7 @@ public class FacebookController {
                 } catch (UserLocationNotResolvableException ignored) {}
             }
             MembersClient.updateMember(member);
-        } catch (PortalException e) {
+        } catch (PortalException | MemberNotFoundException e) {
             _log.error(e);
         }
     }

@@ -16,6 +16,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>xcolab-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     
 </project>
