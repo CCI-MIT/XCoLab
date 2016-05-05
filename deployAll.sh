@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd microservices/jooq-config
+cd microservices/util/jooq-config
 mvn clean compile package install clean
-cd ../..
+cd ../../..
 
 cd microservices/clients
 for D in *; do
