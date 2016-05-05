@@ -25,7 +25,11 @@ public enum ConfigurationAttributeKey {
     MY_EMMA_PRIVATE_API_KEY(AttributeType.STRING),
 
     IMAGE_UPLOAD_EXTERNAL_SERVICE_URL(AttributeType.STRING),
-    IMAGE_UPLOAD_HELP_TEXT(AttributeType.STRING);
+    IMAGE_UPLOAD_HELP_TEXT(AttributeType.STRING),
+
+    MIT_HEADER_BAR_SHOW(AttributeType.BOOLEAN),
+    MIT_HEADER_BAR_LINK_TEXT(AttributeType.STRING),
+    MIT_HEADER_BAR_LINK_URL(AttributeType.STRING);
 
     private final AttributeType type;
 
