@@ -185,14 +185,6 @@ public final class ContentsClient {
         RequestUtils.put(uriBuilder, contentFolder);
     }
 
-    public static List<ContentFolder> getChildFolders(Long folderId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentFolders/" + folderId + "/childFolders/");
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<ContentFolder>>() {
-        });
-    }
-
     public static List<ContentArticleVersion> getChildArticleVersions(Long folderId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contentFolders/" + folderId

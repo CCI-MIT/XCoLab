@@ -32,8 +32,8 @@ public final class MessagingClient {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
                         .queryParam("recipientId", userId)
-                        .queryParam("firstRecord", firstMessage)
-                        .queryParam("lastRecord", lastMessage);
+                        .queryParam("startRecord", firstMessage)
+                        .queryParam("limitRecord", lastMessage);
 
         uriBuilder.queryParam("isArchived", isArchived);
 
@@ -45,8 +45,8 @@ public final class MessagingClient {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/messages")
                         .queryParam("senderId", userId)
-                        .queryParam("firstRecord", firstMessage)
-                        .queryParam("lastRecord", lastMessage);
+                        .queryParam("startRecord", firstMessage)
+                        .queryParam("limitRecord", lastMessage);
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Message>>() {
         });

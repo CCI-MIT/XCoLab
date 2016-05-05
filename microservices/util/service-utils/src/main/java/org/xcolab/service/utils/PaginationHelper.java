@@ -11,7 +11,7 @@ public class PaginationHelper {
 
     private final int startRecord;
     private final int limitRecord;
-    private final List<SortColumn> sortColumns = new ArrayList<SortColumn>();
+    private final List<SortColumn> sortColumns = new ArrayList<>();
 
     public PaginationHelper(Integer startRecord, Integer limitRecord, String sort) {
         this.startRecord = startRecord != null ? startRecord : 0;

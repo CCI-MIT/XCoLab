@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.records.ContentArticleVersionRecord;
+import org.xcolab.service.contents.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.util.List;
 
@@ -54,11 +57,15 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
-    public ContentArticleVersion get(Long contentArticleId) {
-        return this.dslContext.select()
+    public ContentArticleVersion get(Long contentArticleId) throws NotFoundException {
+        final Record record = this.dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
                 .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.eq(contentArticleId))
-                .fetchOneInto(ContentArticleVersion.class);
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException();
+        }
+        return record.into(ContentArticleVersion.class);
     }
 
     @Override
@@ -84,44 +91,17 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
-    public ContentArticleVersion getLatestVersionByContentArticleId(Long contentArticleVersionId) {
-        return this.dslContext.select()
-                .from(CONTENT_ARTICLE_VERSION)
-                .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
-                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleVersionId))
-                .and(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.equal(CONTENT_ARTICLE.MAX_VERSION_ID))
-                .fetchOneInto(ContentArticleVersion.class);
-    }
-
-    @Override
-    public List<ContentArticleVersion> getVersions() {
-        return dslContext.select()
-                .from(CONTENT_ARTICLE_VERSION)
-                .fetchInto(ContentArticleVersion.class);
-    }
-
-    @Override
-    public List<ContentArticleVersion> getVersionsForArticle(long articleId) {
-        return dslContext.select()
-                .from(CONTENT_ARTICLE_VERSION)
-                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(articleId))
-                .fetchInto(ContentArticleVersion.class);
-    }
-
-    @Override
-    public List<ContentArticleVersion> findByGiven(
-            Long contentArticleId, Long contentArticleVersion,
-            Long folderId, String title, int startRecord, int limitRecord) {
+    public List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper,
+            Long contentArticleId, Long contentArticleVersion, Long folderId, String title) {
         final SelectQuery<Record> query = dslContext.select()
-                .from(CONTENT_ARTICLE_VERSION).getQuery();
+                .from(CONTENT_ARTICLE_VERSION)
+                .getQuery();
 
         if (contentArticleId != null) {
-            query.addConditions(
-                    CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleId));
+            query.addConditions(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleId));
         }
         if (contentArticleVersion != null) {
-            query.addConditions(
-                    CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.eq(contentArticleVersion));
+            query.addConditions(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.eq(contentArticleVersion));
         }
         if (folderId != null) {
             query.addConditions(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(folderId));
@@ -129,8 +109,33 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         if (title != null) {
             query.addConditions(CONTENT_ARTICLE_VERSION.TITLE.eq(title));
         }
-        query.addOrderBy(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.desc());
-        query.addLimit(startRecord, limitRecord);
+
+        for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
+            switch (sortColumn.getColumnName()) {
+                case "contentArticleId":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.asc()
+                            : CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.desc());
+                    break;
+                case "folderId":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTENT_ARTICLE_VERSION.FOLDER_ID.asc()
+                            : CONTENT_ARTICLE_VERSION.FOLDER_ID.desc());
+                    break;
+                case "title":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTENT_ARTICLE_VERSION.TITLE.asc()
+                            : CONTENT_ARTICLE_VERSION.TITLE.desc());
+                    break;
+                default:
+                case "contentArticleVersion":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.asc()
+                            : CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.desc());
+                    break;
+            }
+        }
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
         return query.fetchInto(ContentArticleVersion.class);
     }
 }

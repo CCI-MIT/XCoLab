@@ -47,7 +47,7 @@ public class ContentEditorController {
         if (node != null && !node.isEmpty()) {
             folderId = Long.parseLong(node);
         }
-        List<ContentFolder> contentFolders = ContentsClient.getChildFolders(folderId);
+        List<ContentFolder> contentFolders = ContentsClient.getContentFolders(folderId);
 
         if (contentFolders != null) {
             for (ContentFolder cf : contentFolders) {

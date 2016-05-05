@@ -1,10 +1,12 @@
 package org.xcolab.service.contents.domain.contentarticle;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.records.ContentArticleRecord;
+import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.contents.wrappers.ContentArticleWrapper;
 
 import java.util.List;
@@ -55,11 +57,15 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     }
 
     @Override
-    public ContentArticle get(Long contentArticleId) {
-        return this.dslContext.select()
+    public ContentArticle get(Long contentArticleId) throws NotFoundException {
+        final Record record = this.dslContext.select()
                 .from(CONTENT_ARTICLE)
                 .where(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(contentArticleId))
-                .fetchOneInto(ContentArticle.class);
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException();
+        }
+        return record.into(ContentArticle.class);
     }
 
     @Override

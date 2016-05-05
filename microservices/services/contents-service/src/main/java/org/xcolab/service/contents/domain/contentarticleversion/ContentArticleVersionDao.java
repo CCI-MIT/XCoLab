@@ -1,6 +1,8 @@
 package org.xcolab.service.contents.domain.contentarticleversion;
 
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
+import org.xcolab.service.contents.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
@@ -10,15 +12,10 @@ public interface ContentArticleVersionDao {
 
     void update(ContentArticleVersion contentArticleVersion);
 
-    ContentArticleVersion get(Long contentArticleId);
+    ContentArticleVersion get(Long contentArticleId) throws NotFoundException;
 
-    List<ContentArticleVersion> getVersions();
-    List<ContentArticleVersion> getVersionsForArticle(long articleId);
-
-    List<ContentArticleVersion> findByGiven(Long contentArticleId, Long contentArticleVersion,
-            Long folderId, String title, int startRecord, int limitRecord);
+    List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper, Long contentArticleId, Long contentArticleVersion,
+            Long folderId, String title);
 
     List<ContentArticleVersion> getByFolderId(Long contentFolderId);
-
-    ContentArticleVersion getLatestVersionByContentArticleId(Long contentArticleVersionId);
 }
