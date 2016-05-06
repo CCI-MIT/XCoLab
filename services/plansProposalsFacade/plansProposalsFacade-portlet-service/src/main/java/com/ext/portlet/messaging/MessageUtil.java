@@ -99,7 +99,7 @@ public final class MessageUtil {
         Message message = new Message();
         message.setMessageId(nextId);
         message.setSubject(StringEscapeUtils.unescapeXml(subject));
-        message.setContent(content);
+        message.setContent(content.replaceAll("\n", ""));
         message.setFromId(fromId);
         message.setCreateDate(new Timestamp(DateTime.now().getMillis()));
         message.setRepliesTo(replyToId);
@@ -150,7 +150,7 @@ public final class MessageUtil {
                         .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL, createMessageURL(m))
                         .replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT, m.getSubject())
                         .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,
-                                m.getContent().replaceAll("\n", "<br />")));
+                                m.getContent()));
 
         InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
         InternetAddress toEmail = new InternetAddress(to.getEmailAddress());
