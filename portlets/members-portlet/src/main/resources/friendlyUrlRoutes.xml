@@ -79,4 +79,14 @@
         <generated-parameter name="page">{page}</generated-parameter>
         <implicit-parameter name="sortAscending">true</implicit-parameter>
     </route>
+    
+    <!-- user search API for autocompletion in other portlets -->
+    <route>
+        <pattern>/users/partialName/{partialName}</pattern>
+        <generated-parameter name="partialName">{partialName}</generated-parameter>
+        <implicit-parameter name="p_p_id">membersportlet_WAR_membersportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getUsersByPartialName</implicit-parameter>
+    </route>
+    
 </routes>
