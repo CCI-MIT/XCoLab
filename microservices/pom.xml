@@ -10,10 +10,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>jooq-config</module>
         <module>services</module>
         <module>clients</module>
+        <module>util</module>
     </modules>
+
     <build>
         <plugins>
             <plugin>
@@ -26,5 +27,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <!--common dependencies-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+    </dependencies>
     
 </project>
