@@ -133,6 +133,7 @@
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="c-Alert c-Alert__error" path="password" />
 						</div></td>
+					<td colspan="2" class="p-LoginRegister__signup__infofield"><b>Note:</b> Passwords must be between 8 and 24 characters long.</td>
 				</tr>
 
 
