@@ -1,5 +1,8 @@
 package org.xcolab.service.contents.web;
 
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,20 +14,27 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.pojos.ContentFolder;
+import org.xcolab.model.tables.pojos.Wikipage;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.contents.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVersionDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
+import org.xcolab.service.contents.service.WikipageMigrationHelper;
 import org.xcolab.service.contents.service.contentarticle.ContentArticleService;
 import org.xcolab.service.contents.service.contentarticleversion.ContentArticleVersionService;
 import org.xcolab.service.contents.service.contentfolder.ContentFolderService;
 import org.xcolab.service.utils.PaginationHelper;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
 public class ContentsController {
+
+    @Autowired
+    private WikipageMigrationHelper wikipageMigrationHelper;
 
     @Autowired
     private ContentArticleService contentArticleService;
@@ -230,6 +240,26 @@ public class ContentsController {
                 throw new NotFoundException("No content folder with id given");
             }
         }
+    }
+
+    //TODO: temporary endpoint for migration
+    @RequestMapping(value = "/migration/creolePages", method = RequestMethod.GET)
+    public List<Wikipage> getCreolePages() {
+        return wikipageMigrationHelper.getCreolePages();
+    }
+    @RequestMapping(value = "/migration/getClimateCoLabContent", method = RequestMethod.GET)
+    public List<Wikipage> getClimateCoLabContent() throws IOException {
+        final List<Wikipage> creolePages = wikipageMigrationHelper.getCreolePages();
+        for (Wikipage page : creolePages.subList(0, 10)) {
+            final String url = "http://climatecolab.org/resources/-/wiki/Main/" + URLEncoder.encode(page.getTitle(), "UTF-8");
+            try {
+                Document doc = Jsoup.connect(url).get();
+                page.setContent(doc.select(".wiki-body").html());
+            } catch (HttpStatusException e) {
+                System.out.println("Could not get url: " + url);
+            }
+        }
+        return creolePages.subList(0, 10);
     }
 
     @RequestMapping(value = "/contentArticles/{contentArticleId}", method = RequestMethod.DELETE)
