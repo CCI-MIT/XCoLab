@@ -74,7 +74,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>members_Member|User_|Users_Roles|Role_|xcolab_Message|xcolab_MessageRecipientStatus|xcolab_MessagingUserPreferences|Contact_|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory|xcolab_ContestTeamMember</includes>
+							<includes>members_Member|User_|Users_Roles|Role_|xcolab_Message|xcolab_MessageRecipientStatus|xcolab_MessagingUserPreferences|Contact_|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory|xcolab_ContestTeamMember|members_RoleGroupRoles|members_RoleGroup</includes>
 						</database>
 					</generator>
 				</configuration>
