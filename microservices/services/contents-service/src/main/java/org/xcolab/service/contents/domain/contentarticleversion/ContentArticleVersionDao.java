@@ -9,6 +9,7 @@ import java.util.List;
 public interface ContentArticleVersionDao {
 
     ContentArticleVersion create(ContentArticleVersion contentArticleVersion);
+    int deleteByArticleId(long contentArticleId);
 
     void update(ContentArticleVersion contentArticleVersion);
 

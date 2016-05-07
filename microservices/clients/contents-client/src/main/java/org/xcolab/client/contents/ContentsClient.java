@@ -33,11 +33,13 @@ public final class ContentsClient {
     public static ContentArticleVersion getLatestContentArticleVersion(long folderId, String title)
             throws ContentNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions");
+                EUREKA_APPLICATION_ID + "/contentArticleVersions")
+                    .queryParam("folderId", folderId)
+                    .queryParam("title", title);
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
                     new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-                    }, "_contentArticleVersion_latest_folderId_" + folderId + "_title_" + title);
+                    }, "_latest_folderId_" + folderId + "_title_" + title);
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException("No ContentArticleVersion with title " + title
                     + " found in folder " + folderId);
@@ -47,11 +49,12 @@ public final class ContentsClient {
     public static ContentArticleVersion getLatestContentArticleVersion(long articleId)
             throws ContentNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions");
+                EUREKA_APPLICATION_ID + "/contentArticleVersions")
+                    .queryParam("articleId", articleId);
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
                     new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-                    }, "_contentArticleVersion_latest_articleId_" + articleId);
+                    }, "_latest_articleId_" + articleId);
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "No ContentArticleVersion for contentArticleID " + articleId);

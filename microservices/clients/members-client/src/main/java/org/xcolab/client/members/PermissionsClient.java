@@ -47,7 +47,7 @@ public final class PermissionsClient {
                 return true;
             }
         }
-        return false;
+        return canAdminAll(memberId);
     }
 
     private static boolean memberHasRole(Long memberId, long roleIdToTest) {

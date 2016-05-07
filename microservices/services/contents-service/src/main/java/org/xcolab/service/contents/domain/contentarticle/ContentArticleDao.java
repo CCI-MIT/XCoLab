@@ -14,4 +14,5 @@ public interface ContentArticleDao {
     void update(ContentArticle contentArticle);
 
     ContentArticle create(ContentArticle contentArticle);
+    int delete(long contentArticleId);
 }

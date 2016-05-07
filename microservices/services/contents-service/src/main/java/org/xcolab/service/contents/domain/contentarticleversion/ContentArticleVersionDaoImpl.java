@@ -44,6 +44,13 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
+    public int deleteByArticleId(long contentArticleId) {
+        return dslContext.deleteFrom(CONTENT_ARTICLE_VERSION)
+                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleId))
+                .execute();
+    }
+
+    @Override
     public void update(ContentArticleVersion contentArticleVersion) {
         this.dslContext.update(CONTENT_ARTICLE_VERSION)
                 .set(CONTENT_ARTICLE_VERSION.AUTHOR_ID, contentArticleVersion.getAuthorId())

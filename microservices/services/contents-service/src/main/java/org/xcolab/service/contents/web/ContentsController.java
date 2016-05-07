@@ -230,7 +230,10 @@ public class ContentsController {
                 throw new NotFoundException("No content folder with id given");
             }
         }
-
     }
 
+    @RequestMapping(value = "/contentArticles/{contentArticleId}", method = RequestMethod.DELETE)
+    public int deleteArticle(@PathVariable long contentArticleId) {
+        return contentArticleService.delete(contentArticleId);
+    }
 }
