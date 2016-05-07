@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.RoleGroup;
 import org.xcolab.model.tables.pojos.Role_;
+import org.xcolab.service.members.domain.rolegroup.RoleGroupDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.rolegroup.RoleGroupService;
 
@@ -18,15 +20,18 @@ import java.util.List;
 public class RoleGroupController {
 
     @Autowired
+    private RoleGroupDao roleGroupDao;
+
+    @Autowired
     private RoleGroupService roleGroupService;
 
 
-    @RequestMapping(value = "/roleGroup", method = RequestMethod.POST)
+    @RequestMapping(value = "/roleGroups", method = RequestMethod.POST)
     public RoleGroup create(@RequestBody RoleGroup roleGroup) {
-        return roleGroupService.create(roleGroup);
+        return roleGroupDao.create(roleGroup);
     }
 
-    @RequestMapping(value = "/roleGroup/{roleGroupId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/roleGroups/{roleGroupId}/roles", method = RequestMethod.GET)
     public List<Role_> getRolesInGroup(@PathVariable("roleGroupId") Long roleGroupId)
             throws NotFoundException {
         if (roleGroupId != null) {
@@ -34,16 +39,15 @@ public class RoleGroupController {
         } else {
             throw new NotFoundException("No message id given");
         }
-
     }
 
-    @RequestMapping(value = "/roleGroup/{roleGroupId}/addRole", method = RequestMethod.POST)
+    @RequestMapping(value = "/roleGroups/{roleGroupId}/roles", method = RequestMethod.POST)
     public String addRoleToRoleGroup(@PathVariable Long roleGroupId, @RequestParam Long roleId) {
         roleGroupService.addRoleToGroup(roleGroupId, roleId);
         return "Role added to role group successfully";
     }
 
-    @RequestMapping(value = "/roleGroup/{roleGroupId}/{roleId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/roleGroups/{roleGroupId}/roles/{roleId}", method = RequestMethod.DELETE)
     public String deleteRoleFromRoleGroup(@PathVariable("roleGroupId") Long roleGroupId,
                                           @PathVariable("roleId") Long roleId) throws NotFoundException {
         roleGroupService.removeRoleFromGroup(roleGroupId, roleId);

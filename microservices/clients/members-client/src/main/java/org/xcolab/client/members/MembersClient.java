@@ -100,7 +100,7 @@ public final class MembersClient {
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "/roles");
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
-        }, "member_roles_" + memberId);
+        }, "memberId_" + memberId);
     }
 
     public static List<Role_> getMemberRolesInContest(Long memberId, Long contestId) {
@@ -108,7 +108,7 @@ public final class MembersClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "/roles/contests/" + contestId);
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
-        }, "member_roles_contest_" + memberId + "_" + contestId);
+        }, "memberId_" + memberId + "_contestId_" + contestId);
     }
 
 
@@ -117,7 +117,7 @@ public final class MembersClient {
                 EUREKA_APPLICATION_ID + "/membercategories/" + roleId + "");
 
         try {
-            return RequestUtils.get(uriBuilder, MemberCategory.class);
+            return RequestUtils.get(uriBuilder, MemberCategory.class, "roleId_" + roleId);
         } catch (EntityNotFoundException e) {
             throw new MemberCategoryNotFoundException("Cateogry with role id " + roleId + " not found.");
         }
@@ -127,7 +127,7 @@ public final class MembersClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "");
         try {
-            return RequestUtils.get(uriBuilder, Member.class, "member_" + memberId);
+            return RequestUtils.get(uriBuilder, Member.class, "memberId_" + memberId);
         } catch (EntityNotFoundException e) {
             throw new MemberNotFoundException("Member with id " + memberId + " not found.");
         }

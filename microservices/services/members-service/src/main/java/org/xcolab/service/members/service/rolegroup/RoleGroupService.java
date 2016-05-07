@@ -2,7 +2,7 @@ package org.xcolab.service.members.service.rolegroup;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xcolab.model.tables.pojos.RoleGroup;
+
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.rolegroup.RoleGroupDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
@@ -17,10 +17,6 @@ public class RoleGroupService {
     @Autowired
     public RoleGroupService(RoleGroupDao roleGroupDao) {
         this.roleGroupDao = roleGroupDao;
-    }
-
-    public RoleGroup create(RoleGroup roleGroup) {
-        return this.roleGroupDao.create(roleGroup);
     }
 
     public void addRoleToGroup(Long roleGroupId, Long roleId) {

@@ -1,17 +1,23 @@
 package org.xcolab.client.members;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.util.RequestUtils;
 
 import java.util.List;
 
 public final class PermissionsClient {
 
+    private static final String EUREKA_APPLICATION_ID = "localhost:8080/members-service";
+
     private PermissionsClient() {
     }
 
     public static boolean canAdminAll(Long memberId) {
-        return memberHasRole(memberId, MemberRole.ADMINISTRATOR);
+        return memberHasRole(memberId, MemberRole.ADMINISTRATOR.getRoleId());
     }
 
     public static boolean canJudge(Long memberId, Long contestId) {
@@ -23,17 +29,32 @@ public final class PermissionsClient {
     }
 
     public static boolean canIAF(Long memberId) {
-        return memberHasRole(memberId, MemberRole.IMPACT_ASSESSMENT_FELLOW);
+        return memberHasRole(memberId, MemberRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
     }
 
     public static boolean canStaff(Long memberId) {
-        return memberHasRole(memberId, MemberRole.STAFF);
+        return memberHasRole(memberId, MemberRole.STAFF.getRoleId());
     }
-    private static boolean memberHasRole(Long memberId, MemberRole roleToTest) {
+
+    public static boolean hasRoleGroup(long memberId, long roleGroupId) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/roleGroups/" + roleGroupId + "/roles");
+        final List<Role_> roles = RequestUtils
+                .getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
+                }, "memberId_" + memberId + "_roleGroupId_" + roleGroupId);
+        for (Role_ role : roles) {
+            if (memberHasRole(memberId, role.getRoleId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean memberHasRole(Long memberId, long roleIdToTest) {
         List<Role_> roles = MembersClient.getMemberRoles(memberId);
         if (roles != null && !roles.isEmpty()) {
             for (Role_ role : roles) {
-                if (role.getRoleId() == roleToTest.getRoleId()) {
+                if (role.getRoleId() == roleIdToTest) {
                     return true;
                 }
             }
