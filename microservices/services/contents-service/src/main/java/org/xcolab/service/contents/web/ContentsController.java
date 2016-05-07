@@ -1,5 +1,6 @@
 package org.xcolab.service.contents.web;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -247,19 +248,64 @@ public class ContentsController {
     public List<Wikipage> getCreolePages() {
         return wikipageMigrationHelper.getCreolePages();
     }
+
     @RequestMapping(value = "/migration/getClimateCoLabContent", method = RequestMethod.GET)
-    public List<Wikipage> getClimateCoLabContent() throws IOException {
-        final List<Wikipage> creolePages = wikipageMigrationHelper.getCreolePages();
-        for (Wikipage page : creolePages.subList(0, 10)) {
+    public List<Wikipage> getClimateCoLabContent(
+            @RequestParam String sessionId,
+            @RequestParam String lrSessionState
+    ) throws IOException {
+        final List<Wikipage> pages = wikipageMigrationHelper.getAllPages();
+        for (Wikipage page : pages) {
             final String url = "http://climatecolab.org/resources/-/wiki/Main/" + URLEncoder.encode(page.getTitle(), "UTF-8");
             try {
                 Document doc = Jsoup.connect(url).get();
-                page.setContent(doc.select(".wiki-body").html());
+                String html = doc.select(".wiki-body").html();
+                boolean isRestricted = false;
+                if (StringUtils.isNotBlank(html)) {
+                    page.setContent(html);
+                } else {
+                        doc = Jsoup.connect(url)
+                                .cookie("JSESSIONID", sessionId)
+                                .cookie("LFR_SESSION_STATE_2057710", lrSessionState)
+                                .get();
+                        html = doc.select(".wiki-body").html();
+                        if (StringUtils.isNotBlank(html)) {
+                            page.setContent(html);
+                            isRestricted = true;
+                            System.out.println("Found content by using cookies: " + url);
+                        } else {
+                            System.out.println("No content on url: " + url);
+                        }
+                }
+                //insert into content article
+                if (StringUtils.isNotBlank(html)) {
+
+                    ContentArticle contentArticle = new ContentArticle();
+                    contentArticle.setViewRoleGroupId(isRestricted ? 3L : null);
+                    contentArticle.setEditRoleGroupId(2L);
+                    contentArticle.setFolderId(3L);
+                    contentArticle.setAuthorId(page.getUserId());
+                    contentArticle.setVisible(true);
+                    contentArticle.setCreateDate(page.getCreateDate());
+                    contentArticle = contentArticleDao.create(contentArticle);
+
+                    ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
+                    contentArticleVersion.setCreateDate(page.getCreateDate());
+                    contentArticleVersion.setTitle(page.getTitle());
+                    contentArticleVersion.setContent(html);
+                    contentArticleVersion.setFolderId(3L);
+                    contentArticleVersion.setAuthorId(page.getUserId());
+                    contentArticleVersion.setContentArticleId(contentArticle.getContentArticleId());
+                    contentArticleVersion = contentArticleVersionDao.create(contentArticleVersion);
+
+                    contentArticle.setMaxVersionId(contentArticleVersion.getContentArticleVersionId());
+                    contentArticleDao.update(contentArticle);
+                }
             } catch (HttpStatusException e) {
-                System.out.println("Could not get url: " + url);
+                System.out.println("Could not get url: " + url + " (modifiedDate = " + page.getModifiedDate() + ")");
             }
         }
-        return creolePages.subList(0, 10);
+        return pages;
     }
 
     @RequestMapping(value = "/contentArticles/{contentArticleId}", method = RequestMethod.DELETE)
