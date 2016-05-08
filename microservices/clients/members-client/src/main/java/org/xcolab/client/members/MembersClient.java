@@ -69,7 +69,9 @@ public final class MembersClient {
             uriBuilder.queryParam("category", categoryFilterValue);
         }
         try {
-            return RequestUtils.get(uriBuilder, Integer.class);
+            return RequestUtils.get(uriBuilder, Integer.class,
+                    "members_count_category_" + categoryFilterValue
+                            + "_screenName_" + screenNameFilterValue);
         } catch (EntityNotFoundException e) {
             return 0;
         }

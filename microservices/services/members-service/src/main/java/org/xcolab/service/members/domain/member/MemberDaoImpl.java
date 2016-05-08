@@ -91,7 +91,6 @@ public class MemberDaoImpl implements MemberDao {
                             : ROLES_CATEGORY.ROLE_ORDINAL.desc());
                     break;
                 case "points":
-                default:
                     Field<Object> points =
                             this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
                                     .from(POINTS)
@@ -102,6 +101,7 @@ public class MemberDaoImpl implements MemberDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? points.asc() : points.desc());
                     break;
+                default:
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
