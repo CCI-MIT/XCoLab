@@ -63,8 +63,9 @@ public class MembersController {
             sortFilterPage.setSortAscending(false);
         }
 
-        List<Member> dbUsersMicro = MembersClient.listMembers(memberCategoryParam, filterParam,
-                sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
+        List<Member> dbUsersMicro = MembersClient.listMembers(
+                memberCategoryParam.equalsIgnoreCase("Judge") ? "Judges" : memberCategoryParam,
+                filterParam, sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
                 firstUser, endUser);
 
         for (Member user : dbUsersMicro) {
