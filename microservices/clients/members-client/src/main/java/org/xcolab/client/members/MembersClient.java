@@ -134,21 +134,55 @@ public final class MembersClient {
     }
 
     public static Member findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
-//        try {
-            //TODO: add API call
-            return null;
-//        } catch (EntityNotFoundException e) {
-//            throw new MemberNotFoundException("Member with email " + emailAddress + " does not exist");
-//        }
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members")
+                .queryParam("email", emailAddress);
+        try {
+            return RequestUtils.getFirstFromList(uriBuilder,
+                    new ParameterizedTypeReference<List<Member>>() {
+                    });
+        } catch (EntityNotFoundException e) {
+            throw new MemberNotFoundException("Member with email " + emailAddress + " does not exist");
+        }
     }
 
     public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
-//        try {
-            //TODO: add API call
-            return null;
-//        } catch (EntityNotFoundException e) {
-//            throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
-//        }
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members")
+                .queryParam("screenName", screenName);
+        try {
+            return RequestUtils.getFirstFromList(uriBuilder,
+                    new ParameterizedTypeReference<List<Member>>() {
+                    });
+        } catch (EntityNotFoundException e) {
+            throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
+        }
+    }
+
+    public static Member findMemberByFacebookId(long facebookId) throws MemberNotFoundException {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members")
+                .queryParam("facebookId", facebookId);
+        try {
+            return RequestUtils.getFirstFromList(uriBuilder,
+                    new ParameterizedTypeReference<List<Member>>() {
+                    });
+        } catch (EntityNotFoundException e) {
+            throw new MemberNotFoundException("Member with facebookId " + facebookId + " does not exist");
+        }
+    }
+
+    public static Member findMemberByOpenId(String openId) throws MemberNotFoundException {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members")
+                .queryParam("openId", openId);
+        try {
+            return RequestUtils.getFirstFromList(uriBuilder,
+                    new ParameterizedTypeReference<List<Member>>() {
+                    });
+        } catch (EntityNotFoundException e) {
+            throw new MemberNotFoundException("Member with openId " + openId + " does not exist");
+        }
     }
 
     public static void updateMember(Member member) {

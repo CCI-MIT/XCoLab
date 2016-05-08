@@ -9,7 +9,7 @@ import java.util.List;
 public interface MemberDao {
 
     List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
-            String roleName);
+            String roleName, String email, String screenName, Long facebookId, String openId);
 
     Member getMember(long memberId) throws NotFoundException;
 

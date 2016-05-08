@@ -38,10 +38,15 @@ public class MembersController {
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String partialName,
-            @RequestParam(required = false) String roleName) {
+            @RequestParam(required = false) String roleName,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String screenName,
+            @RequestParam(required = false) Long facebookId,
+            @RequestParam(required = false) String openId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        return memberDao.findByGiven(paginationHelper, partialName, roleName);
+        return memberDao.findByGiven(paginationHelper, partialName, roleName,
+                email, screenName, facebookId, openId);
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
