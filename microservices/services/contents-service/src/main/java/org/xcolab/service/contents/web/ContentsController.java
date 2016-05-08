@@ -256,7 +256,7 @@ public class ContentsController {
     ) throws IOException {
         final List<Wikipage> pages = wikipageMigrationHelper.getAllPages();
         for (Wikipage page : pages) {
-            final String url = "http://climatecolab.org/resources/-/wiki/Main/" + URLEncoder.encode(page.getTitle(), "UTF-8");
+            final String url = "http://climatecolab.org:18081/resources/-/wiki/Main/" + URLEncoder.encode(page.getTitle(), "UTF-8");
             try {
                 Document doc = Jsoup.connect(url).get();
                 String html = doc.select(".wiki-body").html();
