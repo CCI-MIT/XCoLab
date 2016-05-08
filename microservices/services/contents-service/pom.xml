@@ -18,6 +18,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -57,7 +62,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_ContentArticle|xcolab_ContentArticleVersion|xcolab_ContentFolder</includes>
+                            <includes>WikiPage|xcolab_ContentArticle|xcolab_ContentArticleVersion|xcolab_ContentFolder</includes>
                         </database>
                     </generator>
                 </configuration>
