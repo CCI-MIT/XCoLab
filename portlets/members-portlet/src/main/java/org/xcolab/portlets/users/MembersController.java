@@ -64,7 +64,7 @@ public class MembersController {
         }
 
         List<Member> dbUsersMicro = MembersClient.listMembers(
-                memberCategoryParam.equalsIgnoreCase("Judge") ? "Judges" : memberCategoryParam,
+                "Judge".equalsIgnoreCase(memberCategoryParam) ? "Judges" : memberCategoryParam,
                 filterParam, sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
                 firstUser, endUser);
 
