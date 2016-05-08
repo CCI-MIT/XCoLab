@@ -43,6 +43,13 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     }
 
     @Override
+    public int delete(long contentArticleId) {
+        return dslContext.deleteFrom(CONTENT_ARTICLE)
+                .where(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(contentArticleId))
+                .execute();
+    }
+
+    @Override
     public void update(ContentArticle contentArticle) {
         this.dslContext.update(CONTENT_ARTICLE)
                 .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())

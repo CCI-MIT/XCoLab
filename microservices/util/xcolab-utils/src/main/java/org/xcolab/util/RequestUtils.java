@@ -53,7 +53,7 @@ public final class RequestUtils {
         T ret;
         if (cacheActive) {
             //noinspection unchecked
-            ret = (T) memcached.get(cachePrefix + cacheQueryIdentifier);
+            ret = (T) memcached.get(sanitize(cachePrefix + cacheQueryIdentifier));
             if (ret != null) {
                 return ret;
             }
@@ -66,7 +66,7 @@ public final class RequestUtils {
         ret = list.get(0);
 
         if (cacheActive) {
-            memcached.add(cachePrefix + cacheQueryIdentifier, MEMCACHED_TIMEOUT, ret);
+            memcached.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
         }
 
         return ret;
@@ -85,7 +85,7 @@ public final class RequestUtils {
         final String cachePrefix = "_" + typeReference.getType() + "_list_";
         if (cacheActive) {
             //noinspection unchecked
-            ret = (List<T>) memcached.get(cachePrefix + cacheQueryIdentifier);
+            ret = (List<T>) memcached.get(sanitize(cachePrefix + cacheQueryIdentifier));
             if (ret != null) {
                 return ret;
             }
@@ -95,7 +95,7 @@ public final class RequestUtils {
         ret = response.getBody();
 
         if (cacheActive) {
-            memcached.add(cachePrefix + cacheQueryIdentifier, MEMCACHED_TIMEOUT, ret);
+            memcached.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
         }
         return ret;
     }
@@ -132,14 +132,14 @@ public final class RequestUtils {
         final String cachePrefix = "_" + entityType.getSimpleName() + "_";
         if (cacheActive) {
             //noinspection unchecked
-            ret = (T) memcached.get(cachePrefix + cacheQueryIdentifier);
+            ret = (T) memcached.get(sanitize(cachePrefix + cacheQueryIdentifier));
             if (ret != null) {
                 return ret;
             }
         }
         ret = restTemplate.getForObject(uriBuilder.build().toString(), entityType);
         if (cacheActive) {
-            memcached.add(cachePrefix + cacheQueryIdentifier, MEMCACHED_TIMEOUT, ret);
+            memcached.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
         }
         return ret;
     }
@@ -175,5 +175,9 @@ public final class RequestUtils {
 
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.build().toString(), entity, returnType);
+    }
+
+    private static String sanitize(String identifier) {
+        return identifier.replaceAll("\\s", "+");
     }
 }

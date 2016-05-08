@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import org.xcolab.client.members.PermissionsClient;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -116,6 +118,18 @@ public class ContentArticle implements Serializable {
     @JsonIgnore
     public String getLinkUrl() {
         return "/web/guest/wiki/-/wiki/page/" + title;
+    }
+
+    @JsonIgnore
+    public boolean canView(Long memberId) {
+        return viewRoleGroupId == null
+                || (memberId != null && PermissionsClient.hasRoleGroup(memberId, viewRoleGroupId));
+    }
+
+    @JsonIgnore
+    public boolean canEdit(Long memberId) {
+        return editRoleGroupId == null
+                || (memberId != null && PermissionsClient.hasRoleGroup(memberId, editRoleGroupId));
     }
 
     @Override

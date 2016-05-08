@@ -3,6 +3,7 @@ package org.xcolab.portlets.users;
 import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,27 +58,22 @@ public class MembersController {
 
         List<MemberItem> users = new ArrayList<>();
 
-        final String sortColumn = sortFilterPage.getSortColumn() != null ? sortFilterPage.getSortColumn() : "";
-
-        int usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
-
-        if(sortColumn == null || sortColumn.isEmpty()){
+        if (StringUtils.isEmpty(sortFilterPage.getSortColumn())) {
             sortFilterPage.setSortColumn("POINTS");
             sortFilterPage.setSortAscending(false);
         }
-        List<Member> dbUsersMicro = MembersClient.listMembers(memberCategoryParam, filterParam, sortColumn,
-                sortFilterPage.isSortAscending(), firstUser, endUser);
 
-
-        request.getPortletSession().setAttribute("previousSortColumn", sortColumn);
-        request.getPortletSession().setAttribute("previousSortOrder", sortFilterPage.isSortAscending());
+        List<Member> dbUsersMicro = MembersClient.listMembers(
+                "Judge".equalsIgnoreCase(memberCategoryParam) ? "Judges" : memberCategoryParam,
+                filterParam, sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
+                firstUser, endUser);
 
         for (Member user : dbUsersMicro) {
             MemberItem memberItem = new MemberItem(user, memberCategoryParam);
             users.add(memberItem);
         }
 
-
+        int usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
         int pagesCount = (int) Math.ceil(usersCount / (double) USERS_PER_PAGE);
         int endPage = pagesCount;
         if (startPage + 10 < pagesCount) {

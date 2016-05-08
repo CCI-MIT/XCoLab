@@ -215,6 +215,7 @@ public class MainViewController {
             model.addAttribute("redirect", com.liferay.portal.kernel.util.HtmlUtil.escape(redirect));
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
+        newAccountBean.setCaptchaText("");
         return "view";
     }
 

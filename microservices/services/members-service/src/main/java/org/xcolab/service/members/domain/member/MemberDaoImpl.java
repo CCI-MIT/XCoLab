@@ -32,7 +32,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
-            String roleName) {
+            String roleName, String email, String screenName, Long facebookId, String openId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBER)
                 .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
@@ -47,6 +47,19 @@ public class MemberDaoImpl implements MemberDao {
         if (roleName != null) {
             query.addConditions(ROLES_CATEGORY.CATEGORY_NAME.eq(roleName));
         }
+        if (screenName != null) {
+            query.addConditions(MEMBER.SCREEN_NAME.eq(screenName));
+        }
+        if (email != null) {
+            query.addConditions(MEMBER.EMAIL_ADDRESS.eq(email));
+        }
+        if (facebookId != null) {
+            query.addConditions(MEMBER.FACEBOOK_ID.eq(facebookId));
+        }
+        if (openId != null) {
+            query.addConditions(MEMBER.OPEN_ID.eq(openId));
+        }
+
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
                 case "createDate":
@@ -78,7 +91,6 @@ public class MemberDaoImpl implements MemberDao {
                             : ROLES_CATEGORY.ROLE_ORDINAL.desc());
                     break;
                 case "points":
-                default:
                     Field<Object> points =
                             this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
                                     .from(POINTS)
@@ -89,6 +101,7 @@ public class MemberDaoImpl implements MemberDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? points.asc() : points.desc());
                     break;
+                default:
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
