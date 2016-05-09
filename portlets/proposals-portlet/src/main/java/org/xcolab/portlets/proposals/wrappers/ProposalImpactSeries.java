@@ -1,9 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-/**
- * Created by kmang on 13/03/15.
- */
-
 import com.ext.portlet.NoSuchImpactDefaultSeriesDataException;
 import com.ext.portlet.NoSuchImpactDefaultSeriesException;
 import com.ext.portlet.NoSuchProposalVersionException;
