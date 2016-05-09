@@ -50,7 +50,7 @@ public final class ContentsClient {
             throws ContentNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contentArticleVersions")
-                    .queryParam("articleId", articleId);
+                    .queryParam("contentArticleId", articleId);
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
                     new ParameterizedTypeReference<List<ContentArticleVersion>>() {
