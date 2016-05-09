@@ -182,6 +182,14 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
+    public Member findOneByForgotPasswordHash(String newPasswordToken) {
+        return dslContext.select()
+                .from(MEMBER)
+                .where(MEMBER.NEW_PASSWORD_TOKEN.eq(newPasswordToken))
+                .fetchOne().into(Member.class);
+    }
+
+    @Override
     public void updateMember(Member member) {
 
         this.dslContext.update(MEMBER)

@@ -14,10 +14,13 @@ import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
+import org.xcolab.service.members.util.SecureRandomUtil;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +38,14 @@ public class MembersController {
 
     @RequestMapping(value = "/members", method = RequestMethod.GET)
     public List<Member> listMembers(@RequestParam(required = false) Integer startRecord,
-            @RequestParam(required = false) Integer limitRecord,
-            @RequestParam(required = false) String sort,
-            @RequestParam(required = false) String partialName,
-            @RequestParam(required = false) String roleName,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String screenName,
-            @RequestParam(required = false) Long facebookId,
-            @RequestParam(required = false) String openId) {
+                                    @RequestParam(required = false) Integer limitRecord,
+                                    @RequestParam(required = false) String sort,
+                                    @RequestParam(required = false) String partialName,
+                                    @RequestParam(required = false) String roleName,
+                                    @RequestParam(required = false) String email,
+                                    @RequestParam(required = false) String screenName,
+                                    @RequestParam(required = false) Long facebookId,
+                                    @RequestParam(required = false) String openId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         return memberDao.findByGiven(paginationHelper, partialName, roleName,
@@ -138,7 +141,7 @@ public class MembersController {
 
     @RequestMapping(value = "/members/hashPassword", method = RequestMethod.GET)
     public String hashPassword(@RequestParam String password,
-            @RequestParam(required = false) Boolean liferayCompatible)
+                               @RequestParam(required = false) Boolean liferayCompatible)
             throws NoSuchAlgorithmException {
         return memberService
                 .hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
@@ -158,6 +161,27 @@ public class MembersController {
         if (memberId != null) {
             return memberService
                     .validatePassword(password, memberDao.getMember(memberId).getHashedPassword());
+        }
+        throw new NotFoundException(
+                "The endpoint you requested is not available for the given attributes");
+    }
+
+    @RequestMapping(value = "/members/createForgotPasswordToken", method = RequestMethod.GET)
+    public String forgotPassword(
+            @RequestParam(required = false) Long memberId)
+            throws NoSuchAlgorithmException, NotFoundException {
+        String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
+
+        if (memberId != null) {
+            Member member = memberDao.getMember(memberId);
+            if (member != null) {
+                member.setNewPasswordToken(confirmationToken);
+                LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10l);
+                member.setNewPasswordTokenExpireTime(Timestamp.valueOf(localDateTime));
+                memberDao.updateMember(member);
+                return confirmationToken;
+            }
+
         }
         throw new NotFoundException(
                 "The endpoint you requested is not available for the given attributes");
@@ -187,7 +211,7 @@ public class MembersController {
 
     @RequestMapping(value = "/members/{memberId}/roles/contests/{contestId}", method = RequestMethod.GET)
     public List<Role_> getMemberRoles(@PathVariable("memberId") Long memberId,
-            @PathVariable("contestId") Long contestId) {
+                                      @PathVariable("contestId") Long contestId) {
         if (memberId == null || contestId == null) {
             return new ArrayList<>();
         } else {
