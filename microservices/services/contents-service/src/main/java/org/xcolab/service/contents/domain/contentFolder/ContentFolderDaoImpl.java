@@ -38,13 +38,13 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     }
 
     @Override
-    public void update(ContentFolder contentFolder) {
-        this.dslContext.update(CONTENT_FOLDER)
+    public boolean update(ContentFolder contentFolder) {
+         return dslContext.update(CONTENT_FOLDER)
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_DESCRIPTION, contentFolder.getContentFolderDescription())
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_ID, contentFolder.getParentFolderId())
                 .where(CONTENT_FOLDER.CONTENT_FOLDER_ID.eq(contentFolder.getContentFolderId()))
-                .execute();
+                .execute() > 0;
     }
 
     @Override

@@ -108,18 +108,13 @@ public class ContentsController {
     }
 
     @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.PUT)
-    public String updateContentArticle(@RequestBody ContentArticle contentArticle,
+    public boolean updateContentArticle(@RequestBody ContentArticle contentArticle,
             @PathVariable("articleId") Long articleId) throws NotFoundException {
 
-        if (articleId == null || articleId == 0) {
-            throw new NotFoundException("No content article with id given");
+        if (articleId == null || articleId == 0 || contentArticleDao.get(articleId) == null) {
+            throw new NotFoundException("No content article with id " + articleId);
         } else {
-            if (this.contentArticleDao.get(articleId) != null) {
-                this.contentArticleDao.update(contentArticle);
-                return "Content article updated successfully";
-            } else {
-                throw new NotFoundException("No content article with id given");
-            }
+            return contentArticleDao.update(contentArticle);
         }
     }
 
@@ -186,19 +181,16 @@ public class ContentsController {
     }
 
     @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.PUT)
-    public String updateContentArticleVersion(
+    public boolean updateContentArticleVersion(
             @RequestBody ContentArticleVersion contentArticleVersion,
             @PathVariable("articleVersionId") Long articleVersionId) throws NotFoundException {
 
-        if (articleVersionId == null || articleVersionId == 0) {
-            throw new NotFoundException("No content article version with id given");
+        if (articleVersionId == null || articleVersionId == 0
+                || contentArticleVersionDao.get(articleVersionId) == null) {
+            throw new NotFoundException("No content article version with id "
+                    + articleVersionId + " exists");
         } else {
-            if (this.contentArticleVersionDao.get(articleVersionId) != null) {
-                this.contentArticleVersionDao.update(contentArticleVersion);
-                return "Content article version updated successfully";
-            } else {
-                throw new NotFoundException("No content article version with id given");
-            }
+            return contentArticleVersionDao.update(contentArticleVersion);
         }
     }
 
@@ -228,18 +220,14 @@ public class ContentsController {
     }
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.PUT)
-    public String updateContentFolder(@RequestBody ContentFolder contentFolder,
+    public boolean updateContentFolder(@RequestBody ContentFolder contentFolder,
             @PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
 
-        if (contentFolderId == null || contentFolderId == 0) {
+        if (contentFolderId == null || contentFolderId == 0
+                || contentFolderDao.get(contentFolderId) == null) {
             throw new NotFoundException("No content folder with id given");
         } else {
-            if (this.contentFolderDao.get(contentFolderId) != null) {
-                this.contentFolderDao.update(contentFolder);
-                return "Content folder updated successfully";
-            } else {
-                throw new NotFoundException("No content folder with id given");
-            }
+                return contentFolderDao.update(contentFolder);
         }
     }
 

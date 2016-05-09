@@ -50,8 +50,8 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     }
 
     @Override
-    public void update(ContentArticle contentArticle) {
-        this.dslContext.update(CONTENT_ARTICLE)
+    public boolean update(ContentArticle contentArticle) {
+        return dslContext.update(CONTENT_ARTICLE)
                 .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())
                 .set(CONTENT_ARTICLE.EDIT_ROLE_GROUP_ID, contentArticle.getEditRoleGroupId())
                 .set(CONTENT_ARTICLE.VIEW_ROLE_GROUP_ID, contentArticle.getViewRoleGroupId())
@@ -60,7 +60,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
                 .set(CONTENT_ARTICLE.CREATE_DATE, contentArticle.getCreateDate())
                 .set(CONTENT_ARTICLE.VISIBLE, contentArticle.getVisible())
                 .where(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(contentArticle.getContentArticleId()))
-                .execute();
+                .execute() > 0;
     }
 
     @Override

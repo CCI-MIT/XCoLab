@@ -87,14 +87,12 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.PUT)
-    public String updateMember(@RequestBody Member member, @PathVariable("memberId") Long memberId)
+    public boolean updateMember(@RequestBody Member member, @PathVariable Long memberId)
             throws NotFoundException {
-        if (memberDao.getMember(memberId) != null) {
-            memberDao.updateMember(member);
-            return "Updated successfully";
-        } else {
-            return "Member not found";
+        if (memberId == 0 || memberDao.getMember(memberId) == null) {
+            throw new NotFoundException("No member with id " + memberId);
         }
+        return memberDao.updateMember(member);
     }
 
     @RequestMapping(value = "/members/{memberId}/activityCount", method = RequestMethod.GET)

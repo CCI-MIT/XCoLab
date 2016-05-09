@@ -182,9 +182,8 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public void updateMember(Member member) {
-
-        this.dslContext.update(MEMBER)
+    public boolean updateMember(Member member) {
+        return dslContext.update(MEMBER)
                 .set(MEMBER.CREATE_DATE, member.getCreateDate())
                 .set(MEMBER.MODIFIED_DATE, member.getModifiedDate())
                 .set(MEMBER.HASHED_PASSWORD, member.getHashedPassword())
@@ -200,7 +199,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.COUNTRY, member.getCountry())
                 .where(MEMBER.ID_.equal(member.getId_()))
-                .execute();
+                .execute() > 0;
     }
 
     @Override

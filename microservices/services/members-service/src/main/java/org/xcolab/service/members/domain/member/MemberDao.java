@@ -24,7 +24,7 @@ public interface MemberDao {
     Member findOneByScreenName(String screenName);
     Member findOneByEmail(String email);
 
-    void updateMember(Member member);
+    boolean updateMember(Member member);
     void createMember(String screenName, String password, String email, String firstName, String lastName,
             String shortBio, String country, Long facebookId, String openId, Long liferayUserId);
 

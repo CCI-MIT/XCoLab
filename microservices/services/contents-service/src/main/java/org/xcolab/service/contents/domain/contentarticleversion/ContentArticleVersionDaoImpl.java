@@ -51,8 +51,8 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
-    public void update(ContentArticleVersion contentArticleVersion) {
-        this.dslContext.update(CONTENT_ARTICLE_VERSION)
+    public boolean update(ContentArticleVersion contentArticleVersion) {
+        return dslContext.update(CONTENT_ARTICLE_VERSION)
                 .set(CONTENT_ARTICLE_VERSION.AUTHOR_ID, contentArticleVersion.getAuthorId())
                 .set(CONTENT_ARTICLE_VERSION.CREATE_DATE, contentArticleVersion.getCreateDate())
                 .set(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID, contentArticleVersion.getContentArticleId())
@@ -60,7 +60,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .set(CONTENT_ARTICLE_VERSION.CONTENT, contentArticleVersion.getContent())
                 .set(CONTENT_ARTICLE_VERSION.TITLE, contentArticleVersion.getTitle())
                 .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleVersion.getContentArticleVersionId()))
-                .execute();
+                .execute() > 0;
     }
 
     @Override
