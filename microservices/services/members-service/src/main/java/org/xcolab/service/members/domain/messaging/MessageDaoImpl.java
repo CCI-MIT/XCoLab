@@ -132,21 +132,21 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public void setArchived(long messageId, long memberId, boolean isArchived) {
-        dslContext.update(MESSAGE_RECIPIENT_STATUS)
+    public boolean setArchived(long messageId, long memberId, boolean isArchived) {
+        return dslContext.update(MESSAGE_RECIPIENT_STATUS)
                 .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, isArchived)
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId)
                         .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(memberId)))
-                .execute();
+                .execute() > 0;
     }
 
     @Override
-    public void setOpened(long messageId, long memberId, boolean isOpened) {
-        dslContext.update(MESSAGE_RECIPIENT_STATUS)
+    public boolean setOpened(long messageId, long memberId, boolean isOpened) {
+        return dslContext.update(MESSAGE_RECIPIENT_STATUS)
                 .set(MESSAGE_RECIPIENT_STATUS.OPENED, isOpened)
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId)
                         .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(memberId)))
-                .execute();
+                .execute() > 0;
     }
 
     @Override

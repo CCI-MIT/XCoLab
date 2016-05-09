@@ -83,15 +83,17 @@ public class MessagingController {
 
     //TODO: patch doesn't work
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.PUT)
-    public void patchMessage(@PathVariable("messageId") long messageId,
+    public boolean patchMessage(@PathVariable("messageId") long messageId,
             @RequestParam Long memberId,
             @RequestParam(required = false) Boolean isArchived,
             @RequestParam(required = false) Boolean isOpened) {
+        boolean success = true;
         if (isOpened != null) {
-            messageDao.setOpened(messageId, memberId, isOpened);
+            success = messageDao.setOpened(messageId, memberId, isOpened);
         }
         if (isArchived != null) {
-            messageDao.setArchived(messageId, memberId, isArchived);
+            success = success && messageDao.setArchived(messageId, memberId, isArchived);
         }
+        return success;
     }
 }

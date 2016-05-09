@@ -18,9 +18,9 @@ public interface MessageDao {
 
     List<Member> getRecipients(long messageId);
 
-    void setArchived(long messageId, long memberId, boolean isArchived);
+    boolean setArchived(long messageId, long memberId, boolean isArchived);
 
-    void setOpened(long messageId, long memberId, boolean isOpened);
+    boolean setOpened(long messageId, long memberId, boolean isOpened);
 
     void createMessage(long messageId, long senderId, long repliesToId, String subject,
             String content);
