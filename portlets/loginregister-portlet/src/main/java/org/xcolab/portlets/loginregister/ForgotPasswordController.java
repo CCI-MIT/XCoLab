@@ -168,7 +168,7 @@ public class ForgotPasswordController {
     }
 
     @ActionMapping(params = {"isResetEmail=true"})
-    public String resetPassword(ActionRequest request, ActionResponse response) throws IOException {
+    public String openResetPassword(ActionRequest request, ActionResponse response) throws IOException {
 
         String hash = request.getParameter("resetTicket");
 
