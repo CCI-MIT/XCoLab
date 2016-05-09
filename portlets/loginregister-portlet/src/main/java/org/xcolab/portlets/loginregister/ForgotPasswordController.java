@@ -47,6 +47,8 @@ public class ForgotPasswordController {
 
     private static final long DEFAULT_COMPANY_ID = 10112L;
 
+    private static final String FORGOTPASSWORDURL = "/web/guest/loginregister?p_auth=JeaIAVzC&p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_loginregisterportlet_WAR_loginregisterportlet_isResetEmailLink=true";
+
     @ActionMapping(params = {"isForgotpass=true"})
     public void sendPassword(ActionRequest request, ActionResponse response) throws IOException {
 
@@ -95,7 +97,11 @@ public class ForgotPasswordController {
             AuthenticationServiceUtil
                     .sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
 */
+
+
             String passwordLink = "http://localhost:18081/c/portal/update_password?p_l_id=44901&amp;ticketKey=89890";
+
+
 
             sendEmailNotificationToForPasswordReset(PortalUtil.getHttpServletRequest(request).getRemoteAddr(), passwordLink , themeDisplay, user);
 
@@ -167,7 +173,7 @@ public class ForgotPasswordController {
         return "password_reset_error";
     }
 
-    @ActionMapping(params = {"isResetEmail=true"})
+    @ActionMapping(params = {"isResetEmailLink=true"})
     public String openResetPassword(ActionRequest request, ActionResponse response) throws IOException {
 
         String hash = request.getParameter("resetTicket");

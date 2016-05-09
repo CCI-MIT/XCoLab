@@ -8,11 +8,14 @@ import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.util.PBKDF2PasswordEncryptor;
 import org.xcolab.service.members.util.SHA1PasswordEncryptor;
+import org.xcolab.service.members.util.SecureRandomUtil;
 import org.xcolab.service.members.util.UsernameGenerator;
 import org.xcolab.service.members.util.email.ConnectorEmmaAPI;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Service
 public class MemberService {
@@ -75,10 +78,10 @@ public class MemberService {
     }
 
     public Member register(String screenName, String password, String email, String firstName, String lastName,
-            String shortBio, String country, Long facebookId, String openId, Long imageId, Long liferayUserId)
+                           String shortBio, String country, Long facebookId, String openId, Long imageId, Long liferayUserId)
             throws NoSuchAlgorithmException {
         memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
-                    shortBio, country, facebookId, openId, liferayUserId);
+                shortBio, country, facebookId, openId, liferayUserId);
         final Member member = memberDao.findOneByScreenName(screenName);
 
         subscribeToNewsletter(member.getEmailAddress());
@@ -91,8 +94,19 @@ public class MemberService {
                 //TODO: do login
                 return true;
             }
-        } catch (NoSuchAlgorithmException ignored) {}
+        } catch (NoSuchAlgorithmException ignored) {
+        }
         return false;
+    }
+
+    public String createNewForgotPasswordToken(Long memberId) throws NotFoundException {
+        Member member = memberDao.getMember(memberId);
+        String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
+        member.setNewPasswordToken(confirmationToken);
+        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10l);
+        member.setNewPasswordTokenExpireTime(Timestamp.valueOf(localDateTime));
+        memberDao.updateMember(member);
+        return confirmationToken;
     }
 
     public boolean isSubscribedToNewsletter(long memberId) throws IOException, NotFoundException {

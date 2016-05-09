@@ -168,18 +168,8 @@ public class MembersController {
     public String forgotPassword(
             @RequestParam(required = false) Long memberId)
             throws NoSuchAlgorithmException, NotFoundException {
-        String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
-
         if (memberId != null) {
-            Member member = memberDao.getMember(memberId);
-            if (member != null) {
-                member.setNewPasswordToken(confirmationToken);
-                LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10l);
-                member.setNewPasswordTokenExpireTime(Timestamp.valueOf(localDateTime));
-                memberDao.updateMember(member);
-                return confirmationToken;
-            }
-
+                return memberService.createNewForgotPasswordToken(memberId);
         }
         throw new NotFoundException(
                 "The endpoint you requested is not available for the given attributes");

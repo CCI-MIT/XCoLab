@@ -233,6 +233,8 @@ public final class MembersClient {
         return RequestUtils.getUnchecked(uriBuilder, String.class);
     }
 
+    // /members/createForgotPasswordToken
+
     public static boolean validatePassword(String password, long memberId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/validatePassword")
