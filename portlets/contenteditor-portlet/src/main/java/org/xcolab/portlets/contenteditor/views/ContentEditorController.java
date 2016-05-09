@@ -43,7 +43,7 @@ public class ContentEditorController {
             throws IOException, SystemException, PortalException {
 
         JSONArray responseArray = JSONFactoryUtil.createJSONArray();
-        Long folderId = 0L;
+        Long folderId = 1L;
         if (node != null && !node.isEmpty()) {
             folderId = Long.parseLong(node);
         }
