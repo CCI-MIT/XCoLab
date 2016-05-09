@@ -8,7 +8,7 @@ import java.util.List;
 public interface ContentFolderDao {
     ContentFolder create(ContentFolder contentFolder);
 
-    void update(ContentFolder contentFolder);
+    boolean update(ContentFolder contentFolder);
 
     ContentFolder get(Long contentFolderId);
 

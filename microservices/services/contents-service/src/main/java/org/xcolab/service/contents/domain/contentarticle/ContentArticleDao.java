@@ -11,7 +11,7 @@ public interface ContentArticleDao {
     List<ContentArticle> getArticles();
     List<ContentArticle> getArticlesInFolder(long folderId);
 
-    void update(ContentArticle contentArticle);
+    boolean update(ContentArticle contentArticle);
 
     ContentArticle create(ContentArticle contentArticle);
     int delete(long contentArticleId);

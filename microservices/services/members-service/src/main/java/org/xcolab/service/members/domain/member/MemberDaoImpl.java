@@ -208,7 +208,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.COUNTRY, member.getCountry())
                 .where(MEMBER.ID_.equal(member.getId_()))
-                .execute();
+                .execute() > 0;
     }
 
     @Override
