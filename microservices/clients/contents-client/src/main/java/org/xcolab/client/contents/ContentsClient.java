@@ -35,7 +35,8 @@ public final class ContentsClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contentArticleVersions")
                     .queryParam("folderId", folderId)
-                    .queryParam("title", title);
+                    .queryParam("title", title)
+                    .queryParam("sort", "-contentArticleVersion");
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
                     new ParameterizedTypeReference<List<ContentArticleVersion>>() {
@@ -50,7 +51,8 @@ public final class ContentsClient {
             throws ContentNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contentArticleVersions")
-                    .queryParam("contentArticleId", articleId);
+                    .queryParam("contentArticleId", articleId)
+                    .queryParam("sort", "-contentArticleVersion");
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
                     new ParameterizedTypeReference<List<ContentArticleVersion>>() {
