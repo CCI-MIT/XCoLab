@@ -145,9 +145,22 @@
                   .autocomplete({
                     minLength: 0,
                     source: function (request, response) {
-                      // delegate back to autocomplete, but extract the last term
-                      response($.ui.autocomplete.filter(
-                              userNames, request.term));
+                      $.ajax({
+                        type: "GET",
+                        url: "/web/guest/members/-/members/users/partialName/" + $(userSelectorInput).val(),
+                        dataType: 'json',
+                        async: true,
+                        success: function (data, textStatus, jqXHR) {
+                          var screenNames = [];
+                          $.each(data, function(index, value) {
+                            screenNames.push(value["screenName"]);
+                          });
+                          response(screenNames);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                          response([]);
+                        }
+                      });
                     },
                     focus: function () {
                       // prevent value inserted on focus
