@@ -222,9 +222,9 @@
         <div class="c-Popup">
             <h4>By saving your ${contestType.proposalName} you are entering the ${colabName} ${contestType.contestName} and agree to the&#160;
                 <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>
-                &#160;and ${contestType.contestName} Rules.</h4>
+                &#160;and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a> .</h4>
 
-            <h5>${fn:toUpperCase(contestType.contestName)} RULES:</h5>
+            <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
             <div class="terms">
                     ${preferences.termsOfService}
             </div>
