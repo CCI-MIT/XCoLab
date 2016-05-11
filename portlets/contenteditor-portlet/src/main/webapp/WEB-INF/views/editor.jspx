@@ -16,7 +16,7 @@
 
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jqtree.css"><!-- --></link>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"><!-- --></link>
+    <!-- link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"></link -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery.loadmask.spin.css"><!-- --></link>
 
@@ -49,7 +49,9 @@
 
             $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
 
-            CKEDITOR.config.contentsCss = '/climatecolab-theme/css/style.css';
+            CKEDITOR.config.contentsCss = '${pageContext.request.contextPath}/climatecolab-theme/css/style.css';
+            CKEDITOR.config.allowedContent = true;
+
             $('#tree-view').tree({
                                      //data:data,
                                      saveState: true,

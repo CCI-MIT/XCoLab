@@ -7,6 +7,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContentFolder implements Serializable {
 
+    public static final long RESOURCE_FOLDER_ID = 4L;
     private static final long serialVersionUID = 111562325;
 
     private Long contentFolderId;

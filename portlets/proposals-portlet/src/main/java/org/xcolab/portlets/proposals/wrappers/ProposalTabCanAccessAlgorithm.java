@@ -83,8 +83,10 @@ interface ProposalTabCanAccessAlgorithm {
 			} catch (PortalException | SystemException e) {
 				e.printStackTrace();
 			}
-			return permissions.getCanAdminAll() || permissions.getCanJudgeActions()
-					|| permissions.getCanFellowActions() || permissions.getCanIAFActions();
+            //TODO: [COLAB-1161] temporarily hid fellow review tab -> decide what to do with it
+			return false;
+//			return permissions.getCanAdminAll() || permissions.getCanJudgeActions()
+//					|| permissions.getCanFellowActions() || permissions.getCanIAFActions();
 		}
 	};
 
