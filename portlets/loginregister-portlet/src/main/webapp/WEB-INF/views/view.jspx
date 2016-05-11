@@ -33,9 +33,9 @@
 	<portlet:resourceURL id="generateScreenName" var="generateScreenNameUrl">
 	</portlet:resourceURL>
 
-	<portlet:actionURL var="resetEmailLinkURL">
-		<portlet:param name="isResetEmailLink" value="true" />
-	</portlet:actionURL>
+
+
+
 	<div class="popupreg_form">
 
 
@@ -65,7 +65,6 @@
 			id="fileUploadForm">
 			<input type="file" name="file" id="portraitUploadInput" />
 		</form>
-		${resetEmailLinkURL}
 		<form:form action="${createAccountURL }" commandName="createUserBean" id="registrationForm">
 			<input type="hidden" name="action" value="add" />
 			<div class="reg_errors"><!--  --></div>

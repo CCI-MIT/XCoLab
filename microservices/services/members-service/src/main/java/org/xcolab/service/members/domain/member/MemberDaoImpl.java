@@ -185,13 +185,14 @@ public class MemberDaoImpl implements MemberDao {
     public Member findOneByForgotPasswordHash(String newPasswordToken) {
         return dslContext.select()
                 .from(MEMBER)
-                .where(MEMBER.NEW_PASSWORD_TOKEN.eq(newPasswordToken))
+                .where(MEMBER.FORGOT_PASSWORD_TOKEN.eq(newPasswordToken))
                 .fetchOne().into(Member.class);
     }
 
     @Override
-    public void updateMember(Member member) {
+    public boolean updateMember(Member member) {
 
+        return
         this.dslContext.update(MEMBER)
                 .set(MEMBER.CREATE_DATE, member.getCreateDate())
                 .set(MEMBER.MODIFIED_DATE, member.getModifiedDate())
@@ -207,6 +208,8 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.COUNTRY, member.getCountry())
+                .set(MEMBER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
+                .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
                 .where(MEMBER.ID_.equal(member.getId_()))
                 .execute() > 0;
     }

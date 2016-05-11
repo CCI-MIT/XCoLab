@@ -76,4 +76,9 @@
         <implicit-parameter name="p_p_state">normal</implicit-parameter>
         <implicit-parameter name="p_p_mode">view</implicit-parameter>
     </route>
+    <route>
+        <pattern>/forgotPassword/{resetPasswordToken}</pattern>
+        <generated-parameter name="pageToDisplay">password_reset</generated-parameter>
+        <generated-parameter name="resetTicket">{resetPasswordToken}</generated-parameter>
+    </route>
 </routes>

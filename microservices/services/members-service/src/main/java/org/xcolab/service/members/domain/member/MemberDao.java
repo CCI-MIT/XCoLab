@@ -26,7 +26,7 @@ public interface MemberDao {
 
     Member findOneByForgotPasswordHash(String newPasswordToken);
 
-    void updateMember(Member member);
+    boolean updateMember(Member member);
     void createMember(String screenName, String password, String email, String firstName, String lastName,
             String shortBio, String country, Long facebookId, String openId, Long liferayUserId);
 

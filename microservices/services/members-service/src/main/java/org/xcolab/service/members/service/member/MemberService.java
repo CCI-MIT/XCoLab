@@ -99,14 +99,40 @@ public class MemberService {
         return false;
     }
 
+    public boolean validateForgotPasswordToken(String passwordToken) throws NotFoundException {
+        Member member = memberDao.findOneByForgotPasswordHash(passwordToken);
+
+        if (member == null) return false;
+
+        if (member.getForgotPasswordTokenExpireTime().getTime() >= Timestamp.valueOf(LocalDateTime.now()).getTime()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String createNewForgotPasswordToken(Long memberId) throws NotFoundException {
         Member member = memberDao.getMember(memberId);
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
-        member.setNewPasswordToken(confirmationToken);
+        member.setForgotPasswordToken(confirmationToken);
         LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10l);
-        member.setNewPasswordTokenExpireTime(Timestamp.valueOf(localDateTime));
+        member.setForgotPasswordTokenExpireTime(Timestamp.valueOf(localDateTime));
         memberDao.updateMember(member);
         return confirmationToken;
+    }
+
+    public Long updateUserPasswordWithToken(String token, String newPassword) throws NoSuchAlgorithmException, NotFoundException{
+        Member member = memberDao.findOneByForgotPasswordHash(token);
+        if (member != null) {
+            member.setPasswordModifiedDate(Timestamp.valueOf(LocalDateTime.now()));
+            member.setHashedPassword(hashPassword(newPassword));
+            member.setForgotPasswordToken(null);
+            member.setForgotPasswordTokenExpireTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(-10)));
+            memberDao.updateMember(member);
+            return member.getId_();
+        }else{
+            throw new NotFoundException();
+        }
     }
 
     public boolean isSubscribedToNewsletter(long memberId) throws IOException, NotFoundException {

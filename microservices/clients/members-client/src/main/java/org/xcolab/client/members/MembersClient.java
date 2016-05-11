@@ -2,7 +2,6 @@ package org.xcolab.client.members;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
@@ -212,6 +211,28 @@ public final class MembersClient {
                 EUREKA_APPLICATION_ID + "/members/isUsed")
                     .queryParam("email", email);
         return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+    }
+
+    public static Long updateUserPassword(String forgotPasswordToken, String password) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/validateForgotPasswordToken")
+                .queryParam("forgotPasswordToken", forgotPasswordToken)
+                .queryParam("password", password);
+        return RequestUtils.post(uriBuilder, null, Long.class);
+    }
+
+    public static boolean isForgotPasswordTokenValid(String passwordToken) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/validateForgotPasswordToken")
+                .queryParam("passwordToken", passwordToken);
+        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+    }
+
+    public static String createForgotPasswordToken(Long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/createForgotPasswordToken")
+                .queryParam("memberId", memberId );
+        return RequestUtils.getUnchecked(uriBuilder, String.class);
     }
 
     public static String generateScreenName(String lastName, String firstName) {

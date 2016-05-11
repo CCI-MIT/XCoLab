@@ -24,8 +24,12 @@ import com.liferay.portal.util.PortalUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.utils.GlobalMessagesUtil;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.emailnotification.member.MemberForgotPasswordNotification;
@@ -47,7 +51,8 @@ public class ForgotPasswordController {
 
     private static final long DEFAULT_COMPANY_ID = 10112L;
 
-    private static final String FORGOTPASSWORDURL = "/web/guest/loginregister?p_auth=JeaIAVzC&p_p_id=loginregisterportlet_WAR_loginregisterportlet&p_p_lifecycle=1&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_loginregisterportlet_WAR_loginregisterportlet_isResetEmailLink=true";
+    private static final String FORGOTPASSWORDURL = "/web/guest/loginregister/-/login/forgotPassword/";
+
 
     @ActionMapping(params = {"isForgotpass=true"})
     public void sendPassword(ActionRequest request, ActionResponse response) throws IOException {
@@ -99,11 +104,11 @@ public class ForgotPasswordController {
 */
 
 
-            String passwordLink = "http://localhost:18081/c/portal/update_password?p_l_id=44901&amp;ticketKey=89890";
+            String token = MembersClient.createForgotPasswordToken(user.getUserId());
+            String colabUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue();
+            String passwordLink = colabUrl + FORGOTPASSWORDURL + "" + token;
 
-
-
-            sendEmailNotificationToForPasswordReset(PortalUtil.getHttpServletRequest(request).getRemoteAddr(), passwordLink , themeDisplay, user);
+            sendEmailNotificationToForPasswordReset(PortalUtil.getHttpServletRequest(request).getRemoteAddr(), passwordLink, themeDisplay, user);
 
         } catch (Exception e) {
             if (e instanceof AuthException) {
@@ -164,6 +169,11 @@ public class ForgotPasswordController {
     public String register(PortletRequest request, PortletResponse response,
                            Model model) throws SystemException {
 
+        return redirectToErrorPageOnPasswordReset(model, request);
+    }
+
+    public String redirectToErrorPageOnPasswordReset(Model model, PortletRequest request)
+            throws SystemException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         model.addAttribute("message",
                 "Your password reset ticket has expired. Please try to reset your password again.");
@@ -173,13 +183,35 @@ public class ForgotPasswordController {
         return "password_reset_error";
     }
 
-    @ActionMapping(params = {"isResetEmailLink=true"})
-    public String openResetPassword(ActionRequest request, ActionResponse response) throws IOException {
 
-        String hash = request.getParameter("resetTicket");
+    @RequestMapping(params = "pageToDisplay=password_reset")
+    public String openResetPassword(PortletRequest request,
+                                    PortletResponse response,
+                                    Model model,
+                                    @RequestParam String resetTicket) throws SystemException {
 
-        //get user from DB check hash field
-        return "password_reset";
+        if (!MembersClient.isForgotPasswordTokenValid(resetTicket)) {
+            return redirectToErrorPageOnPasswordReset(model, request);
+        } else {
+            model.addAttribute("passwordResetToken", resetTicket);
+            return "password_reset";
+        }
     }
 
+    @ActionMapping(params = {"isUpdatingPassword=true"})
+    public void updatePassword(ActionRequest request, Model model,
+                               ActionResponse response, CreateUserBean newAccountBean,
+                               BindingResult result,
+                               @RequestParam(required = false) String passwordResetToken) throws IOException, SystemException {
+
+        String newPassword = newAccountBean.getPassword();
+
+        if (MembersClient.isForgotPasswordTokenValid(passwordResetToken)) {
+
+        } else {
+            response.setRenderParameter("isError", "true");
+        }
+
     }
+
+}

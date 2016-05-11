@@ -51,6 +51,13 @@ public class MemberForgotPasswordNotification extends MemberNotification {
         return templateWrapper;
     }
 
+
+    private String getPasswordLink() {
+
+        return String.format(LINK_FORMAT_STRING, passwordResetLink , "here");
+    }
+
+
     protected class MemberForgotPasswordTemplate extends EmailNotificationTemplate {
 
         public MemberForgotPasswordTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
@@ -74,7 +81,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
                 case SENDER_IP_PLACEHOLDER:
                     return new TextNode(memberIp, "");
                 case PASSWORD_RESET_LINK_PLACEHOLDER:
-                    return new TextNode(passwordResetLink, "");
+                    return parseXmlNode(getPasswordLink());
                 case SYSTEM_LINK_PLACEHOLDER:
                     return new TextNode(ConfigurationAttributeKey.COLAB_URL.getStringValue(), "");
                 default:

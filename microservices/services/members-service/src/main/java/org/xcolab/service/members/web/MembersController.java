@@ -7,20 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
-import org.xcolab.service.members.util.SecureRandomUtil;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,12 +160,38 @@ public class MembersController {
                 "The endpoint you requested is not available for the given attributes");
     }
 
+
     @RequestMapping(value = "/members/createForgotPasswordToken", method = RequestMethod.GET)
-    public String forgotPassword(
+    public String createForgotPasswordToken(
             @RequestParam(required = false) Long memberId)
             throws NoSuchAlgorithmException, NotFoundException {
         if (memberId != null) {
                 return memberService.createNewForgotPasswordToken(memberId);
+        }
+        throw new NotFoundException(
+                "The endpoint you requested is not available for the given attributes");
+    }
+
+
+
+    @RequestMapping(value = "/members/updateForgottenPassword", method = RequestMethod.POST)
+    public Long updateForgottenPasswordByToken(
+            @RequestParam(required = false) String forgotPasswordToken,
+            @RequestParam(required = false) String password)
+            throws NoSuchAlgorithmException, NotFoundException {
+        if (forgotPasswordToken != null) {
+            return memberService.updateUserPasswordWithToken(forgotPasswordToken, password);
+        }
+        throw new NotFoundException(
+                "The endpoint you requested is not available for the given attributes");
+    }
+
+    @RequestMapping(value = "/members/validateForgotPasswordToken", method = RequestMethod.GET)
+    public boolean validateForgotPasswordToken(
+            @RequestParam(required = false) String passwordToken)
+            throws NoSuchAlgorithmException, NotFoundException {
+        if (passwordToken != null) {
+            return memberService.validateForgotPasswordToken(passwordToken);
         }
         throw new NotFoundException(
                 "The endpoint you requested is not available for the given attributes");
