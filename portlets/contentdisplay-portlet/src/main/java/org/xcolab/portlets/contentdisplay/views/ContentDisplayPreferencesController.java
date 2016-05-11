@@ -24,7 +24,7 @@ import javax.portlet.ValidatorException;
 @RequestMapping("edit")
 public class ContentDisplayPreferencesController {
 
-    private static final long CONTENT_FOLDER_ID = 1L;
+    private static final long CONTENT_FOLDER_ID = 2L;
 
     @RequestMapping
     public String showPreferences(RenderRequest request, RenderResponse response, Model model)
@@ -32,7 +32,7 @@ public class ContentDisplayPreferencesController {
         model.addAttribute("preferences", new ContentDisplayPreferences(request));
 
         final List<ContentArticle> contentArticles = ContentsClient
-                .getContentArticles(null);
+                .getContentArticles(CONTENT_FOLDER_ID);
         model.addAttribute("contentArticles", contentArticles);
         return "preferences";
     }
