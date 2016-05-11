@@ -20,6 +20,15 @@
     </bean>
 
     <bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+    <bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key=".ContentNotFoundException">notFound</prop>
+            </props>
+        </property>
+    </bean>
+
     <mvc:annotation-driven/>
 
 </beans>
