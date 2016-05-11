@@ -10,6 +10,7 @@ import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 
 import java.io.UnsupportedEncodingException;
@@ -67,9 +68,10 @@ public class WikiPageWrapper {
                         ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
             } else {
                 contentArticleVersion = new ContentArticleVersion();
-                contentArticleVersion.setFolderId(2L);
+                contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
                 contentArticleVersion.setAuthorId(loggedInUserId);
                 contentArticleVersion.setTitle(contest.getContestShortName());
+                contentArticleVersion.setContent("");
                 contentArticleVersion = ContentsClient
                         .createContentArticleVersion(contentArticleVersion);
 
