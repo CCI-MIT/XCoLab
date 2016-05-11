@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URL;
 
+import javax.portlet.PortletRequest;
+
 public final class FacebookUtil {
 
     private static final Log _log = LogFactoryUtil.getLog(FacebookUtil.class);
@@ -37,6 +39,7 @@ public final class FacebookUtil {
      */
     public static String getFacebookPictureURLString(String fbProfilePictureURL) {
         try {
+            //TODO: this doesn't work -> requires token!
             // Get real facebook image URL
             InputStream is = new URL(fbProfilePictureURL).openStream();
             StringWriter writer = new StringWriter();
@@ -52,10 +55,10 @@ public final class FacebookUtil {
         return null;
     }
 
-    public static String getAccessToken(String redirect, String code) {
+    public static String getAccessToken(PortletRequest request, String code) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(TOKEN_URL)
                 .queryParam("client_id", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.getStringValue())
-                .queryParam("redirect_uri", redirect)
+                .queryParam("redirect_uri", getAuthRedirectURL(request))
                 .queryParam("client_secret", ConfigurationAttributeKey.FACEBOOK_APPLICATION_SECRET.getStringValue())
                 .queryParam("code", code);
         final String requestResult = RequestUtils.post(uriBuilder, null, String.class);
@@ -85,6 +88,18 @@ public final class FacebookUtil {
         } catch (JSONException e) {
             return null;
         }
+    }
+
+    public static String getAuthRedirectURL(PortletRequest request) {
+        return FacebookUtil.getDomain(request) + FacebookUtil.REDIRECT_URL;
+    }
+
+    public static String getDomain(PortletRequest request) {
+        final boolean isStandardPort =
+                (request.getScheme().equals("http") && request.getServerPort() == 80)
+                        || (request.getScheme().equals("https") && request.getServerPort() == 443);
+        return request.getScheme() + "://" + request.getServerName()
+                + (!isStandardPort ? ":" + request.getServerPort() : "");
     }
 
 }

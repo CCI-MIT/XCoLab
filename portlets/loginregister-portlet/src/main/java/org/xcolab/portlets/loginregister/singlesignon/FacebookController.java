@@ -34,7 +34,6 @@ import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Locale;
 
 import javax.portlet.ActionRequest;
@@ -68,16 +67,14 @@ public class FacebookController {
         String referrer = httpReq.getHeader("referer");
         session.setAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY, referrer);
 
-        UriComponentsBuilder facebookAuthRedirectURL = UriComponentsBuilder
-                .fromHttpUrl(FacebookUtil.REDIRECT_URL)
-                //TODO: potentially replace by current URL
-                .queryParam("redirect", URLEncoder.encode(referrer, "UTF-8"));
+        //TODO: potentially replace by current URL
+        String facebookAuthRedirectURL = FacebookUtil.getAuthRedirectURL(request);
 
         UriComponentsBuilder facebookAuthURL = UriComponentsBuilder.fromHttpUrl(
                 FacebookUtil.AUTH_URL)
                 .queryParam("client_id",
                         ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.getStringValue())
-                .queryParam("redirect_uri", facebookAuthRedirectURL.build().toString())
+                .queryParam("redirect_uri", facebookAuthRedirectURL)
                 .queryParam("scope", "email");
 
         response.sendRedirect(facebookAuthURL.build().toString());
@@ -97,7 +94,6 @@ public class FacebookController {
 
     @RequestMapping(params = "action=fbCallback")
     public void fbCallback(ActionRequest request, ActionResponse response) throws Exception {
-
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
@@ -105,14 +101,14 @@ public class FacebookController {
 
         session.removeAttribute(SSOKeys.SSO_OPENID_ID);
 
-        String redirectUrl = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        String redirectUrl = (String) session
+                .getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
         if (Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) {
             redirectUrl = themeDisplay.getURLHome();
         }
 
-        String redirect = ParamUtil.getString(request, "redirect");
         String code = ParamUtil.getString(request, "code");
-        String token = FacebookUtil.getAccessToken(redirect, code);
+        String token = FacebookUtil.getAccessToken(request, code);
 
         JSONObject jsonObject = FacebookUtil.getGraphResources("/me", token,
                 "id,email,first_name,last_name,gender,verified,location,locale");
@@ -135,7 +131,9 @@ public class FacebookController {
         User liferayUser = null;
 
         long facebookId = jsonObject.getLong("id");
-        String fbProfilePictureURL = String.format(FacebookUtil.FB_PROFILE_PIC_URL_FORMAT_STRING, facebookId);
+        String fbProfilePictureURL = String
+                .format(FacebookUtil.FB_PROFILE_PIC_URL_FORMAT_STRING, facebookId);
+
 
         PortletSession portletSession = request.getPortletSession();
 
