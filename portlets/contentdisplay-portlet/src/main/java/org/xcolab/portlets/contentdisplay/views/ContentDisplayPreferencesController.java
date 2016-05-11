@@ -32,7 +32,7 @@ public class ContentDisplayPreferencesController {
         model.addAttribute("preferences", new ContentDisplayPreferences(request));
 
         final List<ContentArticle> contentArticles = ContentsClient
-                .getContentArticles(CONTENT_FOLDER_ID);
+                .getContentArticles(null);
         model.addAttribute("contentArticles", contentArticles);
         return "preferences";
     }
