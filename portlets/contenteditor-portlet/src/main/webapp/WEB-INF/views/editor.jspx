@@ -1,7 +1,8 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://java.sun.com/portlet_2_0 "
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          xmlns:liferay-theme="http://liferay.com/tld/theme" >
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"><!-- --></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/js.cookie.js"><!-- --></script>
     <script src="${pageContext.request.contextPath}/js/tree.jquery.js"><!-- --></script>
@@ -9,7 +10,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"><!-- --></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/spin.min.js"><!-- --></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.loadmask.spin.js"><!-- --></script>
-
+    <liferay-theme:defineObjects />
 
     <portlet:defineObjects />
 
@@ -49,7 +50,14 @@
 
             $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
 
-            CKEDITOR.config.contentsCss = '${pageContext.request.contextPath}/climatecolab-theme/css/style.css';
+            var styles = $('link');
+            for(var i=0 ; i <styles.length ; i++){
+                if($(styles[i]).attr("href").indexOf("style.css")!= -1){
+                    CKEDITOR.config.contentsCss = $(styles[i]).attr("href");
+                    break;
+                }
+            }
+
             CKEDITOR.config.allowedContent = true;
 
             $('#tree-view').tree({
