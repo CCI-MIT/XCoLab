@@ -215,7 +215,7 @@ public final class MembersClient {
 
     public static Long updateUserPassword(String forgotPasswordToken, String password) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/validateForgotPasswordToken")
+                EUREKA_APPLICATION_ID + "/members/updateForgottenPassword")
                 .queryParam("forgotPasswordToken", forgotPasswordToken)
                 .queryParam("password", password);
         return RequestUtils.post(uriBuilder, null, Long.class);

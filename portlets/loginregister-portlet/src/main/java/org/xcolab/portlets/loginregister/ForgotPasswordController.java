@@ -10,7 +10,6 @@ import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -30,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.utils.GlobalMessagesUtil;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.emailnotification.member.MemberForgotPasswordNotification;
@@ -84,24 +85,6 @@ public class ForgotPasswordController {
             } else {
                 user = UserLocalServiceUtil.getUserByScreenName(DEFAULT_COMPANY_ID, userNameEmail);
             }
-
-            String languageId = LanguageUtil.getLanguageId(request);
-
-            String emailFromName = preferences.getValue("emailFromName", null);
-            String emailFromAddress = preferences.getValue(
-                    "emailFromAddress", null);
-            String emailToAddress = user.getEmailAddress();
-
-            String emailParam = "emailPasswordSent";
-
-            String subject = preferences.getValue(
-                    emailParam + "Subject_" + languageId, null);
-            String body = preferences.getValue(
-                    emailParam + "Body_" + languageId, null);
-/*
-            AuthenticationServiceUtil
-                    .sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
-*/
 
 
             String token = MembersClient.createForgotPasswordToken(user.getUserId());
@@ -193,7 +176,10 @@ public class ForgotPasswordController {
         if (!MembersClient.isForgotPasswordTokenValid(resetTicket)) {
             return redirectToErrorPageOnPasswordReset(model, request);
         } else {
+            CreateUserBean userBean = new CreateUserBean();
+            model.addAttribute("createUserBean", userBean);
             model.addAttribute("passwordResetToken", resetTicket);
+            model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
             return "password_reset";
         }
     }
@@ -207,6 +193,19 @@ public class ForgotPasswordController {
         String newPassword = newAccountBean.getPassword();
 
         if (MembersClient.isForgotPasswordTokenValid(passwordResetToken)) {
+            try {
+                LoginRegisterUtil.updatePassword(passwordResetToken, newPassword );
+                GlobalMessagesUtil
+                        .addMessage("Your password was successfully updated! ", request);
+                SessionErrors.clear(request);
+                SessionMessages.clear(request);
+                response.sendRedirect("/");
+
+            } catch (MemberNotFoundException e) {
+                response.setRenderParameter("isError", "true");
+            } catch (PortalException e) {
+                response.setRenderParameter("isError", "true");
+            }
 
         } else {
             response.setRenderParameter("isError", "true");
