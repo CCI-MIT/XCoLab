@@ -34,7 +34,7 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.emailnotification.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.utils.emailnotification.proposal.ProposalUserActionNotification;
 

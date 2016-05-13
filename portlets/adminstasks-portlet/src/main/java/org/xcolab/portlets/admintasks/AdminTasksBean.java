@@ -36,16 +36,18 @@ import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.utils.UrlBuilder;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 public class AdminTasksBean {
 	private static final Log _log = LogFactoryUtil.getLog(AdminTasksBean.class);
@@ -252,14 +254,6 @@ public class AdminTasksBean {
         Indexer indexer = IndexerRegistryUtil.getIndexer(SocialActivity.class);
         for (SocialActivity s : SocialActivityLocalServiceUtil.getSocialActivities(0,Integer.MAX_VALUE)) {
 			indexer.reindex(s);
-		}
-        pushAjaxUpdateFinishedIndexerTask();
-    }
-    public void reindexDiscussions() throws SearchException, SystemException {
-        pushAjaxUpdate("Reindexing Users Discussions index");
-        Indexer indexer = IndexerRegistryUtil.getIndexer(DiscussionMessage.class);
-        for (DiscussionMessage m : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0,Integer.MAX_VALUE)) {
-			indexer.reindex(m);
 		}
         pushAjaxUpdateFinishedIndexerTask();
     }
