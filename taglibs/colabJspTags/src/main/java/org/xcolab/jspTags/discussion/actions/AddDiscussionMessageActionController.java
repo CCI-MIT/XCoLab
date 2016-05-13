@@ -21,7 +21,7 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 
 import java.io.IOException;

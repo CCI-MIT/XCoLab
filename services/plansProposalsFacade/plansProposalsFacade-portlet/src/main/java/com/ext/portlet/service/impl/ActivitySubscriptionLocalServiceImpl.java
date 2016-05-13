@@ -39,7 +39,7 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.collections.comparators.ComparatorChain;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import javax.mail.internet.InternetAddress;

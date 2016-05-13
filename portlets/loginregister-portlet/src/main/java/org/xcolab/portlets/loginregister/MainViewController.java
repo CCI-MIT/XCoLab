@@ -49,7 +49,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.UserCreationUtil;

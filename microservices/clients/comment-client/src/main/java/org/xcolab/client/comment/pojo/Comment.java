@@ -11,6 +11,7 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.HtmlUtil;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -107,6 +108,11 @@ public class Comment implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @JsonIgnore
+    public String getContentPlain() {
+        return HtmlUtil.cleanAll(content);
     }
 
     @JsonIgnore
