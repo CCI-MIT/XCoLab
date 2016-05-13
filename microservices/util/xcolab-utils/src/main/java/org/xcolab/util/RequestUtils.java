@@ -143,8 +143,23 @@ public final class RequestUtils {
         }
         return ret;
     }
-
     public static int getCount(UriComponentsBuilder uriBuilder) {
+        return getCount(uriBuilder, Object.class, null);
+    }
+
+    public static int getCount(UriComponentsBuilder uriBuilder,
+            Class<?> entityType, String cacheQueryIdentifier) {
+        Integer ret;
+        final boolean cacheActive = memcached != null && cacheQueryIdentifier != null;
+        final String cachePrefix = "_" + entityType.getSimpleName()  + "_count_";
+        if (cacheActive) {
+            //noinspection unchecked
+            ret = (Integer) memcached.get(sanitize(cachePrefix + cacheQueryIdentifier));
+            if (ret != null) {
+                return ret;
+            }
+        }
+
         try {
             final HttpHeaders httpHeaders = restTemplate
                     .headForHeaders(uriBuilder.build().toString());
@@ -152,7 +167,12 @@ public final class RequestUtils {
             if (countHeaders.isEmpty()) {
                 return 0;
             }
-            return Integer.valueOf(countHeaders.get(0));
+
+            ret = Integer.valueOf(countHeaders.get(0));
+            if (cacheActive) {
+                memcached.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
+            }
+            return ret;
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 throw new ServiceNotFoundException(uriBuilder.build().toString());

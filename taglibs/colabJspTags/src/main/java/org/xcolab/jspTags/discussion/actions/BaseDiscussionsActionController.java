@@ -1,21 +1,15 @@
 package org.xcolab.jspTags.discussion.actions;
 
-import com.ext.portlet.NoSuchDiscussionMessageException;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.util.PortalUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+
+import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,17 +18,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.servlet.http.HttpServletRequest;
+
 public abstract class BaseDiscussionsActionController {
 
     private static final Log _log = LogFactoryUtil.getLog(BaseDiscussionsActionController.class);
 
-    public void checkPermissions(ActionRequest request, String accessDeniedMessage, long discussionId, long additionalId)
-            throws PortalException, SystemException, DiscussionAuthorizationException {
+    public void checkPermissions(ActionRequest request, String accessDeniedMessage, long additionalId)
+            throws DiscussionAuthorizationException {
 
-        DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
-        DiscussionPermissions permissions = new DiscussionPermissions(request, dcg);
+        DiscussionPermissions permissions = new DiscussionPermissions(request);
 
-        if (!isUserAllowed(permissions, additionalId)) {
+        try {
+            if (!isUserAllowed(permissions, additionalId)) {
+                throw new DiscussionAuthorizationException(accessDeniedMessage);
+            }
+        } catch (CommentNotFoundException e) {
             throw new DiscussionAuthorizationException(accessDeniedMessage);
         }
     }
@@ -82,7 +83,7 @@ public abstract class BaseDiscussionsActionController {
     }
 
     public abstract boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
-            throws SystemException, NoSuchDiscussionMessageException;
+            throws CommentNotFoundException;
 
     private static class SimpleNameValuePair implements NameValuePair {
         String name, value;

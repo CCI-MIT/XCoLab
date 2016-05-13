@@ -1,44 +1,40 @@
 package org.xcolab.client.comment.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.KeyReferenceException;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 113982360;
 
-    private Long      commentid;
-    private Long      threadid;
-    private Long      authorid;
+    private Long commentid;
+    private Long threadid;
+    private Long authorid;
     private Timestamp createdate;
     private Timestamp modifieddate;
     private Timestamp deleteddate;
-    private String    title;
-    private String    content;
+    private String title;
+    private String content;
 
-    public Comment() {}
-
-    public Comment(Comment value) {
-        this.commentid = value.commentid;
-        this.threadid = value.threadid;
-        this.authorid = value.authorid;
-        this.createdate = value.createdate;
-        this.modifieddate = value.modifieddate;
-        this.deleteddate = value.deleteddate;
-        this.title = value.title;
-        this.content = value.content;
+    public Comment() {
     }
 
-    public Comment(
-        Long      commentid,
-        Long      threadid,
-        Long      authorid,
-        Timestamp createdate,
-        Timestamp modifieddate,
-        Timestamp deleteddate,
-        String    title,
-        String    content
-    ) {
+    public Comment(Long commentid, Long threadid, Long authorid, Timestamp createdate,
+            Timestamp modifieddate, Timestamp deleteddate, String title, String content) {
         this.commentid = commentid;
         this.threadid = threadid;
         this.authorid = authorid;
@@ -111,6 +107,27 @@ public class Comment implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @JsonIgnore
+    public Member getAuthor() {
+        try {
+            return MembersClient.getMember(authorid);
+        } catch (MemberNotFoundException e) {
+            throw new KeyReferenceException(e);
+        }
+    }
+
+    @JsonIgnore
+    public CommentThread getThread() {
+        if (threadid != null && threadid > 0) {
+            try {
+                return CommentClient.getThread(threadid);
+            } catch (ThreadNotFoundException e) {
+                throw new KeyReferenceException(e);
+            }
+        }
+        return null;
     }
 
     @Override

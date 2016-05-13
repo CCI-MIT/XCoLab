@@ -1,47 +1,40 @@
 package org.xcolab.client.comment.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadSortColumn;
+import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
+import org.xcolab.client.comment.exceptions.KeyReferenceException;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class Category implements Serializable {
 
     private static final long serialVersionUID = -753738209;
 
-    private Long      categoryid;
-    private Long      groupid;
-    private Long      authorid;
-    private String    name;
-    private String    description;
+    private Long categoryid;
+    private Long groupid;
+    private Long authorid;
+    private String name;
+    private String description;
     private Timestamp createdate;
     private Timestamp deleteddate;
-    private Integer   sort;
-    private Boolean   isquiet;
+    private Integer sort;
+    private Boolean isquiet;
 
-    public Category() {}
-
-    public Category(Category value) {
-        this.categoryid = value.categoryid;
-        this.groupid = value.groupid;
-        this.authorid = value.authorid;
-        this.name = value.name;
-        this.description = value.description;
-        this.createdate = value.createdate;
-        this.deleteddate = value.deleteddate;
-        this.sort = value.sort;
-        this.isquiet = value.isquiet;
+    public Category() {
     }
 
-    public Category(
-        Long      categoryid,
-        Long      groupid,
-        Long      authorid,
-        String    name,
-        String    description,
-        Timestamp createdate,
-        Timestamp deleteddate,
-        Integer   sort,
-        Boolean   isquiet
-    ) {
+    public Category(Long categoryid, Long groupid, Long authorid, String name, String description,
+            Timestamp createdate, Timestamp deleteddate, Integer sort, Boolean isquiet) {
         this.categoryid = categoryid;
         this.groupid = groupid;
         this.authorid = authorid;
@@ -123,6 +116,33 @@ public class Category implements Serializable {
 
     public void setIsQuiet(Boolean isquiet) {
         this.isquiet = isquiet;
+    }
+
+    @JsonIgnore
+    public List<CommentThread> getThreads(ThreadSortColumn sortColumn, boolean ascending) {
+        return CommentClient.listThreads(0, Integer.MAX_VALUE,
+                categoryid, null, sortColumn, ascending);
+    }
+
+    @JsonIgnore
+    public CategoryGroup getCategoryGroup() {
+        if (groupid != null && groupid > 0) {
+            try {
+                return CommentClient.getCategoryGroup(groupid);
+            } catch (CategoryGroupNotFoundException e) {
+                throw new KeyReferenceException(e);
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public String getLinkUrl() {
+        final CategoryGroup categoryGroup = getCategoryGroup();
+        if (categoryGroup != null) {
+            return categoryGroup.getLinkUrl() + "/-/discussion/category/" + categoryid;
+        }
+        return "";
     }
 
     @Override

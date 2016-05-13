@@ -1,57 +1,76 @@
 package org.xcolab.jspTags.discussion;
 
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
+
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
+import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.Category;
+import org.xcolab.client.comment.pojo.CategoryGroup;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
-import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-/**
- * Created by johannes on 12/2/15.
- */
 public class LoadThreadStartTag extends BodyTagSupport {
 
     private static final Log _log = LogFactoryUtil.getLog(LoadThreadStartTag.class);
 
-    private ThreadWrapper thread;
+    private long threadId;
+    private long categoryId;
     private long categoryGroupId;
 
     @Override
     public int doStartTag() throws JspException {
         try {
             PortletRequest portletRequest = getPortletRequest(pageContext);
-            DiscussionCategoryGroup dcg = null;
+
+            String shareTitle = null;
+            String shareUrl = null;
+
+            if (categoryId > 0) {
+                Category category = CommentClient.getCategory(categoryId);
+                shareTitle = category.getName();
+                //TODO: url
+                shareUrl = "";
+            }
+
+            CategoryGroup categoryGroup = null;
             if (categoryGroupId > 0) {
-                dcg = DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(categoryGroupId);
-                if (thread == null && dcg.getCommentsThread() > 0) {
-                    thread = new ThreadWrapper(DiscussionMessageLocalServiceUtil.fetchDiscussionMessage(dcg.getCommentsThread()));
+                categoryGroup = CommentClient.getCategoryGroup(categoryGroupId);
+                if (shareTitle == null) {
+                    shareTitle = categoryGroup.getDescription();
+                }
+                if (shareUrl == null) {
+                    //TODO: url
+                    shareUrl = "";
                 }
             }
-            if (dcg == null) {
-                dcg = thread.getCategoryGroup();
-            }
-            DiscussionPermissions discussionPermissions = (DiscussionPermissions) portletRequest.getAttribute(
-                    DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
+
+            CommentThread thread = CommentClient.getThread(threadId);
+
+            DiscussionPermissions discussionPermissions = (DiscussionPermissions)
+                    portletRequest.getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
             if (discussionPermissions == null) {
-                discussionPermissions = new DiscussionPermissions(portletRequest, dcg);
+                discussionPermissions = new DiscussionPermissions(portletRequest);
             } else {
                 _log.info("Found custom DiscussionPermissions of type " + discussionPermissions.getClass().getName());
             }
+
             pageContext.setAttribute("thread", thread);
-            pageContext.setAttribute("categoryGroup", new DiscussionCategoryGroupWrapper(dcg));
+            pageContext.setAttribute("shareTitle", shareTitle);
+            pageContext.setAttribute("shareUrl", shareUrl);
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
             pageContext.setAttribute("discussionPermissions", discussionPermissions);
-        } catch (PortalException | SystemException | JspException e) {
+        } catch (PortalException | SystemException | JspException | CategoryGroupNotFoundException
+                | ThreadNotFoundException | CategoryNotFoundException e) {
             e.printStackTrace();
         }
         return EVAL_BODY_INCLUDE;
@@ -73,11 +92,19 @@ public class LoadThreadStartTag extends BodyTagSupport {
         this.categoryGroupId = categoryGroupId;
     }
 
-    public ThreadWrapper getThread() {
-        return thread;
+    public long getThreadId() {
+        return threadId;
     }
 
-    public void setThread(ThreadWrapper thread) {
-        this.thread = thread;
+    public void setThreadId(long threadId) {
+        this.threadId = threadId;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 }

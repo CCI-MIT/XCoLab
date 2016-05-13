@@ -1,7 +1,8 @@
 package org.xcolab.portlets.discussions.views;
 
 import com.ext.portlet.model.DiscussionCategory;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -13,32 +14,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadSortColumn;
+import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
+import org.xcolab.client.comment.pojo.Category;
+import org.xcolab.client.comment.pojo.CategoryGroup;
+import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.jspTags.discussion.ThreadSortColumn;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
-import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
-import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
-import org.xcolab.utils.ListUtil;
 
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.naming.OperationNotSupportedException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Created by johannes on 12/1/15.
- */
 @Controller
 @RequestMapping("view")
 public class CategoryController extends BaseDiscussionController {
 
     @RenderMapping
     public String showCategories(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
-        return showCategories(request, response, model, ThreadSortColumn.DATE.name(), true);
+        return showCategories(request, response, model, ThreadSortColumn.DATE.name(), false);
     }
 
     @RenderMapping(params = "action=showCategories")
@@ -56,26 +62,17 @@ public class CategoryController extends BaseDiscussionController {
             threadSortColumn = ThreadSortColumn.DATE;
         }
 
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
+        List<Category> categories = categoryGroup.getCategories();
+        List<CommentThread> threads = categoryGroup.getThreads(threadSortColumn, sortAscending);
 
-        List<CategoryWrapper> categories = categoryGroupWrapper.getCategories(threadSortColumn, sortAscending);
-
-        List<List<ThreadWrapper>> threadsList = new ArrayList<>();
-
-        if (categories != null) {
-            for (CategoryWrapper category : categories) {
-                threadsList.add(new ArrayList<>(category.getThreads()));
-            }
-        }
-        List<ThreadWrapper> threads = ListUtil.mergeSortedLists(threadsList,
-                ThreadWrapper.getComparator(threadSortColumn, sortAscending));
-
-        model.addAttribute("categoryGroup", categoryGroupWrapper);
+        model.addAttribute("categoryGroup", categoryGroup);
         model.addAttribute("categories", categories);
         model.addAttribute("threads", threads);
         model.addAttribute("sortColumn", threadSortColumn);
         model.addAttribute("sortAscending", sortAscending);
-        model.addAttribute("isSubscribed", categoryGroupWrapper.isSubscribed(themeDisplay.getUserId()));
+        model.addAttribute("isSubscribed", ActivitySubscriptionLocalServiceUtil.isSubscribed(
+                themeDisplay.getUserId(), DiscussionCategoryGroup.class, categoryGroup.getGroupId(), 0, ""));
 
         return "category";
     }
@@ -84,7 +81,7 @@ public class CategoryController extends BaseDiscussionController {
     public String showCategory(PortletRequest request, PortletResponse response, Model model,
                                @RequestParam long categoryId, @RequestParam(required = false) String sortColumn,
                                @RequestParam(required = false) boolean sortAscending)
-            throws SystemException, PortalException, DiscussionAuthorizationException {
+            throws SystemException, PortalException, DiscussionAuthorizationException, CategoryNotFoundException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -95,19 +92,19 @@ public class CategoryController extends BaseDiscussionController {
             threadSortColumn = ThreadSortColumn.DATE;
         }
 
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
 
-        List<CategoryWrapper> categories = categoryGroupWrapper.getCategories(threadSortColumn, sortAscending);
-        CategoryWrapper currentCategory = new CategoryWrapper(DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(categoryId),
-                threadSortColumn, sortAscending);
+        List<Category> categories = categoryGroup.getCategories();
+        Category currentCategory = CommentClient.getCategory(categoryId);
 
-        model.addAttribute("categoryGroup", categoryGroupWrapper);
+        model.addAttribute("categoryGroup", categoryGroup);
         model.addAttribute("currentCategory", currentCategory);
         model.addAttribute("categories", categories);
-        model.addAttribute("threads", currentCategory.getThreads());
+        model.addAttribute("threads", currentCategory.getThreads(threadSortColumn, sortAscending));
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
-        model.addAttribute("isSubscribed", currentCategory.isSubscribed(themeDisplay.getUserId()));
+        model.addAttribute("isSubscribed", ActivitySubscriptionLocalServiceUtil.isSubscribed(
+                themeDisplay.getUserId(), DiscussionCategoryGroup.class, categoryGroup.getGroupId(), 0, Long.toString(categoryId)));
 
         return "category";
     }
@@ -136,9 +133,9 @@ public class CategoryController extends BaseDiscussionController {
                                @RequestParam long categoryId)
             throws SystemException, PortalException, DiscussionAuthorizationException {
 
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
         checkCanEdit(request, "User does not have the necessary permissions to create a category",
-                categoryGroupWrapper.getWrapped(), 0L);
+                categoryGroup, 0L);
 
         return "category_add";
     }
@@ -146,17 +143,18 @@ public class CategoryController extends BaseDiscussionController {
     @ActionMapping(params = "action=createCategory")
     public void createCategoryAction(ActionRequest request, ActionResponse response,
                                    @RequestParam String title, @RequestParam String description)
-            throws SystemException, PortalException, IOException, DiscussionAuthorizationException {
+            throws SystemException, PortalException, IOException, DiscussionAuthorizationException, OperationNotSupportedException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
 
         checkCanEdit(request, "User does not have the necessary permissions to create a category",
-                categoryGroupWrapper.getWrapped(), 0L);
+                categoryGroup, 0L);
 
-        final DiscussionCategory category = DiscussionCategoryLocalServiceUtil.createDiscussionCategory(categoryGroupWrapper.getId(), title, description, themeDisplay.getUser());
-
-        response.sendRedirect(new CategoryWrapper(category).getLinkUrl());
+        throw new OperationNotSupportedException("Not implemented");
+//        final DiscussionCategory category = DiscussionCategoryLocalServiceUtil.createDiscussionCategory(categoryGroup.getGroupId(), title, description, themeDisplay.getUser());
+//
+//        response.sendRedirect(new CategoryWrapper(category).getLinkUrl());
     }
 
     @ActionMapping(params = "action=subscribeCategory")
@@ -164,16 +162,16 @@ public class CategoryController extends BaseDiscussionController {
             throws SystemException, DiscussionAuthorizationException, PortalException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
-        checkCanView(request, "You do not have permissions to view this category", categoryGroupWrapper.getWrapped(), 0L);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
+        checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
 
         if (!themeDisplay.getUser().isDefaultUser()) {
             if (categoryId > 0) {
-                DiscussionCategoryLocalServiceUtil.subscribe(themeDisplay.getUserId(),
-                        categoryGroupWrapper.getId(), categoryId);
+                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, categoryGroup.getGroupId(),
+                        0, Long.toString(categoryId), themeDisplay.getUserId());
             } else {
-                DiscussionCategoryGroupLocalServiceUtil.subscribe(themeDisplay.getUserId(),
-                        categoryGroupWrapper.getId());
+                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, categoryGroup.getGroupId(),
+                        0, "", themeDisplay.getUserId());
             }
         }
     }
@@ -183,27 +181,74 @@ public class CategoryController extends BaseDiscussionController {
             throws SystemException, DiscussionAuthorizationException, PortalException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
-        checkCanView(request, "You do not have permissions to view this category", categoryGroupWrapper.getWrapped(), 0L);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
+        checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
 
         if (!themeDisplay.getUser().isDefaultUser()) {
             if (categoryId > 0) {
-                DiscussionCategoryLocalServiceUtil.unsubscribe(themeDisplay.getUserId(),
-                        categoryGroupWrapper.getId(), categoryId);
+                ActivitySubscriptionLocalServiceUtil.deleteSubscription(themeDisplay.getUserId(),
+                        DiscussionCategoryGroup.class, categoryGroup.getGroupId(), 0, Long.toString(categoryId));
             } else {
-                DiscussionCategoryGroupLocalServiceUtil.unsubscribe(themeDisplay.getUserId(),
-                        categoryGroupWrapper.getId());
+                ActivitySubscriptionLocalServiceUtil.deleteSubscription(themeDisplay.getUserId(),
+                        DiscussionCategoryGroup.class, categoryGroup.getGroupId(), 0, "");
             }
         }
     }
 
     @Override
-    public boolean getCanView(DiscussionPermissions permissions, long additionalId) {
+    public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         return true; //not used
     }
 
     @Override
-    public boolean getCanEdit(DiscussionPermissions permissions, long additionalId) {
+    public boolean getCanEdit(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         return permissions.getCanCreateCategory();
+    }
+
+    //TODO: move
+    public static Comparator<CommentThread> getComparator(final ThreadSortColumn sortColumn, final boolean sortAscending) {
+        return new Comparator<CommentThread>() {
+
+            @Override
+            public int compare(CommentThread o1, CommentThread o2) {
+                int ret;
+
+                switch (sortColumn) {
+                    case TITLE:
+                        ret = o1.getTitle().compareToIgnoreCase(o2.getTitle());
+                        break;
+                    case REPLIES:
+                        ret = o1.getCommentsCount() - o2.getCommentsCount();
+                        break;
+                    case LAST_COMMENTER:
+                        final long lastActivityAuthorId1 = CommentClient
+                                .getLastActivityAuthorId(o1.getThreadId());
+                        final long lastActivityAuthorId2 = CommentClient
+                                .getLastActivityAuthorId(o2.getThreadId());
+                        try {
+                            final Member lastActivityAuthor1 = MembersClient.getMember(
+                                    lastActivityAuthorId1);
+                            final Member lastActivityAuthor2 = MembersClient.getMember(
+                                    lastActivityAuthorId2);
+                            if (lastActivityAuthor1 != null && lastActivityAuthor2 != null) {
+                                ret = lastActivityAuthor1.getScreenName()
+                                        .compareToIgnoreCase(lastActivityAuthor2.getScreenName());
+                            } else {
+                                ret = (int) (lastActivityAuthorId1 - lastActivityAuthorId2);
+                            }
+                        } catch (MemberNotFoundException e) {
+                            ret = (int) (lastActivityAuthorId1 - lastActivityAuthorId2);
+                        }
+                        break;
+                    case DATE:
+                    default:
+                        ret = CommentClient.getLastActivityDate(o1.getThreadId())
+                                .compareTo(CommentClient.getLastActivityDate(o2.getThreadId()));
+                        break;
+                }
+
+                return sortAscending ? -ret : ret;
+            }
+        };
     }
 }

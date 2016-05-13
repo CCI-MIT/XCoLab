@@ -370,6 +370,6 @@ public class DiscussionMessageLocalServiceImpl
             throws PortalException, SystemException {
         String extraData = String.valueOf(categoryId) + "," + threadId;
         return ActivitySubscriptionLocalServiceUtil.isSubscribed(
-                userId, DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, "");
+                userId, DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, extraData);
     }
 }
