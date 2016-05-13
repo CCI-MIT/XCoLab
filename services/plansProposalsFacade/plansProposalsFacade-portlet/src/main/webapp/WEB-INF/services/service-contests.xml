@@ -47,7 +47,6 @@
         
         <column name="groupId" type="long" />
         <column name="discussionGroupId" type="long" />
-        <column name="fellowDiscussionGroupId" type="long" />
         <column name="weight" type="int" />
         <column name="resourcesUrl" type="String" />
         <column name="contestPrivate" type="boolean" />

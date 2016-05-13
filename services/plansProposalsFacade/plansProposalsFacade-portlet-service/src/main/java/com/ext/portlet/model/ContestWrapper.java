@@ -75,7 +75,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("flagTooltip", getFlagTooltip());
         attributes.put("groupId", getGroupId());
         attributes.put("discussionGroupId", getDiscussionGroupId());
-        attributes.put("fellowDiscussionGroupId", getFellowDiscussionGroupId());
         attributes.put("weight", getWeight());
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
@@ -305,13 +304,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (discussionGroupId != null) {
             setDiscussionGroupId(discussionGroupId);
-        }
-
-        Long fellowDiscussionGroupId = (Long) attributes.get(
-                "fellowDiscussionGroupId");
-
-        if (fellowDiscussionGroupId != null) {
-            setFellowDiscussionGroupId(fellowDiscussionGroupId);
         }
 
         Integer weight = (Integer) attributes.get("weight");
@@ -1138,26 +1130,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setDiscussionGroupId(long discussionGroupId) {
         _contest.setDiscussionGroupId(discussionGroupId);
-    }
-
-    /**
-    * Returns the fellow discussion group ID of this contest.
-    *
-    * @return the fellow discussion group ID of this contest
-    */
-    @Override
-    public long getFellowDiscussionGroupId() {
-        return _contest.getFellowDiscussionGroupId();
-    }
-
-    /**
-    * Sets the fellow discussion group ID of this contest.
-    *
-    * @param fellowDiscussionGroupId the fellow discussion group ID of this contest
-    */
-    @Override
-    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
-        _contest.setFellowDiscussionGroupId(fellowDiscussionGroupId);
     }
 
     /**

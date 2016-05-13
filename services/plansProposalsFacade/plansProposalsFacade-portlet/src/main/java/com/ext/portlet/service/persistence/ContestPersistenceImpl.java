@@ -10108,7 +10108,6 @@ public class ContestPersistenceImpl extends BasePersistenceImpl<Contest>
         contestImpl.setFlagTooltip(contest.getFlagTooltip());
         contestImpl.setGroupId(contest.getGroupId());
         contestImpl.setDiscussionGroupId(contest.getDiscussionGroupId());
-        contestImpl.setFellowDiscussionGroupId(contest.getFellowDiscussionGroupId());
         contestImpl.setWeight(contest.getWeight());
         contestImpl.setResourcesUrl(contest.getResourcesUrl());
         contestImpl.setContestPrivate(contest.isContestPrivate());
