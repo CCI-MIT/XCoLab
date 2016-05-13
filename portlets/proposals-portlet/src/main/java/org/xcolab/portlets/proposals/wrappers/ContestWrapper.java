@@ -32,7 +32,7 @@ public class ContestWrapper extends BaseContestWrapper {
     private static final long ONTOLOGY_SPACE_ID_HOW = 103L;
     private static final long CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS = 3L;
 
-    private static final String EMAIL_TEMPLATE_URL = "/web/guest/generic-advancing-email-template";
+    private static final String EMAIL_TEMPLATE_URL = "/resources/-/wiki/Main/Judging+Mail+Templates";
 
     private Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<BaseContestPhaseWrapper> visiblePhases;
