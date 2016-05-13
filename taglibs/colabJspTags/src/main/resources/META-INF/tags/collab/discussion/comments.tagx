@@ -143,6 +143,7 @@
 										<c:if test="${discussionPermissions.getCanAdminMessage(message) }">
 											<portlet:actionURL var="editCommentURL">
 												<portlet:param name="action" value="editComment" />
+                                                <portlet:param name="commentId" value="${message.commentId}" />
 												<portlet:param name="proposalId" value="${proposalId}" />
 											</portlet:actionURL>
 											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.commentId},'${editCommentURL}');">Edit</a>
@@ -159,8 +160,7 @@
 
 												<portlet:actionURL var="deleteMessageURL">
 													<portlet:param name="action" value="deleteDiscussionMessageFlag" />
-													<portlet:param name="discussionId" value="${categoryGroup.id}" />
-													<portlet:param name="messageId" value="${message.commentId }" />
+													<portlet:param name="commentId" value="${message.commentId }" />
 													<portlet:param name="proposalId" value="${proposalId}" />
 												</portlet:actionURL>
 												<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>

@@ -136,6 +136,7 @@ public final class RequestUtils {
         }
         return ret;
     }
+
     public static int getCount(UriComponentsBuilder uriBuilder) {
         return getCount(uriBuilder, Object.class, null);
     }
@@ -143,11 +144,11 @@ public final class RequestUtils {
     public static int getCount(UriComponentsBuilder uriBuilder,
             Class<?> entityType, String cacheQueryIdentifier) {
         Integer ret;
-        final boolean cacheActive = memcached != null && cacheQueryIdentifier != null;
+        final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
         final String cachePrefix = "_" + entityType.getSimpleName()  + "_count_";
         if (cacheActive) {
             //noinspection unchecked
-            ret = (Integer) memcached.get(sanitize(cachePrefix + cacheQueryIdentifier));
+            ret = (Integer) cacheProvider.get(sanitize(cachePrefix + cacheQueryIdentifier));
             if (ret != null) {
                 return ret;
             }
@@ -163,7 +164,7 @@ public final class RequestUtils {
 
             ret = Integer.valueOf(countHeaders.get(0));
             if (cacheActive) {
-                memcached.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
+                cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
             }
             return ret;
         } catch (HttpClientErrorException e) {
@@ -188,6 +189,10 @@ public final class RequestUtils {
 
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.build().toString(), entity, returnType);
+    }
+
+    public static void delete(UriComponentsBuilder uriBuilder) {
+        restTemplate.delete(uriBuilder.build().toString());
     }
 
     private static String sanitize(String identifier) {

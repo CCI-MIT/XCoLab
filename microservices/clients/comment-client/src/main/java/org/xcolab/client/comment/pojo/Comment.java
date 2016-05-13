@@ -110,6 +110,12 @@ public class Comment implements Serializable {
     }
 
     @JsonIgnore
+    public int getSpamReportCount() {
+        //TODO: implement
+        return 0;
+    }
+
+    @JsonIgnore
     public Member getAuthor() {
         try {
             return MembersClient.getMember(authorid);
