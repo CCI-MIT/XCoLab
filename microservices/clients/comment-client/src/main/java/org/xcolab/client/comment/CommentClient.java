@@ -67,6 +67,12 @@ public final class CommentClient {
         return RequestUtils.post(uriBuilder, comment, Comment.class);
     }
 
+    public static void deleteComment(long commentId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/comments/" + commentId);
+        RequestUtils.delete(uriBuilder);
+    }
+
 //    Threads
 
     public static List<CommentThread> listThreads(int start, int last, Long categoryId,

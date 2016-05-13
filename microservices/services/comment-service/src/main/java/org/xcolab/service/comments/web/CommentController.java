@@ -71,10 +71,21 @@ public class CommentController {
         return commentDao.create(comment);
     }
 
+    @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.DELETE)
+    public void deleteComment(@PathVariable Long commentId) {
+        try {
+            Comment comment = commentDao.get(commentId);
+            comment.setDeletedDate(new Timestamp(new Date().getTime()));
+            commentDao.update(comment);
+        } catch (NotFoundException ignored) {
+        }
+    }
+
     @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.PUT)
     public boolean updateComment(@RequestBody Comment comment, @PathVariable Long commentId)
             throws NotFoundException {
         if (commentDao.get(commentId) != null) {
+            comment.setModifiedDate(new Timestamp(new Date().getTime()));
             return commentDao.update(comment);
         } else {
             throw new NotFoundException();
@@ -175,7 +186,7 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/threads/{threadId}/lastActivityDate", method = RequestMethod.GET)
-    public Date getLastActivityDate(@PathVariable Long threadId) throws NotFoundException {
+    public Date getLastActivityDate(@PathVariable long threadId) throws NotFoundException {
         if (threadId == 0) {
             throw new NotFoundException("No category id given");
         } else {
@@ -187,7 +198,7 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/threads/{threadId}/lastActivityAuthorId", method = RequestMethod.GET)
-    public long getLastActivityAuthor(@PathVariable Long threadId) throws NotFoundException {
+    public long getLastActivityAuthor(@PathVariable long threadId) throws NotFoundException {
         if (threadId == 0) {
             throw new NotFoundException("No category id given");
         } else {
