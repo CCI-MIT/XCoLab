@@ -101,7 +101,7 @@
 									</a>
 									|
 									<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact message_add_this"
-									   addthis:title="${shareTitle}" addthis:description="${message.content}"
+									   addthis:title="${shareTitle}" addthis:description="${message.contentPlain}"
 									   addthis:url="${shareUrl}"
 									   data-hash="#_message_${message.commentId}">
 										<span>share</span>

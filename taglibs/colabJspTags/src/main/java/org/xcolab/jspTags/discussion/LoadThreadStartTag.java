@@ -1,7 +1,5 @@
 package org.xcolab.jspTags.discussion;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -42,9 +40,8 @@ public class LoadThreadStartTag extends BodyTagSupport {
                 shareUrl = "";
             }
 
-            CategoryGroup categoryGroup = null;
             if (categoryGroupId > 0) {
-                categoryGroup = CommentClient.getCategoryGroup(categoryGroupId);
+                CategoryGroup categoryGroup = CommentClient.getCategoryGroup(categoryGroupId);
                 if (shareTitle == null) {
                     shareTitle = categoryGroup.getDescription();
                 }
@@ -69,7 +66,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
             pageContext.setAttribute("shareUrl", shareUrl);
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
             pageContext.setAttribute("discussionPermissions", discussionPermissions);
-        } catch (PortalException | SystemException | JspException | CategoryGroupNotFoundException
+        } catch (JspException | CategoryGroupNotFoundException
                 | ThreadNotFoundException | CategoryNotFoundException e) {
             e.printStackTrace();
         }
