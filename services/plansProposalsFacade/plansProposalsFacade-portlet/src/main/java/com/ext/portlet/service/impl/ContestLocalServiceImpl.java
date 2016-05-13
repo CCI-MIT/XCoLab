@@ -27,7 +27,6 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
@@ -69,6 +68,8 @@ import com.liferay.portal.service.ServiceContext;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
@@ -168,12 +169,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
 
-        DiscussionCategoryGroup categoryGroup = DiscussionCategoryGroupLocalServiceUtil
-                .createDiscussionCategoryGroup(c.getContestName() + " discussion");
-
-        categoryGroup.setUrl(getContestLinkUrl(c) + "/discussion");
-
-        DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
+        CommentThread thread = new CommentThread();
+        thread.setTitle(c.getContestName() + " discussion");
+        thread.setAuthorId(c.getAuthorId());
+        long discussionId = CommentClient.createThread(thread).getThreadId();
 
         // set up permissions
 
@@ -224,7 +223,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
 
         c.setGroupId(group.getGroupId());
-        c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
+        c.setDiscussionGroupId(discussionId);
         store(c);
     }
 
@@ -238,6 +237,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return contestPersistence.findByContestYear(contestYear);
     }
 
+    @Override
     public Contest getByContestUrlNameContestYear(String contestUrlName, long year)
             throws SystemException, NoSuchContestException {
         return contestPersistence.findByContestUrlNameContestYear(contestUrlName, year);
@@ -412,18 +412,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     @Override
-    public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest) throws PortalException, SystemException {
-        return DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
-    }
-
-    @Override
     public long getTotalCommentsCount(Contest contest) throws PortalException, SystemException {
-        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest)) + getProposalsCommentsCount(contest);
+        return getCommentsCount(contest) + getProposalsCommentsCount(contest);
     }
 
     @Override
     public long getCommentsCount(Contest contest) throws PortalException, SystemException {
-        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest));
+        return CommentClient.countComments(contest.getDiscussionGroupId());
     }
 
     @Override
@@ -457,11 +452,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         votesQuery.add(PropertyFactoryUtil.forName("primaryKey.contestPhaseId").eq(contestPhaseId));
         votesQuery.add(RestrictionsFactoryUtil.in("proposalId", proposalIds));
         return dynamicQueryCount(votesQuery);
-    }
-
-    @Override
-    public long getTotalComments(Contest contest) throws PortalException, SystemException {
-        return getCommentsCount(contest) + getProposalsCommentsCount(contest);
     }
 
     @Override
