@@ -22,6 +22,6 @@
 	</div>
 	<!-- /proposal-head -->	
 	<div id="content">
-		<discussionsTagFiles:evaluationComments evaluationDiscussionId="${discussionId }" />
+		<discussionsTagFiles:evaluationComments threadId="${discussionId }" />
 	</div>
 </jsp:root>

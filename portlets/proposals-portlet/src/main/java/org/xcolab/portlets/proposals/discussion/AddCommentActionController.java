@@ -29,12 +29,12 @@ public class AddCommentActionController extends AddDiscussionMessageActionContro
     public void updateAnalyticsAndActivities(CommentThread thread, Comment comment, long userId, ActionRequest request)
             throws SystemException, PortalException {
         super.updateAnalyticsAndActivities(thread, comment, userId, request);
-        if (! thread.getIsQuiet()) {
+        if (!thread.getIsQuiet()) {
             Group scopeGroup = GroupLocalServiceUtil.getGroup(
                     CompanyLocalServiceUtil.getCompanyByWebId(PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID)).getCompanyId(),
                     DEFAULT_GROUP_NAME);
             SocialActivityLocalServiceUtil.addActivity(userId, scopeGroup.getGroupId(),
-                    DiscussionCategoryGroup.class.getName(), thread.getCategory().getGroupId(),
+                    DiscussionCategoryGroup.class.getName(), 0L,
                     DiscussionActivityKeys.ADD_PROPOSAL_DISCUSSION_COMMENT.id(),
                     ActivityUtil.getExtraDataForIds(thread.getCategoryId(),
                             thread.getThreadId(),
