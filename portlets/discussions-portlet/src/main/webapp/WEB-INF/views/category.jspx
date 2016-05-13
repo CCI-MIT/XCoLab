@@ -7,9 +7,9 @@
     <portlet:defineObjects />
     <liferay-theme:defineObjects />
 
-    <!--@elvariable id="currentCategory" type="org.xcolab.jspTags.discussion.wrappers.CategoryWrapper"-->
-    <!--@elvariable id="categories" type="java.util.List<org.xcolab.jspTags.discussion.wrappers.CategoryWrapper>"-->
-    <!--@elvariable id="threads" type="java.util.List<org.xcolab.jspTags.discussion.wrappers.ThreadWrapper>"-->
+    <!--@elvariable id="currentCategory" type="org.xcolab.client.comment.pojo.Category"-->
+    <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
+    <!--@elvariable id="threads" type="java.util.List<org.xcolab.client.comment.pojo.CommentThread>"-->
     <!--@elvariable id="sortAscending" type="java.lang.Boolean"-->
     <!--@elvariable id="sortColumn" type="java.lang.String"-->
     <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
@@ -31,13 +31,13 @@
         <c:if test="${not empty currentCategory}">
             &#160;
             <img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />&#160;
-            <a href="${currentCategory.linkUrl}">${currentCategory.title}</a>&#160;
+            <a href="${currentCategory.linkUrl}">${currentCategory.name}</a>&#160;
         </c:if>
     </div>
 
     <div class="c-Comment__threads">
         <div>
-            <h3>${empty currentCategory ? 'All Discussions' : currentCategory.title}</h3>
+            <h3>${empty currentCategory ? 'All Discussions' : currentCategory.name}</h3>
             <div class="p-Discussion__row">
                 <div class="p-Discussion__left">
                     <div class="b-Spacing separatorBelow">
@@ -60,11 +60,11 @@
                 <div class="p-Discussion__right border-bottom">
                     <portlet:actionURL var="subscribeUrl">
                         <portlet:param name="action" value="subscribeCategory" />
-                        <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.id : '0'}"/>
+                        <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                     </portlet:actionURL>
                     <portlet:actionURL var="unsubscribeUrl">
                         <portlet:param name="action" value="unsubscribeCategory" />
-                        <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.id : '0'}"/>
+                        <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                     </portlet:actionURL>
                     <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
                        onclick="if(!deferUntilLogin()) return false;">
@@ -80,7 +80,7 @@
                         <th class="c-Table__cell--title">
                             <portlet:actionURL var="sortURL">
                                 <portlet:param name="action" value="sortCategory" />
-                                <portlet:param name="categoryId" value="${currentCategory.id}" />
+                                <portlet:param name="categoryId" value="${currentCategory.categoryId}" />
                                 <portlet:param name="sortColumn" value="TITLE" />
                                 <portlet:param name="currentSortColumn" value="${sortColumn}" />
                                 <portlet:param name="currentSortAscending" value="${sortAscending}" />
@@ -96,7 +96,7 @@
                         <th class="c-Table__cell--title">
                             <portlet:actionURL var="sortURL">
                                 <portlet:param name="action" value="sortCategory" />
-                                <portlet:param name="categoryId" value="${currentCategory.id}" />
+                                <portlet:param name="categoryId" value="${currentCategory.categoryId}" />
                                 <portlet:param name="sortColumn" value="REPLIES" />
                                 <portlet:param name="currentSortColumn" value="${sortColumn}" />
                                 <portlet:param name="currentSortAscending" value="${sortAscending}" />
@@ -112,7 +112,7 @@
                         <th class="c-Table__cell--title">
                             <portlet:actionURL var="sortURL">
                                 <portlet:param name="action" value="sortCategory" />
-                                <portlet:param name="categoryId" value="${currentCategory.id}" />
+                                <portlet:param name="categoryId" value="${currentCategory.categoryId}" />
                                 <portlet:param name="sortColumn" value="LAST_COMMENTER" />
                                 <portlet:param name="currentSortColumn" value="${sortColumn}" />
                                 <portlet:param name="currentSortAscending" value="${sortAscending}" />
@@ -128,7 +128,7 @@
                         <th class="c-Table__cell--title">
                             <portlet:actionURL var="sortURL">
                                 <portlet:param name="action" value="sortCategory" />
-                                <portlet:param name="categoryId" value="${currentCategory.id}" />
+                                <portlet:param name="categoryId" value="${currentCategory.categoryId}" />
                                 <portlet:param name="sortColumn" value="DATE" />
                                 <portlet:param name="currentSortColumn" value="${sortColumn}" />
                                 <portlet:param name="currentSortAscending" value="${sortAscending}" />
@@ -147,7 +147,7 @@
                         <td class="c-Table__cell"><a href="${thread.linkUrl}">${thread.title}</a></td>
                         <td class="c-Table__cell">${thread.commentsCount}</td>
                         <td class="c-Table__cell"><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.screenName}"/></td>
-                        <td class="c-Table__cell">${thread.modifiedDate}</td>
+                        <td class="c-Table__cell">${thread.lastActivityDateFormatted}</td>
                     </tr>
                 </c:forEach>
             </table>
@@ -158,7 +158,7 @@
                     <ul class="discussionCategories">
                         <li><a href="/web/guest/discussion">All Discussions</a></li>
                         <c:forEach var="category" items="${categories}">
-                            <li><a href="${category.linkUrl}">${category.title}</a></li>
+                            <li><a href="${category.linkUrl}">${category.name}</a></li>
                         </c:forEach>
                     </ul>
                 </div>

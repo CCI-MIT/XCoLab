@@ -8,7 +8,7 @@ import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.jspTags.discussion.ThreadSortColumn;
+import org.xcolab.client.comment.ThreadSortColumn;
 
 import java.util.ArrayList;
 import java.util.Collections;

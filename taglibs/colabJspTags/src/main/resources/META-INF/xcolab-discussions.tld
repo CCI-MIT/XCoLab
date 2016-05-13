@@ -16,16 +16,22 @@
         <tag-class>org.xcolab.jspTags.discussion.LoadThreadStartTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <name>categoryGroupId</name>
+            <name>threadId</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.Long</type>
         </attribute>
         <attribute>
-            <name>thread</name>
+            <name>categoryGroupId</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.ext.portlet.model.DiscussionMessage</type>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <name>categoryId</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
         </attribute>
     </tag>
 

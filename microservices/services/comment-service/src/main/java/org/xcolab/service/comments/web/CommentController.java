@@ -17,9 +17,14 @@ import org.xcolab.service.comments.domain.categorygroup.CategoryGroupDao;
 import org.xcolab.service.comments.domain.comment.CommentDao;
 import org.xcolab.service.comments.domain.thread.ThreadDao;
 import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class CommentController {
@@ -36,14 +41,17 @@ public class CommentController {
     @Autowired
     private ThreadDao threadDao;
 
-    @RequestMapping(value = "/comments", method = RequestMethod.GET)
-    public List<Comment> listComments(
+    @RequestMapping(value = "/comments", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Comment> listComments(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Long authorId,
             @RequestParam(required = false) Long threadId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+
+        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+                    Integer.toString(commentDao.countByGiven(authorId, threadId)));
 
         return commentDao.findByGiven(paginationHelper, authorId, threadId);
     }
@@ -59,6 +67,7 @@ public class CommentController {
 
     @RequestMapping(value = "/comments", method = RequestMethod.POST)
     public Comment createComment(@RequestBody Comment comment) {
+        comment.setCreateDate(new Timestamp(new Date().getTime()));
         return commentDao.create(comment);
     }
 
@@ -72,7 +81,7 @@ public class CommentController {
         }
     }
 
-    @RequestMapping(value = "/groups", method = RequestMethod.GET)
+    @RequestMapping(value = "/groups", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<CategoryGroup> listGroups(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord) {
@@ -90,7 +99,7 @@ public class CommentController {
         }
     }
 
-    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+    @RequestMapping(value = "/categories", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Category> listCategories(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
@@ -113,6 +122,7 @@ public class CommentController {
 
     @RequestMapping(value = "/categories", method = RequestMethod.POST)
     public Category createCategory(@RequestBody Category category) {
+        category.setCreateDate(new Timestamp(new Date().getTime()));
         return categoryDao.create(category);
     }
 
@@ -126,16 +136,17 @@ public class CommentController {
         }
     }
 
-    @RequestMapping(value = "/threads", method = RequestMethod.GET)
+    @RequestMapping(value = "/threads", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Thread> listThreads(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Long authorId,
-            @RequestParam(required = false) Long categoryId) {
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long groupId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        return threadDao.findByGiven(paginationHelper, authorId, categoryId);
+        return threadDao.findByGiven(paginationHelper, authorId, categoryId, groupId);
     }
 
     @RequestMapping(value = "/threads/{threadId}", method = RequestMethod.GET)
@@ -148,8 +159,9 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/threads", method = RequestMethod.POST)
-    public Thread createThread(@RequestBody Thread category) {
-        return threadDao.create(category);
+    public Thread createThread(@RequestBody Thread thread) {
+        thread.setCreateDate(new Timestamp(new Date().getTime()));
+        return threadDao.create(thread);
     }
 
     @RequestMapping(value = "/threads/{threadId}", method = RequestMethod.PUT)
@@ -159,6 +171,27 @@ public class CommentController {
             return threadDao.update(category);
         } else {
             throw new NotFoundException();
+        }
+    }
+
+    @RequestMapping(value = "/threads/{threadId}/lastActivityDate", method = RequestMethod.GET)
+    public Date getLastActivityDate(@PathVariable Long threadId) throws NotFoundException {
+        if (threadId == 0) {
+            throw new NotFoundException("No category id given");
+        } else {
+            final Timestamp timestamp = threadDao.lastActivityDate(threadId);
+//            return timestamp.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//            return timestamp.toLocalDateTime();
+            return new Date(timestamp.getTime());
+        }
+    }
+
+    @RequestMapping(value = "/threads/{threadId}/lastActivityAuthorId", method = RequestMethod.GET)
+    public long getLastActivityAuthor(@PathVariable Long threadId) throws NotFoundException {
+        if (threadId == 0) {
+            throw new NotFoundException("No category id given");
+        } else {
+            return threadDao.lastActivityAuthor(threadId);
         }
     }
 }

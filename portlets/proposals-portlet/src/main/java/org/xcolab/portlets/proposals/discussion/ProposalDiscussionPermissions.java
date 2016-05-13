@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.discussion;
 
 import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
@@ -9,27 +8,23 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
+import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.jspTags.discussion.wrappers.DiscussionMessageWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 
-/**
- * Created by johannes on 12/5/15.
- */
 public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private final String discussionTabName;
     private final Long proposalId;
     private final Long contestPhaseId;
 
-    public ProposalDiscussionPermissions(PortletRequest request, DiscussionCategoryGroup categoryGroup)
-            throws SystemException, PortalException {
-
-        super(request, categoryGroup);
+    public ProposalDiscussionPermissions(PortletRequest request) {
+        super(request);
         discussionTabName = getTabName(request);
         proposalId = getProposalId(request);
         contestPhaseId = getContestPhaseId(request);
@@ -46,7 +41,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         return discussionTabName;
     }
 
-    private Long getProposalId(PortletRequest request){
+    private Long getProposalId(PortletRequest request) {
         Long proposalId = null;
         try {
             String proposalIdParameter = request.getParameter("proposalId");
@@ -62,7 +57,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         return proposalId;
     }
 
-    private Long getContestPhaseId(PortletRequest request){
+    private Long getContestPhaseId(PortletRequest request) {
         Long phaseId = null;
         try {
             String contestPhaseIdParameter = request.getParameter("phaseId");
@@ -94,8 +89,8 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     @Override
-    public boolean getCanAdminMessage(DiscussionMessageWrapper message) {
-        if (message.getAuthorId() == currentUser.getUserId() && proposalId != null) {
+    public boolean getCanAdminMessage(Comment comment) {
+        if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
             try {
                 Proposal proposal = ProposalLocalServiceUtil.fetchProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
@@ -103,7 +98,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
                 return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
             } catch (PortalException | SystemException ignored) { }
         }
-        return message.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
+        return comment.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
     }
 
     private boolean isUserAllowedToAddCommentsToProposalEvaluationInContestPhase

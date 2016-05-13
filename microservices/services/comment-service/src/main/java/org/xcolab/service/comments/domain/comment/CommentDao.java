@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CommentDao {
 
+    int countByGiven(Long authorId, Long threadId);
     List<Comment> findByGiven(PaginationHelper paginationHelper, Long authorId, Long threadId);
 
     Comment get(long commentId) throws NotFoundException;

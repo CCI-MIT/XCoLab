@@ -8,18 +8,20 @@
 
     <liferay-theme:defineObjects />
 
-    <jsp:directive.attribute name="thread" type="org.xcolab.jspTags.discussion.wrappers.ThreadWrapper" required="false" rtexprvalue="true" description="Thread DiscussionMessage" />
-    <jsp:directive.attribute name="categoryGroupId" type="java.lang.Long" required="false" rtexprvalue="true" description="DiscussionCategoryGroup id (for individual discussions)" />
+    <jsp:directive.attribute name="threadId" type="java.lang.Long" required="true" rtexprvalue="true" description="Thread id" />
+    <jsp:directive.attribute name="categoryGroupId" type="java.lang.Long" required="false" rtexprvalue="true" description="CategoryGroup id" />
+    <jsp:directive.attribute name="categoryId" type="java.lang.Long" required="false" rtexprvalue="true" description="Category id" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="false" rtexprvalue="true" description="Proposal id" />
-    <c:set var="thread" value="${empty thread ? null : thread}" />
     <c:set var="categoryGroupId" value="${empty categoryGroupId ? 0 : categoryGroupId}" />
+    <c:set var="categoryId" value="${empty categoryId ? 0 : categoryId}" />
     <c:set var="proposalId" value="${empty proposalId ? 0 : proposalId}" />
 
-	<discussions:loadThread categoryGroupId="${categoryGroupId }" thread="${thread}">
-        <!--@elvariable id="categoryGroup" type="org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper"-->
-        <!--@elvariable id="thread" type="org.xcolab.jspTags.discussion.wrappers.ThreadWrapper"-->
+	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}">
+        <!--@elvariable id="thread" type="org.xcolab.client.comment.pojo.CommentThread"-->
         <!--@elvariable id="newMessage" type="org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper"-->
         <!--@elvariable id="discussionPermissions" type="org.xcolab.jspTags.discussion.DiscussionPermissions"-->
+        <!--@elvariable id="shareTitle" type="java.lang.String"-->
+        <!--@elvariable id="shareUrl" type="java.lang.String"-->
 
         <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
         <script type="text/javascript" src="/discussions-portlet/js/discussionComments.js" ><!-- --></script>
@@ -44,8 +46,8 @@
 				</c:if>
 				<div class="c-Comment__share">
 					<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
-					   addthis:title="${categoryGroup.description}"
-					   addthis:description="${categoryGroup.description}">
+					   addthis:title="${shareTitle}"
+					   addthis:description="${shareTitle}">
 						<img src="${themeDisplay.pathThemeImages}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
 						Share conversation
 					</a>
@@ -67,9 +69,10 @@
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
 						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
 							<!--@elvariable id="role" type="org.xcolab.enums.MemberRole"-->
-							<tr class="${message.expertReview ? 'expertReview' : ''} ${status.index mod 2 == 0 ? 'odd' : 'even'}">
-								<td class="c-Comment__commentor ${message.expertReview ? 'expertReview' : ''}">
-									<a id="_message_${message.messageId}"></a>
+                            <!-- Removed ${message.expertReview ? 'expertReview' : ''} from both -->
+							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
+								<td class="c-Comment__commentor">
+									<a id="_message_${message.commentId}"></a>
 									<collab:userPortrait screenName="${message.author.screenName}"
 														 portraitId="${message.author.portraitId}"
 														 width="59" height="59" />
@@ -77,9 +80,9 @@
 									<collab:userLinkSimple text="${message.author.screenName}" userId="${message.author.userId}" /> <br />
 									<br />
 
-									<c:if test="${message.expertReview}">
-										<strong>Expert Review</strong><br />
-									</c:if>
+									<!--<c:if test="${message.expertReview}">-->
+										<!--<strong>Expert Review</strong><br />-->
+									<!--</c:if>-->
 									<collab:dateTime epoch="${message.createDate.time}" format="dateText" /><br />
 									<collab:dateTime epoch="${message.createDate.time}" format="time" /><br />
 
@@ -93,18 +96,19 @@
 									</div>
 
 									<br /><br />
-									<a href="#_message_${message.messageId}">
-										<span class="com_num messageLink" rel="${message.messageId}">${status.index + 1} </span>
+									<a href="#_message_${message.commentId}">
+										<span class="com_num messageLink" rel="${message.commentId}">${status.index + 1} </span>
 									</a>
 									|
 									<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact message_add_this"
-									   addthis:title="${categoryGroup.description}" addthis:description="${message.body}"
-									   addthis:url="${categoryGroup.discussionUrl}"
-									   data-hash="#_message_${message.messageId}">
+									   addthis:title="${shareTitle}" addthis:description="${message.content}"
+									   addthis:url="${shareUrl}"
+									   data-hash="#_message_${message.commentId}">
 										<span>share</span>
 									</a>
 								</td>
-								<td class="c-Comment ${message.expertReview ? 'expertReview' : ''} ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
+                                <!-- removed ${message.expertReview ? 'expertReview' : ''}-->
+								<td class="c-Comment ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
 									<c:choose>
 										<c:when test="${authorId == message.author.userId}">
 											<div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> creator</div></div>
@@ -113,15 +117,14 @@
 											<div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> contributor</div></div>
 										</c:when>
 									</c:choose>
-									<div id="message_${message.messageId}" class="content">
-										${message.body }
+									<div id="message_${message.commentId}" class="content">
+										${message.content }
 									</div>
 									<div class="c-Comment__actions">
 										<c:if test="${discussionPermissions.getCanReportMessage(message) }">
 											<portlet:actionURL var="reportSpamURL">
 												<portlet:param name="action" value="reportSpam" />
-												<portlet:param name="messageId" value="${message.messageId }" />
-												<portlet:param name="discussionId" value="${categoryGroup.id}" />
+												<portlet:param name="commentId" value="${message.commentId }" />
 												<portlet:param name="proposalId" value="${proposalId}" />
 											</portlet:actionURL>
 											<a style="margin-left: 10px;" href="javascript:;" data-url="${reportSpamURL }" onclick="if (confirm('Are you sure you want to report this message as spam?')) window.location = $(this).attr('data-url');">Mark as spam</a>
@@ -132,8 +135,7 @@
 										<c:if test="${discussionPermissions.getCanRemoveSpamReport(message) }">
 											<portlet:actionURL var="removeSpamReportURL">
 												<portlet:param name="action" value="removeSpamReport" />
-												<portlet:param name="messageId" value="${message.messageId }" />
-												<portlet:param name="discussionId" value="${categoryGroup.id}" />
+												<portlet:param name="commentId" value="${message.commentId }" />
 												<portlet:param name="proposalId" value="${proposalId}" />
 											</portlet:actionURL>
 											<a style="margin-left: 10px;" href="javascript:;" data-url="${removeSpamReportURL }" onclick="if (confirm('Are you sure you want to remove all spam reports for this message?')) window.location = $(this).attr('data-url');">Not spam</a>
@@ -141,25 +143,24 @@
 										<c:if test="${discussionPermissions.getCanAdminMessage(message) }">
 											<portlet:actionURL var="editCommentURL">
 												<portlet:param name="action" value="editComment" />
-												<portlet:param name="discussionId" value="${categoryGroup.id}" />
 												<portlet:param name="proposalId" value="${proposalId}" />
 											</portlet:actionURL>
-											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.messageId},'${editCommentURL}');">Edit</a>
+											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.commentId},'${editCommentURL}');">Edit</a>
 
 											<c:if test="${discussionPermissions.canAdminMessages}">
 												<portlet:actionURL var="toggleExpertReviewURL">
 													<portlet:param name="action" value="toggleDiscussionMessageFlag" />
 													<portlet:param name="flag" value="EXPERT_REVIEW" />
 													<portlet:param name="discussionId" value="${categoryGroup.id}" />
-													<portlet:param name="messageId" value="${message.messageId }" />
+													<portlet:param name="messageId" value="${message.commentId }" />
 													<portlet:param name="proposalId" value="${proposalId}" />
 												</portlet:actionURL>
-												<a style="margin-left: 10px;" href="${toggleExpertReviewURL }">${message.expertReview ? 'Remove expert review mark' : 'Mark as expert review'}</a>
+												<!--<a style="margin-left: 10px;" href="${toggleExpertReviewURL }">${message.expertReview ? 'Remove expert review mark' : 'Mark as expert review'}</a>-->
 
 												<portlet:actionURL var="deleteMessageURL">
 													<portlet:param name="action" value="deleteDiscussionMessageFlag" />
 													<portlet:param name="discussionId" value="${categoryGroup.id}" />
-													<portlet:param name="messageId" value="${message.messageId }" />
+													<portlet:param name="messageId" value="${message.commentId }" />
 													<portlet:param name="proposalId" value="${proposalId}" />
 												</portlet:actionURL>
 												<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
@@ -186,7 +187,9 @@
 							<i>Your comment will be visible to the public.</i>
 						</c:when>
 						<c:when test="${!discussionPermissions.canAddComment}">
-							<i>You must be logged into your account to post a comment.</i>
+                            <div class="c-Alert__error__message">
+                                <i>You must be logged into your account to post a comment.</i>
+                            </div>
 						</c:when>
 					</c:choose>
 				</div>
@@ -196,9 +199,7 @@
 						<portlet:param name="proposalId" value="${proposalId}" />
 					</portlet:actionURL>
 					<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
-						<input name="discussionId" class="title text hidden" maxlength="255" value="${categoryGroup.discussionId }"/>
-                        <input name="title" class="title text hidden" maxlength="255" />
-                        <input name="threadId" class="title text hidden" maxlength="255" value="${empty thread.threadId ? 0 : thread.threadId}" />
+                        <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />
 						<textarea id="messageContent" name="description"  class="rte c-Comment__box commentContent"><!-- --></textarea>
 						<div class="clearfix"><!-- --></div>
 						<br />

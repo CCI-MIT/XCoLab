@@ -2,6 +2,7 @@ package org.xcolab.service.comments.domain.comment;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,20 @@ public class CommentDaoImpl implements CommentDao {
 
     @Autowired
     private DSLContext dslContext;
+
+    @Override
+    public int countByGiven(Long authorId, Long threadId) {
+        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
+                .from(COMMENT)
+                .getQuery();
+        if (authorId != null) {
+            query.addConditions(COMMENT.AUTHOR_ID.eq(authorId));
+        }
+        if (threadId != null) {
+            query.addConditions(COMMENT.THREAD_ID.eq(threadId));
+        }
+        return query.fetchOne().into(Integer.class);
+    }
 
     @Override
     public List<Comment> findByGiven(PaginationHelper paginationHelper,
