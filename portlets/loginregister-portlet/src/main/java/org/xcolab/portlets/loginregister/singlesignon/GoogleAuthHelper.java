@@ -1,6 +1,5 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
@@ -14,10 +13,10 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.liferay.portal.kernel.exception.SystemException;
 import jodd.util.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 
 import java.io.IOException;
@@ -51,7 +50,7 @@ public final class GoogleAuthHelper {
     /**
      * Constructor initializes the Google Authorization Code Flow with CLIENT ID, SECRET, and SCOPE
      */
-    public GoogleAuthHelper(String redirectURI) throws SystemException, NoSuchConfigurationAttributeException {
+    public GoogleAuthHelper(String redirectURI) {
         this.redirectUri = redirectURI;
         flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
                 JSON_FACTORY, ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_ID.getStringValue(),
