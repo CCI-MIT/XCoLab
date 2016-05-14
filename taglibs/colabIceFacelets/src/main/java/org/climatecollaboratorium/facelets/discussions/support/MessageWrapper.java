@@ -426,7 +426,7 @@ public class MessageWrapper implements Serializable {
     public String getShortDescription() {
         return shortDescription;
     }
-    
+
     public boolean isExpertReview() throws SystemException {
         return hasFlag(DiscussionMessageFlagType.EXPERT_REVIEW);
     }
