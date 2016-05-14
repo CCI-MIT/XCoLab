@@ -69,7 +69,6 @@
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
 						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
 							<!--@elvariable id="role" type="org.xcolab.enums.MemberRole"-->
-                            <!-- Removed ${message.expertReview ? 'expertReview' : ''} from both -->
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.commentId}"></a>
@@ -79,10 +78,6 @@
 									<br />
 									<collab:userLinkSimple text="${message.author.screenName}" userId="${message.author.userId}" /> <br />
 									<br />
-
-									<!--<c:if test="${message.expertReview}">-->
-										<!--<strong>Expert Review</strong><br />-->
-									<!--</c:if>-->
 									<collab:dateTime epoch="${message.createDate.time}" format="dateText" /><br />
 									<collab:dateTime epoch="${message.createDate.time}" format="time" /><br />
 
@@ -107,7 +102,6 @@
 										<span>share</span>
 									</a>
 								</td>
-                                <!-- removed ${message.expertReview ? 'expertReview' : ''}-->
 								<td class="c-Comment ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
 									<c:choose>
 										<c:when test="${authorId == message.author.userId}">
@@ -149,15 +143,6 @@
 											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.commentId},'${editCommentURL}');">Edit</a>
 
 											<c:if test="${discussionPermissions.canAdminMessages}">
-												<portlet:actionURL var="toggleExpertReviewURL">
-													<portlet:param name="action" value="toggleDiscussionMessageFlag" />
-													<portlet:param name="flag" value="EXPERT_REVIEW" />
-													<portlet:param name="discussionId" value="${categoryGroup.id}" />
-													<portlet:param name="messageId" value="${message.commentId }" />
-													<portlet:param name="proposalId" value="${proposalId}" />
-												</portlet:actionURL>
-												<!--<a style="margin-left: 10px;" href="${toggleExpertReviewURL }">${message.expertReview ? 'Remove expert review mark' : 'Mark as expert review'}</a>-->
-
 												<portlet:actionURL var="deleteMessageURL">
 													<portlet:param name="action" value="deleteDiscussionMessageFlag" />
 													<portlet:param name="commentId" value="${message.commentId }" />
