@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: activities-service
+  jmx:
+    default-domain: ${spring.application.name}

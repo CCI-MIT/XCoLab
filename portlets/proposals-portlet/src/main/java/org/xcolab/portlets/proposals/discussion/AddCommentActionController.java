@@ -14,6 +14,8 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.jspTags.discussion.actions.AddDiscussionMessageActionController;
 
 import javax.portlet.ActionRequest;
@@ -34,12 +36,16 @@ public class AddCommentActionController extends AddDiscussionMessageActionContro
             Group scopeGroup = GroupLocalServiceUtil.getGroup(
                     CompanyLocalServiceUtil.getCompanyByWebId(PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID)).getCompanyId(),
                     DEFAULT_GROUP_NAME);
+
             SocialActivityLocalServiceUtil.addActivity(userId, scopeGroup.getGroupId(),
                     DiscussionCategoryGroup.class.getName(), dcg.getId(),
                     DiscussionActivityKeys.ADD_PROPOSAL_DISCUSSION_COMMENT.id(),
                     ActivityUtil.getExtraDataForIds(comment.getCategoryId(),
                             comment.getThreadId() > 0 ? comment.getThreadId() : comment.getMessageId(),
                             comment.getMessageId()), 0);
+
+            ActivityEntryHelper.createActivityEntry(userId, comment.getPrimaryKey(),null,
+                    new ProposalSupporterAddedActivityEntry());
         }
     }
 }

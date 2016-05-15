@@ -16,6 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>activities-client</module>
         <module>admin-client</module>
         <module>contents-client</module>
         <module>emails-client</module>

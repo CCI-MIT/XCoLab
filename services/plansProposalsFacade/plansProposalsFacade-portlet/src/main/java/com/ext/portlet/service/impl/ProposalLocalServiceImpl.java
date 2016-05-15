@@ -68,8 +68,18 @@ import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.xcolab.activityEntry.proposal.ProposalCreatedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalMemberAddedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalSupporterRemovedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalVoteActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalVoteRetractActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
@@ -84,8 +94,6 @@ import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.UrlBuilder;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
-import javax.mail.internet.AddressException;
-import javax.portlet.PortletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,6 +103,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.PortletRequest;
 
 /**
  * The implementation of the proposal local service.
@@ -255,6 +266,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             if (publishActivity) {
                 eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal,
                         contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
+
+                ActivityEntryHelper.createActivityEntry(authorId,proposalId,null,
+                        new ProposalCreatedActivityEntry());
             }
         }
 
@@ -554,6 +568,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         if (publishActivity) {
             eventBus.post(new ProposalSupporterAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+
+            ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                    new ProposalSupporterAddedActivityEntry());
         }
     }
 
@@ -573,6 +590,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         proposalSupporterLocalService.deleteProposalSupporter(supporter);
         eventBus.post(new ProposalSupporterRemovedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+
+        ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                new ProposalSupporterRemovedActivityEntry());
     }
 
     /**
@@ -655,6 +675,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposalVoteLocalService.addProposalVote(vote);
         if (publishActivity) {
             eventBus.post(new ProposalVotedOnEvent(getProposal(proposalId), userLocalService.getUser(userId), voted));
+
+            if(!voted) {
+                ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+                        new ProposalVoteActivityEntry());
+            }else{
+                ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+                        new ProposalVoteSwitchActivityEntry());
+            }
         }
     }
 
@@ -673,6 +701,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             ProposalVote proposalVote = proposalVoteLocalService.findByProposalIdContestPhaseIdUserId(contestPhaseId, userId);
             proposalVoteLocalService.deleteProposalVote(proposalVote);
             eventBus.post(new ProposalRemovedVoteEvent(getProposal(proposalVote.getProposalId()), userLocalService.getUser(userId)));
+
+            ActivityEntryHelper.createActivityEntry(userId,proposalVote.getProposalId(),null,
+                    new ProposalVoteRetractActivityEntry());
 
         } catch (NoSuchProposalVoteException ignored) { }
     }
@@ -852,6 +883,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         GroupLocalServiceUtil.unsetUserGroups(userId, new long[]{proposal.getGroupId()});
 
         eventBus.post(new ProposalMemberRemovedEvent(proposal, userLocalService.getUser(userId)));
+
+        ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                new ProposalMemberRemovedActivityEntry());
     }
 
     /**
@@ -887,6 +921,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             MembershipRequestLocalServiceUtil.updateStatus(userId, request.getMembershipRequestId(), reply,
                     MembershipRequestConstants.STATUS_APPROVED, true, null);
             eventBus.post(new ProposalMemberAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+
+            ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                    new ProposalMemberAddedActivityEntry());
 
             if (!isSubscribed(proposalId, userId)) {
                 subscribe(proposalId, userId);
