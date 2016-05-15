@@ -12,7 +12,7 @@
 <?php if (!empty($_POST)): ?>
 <?php
 //if(!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) die('Incorrect email.');
-$c = mysqli_connect("127.0.0.1", "ColabMaintenance", 'xcolab', "ColabMaintenance") or die(mysqli_error($c));
+$c = mysqli_connect("127.0.0.1", "ColabMaintenance", 'ColabMainten234234ance__', "ColabMaintenance") or die(mysqli_error($c));
 	$r = mysqli_query($c, "INSERT INTO email (email) VALUES ('" . mysqli_real_escape_string($c,$_POST["email"]) . "')") or die(mysqli_error($c));
 	mysqli_close($c);
  ?>
