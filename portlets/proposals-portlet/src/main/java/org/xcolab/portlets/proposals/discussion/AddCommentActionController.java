@@ -12,9 +12,10 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
+import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.jspTags.discussion.actions.AddDiscussionMessageActionController;
 
@@ -45,7 +46,7 @@ public class AddCommentActionController extends AddDiscussionMessageActionContro
                             comment.getMessageId()), 0);
 
             ActivityEntryHelper.createActivityEntry(userId, comment.getPrimaryKey(),null,
-                    new ProposalSupporterAddedActivityEntry());
+                    new DiscussionAddProposalCommentActivityEntry());
         }
     }
 }
