@@ -17,11 +17,11 @@ public class DiscussionCategoryAddedActivityEntry extends DiscussionBaseActivity
 
     @Override
     public String getTitle() {
-        return null;
+        return getUserLink() + " added a category";
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Category added";
     }
 }

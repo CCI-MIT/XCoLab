@@ -31,6 +31,9 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.enums.ColabConstants;
 
 import java.util.ArrayList;
@@ -50,8 +53,9 @@ public class ActivityUtil {
 
     private static final String ADMINISTRATOR_ROLE_NAME = "Administrator";
 
-    public static List<SocialActivity> retrieveAllActivities(int pagestart, int next) throws SystemException {
-        return SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
+    public static List<ActivityEntry> retrieveAllActivities(int pagestart, int next) throws SystemException {
+       return  ActivitiesClient.getActivityEntries(pagestart, next, null, null);
+        //return SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
     }
 
     public static List<SocialActivity> retrieveWindowedActivities(int start, int end) throws SystemException, PortalException {

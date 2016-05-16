@@ -1,6 +1,7 @@
 package org.xcolab.portlets.feeds;
 
 import au.com.bytecode.opencsv.CSVWriter;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -11,11 +12,10 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -25,6 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 @Controller
 @RequestMapping("view")
@@ -75,7 +78,7 @@ public class FeedsDumpGeneratingController {
 								"http://climatecolab.org/web/guest");
 						csvWriter.writeNext(new String[] {
 								df.format(new Date(activity.getCreateDate())),
-								user.getScreenName(), body });
+								user.getUserId()+"", body , activity.getClassPK()+"", activity.getType() + ""});
 					}
 				} catch (Throwable t) {
 					// ignore

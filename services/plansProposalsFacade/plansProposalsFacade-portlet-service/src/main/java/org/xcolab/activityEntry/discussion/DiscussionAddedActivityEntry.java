@@ -22,12 +22,12 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
     @Override
     public String getTitle() {
-        return null;
+        return getTitle() + " started a new discussion";
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Added new discussion";
     }
 
 }

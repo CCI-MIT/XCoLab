@@ -4,21 +4,20 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portlet.social.model.SocialActivity;
-import com.liferay.portlet.social.model.SocialActivityFeedEntry;
-import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.ocpsoft.pretty.time.PrettyTime;
-import org.xcolab.portlets.feeds.Helper;
 
-import javax.portlet.PortletRequest;
+import org.xcolab.client.activities.pojo.ActivityEntry;
+
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.portlet.PortletRequest;
 
 public class MemberWrapper implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private User user;
     private int activitiesCount;
-    private SocialActivity activity;
+    private ActivityEntry activity;
     private String lastActivityBody;
     private Date lastActivityDate;
     private static PrettyTime timeAgoConverter = new PrettyTime();
@@ -31,32 +30,25 @@ public class MemberWrapper implements Serializable{
     }
     
     
-    public MemberWrapper(User user, SocialActivity activity, PortletRequest request) {
+    public MemberWrapper(User user, ActivityEntry activity, PortletRequest request) {
         this.user = user;
         this.activity = activity;
         if (activity != null) {
-            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, Helper.getThemeDisplay(request));
-            lastActivityBody = entry != null ? entry.getBody() : null;
-            if (lastActivityBody == null || lastActivityBody.trim().length() == 0) {
-                lastActivityBody = entry != null ? entry.getTitle() : null;
-            }
+
+            lastActivityBody = activity.getActivityEntryBody();
+
         }
-        lastActivityDate = new Date(activity.getCreateDate());
+        lastActivityDate = new Date(activity.getCreateDate().getTime());
         this.request = request;
     }
     
-    public MemberWrapper(SocialActivity activity, PortletRequest request) throws PortalException, SystemException {
+    public MemberWrapper(ActivityEntry activity, PortletRequest request) throws PortalException, SystemException {
         this.activity = activity;
         if (activity != null) {
-            SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, Helper.getThemeDisplay(request));
-            lastActivityBody = entry != null ? entry.getBody() : null;
-            if (lastActivityBody == null || lastActivityBody.trim().length() == 0) {
-                lastActivityBody = entry != null ? entry.getTitle() : null;
-            }
-            
+            lastActivityBody = this.activity.getActivityEntryBody();
         }
-        lastActivityDate = new Date(activity.getCreateDate());
-        user = UserLocalServiceUtil.getUser(activity.getUserId());
+        lastActivityDate = new Date(activity.getCreateDate().getTime());
+        user = UserLocalServiceUtil.getUser(activity.getMemberId());
         this.request = request;
     }
 

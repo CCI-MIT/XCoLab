@@ -20,11 +20,11 @@ public class DiscussionAddProposalCommentActivityEntry extends DiscussionBaseAct
 
     @Override
     public String getTitle() {
-        return null;
+        return getUserLink() + " added a comment to proposal";
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Comment to proposal";
     }
 }

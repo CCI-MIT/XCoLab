@@ -7,7 +7,7 @@ public class DiscussionForumCommentAddedActivityEntry extends DiscussionBaseActi
 
     @Override
     public Integer getSecondaryType() {
-        return 2;
+        return 4;
     }
 
     @Override
@@ -21,11 +21,11 @@ public class DiscussionForumCommentAddedActivityEntry extends DiscussionBaseActi
 
     @Override
     public String getTitle() {
-        return null;
+        return getUserLink()+" added a forum comment";
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Forum Comment";
     }
 }
