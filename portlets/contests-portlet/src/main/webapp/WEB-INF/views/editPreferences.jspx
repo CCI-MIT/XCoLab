@@ -45,6 +45,15 @@
 				<form:input path="allContestsUrl" />
 			</td>
 		</tr>
+
+		<tr>
+			<td>
+				Show counts
+			</td>
+			<td>
+				<form:checkbox path="showCounts" />
+			</td>
+		</tr>
 	
 		<tr>
 			<td>

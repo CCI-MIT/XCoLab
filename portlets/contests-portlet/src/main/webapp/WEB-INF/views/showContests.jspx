@@ -3,9 +3,10 @@
     xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
 
     <jsp:directive.include file="init.jspx"/>
+    <!--@elvariable id="preferences" type="org.xcolab.portlets.contests.ContestPreferences"-->
 
     <div>
-        <h2> ${title} <span><a href="${allContestsUrl}">${allContestsTitle}</a></span></h2>
+        <h2> ${preferences.title} <span><a href="${preferences.allContestsUrl}">${preferences.allContestsTitle}</a></span></h2>
         <c:forEach var="contest" items="${contests }">
             <div class="c-ContestBox backgroundLight">
                 <div class="c-ContestBox__image">
@@ -19,21 +20,24 @@
                     </a>
                 </div>
                 <div class="c-ContestBox__text">
-                    <h3><collab:contestLink contest="${contest}"/></h3>
+                    <h3 class="c-ContestBox__text__title">
+                        <collab:contestLink contest="${contest}"/>
+                    </h3>
                     ${contest.contestName}
                 </div>
-                <div class="c-ContestBox__meta">
-                    <div class="c-ContestBox__meta__count">
-                        <div class="prop"><strong>${contest.proposalsCount}</strong> proposals</div>
-                        <c:if test="${not contest.contestInVotingPhase}">
-                            <div class="comm"><strong> ${contest.totalCommentsCount}</strong> comments</div>
-                        </c:if>
-                        <c:if test="${contest.contestInVotingPhase}">
-                            <div class="comm"><strong>${contest.votesCount}</strong> votes</div>
-                        </c:if>
+                <c:if test="${preferences.showCounts}">
+                    <div class="c-ContestBox__meta">
+                        <div class="c-ContestBox__meta__count">
+                            <div class="prop"><strong>${contest.proposalsCount}</strong> proposals</div>
+                            <c:if test="${not contest.contestInVotingPhase}">
+                                <div class="comm"><strong> ${contest.totalCommentsCount}</strong> comments</div>
+                            </c:if>
+                            <c:if test="${contest.contestInVotingPhase}">
+                                <div class="comm"><strong>${contest.votesCount}</strong> votes</div>
+                            </c:if>
+                        </div>
                     </div>
-                </div>
-                
+                </c:if>
             </div> <!-- /contestbox -->
             <div class="clearfix"><!--  --></div>
         </c:forEach>

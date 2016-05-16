@@ -7,12 +7,9 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.utils.IdListUtil;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.ReadOnlyException;
-import javax.portlet.ValidatorException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +18,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.ValidatorException;
+
 public class ContestPreferences {
     private List<Long> selectedContests;
     private final static String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
@@ -28,11 +30,13 @@ public class ContestPreferences {
     private final static String FEED_SIZE_PREFERENCE = "CONTEST_FEED_SIZE";
     private final static String ALL_CONTESTS_TITLE = "ALL_CONTESTS_TITLE";
     private final static String ALL_CONTESTS_URL = "ALL_CONTESTS_URL";
+    private final static String SHOW_COUNTS = "SHOW_COUNTS";
 
     private String title;
     private Integer feedSize;
     private String allContestsUrl;
     private String allContestsTitle;
+    private Boolean showCounts;
     private Map<Long, String> contestMap;
 
     public String getTitle() {
@@ -58,6 +62,7 @@ public class ContestPreferences {
         selectedContests = IdListUtil.getIdsFromString(prefs.getValue(SELECTED_CONTESTS_PREFERENCE, ""));
         title = prefs.getValue(TITLE_PREFERENCE, "Featured contests");
         allContestsTitle = prefs.getValue(ALL_CONTESTS_TITLE, "see all contests");
+        showCounts = Boolean.parseBoolean(prefs.getValue(SHOW_COUNTS, "true"));
         allContestsUrl = prefs.getValue(ALL_CONTESTS_URL, "/web/guest/plans");
         try {
             feedSize = Integer.parseInt(prefs.getValue(FEED_SIZE_PREFERENCE, "4"));
@@ -119,6 +124,7 @@ public class ContestPreferences {
         prefs.setValue(TITLE_PREFERENCE, title);
         prefs.setValue(FEED_SIZE_PREFERENCE, feedSize+"");
         prefs.setValue(ALL_CONTESTS_TITLE, allContestsTitle);
+        prefs.setValue(SHOW_COUNTS, Boolean.toString(showCounts));
         prefs.setValue(ALL_CONTESTS_URL, allContestsUrl);
 
         prefs.store();
@@ -156,5 +162,13 @@ public class ContestPreferences {
 
     public void setAllContestsTitle(String allContestsTitle) {
         this.allContestsTitle = allContestsTitle;
+    }
+
+    public Boolean getShowCounts() {
+        return showCounts;
+    }
+
+    public void setShowCounts(Boolean showCounts) {
+        this.showCounts = showCounts;
     }
 }
