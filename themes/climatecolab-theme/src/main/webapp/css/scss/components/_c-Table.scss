@@ -10,6 +10,7 @@ $c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
 $c-Table__cell__fontWeight--active: $b-Typography__fontWeight--bold !default;
 $c-Table__cell--title__borderRight: none !default;
 $c-Table__cell--odd__background: url(../images/pattern-tbl-6x6.png) !default;
+$c-Table__row--title__borderTop: none !default;
 $c-Table__row--title__borderBottom: 1px solid $c-Table__borderColor !default;
 $c-Table__cell--title__a__capitalization: $b-Typography__capitalization--none !default;
 $c-Table__cell__count__top: 2px !default;
@@ -26,6 +27,7 @@ $c-Table__cell__count__backgroundColor: $t-Color__grey--lightest !default;
 
 .c-Table__row--title { //thead.blueheaderbar
   background: $c-Table__title__backgroundColor;
+  border-top: $c-Table__row--title__borderTop;
   border-bottom: $c-Table__row--title__borderBottom;
   color: $c-Table__title__fontColor;
   position: -webkit-sticky;
@@ -135,7 +137,7 @@ $c-Table__cell__count__backgroundColor: $t-Color__grey--lightest !default;
 
   &.no-border {
     border-bottom: none;
-    padding-bottom: 0px;
+    padding-bottom: 0;
   }
 
   .highlight {

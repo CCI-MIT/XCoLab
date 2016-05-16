@@ -12,7 +12,7 @@
             <a href="${proposalsModel.preferences.allProposalsUrl}">${proposalsModel.preferences.allProposalsTitle}</a>
         </span></h2>
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
-        	<div class="${not proposalsModel.compact ? 'contestbox' : ''}">
+        	<div class="${not proposalsModel.compact ? 'c-ContestBox' : ''}">
                 <c:if test="${not proposalsModel.compact}">
                     <div class="img-wrap">
                         <a href="${proposal.proposalUrl}">

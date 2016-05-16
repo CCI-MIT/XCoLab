@@ -7,8 +7,8 @@
     <div>
         <h2> ${title} <span><a href="${allContestsUrl}">${allContestsTitle}</a></span></h2>
         <c:forEach var="contest" items="${contests }">
-            <div class="contestbox">
-                <div class="img-wrap">
+            <div class="c-ContestBox backgroundLight">
+                <div class="c-ContestBox__image">
                     <a href="${contest.contestUrl}">
                         <c:if test="${not empty contest.logoPath}">
                             <img src="/image/${contestsBean.themeDisplay.pathImage}${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName}" />
@@ -18,16 +18,18 @@
                         </c:if>
                     </a>
                 </div>
-                <div class="text-wrap">
+                <div class="c-ContestBox__text">
                     <h3><collab:contestLink contest="${contest}"/></h3>
                     ${contest.contestName}
-                    <div class="count">
-                        <div class="icePnlGrp prop"><strong>${contest.proposalsCount}</strong> proposals</div>
+                </div>
+                <div class="c-ContestBox__meta">
+                    <div class="c-ContestBox__meta__count">
+                        <div class="prop"><strong>${contest.proposalsCount}</strong> proposals</div>
                         <c:if test="${not contest.contestInVotingPhase}">
-                        	<div class="icePnlGrp comm"><strong> ${contest.totalCommentsCount}</strong> comments</div>
+                            <div class="comm"><strong> ${contest.totalCommentsCount}</strong> comments</div>
                         </c:if>
                         <c:if test="${contest.contestInVotingPhase}">
-                        	<div class="icePnlGrp comm"><strong>${contest.votesCount}</strong> votes</div>
+                            <div class="comm"><strong>${contest.votesCount}</strong> votes</div>
                         </c:if>
                     </div>
                 </div>
