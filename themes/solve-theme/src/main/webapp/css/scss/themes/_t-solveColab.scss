@@ -11,19 +11,19 @@ $t-Color__cure__green: #6CC8A6;
 
 //main colors:
 $t-Color__primary: $t-Color__blue; $__hex: #3D88C7;
-$t-Color__secondary: $t-Color__blue; $__hex: #54BD14;
-$t-Color__accent: $t-Color__blue; $__hex: #54BD14; //not using accent for now
-$t-Color__auxiliary: $t-Color__blue; $__hex: #54BD14; // 4th color when needed (e.g. ontology) -- not used for now
+$t-Color__secondary: black;
+$t-Color__accent: black;
+$t-Color__auxiliary: black; // 4th color when needed (e.g. ontology) -- not used for now
 
 //lightness variations
 $t-Color__primary--light: lighten($t-Color__primary, 15); $__hex: #f04e47;
-$t-Color__secondary--light: lighten($t-Color__secondary, 10); $__hex: #6ae71d;
+$t-Color__secondary--light: black;
 
 $t-Color__primary--dark: darken($t-Color__primary, 15); $__hex: #8e110b;
-$t-Color__secondary--dark: darken($t-Color__secondary, 10); $__hex: #3d8a0f;
+$t-Color__secondary--dark: black;
 
 $t-Color__primary--darkest: darken($t-Color__primary, 20); $__hex: #5f0b07;
-$t-Color__secondary--darkest: darken($t-Color__primary, 20); $__hex: #295c0a;
+$t-Color__secondary--darkest: black;
 
 //desaturated (grey) variations of the primary color
 $t-Color__primary__grey: desaturate($t-Color__primary, 30); $__hex: #b43a34;
@@ -31,17 +31,17 @@ $t-Color__primary__grey--dark: darken($t-Color__primary__grey, 10); $__hex_color
 $t-Color__primary__grey--light: lighten($t-Color__primary__grey--dark, 10); $__hex: #cd5751;
 
 //greys
-$t-Color__grey--lightest: #EDEDEE;
-$t-Color__grey--light: #babbbd;
+$t-Color__grey--lightest: #f6f6f6;
+$t-Color__grey--light: #dddddd;
 $t-Color__grey--medium: #999999;
 $t-Color__grey--dark: #57585a;
 $t-Color__grey--darkest: #404143;
 
 //alert and message colors:
-$t-Color__alert: #eb008a;
-$t-Color__alert--light: #f6dfec;
+$t-Color__alert: #b94a48;
+$t-Color__alert--light: #f2dede;
 $t-Color__info__background: $t-Color__primary__grey--light;
-$t-Color__success__background: $t-Color__secondary--light;
+$t-Color__success__background: #66b035;
 
 //standard text colors
 $t-Color__text--light: white;
@@ -57,15 +57,14 @@ $t-Color__outline__level4: #aaa69f; // background slevel4-6
 
 // ====
 // changes in component variables
-
-@import url(https://fonts.googleapis.com/css?family=Fira+Sans:400,500,300);
+@import "font__NeueHaasGrotesk";
 
 $b-Typography__fontWeight--light: 300;
 $b-Typography__fontWeight--regular: 400;
 $b-Typography__fontWeight--medium: 500;
 
-$b-Typography__fontFamily: "Fira Sans", Arial, sans-serif;
-$b-Typography__fontFamily__h1: "Fira Sans", Arial, sans-serif;
+$b-Typography__fontFamily: "Neue Haas Grotesk", Helvetica, sans-serif;
+$b-Typography__fontFamily__h1: "Neue Haas Grotesk", Helvetica, sans-serif;
 $b-Typography__fontWeight--bold: $b-Typography__fontWeight--medium;
 
 $c-Header__background: white;
@@ -83,14 +82,15 @@ $c-Header__menu__right__li__login__backgroundUrl: none;
 $c-Header__menu__right__li__login--hover__backgroundUrl: none;
 $c-Header__menu__right__li__a__paddingTop: 30px;
 $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
-$c-Header__menu__li__a__textColor: $t-Color__grey--medium;
-$c-Header__menu__highlightedTextColor: $t-Color__primary;
+$c-Header__menu__li__a__textColor: $t-Color__primary;
+$c-Header__menu__li__isCurrent__a__textColor: black;
+$c-Header__menu__highlightedTextColor: black;
 $c-Header__search__submit__borderRadius: 0;
 $c-Header__search__submit__fontWeight: $b-Typography__fontWeight--light;
 $c-Header__search__pop__positionLeft: 552px;
 
 $c-Headline__days-left__span__textColor: $t-Color__blue;
-$c-Headline__h2__span__textColor: $t-Color__blue;
+$c-Headline__h2__span__textColor: black;
 $c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
 
 $c-Footer__backgroundColor: white;
@@ -144,7 +144,9 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight--light;
 $p-Contests__contestFlag__capitalization: uppercase;
 $p-Contests__contestFlag__boxShadow: 0px 0px 5px $t-Color__grey--light;
 $p-Contests__contestFlag--color__border: none;
-$p-Contests__contestBox__border--bottom: 1px solid $t-Color__grey;
+$p-Contests__contestBox__background: $t-Color__grey--lightest;
+$p-Contests__contestBox__border: none;
+$p-Contests__contestBox__border__radius: 0;
 $p-Contests__contestBox--hover__boxShadow: 0 0 15px $t-Color__grey--light;
 $p-Contests__userslist__a__fontWeight: $b-Typography__fontWeight--regular;
 $p-Contests__detailsButton__fontWeight: $b-Typography__fontWeight--regular;
@@ -174,10 +176,10 @@ $p-community__infoLeft__span__paddingRight: 0px;
 $p-community__infoLeft__span__fontWeight: $b-Typography__fontWeight--regular;
 
 $p-Contests__contestDetail__backgroundColor: $t-Color__grey--lightest;
-$p-Contests__contestDetail__heading__background: url(../images/bg-noise.png) $t-Color__grey--light;
+$p-Contests__contestDetail__heading__background: none;
 
 $p-homepage__content__h2__fontSize: 26pt;
-$p-homepage__content__h2__textColor: $t-Color__primary;
+$p-homepage__content__h2__textColor: black;
 
 $p-homepage__learn__backgroundColor: $t-Color__primary;
 $p-homepage__learn__borderColor: none;
@@ -223,15 +225,15 @@ $p-community__left__lineHeight: default;
 
 $c-Table__shadebar__background: none;
 $c-Table__borderColor: $t-Color__grey--light;
-$c-Table__title__backgroundColor: $t-Color__primary;
-$c-Table__title__fontColor: white;
+$c-Table__title__backgroundColor: white;
+$c-Table__title__fontColor: black;
 $c-Table__row__fontWeight: $b-Typography__fontWeight--regular;
 $c-Table__cell__fontWeight--active: $b-Typography__fontWeight--medium;
-$c-Table__cell--title__borderRight: 1px solid white;
-$c-Table__row--title__borderBottom: none;
+$c-Table__row--title__borderTop: 1px solid $t-Color__grey--medium;
+$c-Table__row--title__borderBottom: 1px solid $t-Color__grey--medium;
 $c-Table__cell--odd__background: url(../images/bg-noise.png) $t-Color__grey--lightest;
-$c-Table__cell--title__a__capitalization: uppercase;
-$c-Table__title__textColor--hover: $t-Color__grey--lightest;
+$c-Table__cell--title__a__capitalization: none;
+$c-Table__title__textColor--hover: $t-Color__primary;
 $c-Table__cell__count__top: 4px;
 $c-Table__cell__count__backgroundColor: white;
 
