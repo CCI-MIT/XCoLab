@@ -7,8 +7,140 @@ $p-ContestProposals__list__element--judgeFellow__border--left: none !default;
 $p-ContestProposals__list__element--contributor__width: 106px !default;
 $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !default;
 
-.p-ContestProposals__list {
+.p-ContestProposals__header { //.contest-detail
+  background-color: $p-Contests__contestDetail__backgroundColor;
+  border-bottom: 1px solid $t-Color__grey--light;
+  margin-top: -4px;
+  color: $t-Color__grey--darkest;
+}
 
+.p-ContestProposals__header__title { //.contest-detail .heading
+  background: $p-Contests__contestDetail__heading__background;
+  min-height: 24px;
+  padding: 20px 20px;
+  font-size: 22px;
+  vertical-align: middle;
+}
+
+.p-ContestProposals__header__description { //.contest-detail .description {
+  padding: 20px 16px;
+
+  p { //.contest-detail .description p
+    padding-right: 22px;
+    line-height: 24px;
+    margin: 0;
+  }
+}
+
+.p-ContestProposals__header__sponsorLogo { //div.sponsorLogo {
+  max-width: 320px;
+  min-width: 0;
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 14px;
+
+  //.heading-sponsor-logo
+  min-height: 30px;
+  float: right;
+  padding: 3px;
+
+  img { //.heading-sponsor-logo img
+    max-width: 100%;
+    max-height: 110px;
+    height: auto;
+    width: auto;
+  }
+}
+
+.p-ContestProposals__header__team { //.contest-detail .moreinfo
+  display: inline-block;
+  width: 640px;
+  padding: 10px 16px;
+  position: relative;
+  min-height: 37px;
+}
+
+.p-ContestProposals__header__team__roleName { //.contestTeamRole .contestTeamRoleName
+  display: inline-block;
+  padding-top: 15px;
+  width: 65px;
+}
+
+.p-ContestProposals__header__team__member { //.contestTeamRole .contestTeamMember
+  display: inline-block;
+  white-space: nowrap;
+  padding-right: 10px;
+
+  img {
+    margin-right: 5px;
+  }
+}
+
+.p-ContestProposals__header__buttons {
+  display: inline-block;
+  width: 280px;
+}
+
+.p-ContestProposals__header__detailButton { //a.detailbutton
+  padding: $p-Contests__detailsButton__padding;
+  width: 115px;
+  height: 27px;
+  line-height: 27px;
+  display: inline-block;
+  margin-left: 3px;
+  background: $p-Contests__detailsButton__backgroundColor;
+  border: 1px solid $p-Contests__detailsButton__borderColor;
+  font-size: 16px;
+  font-weight: $p-Contests__detailsButton__fontWeight;
+  text-align: center;
+  @include border-radius($p-Contests__detailsButton__borderRadius);
+}
+
+.p-ContestProposals__header__ontology {
+  padding: 10px 16px;
+}
+
+.p-ContestProposals__header__ontology__term {
+  display: inline-block;
+  margin-right: 15px;
+  width: 220px;
+}
+
+%p-ContestProposals__header__ontology__term__title {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: $b-Typography__fontWeight--bold;
+  height: 24px;
+  padding-top: 1px;
+  padding-right: 10px;
+  background: none;
+  width: auto;
+}
+
+.p-ContestProposals__header__ontology__term__title--what { //.contest-detail .what
+  @extend %p-ContestProposals__header__ontology__term__title;
+  background: url(../images/icon-list-what.png) no-repeat;
+  padding-left: 30px;
+}
+
+.p-ContestProposals__header__ontology__term__title--where { //.contest-detail .where {
+  @extend %p-ContestProposals__header__ontology__term__title;
+  background: url(../images/icon-list-where.png) no-repeat;
+  padding-left: 33px;
+}
+
+.p-ContestProposals__header__ontology__term__title--who { //.contest-detail .who {
+  @extend %p-ContestProposals__header__ontology__term__title;
+  background: url(../images/icon-list-who.png) no-repeat;
+  padding-left: 25px;
+}
+
+.p-ContestProposals__header__ontology__term__title--how {
+  @extend %p-ContestProposals__header__ontology__term__title;
+}
+
+.p-ContestProposals__header__ontology__term__link {
+  display: inline-block;
 }
 
 %p-ContestProposals__list__element {
@@ -98,4 +230,18 @@ $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !de
   a {
     font-size: 0.9em
   }
+}
+
+
+//TODO: used for addthis
+.fixed-position-container {
+  position: relative;
+}
+
+.fixed-position-inner-relative {
+  overflow: auto;
+}
+
+.fixed-position-inner-fixed {
+  position: absolute;
 }

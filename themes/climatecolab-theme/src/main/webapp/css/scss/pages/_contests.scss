@@ -202,123 +202,6 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   font-weight: $b-Typography__fontWeight--bold;
 }
 
-/* top section of the contests page under the headline, above the sub-headline */
-.contest-detail {
-  background-color: $p-Contests__contestDetail__backgroundColor;
-  border-bottom: 1px solid $t-Color__grey--light;
-  margin-top: -4px;
-  color: $t-Color__grey--darkest;
-}
-
-.contest-detail .heading
-{
-  background: $p-Contests__contestDetail__heading__background;
-  min-height: 24px;
-  padding: 7px 0 5px 20px;
-  font-size: 22px;
-}
-
-.contest-detail .heading-title {
-  margin: 20px 0;
-}
-
-.contest-detail .description {
-  padding: 18px 16px 20px 18px;
-}
-
-.contest-detail .description p {
-  padding-right: 22px;
-  line-height: 24px;
-  margin: 0;
-}
-
-.fixed-position-container {
-  position: relative;
-}
-
-.fixed-position-inner-relative {
-  overflow: auto;
-}
-
-.fixed-position-inner-fixed {
-  position: absolute;
-}
-
-.contest-detail .what, .contest-detail .where, .contest-detail .who, .contest-detail .how {
-  float: left;
-  font-size: 16px;
-  height: 24px;
-  display: inline;
-  padding-top: 1px;
-  padding-right: 10px;
-  background: none;
-  width: auto;
-}
-
-.contest-detail .what {
-  background: url(../images/icon-list-what.png) no-repeat;
-  padding-left: 30px;
-}
-
-.contest-detail .where {
-  background: url(../images/icon-list-where.png) no-repeat;
-  padding-left: 33px;
-}
-
-.contest-detail .who {
-  background: url(../images/icon-list-who.png) no-repeat;
-  padding-left: 25px;
-}
-
-.contest-detail .moreinfo {
-  clear: both;
-  padding: 14px 16px 16px 18px;
-  position: relative;
-  min-height: 37px;
-}
-
-.contest-detail .advisors {
-  font-size: 14px;
-  font-weight: $b-Typography__fontWeight--bold;
-  padding-top: 0;
-  color: $t-Color__grey--medium;
-  float: left;
-}
-
-.contest-detail .advisors img {
-  margin-left: 5px;
-  margin-right: 10px;
-  vertical-align: bottom;
-}
-
-.contest-detail .contestTeamRole {
-  padding: 5px 0;
-}
-
-.contest-detail .buttons {
-  float: right;
-  width: 270px;
-  text-align: right;
-  position: absolute;
-  right: 15px;
-  bottom: 20px;
-}
-
-.contest-detail .buttons a, a.detailbutton {
-  padding: $p-Contests__detailsButton__padding;
-  width: 115px;
-  height: 27px;
-  line-height: 27px;
-  display: inline-block;
-  margin-left: 3px;
-  background: $p-Contests__detailsButton__backgroundColor;
-  border: 1px solid $p-Contests__detailsButton__borderColor;
-  font-size: 16px;
-  font-weight: $p-Contests__detailsButton__fontWeight;
-  text-align: center;
-  @include border-radius($p-Contests__detailsButton__borderRadius);
-}
-
 /* the table with rows of users  */
 .userslist {
   clear: both;
@@ -424,10 +307,6 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 //TODO: prop-description is for proposals?
 .contest-discussion .prop-description a {
   font-size: 18px;
-}
-
-.contest-detail .heading {
-  padding-right: 27px;
 }
 
 //contest outline view
