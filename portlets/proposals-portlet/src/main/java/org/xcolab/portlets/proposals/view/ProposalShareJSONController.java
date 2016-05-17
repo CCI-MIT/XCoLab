@@ -156,7 +156,7 @@ public class ProposalShareJSONController {
 			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, phase);
 		}
         ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
-		body += String.format("%n%n<a href='%s'>Link to %s</a>", proposalUrl, contestType.getProposalName());
+		body += String.format("<p><a href='%s'>Link to %s</a></p>", proposalUrl, contestType.getProposalName());
 
 		// Send the message
         Long userId = themeDisplay.getUserId();
