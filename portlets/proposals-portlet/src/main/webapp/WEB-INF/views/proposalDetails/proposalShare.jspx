@@ -150,9 +150,22 @@
                 })
                 .autocomplete({
                     source: function (request, response) {
-                        $.getJSON(autocompleteURL, {
-                            term: extractLast(request.term)
-                        }, response);
+                        $.ajax({
+                            type: "GET",
+                            url: "/web/guest/members/-/members/users/partialName/" + extractLast(request.term),
+                            dataType: 'json',
+                            async: true,
+                            success: function (data, textStatus, jqXHR) {
+                                var screenNames = [];
+                                $.each(data, function(index, value) {
+                                    screenNames.push(value["screenName"]);
+                                });
+                                response(screenNames);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                response([]);
+                            }
+                        });
                     },
                     search: function () {
                         // custom minLength
