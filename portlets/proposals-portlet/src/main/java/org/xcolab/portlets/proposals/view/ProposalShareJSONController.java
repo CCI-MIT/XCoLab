@@ -87,33 +87,6 @@ public class ProposalShareJSONController {
         response.getPortletOutputStream().write(json.toString().getBytes());
     }
 
-    @ResourceMapping("proposalShare-autocomplete")
-    public void autocompleteRecipient(ResourceRequest request, ResourceResponse response) throws PortalException, IOException {
-        String queryString = request.getParameter("term");
-
-        try {
-            DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
-            query.add(RestrictionsFactoryUtil.ilike("screenName", queryString + "%"));
-			query.setLimit(0, 10);
-            List<User> recipients = UserLocalServiceUtil.dynamicQuery(query);
-
-            JSONArray result = JSONFactoryUtil.createJSONArray();
-            for (User user: recipients) {
-                final JSONObject userObject = JSONFactoryUtil.createJSONObject();
-                userObject.put("id", user.getUserId());
-                userObject.put("label", user.getScreenName());
-                userObject.put("value", user.getScreenName());
-                result.put(userObject);
-            }
-
-            response.getPortletOutputStream().write(result.toString().getBytes());
-        } catch (SystemException e) {
-            e.printStackTrace();
-
-            sendResponseJSON(false, "The request could not be processed.", response);
-        }
-    }
-
     @ResourceMapping("proposalShare-validate")
     public void validateRecipients(ResourceRequest request, ResourceResponse response) throws PortalException, IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);

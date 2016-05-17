@@ -1,8 +1,6 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
     xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <portlet:resourceURL id="proposalShare-autocomplete" var="autocompleteURL">
-    </portlet:resourceURL>
     <portlet:resourceURL id="proposalShare-send" var="sendURL">
     </portlet:resourceURL>
     <portlet:resourceURL id="proposalShare-validate" var="validationURL">
@@ -63,7 +61,6 @@
         </form>
     </div>
     <script type="text/javascript">
-        var autocompleteURL = '${autocompleteURL}';
         var validationURL = '${validationURL}';
         var sendURL  = '${sendURL}';
 
