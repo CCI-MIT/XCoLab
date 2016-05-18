@@ -56,11 +56,11 @@
 
       function updateMemberList(){
         jQuery("#"+memberList).val(members);
-        console.log("members",members);
-        console.log("initialMembers",initialMembers);
       }
 
       function removeMemberFromList(userId, userName, userListId){
+        var inpField = document.getElementById("${inputBox}");
+        inpField.className += " editorDirty";
         var elementIndex = members.indexOf(userId);
         members.splice(elementIndex, 1);
         jQuery("#"+memberList).val(members);
@@ -76,6 +76,8 @@
       }
 
       function addUserToList(userId, screenName, userListId){
+        var inpField = document.getElementById("${inputBox}");
+        inpField.className += " editorDirty";
 
         var newLiElement = document.createElement("li");
         newLiElement.setAttribute("id",userId);
