@@ -1,5 +1,4 @@
 function initializeTextEditors() {
-
     jQuery("input[type='text'], textarea").each(function() {
         if (jQuery(this).hasClass('rteInitialized') || jQuery(this).parent().parent().attr('class') == "login_popup_box") {
             return;
@@ -74,6 +73,17 @@ function initializeTextEditors() {
             thiz.bind(eventsToBind);
         }
         jQuery(this).addClass('rteInitialized');
+    });
+}
+
+function initializeDropDowns() {
+    jQuery("select").each(function() {
+        eventsToBind = {
+            change: function(event) {
+                markEditorDirty(jQuery(jQuery("input[type='text'], textarea")[0]));
+            }
+        };
+        jQuery(this).bind(eventsToBind);
     });
 }
 
@@ -261,5 +271,6 @@ jQuery(function() {
     });
 
     initializeTextEditors();
+    initializeDropDowns();
     resizeAllTextareas();
 });
