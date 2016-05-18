@@ -6,24 +6,60 @@ $p-ContestProposals__list__element--judgeFellow__width: 159px !default;
 $p-ContestProposals__list__element--judgeFellow__border--left: none !default;
 $p-ContestProposals__list__element--contributor__width: 106px !default;
 $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !default;
+$p-ContestProposals__header__title__fontWeight: $b-Typography__fontWeight !default;
+$p-ContestProposals__header__isTwoColumns: false !default;
+$p-ContestProposals__header__leftColumn__width: 750px !default;
+$p-ContestProposals__header__rightColumn__width: 150px !default;
+$p-ContestProposals__header__ontology__term__useIcons: true !default;
+$p-ContestProposals__header__ontology__display: inline-block !default;
+$p-ContestProposals__header__ontology__link__display: inline-block !default;
+$p-ContestProposals__header__team__display: inline-block !default;
+
+$p-ContestProposals__header__detailButton__fontWeight: $b-Typography__fontWeight--bold !default;
+$p-ContestProposals__header__detailButton__borderRadius: 5px !default;
+$p-ContestProposals__header__detailButton__padding: 5px 5px 0px 5px !default;
+$p-ContestProposals__header__detailButton__backgroundColor: $t-Color__primary__grey--light !default;
+$p-ContestProposals__header__detailButton__border: 1px solid $t-Color__primary__grey--dark !default;
+$p-ContestProposals__header__detailButton__display: inline-block !default;
+
+$p-Contests__contestDetail__backgroundColor: $t-Color__grey--lightest !default;
+$p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.png) darken($t-Color__grey--lightest, 7) !default;
 
 .p-ContestProposals__header { //.contest-detail
   background-color: $p-Contests__contestDetail__backgroundColor;
+  padding-bottom: 20px;
   border-bottom: 1px solid $t-Color__grey--light;
   margin-top: -4px;
   color: $t-Color__grey--darkest;
 }
 
+@if $p-ContestProposals__header__isTwoColumns {
+  .p-ContestProposals__header__mainSection {
+    display: inline-block;
+    width: $p-ContestProposals__header__leftColumn__width;
+    vertical-align: top;
+  }
+}
+
+@if $p-ContestProposals__header__isTwoColumns {
+  .p-ContestProposals__header__metaSection {
+    display: inline-block;
+    width: $p-ContestProposals__header__rightColumn__width;
+    vertical-align: top;
+  }
+}
+
 .p-ContestProposals__header__title { //.contest-detail .heading
   background: $p-Contests__contestDetail__heading__background;
   min-height: 24px;
-  padding: 20px 20px;
+  padding: 20px;
   font-size: 22px;
+  font-weight: $p-ContestProposals__header__title__fontWeight;
   vertical-align: middle;
 }
 
 .p-ContestProposals__header__description { //.contest-detail .description {
-  padding: 20px 16px;
+  padding: 20px;
 
   p { //.contest-detail .description p
     padding-right: 22px;
@@ -53,9 +89,9 @@ $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !de
 }
 
 .p-ContestProposals__header__team { //.contest-detail .moreinfo
-  display: inline-block;
-  width: 640px;
-  padding: 10px 16px;
+  display: $p-ContestProposals__header__team__display;
+  max-width: 640px;
+  padding: 20px 16px;
   position: relative;
   min-height: 37px;
 }
@@ -82,26 +118,50 @@ $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !de
 }
 
 .p-ContestProposals__header__detailButton { //a.detailbutton
-  padding: $p-Contests__detailsButton__padding;
+  position: relative;
+  display: $p-ContestProposals__header__detailButton__display;
+
+  padding: $p-ContestProposals__header__detailButton__padding;
   width: 115px;
   height: 27px;
   line-height: 27px;
-  display: inline-block;
   margin-left: 3px;
-  background: $p-Contests__detailsButton__backgroundColor;
-  border: 1px solid $p-Contests__detailsButton__borderColor;
+
   font-size: 16px;
-  font-weight: $p-Contests__detailsButton__fontWeight;
+  font-weight: $p-ContestProposals__header__detailButton__fontWeight;
   text-align: center;
-  @include border-radius($p-Contests__detailsButton__borderRadius);
+
+  background: $p-ContestProposals__header__detailButton__backgroundColor;
+  border: $p-ContestProposals__header__detailButton__border;
+
+  @include border-radius($p-ContestProposals__header__detailButton__borderRadius);
+}
+
+.p-ContestProposals__header__detailButton__count { //.discussion-button-badge {
+  position: absolute;
+  right: -7px;
+  top: -6px;
+  display: inline;
+  text-align: center;
+  font: 12px Arial, Helvetica, sans-serif;
+  color: white;
+  background: $t-Color__primary--darkest;
+  padding: 0 5px;
+  margin-left: 5px;
+  @include border-radius(8px);
 }
 
 .p-ContestProposals__header__ontology {
   padding: 10px 16px;
+
+  @if $p-ContestProposals__header__isTwoColumns {
+    display: inline-block;
+    width: $p-ContestProposals__header__rightColumn__width;
+  }
 }
 
 .p-ContestProposals__header__ontology__term {
-  display: inline-block;
+  display: $p-ContestProposals__header__ontology__display;
   margin-right: 15px;
   width: 220px;
 }
@@ -119,20 +179,26 @@ $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !de
 
 .p-ContestProposals__header__ontology__term__title--what { //.contest-detail .what
   @extend %p-ContestProposals__header__ontology__term__title;
-  background: url(../images/icon-list-what.png) no-repeat;
-  padding-left: 30px;
+  @if $p-ContestProposals__header__ontology__term__useIcons {
+    background: url(../images/icon-list-what.png) no-repeat;
+    padding-left: 30px;
+  }
 }
 
 .p-ContestProposals__header__ontology__term__title--where { //.contest-detail .where {
   @extend %p-ContestProposals__header__ontology__term__title;
-  background: url(../images/icon-list-where.png) no-repeat;
-  padding-left: 33px;
+  @if $p-ContestProposals__header__ontology__term__useIcons {
+    background: url(../images/icon-list-where.png) no-repeat;
+    padding-left: 33px;
+  }
 }
 
 .p-ContestProposals__header__ontology__term__title--who { //.contest-detail .who {
   @extend %p-ContestProposals__header__ontology__term__title;
-  background: url(../images/icon-list-who.png) no-repeat;
-  padding-left: 25px;
+  @if $p-ContestProposals__header__ontology__term__useIcons {
+    background: url(../images/icon-list-who.png) no-repeat;
+    padding-left: 25px;
+  }
 }
 
 .p-ContestProposals__header__ontology__term__title--how {
@@ -140,7 +206,7 @@ $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !de
 }
 
 .p-ContestProposals__header__ontology__term__link {
-  display: inline-block;
+  display: $p-ContestProposals__header__ontology__link__display;
 }
 
 %p-ContestProposals__list__element {
