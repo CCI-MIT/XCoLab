@@ -225,5 +225,9 @@
             $(".judging_comments .c-Button__primary").hide();
         </script>
     </c:if>
-
+    <script type="text/javascript">
+        jQuery(function() {
+            enableDirtyCheck();
+        });
+    </script>
 </jsp:root>

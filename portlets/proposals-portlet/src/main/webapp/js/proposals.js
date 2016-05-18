@@ -100,7 +100,7 @@ function markEditorDirty(editor) {
 
 function initializeTextEditors() {
 	jQuery("input[type='text'], textarea").each(function() {
-		if (jQuery(this).hasClass('rteInitialized')) {
+		if (jQuery(this).hasClass('rteInitialized') || jQuery(this).parent().parent().attr('class') == "login_popup_box") {
 			return;
 		}
 		
@@ -131,7 +131,7 @@ function initializeTextEditors() {
 				try{
 					if (editor == null) return;
             	
-					if (editor &&  editor.document && editor.document['$'] && (editor.checkDirty() || !editor.updatedCharCount)) {
+					if (editor &&  editor.document && editor.document['$'] && (editor.checkDirty() || editor.updatedCharCount)) {
 						markEditorDirty(thiz);
 						updateCharacterCounter(thiz, editor);
 						editor.updatedCharCount = true;

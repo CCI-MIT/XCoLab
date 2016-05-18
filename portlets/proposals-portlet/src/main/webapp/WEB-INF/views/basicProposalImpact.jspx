@@ -1089,4 +1089,9 @@
         }
 
     </script>
+    <script type="text/javascript">
+        jQuery(function() {
+            enableDirtyCheck();
+        });
+    </script>
 </jsp:root>
