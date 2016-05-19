@@ -17,6 +17,7 @@
 
     <modules>
         <module>admin-client</module>
+        <module>ballons-client</module>
         <module>contents-client</module>
         <module>emails-client</module>
         <module>members-client</module>

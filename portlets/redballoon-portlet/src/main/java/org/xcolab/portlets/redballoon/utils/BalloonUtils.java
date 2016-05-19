@@ -1,11 +1,8 @@
 package org.xcolab.portlets.redballoon.utils;
 
-import com.ext.portlet.NoSuchBalloonUserTrackingException;
-import com.ext.portlet.model.BalloonLink;
+//import com.ext.portlet.model.BalloonLink;
 import com.ext.portlet.model.BalloonText;
-import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.service.BalloonTextLocalServiceUtil;
-import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -16,15 +13,24 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+
+import org.xcolab.client.balloons.BalloonsClient;
+import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.pojo.BalloonLink;
+import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.portlets.redballoon.BalloonCookie;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+//import com.ext.portlet.model.BalloonUserTracking;
 
 public class BalloonUtils {
 	
@@ -50,9 +56,10 @@ public class BalloonUtils {
 		
 		BalloonUserTracking but = null;
 		try { 
-			but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(cookie.getUuid());
+			but = BalloonsClient.getBalloonUserTracking(cookie.getUuid());
 		}
-		catch (NoSuchBalloonUserTrackingException e) {
+		catch (BalloonUserTrackingNotFound e) {
+			/* CHECK IF THIS IS EVER RUN
 			if (! user.getDefaultUser()) {
 				List<BalloonUserTracking> buts = BalloonUserTrackingLocalServiceUtil.findByEmail(user.getEmailAddress());
 				if (! buts.isEmpty()) {
@@ -62,12 +69,13 @@ public class BalloonUtils {
 					return but;
 				}
 			}
-			
+			*/
 			
 			HttpServletRequest httpServletRequest = PortalUtil.getHttpServletRequest(request);
 
-			but = BalloonUserTrackingLocalServiceUtil.createBalloonUserTracking(cookie.getUuid());
-			but.setCreateDate(new Date());
+			but = new org.xcolab.client.balloons.pojo.BalloonUserTracking();
+			but.setUuid_(cookie.getUuid());;
+			but.setCreateDate(new Timestamp(new Date().getTime()));
 			but.setIp(PortalUtil.getHttpServletRequest(request).getRemoteAddr());
 			but.setParent(parent);
 			but.setBalloonLinkContext(context);
@@ -98,8 +106,9 @@ public class BalloonUtils {
 			if (! texts.isEmpty()) {
 				but.setBalloonTextId(texts.get(rand.nextInt(texts.size())).getId());
 			}
-			
-			BalloonUserTrackingLocalServiceUtil.addBalloonUserTracking(but);
+
+			BalloonsClient.createBalloonUserTracking(but);
+			//BalloonUserTrackingLocalServiceUtil.addBalloonUserTracking(but);
 		}
 		return but;
 	}
@@ -111,7 +120,7 @@ public class BalloonUtils {
 		// find first occurrence of / to get address and port
 		String protocolHostPort = requestUrl.substring(0, requestUrl.indexOf("/", 10));
 		
-		return String.format(SHARE_LINK_PATTERN, protocolHostPort, bl.getUuid());
+		return String.format(SHARE_LINK_PATTERN, protocolHostPort, bl.getUuid_());
 	}
 
 }
