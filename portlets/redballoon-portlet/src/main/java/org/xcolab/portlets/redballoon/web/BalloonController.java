@@ -2,9 +2,7 @@ package org.xcolab.portlets.redballoon.web;
 
 //import com.ext.portlet.model.BalloonLink;
 
-import com.ext.portlet.model.BalloonText;
-//import com.ext.portlet.model.BalloonUserTracking;
-import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
+//import com.ext.portlet.model.BalloonText;
 import com.ext.portlet.service.BalloonTextLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -23,6 +21,7 @@ import org.w3c.dom.Element;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
+import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.portlets.redballoon.utils.BalloonUtils;
 import org.xcolab.portlets.redballoon.web.beans.UserEmailBean;
@@ -35,6 +34,8 @@ import javax.portlet.RenderResponse;
 import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+//import com.ext.portlet.model.BalloonUserTracking;
 
 @RequestMapping("view")
 @Controller
@@ -60,7 +61,7 @@ public class BalloonController {
                 link = null;
             }
 
-            BalloonLinkLocalServiceUtil.getBalloonLink(linkuuid);
+
 
             if (link != null) {
                 model.addAttribute("balloonLink", link);
@@ -78,7 +79,15 @@ public class BalloonController {
             but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
         }
         if (but.getBalloonTextId() > 0) {
-            BalloonText text = BalloonTextLocalServiceUtil.getBalloonText(but.getBalloonTextId());
+            BalloonText text = null;
+            try {
+                text = BalloonsClient.getBalloonText(but.getBalloonTextId());
+
+            } catch (BalloonUserTrackingNotFound balloonUserTrackingNotFound) {
+                text = null;
+            }
+
+            BalloonTextLocalServiceUtil.getBalloonText(but.getBalloonTextId());
             model.addAttribute("balloonText", text);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 

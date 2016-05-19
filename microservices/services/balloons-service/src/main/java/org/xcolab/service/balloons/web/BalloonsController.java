@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.BalloonLink;
+import org.xcolab.model.tables.pojos.BalloonText;
 import org.xcolab.model.tables.pojos.BalloonUserTracking;
 import org.xcolab.service.balloons.domain.balloonlink.BalloonLinkDao;
+import org.xcolab.service.balloons.domain.balloontext.BalloonTextDao;
 import org.xcolab.service.balloons.domain.balloonusertracking.BalloonUserTrackingDao;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
 
@@ -21,6 +23,9 @@ public class BalloonsController {
 
     @Autowired
     private BalloonLinkDao balloonLinkDao;
+
+    @Autowired
+    private BalloonTextDao balloonTextDao;
 
     @RequestMapping(value = "/balloonLinks/", method = RequestMethod.POST)
     public BalloonLink createBalloonLink(@RequestBody BalloonLink balloonLink) {
@@ -94,4 +99,40 @@ public class BalloonsController {
             return balloonUserTrackingDao.update(balloonUserTracking);
         }
     }
+
+    @RequestMapping(value = "/balloonTexts/{id}", method = RequestMethod.GET)
+    public BalloonText getBalloonText(@PathVariable("id") Long id) throws NotFoundException {
+        if (id == null) {
+            throw new NotFoundException();
+        } else {
+            return this.balloonTextDao.getBallonText(id);
+        }
+    }
+
+    @RequestMapping(value = "/balloonTexts/{id}", method = RequestMethod.PUT)
+    public boolean updateBalloonText(@RequestBody BalloonText balloonText,
+                                             @PathVariable("id") Long id) throws NotFoundException {
+
+        if ( balloonTextDao.getBallonText(id) == null) {
+            throw new NotFoundException();
+        } else {
+            return balloonTextDao.update(balloonText);
+        }
+    }
+
+    @RequestMapping(value = "/balloonTexts/", method = RequestMethod.POST)
+    public BalloonText createBalloonText(@RequestBody BalloonText balloonText) {
+        return this.balloonTextDao.create(balloonText);
+    }
+
+    @RequestMapping(value = "/balloonTexts/{id}", method = RequestMethod.DELETE)
+    public boolean deleteBalloonText(@PathVariable("id") Long id) throws NotFoundException {
+
+        if ( balloonTextDao.getBallonText(id) == null) {
+            throw new NotFoundException();
+        } else {
+            return balloonTextDao.delete(id);
+        }
+    }
+
 }

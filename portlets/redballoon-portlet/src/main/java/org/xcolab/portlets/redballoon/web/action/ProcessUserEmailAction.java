@@ -1,9 +1,6 @@
 package org.xcolab.portlets.redballoon.web.action;
 
-import com.ext.portlet.model.BalloonLink;
-import com.ext.portlet.model.BalloonText;
-import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
-import com.ext.portlet.service.BalloonTextLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.util.mail.MailEngineException;
@@ -14,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.balloons.BalloonsClient;
+import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.pojo.BalloonLink;
+import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.portlets.redballoon.utils.BalloonUtils;
@@ -67,14 +67,16 @@ public class ProcessUserEmailAction {
             BalloonsClient.updateBalloonUserTracking(but);
 
             // create link to be used by user
-            BalloonLink link = BalloonLinkLocalServiceUtil.createBalloonLink(UUID.randomUUID().toString());
-            link.setBalloonUserUuid(but.getUuid_());
-            link.setCreateDate(new Date());
-            link.setTargetUrl(String.format(BALLOON_LINK_PATTERN, link.getUuid()));
+            BalloonLink link = new BalloonLink();
+            link.setUuid_(UUID.randomUUID().toString());
 
-            BalloonLinkLocalServiceUtil.addBalloonLink(link);
+            link.setBalloonUserUuid(but.getUuid_());
+            link.setCreateDate(new Timestamp(new Date().getTime()));
+            link.setTargetUrl(String.format(BALLOON_LINK_PATTERN, link.getUuid_()));
+
+            BalloonsClient.createBalloonLink(link);
             sendNotificationEmail(request, but, link);
-            response.sendRedirect("/socialnetworkprize2015/-/link/" + link.getUuid());
+            response.sendRedirect("/socialnetworkprize2015/-/link/" + link.getUuid_());
 
         }
     }
@@ -90,28 +92,34 @@ public class ProcessUserEmailAction {
         if (but.getBalloonTextId() <= 0)
             return;
 
-        BalloonText text = BalloonTextLocalServiceUtil.getBalloonText(but.getBalloonTextId());
+        BalloonText text = null;
+        try {
+            text = BalloonsClient.getBalloonText(but.getBalloonTextId());
+            String messageSubject = text.getEmailSubjectTemplate();
+            String messageBody = text.getEmailTemplate().replaceAll(URLPLACEHOLDER, BalloonUtils.getBalloonUrlForLink(request, link));
 
-        String messageSubject = text.getEmailSubjectTemplate();
-        String messageBody = text.getEmailTemplate().replaceAll(URLPLACEHOLDER, BalloonUtils.getBalloonUrlForLink(request, link));
 
 
+            String mailAdr = session.getAttribute(USER_EMAIL) == null ? but.getEmail() : session.getAttribute(USER_EMAIL).toString();
 
-        String mailAdr = session.getAttribute(USER_EMAIL) == null ? but.getEmail() : session.getAttribute(USER_EMAIL).toString();
+            if (StringUtils.isBlank(mailAdr))
+                return;
 
-        if (StringUtils.isBlank(mailAdr))
-            return;
+            String[] recipients = new String[]{mailAdr};
+            List<String> addressTo = new ArrayList<>();
+            for (int i = 0; i < recipients.length; i++) {
+                addressTo.add(recipients[i]);
+            }
 
-        String[] recipients = new String[]{mailAdr};
-        List<String> addressTo = new ArrayList<>();
-        for (int i = 0; i < recipients.length; i++) {
-            addressTo.add(recipients[i]);
+
+            EmailClient.sendEmail(FROM_ADDRESS, addressTo, messageSubject, messageBody, true, FROM_ADDRESS);
+
+            session.setAttribute(EMAIL_SENT, true);
+
+        } catch (BalloonUserTrackingNotFound ignored) {
+
         }
 
-
-        EmailClient.sendEmail(FROM_ADDRESS, addressTo, messageSubject, messageBody, true, FROM_ADDRESS);
-
-        session.setAttribute(EMAIL_SENT, true);
 
     }
 

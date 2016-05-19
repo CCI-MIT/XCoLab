@@ -9,7 +9,6 @@ import org.xcolab.model.tables.records.BalloonLinkRecord;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.BALLOON_LINK;
-import static org.xcolab.model.Tables.BALLOON_USER_TRACKING;
 
 @Repository
 public class BalloonLinkDaoImpl implements BalloonLinkDao {
@@ -58,7 +57,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
                 .set(BALLOON_LINK.BALLOON_USER_UUID, balloonLink.getBalloonUserUuid())
                 .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreateDate())
-                .returning(BALLOON_USER_TRACKING.UUID_)
+                .returning(BALLOON_LINK.UUID_)
                 .fetchOne();
 
         if (ret != null) {
