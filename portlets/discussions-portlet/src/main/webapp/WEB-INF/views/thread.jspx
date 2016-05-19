@@ -17,6 +17,13 @@
 
     <h1>${thread.title}</h1>
 
+    <script type="text/javascript">
+        jQuery(function() {
+            initializeTextEditors();
+            enableDirtyCheck();
+        });
+    </script>
+
     <collab:discussionComments thread="${thread}"/>
 
 </jsp:root>
