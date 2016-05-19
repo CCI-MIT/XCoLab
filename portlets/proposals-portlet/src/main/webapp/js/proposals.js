@@ -216,7 +216,11 @@ function enableDirtyCheck() {
 	window.oldOnBeforeUnload = window.onbeforeunload;
 
 	window.onbeforeunload = function() {
-		if (jQuery(".editorDirty").length > 0) {
+        var dirtyEditors = $(".editorDirty").filter(function(index){
+            return !($(this).attr("name") === "login");
+        });
+        console.log(dirtyEditors);
+		if (dirtyEditors.length > 0) {
 			return 'You have modified this page but have not saved your changes.';
 		}
 		return null;

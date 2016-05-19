@@ -53,7 +53,7 @@
         <form:textarea path="comment" cssClass="c-Comment__box" style="width:100%;" placeholder="Write your review here..." />
 
         <div class="clearfix" style="width: 100%;">
-            <a class="c-Button__primary" style="display:block; float:right; margin-top: 10px;" href="javascript:;" onclick="jQuery(this).parents('form').submit();">Save</a>
+            <a class="c-Button__primary" id="saveProposalJudging" style="display:block; float:right; margin-top: 10px;" href="#">Save</a>
         </div>
 
     </form:form>
@@ -79,4 +79,13 @@
             });
         </script>
     </c:if>
+
+    <script type="text/javascript">
+        jQuery(function() {
+            jQuery("#saveProposalJudging").click(function () {
+                disableDirtyCheck();
+                jQuery("#fellowRatingForm").submit();
+            });
+        });
+    </script>
 </jsp:root>
