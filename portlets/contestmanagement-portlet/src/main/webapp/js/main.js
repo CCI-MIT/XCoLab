@@ -78,6 +78,10 @@ function initializeTextEditors() {
 
 function initializeDropDowns() {
     jQuery("select").each(function() {
+        console.log("initializeDropDowns 2");
+        if (jQuery(this).attr("id") == "changeElementSelect") {
+            return;
+        }
         eventsToBind = {
             change: function(event) {
                 markEditorDirty(jQuery(jQuery("input[type='text'], textarea")[0]));
