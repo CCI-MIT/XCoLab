@@ -58,17 +58,17 @@ public class BalloonUtils {
 			but = BalloonsClient.getBalloonUserTracking(cookie.getUuid());
 		}
 		catch (BalloonUserTrackingNotFound e) {
-			/* CHECK IF THIS IS EVER RUN
+
 			if (! user.getDefaultUser()) {
-				List<BalloonUserTracking> buts = BalloonUserTrackingLocalServiceUtil.findByEmail(user.getEmailAddress());
+				List<BalloonUserTracking> buts = BalloonsClient.getBalloonUserTrackingByEmail(user.getEmailAddress());
 				if (! buts.isEmpty()) {
 					but = buts.get(0);
-					but.setUserUuid(user.getUuid());
-					BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+					but.setUserId(user.getUserId());
+					BalloonsClient.updateBalloonUserTracking(but);
 					return but;
 				}
 			}
-			*/
+
 			
 			HttpServletRequest httpServletRequest = PortalUtil.getHttpServletRequest(request);
 
@@ -107,7 +107,7 @@ public class BalloonUtils {
 			}
 
 			BalloonsClient.createBalloonUserTracking(but);
-			//BalloonUserTrackingLocalServiceUtil.addBalloonUserTracking(but);
+
 		}
 		return but;
 	}

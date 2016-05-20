@@ -36,12 +36,11 @@ public class BalloonsController {
     }
 
 
-
     @RequestMapping(value = "/balloonLinks/{uuid}", method = RequestMethod.PUT)
     public boolean updateBalloonLink(@RequestBody BalloonLink balloonLink,
-                                             @PathVariable("uuid") String uuid) throws NotFoundException {
+                                     @PathVariable("uuid") String uuid) throws NotFoundException {
 
-        if ( balloonLinkDao.getBalloonLink(uuid) == null) {
+        if (balloonLinkDao.getBalloonLink(uuid) == null) {
             throw new NotFoundException();
         } else {
             return balloonLinkDao.update(balloonLink);
@@ -67,7 +66,11 @@ public class BalloonsController {
     }
 
 
+    @RequestMapping(value = "/balloonUserTracking/", method = RequestMethod.GET)
+    public List<BalloonUserTracking> getAllBalloonUserTracking() {
 
+        return this.balloonUserTrackingDao.getAllBalloonUserTracking();
+    }
 
     @RequestMapping(value = "/balloonUserTracking/", method = RequestMethod.POST)
     public BalloonUserTracking createBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking) {
@@ -85,7 +88,7 @@ public class BalloonsController {
     }
 
     @RequestMapping(value = "/balloonUserTracking/", method = RequestMethod.GET)
-    public BalloonUserTracking getBallonUserTrackingByEmail(@RequestParam(required = false) String email) throws NotFoundException {
+    public List<BalloonUserTracking> getBallonUserTrackingByEmail(@RequestParam(required = false) String email) throws NotFoundException {
         if (email == null) {
             throw new NotFoundException();
         } else {
@@ -95,13 +98,21 @@ public class BalloonsController {
 
     @RequestMapping(value = "/balloonUserTracking/{uuid}", method = RequestMethod.PUT)
     public boolean updateBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking,
-                                        @PathVariable("uuid") String uuid) throws NotFoundException {
+                                             @PathVariable("uuid") String uuid) throws NotFoundException {
 
-        if ( balloonUserTrackingDao.getBallonUserTrackingByUuid(uuid) == null) {
-            throw new NotFoundException();
-        } else {
-            return balloonUserTrackingDao.update(balloonUserTracking);
+        if (balloonUserTrackingDao.getBallonUserTrackingByUuid(uuid) == null) {
+            List<BalloonUserTracking> searchByEmail = balloonUserTrackingDao
+                    .getBallonUserTrackingByEmail(balloonUserTracking.getEmail());
+            if (searchByEmail == null || searchByEmail.size() == 0) {
+                throw new NotFoundException();
+            }else{
+                balloonUserTracking.setUuid_(searchByEmail.get(0).getUuid_());
+                //this is not understood might be legacy compatibility
+            }
         }
+
+        return balloonUserTrackingDao.update(balloonUserTracking);
+
     }
 
     @RequestMapping(value = "/balloonTexts/{id}", method = RequestMethod.GET)
@@ -115,9 +126,9 @@ public class BalloonsController {
 
     @RequestMapping(value = "/balloonTexts/{id}", method = RequestMethod.PUT)
     public boolean updateBalloonText(@RequestBody BalloonText balloonText,
-                                             @PathVariable("id") Long id) throws NotFoundException {
+                                     @PathVariable("id") Long id) throws NotFoundException {
 
-        if ( balloonTextDao.getBallonText(id) == null) {
+        if (balloonTextDao.getBallonText(id) == null) {
             throw new NotFoundException();
         } else {
             return balloonTextDao.update(balloonText);
@@ -138,7 +149,7 @@ public class BalloonsController {
     @RequestMapping(value = "/balloonTexts/{id}", method = RequestMethod.DELETE)
     public boolean deleteBalloonText(@PathVariable("id") Long id) throws NotFoundException {
 
-        if ( balloonTextDao.getBallonText(id) == null) {
+        if (balloonTextDao.getBallonText(id) == null) {
             throw new NotFoundException();
         } else {
             return balloonTextDao.delete(id);

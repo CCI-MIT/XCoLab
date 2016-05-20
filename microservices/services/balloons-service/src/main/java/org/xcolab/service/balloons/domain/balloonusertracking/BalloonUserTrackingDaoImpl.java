@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.BalloonUserTracking;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
 
+import java.util.List;
+
 import static org.xcolab.model.Tables.BALLOON_USER_TRACKING;
 
 
@@ -27,14 +29,17 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
 
     }
 
-    public BalloonUserTracking getBallonUserTrackingByEmail(String email) throws NotFoundException {
-        final Record record = dslContext.select()
+    @Override
+    public List<BalloonUserTracking> getAllBalloonUserTracking() {
+        return dslContext.select()
                 .from(BALLOON_USER_TRACKING)
-                .where(BALLOON_USER_TRACKING.EMAIL.eq(email)).fetchOne();
-        if (record == null) {
-            throw new NotFoundException();
-        }
-        return record.into(BalloonUserTracking.class);
+                .fetchInto(BalloonUserTracking.class);
+    }
+
+    public List<BalloonUserTracking> getBallonUserTrackingByEmail(String email) throws NotFoundException {
+        return dslContext.select()
+                .from(BALLOON_USER_TRACKING)
+                .where(BALLOON_USER_TRACKING.EMAIL.eq(email)).fetchInto(BalloonUserTracking.class);
 
     }
 

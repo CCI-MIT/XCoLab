@@ -63,7 +63,7 @@ public class ProcessUserEmailAction {
             but.setEmail(userEmailBean.getEmail());
             but.setFormFiledDate(new Timestamp(new Date().getTime()));
 
-            //BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+            
             BalloonsClient.updateBalloonUserTracking(but);
 
             // create link to be used by user

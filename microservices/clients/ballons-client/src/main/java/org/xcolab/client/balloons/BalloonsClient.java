@@ -68,17 +68,24 @@ public final class BalloonsClient {
         }
     }
 
-    public static BalloonUserTracking getBalloonUserTrackingByEmail(String email) throws BalloonUserTrackingNotFound {
+    public static List<BalloonUserTracking> getBalloonUserTrackingByEmail(String email)  {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/balloonUserTracking/");
         uriBuilder.queryParam("email",email);
 
-        try {
-            return RequestUtils.get(uriBuilder, BalloonUserTracking.class);
-        } catch (EntityNotFoundException e) {
-            throw new BalloonUserTrackingNotFound(
-                    "BalloonUserTracking " + email + " does not exist");
-        }
+            return RequestUtils.getList(uriBuilder,
+                    new ParameterizedTypeReference<List<BalloonUserTracking>>() {
+                    });
+
+    }
+
+    public static List<BalloonUserTracking> getAllBalloonUserTracking() {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/balloonUserTracking/");
+
+        return RequestUtils.getList(uriBuilder,
+                new ParameterizedTypeReference<List<BalloonUserTracking>>() {
+                });
     }
 
     public static BalloonUserTracking createBalloonUserTracking(

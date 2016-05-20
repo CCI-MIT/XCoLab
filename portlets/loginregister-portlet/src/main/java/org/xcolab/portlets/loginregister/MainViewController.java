@@ -1,11 +1,8 @@
 package org.xcolab.portlets.loginregister;
 
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
-import com.ext.portlet.NoSuchBalloonUserTrackingException;
 import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.model.BalloonUserTracking;
-import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.kernel.captcha.CaptchaException;
@@ -44,6 +41,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.balloons.BalloonsClient;
+import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.liferay.LoginRegisterUtil;
@@ -55,6 +55,7 @@ import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.UserCreationUtil;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.portlet.ActionRequest;
@@ -311,11 +312,12 @@ public class MainViewController {
             if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
                 try {
                     BalloonUserTracking but =
-                            BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
-                    but.setRegistrationDate(new Date());
+                            BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
+                            //BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
+                    but.setRegistrationDate(new Timestamp(new Date().getTime()));
                     but.setUserId(user.getId_());
-                    BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
-                } catch (NoSuchBalloonUserTrackingException e) {
+                    BalloonsClient.updateBalloonUserTracking(but);
+                } catch (BalloonUserTrackingNotFound e) {
                     _log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
                 }
             }

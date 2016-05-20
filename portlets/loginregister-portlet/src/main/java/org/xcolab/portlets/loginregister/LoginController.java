@@ -1,7 +1,6 @@
 package org.xcolab.portlets.loginregister;
 
-import com.ext.portlet.model.BalloonUserTracking;
-import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
+
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.PasswordExpiredException;
@@ -10,8 +9,6 @@ import com.liferay.portal.UserIdException;
 import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -27,6 +24,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.xcolab.client.balloons.BalloonsClient;
+import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.liferay.LoginRegisterUtil;
 
 import java.io.IOException;
@@ -118,10 +118,10 @@ public class LoginController {
         if (StringUtils.isNotBlank(bc.getUuid()) && Validator.isNotNull(user)) {
             // cookie is present, get BalloonUserTracking if it exists and update association to the current user
             try {
-                BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(bc.getUuid());
+                BalloonUserTracking but = BalloonsClient.getBalloonUserTracking(bc.getUuid());
                 if (but == null) {
                     List<BalloonUserTracking> buts =
-                            BalloonUserTrackingLocalServiceUtil.findByEmail(user.getEmailAddress());
+                            BalloonsClient.getBalloonUserTrackingByEmail(user.getEmailAddress());
                     if (!buts.isEmpty()) {
                         but = buts.get(0);
                     }
@@ -129,9 +129,10 @@ public class LoginController {
 
                 if (but != null && but.getUserId() != user.getUserId()) {
                     but.setUserId(user.getUserId());
-                    BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+                    BalloonsClient.updateBalloonUserTracking(but);
+
                 }
-            } catch (SystemException | PortalException ignored) {
+            } catch (BalloonUserTrackingNotFound ignored) {
             }
         }
 
