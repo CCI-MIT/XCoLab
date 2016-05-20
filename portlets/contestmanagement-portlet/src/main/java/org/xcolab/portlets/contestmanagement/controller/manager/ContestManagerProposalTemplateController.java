@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.controller.common.ContestProposalTemplateTabController;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -21,16 +22,14 @@ import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import java.io.IOException;
+import java.util.List;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.util.List;
 
-/**
- * Created by Thomas on 5/15/2015.
- */
 @Controller
 @RequestMapping("view")
 public class ContestManagerProposalTemplateController extends ContestProposalTemplateTabController {

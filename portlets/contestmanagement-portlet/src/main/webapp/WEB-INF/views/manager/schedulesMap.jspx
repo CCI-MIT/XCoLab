@@ -14,19 +14,19 @@
         <portlet:param name="elementId" value="${contestProposalTemplateWrapper.planTemplate.id}"/>
     </portlet:actionURL>
 
-    <portlet:actionURL var="createContestScheduleURL">
+    <portlet:actionURL var="createEmailTemplateUrl">
         <portlet:param name="tab" value="SCHEDULES"/>
         <portlet:param name="manager" value="true"/>
         <portlet:param name="action" value="createContestSchedule"/>
     </portlet:actionURL>
 
-    <portlet:actionURL var="updateContestScheduleURL">
+    <portlet:actionURL var="updateEmailTemplateUrl">
         <portlet:param name="tab" value="SCHEDULES"/>
         <portlet:param name="manager" value="true"/>
         <portlet:param name="action" value="updateContestSchedule"/>
     </portlet:actionURL>
 
-    <portlet:actionURL var="deleteContestScheduleURL">
+    <portlet:actionURL var="deleteEmailTemplateUrl">
         <portlet:param name="tab" value="SCHEDULES"/>
         <portlet:param name="scheduleId" value="${contestScheduleWrapper.scheduleId}"/>
         <portlet:param name="manager" value="true"/>
