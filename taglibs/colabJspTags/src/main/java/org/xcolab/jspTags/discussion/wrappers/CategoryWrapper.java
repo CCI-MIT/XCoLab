@@ -8,7 +8,7 @@ import com.ext.utils.userInput.service.UserInputFilterUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import org.xcolab.jspTags.discussion.ThreadSortColumn;
+import org.xcolab.client.comment.ThreadSortColumn;
 import org.xcolab.util.HumanTime;
 
 import java.io.Serializable;

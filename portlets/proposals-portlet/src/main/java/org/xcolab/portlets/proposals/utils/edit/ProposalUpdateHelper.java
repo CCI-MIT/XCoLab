@@ -16,7 +16,7 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 
 import javax.portlet.ActionRequest;

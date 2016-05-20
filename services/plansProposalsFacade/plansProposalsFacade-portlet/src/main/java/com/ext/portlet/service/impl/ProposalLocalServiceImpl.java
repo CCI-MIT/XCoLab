@@ -23,7 +23,6 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -80,6 +79,8 @@ import org.xcolab.activityEntry.proposal.ProposalVoteActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalVoteRetractActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
@@ -719,7 +720,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public long getCommentsCount(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
-        return discussionCategoryGroupLocalService.getCommentsCount(proposal.getDiscussionId());
+        final long discussionId = proposal.getDiscussionId();
+        if (discussionId > 0) {
+            return CommentClient.countComments(discussionId);
+        }
+        return 0;
     }
 
     /**
@@ -734,10 +739,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public long getFellowReviewCommentsCount(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
         final long fellowDiscussionId = proposal.getFellowDiscussionId();
-        if (fellowDiscussionId == 0) {
-            return 0;
+        if (fellowDiscussionId > 0) {
+            return CommentClient.countComments(fellowDiscussionId);
         }
-        return discussionCategoryGroupLocalService.getCommentsCount(fellowDiscussionId);
+        return 0;
     }
 
     /**
@@ -1110,46 +1115,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         if (Validator.isNotNull(messageBody)) {
             MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
         }
-    }
-
-    /**
-     * Posts the judges' review about the proposal's advance decision on the proposal's comment thread
-     * @param proposal  The proposal for which the notification should be sent
-     */
-    @Override
-    public void contestPhasePromotionCommentNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
-        ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-        String commentBody = reviewContentHelper.getPromotionComment(false);
-        //only post comment if it is not empty.
-        if (commentBody != null && !commentBody.trim().equals("")) {
-
-            Long discussionId = getDiscussionIdAndGenerateIfNull(proposal);
-            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
-            DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
-
-            // uncomment these lines to post promotion comment to standard comment thread
-            // discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            // DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
-        }
-    }
-
-    @Override
-    public Long getDiscussionIdAndGenerateIfNull(Proposal proposal) throws SystemException{
-
-        Long discussionId = proposal.getResultsDiscussionId();
-
-        if(discussionId == 0) {
-
-            DiscussionCategoryGroup resultsDiscussion = DiscussionCategoryGroupLocalServiceUtil.
-                    createDiscussionCategoryGroup("Proposal " + proposal.getProposalId() + " results discussion");
-            resultsDiscussion.setIsQuiet(true);
-            DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(resultsDiscussion);
-            proposal.setResultsDiscussionId(resultsDiscussion.getId());
-            proposal.persist();
-            discussionId = proposal.getResultsDiscussionId();
-        }
-
-        return discussionId;
     }
 
     private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {

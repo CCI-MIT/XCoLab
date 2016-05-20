@@ -28,7 +28,7 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;

@@ -21,7 +21,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xcolab.enums.Plurality;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.LinkUtils;
 

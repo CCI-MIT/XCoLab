@@ -1,7 +1,5 @@
 package org.xcolab.portlets.discussions.views;
 
-import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -12,22 +10,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.Category;
+import org.xcolab.client.comment.pojo.CategoryGroup;
+import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
-import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
-import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
-import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
+import org.xcolab.util.HtmlUtil;
+
+import java.io.IOException;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.util.List;
 
-/**
- * Created by johannes on 12/1/15.
- */
 @Controller
 @RequestMapping("view")
 public class ThreadController extends BaseDiscussionController {
@@ -37,21 +38,18 @@ public class ThreadController extends BaseDiscussionController {
     @RenderMapping(params = "action=showThread")
     public String showThread(PortletRequest request, PortletResponse response, Model model,
                              @RequestParam long threadId)
-            throws SystemException, PortalException, DiscussionAuthorizationException {
+            throws SystemException, PortalException, DiscussionAuthorizationException, ThreadNotFoundException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
-        DiscussionMessage thread = DiscussionMessageLocalServiceUtil.getDiscussionMessage(threadId);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
+        CommentThread thread = CommentClient.getThread(threadId);
 
         checkCanView(request,
-                String.format("Thread %d has discussionCategoryGroupId %d, which does not match the portlet's configured id %d",
-                        threadId, thread.getCategoryGroupId(), categoryGroupWrapper.getId()),
-                categoryGroupWrapper.getWrapped(), threadId);
+                String.format("Thread %d is not in the portlet's configured category group %d",
+                        threadId, categoryGroup.getGroupId()),
+                categoryGroup, threadId);
 
-        final ThreadWrapper threadWrapper = new ThreadWrapper(thread);
-        model.addAttribute("thread", threadWrapper);
-        model.addAttribute("isSubscribed", threadWrapper.isSubscribed(themeDisplay.getUserId()));
+        model.addAttribute("thread", thread);
+        model.addAttribute("isSubscribed", false); //threadWrapper.isSubscribed(themeDisplay.getUserId()));
 
         return "thread";
     }
@@ -60,11 +58,11 @@ public class ThreadController extends BaseDiscussionController {
     public String createThread(PortletRequest request, PortletResponse response, Model model)
             throws SystemException, PortalException, DiscussionAuthorizationException {
 
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
-                categoryGroupWrapper.getWrapped(), 0L);
+                categoryGroup, 0L);
 
-        List<CategoryWrapper> categories = categoryGroupWrapper.getCategories();
+        List<Category> categories = categoryGroup.getCategories();
 
         model.addAttribute("categories", categories);
 
@@ -78,64 +76,85 @@ public class ThreadController extends BaseDiscussionController {
             throws SystemException, PortalException, IOException, DiscussionAuthorizationException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
+        CategoryGroup categoryGroup = getCategoryGroup(request);
 
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
-                categoryGroupWrapper.getWrapped(), 0L);
+                categoryGroup, 0L);
 
-        if (title.length() > 0 && body.length() > 0) {
-            final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.addThread(categoryGroupWrapper.getId(),
-                    categoryId, title, body, themeDisplay.getUser());
+        final long userId = themeDisplay.getUserId();
 
-            response.sendRedirect(new ThreadWrapper(thread).getLinkUrl());
+        if (!title.isEmpty() && !body.isEmpty()) {
+            CommentThread thread = new CommentThread();
+            thread.setCategoryId(categoryId);
+            thread.setTitle(HtmlUtil.cleanAll(title));
+            thread.setAuthorId(userId);
+            thread = CommentClient.createThread(thread);
+
+            Comment comment = new Comment();
+            comment.setThreadId(thread.getThreadId());
+            comment.setContent(HtmlUtil.cleanSome(body, ""));
+            comment.setAuthorId(userId);
+            CommentClient.createComment(comment);
+
+            response.sendRedirect(thread.getLinkUrl());
         } else {
             response.sendRedirect(CREATE_THREAD_URL);
         }
     }
 
-    @ActionMapping(params = "action=subscribeThread")
-    public void subscribeThread(ActionRequest request, ActionResponse response, @RequestParam long threadId)
-            throws DiscussionAuthorizationException, PortalException, SystemException {
+//    @ActionMapping(params = "action=subscribeThread")
+//    public void subscribeThread(ActionRequest request, ActionResponse response, @RequestParam long threadId)
+//            throws DiscussionAuthorizationException, PortalException, SystemException {
+//
+//        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+//        CategoryGroup categoryGroup = getCategoryGroup(request);
+//        checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
+//
+//        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
+//
+//        if (!themeDisplay.getUser().isDefaultUser()) {
+//            if (threadId > 0) {
+//                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, discussionCategoryGroupId,
+//                        0, extraData, userId);
+//                DiscussionMessageLocalServiceUtil.subscribe(themeDisplay.getUserId(),
+//                        categoryGroup.getGroupId(), threadWrapper.getCategory().getId(), threadId);
+//            }
+//        }
+//    }
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
-        checkCanView(request, "You do not have permissions to view this category", categoryGroupWrapper.getWrapped(), 0L);
+//    @ActionMapping(params = "action=unsubscribeThread")
+//    public void unsubscribeThread(ActionRequest request, ActionResponse response, @RequestParam long threadId)
+//            throws DiscussionAuthorizationException, PortalException, SystemException {
+//
+//        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+//        CategoryGroup categoryGroup = getCategoryGroup(request);
+//        checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
+//
+//        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
+//
+//        if (!themeDisplay.getUser().isDefaultUser()) {
+//            if (threadId > 0) {
+//                ActivitySubscriptionLocalServiceUtil.deleteSubscription(userId,
+//                        DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, "");
+//                DiscussionMessageLocalServiceUtil.unsubscribe(themeDisplay.getUserId(),
+//                        categoryGroup.getGroupId(), threadWrapper.getCategory().getId(), threadId);
+//            }
+//        }
+//    }
 
-        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
-
-        if (!themeDisplay.getUser().isDefaultUser()) {
-            if (threadId > 0) {
-                DiscussionMessageLocalServiceUtil.subscribe(themeDisplay.getUserId(),
-                        categoryGroupWrapper.getId(), threadWrapper.getCategory().getId(), threadId);
-            }
-        }
-    }
-
-    @ActionMapping(params = "action=unsubscribeThread")
-    public void unsubscribeThread(ActionRequest request, ActionResponse response, @RequestParam long threadId)
-            throws DiscussionAuthorizationException, PortalException, SystemException {
-
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        DiscussionCategoryGroupWrapper categoryGroupWrapper = getDiscussionCategoryGroupWrapper(request);
-        checkCanView(request, "You do not have permissions to view this category", categoryGroupWrapper.getWrapped(), 0L);
-
-        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
-
-        if (!themeDisplay.getUser().isDefaultUser()) {
-            if (threadId > 0) {
-                DiscussionMessageLocalServiceUtil.unsubscribe(themeDisplay.getUserId(),
-                        categoryGroupWrapper.getId(), threadWrapper.getCategory().getId(), threadId);
-            }
+    @Override
+    public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) throws SystemException {
+        try {
+            CommentThread thread = CommentClient.getThread(additionalId);
+            return thread.getCategory().getCategoryGroup().getGroupId()
+                    .equals(categoryGroup.getGroupId());
+        } catch (ThreadNotFoundException e) {
+            return false;
         }
     }
 
     @Override
-    public boolean getCanView(DiscussionPermissions permissions, long additionalId) throws SystemException {
-        return permissions.getCanViewThread(additionalId);
-    }
-
-    @Override
-    public boolean getCanEdit(DiscussionPermissions permissions, long additionalId) throws SystemException {
+    public boolean getCanEdit(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) throws SystemException {
         return permissions.getCanAddComment();
     }
 }

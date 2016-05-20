@@ -3,20 +3,21 @@ package org.xcolab.wrapper;
 import com.ext.portlet.NoSuchContestDiscussionException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDiscussion;
-import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
+
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.interfaces.TabPermissions;
-import org.xcolab.utils.UrlBuilder;
+
+import java.io.Serializable;
 
 import javax.portlet.PortletRequest;
-import java.io.Serializable;
 
 public class TabWrapper implements Serializable {
     private TabEnum tab;
@@ -84,23 +85,25 @@ public class TabWrapper implements Serializable {
             discussionId = ContestDiscussionLocalServiceUtil.
                     getDiscussionIdByContestIdAndTabName(contest.getContestPK(), getName());
         } catch (NoSuchContestDiscussionException e) {
-            discussionId = createNewDiscussionIdByContestIdAndTabName(contest.getContestPK(), getName());
+            discussionId = createNewDiscussionIdByContestIdAndTabName(contest, getName());
         }
         return discussionId;
     }
 
-    private Long createNewDiscussionIdByContestIdAndTabName(Long contestId, String tabName)
+    private Long createNewDiscussionIdByContestIdAndTabName(Contest contest, String tabName)
             throws SystemException, NoSuchContestDiscussionException{
 
-        DiscussionCategoryGroup newDiscussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.
-                createDiscussionCategoryGroup(ContestTypeLocalServiceUtil.getContestTypeFromContestId(contestId).getContestName() + " " + contestId + " " + tabName + " discussion");
+        long contestId = contest.getContestPK();
 
-        newDiscussionCategoryGroup.setUrl(UrlBuilder.getContestCreationTabCommentsUrl(contestId, tabName));
-        DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(newDiscussionCategoryGroup);
-        newDiscussionCategoryGroup.persist();
+        CommentThread thread = new CommentThread();
+        thread.setAuthorId(contest.getAuthorId());
+        thread.setTitle(
+                ContestTypeLocalServiceUtil.getContestTypeFromContestId(contestId).getContestName()
+                        + " " + contestId + " " + tabName + " discussion");
+        long discussionId = CommentClient.createThread(thread).getThreadId();
 
         ContestDiscussion newContestDiscussion = ContestDiscussionLocalServiceUtil.
-                createContestDiscussion(newDiscussionCategoryGroup.getId());
+                createContestDiscussion(discussionId);
 
         newContestDiscussion.setContestId(contestId);
         newContestDiscussion.setTab(tabName);

@@ -28,14 +28,6 @@
             <portlet:param name="action" value="saveScreening"/>
         </portlet:actionURL>
 
-        <portlet:actionURL var="sendEmailURL">
-            <portlet:param name="forwardToTab" value="SCREENING"/>
-            <portlet:param name="contestId" value="${contest.contestPK }"/>
-            <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-            <portlet:param name="proposalId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="sendComment"/>
-        </portlet:actionURL>
-
         <div class="judging_left">
             <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
                        commandName="fellowProposalScreeningBean">
@@ -154,13 +146,7 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-
             </form:form>
-            <c:if test="proposalsPermissions.canAdminAll">
-                <div class="addpropbox">
-                        <a style="display:block; float:right;" class="c-Button__primary requestMembershipSubmitButton" href="${sendEmailURL}">Send e-Mails</a>
-                </div>
-            </c:if>
         </div>
 
         <div class="judging_right">
@@ -169,10 +155,6 @@
                 <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}" />
             </div>
         </div>
-
-        <div style="padding-top:40px; clear:both;"></div>
-        <discussionsTagFiles:evaluationComments evaluationDiscussionId="${discussionId }"/>
-
     </div>
 
     <script type="text/javascript">

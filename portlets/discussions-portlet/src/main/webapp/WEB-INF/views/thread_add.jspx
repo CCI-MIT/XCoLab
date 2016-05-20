@@ -3,7 +3,7 @@
           xmlns:portlet="http://java.sun.com/portlet_2_0"
           version="2.0">
 
-    <!--@elvariable id="categories" type="java.util.List<org.xcolab.jspTags.discussion.wrappers.CategoryWrapper>"-->
+    <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
 
     <div class="content">
 
@@ -26,7 +26,7 @@
                         <label class="portlet-form-label">Category: <br />
                             <select class="portlet-form-field" name="categoryId">
                                 <c:forEach var="category" items="${categories}">
-                                    <option value="${category.id}">${category.title}</option>
+                                    <option value="${category.categoryId}">${category.name}</option>
                                 </c:forEach>
                             </select>
                         </label>
