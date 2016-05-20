@@ -8,7 +8,10 @@ import org.xcolab.model.tables.pojos.BalloonText;
 import org.xcolab.model.tables.records.BalloonTextRecord;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
 
+import java.util.List;
+
 import static org.xcolab.model.Tables.BALLOON_TEXT;
+
 
 @Repository
 public class BalloonTextDaoImpl implements BalloonTextDao {
@@ -25,6 +28,14 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
         }
         return record.into(BalloonText.class);
 
+    }
+
+    @Override
+    public List<BalloonText> getEnabledBalloonTexts() {
+        return dslContext.select()
+                .from(BALLOON_TEXT)
+                .where(BALLOON_TEXT.ENABLED.eq(true))
+                .fetchInto(BalloonText.class);
     }
 
     @Override

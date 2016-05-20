@@ -5,7 +5,6 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.BalloonUserTracking;
-import org.xcolab.model.tables.records.BalloonUserTrackingRecord;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.BALLOON_USER_TRACKING;
@@ -64,7 +63,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
 
     @Override
     public BalloonUserTracking create(BalloonUserTracking balloonUserTracking) {
-        BalloonUserTrackingRecord ret = this.dslContext.insertInto(BALLOON_USER_TRACKING)
+        this.dslContext.insertInto(BALLOON_USER_TRACKING)
                 .set(BALLOON_USER_TRACKING.UUID_, balloonUserTracking.getUuid_())
                 .set(BALLOON_USER_TRACKING.EMAIL, balloonUserTracking.getEmail())
                 .set(BALLOON_USER_TRACKING.PARENT, balloonUserTracking.getParent())
@@ -82,14 +81,11 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
                 .set(BALLOON_USER_TRACKING.BALLOON_LINK_UUID, balloonUserTracking.getBalloonLinkUuid())
                 .set(BALLOON_USER_TRACKING.BALLOON_LINK_CONTEXT, balloonUserTracking.getBalloonLinkContext())
                 .set(BALLOON_USER_TRACKING.USER_AGENT, balloonUserTracking.getUserAgent())
-                .returning(BALLOON_USER_TRACKING.UUID_)
-                .fetchOne();
+                .execute();
 
-        if (ret != null) {
+
             return balloonUserTracking;
-        } else {
-            return null;
-        }
+
     }
 
 }

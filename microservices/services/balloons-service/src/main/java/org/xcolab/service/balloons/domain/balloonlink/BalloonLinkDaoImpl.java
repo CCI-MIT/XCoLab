@@ -5,7 +5,6 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.BalloonLink;
-import org.xcolab.model.tables.records.BalloonLinkRecord;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.BALLOON_LINK;
@@ -16,7 +15,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
     private DSLContext dslContext;
 
     @Override
-    public BalloonLink getBallonLink(String uuid) throws NotFoundException {
+    public BalloonLink getBalloonLink(String uuid) throws NotFoundException {
 
         final Record record = dslContext.select()
                 .from(BALLOON_LINK)
@@ -28,7 +27,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
     }
 
     @Override
-    public BalloonLink getBallonLinkByUserUuid(String uuid) throws NotFoundException {
+    public BalloonLink getBalloonLinkByUserUuid(String uuid) throws NotFoundException {
 
         final Record record = dslContext.select()
                 .from(BALLOON_LINK)
@@ -46,25 +45,21 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
                 .set(BALLOON_LINK.BALLOON_USER_UUID, balloonLink.getBalloonUserUuid())
                 .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreateDate())
+                .set(BALLOON_LINK.VISITS, balloonLink.getVisits())
                 .where(BALLOON_LINK.UUID_.eq(balloonLink.getUuid_()))
                 .execute() > 0;
     }
 
     @Override
     public BalloonLink create(BalloonLink balloonLink) {
-        BalloonLinkRecord ret = this.dslContext.insertInto(BALLOON_LINK)
+        this.dslContext.insertInto(BALLOON_LINK)
                 .set(BALLOON_LINK.UUID_, balloonLink.getUuid_())
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
+                .set(BALLOON_LINK.VISITS, ((balloonLink.getVisits()==null)?(0):(balloonLink.getVisits())))
                 .set(BALLOON_LINK.BALLOON_USER_UUID, balloonLink.getBalloonUserUuid())
                 .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreateDate())
-                .returning(BALLOON_LINK.UUID_)
-                .fetchOne();
-
-        if (ret != null) {
+                .execute();
             return balloonLink;
-        } else {
-            return null;
-        }
     }
 
 }

@@ -1,8 +1,6 @@
 package org.xcolab.portlets.redballoon.utils;
 
-//import com.ext.portlet.model.BalloonLink;
-import com.ext.portlet.model.BalloonText;
-import com.ext.portlet.service.BalloonTextLocalServiceUtil;
+
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -17,6 +15,7 @@ import com.liferay.portal.util.PortalUtil;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
+import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.portlets.redballoon.BalloonCookie;
 
@@ -102,9 +101,9 @@ public class BalloonUtils {
 			}
 			
 			// pick randomly balloon text to be displayed
-			List<BalloonText> texts = BalloonTextLocalServiceUtil.getBalloonTextsEnabled(true);
+			List<BalloonText> texts = BalloonsClient.getAllEnabledBallonTexts();
 			if (! texts.isEmpty()) {
-				but.setBalloonTextId(texts.get(rand.nextInt(texts.size())).getId());
+				but.setBalloonTextId(texts.get(rand.nextInt(texts.size())).getId_());
 			}
 
 			BalloonsClient.createBalloonUserTracking(but);

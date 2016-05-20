@@ -1,5 +1,6 @@
 package org.xcolab.client.balloons;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
@@ -7,6 +8,8 @@ import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.util.RequestUtils;
 import org.xcolab.util.exceptions.EntityNotFoundException;
+
+import java.util.List;
 
 public final class BalloonsClient {
 
@@ -34,7 +37,7 @@ public final class BalloonsClient {
     public static void updateBalloonLink(BalloonLink balloonLink) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonUserTracking/" + balloonLink.getUuid_());
+                EUREKA_APPLICATION_ID + "/balloonLinks/" + balloonLink.getUuid_());
 
         RequestUtils.put(uriBuilder, balloonLink);
     }
@@ -103,12 +106,24 @@ public final class BalloonsClient {
                     "BalloonText " + id + " does not exist");
         }
     }
+
+
     public static BalloonText createBalloonText(
             BalloonText balloonText) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/balloonTexts/");
         return RequestUtils.post(uriBuilder, balloonText, BalloonText.class);
     }
+
+    public static List<BalloonText> getAllEnabledBallonTexts() {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/balloonTexts/");
+
+        return RequestUtils.getList(uriBuilder,
+                new ParameterizedTypeReference<List<BalloonText>>() {
+                });
+    }
+
     public static void updateBalloonText(BalloonText balloonText) {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +

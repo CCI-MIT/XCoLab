@@ -4,11 +4,11 @@ import org.xcolab.model.tables.pojos.BalloonLink;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
 
 public interface BalloonLinkDao {
-    BalloonLink getBallonLink(String uuid) throws NotFoundException;
+    BalloonLink getBalloonLink(String uuid) throws NotFoundException;
 
-    BalloonLink getBallonLinkByUserUuid(String uuid) throws NotFoundException;
+    BalloonLink getBalloonLinkByUserUuid(String uuid) throws NotFoundException;
 
     boolean update(BalloonLink balloonLink);
 
-    public BalloonLink create(BalloonLink balloonLink);
+    BalloonLink create(BalloonLink balloonLink);
 }

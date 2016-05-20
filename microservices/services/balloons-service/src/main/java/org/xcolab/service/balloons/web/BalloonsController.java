@@ -15,6 +15,8 @@ import org.xcolab.service.balloons.domain.balloontext.BalloonTextDao;
 import org.xcolab.service.balloons.domain.balloonusertracking.BalloonUserTrackingDao;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
 
+import java.util.List;
+
 @RestController
 public class BalloonsController {
 
@@ -33,11 +35,13 @@ public class BalloonsController {
         return this.balloonLinkDao.create(balloonLink);
     }
 
+
+
     @RequestMapping(value = "/balloonLinks/{uuid}", method = RequestMethod.PUT)
     public boolean updateBalloonLink(@RequestBody BalloonLink balloonLink,
                                              @PathVariable("uuid") String uuid) throws NotFoundException {
 
-        if ( balloonUserTrackingDao.getBallonUserTrackingByUuid(uuid) == null) {
+        if ( balloonLinkDao.getBalloonLink(uuid) == null) {
             throw new NotFoundException();
         } else {
             return balloonLinkDao.update(balloonLink);
@@ -49,7 +53,7 @@ public class BalloonsController {
         if (uuid == null) {
             throw new NotFoundException();
         } else {
-            return this.balloonLinkDao.getBallonLink(uuid);
+            return this.balloonLinkDao.getBalloonLink(uuid);
         }
     }
 
@@ -58,7 +62,7 @@ public class BalloonsController {
         if (memberUuid == null) {
             throw new NotFoundException();
         } else {
-            return this.balloonLinkDao.getBallonLinkByUserUuid(memberUuid);
+            return this.balloonLinkDao.getBalloonLinkByUserUuid(memberUuid);
         }
     }
 
@@ -118,6 +122,12 @@ public class BalloonsController {
         } else {
             return balloonTextDao.update(balloonText);
         }
+    }
+
+    @RequestMapping(value = "/balloonTexts/", method = RequestMethod.GET)
+    public List<BalloonText> getAllEnabledBalloonLinks() {
+
+        return this.balloonTextDao.getEnabledBalloonTexts();
     }
 
     @RequestMapping(value = "/balloonTexts/", method = RequestMethod.POST)

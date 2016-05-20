@@ -3,7 +3,6 @@ package org.xcolab.portlets.redballoon.web;
 //import com.ext.portlet.model.BalloonLink;
 
 //import com.ext.portlet.model.BalloonText;
-import com.ext.portlet.service.BalloonTextLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -87,7 +86,7 @@ public class BalloonController {
                 text = null;
             }
 
-            BalloonTextLocalServiceUtil.getBalloonText(but.getBalloonTextId());
+
             model.addAttribute("balloonText", text);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 

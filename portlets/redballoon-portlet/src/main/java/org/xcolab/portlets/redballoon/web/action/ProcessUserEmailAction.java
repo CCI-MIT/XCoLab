@@ -76,7 +76,7 @@ public class ProcessUserEmailAction {
 
             BalloonsClient.createBalloonLink(link);
             sendNotificationEmail(request, but, link);
-            response.sendRedirect("/socialnetworkprize2015/-/link/" + link.getUuid_());
+            response.sendRedirect(BALLOON_LINK_PATTERN+"/-/link/" + link.getUuid_());
 
         }
     }
