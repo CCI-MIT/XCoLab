@@ -1,4 +1,4 @@
-package org.xcolab.service.utils;
+package org.xcolab.service.utils.db;
 
 import com.zaxxer.hikari.HikariDataSource;
 
