@@ -153,24 +153,24 @@
                             </c:forEach>
                         </c:if>
                     </div>
-                </div>
-                <div class="p-ContestProposals__header__buttons">
-                    <c:if test="${contest.resourceArticleId > 0}">
-                        <div class="p-ContestProposals__header__detailButton">
-                            <a href="${contest.resourceArticleUrl}">Resources</a>
-                        </div>
-                    </c:if>
+                    <div class="p-ContestProposals__header__buttons">
+                        <c:if test="${contest.resourceArticleId > 0}">
+                            <div class="p-ContestProposals__header__detailButton">
+                                <a href="${contest.resourceArticleUrl}">Resources</a>
+                            </div>
+                        </c:if>
 
-                    <c:if test="${contestType.hasDiscussion}">
-                        <div class="p-ContestProposals__header__detailButton">
-                            <a href="${contest.contestUrl}/discussion">Discussion</a>
-                            <c:if test="${contest.commentsCount > 0}">
-                                <div class="p-ContestProposals__header__detailButton__count">
-                                    ${contest.commentsCount}
-                                </div>
-                            </c:if>
-                        </div>
-                    </c:if>
+                        <c:if test="${contestType.hasDiscussion}">
+                            <div class="p-ContestProposals__header__detailButton">
+                                <a href="${contest.contestUrl}/discussion">Discussion</a>
+                                <c:if test="${contest.commentsCount > 0}">
+                                    <div class="p-ContestProposals__header__detailButton__count">
+                                        ${contest.commentsCount}
+                                    </div>
+                                </c:if>
+                            </div>
+                        </c:if>
+                    </div>
                 </div>
 
                 <div class="fixed-position-inner-fixed" style="right: -32px; top: 20px;">
