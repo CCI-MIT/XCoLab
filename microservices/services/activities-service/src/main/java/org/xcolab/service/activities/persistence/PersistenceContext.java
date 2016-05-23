@@ -16,7 +16,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.xcolab.service.activities.exceptions.JOOQToSpringExceptionTransformer;
-import org.xcolab.service.utils.DataSourceUtil;
+import org.xcolab.service.utils.db.DataSourceUtil;
 
 import javax.sql.DataSource;
 
