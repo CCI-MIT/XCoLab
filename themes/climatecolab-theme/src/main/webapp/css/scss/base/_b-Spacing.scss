@@ -13,6 +13,7 @@ $b-Spacing__separatorColor: $t-Color__grey--light !default;
 
 %b-Spacing {
   &.separatorBelow {
+    padding-bottom: $b-Spacing__paddingBottom;
     border-bottom: 1px solid $b-Spacing__separatorColor;
   }
 
@@ -29,7 +30,6 @@ $b-Spacing__separatorColor: $t-Color__grey--light !default;
 .b-Spacing {
   @extend %b-Spacing;
   margin: $b-Spacing__spacing__vertical $b-Spacing__spacing__horizontal;
-  padding-bottom: $b-Spacing__paddingBottom;
 }
 
 .b-Spacing__inline {

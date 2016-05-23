@@ -1,4 +1,4 @@
-package org.xcolab.jooq;
+package org.xcolab.service.utils.db.jooq.generator;
 
 import org.jooq.tools.StringUtils;
 import org.jooq.util.DefaultGeneratorStrategy;
@@ -6,12 +6,8 @@ import org.jooq.util.Definition;
 
 public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
 
-
     private static final String[] TABLE_PREFIXES = {"xcolab_", "members_", "contest_",
             "content_", "proposal_", "comment_", "file_", "balloon_", "admin_"};
-
-    public XColabGeneratorStrategy() {
-    }
 
     private static String toUpperCase(String string) {
         if (string != null && !string.isEmpty()) {

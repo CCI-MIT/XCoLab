@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd microservices/util/jooq-config
+cd microservices/util/service-utils
 mvn clean compile package install clean
 cd ../../..
 

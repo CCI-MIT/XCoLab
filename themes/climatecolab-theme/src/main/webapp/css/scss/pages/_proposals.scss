@@ -98,29 +98,6 @@ $p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor;
   text-transform: $p-proposal__header__h1__capitalization;
 }
 
-.discussion-button-badge {
-  position: absolute;
-  right: -7px;
-  top: -6px;
-  display: inline;
-  text-align: center;
-  font: 12px Arial, Helvetica, sans-serif;
-  color: white;
-  background: $t-Color__primary--darkest;
-  padding: 0 5px;
-  margin-left: 5px;
-  @include border-radius(8px);
-}
-
-.button-wrapper {
-  position: relative;
-  display: inline-block
-}
-
-.button-wrapper .detailbutton {
-  overflow: auto;
-}
-
 /* edit proposal block */
 .edit-prop-wrap {
   border-bottom: 1px dashed #666;
