@@ -2,7 +2,6 @@ package org.xcolab.client.members;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
@@ -19,6 +18,17 @@ public final class MembersClient {
     private static final String EUREKA_APPLICATION_ID = "localhost:8080/members-service";
 
     private MembersClient() {
+    }
+
+    public static List<Member> findMembersMatching(String partialName, int maxMembers) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members")
+                        .queryParam("startRecord", 0)
+                        .queryParam("limitRecord", maxMembers)
+                        .queryParam("partialName", partialName)
+                        .queryParam("sort", "screenName");
+        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Member>>() {
+        });
     }
 
     public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
@@ -214,6 +224,28 @@ public final class MembersClient {
         return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
     }
 
+    public static Long updateUserPassword(String forgotPasswordToken, String password) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/updateForgottenPassword")
+                .queryParam("forgotPasswordToken", forgotPasswordToken)
+                .queryParam("password", password);
+        return RequestUtils.post(uriBuilder, null, Long.class);
+    }
+
+    public static boolean isForgotPasswordTokenValid(String passwordToken) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/validateForgotPasswordToken")
+                .queryParam("passwordToken", passwordToken);
+        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+    }
+
+    public static String createForgotPasswordToken(Long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/createForgotPasswordToken")
+                .queryParam("memberId", memberId );
+        return RequestUtils.getUnchecked(uriBuilder, String.class);
+    }
+
     public static String generateScreenName(String lastName, String firstName) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/generateScreenName")
@@ -232,6 +264,8 @@ public final class MembersClient {
                 .queryParam("liferayCompatible", liferayCompatible);
         return RequestUtils.getUnchecked(uriBuilder, String.class);
     }
+
+    // /members/createForgotPasswordToken
 
     public static boolean validatePassword(String password, long memberId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +

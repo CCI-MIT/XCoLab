@@ -1,8 +1,5 @@
 package org.xcolab.portlets.contestmanagement.entities;
 
-/**
- * Created by Thomas on 2/9/2015.
- */
 public class LabelStringValue {
     private String lable;
     private String value;

@@ -24,6 +24,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.xcolab.enums.MemberRole;
@@ -38,6 +39,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
 import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
@@ -180,6 +182,10 @@ public class ProposalsContextImpl implements ProposalsContext {
         String currentUrl = themeDisplay.getPortalURL() + themeDisplay.getURLCurrent();
         User currentUser = null;
 
+        HttpServletRequest httpServletRequest = ((LiferayPortletRequest) request).getHttpServletRequest();
+        String referralUrl = httpServletRequest.getHeader("Referer");
+        String userAgent = httpServletRequest.getHeader("User-Agent");
+
         try {
             currentUser = PortalUtil.getUser(request);
         } catch (SystemException | PortalException ignored) { }
@@ -189,13 +195,14 @@ public class ProposalsContextImpl implements ProposalsContext {
             try {
                 contest = ContestLocalServiceUtil.getContest(contestId);
             } catch (NoSuchContestException e) {
-                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
+                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, referralUrl, userAgent);
             }
         } else if (StringUtils.isNotBlank(contestUrlName) && contestYear > 0) {
             try {
                 contest = ContestLocalServiceUtil.getByContestUrlNameContestYear(contestUrlName, contestYear);
             } catch (NoSuchContestException e) {
-                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
+                System.out.println();
+                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, referralUrl, userAgent);
             }
         }
 
@@ -246,7 +253,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                             if (mostRecentPhaseInRequestedContest == null) {
 
                                 if (mostRecentPhaseInOtherContest == null) {
-                                    handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl);
+                                    handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, userAgent, referralUrl);
                                 } else {
                                     contestPhase = mostRecentPhaseInOtherContest;
                                     // TODO show user list if several contest are available
@@ -325,18 +332,22 @@ public class ProposalsContextImpl implements ProposalsContext {
     private final static Log _log = LogFactoryUtil.getLog(ProposalsContextImpl.class);
 
 
-    private void reportInvalidUrlToAdmins(User currentUser, String currentUrl) {
+    private void reportInvalidUrlToAdmins(User currentUser, String currentUrl, String referralUrl, String userAgent) {
         String userScreenName = "(not logged in)";
         if (Validator.isNotNull(currentUser)) {
             userScreenName = currentUser.getScreenName();
         }
 
-        new EmailToAdminDispatcher("User accessed invalid URL " + currentUrl, "<p>User " + userScreenName + " could not access URL " + currentUrl + "</p>").sendMessage();
+        String emailMessage = "<p>User <b>" + userScreenName + "</b> could not access URL: <b>" + currentUrl + "</b></p>" +
+                "<p>Referral URL: <b>" + referralUrl + "</b></p>" +
+                "<p>User agent: <b>" + userAgent + "</b></p>";
+
+        new EmailToAdminDispatcher("User accessed invalid URL " + currentUrl, emailMessage).sendMessage();
     }
 
-    private void handleAccessedInvalidUrlIdInUrl(User currentUser, String currentUrl) throws ProposalIdOrContestIdInvalidException {
+    private void handleAccessedInvalidUrlIdInUrl(User currentUser, String currentUrl, String referralUrl, String userAgent) throws ProposalIdOrContestIdInvalidException {
         if (Validator.isNotNull(currentUser)) {
-            reportInvalidUrlToAdmins(currentUser, currentUrl);
+            reportInvalidUrlToAdmins(currentUser, currentUrl, referralUrl, userAgent);
         }
 
         throw new ProposalIdOrContestIdInvalidException();

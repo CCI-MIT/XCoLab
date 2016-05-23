@@ -18,6 +18,9 @@ public enum ConfigurationAttributeKey {
 
     GOOGLE_AUTH_CLIENT_ID(AttributeType.STRING),
     GOOGLE_AUTH_CLIENT_SECRET(AttributeType.STRING),
+    FACEBOOK_APPLICATION_ID(AttributeType.STRING),
+    FACEBOOK_APPLICATION_SECRET(AttributeType.STRING),
+    FACEBOOK_VERIFIED_REQUIRED(AttributeType.BOOLEAN),
 
     MY_EMMA_ACCOUNT_ID(AttributeType.STRING),
     MY_EMMA_GROUP_ID(AttributeType.STRING),

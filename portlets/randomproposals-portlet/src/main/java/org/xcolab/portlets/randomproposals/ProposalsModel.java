@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public class ProposalsModel {
-	private RandomProposalsPreferences _preferences;
+	private final RandomProposalsPreferences _preferences;
 	private final String _baseImagePath;
 
 	private static List<ProposalWrapper> _proposals;
@@ -26,5 +26,8 @@ public class ProposalsModel {
 	public List<ProposalWrapper> getProposals(){
 		return _proposals;		
 	}
- 
+
+	public boolean getCompact() {
+		return _preferences.getCompact();
+	}
 }

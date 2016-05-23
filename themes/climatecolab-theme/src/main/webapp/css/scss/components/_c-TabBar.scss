@@ -85,6 +85,10 @@ $c-TabBar__tab--first__margin--left: 0px !default;
     background: white;
     box-shadow: $c-TabBar__tab__shadow--active;
   }
+
+  &.highlight a {
+    background-color: $t-Color__secondary;
+  }
 }
 
 .c-TabBar__tab {

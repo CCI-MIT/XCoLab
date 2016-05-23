@@ -5,14 +5,10 @@ import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.facebook.FacebookConnectUtil;
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -22,12 +18,13 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -37,9 +34,6 @@ import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URL;
 import java.util.Locale;
 
 import javax.portlet.ActionRequest;
@@ -54,9 +48,6 @@ import javax.servlet.http.HttpSession;
 public class FacebookController {
 
     private final static Log _log = LogFactoryUtil.getLog(FacebookController.class);
-
-    private static final String FB_PROFILE_PIC_URL_FORMAT_STRING =
-            "https://graph.facebook.com/%d/?fields=picture.type(large)";
 
     @RequestMapping(params = "action=initiateLogin")
     public void initiateFbLogin(ActionRequest request, ActionResponse response) throws IOException, SystemException {
@@ -76,17 +67,17 @@ public class FacebookController {
         String referrer = httpReq.getHeader("referer");
         session.setAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY, referrer);
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        String facebookAuthRedirectURL = FacebookConnectUtil.getRedirectURL(themeDisplay.getCompanyId());
-        facebookAuthRedirectURL = HttpUtil.addParameter(facebookAuthRedirectURL, "redirect",
-                HttpUtil.encodeURL(themeDisplay.getURLCurrent()));
-        String facebookAuthURL = FacebookConnectUtil.getAuthURL(themeDisplay.getCompanyId());
-        facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "client_id",
-                FacebookConnectUtil.getAppId(themeDisplay.getCompanyId()));
-        facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "redirect_uri", facebookAuthRedirectURL);
-        facebookAuthURL = HttpUtil.addParameter(facebookAuthURL, "scope", "email");
+        //TODO: potentially replace by current URL
+        String facebookAuthRedirectURL = FacebookUtil.getAuthRedirectURL(request);
 
-        response.sendRedirect(facebookAuthURL);
+        UriComponentsBuilder facebookAuthURL = UriComponentsBuilder.fromHttpUrl(
+                FacebookUtil.AUTH_URL)
+                .queryParam("client_id",
+                        ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.getStringValue())
+                .queryParam("redirect_uri", facebookAuthRedirectURL)
+                .queryParam("scope", "email");
+
+        response.sendRedirect(facebookAuthURL.build().toString());
     }
 
     @RequestMapping(params = "action=initiateRegistration")
@@ -103,7 +94,6 @@ public class FacebookController {
 
     @RequestMapping(params = "action=fbCallback")
     public void fbCallback(ActionRequest request, ActionResponse response) throws Exception {
-
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
@@ -111,17 +101,16 @@ public class FacebookController {
 
         session.removeAttribute(SSOKeys.SSO_OPENID_ID);
 
-        String redirectUrl = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        String redirectUrl = (String) session
+                .getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
         if (Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) {
             redirectUrl = themeDisplay.getURLHome();
         }
 
-        String redirect = ParamUtil.getString(request, "redirect");
         String code = ParamUtil.getString(request, "code");
-        String token = FacebookConnectUtil.getAccessToken(themeDisplay.getCompanyId(), redirect, code);
+        String token = FacebookUtil.getAccessToken(request, code);
 
-        JSONObject jsonObject = FacebookConnectUtil.getGraphResources(
-                themeDisplay.getCompanyId(), "/me", token,
+        JSONObject jsonObject = FacebookUtil.getGraphResources("/me", token,
                 "id,email,first_name,last_name,gender,verified,location,locale");
 
         if ((jsonObject == null) || (jsonObject.getJSONObject("error") != null)) {
@@ -131,18 +120,20 @@ public class FacebookController {
             return;
         }
 
-        if (FacebookConnectUtil.isVerifiedAccountRequired(themeDisplay.getCompanyId()) && !jsonObject
-                .getBoolean("verified")) {
+        if (ConfigurationAttributeKey.FACEBOOK_VERIFIED_REQUIRED.getBooleanValue()
+                && !jsonObject.getBoolean("verified")) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("SSO", "general");
             request.setAttribute("error", "Verified account required.");
             return;
         }
 
-        User user = null;
+        User liferayUser = null;
 
         long facebookId = jsonObject.getLong("id");
-        String fbProfilePictureURL = String.format(FB_PROFILE_PIC_URL_FORMAT_STRING, facebookId);
+        String fbProfilePictureURL = String
+                .format(FacebookUtil.FB_PROFILE_PIC_URL_FORMAT_STRING, facebookId);
+
 
         PortletSession portletSession = request.getPortletSession();
 
@@ -152,14 +143,14 @@ public class FacebookController {
                     PortletSession.APPLICATION_SCOPE);
 
             try {
-                user = UserLocalServiceUtil.getUserByFacebookId(themeDisplay.getCompanyId(), facebookId);
+                liferayUser = UserLocalServiceUtil.getUserByFacebookId(themeDisplay.getCompanyId(), facebookId);
 
-                String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
+                String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
-                    ImageUploadUtils.updateProfilePicture(user, realPictureURLString);
+                    ImageUploadUtils.updateProfilePicture(liferayUser, realPictureURLString);
                 }
 
-                LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
+                LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
             } catch (NoSuchUserException ignored) {
@@ -170,20 +161,20 @@ public class FacebookController {
 
         // if email matches -> autologin
         String emailAddress = jsonObject.getString("email");
-        if ((user == null) && Validator.isNotNull(emailAddress)) {
+        if ((liferayUser == null) && Validator.isNotNull(emailAddress)) {
             try {
-                user = UserLocalServiceUtil.getUserByEmailAddress(
+                liferayUser = UserLocalServiceUtil.getUserByEmailAddress(
                         themeDisplay.getCompanyId(), emailAddress);
-                updateUserWithFBId(user, facebookId);
+                updateUserWithFBId(liferayUser, facebookId);
 
-                String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
+                String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
-                    ImageUploadUtils.updateProfilePicture(user, realPictureURLString);
+                    ImageUploadUtils.updateProfilePicture(liferayUser, realPictureURLString);
                 }
 
-                updateUserAccountInformation(user, jsonObject);
+                updateUserAccountInformation(liferayUser, jsonObject);
 
-                LoginLogLocalServiceUtil.createLoginLog(user, httpReq.getRemoteAddr(), redirectUrl);
+                LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
             } catch (NoSuchUserException ignored) {
@@ -219,9 +210,10 @@ public class FacebookController {
 
         // Get the FB image url
         if (facebookId > 0) {
-            String realPictureURLString = getFacebookPictureURLString(fbProfilePictureURL);
+            String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
             if (realPictureURLString != null) {
-                long imageId = ImageUploadUtils.linkProfilePicture(getFacebookPictureURLString(fbProfilePictureURL));
+                long imageId = ImageUploadUtils.linkProfilePicture(
+                        FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL));
                 portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId),
                         PortletSession.APPLICATION_SCOPE);
             }
@@ -272,26 +264,6 @@ public class FacebookController {
     private void updateUserWithFBId(User u, long fbId) throws SystemException, PortalException {
         u.setFacebookId(fbId);
         UserLocalServiceUtil.updateUser(u);
-    }
-
-    /**
-     * Get the real image URL
-     */
-    private String getFacebookPictureURLString(String fbProfilePictureURL) {
-        try {
-            // Get real facebook image URL
-            InputStream is = new URL(fbProfilePictureURL).openStream();
-            StringWriter writer = new StringWriter();
-            IOUtils.copy(is, writer, "UTF-8");
-            String json = writer.toString();
-
-            JSONObject fbJson = JSONFactoryUtil.createJSONObject(json);
-            return fbJson.getJSONObject("picture").getJSONObject("data").getString("url");
-        } catch (JSONException | IOException e) {
-            _log.error("Error while getting facebook picture url", e);
-        }
-
-        return null;
     }
 
     private void updateUserAccountInformation(User user, JSONObject jsonObject) throws SystemException {

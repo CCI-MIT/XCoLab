@@ -8,16 +8,17 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.ReadOnlyException;
-import javax.portlet.ValidatorException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.ValidatorException;
 
 public class RandomProposalsPreferences {
     private final static String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";
@@ -26,12 +27,14 @@ public class RandomProposalsPreferences {
     private final static String FEED_SIZE_PREFERENCE = "FEED_SIZE";
     private final static String ALL_PROPOSALS_TITLE = "ALL_PROPOSALS_TITLE";
     private final static String ALL_PROPOSALS_URL = "ALL_PROPOSALS_URL";
+    private final static String IS_COMPACT = "IS_COMPACT";
 
     private Long[] selectedPhases;
     private Long[] flagFilters;
     private String flagFiltersStr;
     private String title;
     private Integer feedSize;
+    private Boolean isCompact;
     private String allProposalsUrl;
     private String allProposalsTitle;
 
@@ -61,6 +64,7 @@ public class RandomProposalsPreferences {
         allProposalsTitle = prefs.getValue(ALL_PROPOSALS_TITLE, "see all finalists");
         allProposalsUrl = prefs.getValue(ALL_PROPOSALS_URL,
                 "/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2#Vote");
+        isCompact = Boolean.parseBoolean(prefs.getValue(IS_COMPACT, "false"));
         try {
             feedSize = Integer.parseInt(prefs.getValue(FEED_SIZE_PREFERENCE, "4"));
         } catch (NumberFormatException e) {
@@ -79,6 +83,7 @@ public class RandomProposalsPreferences {
         prefs.setValue(FEED_SIZE_PREFERENCE, feedSize+"");
         prefs.setValue(ALL_PROPOSALS_TITLE, allProposalsTitle);
         prefs.setValue(ALL_PROPOSALS_URL, allProposalsUrl);
+        prefs.setValue(IS_COMPACT, Boolean.toString(isCompact));
 
         prefs.store();
         
@@ -189,5 +194,13 @@ public class RandomProposalsPreferences {
 
     public void setAllProposalsUrl(String allProposalsUrl) {
         this.allProposalsUrl = allProposalsUrl;
+    }
+
+    public Boolean getCompact() {
+        return isCompact;
+    }
+
+    public void setCompact(Boolean compact) {
+        isCompact = compact;
     }
 }

@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.ContestEmailTemplate;
+import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 import org.xcolab.service.admin.service.EmailTemplateService;
 
 import java.util.List;
@@ -17,32 +19,31 @@ public class EmailTemplateController {
     @Autowired
     private EmailTemplateService emailTemplateService;
 
+    @Autowired
+    private EmailTemplateDao emailTemplateDao;
+
     @RequestMapping(value = "/emailTemplates", method = RequestMethod.GET)
     public List<ContestEmailTemplate> listEmailTemplates() {
 
-        return this.emailTemplateService.listAllEmailTemplate();
+        return this.emailTemplateDao.listAllEmailTemplates();
     }
 
     @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.GET)
     public ContestEmailTemplate getEmailTemplates(@PathVariable("emailTemplateType") String emailTemplateType) {
-        return this.emailTemplateService.getEmailTemplate(emailTemplateType);
+        return this.emailTemplateDao.getEmailTemplate(emailTemplateType);
     }
 
-    @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.POST)
-    public String updateEmailTemplates(@RequestBody ContestEmailTemplate contestEmailTemplate,
+    @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.PUT)
+    public boolean updateEmailTemplates(@RequestBody ContestEmailTemplate contestEmailTemplate,
                                        @PathVariable("emailTemplateType") String emailTemplateType) {
-        if (this.emailTemplateService.getEmailTemplate(emailTemplateType) != null) {
-            this.emailTemplateService.updateEmailTemplate(contestEmailTemplate);
-            return "Email template updated successfully";
-        } else {
-            return "Email template not found";
-        }
+        return this.emailTemplateDao.getEmailTemplate(emailTemplateType) != null
+                && emailTemplateDao.updateEmailTemplate(contestEmailTemplate);
     }
 
-    @RequestMapping(value = "/emailTemplates", method = RequestMethod.PUT)
+    @RequestMapping(value = "/emailTemplates", method = RequestMethod.POST)
     public ContestEmailTemplate createEmailTemplates(@RequestBody ContestEmailTemplate contestEmailTemplate) {
-        this.emailTemplateService.createEmailTemplate(contestEmailTemplate);
-        return this.emailTemplateService.getEmailTemplate(contestEmailTemplate.getType_());
+        emailTemplateDao.createEmailTemplate(contestEmailTemplate);
+        return emailTemplateDao.getEmailTemplate(contestEmailTemplate.getType_());
     }
 
     @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.DELETE)

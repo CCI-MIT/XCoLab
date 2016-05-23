@@ -49,8 +49,6 @@ create index IX_D97B920F on xcolab_ContestPhaseColumn (ContestPhasePK);
 
 create index IX_E1468F04 on xcolab_ContestTeamMember (contestId);
 
-create index IX_CCF81B65 on xcolab_ContestTeamMemberRole (contestTeamMemberId);
-
 create index IX_8526458A on xcolab_DiscussionCategory (categoryGroupId);
 create index IX_306B69EF on xcolab_DiscussionCategory (categoryId);
 

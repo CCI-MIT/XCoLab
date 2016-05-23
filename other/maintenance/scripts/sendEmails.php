@@ -1,7 +1,7 @@
 <?php
 require 'jsonwrapper.php';
 
-$c = mysqli_connect("127.0.0.1", "ColabMaintenance", 'xcolab', "ColabMaintenance") or die(mysqli_error($c));
+$c = mysqli_connect("127.0.0.1", "ColabMaintenance", 'ColabMainten234234ance__', "ColabMaintenance") or die(mysqli_error($c));
         $r = mysqli_query($c, "select * from email;") or die(mysqli_error($c));
 
 while ($row = mysqli_fetch_row($r)) {

@@ -56,7 +56,7 @@
                                                         <img src="${themeDisplay.pathThemeImages}/icon_question-x.png" class="review-status-icon"/>
                                                     </c:when>
                                                     <c:when test="${judgeReviewStatus.statusValue eq 2}">
-                                                        <img src="${themeDisplay.pathThemeImages}/images/icon_question-chk.png" class="review-status-icon"/>
+                                                        <img src="${themeDisplay.pathThemeImages}/icon_question-chk.png" class="review-status-icon"/>
                                                     </c:when>
                                                 </c:choose>
                                             </judging:judgeReviewStatus>
@@ -122,11 +122,10 @@
                     <form:errors path="*" cssClass="c-Alert c-Alert__error" />
 
                     <h3 style="margin-top: 0;">My Rating</h3>
-                    <i>Your rating will be visible to the Judging team only.</i>
                     <c:choose>
                         <c:when test="${proposalsPermissions.canFellowActions}">
                             <p>
-                                This is individualized for each Fellow and will be used for research purposes. Your comment (but not your rating) will be seen by other Fellows and Judges.
+                                This section is individualized for each Fellow and will be used for Climate CoLab's research purposes. Other Fellows and Judges will be able to see your comment (but not your rating) once all evaluations are submitted.
                             </p>
 
                             <div style="float: left; padding-left: 30px;"><h5>Least (1)</h5></div> <div style="text-align: right; padding-right: 30px;"><h5>Most (4)</h5></div>
