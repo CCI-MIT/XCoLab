@@ -2,8 +2,6 @@ package org.xcolab.service.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import javax.sql.DataSource;
-
 public final class DataSourceUtil {
 
     private static final int MAX_POOL_SIZE = 10;
@@ -15,8 +13,8 @@ public final class DataSourceUtil {
     private DataSourceUtil() {
     }
 
-    public static DataSource getConfiguredDataSource(String driverClassName, String databaseUrl,
-            String databaseUsername, String databasePassword) {
+    public static HikariDataSource getConfiguredDataSource(String driverClassName,
+            String databaseUrl, String databaseUsername, String databasePassword) {
 
         final HikariDataSource dataSource = new HikariDataSource();
 
