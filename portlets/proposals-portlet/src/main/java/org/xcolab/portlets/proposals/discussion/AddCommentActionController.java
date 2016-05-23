@@ -15,6 +15,8 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.jspTags.discussion.actions.AddDiscussionMessageActionController;
@@ -41,6 +43,9 @@ public class AddCommentActionController extends AddDiscussionMessageActionContro
                     ActivityUtil.getExtraDataForIds(thread.getCategoryId(),
                             thread.getThreadId(),
                             comment.getCommentId()), 0);
+
+            ActivityEntryHelper.createActivityEntry(userId, comment.getCommentId(),null,
+                    new DiscussionAddProposalCommentActivityEntry());
         }
     }
 }
