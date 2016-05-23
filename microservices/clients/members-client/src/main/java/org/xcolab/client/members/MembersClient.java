@@ -20,6 +20,17 @@ public final class MembersClient {
     private MembersClient() {
     }
 
+    public static List<Member> findMembersMatching(String partialName, int maxMembers) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members")
+                        .queryParam("startRecord", 0)
+                        .queryParam("limitRecord", maxMembers)
+                        .queryParam("partialName", partialName)
+                        .queryParam("sort", "screenName");
+        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Member>>() {
+        });
+    }
+
     public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstMember, int lastMember) {
 

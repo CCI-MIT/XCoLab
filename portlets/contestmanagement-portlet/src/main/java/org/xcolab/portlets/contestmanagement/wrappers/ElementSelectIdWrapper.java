@@ -4,9 +4,6 @@ import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 
 import java.util.List;
 
-/**
- * Created by Thomas on 3/24/2015.
- */
 public class ElementSelectIdWrapper {
 
     private List<LabelValue> selectionItems;

@@ -11,7 +11,7 @@ public interface EmailTemplateDao {
 
     ContestEmailTemplate getEmailTemplate(String emailTemplateId);
 
-    void updateEmailTemplate(ContestEmailTemplate contestEmailTemplate);
+    boolean updateEmailTemplate(ContestEmailTemplate contestEmailTemplate);
 
     void createEmailTemplate(ContestEmailTemplate contestEmailTemplate);
 }

@@ -45,7 +45,7 @@ public class StaffMembersPreferences implements Serializable {
         categories.put(13, "Catalysts");
         categories.put(14, "Fellows 2015");
         categories.put(15, "Impact Assessment Fellows 2015");
-
+        categories.put(16, "Fellows 2016");
     }
 
     public static Map<Integer, String> getCategories() {

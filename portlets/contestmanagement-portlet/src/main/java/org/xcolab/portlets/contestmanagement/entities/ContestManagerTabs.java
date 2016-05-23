@@ -8,9 +8,6 @@ import org.xcolab.interfaces.TabPermissions;
 
 import javax.portlet.PortletRequest;
 
-/**
- * Created by Thomas on 2/9/2015.
- */
 public enum ContestManagerTabs implements TabEnum {
     OVERVIEW("Contests overview", "Contests", TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
@@ -18,6 +15,8 @@ public enum ContestManagerTabs implements TabEnum {
     SCHEDULES("Schedules", "schedule", TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     PROPOSALTEMPLATES("Proposal Templates", "template", TabPermissionAlgorithm.adminOnlyViewAndEdit,
+            TabActivityCountAlgorithm.alwaysZero),
+    EMAIL_TEMPLATES("Email Templates", "emailTemplate", TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero);
 
     private final String displayName;

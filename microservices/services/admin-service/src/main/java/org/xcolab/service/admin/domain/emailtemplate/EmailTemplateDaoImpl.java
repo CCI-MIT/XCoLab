@@ -29,14 +29,14 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
                 .fetchOneInto(ContestEmailTemplate.class);
     }
     @Override
-    public void updateEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
-         this.dslContext.update(CONTEST_EMAIL_TEMPLATE)
+    public boolean updateEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
+         return dslContext.update(CONTEST_EMAIL_TEMPLATE)
                 .set(CONTEST_EMAIL_TEMPLATE.TYPE_, contestEmailTemplate.getType_())
                 .set(CONTEST_EMAIL_TEMPLATE.SUBJECT, contestEmailTemplate.getSubject())
                 .set(CONTEST_EMAIL_TEMPLATE.HEADER, contestEmailTemplate.getHeader())
                 .set(CONTEST_EMAIL_TEMPLATE.FOOTER, contestEmailTemplate.getFooter())
                 .where(CONTEST_EMAIL_TEMPLATE.TYPE_.equal(contestEmailTemplate.getType_()))
-                .execute();
+                .execute() > 0;
     }
     @Override
     public void createEmailTemplate(ContestEmailTemplate contestEmailTemplate) {

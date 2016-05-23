@@ -54,6 +54,15 @@
 				<form:input path="allProposalsUrl" />
 			</td>
 		</tr>
+
+		<tr>
+			<td>
+				Compact display (text only)
+			</td>
+			<td>
+				<form:checkbox path="compact" />
+			</td>
+		</tr>
 	
 		<tr>
 			<td>

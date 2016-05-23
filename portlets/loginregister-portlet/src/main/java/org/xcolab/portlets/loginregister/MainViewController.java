@@ -69,6 +69,7 @@ import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -113,8 +114,11 @@ public class MainViewController {
         if (redirect == null || redirect.trim().isEmpty()) {
             redirect = httpRequest.getParameter("redirect");
             if (redirect == null) {
-                redirect = PortalUtil.getHttpServletRequest(request).getHeader(
-                        "referer");
+                HttpSession session = httpRequest.getSession();
+                redirect = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+            }
+            if (redirect == null) {
+                redirect = PortalUtil.getHttpServletRequest(request).getHeader("referer");
             }
         }
         if (themeDisplay.isSignedIn()) {

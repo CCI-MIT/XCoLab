@@ -2,10 +2,8 @@ package org.xcolab.service.admin.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xcolab.model.tables.pojos.ContestEmailTemplate;
-import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 
-import java.util.List;
+import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 
 @Service
 public class EmailTemplateService {
@@ -16,21 +14,4 @@ public class EmailTemplateService {
     public EmailTemplateService(EmailTemplateDao emailTemplateDao) {
         this.emailTemplateDao = emailTemplateDao;
     }
-
-    public List<ContestEmailTemplate> listAllEmailTemplate() {
-        return this.emailTemplateDao.listAllEmailTemplates();
-    }
-
-    public ContestEmailTemplate getEmailTemplate(String emailTemplateId) {
-        return this.emailTemplateDao.getEmailTemplate(emailTemplateId);
-    }
-
-    public void createEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
-        this.emailTemplateDao.createEmailTemplate(contestEmailTemplate);
-    }
-
-    public void updateEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
-        this.emailTemplateDao.updateEmailTemplate(contestEmailTemplate);
-    }
-
 }

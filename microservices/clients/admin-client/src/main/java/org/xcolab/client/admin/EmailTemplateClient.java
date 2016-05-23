@@ -38,6 +38,12 @@ public final class EmailTemplateClient {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/emailTemplates/" + contestEmailTemplate.getType_() + "");
-        RequestUtils.post(uriBuilder, contestEmailTemplate, String.class);
+        RequestUtils.put(uriBuilder, contestEmailTemplate);
+    }
+
+    public static ContestEmailTemplate createEmailTemplate(ContestEmailTemplate template) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/emailTemplates");
+        return RequestUtils.post(uriBuilder, template, ContestEmailTemplate.class);
     }
 }

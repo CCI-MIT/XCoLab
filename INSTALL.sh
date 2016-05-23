@@ -37,11 +37,11 @@ fi
 if [[ "$_mysql" ]]; then
     version=$("$_mysql" --version 2>&1 | awk -F ' ' '{print $5}' | awk -F ',' '{print $1}')
     echo "[INFO] MySQL Version" "$version"
-    if [[ "$version" > "5.0" ]]; then
-        echo "[INFO] MySQL version is sufficient (>5.0)"
+    if [[ "$version" > "5.6" ]]; then
+        echo "[INFO] MySQL version is sufficient (>5.6)"
 	echo "[WARN] If you experience problems with your database please download the correct JDBC driver for your MySQL version from: http://dev.mysql.com/downloads/connector/j/"
     else         
-        echo "[ERROR] MySQL version is below 5.0. Please make sure MySQL 5.0 is installed and set up in PATH."
+        echo "[ERROR] MySQL version is below 5.6. Please make sure MySQL 5.6 is installed and set up in PATH."
 	exit 0
     fi
 fi
@@ -82,6 +82,10 @@ cd ../..
 cd microservices/services
 mvn install -N
 cd ../..
+
+cd microservices/util
+mvn install -N
+cd ../../..
 
 cd microservices/util/xcolab-utils
 mvn clean compile package install clean
