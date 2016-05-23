@@ -1,8 +1,6 @@
-package org.xcolab.service.utils;
+package org.xcolab.service.utils.db;
 
 import com.zaxxer.hikari.HikariDataSource;
-
-import javax.sql.DataSource;
 
 public final class DataSourceUtil {
 
@@ -15,8 +13,8 @@ public final class DataSourceUtil {
     private DataSourceUtil() {
     }
 
-    public static DataSource getConfiguredDataSource(String driverClassName, String databaseUrl,
-            String databaseUsername, String databasePassword) {
+    public static HikariDataSource getConfiguredDataSource(String driverClassName,
+            String databaseUrl, String databaseUsername, String databasePassword) {
 
         final HikariDataSource dataSource = new HikariDataSource();
 

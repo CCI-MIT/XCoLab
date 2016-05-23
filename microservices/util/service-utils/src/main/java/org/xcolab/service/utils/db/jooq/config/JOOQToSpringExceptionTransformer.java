@@ -1,4 +1,4 @@
-package org.xcolab.service.admin.exceptions;
+package org.xcolab.service.utils.db.jooq.config;
 
 import org.jooq.ExecuteContext;
 import org.jooq.SQLDialect;
@@ -7,7 +7,7 @@ import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 
-public class JOOQToSpringExceptionTransformer extends DefaultExecuteListener {
+public class JooqToSpringExceptionTransformer extends DefaultExecuteListener {
 
     private static final long serialVersionUID = 112390128309L;
 

@@ -1,29 +1,30 @@
-<jsp:root
-        xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
         xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-        version="2.0" >
+        xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0" >
 
     <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
 
 	<jsp:directive.attribute name="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper" required="true" rtexprvalue="true" description="Contest" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
-	<div class="contestbox" style="${ (index % 2 == 0) ? 'margin-right: 25px;' : ''}">
-		<div class="img-wrap">
+	<div class="c-ContestBox" style="${ (index % 2 == 0) ? 'margin-right: 25px;' : ''}">
+		<div class="c-ContestBox__image">
         	<a href="${contest.contestUrl}">
             	<img src="/image/contest?img_id=${contest.contestLogoId}" width="151" height="151" alt="${contest.contestShortName }" />
             </a>
         </div>
-        <div class="text-wrap">
-			<h3>
+        <div class="c-ContestBox__text">
+			<h3 class="c-ContestBox__text__title">
             	<collab:contestLink contest="${contest}" />
             </h3>
             ${contest.contestName }
-            <div class="count">
+        </div>
+
+        <div class="c-ContestBox__meta">
+            <div class="c-ContestBox__meta__count">
                 <div class="prop"><strong>${contest.proposalsCount}</strong>
                     <c:choose>
                         <c:when test="${contest.proposalsCount == 1}">
-                         ${contestType.proposalName}</c:when>
+                            ${contestType.proposalName}</c:when>
                         <c:otherwise> ${contestType.proposalNamePlural}</c:otherwise>
                     </c:choose>
                 </div>
@@ -50,27 +51,27 @@
                     </c:otherwise>
                 </c:choose>
 
-			</div>
-        </div>
+            </div>
 
-        <c:if test="${contest.flag ge 0}">
-            <c:choose>
-                <c:when test="${not empty contest.flagText and contest.flag == 1}">
-                    <div class="contest-flag-color"> ${contest.flagText} </div>
-                </c:when>
-                <c:when test="${not empty contest.flagText and contest.flag == 2}">
-                    <div class="contest-flag-grey"> ${contest.flagText} </div>
-                </c:when>
-                <c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
-                    <div class="contest-flag-grey" style="font-size: 13px;"> Winners to be announced </div>
-                </c:when>
-                <c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
-                    <div class="contest-flag-grey"> ${contest.activePhase.name} </div>
-                </c:when>
-                <c:when test='${not empty contest.activePhase.status}'>
-                    <div class="contest-flag-color"> ${contest.activePhase.name} </div>
-                </c:when>
-            </c:choose>
-        </c:if>
+            <c:if test="${contest.flag ge 0}">
+                <c:choose>
+                    <c:when test="${not empty contest.flagText and contest.flag == 1}">
+                        <div class="c-ContestBox__meta__flag--color"> ${contest.flagText} </div>
+                    </c:when>
+                    <c:when test="${not empty contest.flagText and contest.flag == 2}">
+                        <div class="c-ContestBox__meta__flag--grey"> ${contest.flagText} </div>
+                    </c:when>
+                    <c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
+                        <div class="c-ContestBox__meta__flag--grey" style="font-size: 13px;"> Winners to be announced </div>
+                    </c:when>
+                    <c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
+                        <div class="c-ContestBox__meta__flag--grey"> ${contest.activePhase.name} </div>
+                    </c:when>
+                    <c:when test='${not empty contest.activePhase.status}'>
+                        <div class="c-ContestBox__meta__flag--color"> ${contest.activePhase.name} </div>
+                    </c:when>
+                </c:choose>
+            </c:if>
+        </div>
      </div> <!-- /contestbox -->
 </jsp:root>

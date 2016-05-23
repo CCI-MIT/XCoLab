@@ -25,22 +25,8 @@
         <module>members-service</module>
     </modules>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-        <jooq.version>3.8.1</jooq.version>
-        <mysqlConnector.version>5.1.38</mysqlConnector.version>
-        <spring.version>4.2.6.RELEASE</spring.version>
-        <spring.boot.version>1.3.5.RELEASE</spring.boot.version>
-    </properties>
-
     <dependencies>
         <!-- database dependencies -->
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq</artifactId>
-            <version>${jooq.version}</version>
-        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -58,11 +44,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>
@@ -91,7 +72,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka-server</artifactId>
-            <version>1.1.0.RELEASE</version>
+            <version>${spring.cloud.version}</version>
         </dependency>
 
         <!-- common dependencies -->
@@ -152,8 +133,8 @@
                     </dependency>
                     
                     <dependency>
-                        <groupId>org.xcolab.microservices</groupId>
-                        <artifactId>jooq-config</artifactId>
+                        <groupId>org.xcolab</groupId>
+                        <artifactId>service-utils</artifactId>
                         <version>1.0-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
@@ -192,7 +173,7 @@
                             <directory>target/generated-sources/jooq</directory>
                         </target>
                         <strategy>
-                            <name>org.xcolab.jooq.XColabGeneratorStrategy</name>
+                            <name>org.xcolab.service.utils.db.jooq.generator.XColabGeneratorStrategy</name>
                         </strategy>
                     </generator>
                 </configuration>

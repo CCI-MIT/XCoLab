@@ -43,7 +43,8 @@ $b-Typography__textColor__h1: $t-Color__grey--darkest !default;
 $b-Typography__textColor__a: $t-Color__primary !default;
 $b-Typography__textColor__a--isHover: black !default;
 
-$b-Typography__textDecoration__a: none !important !default;
+$b-Typography__textDecoration__a: none !default;
+$b-Typography__textDecoration__a--hover: none !default;
 
 $b-Typography__margin__p: 0 0 20px 0 !default;
 
@@ -107,6 +108,7 @@ a {
 
 a:hover {
   color: $b-Typography__textColor__a--isHover;
+  text-decoration: $b-Typography__textDecoration__a--hover;
 }
 
 .lowercase {
