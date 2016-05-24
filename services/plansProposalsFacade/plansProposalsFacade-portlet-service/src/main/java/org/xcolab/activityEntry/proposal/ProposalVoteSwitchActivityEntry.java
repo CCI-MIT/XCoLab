@@ -4,8 +4,8 @@ public class ProposalVoteSwitchActivityEntry extends ProposalBaseActivityEntry {
 
 
     @Override
-    public Integer getSecondaryType() {
-        return 5;
+    public Long getSecondaryType() {
+        return ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId();
     }
 
     @Override

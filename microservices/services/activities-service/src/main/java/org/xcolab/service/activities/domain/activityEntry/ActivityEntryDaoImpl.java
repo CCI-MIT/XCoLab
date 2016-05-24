@@ -2,6 +2,7 @@ package org.xcolab.service.activities.domain.activityEntry;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -59,5 +60,24 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
         return query.fetchInto(ActivityEntry.class);
+    }
+
+    public Integer findByGivenCount(Long memberId, List<Long> memberIdsToExclude) {
+
+        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
+                .from(ACTIVITY_ENTRY)
+                .getQuery();
+
+        if (memberId != null) {
+            query.addConditions(ACTIVITY_ENTRY.MEMBER_ID.eq(memberId));
+        }
+
+        if (memberIdsToExclude != null) {
+            query.addConditions(ACTIVITY_ENTRY.MEMBER_ID.notIn(memberIdsToExclude));
+        }
+
+        query.addOrderBy(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID.desc());
+
+        return query.fetchOne(0, Integer.class);
     }
 }

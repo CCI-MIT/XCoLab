@@ -3,11 +3,9 @@ package org.xcolab.activityEntry.discussion;
 public class DiscussionForumCommentAddedActivityEntry extends DiscussionBaseActivityEntry {
 
 
-
-
     @Override
-    public Integer getSecondaryType() {
-        return 4;
+    public Long getSecondaryType() {
+        return DiscussionActivitySubType.DISCUSSION_FORUM_COMMENT.getSecondaryTypeId();
     }
 
     @Override

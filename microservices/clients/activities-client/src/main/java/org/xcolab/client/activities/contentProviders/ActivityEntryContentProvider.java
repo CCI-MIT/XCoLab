@@ -4,9 +4,9 @@ import org.xcolab.client.activities.pojo.ActivityEntry;
 
 public interface ActivityEntryContentProvider {
 
-    Integer getPrimaryType();
+    Long getPrimaryType();
 
-    Integer getSecondaryType();
+    Long getSecondaryType();
 
     String getBody();
 

@@ -4,8 +4,8 @@ public class ProposalSupporterRemovedActivityEntry extends ProposalBaseActivityE
 
 
     @Override
-    public Integer getSecondaryType() {
-        return 9;
+    public Long getSecondaryType() {
+        return ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId();
     }
 
     @Override

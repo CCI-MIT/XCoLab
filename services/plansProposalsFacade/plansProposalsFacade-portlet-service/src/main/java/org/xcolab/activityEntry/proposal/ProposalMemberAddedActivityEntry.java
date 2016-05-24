@@ -4,8 +4,8 @@ public class ProposalMemberAddedActivityEntry extends ProposalBaseActivityEntry{
 
 
     @Override
-    public Integer getSecondaryType() {
-        return 6;
+    public Long getSecondaryType() {
+        return ProposalActivitySubType.PROPOSAL_MEMBER_ADDED.getSecondaryTypeId();
     }
 
     @Override

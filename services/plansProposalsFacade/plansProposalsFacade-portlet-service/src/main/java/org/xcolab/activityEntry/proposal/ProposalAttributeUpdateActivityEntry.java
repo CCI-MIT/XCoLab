@@ -4,8 +4,8 @@ public class ProposalAttributeUpdateActivityEntry extends ProposalBaseActivityEn
 
 
     @Override
-    public Integer getSecondaryType() {
-        return 1;
+    public Long getSecondaryType() {
+        return ProposalActivitySubType.PROPOSAL_ATTRIBUTE_UPDATE.getSecondaryTypeId();
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -62,12 +63,24 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
     }
 
     @Override
-    public Integer getPrimaryType() {
-        return 01;
-    } //TODO: EXTRACT VARIABLE TO ENUM
+    public Long getPrimaryType() {
+        return ActivityEntryType.MEMBER.getPrimaryTypeId();
+    }
 
     @Override
-    public Integer getSecondaryType() {
-        return 01;
-    }//TODO: EXTRACT VARIABLE TO ENUM
+    public Long getSecondaryType() {
+        return MemberSubActivityType.MEMBER_JOINED.getSecondaryTypeId();
+    }
+
+    public enum MemberSubActivityType{
+        MEMBER_JOINED(1l);
+        private final Long secondaryTypeId;
+        MemberSubActivityType(Long type) {
+            this.secondaryTypeId = type;
+        }
+
+        public Long getSecondaryTypeId(){
+            return this.secondaryTypeId;
+        }
+    }
 }

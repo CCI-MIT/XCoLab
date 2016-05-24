@@ -5,8 +5,8 @@ public class DiscussionAddProposalCommentActivityEntry extends DiscussionBaseAct
 
 
     @Override
-    public Integer getSecondaryType() {
-        return 1;
+    public Long getSecondaryType() {
+        return DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId();
     }
 
     @Override

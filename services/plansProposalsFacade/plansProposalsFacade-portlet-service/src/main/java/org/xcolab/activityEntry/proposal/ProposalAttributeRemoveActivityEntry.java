@@ -4,8 +4,8 @@ public class ProposalAttributeRemoveActivityEntry extends ProposalBaseActivityEn
 
 
     @Override
-    public Integer getSecondaryType() {
-        return 2;
+    public Long getSecondaryType() {
+        return ProposalActivitySubType.PROPOSAL_ATTRIBUTE_REMOVED.getSecondaryTypeId();
     }
 
     @Override

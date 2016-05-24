@@ -3,8 +3,8 @@ package org.xcolab.activityEntry.discussion;
 public class DiscussionCategoryAddedActivityEntry extends DiscussionBaseActivityEntry {
 
     @Override
-    public Integer getSecondaryType() {
-        return 2;
+    public Long getSecondaryType() {
+        return DiscussionActivitySubType.DISCUSSION_CATEGORY_ADDED.getSecondaryTypeId();
     }
     @Override
     public String getBody() {

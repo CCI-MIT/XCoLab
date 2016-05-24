@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
@@ -54,8 +55,8 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
     }
     @Override
-    public Integer getPrimaryType() {
-        return 02;////TODO: EXTRACT VARIABLE TO ENUM
+    public Long getPrimaryType() {
+        return ActivityEntryType.PROPOSOSAL.getPrimaryTypeId();
     }
 
 
@@ -96,6 +97,28 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
     }
     private String getProposalLink(){
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, rawProposal);
+    }
+
+    public enum ProposalActivitySubType{
+        PROPOSAL_ATTRIBUTE_REMOVED(2l),
+        PROPOSAL_ATTRIBUTE_UPDATE(1l),
+        PROPOSAL_CREATED(0l),
+        PROPOSAL_MEMBER_ADDED(6l),
+        PROPOSAL_MEMBER_REMOVED(7l),
+        PROPOSAL_SUPPORTER_ADDED(8l),
+        PROPOSAL_SUPPORTER_REMOVED(9l),
+        PROPOSAL_VOTE(3l),
+        PROPOSAL_VOTE_RETRACT(4l),
+        PROPOSAL_VOTE_SWITCH(5l);
+
+        private final Long secondaryTypeId;
+        ProposalActivitySubType(Long type) {
+            this.secondaryTypeId = type;
+        }
+
+        public Long getSecondaryTypeId(){
+            return this.secondaryTypeId;
+        }
     }
 
 }

@@ -114,12 +114,9 @@ public class ActivityUtil {
 
 
     public static int getAllActivitiesCount() throws SystemException, SearchException {
-        int searchResultCount = getAllAggregatedActivitySearchResults(QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
-        if (searchResultCount == 0) {
-            return groupAllActivities().size();
-        }
 
-        return searchResultCount;
+        return ActivitiesClient.countActivities(null, null);
+
     }
 
     public static int getActivitiesCount(long userId) throws SystemException, SearchException {

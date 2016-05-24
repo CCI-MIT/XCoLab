@@ -4,8 +4,8 @@ public class ProposalVoteRetractActivityEntry extends ProposalBaseActivityEntry 
 
 
     @Override
-    public Integer getSecondaryType() {
-        return 4;
+    public Long getSecondaryType() {
+        return ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId();
     }
 
     @Override

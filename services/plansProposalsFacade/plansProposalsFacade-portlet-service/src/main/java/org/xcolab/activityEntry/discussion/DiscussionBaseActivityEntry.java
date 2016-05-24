@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 
@@ -89,8 +90,24 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     }
 
     @Override
-    public Integer getPrimaryType() {
-        return 3;
+    public Long getPrimaryType() {
+        return ActivityEntryType.DISCUSSION.getPrimaryTypeId();
     }
 
+
+    public enum DiscussionActivitySubType{
+        DISCUSSION_PROPOSAL_COMMENT(1l),
+        DISCUSSION_CATEGORY_ADDED(2l),
+        DISCUSSION_ADDED(3l),
+        DISCUSSION_FORUM_COMMENT(4l);
+
+        private final Long secondaryTypeId;
+        DiscussionActivitySubType(Long type) {
+            this.secondaryTypeId = type;
+        }
+
+        public Long getSecondaryTypeId(){
+            return this.secondaryTypeId;
+        }
+    }
 }

@@ -7,8 +7,8 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
 
     @Override
-    public Integer getSecondaryType() {
-        return 3;
+    public Long getSecondaryType() {
+        return DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId();
     }
     @Override
     public String getBody() {
@@ -29,5 +29,6 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
     public String getName() {
         return "Added new discussion";
     }
+
 
 }

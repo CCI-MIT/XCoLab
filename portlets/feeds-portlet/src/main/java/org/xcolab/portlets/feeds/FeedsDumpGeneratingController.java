@@ -77,8 +77,9 @@ public class FeedsDumpGeneratingController {
 						body = body.replace("/web/guest",
 								"http://climatecolab.org/web/guest");
 						csvWriter.writeNext(new String[] {
+								body,
 								df.format(new Date(activity.getCreateDate())),
-								user.getUserId()+"", body , activity.getClassPK()+"", activity.getType() + ""});
+								activity.getActivityId() + ""});
 					}
 				} catch (Throwable t) {
 					// ignore

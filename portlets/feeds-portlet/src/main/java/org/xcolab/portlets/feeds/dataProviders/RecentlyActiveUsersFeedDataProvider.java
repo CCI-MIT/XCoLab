@@ -4,7 +4,7 @@ import com.ext.portlet.Activity.ActivityUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portlet.social.model.SocialActivity;
+
 import org.springframework.ui.Model;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.commons.beans.SortFilterPage;
@@ -15,12 +15,13 @@ import org.xcolab.portlets.feeds.Helper;
 import org.xcolab.portlets.feeds.wrappers.MemberWrapper;
 import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 public class RecentlyActiveUsersFeedDataProvider implements
 		FeedTypeDataProvider {

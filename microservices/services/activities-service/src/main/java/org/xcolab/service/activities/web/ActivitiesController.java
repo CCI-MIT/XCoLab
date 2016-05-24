@@ -38,4 +38,13 @@ public class ActivitiesController {
         return activityEntryDao.findByGiven(paginationHelper,memberId, memberIdsToExclude);
     }
 
+    @RequestMapping(value = "/activityEntries/count", method = RequestMethod.GET)
+    public Integer getActivtiesCount(
+            @RequestParam(required = false) Long memberId,
+            @RequestParam(required = false) List<Long> memberIdsToExclude){
+            return this.activityEntryDao.findByGivenCount(memberId, memberIdsToExclude);
+
+    }
+
+
 }
