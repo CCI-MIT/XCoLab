@@ -1,9 +1,5 @@
 package org.xcolab.service.contents.web;
 
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.HttpStatusException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,27 +11,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.pojos.ContentFolder;
-import org.xcolab.model.tables.pojos.Wikipage;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.contents.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVersionDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
-import org.xcolab.service.contents.service.WikipageMigrationHelper;
 import org.xcolab.service.contents.service.contentarticle.ContentArticleService;
 import org.xcolab.service.contents.service.contentarticleversion.ContentArticleVersionService;
 import org.xcolab.service.contents.service.contentfolder.ContentFolderService;
 import org.xcolab.service.utils.PaginationHelper;
 
-import java.io.IOException;
-import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
 public class ContentsController {
-
-    @Autowired
-    private WikipageMigrationHelper wikipageMigrationHelper;
 
     @Autowired
     private ContentArticleService contentArticleService;
@@ -229,71 +218,6 @@ public class ContentsController {
         } else {
                 return contentFolderDao.update(contentFolder);
         }
-    }
-
-    //TODO: temporary endpoint for migration
-    @RequestMapping(value = "/migration/creolePages", method = RequestMethod.GET)
-    public List<Wikipage> getCreolePages() {
-        return wikipageMigrationHelper.getCreolePages();
-    }
-
-    @RequestMapping(value = "/migration/getClimateCoLabContent", method = RequestMethod.GET)
-    public List<Wikipage> getClimateCoLabContent(
-            @RequestParam String sessionId,
-            @RequestParam String lrSessionState
-    ) throws IOException {
-        final List<Wikipage> pages = wikipageMigrationHelper.getAllPages();
-        for (Wikipage page : pages) {
-            final String url = "http://climatecolab.org:18081/resources/-/wiki/Main/" + URLEncoder.encode(page.getTitle(), "UTF-8");
-            try {
-                Document doc = Jsoup.connect(url).get();
-                String html = doc.select(".wiki-body").html();
-                boolean isRestricted = false;
-                if (StringUtils.isNotBlank(html)) {
-                    page.setContent(html);
-                } else {
-                        doc = Jsoup.connect(url)
-                                .cookie("JSESSIONID", sessionId)
-                                .cookie("LFR_SESSION_STATE_2057710", lrSessionState)
-                                .get();
-                        html = doc.select(".wiki-body").html();
-                        if (StringUtils.isNotBlank(html)) {
-                            page.setContent(html);
-                            isRestricted = true;
-                            System.out.println("Found content by using cookies: " + url);
-                        } else {
-                            System.out.println("No content on url: " + url);
-                        }
-                }
-                //insert into content article
-                if (StringUtils.isNotBlank(html)) {
-
-                    ContentArticle contentArticle = new ContentArticle();
-                    contentArticle.setViewRoleGroupId(isRestricted ? 3L : null);
-                    contentArticle.setEditRoleGroupId(2L);
-                    contentArticle.setFolderId(3L);
-                    contentArticle.setAuthorId(page.getUserId());
-                    contentArticle.setVisible(true);
-                    contentArticle.setCreateDate(page.getCreateDate());
-                    contentArticle = contentArticleDao.create(contentArticle);
-
-                    ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
-                    contentArticleVersion.setCreateDate(page.getCreateDate());
-                    contentArticleVersion.setTitle(page.getTitle());
-                    contentArticleVersion.setContent(html);
-                    contentArticleVersion.setFolderId(3L);
-                    contentArticleVersion.setAuthorId(page.getUserId());
-                    contentArticleVersion.setContentArticleId(contentArticle.getContentArticleId());
-                    contentArticleVersion = contentArticleVersionDao.create(contentArticleVersion);
-
-                    contentArticle.setMaxVersionId(contentArticleVersion.getContentArticleVersionId());
-                    contentArticleDao.update(contentArticle);
-                }
-            } catch (HttpStatusException e) {
-                System.out.println("Could not get url: " + url + " (modifiedDate = " + page.getModifiedDate() + ")");
-            }
-        }
-        return pages;
     }
 
     @RequestMapping(value = "/contentArticles/{contentArticleId}", method = RequestMethod.DELETE)

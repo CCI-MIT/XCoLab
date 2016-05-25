@@ -30,9 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Thomas on 2/20/2015.
- */
 public class ContestScheduleWrapper {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestScheduleWrapper.class);

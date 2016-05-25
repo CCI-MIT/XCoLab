@@ -2,12 +2,10 @@ package org.xcolab.service.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import javax.sql.DataSource;
-
 public final class DataSourceUtil {
 
-    private static final int MAX_POOL_SIZE = 20;
-    private static final int MIN_IDLE = 5;
+    private static final int MAX_POOL_SIZE = 10;
+    private static final int MIN_IDLE = 2;
     private static final int IDLE_TIMEOUT_MS = 120000;
     private static final int PREPARED_STATEMENT_CACHE_SIZE = 250;
     private static final int PREPARED_STATEMENT_CACHE_SQL_LIMIT = 1024;
@@ -15,8 +13,8 @@ public final class DataSourceUtil {
     private DataSourceUtil() {
     }
 
-    public static DataSource getConfiguredDataSource(String driverClassName, String databaseUrl,
-            String databaseUsername, String databasePassword) {
+    public static HikariDataSource getConfiguredDataSource(String driverClassName,
+            String databaseUrl, String databaseUsername, String databasePassword) {
 
         final HikariDataSource dataSource = new HikariDataSource();
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd microservices/util/jooq-config
+cd microservices/util/service-utils
 mvn clean compile package install clean
 cd ../../..
 
@@ -9,7 +9,7 @@ for D in *-service; do
     if [ -d "${D}" ]; then
         cd $D
         pwd
-        mvn compile package spring-boot:repackage
+        mvn clean compile package spring-boot:repackage
         cd ..
     fi
 done

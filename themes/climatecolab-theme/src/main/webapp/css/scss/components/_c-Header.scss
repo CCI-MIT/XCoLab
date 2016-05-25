@@ -13,6 +13,7 @@ $c-Header__menu__li__a__search__backgroundUrl: url(../images/icon-menu-search.pn
 $c-Header__menu__li__a__search__textColor: $t-Color__grey--dark !default;
 $c-Header__menu__li__a__search__fontFamily: Arial, Helvetica, sans-serif !default;
 $c-Header__menu__li__isCurrent__boxShadow: none !default;
+$c-Header__menu__li__isCurrent__a__textColor: $t-Color__primary !default;
 
 $c-Header__menu__highlightedTextColor: $t-Color__grey--darkest !default;
 $c-Header__menu__subitem__borderColor--left: $t-Color__grey--medium !default;
@@ -102,6 +103,10 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
       background: white;
       border-left: $c-Header__menu__li__isCurrent__border--left;
       box-shadow: $c-Header__menu__li__isCurrent__boxShadow;
+
+      a {
+        color: $c-Header__menu__li__isCurrent__a__textColor;
+      }
     }
 
     a {

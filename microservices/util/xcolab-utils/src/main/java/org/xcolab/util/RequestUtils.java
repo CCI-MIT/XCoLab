@@ -1,38 +1,31 @@
 package org.xcolab.util;
 
-import net.spy.memcached.MemcachedClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import org.xcolab.util.caching.CacheProvider;
+import org.xcolab.util.caching.CacheProviderNoOpImpl;
 import org.xcolab.util.exceptions.EntityNotFoundException;
 import org.xcolab.util.exceptions.ServiceNotFoundException;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.util.List;
 
+@Component
 public final class RequestUtils {
 
     private static final int MEMCACHED_TIMEOUT = 3;
 
     private static final RestTemplate restTemplate = new RestTemplate();
 
-    private static MemcachedClient memcached;
-
-    static {
-        try {
-            memcached = new MemcachedClient(new InetSocketAddress("127.0.0.1", 11211));
-        } catch (IOException ignored) {
-            memcached = null;
-        }
-    }
+    private static CacheProvider cacheProvider = new CacheProviderNoOpImpl();
 
     private RequestUtils() {
     }
@@ -48,12 +41,12 @@ public final class RequestUtils {
         uriBuilder.queryParam("startRecord", 0);
         uriBuilder.queryParam("limitRecord", 1);
 
-        final boolean cacheActive = memcached != null && cacheQueryIdentifier != null;
+        final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
         final String cachePrefix = "_" + typeReference.getType() + "_listFirst_";
         T ret;
         if (cacheActive) {
             //noinspection unchecked
-            ret = (T) memcached.get(sanitize(cachePrefix + cacheQueryIdentifier));
+            ret = (T) cacheProvider.get(sanitize(cachePrefix + cacheQueryIdentifier));
             if (ret != null) {
                 return ret;
             }
@@ -66,7 +59,7 @@ public final class RequestUtils {
         ret = list.get(0);
 
         if (cacheActive) {
-            memcached.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
+            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
         }
 
         return ret;
@@ -81,11 +74,11 @@ public final class RequestUtils {
             ParameterizedTypeReference<List<T>> typeReference,
             String cacheQueryIdentifier) {
         List<T> ret;
-        final boolean cacheActive = memcached != null && cacheQueryIdentifier != null;
+        final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
         final String cachePrefix = "_" + typeReference.getType() + "_list_";
         if (cacheActive) {
             //noinspection unchecked
-            ret = (List<T>) memcached.get(sanitize(cachePrefix + cacheQueryIdentifier));
+            ret = (List<T>) cacheProvider.get(sanitize(cachePrefix + cacheQueryIdentifier));
             if (ret != null) {
                 return ret;
             }
@@ -95,7 +88,7 @@ public final class RequestUtils {
         ret = response.getBody();
 
         if (cacheActive) {
-            memcached.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
+            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
         }
         return ret;
     }
@@ -128,18 +121,18 @@ public final class RequestUtils {
     public static <T> T getUnchecked(UriComponentsBuilder uriBuilder, Class<T> entityType,
             String cacheQueryIdentifier) {
         T ret;
-        final boolean cacheActive = memcached != null && cacheQueryIdentifier != null;
+        final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
         final String cachePrefix = "_" + entityType.getSimpleName() + "_";
         if (cacheActive) {
             //noinspection unchecked
-            ret = (T) memcached.get(sanitize(cachePrefix + cacheQueryIdentifier));
+            ret = (T) cacheProvider.get(sanitize(cachePrefix + cacheQueryIdentifier));
             if (ret != null) {
                 return ret;
             }
         }
         ret = restTemplate.getForObject(uriBuilder.build().toString(), entityType);
         if (cacheActive) {
-            memcached.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
+            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
         }
         return ret;
     }
@@ -186,5 +179,9 @@ public final class RequestUtils {
 
     private static String sanitize(String identifier) {
         return identifier.replaceAll("\\s", "+");
+    }
+
+    public static void setCacheProvider(CacheProvider cacheProvider) {
+        RequestUtils.cacheProvider = cacheProvider;
     }
 }
