@@ -30,6 +30,7 @@ $c-TitleBar__separator__color: #B9E3FF !default;
 
   a:hover {
     color: $c-TitleBar__a__textColor--hover;
+    text-decoration: none;
   }
 
   &.contestSummary {

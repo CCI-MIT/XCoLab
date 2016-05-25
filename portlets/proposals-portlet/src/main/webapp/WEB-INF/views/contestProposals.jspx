@@ -28,7 +28,15 @@
         </div>
         <div class="c-Headline c-Headline__subhead">
             <h2>
-                <span>${fn:length(proposals.proposals)}</span> ${contestType.proposalNamePlural}
+                <span>${fn:length(proposals.proposals)}</span>
+                <c:choose>
+                    <c:when test="${fn:length(proposals.proposals) == 1}">
+                        ${contestType.proposalName}
+                    </c:when>
+                    <c:otherwise>
+                        ${contestType.proposalNamePlural}
+                    </c:otherwise>
+                </c:choose>
             </h2>
             <div class="right">
                 <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">

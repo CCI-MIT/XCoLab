@@ -112,6 +112,11 @@
 #if ($permissionChecker.isOmniadmin())
 	#dockbar()
 #end
+#if ($betaRibbonShow)
+    <div class="c-Ribbon">
+        Beta
+    </div>
+#end
 #if ($mitHeaderBarShow)
     <div class="c-TitleBar light">
         <div class="c-TitleBar__pageMargins">

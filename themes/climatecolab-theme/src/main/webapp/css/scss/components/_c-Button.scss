@@ -1,6 +1,6 @@
 $c-Button__padding: 8px !default;
 $c-Button__padding--large: 8px !default;
-$c-Button__padding--small: 8px !default;
+$c-Button__padding--small: 6px !default;
 $c-Button__fontWeight: 700 !default;
 $c-Button__borderRadius: 5px !default;
 $c-Button__capitalization: none !default;
@@ -28,7 +28,7 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   }
 
   &.small {
-    font-size: 12px;
+    font-size: 14px;
     padding: $c-Button__padding--small;
   }
   &.large {
@@ -61,6 +61,7 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
 
   &:hover {
     color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
+    text-decoration: none;
     @if $border-color == none {
       @if $image-url == none or $image-url == null {
         @include background(hover-color($button-color));

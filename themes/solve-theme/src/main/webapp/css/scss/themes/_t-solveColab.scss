@@ -3,7 +3,7 @@
 $t-Color__black: black;
 $t-Color__grey--dark: #354046;
 $t-Color__grey: #999999;
-$t-Color__blue: #3D88C7;
+$t-Color__blue: #2E89C7;
 $t-Color__blue--hover: #71C8FE;
 
 $t-Color__make__blue: #4596E1;
@@ -94,7 +94,7 @@ $c-Header__search__submit__borderRadius: 0;
 $c-Header__search__submit__fontWeight: $b-Typography__fontWeight--light;
 $c-Header__search__pop__positionLeft: 552px;
 
-$c-Headline__days-left__span__textColor: $t-Color__blue;
+$c-Headline__days-left__span__textColor: white;
 $c-Headline__h2__span__textColor: black;
 $c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
 
@@ -106,7 +106,7 @@ $c-Footer__menu__backgroundColor: transparent;
 $c-Footer__menu__boxShadow: none;
 
 $c-Button__padding: 7px 15px;
-$c-Button__padding--small: 5px 10px;
+$c-Button__padding--small: 5px 8px;
 $c-Button__padding--large: 7px 15px;
 $c-Button__fontWeight: $b-Typography__fontWeight--regular;
 $c-Button__borderRadius: 0;
@@ -194,7 +194,7 @@ $p-community__infoLeft__span__fontWeight: $b-Typography__fontWeight--regular;
 $p-Contests__contestDetail__backgroundColor: $t-Color__grey--lightest;
 $p-Contests__contestDetail__heading__background: none;
 
-$p-homepage__content__h2__fontSize: 26pt;
+$p-homepage__content__h2__fontSize: 18pt;
 $p-homepage__content__h2__textColor: black;
 
 $p-homepage__learn__backgroundColor: $t-Color__primary;
@@ -348,6 +348,20 @@ $b-Spacing__inline--large__capitalization: uppercase;
 
 //solve colab additions
 $p-Homepage__homespot__background: none;
-$p-Homepage__homespot__background__minHeight: 470px;
-$p-Homepage__homespot__background__minWidth: 1080px;
 $p-Homepage__homespot__background__background: url(../images/homespot/background.png) no-repeat center center;
+$p-Homepage__homespot__background__backgroundSize: cover;
+$p-Homepage__HeaderMenu__hover__background: none;
+
+$c-Footer__link__textColor--hover: $t-Color__primary;
+$c-Header__menu__right__li__a--hover__textColor: $t-Color__primary;
+$c-ContestBox__text__title__textColor--hover: $t-Color__primary;
+$c-Header__menu__li__a__search__textColor--hover: $t-Color__primary;
+$p-ContestProposals__header__paddingTop: 30px;
+$p-ContestProposals__header__rightColumn__borderTop: 1px solid $t-Color__grey--medium;
+$c-Headline__h2__span__fontSize: 27px;
+$p-ContestProposals__header__team__member__display: block;
+$p-ContestProposals__header__ontology__term__marginTop: 10px;
+$p-ContestProposals__header__team__roleName__paddingTop: 0;
+$c-Headline__days-left__span__padding: 7px 12px;
+$c-Headline__days-left__span__background: $t-Color__grey--medium;
+$c-Headline__days-left__span__fontSize: 15px;
