@@ -54,17 +54,11 @@
   width: 100%;
 }
 
-#uploadWidget {
-  background: url(../img/image_upload-button.png) no-repeat;
+.uploadWidget {
   width: 219px;
-  height: 30px;
-  margin-top: 12px;
+  margin-top: 18px;
   cursor: pointer;
   float: left;
-}
-
-#uploadWidget:hover {
-  background: url(../img/image_upload-button-hover.png) no-repeat;
 }
 
 #proposalPitchInput {
