@@ -94,10 +94,10 @@
                 <td class="c-Table__cell center contributors no-border">
                     <c:choose>
                         <c:when test="${proposal.open}">
-                            anyone
+                            Anyone
                         </c:when>
                         <c:otherwise>
-                            team only
+                            Team only
                         </c:otherwise>
                     </c:choose>
                 </td>

@@ -8,6 +8,7 @@ $p-homepage__content__h2__fontSize: 20px !default;
 $p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
 
 $p-homepage__learn__backgroundColor: $t-Color__primary !default;
+$p-homepage__learn__backgroundColor--hover: null !default;
 $p-homepage__learn__borderColor: $t-Color__primary--darkest !default;
 $p-homepage__learn__imageUrl: url(../images/homespot/light-bulb-white.png) !default;
 
@@ -77,7 +78,8 @@ $p-homepage__join__imageUrl: none !default;
 }
 
 a.learn {
-  @include theme-button($p-homepage__learn__backgroundColor, $p-homepage__learn__borderColor, $p-homepage__learn__imageUrl);
+  @include theme-button($p-homepage__learn__backgroundColor, $p-homepage__learn__borderColor,
+          $p-homepage__learn__imageUrl, $p-homepage__learn__backgroundColor--hover);
   text-transform: uppercase;
   margin-right: 15px;
 }

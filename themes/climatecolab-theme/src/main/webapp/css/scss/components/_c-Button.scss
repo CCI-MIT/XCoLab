@@ -7,6 +7,7 @@ $c-Button__capitalization: none !default;
 
 $c-Button__primary__backgroundColor: $t-Color__primary !default;
 $c-Button__primary__borderColor: $t-Color__primary--dark !default;
+$c-Button__primary__backgroundColor--hover: null !default;
 
 $c-Button__grey__backgroundColor: $t-Color__grey--medium !default;
 $c-Button__grey__borderColor: $t-Color__grey--dark !default;
@@ -37,11 +38,15 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   }
 }
 
-@function hover-color($color) {
-  @return darken($color, 10%);
+@function hover-color($color, $hover-color: null) {
+  @if $hover-color == null {
+    @return darken($color, 10%);
+  } @else {
+    @return $hover-color;
+  }
 }
 
-@mixin theme-button($button-color, $border-color: null, $image-url: null) {
+@mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
   @extend %c-Button__base;
 
   @if $border-color == none {
@@ -64,11 +69,10 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
     text-decoration: none;
     @if $border-color == none {
       @if $image-url == none or $image-url == null {
-        @include background(hover-color($button-color));
+        @include background(hover-color($button-color, $hover-color));
       } @else {
         @include background(hover-color($button-color), $image-url, 40px);
       }
-
     } @else {
       @include background-gradient(hover-color($button-color), $image-url, 40px);
     }
@@ -77,7 +81,7 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
 
 //blue-button.a is for legacy support (e.g. ice faclet portlets)
 a.c-Button__primary, .c-Button__primary a, input.c-Button__primary { //a.primary-button, .blue-button a, input.primary-button
-  @include theme-button($c-Button__primary__backgroundColor, $c-Button__primary__borderColor);
+  @include theme-button($c-Button__primary__backgroundColor, $c-Button__primary__borderColor, $hover-color: $c-Button__primary__backgroundColor--hover);
 }
 
 //gray-button.a is for legacy support (e.g. ice faclet portlets)
