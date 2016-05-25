@@ -125,9 +125,8 @@ $c-TitleBar__element--disabled__textColor: $t-Color__grey--light;
 $c-TitleBar__a__textColor: white;
 $c-TitleBar__a__textColor--hover: white;
 $c-TitleBar__a__fontWeight: $b-Typography__fontWeight--regular;
-$c-TitleBar__contestSummary__backgroundColor: $t-Color__grey--dark;
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__grey--medium;
 $c-TitleBar__contestSummary__backgroundColor--light: $t-Color__grey--lightest;
-$c-TitleBar__contestSummary__display: none !default;
 $c-TitleBar__capitalization: uppercase;
 
 $c-Comment__count__backgroundColor: white;
@@ -368,3 +367,4 @@ $c-Headline__days-left__span__fontSize: 15px;
 $c-TitleBar__actionButton__backgroundColor--hover: $t-Color__blue--hover;
 $c-Button__primary__backgroundColor--hover: $t-Color__blue--hover;
 $p-homepage__learn__backgroundColor--hover: $t-Color__blue--hover;
+$c-Box__button__boxColor--dark__backgroundColor--hover: $t-Color__blue--hover;

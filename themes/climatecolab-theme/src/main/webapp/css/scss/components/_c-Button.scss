@@ -16,7 +16,6 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   display: inline-block;
   padding: $c-Button__padding;
   margin-left: 5px;
-  font-size: 16px;
   font-weight: $c-Button__fontWeight;
   line-height: normal;
   text-transform: $c-Button__capitalization;
@@ -48,6 +47,7 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
 
 @mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
   @extend %c-Button__base;
+  font-size: 16px;
 
   @if $border-color == none {
     @if $image-url == none or $image-url == null {

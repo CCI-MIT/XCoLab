@@ -40,7 +40,7 @@
             <h3>${empty currentCategory ? 'All Discussions' : currentCategory.title}</h3>
             <div class="p-Discussion__row">
                 <div class="p-Discussion__left">
-                    <div class="b-Spacing separatorBelow">
+                    <div class="b-Spacing ${not empty currentCategory ? 'separatorBelow' : ''}">
 
                         <span class="c-Count"><span class="c-Count__number">${threads.size()}</span> discussions</span>
 
