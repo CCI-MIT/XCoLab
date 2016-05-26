@@ -13,7 +13,7 @@ import java.util.List;
 
 public final class BalloonsClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:8080/balloons-service";
+    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/balloons-service";
 
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {
