@@ -20,6 +20,7 @@
         <module>ballons-client</module>
         <module>contents-client</module>
         <module>emails-client</module>
+        <module>files-client</module>
         <module>members-client</module>
     </modules>
 

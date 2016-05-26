@@ -5,12 +5,19 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.service.ImageLocalServiceUtil;
+
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
+import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.utils.FileUploadUtil;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.servlet.Filter;
@@ -21,10 +28,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
 
 public class FileUploadFilter implements Filter {
 
@@ -63,6 +66,10 @@ public class FileUploadFilter implements Filter {
 						
 						//Image img = ImageLocalServiceUtil..getImage(imgBArr);
 						Image img = ImageLocalServiceUtil.createImage(imageId);
+
+						FileEntry file = new FileEntry();
+
+
 						//ImageLocalServiceUtil.u
 						//img.setImageId(imageId);
 						img.setModifiedDate(new Date());
