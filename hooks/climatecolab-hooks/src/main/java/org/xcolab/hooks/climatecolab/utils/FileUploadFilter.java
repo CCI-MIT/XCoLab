@@ -10,13 +10,16 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.utils.FileUploadUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
@@ -67,7 +70,16 @@ public class FileUploadFilter implements Filter {
 						//Image img = ImageLocalServiceUtil..getImage(imgBArr);
 						Image img = ImageLocalServiceUtil.createImage(imageId);
 
+						String path = request.getSession().getServletContext().getRealPath("/");
+
 						FileEntry file = new FileEntry();
+						file.setCreateDate(new Timestamp(new Date().getTime()));
+						String nameExt = item.getName();
+						file.setFileEntryExtension((FilenameUtils.getExtension(nameExt)).toLowerCase());
+						file.setFileEntrySize(imgBArr.length);
+						file.setFileEntryName(FilenameUtils.getName(nameExt));
+
+						file = FilesClient.createFileEntry(file, imgBArr, path);
 
 
 						//ImageLocalServiceUtil.u
@@ -77,7 +89,7 @@ public class FileUploadFilter implements Filter {
 						ImageLocalServiceUtil.updateImage(imageId, imgBArr);
 
 						// return JSON with image id
-						response.getWriter().append(String.format("{\"success\": \"true\", \"imageId\": %d}", img.getPrimaryKey()));
+						response.getWriter().append(String.format("{\"success\": \"true\", \"imageId\": %d}", file.getFileEntryId()));
 						response.getWriter().close();
 					}
 					else {

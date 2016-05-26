@@ -1,16 +1,45 @@
 package org.xcolab.client.files.providers;
 
-import java.io.File;
+import org.apache.commons.io.FileUtils;
+import org.xcolab.client.files.pojo.FileEntry;
 
-public class FileSystemPersistenceProvider implements PersistenceProvider{
+import java.io.File;
+import java.io.IOException;
+
+public class FileSystemPersistenceProvider implements PersistenceProvider {
+
+    private final String LOCAL_FOLDER_NAME = "fileEntriesDataFolder";
+
+    private final int LOCAL_FOLDER_MAX_AMOUNT_OF_FILES = 300;
+
     @Override
-    public boolean saveFileToFinalDestination(File file, Object fileEntry) {
-        // move file to liferay data folder above tomcat
+    public boolean saveFileToFinalDestination(byte[] imgBArr, FileEntry fileEntry, String path) {
+
+        System.out.println("Path: " + path + " fileName : " + fileEntry.getFileEntryName() + " fileExtension : " + fileEntry.getFileEntryExtension());
+
+        int shardingFolder = (fileEntry.getFileEntryId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
+
+
+        String finalPath = path + "../../../data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;
+        File folder = new File(finalPath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        try {
+            FileUtils.writeByteArrayToFile(new File(finalPath + fileEntry.getFileEntryId() + "." + fileEntry.getFileEntryExtension()), imgBArr);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 
     @Override
-    public String getFilePathFromFinalDestination(File file, Object fileEntry) {
-        return null;
+    public String getFilePathFromFinalDestination(FileEntry fileEntry, String path) {
+
+        int shardingFolder = (fileEntry.getFileEntryId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
+        String finalPath = path + "../../../data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;
+        return finalPath + fileEntry.getFileEntryId() + "." + fileEntry.getFileEntryExtension();
     }
 }

@@ -1,10 +1,10 @@
 package org.xcolab.client.files.providers;
 
-import java.io.File;
+import org.xcolab.client.files.pojo.FileEntry;
 
 public interface PersistenceProvider {
 
-    boolean saveFileToFinalDestination(File file, Object fileEntry);
+    boolean saveFileToFinalDestination(byte [] imgBArr, FileEntry fileEntry, String path);
 
-    String getFilePathFromFinalDestination(File file, Object fileEntry);
+    String getFilePathFromFinalDestination(FileEntry fileEntry, String path);
 }
