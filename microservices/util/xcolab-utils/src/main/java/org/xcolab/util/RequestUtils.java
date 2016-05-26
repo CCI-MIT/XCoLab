@@ -10,16 +10,44 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.util.caching.CacheProvider;
 import org.xcolab.util.caching.CacheProviderNoOpImpl;
 import org.xcolab.util.exceptions.EntityNotFoundException;
 import org.xcolab.util.exceptions.ServiceNotFoundException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
+
 
 @Component
 public final class RequestUtils {
+
+    private static String SERVICES_PORT = null;
+
+    public static String getServicesPort() {
+
+        if(SERVICES_PORT != null){ return SERVICES_PORT;}
+        else {
+            Properties prop = new Properties();
+            String servicesPort = "";
+
+            try {
+
+                InputStream inputStream =
+                        RequestUtils.class.getClassLoader().getResourceAsStream("application.properties");
+                prop.load(inputStream);
+                servicesPort = prop.getProperty("services.port");
+                SERVICES_PORT = servicesPort;
+            } catch (IOException e) {
+                e.printStackTrace();
+                SERVICES_PORT = "8080";
+            }
+            return servicesPort;
+        }
+
+    }
 
     private static final int MEMCACHED_TIMEOUT = 3;
 

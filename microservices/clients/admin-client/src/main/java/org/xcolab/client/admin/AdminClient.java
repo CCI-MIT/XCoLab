@@ -10,7 +10,7 @@ import org.xcolab.util.exceptions.EntityNotFoundException;
 
 public class AdminClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:8080/admin-service";
+    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/admin-service";
 
     public static ConfigurationAttribute getConfigurationAttribute(ConfigurationAttributeKey attributeKey) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +

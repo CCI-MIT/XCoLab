@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ContestClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:8080/contest-service";
+    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/contest-service";
 
     public static Contest getContest(String contestUrlName, Long contestYear)
             throws ContestNotFoundException {
