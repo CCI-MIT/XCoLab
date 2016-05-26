@@ -15,7 +15,7 @@ import java.util.List;
 
 public final class MembersClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:8080/members-service";
+    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/members-service";
 
     private MembersClient() {
     }

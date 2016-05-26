@@ -14,7 +14,7 @@ import java.util.List;
 
 public final class ContentsClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:8080/contents-service";
+    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/contents-service";
 
     private ContentsClient() {
     }
