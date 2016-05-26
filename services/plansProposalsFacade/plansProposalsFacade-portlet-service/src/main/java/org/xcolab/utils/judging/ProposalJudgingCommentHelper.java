@@ -7,7 +7,6 @@ import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
@@ -17,6 +16,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
+
+import org.xcolab.client.admin.EmailTemplateClient;
 
 /**
  * This is a helper class that interprets the Judging Feedback message made during judging contest phases
@@ -134,7 +135,7 @@ public class ProposalJudgingCommentHelper {
                     String templateToLoad = (advanceDecision == JudgingSystemActions.AdvanceDecision.MOVE_ON) ? "ADVANCING_ADVANCE_TO_SEMIFINALIST" : "ADVANCING_DO_NOT_ADVANCE";
 
                     EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                            ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),
+                            EmailTemplateClient.getContestEmailTemplateByType(templateToLoad),
                             proposalName,
                             contestName
                     );
@@ -161,7 +162,7 @@ public class ProposalJudgingCommentHelper {
             }
 
             EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                    ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),
+                    EmailTemplateClient.getContestEmailTemplateByType(templateToLoad),
                     proposalName,
                     contestName
             );

@@ -1,12 +1,12 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import java.io.IOException;
@@ -55,28 +55,18 @@ public class ProposalsPreferencesWrapper {
         if (termsOfServiceTemplateWrapper != null) {
             return termsOfServiceTemplateWrapper;
         }
-
-        try {
-            termsOfServiceTemplateWrapper = new EmailTemplateWrapper(
-                    ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TERMS_OF_SERVICE_PREF),
-                    "", "");
-        } catch (SystemException e) {
-            e.printStackTrace();
-        }
+        termsOfServiceTemplateWrapper = new EmailTemplateWrapper(
+                EmailTemplateClient.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF), "", "");
 
         return termsOfServiceTemplateWrapper;
     }
 
     public void store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
         PortletPreferences preferences = request.getPreferences();
-        try {
-            ContestEmailTemplate template = ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(TERMS_OF_SERVICE_PREF);
-            template.setHeader(termsOfService);
-            ContestEmailTemplateLocalServiceUtil.updateContestEmailTemplate(template);
+        ContestEmailTemplate template = EmailTemplateClient.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
+        template.setHeader(termsOfService);
+        EmailTemplateClient.updateContestEmailTemplate(template);
 
-        } catch (SystemException e) {
-            e.printStackTrace();
-        }
         preferences.setValue(CALL_TO_ACTION, callToAction);
         preferences.setValue(CONTEST_TYPE_ID, contestTypeId);
         preferences.store();

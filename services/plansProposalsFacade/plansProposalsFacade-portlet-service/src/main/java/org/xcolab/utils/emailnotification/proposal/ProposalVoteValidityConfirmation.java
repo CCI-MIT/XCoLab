@@ -2,15 +2,16 @@ package org.xcolab.utils.emailnotification.proposal;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+
+import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 
 public class ProposalVoteValidityConfirmation extends ProposalNotification {
@@ -45,7 +46,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
             proposalVoteConfirmationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final ContestEmailTemplate emailTemplate =
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(proposalVoteConfirmationTemplateString);
+                EmailTemplateClient.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
         if (emailTemplate == null) {
             throw new SystemException(
                     "Could not load template \"" + proposalVoteConfirmationTemplateString + "\" for " + this.getClass()

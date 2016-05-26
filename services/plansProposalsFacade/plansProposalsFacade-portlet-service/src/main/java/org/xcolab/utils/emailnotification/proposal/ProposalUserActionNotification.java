@@ -2,9 +2,7 @@ package org.xcolab.utils.emailnotification.proposal;
 
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -12,6 +10,9 @@ import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+
+import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 
 public class ProposalUserActionNotification extends ProposalNotification {
@@ -38,7 +39,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         final ContestEmailTemplate emailTemplate =
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
+                EmailTemplateClient.getContestEmailTemplateByType(templateName);
         if (emailTemplate == null) {
             throw new SystemException(
                     "Could not load template \"" + templateName + "\" for " + this.getClass().getName());

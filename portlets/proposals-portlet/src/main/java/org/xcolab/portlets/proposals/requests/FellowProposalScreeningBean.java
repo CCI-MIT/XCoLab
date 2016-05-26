@@ -9,9 +9,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by kmang on 25/05/14.
- */
 public class FellowProposalScreeningBean extends RatingBean implements Serializable {
     private JudgingSystemActions.FellowAction fellowScreeningAction;
 
