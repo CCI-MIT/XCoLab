@@ -15,11 +15,7 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
     @Override
     public boolean saveFileToFinalDestination(byte[] imgBArr, FileEntry fileEntry, String path) {
 
-        System.out.println("Path: " + path + " fileName : " + fileEntry.getFileEntryName() + " fileExtension : " + fileEntry.getFileEntryExtension());
-
         int shardingFolder = (fileEntry.getFileEntryId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
-
-
         String finalPath = path + "../../../data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;
         File folder = new File(finalPath);
         if (!folder.exists()) {
@@ -31,7 +27,6 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
