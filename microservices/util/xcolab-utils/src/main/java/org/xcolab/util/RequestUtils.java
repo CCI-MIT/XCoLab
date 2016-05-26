@@ -39,7 +39,6 @@ public final class RequestUtils {
                         RequestUtils.class.getClassLoader().getResourceAsStream("application.properties");
                 prop.load(inputStream);
                 servicesPort = prop.getProperty("services.port");
-                System.out.println("Read the port from file >>>>>>>> " + servicesPort);
                 SERVICES_PORT = servicesPort;
             } catch (IOException e) {
                 e.printStackTrace();
