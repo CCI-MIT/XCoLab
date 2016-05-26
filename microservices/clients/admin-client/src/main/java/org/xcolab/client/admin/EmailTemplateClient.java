@@ -12,7 +12,7 @@ import java.util.List;
 
 public final class EmailTemplateClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:8080/admin-service";
+    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/admin-service";
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
 

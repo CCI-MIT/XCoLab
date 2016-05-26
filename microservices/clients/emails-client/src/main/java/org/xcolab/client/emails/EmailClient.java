@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class EmailClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:8080/emails-service";
+    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/emails-service";
 
     private EmailClient() {
     }

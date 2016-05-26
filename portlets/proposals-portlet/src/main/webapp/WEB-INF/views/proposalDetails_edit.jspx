@@ -154,7 +154,7 @@
                     <form:input path="imageId" cssStyle="display: none;" id="proposalImageId" />
                 </div>
 
-                <div id="uploadWidget"><!--  --></div>
+                <div id="uploadWidget" class="uploadWidget optional">Upload an image (optional)</div>
                 <div class="clear"><!--  --></div>
             </div>
         </div>
