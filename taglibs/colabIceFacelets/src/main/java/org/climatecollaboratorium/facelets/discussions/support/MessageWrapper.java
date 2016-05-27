@@ -36,6 +36,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
+import org.xcolab.activityEntry.discussion.DiscussionCategoryAddedActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.mail.EmailToAdminDispatcher;
 
@@ -183,6 +186,9 @@ public class MessageWrapper implements Serializable {
                     DiscussionCategoryGroup.class.getName(), discussionBean.getDiscussionId(), 
                     DiscussionActivityKeys.ADD_DISCUSSION.id(),
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryId(), wrapped.getMessageId()), 0);
+
+            ActivityEntryHelper.createActivityEntry(td.getUserId(), discussionBean.getDiscussionId(),null,
+                    new DiscussionCategoryAddedActivityEntry());
         }
     }
     
