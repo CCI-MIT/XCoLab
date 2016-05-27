@@ -221,6 +221,8 @@ public class UserProfileController {
                                      @RequestParam(required = false) boolean passwordError,
                                      @RequestParam Long userId)
             throws SystemException {
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        model.addAttribute("permissions", permissions);
         model.addAttribute("updateError", true);
         if (emailError) {
             model.addAttribute("emailError", true);
@@ -228,16 +230,16 @@ public class UserProfileController {
         if (passwordError) {
             model.addAttribute("passwordError", true);
         }
+        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
-            if (currentUserProfile.isViewingOwnProfile()) {
+            if (permissions.getCanEditMemberProfile(userId)) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-            model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-            model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
@@ -284,7 +286,8 @@ public class UserProfileController {
         boolean changedUserPart = false;
         boolean validationError = false;
         if (updatedUserBean.getPassword() != null && !updatedUserBean.getPassword().trim().isEmpty()) {
-            if (isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())) {
+            if (isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())
+                    || (permissions.getCanAdmin() && !currentUserProfile.isViewingOwnProfile())) {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
