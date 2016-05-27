@@ -1,6 +1,5 @@
 package org.xcolab.utils.judging;
 
-import com.ext.portlet.model.ContestEmailTemplate;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.jsoup.Jsoup;
@@ -9,6 +8,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Parser;
+
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 
 public class EmailTemplateWrapper {
     private static final String PROPOSAL_TITLE_PLACEHOLDER = "proposal-title";

@@ -1,9 +1,7 @@
 package org.xcolab.utils.emailnotification.contest;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -11,6 +9,9 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+
+import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.utils.emailnotification.basic.ContestNotification;
 
 import java.util.List;
@@ -40,8 +41,8 @@ public class ContestVoteQuestionNotification extends ContestNotification {
         if (voteQuestionTemplateString.isEmpty()) {
             voteQuestionTemplateString = DEFAULT_TEMPLATE_STRING;
         }
-        final ContestEmailTemplate emailTemplate = ContestEmailTemplateLocalServiceUtil
-                .getEmailTemplateByType(voteQuestionTemplateString);
+        final ContestEmailTemplate emailTemplate =
+                EmailTemplateClient.getContestEmailTemplateByType(voteQuestionTemplateString);
         if (emailTemplate == null) {
             throw new SystemException(String.format("Could not load template \"%s\" for %s",
                     voteQuestionTemplateString, this.getClass().getName()));

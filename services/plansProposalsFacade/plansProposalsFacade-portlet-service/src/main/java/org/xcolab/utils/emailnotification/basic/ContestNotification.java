@@ -1,8 +1,6 @@
 package org.xcolab.utils.emailnotification.basic;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestEmailTemplate;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -16,7 +14,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+
+import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,7 +62,7 @@ public class ContestNotification extends EmailNotification {
         }
 
         final ContestEmailTemplate emailTemplate =
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
+                EmailTemplateClient.getContestEmailTemplateByType(templateName);
         if (emailTemplate == null) {
             throw new SystemException(
                     "Could not load template \"" + templateName + "\" for " + this.getClass().getName());

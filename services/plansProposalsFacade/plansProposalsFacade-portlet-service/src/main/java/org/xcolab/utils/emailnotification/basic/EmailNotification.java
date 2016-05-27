@@ -3,7 +3,6 @@ package org.xcolab.utils.emailnotification.basic;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestEmailTemplate;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -16,11 +15,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.util.mail.MailEngineException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.utils.TemplateReplacementUtil;

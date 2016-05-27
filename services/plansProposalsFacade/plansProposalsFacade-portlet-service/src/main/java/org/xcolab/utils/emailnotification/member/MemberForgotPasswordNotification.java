@@ -1,16 +1,16 @@
 package org.xcolab.utils.emailnotification.member;
 
-import com.ext.portlet.model.ContestEmailTemplate;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+
+import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.utils.emailnotification.basic.MemberNotification;
 
 public class MemberForgotPasswordNotification extends MemberNotification {
@@ -23,9 +23,9 @@ public class MemberForgotPasswordNotification extends MemberNotification {
     private static final String PASSWORD_RESET_LINK_PLACEHOLDER = "password-reset-link";
     private static final String SYSTEM_LINK_PLACEHOLDER = "system-link";
 
-    private String memberIp;
+    private final String memberIp;
 
-    private String passwordResetLink;
+    private final String passwordResetLink;
 
     public MemberForgotPasswordNotification(String memberIp, String passwordResetLink, User recipient, ServiceContext serviceContext)
             throws SystemException, PortalException {
@@ -41,7 +41,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
         }
 
         final ContestEmailTemplate emailTemplate =
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
+                EmailTemplateClient.getContestEmailTemplateByType(templateName);
         if (emailTemplate == null) {
             throw new SystemException(
                     "Could not load template \"" + templateName + "\" for " + this.getClass().getName());
@@ -51,12 +51,10 @@ public class MemberForgotPasswordNotification extends MemberNotification {
         return templateWrapper;
     }
 
-
     private String getPasswordLink() {
 
         return String.format(LINK_FORMAT_STRING, passwordResetLink , "here");
     }
-
 
     protected class MemberForgotPasswordTemplate extends EmailNotificationTemplate {
 

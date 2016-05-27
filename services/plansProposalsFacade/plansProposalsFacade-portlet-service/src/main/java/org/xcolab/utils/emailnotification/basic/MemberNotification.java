@@ -1,18 +1,17 @@
 package org.xcolab.utils.emailnotification.basic;
 
-import com.ext.portlet.model.ContestEmailTemplate;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-public class MemberNotification extends EmailNotification {
+import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 
+public class MemberNotification extends EmailNotification {
 
     protected final String templateName;
     protected final User recipient;
@@ -22,19 +21,16 @@ public class MemberNotification extends EmailNotification {
     private static final String SENDER_LASTNAME_PLACEHOLDER = "sender-lastname";
     private static final String SENDER_SCREENNAME_PLACEHOLDER = "sender-screenname";
 
-    public MemberNotification( User recipient, String templateName,
-                               ServiceContext serviceContext) {
+    public MemberNotification(User recipient, String templateName, ServiceContext serviceContext) {
         super(serviceContext);
         this.recipient = recipient;
         this.templateName = templateName;
-
     }
 
     @Override
     protected User getRecipient() throws SystemException, PortalException {
         return recipient;
     }
-
 
     @Override
     protected EmailNotificationTemplate getTemplateWrapper() throws PortalException, SystemException {
@@ -43,7 +39,7 @@ public class MemberNotification extends EmailNotification {
         }
 
         final ContestEmailTemplate emailTemplate =
-                ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateName);
+                EmailTemplateClient.getContestEmailTemplateByType(templateName);
         if (emailTemplate == null) {
             throw new SystemException(
                     "Could not load template \"" + templateName + "\" for " + this.getClass().getName());

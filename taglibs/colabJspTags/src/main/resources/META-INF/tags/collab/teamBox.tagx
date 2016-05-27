@@ -48,6 +48,7 @@
       var members = [];
       var initialMembers = [];
       var memberList = "${memberList}";
+      var currentUserMap = {};
 
       <c:forEach var="member" items="${list}">
         members.push(usersMap["${member.screenName}"]);
@@ -152,8 +153,10 @@
                         async: true,
                         success: function (data, textStatus, jqXHR) {
                           var screenNames = [];
+                          currentUserMap = {};
                           $.each(data, function(index, value) {
                             screenNames.push(value["screenName"]);
+                            currentUserMap[value["screenName"]] = value["userId"];
                           });
                           response(screenNames);
                         },
@@ -167,13 +170,11 @@
                       return false;
                     },
                     select: function (event, ui) {
-
-                      var userId = usersMap[jQuery.trim(ui.item.value)];
+                      var userId = currentUserMap[jQuery.trim(ui.item.value)]; //userMap
                       if(members.indexOf(userId) == -1) {
                         members.push(userId);
                         addUserToList(userId, ui.item.value, userListId);
                       }
-
                       this.value = "";
                       return false;
                     }
