@@ -49,11 +49,22 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
-    public Member getMember(@PathVariable("memberId") Long memberId) throws NotFoundException {
-        if (memberId == null || memberId == 0) {
+    public Member getMember(@PathVariable long memberId) throws NotFoundException {
+        if (memberId == 0) {
             throw new NotFoundException("No message id given");
         } else {
             return memberDao.getMember(memberId);
+        }
+    }
+
+    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.DELETE)
+    public boolean deleteMember(@PathVariable long memberId) throws NotFoundException {
+        if (memberId == 0) {
+            throw new NotFoundException("No message id given");
+        } else {
+            final Member member = memberDao.getMember(memberId);
+            member.setStatus(5);
+            return memberDao.updateMember(member);
         }
     }
 

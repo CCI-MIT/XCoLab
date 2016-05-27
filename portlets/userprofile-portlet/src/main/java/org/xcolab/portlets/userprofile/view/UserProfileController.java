@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
@@ -23,7 +22,6 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
@@ -514,13 +512,21 @@ public class UserProfileController {
     }
 
     @RequestMapping(params = "action=deleteProfile")
-    public void deleteUserProfile(ActionRequest request, ActionResponse response, Model model)
+    public void deleteUserProfile(ActionRequest request, ActionResponse response, Model model,
+                long userId)
             throws IOException, SystemException, PortalException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        UserProfilePermissions permission = new UserProfilePermissions(request);
 
-        UserLocalServiceUtil.updateStatus(themeDisplay.getUserId(), WorkflowConstants.STATUS_INACTIVE,
-                ServiceContextFactory.getInstance(request));
+        if (permission.getCanEditMemberProfile(userId)) {
+            UserLocalServiceUtil.updateStatus(userId, WorkflowConstants.STATUS_INACTIVE,
+                    ServiceContextFactory.getInstance(request));
+            MembersClient.deleteMember(userId);
+        }
 
-        response.sendRedirect("/c/portal/logout");
+        if (userId == permission.getCurrentUser().getUserId()) {
+            response.sendRedirect("/c/portal/logout");
+        } else {
+            response.sendRedirect("/web/guest/members");
+        }
     }
 }
