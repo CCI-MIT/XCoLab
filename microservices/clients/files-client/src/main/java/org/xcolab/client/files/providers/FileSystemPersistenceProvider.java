@@ -8,9 +8,9 @@ import java.io.IOException;
 
 public class FileSystemPersistenceProvider implements PersistenceProvider {
 
-    private final String LOCAL_FOLDER_NAME = "fileEntriesDataFolder";
+    private static final String LOCAL_FOLDER_NAME = "fileEntriesDataFolder";
 
-    private final int LOCAL_FOLDER_MAX_AMOUNT_OF_FILES = 300;
+    private static final int LOCAL_FOLDER_MAX_AMOUNT_OF_FILES = 300;
 
     @Override
     public boolean saveFileToFinalDestination(byte[] imgBArr, FileEntry fileEntry, String path) {

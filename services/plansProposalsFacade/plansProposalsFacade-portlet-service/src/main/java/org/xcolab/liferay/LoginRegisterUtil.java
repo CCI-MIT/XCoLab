@@ -4,12 +4,7 @@ import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.security.permission.PermissionThreadLocal;
-import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
@@ -77,19 +72,9 @@ public final class LoginRegisterUtil {
         MembersClient.register(member);
 
         if (imageId != null && !imageId.isEmpty()) {
-            Image img = ImageLocalServiceUtil.getImage(Long.parseLong(imageId));
-            //TODO: we need to set permission checker for liferay
-            PermissionChecker permissionChecker = PermissionCheckerFactoryUtil.create(liferayUser);
-            PermissionThreadLocal.setPermissionChecker(permissionChecker);
 
-            if (img != null) {
-                byte[] bytes = img.getTextObj();
-                UserServiceUtil.updatePortrait(liferayUser.getUserId(), bytes);
-                liferayUser.setPortraitId(0L);
-                UserLocalServiceUtil.updateUser(liferayUser);
-                UserServiceUtil.updatePortrait(liferayUser.getUserId(), bytes);
-                liferayUser = UserLocalServiceUtil.getUser(liferayUser.getUserId());
-            }
+            member.setPortraitFileEntryId(Long.parseLong(imageId));
+            MembersClient.updateMember(member);
         }
         sendEmailNotificationToRegisteredUser(liferayServiceContext, liferayUser);
 
@@ -116,6 +101,7 @@ public final class LoginRegisterUtil {
         AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
         User user = UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
         LoginLogLocalServiceUtil.createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
+
         return user;
     }
 

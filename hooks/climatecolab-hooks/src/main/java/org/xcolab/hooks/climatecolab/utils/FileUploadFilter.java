@@ -1,11 +1,5 @@
 package org.xcolab.hooks.climatecolab.utils;
 
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Image;
-import com.liferay.portal.service.ImageLocalServiceUtil;
-
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
@@ -34,102 +28,87 @@ import javax.servlet.http.HttpServletResponse;
 
 public class FileUploadFilter implements Filter {
 
-	public static final int IMAGE_CROP_WIDTH_PIXELS = 300;
-	public static final int IMAGE_CROP_HEIGHT_PIXELS = 300;
+    public static final int IMAGE_CROP_WIDTH_PIXELS = 300;
+    public static final int IMAGE_CROP_HEIGHT_PIXELS = 300;
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException {
-		InputStream is = null;
-		try {
-			if (ServletFileUpload.isMultipartContent(request)) {
-				ServletFileUpload fileUpload = new ServletFileUpload();
-				FileItemIterator items = fileUpload.getItemIterator(request);
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
+        InputStream is = null;
+        try {
+            if (ServletFileUpload.isMultipartContent(request)) {
+                ServletFileUpload fileUpload = new ServletFileUpload();
+                FileItemIterator items = fileUpload.getItemIterator(request);
 
-				Boolean keepFormat = false;
-				while (items.hasNext()) {
-					FileItemStream item = items.next();
-					if(item.isFormField() && item.getFieldName().equals("keepFormat")){
-						keepFormat = true;
-						continue;
-					}
-					if (!item.isFormField()
-							&& item.getContentType().contains("image")) {
-						// currently we support only images
-						long imageId = CounterLocalServiceUtil
-								.increment(Image.class.getName());
-						//
-						//
-						is = item.openStream();
+                Boolean keepFormat = false;
+                while (items.hasNext()) {
+                    FileItemStream item = items.next();
+                    if (item.isFormField() && item.getFieldName().equals("keepFormat")) {
+                        keepFormat = true;
+                        continue;
+                    }
+                    if (!item.isFormField()
+                            && item.getContentType().contains("image")) {
+                        // currently we support only images
 
-						byte[] imgBArr = IOUtils.toByteArray(is);
-						if(!keepFormat){
-							imgBArr = FileUploadUtil.resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(imgBArr)),
-									IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
-						}
-						
-						//Image img = ImageLocalServiceUtil..getImage(imgBArr);
-						Image img = ImageLocalServiceUtil.createImage(imageId);
+                        is = item.openStream();
 
-						String path = request.getSession().getServletContext().getRealPath("/");
-
-						FileEntry file = new FileEntry();
-						file.setCreateDate(new Timestamp(new Date().getTime()));
-						String nameExt = item.getName();
-						file.setFileEntryExtension((FilenameUtils.getExtension(nameExt)).toLowerCase());
-						file.setFileEntrySize(imgBArr.length);
-						file.setFileEntryName(FilenameUtils.getName(nameExt));
-
-						file = FilesClient.createFileEntry(file, imgBArr, path);
+                        byte[] imgBArr = IOUtils.toByteArray(is);
+                        if (!keepFormat) {
+                            imgBArr = FileUploadUtil.resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(imgBArr)),
+                                    IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
+                        }
 
 
-						//ImageLocalServiceUtil.u
-						//img.setImageId(imageId);
-						img.setModifiedDate(new Date());
-						ImageLocalServiceUtil.addImage(img);
-						ImageLocalServiceUtil.updateImage(imageId, imgBArr);
+                        String path = request.getSession().getServletContext().getRealPath("/");
 
-						// return JSON with image id
-						response.getWriter().append(String.format("{\"success\": \"true\", \"imageId\": %d}", file.getFileEntryId()));
-						response.getWriter().close();
-					}
-					else {
+                        FileEntry file = new FileEntry();
+                        file.setCreateDate(new Timestamp(new Date().getTime()));
+                        String nameExt = item.getName();
+                        file.setFileEntryExtension((FilenameUtils.getExtension(nameExt)).toLowerCase());
+                        file.setFileEntrySize(imgBArr.length);
+                        file.setFileEntryName(FilenameUtils.getName(nameExt));
+
+                        file = FilesClient.createFileEntry(file, imgBArr, path);
+
+                        response.getWriter().append(String.format("{\"success\": \"true\", \"imageId\": %d}", file.getFileEntryId()));
+                        response.getWriter().close();
+                    } else {
                         response.getWriter().append(
                                 "{\"error\": \"true\", \"message\":\"Invalid file format, only images are accepted\"}");
                         response.getWriter().close();
-					}
-				}
-			}
-			else {
+                    }
+                }
+            } else {
                 response.getWriter().append("{\"error\": \"true\", \"message\":\"Unknown request\"}");
                 response.getWriter().close();
-			}
-		} catch (FileUploadException | SystemException | PortalException | IOException e) {
-			throw new ServletException(e);
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					// it's bad but ignore that
-				}
-			}
-		}
-	}
-
-    @Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+            }
+        } catch (FileUploadException | IOException e) {
+            throw new ServletException(e);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    // it's bad but ignore that
+                }
+            }
+        }
     }
 
     @Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
         doPost((HttpServletRequest) request, (HttpServletResponse) response);
-        
+
     }
 
     @Override
-	public void destroy() {
+    public void destroy() {
         // TODO Auto-generated method stub
-        
+
     }
 }

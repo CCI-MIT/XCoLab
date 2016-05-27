@@ -208,6 +208,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.COUNTRY, member.getCountry())
+                .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
                 .where(MEMBER.ID_.equal(member.getId_()))
