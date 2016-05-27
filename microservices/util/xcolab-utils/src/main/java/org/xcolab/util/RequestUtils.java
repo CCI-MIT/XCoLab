@@ -24,30 +24,8 @@ import java.util.Properties;
 @Component
 public final class RequestUtils {
 
-    private static String SERVICES_PORT = null;
+    private static String servicesPort = null;
 
-    public static String getServicesPort() {
-
-        if(SERVICES_PORT != null){ return SERVICES_PORT;}
-        else {
-            Properties prop = new Properties();
-            String servicesPort = "";
-
-            try {
-
-                InputStream inputStream =
-                        RequestUtils.class.getClassLoader().getResourceAsStream("application.properties");
-                prop.load(inputStream);
-                servicesPort = prop.getProperty("services.port");
-                SERVICES_PORT = servicesPort;
-            } catch (IOException e) {
-                e.printStackTrace();
-                SERVICES_PORT = "8080";
-            }
-            return servicesPort;
-        }
-
-    }
 
     private static final int MEMCACHED_TIMEOUT = 3;
 
@@ -204,5 +182,28 @@ public final class RequestUtils {
 
     public static void setCacheProvider(CacheProvider cacheProvider) {
         RequestUtils.cacheProvider = cacheProvider;
+    }
+
+    public static String getServicesPort() {
+
+        if(servicesPort != null){ return servicesPort;}
+        else {
+            Properties prop = new Properties();
+            String servicesPort = "";
+
+            try {
+
+                InputStream inputStream =
+                        RequestUtils.class.getClassLoader().getResourceAsStream("application.properties");
+                prop.load(inputStream);
+                servicesPort = prop.getProperty("services.port");
+                RequestUtils.servicesPort = servicesPort;
+            } catch (IOException e) {
+                e.printStackTrace();
+                RequestUtils.servicesPort = "8080";
+            }
+            return servicesPort;
+        }
+
     }
 }
