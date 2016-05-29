@@ -1,12 +1,16 @@
 package org.xcolab.hooks.climatecolab.utils;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
+import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Image;
+import com.liferay.portal.service.ImageLocalServiceUtil;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
+import org.xcolab.utils.FileUploadUtil;
 
 import javax.imageio.ImageIO;
 import javax.servlet.Filter;
@@ -17,17 +21,15 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
-
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.model.Image;
-import com.liferay.portal.service.ImageLocalServiceUtil;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 
 public class FileUploadFilter implements Filter {
+
+	public static final int IMAGE_CROP_WIDTH_PIXELS = 300;
+	public static final int IMAGE_CROP_HEIGHT_PIXELS = 300;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
@@ -55,7 +57,8 @@ public class FileUploadFilter implements Filter {
 
 						byte[] imgBArr = IOUtils.toByteArray(is);
 						if(!keepFormat){
-							imgBArr = resizeAndCropImage(imgBArr);
+							imgBArr = FileUploadUtil.resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(imgBArr)),
+									IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
 						}
 						
 						//Image img = ImageLocalServiceUtil..getImage(imgBArr);
@@ -67,8 +70,7 @@ public class FileUploadFilter implements Filter {
 						ImageLocalServiceUtil.updateImage(imageId, imgBArr);
 
 						// return JSON with image id
-						response.getWriter().append(
-								"{\"success\": \"true\", \"imageId\": " + img.getPrimaryKey() + "}");
+						response.getWriter().append(String.format("{\"success\": \"true\", \"imageId\": %d}", img.getPrimaryKey()));
 						response.getWriter().close();
 					}
 					else {
@@ -79,11 +81,10 @@ public class FileUploadFilter implements Filter {
 				}
 			}
 			else {
-                response.getWriter().append(
-                        "{\"error\": \"true\", \"message\":\"Unknown request\"}");
+                response.getWriter().append("{\"error\": \"true\", \"message\":\"Unknown request\"}");
                 response.getWriter().close();
 			}
-		} catch (Exception e) {
+		} catch (FileUploadException | SystemException | PortalException | IOException e) {
 			throw new ServletException(e);
 		} finally {
 			if (is != null) {
@@ -96,53 +97,19 @@ public class FileUploadFilter implements Filter {
 		}
 	}
 
-	private byte[] resizeAndCropImage(byte[] imgBArr) throws IOException {
-		int newW = 150;
-		int newH = 150;
-
-		BufferedImage img = ImageIO.read(new ByteArrayInputStream(imgBArr));
-		// crop image
-
-		int w = img.getWidth();
-		int h = img.getHeight();
-
-		int cropSize;
-		int cropX = 0;
-		int cropY = 0;
-
-		if (h < w) {
-			cropSize = h;
-			cropX = (w - h) / 2;
-		} else {
-			cropSize = w;
-			cropY = (h - w) / 2;
-		}
-
-		BufferedImage cropedImage = img.getSubimage(cropX, cropY, cropSize, cropSize);
-		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = dimg.createGraphics();
-		g.setComposite(AlphaComposite.Clear);
-		g.fillRect(0,0,newW, newH);
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.setComposite(AlphaComposite.Src);
-		g.drawImage(cropedImage, 0, 0, newW, newH, 0, 0, cropSize, cropSize, null);
-		g.dispose();
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ImageIO.write(dimg, "png", bos);
-		return bos.toByteArray();
-	}
-
-    public void init(FilterConfig filterConfig) throws ServletException {
+    @Override
+	public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+    @Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
         doPost((HttpServletRequest) request, (HttpServletResponse) response);
         
     }
 
-    public void destroy() {
+    @Override
+	public void destroy() {
         // TODO Auto-generated method stub
         
     }

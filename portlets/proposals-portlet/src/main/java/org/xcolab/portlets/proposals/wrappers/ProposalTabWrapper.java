@@ -1,12 +1,11 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import javax.portlet.PortletRequest;
-
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import javax.portlet.PortletRequest;
 
 public class ProposalTabWrapper {
     private ProposalTab tab;
@@ -39,7 +38,7 @@ public class ProposalTabWrapper {
     
     public String getDisplayName() {
         if (displayName == null) {
-            return tab.getDisplayName();
+            displayName = tab.getDisplayName();
         }
         return displayName;
     }

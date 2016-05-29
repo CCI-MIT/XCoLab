@@ -75,7 +75,7 @@
             <finder-column name="categoryId" />
             <finder-column name="threadId" />
         </finder>
-        
+
         <finder name="ThreadId" return-type="Collection" where="deleted is null">
             <finder-column name="threadId" />
         </finder>
@@ -83,18 +83,7 @@
         <finder name="SingleThreadId" return-type="DiscussionMessage" where="deleted is null">
             <finder-column name="messageId" />
         </finder>
-        
-        <finder name="SubjectLike" return-type="Collection" where="deleted is null">
-            <finder-column name="subject" comparator="LIKE" />
-            <finder-column name="categoryGroupId" />
-        </finder>
-        
-        <finder name="BodyLike" return-type="Collection" where="deleted is null">
-            <finder-column name="body" comparator="LIKE" />
-            <finder-column name="categoryGroupId" />
-        </finder>
-        
-        
+
         <finder name="MessageId" return-type="DiscussionMessage" where="deleted is null">
             <finder-column name="messageId" />
         </finder>
@@ -102,6 +91,19 @@
         <finder name="AuthorId" return-type="Collection" where="deleted is null">
             <finder-column name="authorId" />
         </finder>
+
+        <!--index useless for LIKE - index on categoryGroupId and deleted will be used-->
+        <finder name="SubjectLike" return-type="Collection" where="deleted is null" db-index="false">
+            <finder-column name="subject" comparator="LIKE" />
+            <finder-column name="categoryGroupId" />
+        </finder>
+
+        <!--index useless for LIKE - index on categoryGroupId and deleted will be used-->
+        <finder name="BodyLike" return-type="Collection" where="deleted is null" db-index="false">
+            <finder-column name="body" comparator="LIKE" />
+            <finder-column name="categoryGroupId" />
+        </finder>
+
     </entity>
     
     <entity name="DiscussionMessageFlag" local-service="true">
@@ -120,6 +122,36 @@
         <finder name="MessageIdFlagType" unique="true" return-type="DiscussionMessageFlag">
             <finder-column name="messageId" />
             <finder-column name="flagType" />
+        </finder>
+    </entity>
+
+    <entity name="SpamReport" local-service="true">
+        <column name="id_" type="long" primary="true"/>
+        <column name="spamUserId" type="long"/>
+        <column name="reporterUserId" type="long"/>
+        <column name="discussionMessageId" type="long"/>
+        <column name="isAdminReport" type="boolean"/>
+
+        <finder name="SpamUserId" return-type="Collection">
+            <finder-column name="spamUserId"/>
+        </finder>
+
+        <finder name="DiscussionMessageId" return-type="Collection">
+            <finder-column name="discussionMessageId"/>
+        </finder>
+
+        <finder name="ReporterUserId" return-type="Collection">
+            <finder-column name="reporterUserId"/>
+        </finder>
+
+        <finder name="ReporterUserIdDiscussionMessageId" return-type="SpamReport">
+            <finder-column name="reporterUserId"/>
+            <finder-column name="discussionMessageId"/>
+        </finder>
+
+        <finder name="SpamUserIdDiscussionMessageId" return-type="Collection">
+            <finder-column name="spamUserId"/>
+            <finder-column name="discussionMessageId"/>
         </finder>
     </entity>
 </service-builder>

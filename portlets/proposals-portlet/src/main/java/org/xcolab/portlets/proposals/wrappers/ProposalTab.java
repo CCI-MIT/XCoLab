@@ -1,22 +1,17 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import javax.portlet.PortletRequest;
-
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
-import java.util.List;
+import javax.portlet.PortletRequest;
 
 public enum ProposalTab {
-    DESCRIPTION("Description", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
-    ACTIONSIMPACTS("Model results",
+    DESCRIPTION("Description", Type.NORMAL, ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
+    ACTIONSIMPACTS("Model results", Type.NORMAL,
             new ProposalTabCanAccessAlgorithm() {
 
                 @Override
@@ -28,41 +23,37 @@ public enum ProposalTab {
                     try {
                         Long contestPK = context.getContest(request).getContestPK();
                         Long contestPKofFirst2015Contest = 1301101L;
-                        if(contestPK > contestPKofFirst2015Contest){
-                            return false;
-                        }
-                        return context.getProposalWrapped(request).getModelId() > 0;
-                    } catch (PortalException e) {
-                        _log.error("Can't access proposals model id", e);
-                    } catch (SystemException e) {
+                        return contestPK <= contestPKofFirst2015Contest
+                                && context.getProposalWrapped(request).getModelId() > 0;
+                    } catch (PortalException | SystemException e) {
                         _log.error("Can't access proposals model id", e);
                     }
                     return false;
                 }
-                private Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
+                private final Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
     }
             , ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero), // TODO might need to change this
-    IMPACT("Impact", ProposalTabCanAccessAlgorithm.impactViewAccess, ProposalTabCanAccessAlgorithm.impactEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
-    TEAM("Contributors", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.membersCount),
-    COMMENTS("Comments", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.commentsCount),
-    EVALUATION("Evaluation", ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.evaluationCommentsCount),
-    ADVANCING("Judging Decision",ProposalTabCanAccessAlgorithm.advancingAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
-    FELLOW_REVIEW("Fellow Review", ProposalTabCanAccessAlgorithm.fellowReviewAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.fellowReviewCommentsCount),
-    SCREENING("Screening", ProposalTabCanAccessAlgorithm.screeningAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
-    ADMIN("Admin", ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
-    POINTS("Points", ProposalTabCanAccessAlgorithm.pointsViewAccess, ProposalTabCanAccessAlgorithm.pointsEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero);
-
-
+    IMPACT("Impact", Type.NORMAL, ProposalTabCanAccessAlgorithm.impactViewAccess, ProposalTabCanAccessAlgorithm.impactEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
+    TEAM("Contributors", Type.NORMAL, ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.membersCount),
+    COMMENTS("Comments", Type.NORMAL, ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.commentsCount),
+    SCREENING("Screening", Type.HIGHLIGHT, ProposalTabCanAccessAlgorithm.screeningAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
+    ADVANCING("Advancing", Type.HIGHLIGHT, ProposalTabCanAccessAlgorithm.advancingAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
+    EVALUATION("Evaluation Results", Type.NORMAL, ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.evaluationCommentsCount),
+    FELLOW_REVIEW("Fellow Review", Type.NORMAL, ProposalTabCanAccessAlgorithm.fellowReviewAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.fellowReviewCommentsCount),
+    ADMIN("Admin", Type.NORMAL, ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
+    POINTS("Points", Type.NORMAL, ProposalTabCanAccessAlgorithm.pointsViewAccess, ProposalTabCanAccessAlgorithm.pointsEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero);
 
     private final String displayName;
+    private final Type tabType;
     private final ProposalTabCanAccessAlgorithm canAccessTabAlgorithm;
     private final ProposalTabCanAccessAlgorithm canEditAlgorithm;
     private final ProposalTabActivityCountAlgorithm activitiesCountAlgorithm;
     
-    private ProposalTab(String displayName, ProposalTabCanAccessAlgorithm canAccessTabAlgorithm, 
-            ProposalTabCanAccessAlgorithm canEditAlgorithm, 
-            ProposalTabActivityCountAlgorithm activitiesCountAlgorithm) {
+    ProposalTab(String displayName, Type tabType, ProposalTabCanAccessAlgorithm canAccessTabAlgorithm,
+                ProposalTabCanAccessAlgorithm canEditAlgorithm,
+                ProposalTabActivityCountAlgorithm activitiesCountAlgorithm) {
         this.displayName = displayName;
+        this.tabType = tabType;
         this.canAccessTabAlgorithm = canAccessTabAlgorithm;
         this.canEditAlgorithm = canEditAlgorithm;
         this.activitiesCountAlgorithm = activitiesCountAlgorithm;
@@ -87,7 +78,25 @@ public enum ProposalTab {
     public int getActivityCount(ProposalsContext context, PortletRequest request) {
         return activitiesCountAlgorithm.getActivityCount(context, request);
     }
-    
-    
+
+    public Type getTabType() {
+        return tabType;
+    }
+
+    public enum Type {
+        NORMAL(""),
+        HIGHLIGHT("highlight");
+
+        private final String cssModifier;
+
+        Type(String cssModifier) {
+
+            this.cssModifier = cssModifier;
+        }
+
+        public String getCssModifier() {
+            return cssModifier;
+        }
+    }
     
 }

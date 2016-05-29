@@ -1,10 +1,5 @@
 package com.ext.portlet.service.impl.mock;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -17,6 +12,11 @@ import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.model.impl.GroupImpl;
 import com.liferay.portal.service.GroupService;
 import com.liferay.portal.service.ServiceContext;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GroupServiceImplMock implements GroupService {
     private long counter = 1;

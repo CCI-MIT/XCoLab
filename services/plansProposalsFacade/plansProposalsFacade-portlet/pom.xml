@@ -9,7 +9,6 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.xcolab.services</groupId>
 	<artifactId>plansProposalsFacade-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>plansProposalsFacade Portlet</name>
@@ -227,21 +226,18 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-	<groupId>javax.jcr</groupId>
-	<artifactId>jcr</artifactId>
-	<version>2.0</version>
-			<scope>test</scope>
-</dependency>
-<dependency>
-	<groupId>org.quartz-scheduler</groupId>
-	<artifactId>quartz</artifactId>
-	<version>2.1.6</version>
-			<scope>test</scope>
-</dependency>
+			<groupId>javax.jcr</groupId>
+			<artifactId>jcr</artifactId>
+			<version>2.0</version>
+					<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.1.6</version>
+					<scope>test</scope>
+		</dependency>
 
-
-		
-		
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
@@ -327,12 +323,12 @@
 			<scope>test</scope>
 		</dependency>
 		
-<dependency>
-	<groupId>com.browseengine.bobo</groupId>
-	<artifactId>bobo-browse</artifactId>
-	<version>3.2.0</version>
-  			<scope>test</scope>
-</dependency>
+		<dependency>
+			<groupId>com.browseengine.bobo</groupId>
+			<artifactId>bobo-browse</artifactId>
+			<version>3.2.0</version>
+			<scope>test</scope>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
@@ -387,60 +383,56 @@
   			<scope>test</scope>
 		</dependency>
 		<dependency>
-  <groupId>org.codehaus.groovy</groupId>
-  <artifactId>groovy</artifactId>
-  <version>2.3.6</version>
-  			<scope>test</scope>
-</dependency>
-<dependency>
-	<groupId>org.mozilla</groupId>
-	<artifactId>rhino</artifactId>
-	<version>1.7R4</version>
-  			<scope>test</scope>
-</dependency>
+		  <groupId>org.codehaus.groovy</groupId>
+		  <artifactId>groovy</artifactId>
+		  <version>2.3.6</version>
+					<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+			<version>1.7R4</version>
+					<scope>test</scope>
+		</dependency>
 
-<dependency>
-	<groupId>org.jruby</groupId>
-	<artifactId>jruby</artifactId>
-	<version>1.7.13</version>
-  			<scope>test</scope>
-</dependency>
-<dependency>
-	<groupId>org.freemarker</groupId>
-	<artifactId>freemarker</artifactId>
-	<version>2.3.20</version>
-  			<scope>test</scope>
-</dependency>
-<dependency>
-	<groupId>org.apache.jackrabbit</groupId>
-	<artifactId>jackrabbit-core</artifactId>
-	<version>2.8.0</version>
-			<scope>test</scope>
-</dependency>
+		<dependency>
+			<groupId>org.jruby</groupId>
+			<artifactId>jruby</artifactId>
+			<version>1.7.13</version>
+					<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.20</version>
+					<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jackrabbit</groupId>
+			<artifactId>jackrabbit-core</artifactId>
+			<version>2.8.0</version>
+					<scope>test</scope>
+		</dependency>
 
-<dependency>
-	<groupId>org.mnode.ical4j</groupId>
-	<artifactId>ical4j</artifactId>
-	<version>1.0.2</version>
-			<scope>test</scope>
-</dependency>
-<dependency>
-	<groupId>com.ibm.icu</groupId>
-	<artifactId>icu4j</artifactId>
-	<version>53.1</version>
-			<scope>test</scope>
-</dependency>
+		<dependency>
+			<groupId>org.mnode.ical4j</groupId>
+			<artifactId>ical4j</artifactId>
+			<version>1.0.2</version>
+					<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+			<version>53.1</version>
+					<scope>test</scope>
+		</dependency>
 
-
-		
-		
-    	
-		
-		
-		
-		
-            
-
+		<!-- microservice dependencies -->
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>members-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 

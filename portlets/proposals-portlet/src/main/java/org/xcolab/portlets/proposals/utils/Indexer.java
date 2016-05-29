@@ -1,22 +1,8 @@
 package org.xcolab.portlets.proposals.utils;
 
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-
-import javax.portlet.PortletURL;
-
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,6 +21,16 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+
+import javax.portlet.PortletURL;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Indexes a proposal
@@ -65,7 +61,9 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             id = p.getProposalId();
         }
 
-        if (id < 0) _log.error("id should never be below 0. PAAANIIIIC!!!");
+        if (id < 0) {
+            _log.error("id should never be below 0. PAAANIIIIC!!!");
+        }
 
         try {
             Proposal plan = ProposalLocalServiceUtil.getProposal(id);
@@ -204,24 +202,28 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
     public void reindex(Object obj) throws SearchException {
         Proposal p = null;
         if (obj instanceof Long) {
+            Long proposalId = 0L;
             try {
-                p = ProposalLocalServiceUtil.getProposal((Long) obj);
+                proposalId = (Long) obj;
+                p = ProposalLocalServiceUtil.getProposal(proposalId);
             } catch (Throwable e) {
-                _log.error("Can't reindex plan " + p.getProposalId(), e);
+                _log.error("Can't reindex plan " + proposalId, e);
             }
 
         } else {
             try {
                 Method m = obj.getClass().getMethod("getProposalId");
-                Long planId = (Long) m.invoke(obj);
-                p = ProposalLocalServiceUtil.getProposal(planId);
+                Long proposalId = (Long) m.invoke(obj);
+                p = ProposalLocalServiceUtil.getProposal(proposalId);
             } catch (Throwable e) {
                 _log.error("Can't reindex plan " + obj, e);
             }
         }
 
 
-        if (!p.getVisible()) return;
+        if (p == null || !p.getVisible()) {
+            return;
+        }
         Document doc = getDocument(p);
         SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, doc.getUID());
         SearchEngineUtil.addDocument(getSearchEngineId(), defaultCompanyId, doc);
@@ -242,9 +244,11 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             _log.error("Can't reindex plans", e);
             throw new SearchException("Can't reindex plans", e);
         }
-        Collection<Document> documents = new ArrayList<Document>();
+        Collection<Document> documents = new ArrayList<>();
         for (Proposal p : proposals) {
-            if (!p.getVisible()) continue;
+            if (!p.getVisible()) {
+                continue;
+            }
             try {
                 Document document = getDocument(p);
                 documents.add(document);

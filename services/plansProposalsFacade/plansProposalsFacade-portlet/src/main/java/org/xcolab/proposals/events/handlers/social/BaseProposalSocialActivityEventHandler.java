@@ -1,11 +1,5 @@
 package org.xcolab.proposals.events.handlers.social;
 
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.model.User;
-import org.xcolab.proposals.events.BaseProposalUserActivityEvent;
-import org.xcolab.proposals.events.handlers.BaseEventHandler;
-
 import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -13,9 +7,16 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.model.User;
 import com.liferay.portlet.social.service.SocialActivityLocalService;
+import org.xcolab.proposals.events.BaseProposalUserActivityEvent;
+import org.xcolab.proposals.events.handlers.BaseEventHandler;
 
 public class BaseProposalSocialActivityEventHandler extends BaseEventHandler {
+
+    private final static Log _log = LogFactoryUtil.getLog(BaseProposalSocialActivityEventHandler.class);
 
     @BeanReference(type = SocialActivityLocalService.class)
     protected SocialActivityLocalService socialActivityService;
@@ -28,14 +29,8 @@ public class BaseProposalSocialActivityEventHandler extends BaseEventHandler {
             // Reindex the user to update the activity count
             Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
             indexer.reindex(event.getUser().getUserId());
-        }
-        catch (PortalException e) {
-            _log.error("Can't add social activity", e);
-        }
-        catch (SystemException e) {
+        } catch (PortalException | SystemException e) {
             _log.error("Can't add social activity", e);
         }
     }
-
-    private final static Log _log = LogFactoryUtil.getLog(BaseProposalSocialActivityEventHandler.class);
 }

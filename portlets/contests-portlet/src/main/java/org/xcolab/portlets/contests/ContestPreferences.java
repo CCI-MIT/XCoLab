@@ -4,16 +4,12 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.apache.commons.lang3.StringUtils;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.ReadOnlyException;
-import javax.portlet.ValidatorException;
+import org.xcolab.utils.IdListUtil;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,13 +18,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.ValidatorException;
+
 public class ContestPreferences {
-    private Long[] selectedContests;
+    private List<Long> selectedContests;
     private final static String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
     private final static String TITLE_PREFERENCE = "CONTEST_TITLE";
     private final static String FEED_SIZE_PREFERENCE = "CONTEST_FEED_SIZE";
+    private final static String ALL_CONTESTS_TITLE = "ALL_CONTESTS_TITLE";
+    private final static String ALL_CONTESTS_URL = "ALL_CONTESTS_URL";
+    private final static String SHOW_COUNTS = "SHOW_COUNTS";
+
     private String title;
     private Integer feedSize;
+    private String allContestsUrl;
+    private String allContestsTitle;
+    private Boolean showCounts;
     private Map<Long, String> contestMap;
 
     public String getTitle() {
@@ -51,13 +59,18 @@ public class ContestPreferences {
     
     public ContestPreferences(PortletRequest request) {
     	PortletPreferences prefs = request.getPreferences();
-        selectedContests = convertStringsToLongs(prefs.getValue(SELECTED_CONTESTS_PREFERENCE, "").split(","));
+        selectedContests = IdListUtil.getIdsFromString(prefs.getValue(SELECTED_CONTESTS_PREFERENCE, ""));
         title = prefs.getValue(TITLE_PREFERENCE, "Featured contests");
+        allContestsTitle = prefs.getValue(ALL_CONTESTS_TITLE, "see all contests");
+        showCounts = Boolean.parseBoolean(prefs.getValue(SHOW_COUNTS, "true"));
+        allContestsUrl = prefs.getValue(ALL_CONTESTS_URL, "/web/guest/plans");
         try {
             feedSize = Integer.parseInt(prefs.getValue(FEED_SIZE_PREFERENCE, "4"));
         } catch (NumberFormatException e) {
             feedSize = 4;
         }
+
+
         populateContestMap();
     }
 
@@ -107,48 +120,25 @@ public class ContestPreferences {
     public String submit(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
         PortletPreferences prefs = request.getPreferences();
 
-        prefs.setValue(SELECTED_CONTESTS_PREFERENCE, StringUtils.join(convertLongsToStrings(selectedContests), ","));
+        prefs.setValue(SELECTED_CONTESTS_PREFERENCE, IdListUtil.getStringFromIds(selectedContests));
         prefs.setValue(TITLE_PREFERENCE, title);
         prefs.setValue(FEED_SIZE_PREFERENCE, feedSize+"");
+        prefs.setValue(ALL_CONTESTS_TITLE, allContestsTitle);
+        prefs.setValue(SHOW_COUNTS, Boolean.toString(showCounts));
+        prefs.setValue(ALL_CONTESTS_URL, allContestsUrl);
 
         prefs.store();
 
         return null;
     }
 
-    public Long[] getSelectedContests() {
+    public List<Long> getSelectedContests() {
         return selectedContests;
     }
 
-    public void setSelectedContests(Long[] selectedPhases) {
-        this.selectedContests = selectedPhases;
+    public void setSelectedContests(List<Long> selectedContests) {
+        this.selectedContests = selectedContests;
     }
-
-    private static Long[] convertStringsToLongs(String[] arrayStr) {
-        if (arrayStr.length == 1 && StringUtils.isBlank(arrayStr[0])) {
-            return new Long[] {};
-        }
-
-        Long[] arrayLong = new Long[arrayStr.length];
-        for (int i = 0; i < arrayStr.length; i++) {
-            try {
-                arrayLong[i] = Long.parseLong(arrayStr[i]);
-            }
-            catch (NumberFormatException e) {
-                arrayLong[i] = null;
-            }
-        }
-        return arrayLong;
-    }
-
-    private static String[] convertLongsToStrings(Long[] arrayLong) {
-        String[] arrayStr = new String[arrayLong.length];
-        for (int i = 0; i < arrayLong.length; i++) {
-            arrayStr[i] = arrayLong[i].toString();
-        }
-        return arrayStr;
-    }
-
 
     public Map<Long, String> getContestMap() {
         return contestMap;
@@ -156,5 +146,29 @@ public class ContestPreferences {
 
     public void setContestMap(Map<Long, String> contestMap) {
         this.contestMap = contestMap;
+    }
+
+    public String getAllContestsUrl() {
+        return allContestsUrl;
+    }
+
+    public void setAllContestsUrl(String allContestsUrl) {
+        this.allContestsUrl = allContestsUrl;
+    }
+
+    public String getAllContestsTitle() {
+        return allContestsTitle;
+    }
+
+    public void setAllContestsTitle(String allContestsTitle) {
+        this.allContestsTitle = allContestsTitle;
+    }
+
+    public Boolean getShowCounts() {
+        return showCounts;
+    }
+
+    public void setShowCounts(Boolean showCounts) {
+        this.showCounts = showCounts;
     }
 }

@@ -1,14 +1,14 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ext.portlet.model.OntologyTermEntity;
 import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
 import com.ext.portlet.service.base.OntologyTermEntityLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The implementation of the ontology term entity local service.
@@ -32,8 +32,9 @@ public class OntologyTermEntityLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.OntologyTermEntityLocalServiceUtil} to access the ontology term entity local service.
      */
 
+    @Override
     public List<Long> findTagedIdsForClass(Long termId, Class clasz) throws SystemException {
-        List<Long> ret = new ArrayList<Long>();
+        List<Long> ret = new ArrayList<>();
         
         for (OntologyTermEntity ote: ontologyTermEntityPersistence.findByTermIdClassNameId(termId, ClassNameLocalServiceUtil.getClassNameId(clasz))) {
             ret.add(ote.getClassPK());
@@ -43,6 +44,7 @@ public class OntologyTermEntityLocalServiceImpl
     }
     
     
+    @Override
     public void store(OntologyTermEntity ote) throws SystemException {
         if (ote.isNew()) {
             if (ote.getId() <= 0) {
@@ -55,6 +57,7 @@ public class OntologyTermEntityLocalServiceImpl
         }
     }
     
+    @Override
     public void remove(OntologyTermEntity ote) throws SystemException {
         OntologyTermEntityLocalServiceUtil.deleteOntologyTermEntity(ote);
     }

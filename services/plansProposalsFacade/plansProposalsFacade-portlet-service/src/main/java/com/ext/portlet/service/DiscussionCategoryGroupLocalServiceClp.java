@@ -69,6 +69,12 @@ public class DiscussionCategoryGroupLocalServiceClp
     private String[] _methodParameterTypes29;
     private String _methodName30;
     private String[] _methodParameterTypes30;
+    private String _methodName31;
+    private String[] _methodParameterTypes31;
+    private String _methodName32;
+    private String[] _methodParameterTypes32;
+    private String _methodName33;
+    private String[] _methodParameterTypes33;
 
     public DiscussionCategoryGroupLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -230,6 +236,18 @@ public class DiscussionCategoryGroupLocalServiceClp
         _methodName30 = "getUserMessages";
 
         _methodParameterTypes30 = new String[] { "long" };
+
+        _methodName31 = "subscribe";
+
+        _methodParameterTypes31 = new String[] { "long", "long" };
+
+        _methodName32 = "unsubscribe";
+
+        _methodParameterTypes32 = new String[] { "long", "long" };
+
+        _methodName33 = "isSubscribed";
+
+        _methodParameterTypes33 = new String[] { "long", "long" };
     }
 
     @Override
@@ -1129,5 +1147,88 @@ public class DiscussionCategoryGroupLocalServiceClp
         }
 
         return ((Integer) returnObj).intValue();
+    }
+
+    @Override
+    public void subscribe(long userId, long discussionCategoryGroupId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName31,
+                _methodParameterTypes31,
+                new Object[] { userId, discussionCategoryGroupId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public void unsubscribe(long userId, long discussionCategoryGroupId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName32,
+                _methodParameterTypes32,
+                new Object[] { userId, discussionCategoryGroupId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName33,
+                    _methodParameterTypes33,
+                    new Object[] { userId, discussionCategoryGroupId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
     }
 }

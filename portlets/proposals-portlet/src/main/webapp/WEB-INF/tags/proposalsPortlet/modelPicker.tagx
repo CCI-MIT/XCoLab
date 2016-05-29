@@ -1,12 +1,11 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+		  xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+
+	<liferay-theme:defineObjects />
+
+	<!--@elvariable id="isRegionalContest" type="java.lang.Boolean"-->
 	
 	<jsp:directive.attribute name="availableModels" type="java.util.Map" required="true" rtexprvalue="true" description="Models to be shown" />
 	<jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest PK" />
@@ -20,8 +19,8 @@
 							style="width: 55px"/>
 					</div>
 				</c:if>
-                <h3 style="margin-top: 0px;">Which modeling engine would you like to use?</h3>
-                <div class="selectbox1 modelsSelectBox">
+                <h3 style="margin-top: 0;">Which modeling engine would you like to use?</h3>
+                <div class="c-Form__selectbox__new modelsSelectBox">
                 	<fieldset id="modelSet">
                 	<c:forEach var="model" items="${availableModels }">
 
@@ -51,7 +50,7 @@
 						<c:if test="${not empty wikiUrl}">
 							<a href="${wikiUrl}" target="_blank">
 								<span class="fieldWithTooltip">
-									<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png"/>
+									<img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png"/>
 								</span>
 							</a>
 						</c:if>
@@ -78,7 +77,7 @@
 			// ignore
 		}
 
-		jQuery(".selectbox1").change(function(element) {
+		jQuery(".c-c-Form__selectbox__new").change(function(element) {
 			modeling.loadModel(element.target.value);
 			jQuery(".act-edit_left").html("");
 			jQuery(".act-edit_right").html("");

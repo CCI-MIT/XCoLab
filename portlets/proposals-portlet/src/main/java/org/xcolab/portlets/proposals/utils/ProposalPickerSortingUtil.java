@@ -1,14 +1,17 @@
 package org.xcolab.portlets.proposals.utils;
 
+import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.Collections;
@@ -19,7 +22,6 @@ import java.util.Map;
 
 /**
  * Utility class to sort lists of contests or proposals by a string parameter
- * Created by johannes on 9/3/15.
  */
 public class ProposalPickerSortingUtil {
 
@@ -176,7 +178,7 @@ public class ProposalPickerSortingUtil {
                     Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
-                                           Pair<Proposal, Date> o2) {
+                                Pair<Proposal, Date> o2) {
                             try {
                                 return sortOrderModifier * Proposal2PhaseLocalServiceUtil
                                         .getCurrentContestForProposal(
@@ -188,7 +190,7 @@ public class ProposalPickerSortingUtil {
                                                                 o2.getLeft()
                                                                         .getProposalId())
                                                         .getContestName());
-                            } catch (Exception e) {
+                            } catch (SystemException | PortalException e) {
                                 return 0;
                             }
                         }
@@ -198,18 +200,18 @@ public class ProposalPickerSortingUtil {
                     Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
-                                           Pair<Proposal, Date> o2) {
+                                Pair<Proposal, Date> o2) {
                             try {
-                                return sortOrderModifier * ProposalLocalServiceUtil
+                                return sortOrderModifier * ProposalAttributeLocalServiceUtil
                                         .getAttribute(o1.getLeft().getProposalId(),
-                                                ProposalAttributeKeys.NAME, 0l)
+                                                ProposalAttributeKeys.NAME, 0L)
                                         .getStringValue()
                                         .compareTo(
-                                                ProposalLocalServiceUtil.getAttribute(
+                                                ProposalAttributeLocalServiceUtil.getAttribute(
                                                         o2.getLeft().getProposalId(),
-                                                        ProposalAttributeKeys.NAME, 0l)
+                                                        ProposalAttributeKeys.NAME, 0L)
                                                         .getStringValue());
-                            } catch (Exception e) {
+                            } catch (SystemException | NoSuchProposalAttributeException e) {
                                 return 0;
                             }
                         }
@@ -219,26 +221,28 @@ public class ProposalPickerSortingUtil {
                     Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
-                                           Pair<Proposal, Date> o2) {
+                                Pair<Proposal, Date> o2) {
                             try {
-                                ProposalAttribute t1 = ProposalLocalServiceUtil
+                                ProposalAttribute t1 = ProposalAttributeLocalServiceUtil
                                         .getAttribute(o1.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.TEAM, 0);
-                                ProposalAttribute t2 = ProposalLocalServiceUtil
+                                ProposalAttribute t2 = ProposalAttributeLocalServiceUtil
                                         .getAttribute(o2.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.TEAM, 0);
 
                                 String author1 = t1 == null
-                                        || t1.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
+                                        || t1.getStringValue().trim().isEmpty()
+                                        ? UserLocalServiceUtil
                                         .getUser(o1.getLeft().getAuthorId())
                                         .getScreenName() : t1.getStringValue();
                                 String author2 = t2 == null
-                                        || t2.getStringValue().trim().length() == 0 ? UserLocalServiceUtil
+                                        || t2.getStringValue().trim().isEmpty()
+                                        ? UserLocalServiceUtil
                                         .getUser(o2.getLeft().getAuthorId())
                                         .getScreenName() : t2.getStringValue();
 
                                 return sortOrderModifier * author1.compareTo(author2);
-                            } catch (Exception e) {
+                            } catch (SystemException | PortalException e) {
                                 return 0;
                             }
                         }
@@ -248,7 +252,7 @@ public class ProposalPickerSortingUtil {
                     Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
-                                           Pair<Proposal, Date> o2) {
+                                Pair<Proposal, Date> o2) {
                             return o1.getRight().compareTo(o2.getRight());
                         }
                     });
@@ -257,10 +261,12 @@ public class ProposalPickerSortingUtil {
                     Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
-                                           Pair<Proposal, Date> o2) {
+                                Pair<Proposal, Date> o2) {
                             try {
-                                return sortOrderModifier * ProposalLocalServiceUtil.getSupportersCount(o1
-                                        .getLeft().getProposalId()) - ProposalLocalServiceUtil
+                                return sortOrderModifier * ProposalLocalServiceUtil
+                                        .getSupportersCount(o1
+                                                .getLeft().getProposalId())
+                                        - ProposalLocalServiceUtil
                                         .getSupportersCount(o2.getLeft()
                                                 .getProposalId());
                             } catch (PortalException | SystemException e) {
@@ -273,10 +279,11 @@ public class ProposalPickerSortingUtil {
                     Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
-                                           Pair<Proposal, Date> o2) {
+                                Pair<Proposal, Date> o2) {
                             try {
                                 return sortOrderModifier * (int) (ProposalLocalServiceUtil
-                                        .getCommentsCount(o1.getLeft().getProposalId()) - ProposalLocalServiceUtil
+                                        .getCommentsCount(o1.getLeft().getProposalId())
+                                        - ProposalLocalServiceUtil
                                         .getCommentsCount(o2.getLeft().getProposalId()));
                             } catch (PortalException | SystemException e) {
                                 return 0;
@@ -284,7 +291,13 @@ public class ProposalPickerSortingUtil {
                         }
                     });
                     break;
+                default:
+                    throw new UnsupportedOperationException("Unknown sort column");
             }
+        }
+
+        if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
+            Collections.reverse(proposals);
         }
     }
 }

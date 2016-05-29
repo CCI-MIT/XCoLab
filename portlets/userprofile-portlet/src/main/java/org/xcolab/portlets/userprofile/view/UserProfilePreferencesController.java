@@ -5,25 +5,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.userprofile.beans.UserProfilePreferencesBean;
 
-import javax.portlet.*;
+import javax.portlet.ActionRequest;
+import javax.portlet.ReadOnlyException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ValidatorException;
 import java.io.IOException;
 
 @Controller
 @RequestMapping("edit")
 public class UserProfilePreferencesController {
-	
+
     @RequestMapping
     public String showPreferences(RenderRequest request, RenderResponse response, Model model) {
-    	model.addAttribute("UserProfilePreferencesBean", new UserProfilePreferencesBean(request));
+        model.addAttribute("UserProfilePreferencesBean", new UserProfilePreferencesBean(request));
         return "editUserProfilePreferences";
     }
-	
 
     @RequestMapping(params = {"action=savePreferences"})
     public void savePreferences(ActionRequest request, ActionRequest response, Model model,
-                                UserProfilePreferencesBean preferences)
+            UserProfilePreferencesBean preferences)
             throws ReadOnlyException, ValidatorException, IOException {
         preferences.store(request);
-	}
+    }
 
 }

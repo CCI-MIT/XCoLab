@@ -26,13 +26,14 @@ public class PointsDistributionConfigurationCacheModel implements CacheModel<Poi
     public long pointTypeId;
     public long targetUserId;
     public long targetSubProposalId;
+    public long targetPlanSectionDefinitionId;
     public double percentage;
     public long creator;
     public long createDate;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(id);
@@ -44,6 +45,8 @@ public class PointsDistributionConfigurationCacheModel implements CacheModel<Poi
         sb.append(targetUserId);
         sb.append(", targetSubProposalId=");
         sb.append(targetSubProposalId);
+        sb.append(", targetPlanSectionDefinitionId=");
+        sb.append(targetPlanSectionDefinitionId);
         sb.append(", percentage=");
         sb.append(percentage);
         sb.append(", creator=");
@@ -64,6 +67,7 @@ public class PointsDistributionConfigurationCacheModel implements CacheModel<Poi
         pointsDistributionConfigurationImpl.setPointTypeId(pointTypeId);
         pointsDistributionConfigurationImpl.setTargetUserId(targetUserId);
         pointsDistributionConfigurationImpl.setTargetSubProposalId(targetSubProposalId);
+        pointsDistributionConfigurationImpl.setTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
         pointsDistributionConfigurationImpl.setPercentage(percentage);
         pointsDistributionConfigurationImpl.setCreator(creator);
 
@@ -86,6 +90,7 @@ public class PointsDistributionConfigurationCacheModel implements CacheModel<Poi
         pointTypeId = objectInput.readLong();
         targetUserId = objectInput.readLong();
         targetSubProposalId = objectInput.readLong();
+        targetPlanSectionDefinitionId = objectInput.readLong();
         percentage = objectInput.readDouble();
         creator = objectInput.readLong();
         createDate = objectInput.readLong();
@@ -99,6 +104,7 @@ public class PointsDistributionConfigurationCacheModel implements CacheModel<Poi
         objectOutput.writeLong(pointTypeId);
         objectOutput.writeLong(targetUserId);
         objectOutput.writeLong(targetSubProposalId);
+        objectOutput.writeLong(targetPlanSectionDefinitionId);
         objectOutput.writeDouble(percentage);
         objectOutput.writeLong(creator);
         objectOutput.writeLong(createDate);

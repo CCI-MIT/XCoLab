@@ -1,15 +1,10 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.ImpactIteration;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.model.*;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -23,14 +18,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalImpactDataParser;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
+import org.xcolab.portlets.proposals.utils.ProposalUnversionedAttributeUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.utils.HtmlUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -103,7 +101,7 @@ public class ProposalImpactJSONController {
             ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
 
             response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
-        } catch (Exception e) {
+        } catch (PortalException | SystemException | IOException e) {
             _log.error("Could not load impact series for contestId " + proposalsContext.getContest(request).getContestPK(), e);
             JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
             responseJSON.put("success", false);
@@ -130,7 +128,6 @@ public class ProposalImpactJSONController {
 
         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
         Contest contest = proposalsContext.getContest(request);
-        List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
 
         JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
         try {
@@ -146,6 +143,8 @@ public class ProposalImpactJSONController {
         responseJSON.put("success", true);
         response.getPortletOutputStream().write(responseJSON.toString().getBytes());
     }
+
+
 
     @ResourceMapping("proposalImpactDeleteDataSeries")
     public void proposalImpactDeleteDataSeries(
@@ -166,8 +165,8 @@ public class ProposalImpactJSONController {
         FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
         Proposal proposal = proposalsContext.getProposal(request);
 
-        for (ProposalAttribute proposalAttribute : ProposalLocalServiceUtil.getImpactProposalAttributes(proposal, focusArea)) {
-            ProposalLocalServiceUtil.removeAttribute(proposalsContext.getUser(request).getUserId(), proposalAttribute);
+        for (ProposalAttribute proposalAttribute : ProposalAttributeLocalServiceUtil.getImpactProposalAttributes(proposal, focusArea)) {
+            ProposalAttributeLocalServiceUtil.removeAttribute(proposalsContext.getUser(request).getUserId(), proposalAttribute);
         }
 
         responseJSON.put("success", true);
@@ -204,14 +203,54 @@ public class ProposalImpactJSONController {
             _log.info(e);
             responseJSON.put("success", false);
             responseJSON.put("message", e.getMessage());
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
             _log.error(e);
             responseJSON.put("success", false);
         }
 
         response.getPortletOutputStream().write(responseJSON.toString().getBytes());
     }
+
+    @ResourceMapping("proposalImpactSaveBasicProposalComment")
+    public void proposalImpactSaveBasicProposalComment(ResourceRequest request, ResourceResponse response,
+                @RequestParam(required = false) String impactAuthorComment,
+                @RequestParam(required = false) String impactIAFComment)
+            throws IOException, SystemException, PortalException {
+
+
+        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+
+        if ( !permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
+            responseJSON.put("success", false);
+            response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+            return;
+        }
+        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
+                getAttributes(proposal.getProposalId());
+
+        if (impactAuthorComment != null || impactIAFComment != null) {
+            if(impactAuthorComment != null) {
+
+                ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
+                        HtmlUtil.cleanAll(impactAuthorComment),
+                        ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
+                        proposal, unversionedAttributes);
+            }
+            if (impactIAFComment != null) {
+                ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                        ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
+                        proposal, unversionedAttributes);
+            }
+        }
+
+
+        responseJSON.put("success", true);
+        response.getPortletOutputStream().write(responseJSON.toString().getBytes());
+    }
+
 
     private JSONArray ontologyTermListToJSONArray(List<OntologyTerm> terms) {
         JSONArray array = JSONFactoryUtil.createJSONArray();
@@ -241,8 +280,6 @@ public class ProposalImpactJSONController {
 
         return array;
     }
-
-
 
     private Map<OntologyTerm, List<OntologyTerm>> getOntologyMap(ResourceRequest request) throws SystemException, PortalException {
         Contest contest = proposalsContext.getContest(request);

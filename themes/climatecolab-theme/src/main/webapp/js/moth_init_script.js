@@ -37,11 +37,11 @@ function initSearchUpperBox() {
 	
 	
 	jQuery("#searchsubmit").click(function() {
-		var searchPhrase = escape(jQuery('#searchinput').val());
+		var searchPhrase = encodeURI(jQuery('#searchinput').val());
 		if (searchPhrase == 'Search') {
 			searchPhrase = '';
 		}
-		window.location = "/web/guest/search#search=searchPhrase:" + searchPhrase;
+		window.location = "/web/guest/search/-/search/for/" + searchPhrase;
 	});
 		
 }
@@ -49,7 +49,7 @@ function initSearchUpperBox() {
 function initLoginPopupUpper() {
 	jQuery("#loginPopupTrigger").click(function() {
 		jQuery("#loginPopupContainer").fadeIn("fast");
-		jQuery("#loginPopupContainer .username").focus();
+		jQuery("#loginPopupContainer .c-Header__login__username").focus();
 	});
 	
 	function hideIfLoginNotUsed() {
@@ -248,7 +248,7 @@ function insertParam(key, value)
 }
 
 function closePopup(obj) {
-	jQuery(".popup-wrap").hide();
+	jQuery(".c-Popup__wrapper").hide();
 }
 
 
@@ -313,7 +313,7 @@ jQuery(document).ready(function() {
 			jQuery('.hp_box').fadeIn(300);
 		});
 	
-	var footer = jQuery("#footmenu").next();
+	var footer = jQuery("#c-Footer__menu").next();
 	footer.appendTo(jQuery("#foot_wrap"));
 	
 	jQuery('.close').click(function() { 
@@ -327,7 +327,7 @@ jQuery(document).ready(function() {
     
     
     jQuery(".closepopuplogin a").click(function() {
-    	jQuery(".popup_login_form .error-message").remove();
+    	jQuery(".popup_login_form .c-Alert__error__message").remove();
     	jQuery(".popup_login_form .popup_login-message").show();
     	jQuery('.popup_login, .popup_forgotpassword').hide();
     });
@@ -386,13 +386,13 @@ jQuery(document).ready(function() {
 });
 
 function initSelectbox() {
-	if (jQuery('.selectbox1, .selectbox1-dis-dis').length > 0) {
-		var selectboxOnChange = jQuery('.selectbox1').get(0).getAttribute("onchange");
+	if (jQuery('.Form__selectbox__new, .selectbox1-dis-dis').length > 0) {
+		var selectboxOnChange = jQuery('.Form__selectbox__new').get(0).getAttribute("onchange");
 
-		jQuery('.selectbox1').selectbox({
-			inputClass: 'selectbox',
+		jQuery('.Form__selectbox__new').selectbox({
+			inputClass: 'c-Form__selectbox',
 			onChangeCallback: function () {
-				jQuery(".selectbox1").change();
+				jQuery(".Form__selectbox__new").change();
 				
 				}
 		});
@@ -447,12 +447,12 @@ function updateBreadcrumb(placeholder, items) {
 	
 function initTooltips() {
     function findTooltip(obj) {
-        if (obj.next().hasClass('tooltip')) {
+        if (obj.next().hasClass('c-Tooltip')) {
             return obj.next();
         }
 		var children = $(obj).children();
 		for (i = 0; i < children.length; ++i) {
-			if (jQuery(children[i]).hasClass('tooltip')) {
+			if (jQuery(children[i]).hasClass('c-Tooltip')) {
 				return jQuery(children[i]);
 			}
 		}
@@ -462,7 +462,7 @@ function initTooltips() {
         return jQuery("<span />");
     }
 
-	const tooltipFields = jQuery(".tooltips div a, .fieldWithTooltip");
+	const tooltipFields = jQuery(".tooltips div a, .tooltips th a, .fieldWithTooltip");
 	tooltipFields.not('.tooltipInitialized').mouseover(function() {
         var self = jQuery(this);
         self.addClass('tooltipInitialized');

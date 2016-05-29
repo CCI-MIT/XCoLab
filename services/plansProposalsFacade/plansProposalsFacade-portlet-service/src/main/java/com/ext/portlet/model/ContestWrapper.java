@@ -38,14 +38,15 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
         attributes.put("ContestPK", getContestPK());
+        attributes.put("contestTypeId", getContestTypeId());
         attributes.put("ContestName", getContestName());
         attributes.put("ContestShortName", getContestShortName());
+        attributes.put("ContestUrlName", getContestUrlName());
+        attributes.put("ContestYear", getContestYear());
         attributes.put("ContestDescription", getContestDescription());
         attributes.put("ContestModelDescription", getContestModelDescription());
         attributes.put("ContestPositionsDescription",
             getContestPositionsDescription());
-        attributes.put("defaultPlanDescription", getDefaultPlanDescription());
-        attributes.put("PlanTypeId", getPlanTypeId());
         attributes.put("created", getCreated());
         attributes.put("updated", getUpdated());
         attributes.put("authorId", getAuthorId());
@@ -57,6 +58,8 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("voteTemplateString", getVoteTemplateString());
         attributes.put("proposalVoteTemplateString",
             getProposalVoteTemplateString());
+        attributes.put("proposalVoteConfirmationTemplateString",
+            getProposalVoteConfirmationTemplateString());
         attributes.put("voteQuestionTemplateString",
             getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
@@ -90,6 +93,7 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
         attributes.put("hideRibbons", getHideRibbons());
+        attributes.put("resourceArticleId", getResourceArticleId());
 
         return attributes;
     }
@@ -102,6 +106,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
             setContestPK(ContestPK);
         }
 
+        Long contestTypeId = (Long) attributes.get("contestTypeId");
+
+        if (contestTypeId != null) {
+            setContestTypeId(contestTypeId);
+        }
+
         String ContestName = (String) attributes.get("ContestName");
 
         if (ContestName != null) {
@@ -112,6 +122,18 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (ContestShortName != null) {
             setContestShortName(ContestShortName);
+        }
+
+        String ContestUrlName = (String) attributes.get("ContestUrlName");
+
+        if (ContestUrlName != null) {
+            setContestUrlName(ContestUrlName);
+        }
+
+        Long ContestYear = (Long) attributes.get("ContestYear");
+
+        if (ContestYear != null) {
+            setContestYear(ContestYear);
         }
 
         String ContestDescription = (String) attributes.get(
@@ -133,19 +155,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (ContestPositionsDescription != null) {
             setContestPositionsDescription(ContestPositionsDescription);
-        }
-
-        String defaultPlanDescription = (String) attributes.get(
-                "defaultPlanDescription");
-
-        if (defaultPlanDescription != null) {
-            setDefaultPlanDescription(defaultPlanDescription);
-        }
-
-        Long PlanTypeId = (Long) attributes.get("PlanTypeId");
-
-        if (PlanTypeId != null) {
-            setPlanTypeId(PlanTypeId);
         }
 
         Date created = (Date) attributes.get("created");
@@ -203,6 +212,13 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
 
         if (proposalVoteTemplateString != null) {
             setProposalVoteTemplateString(proposalVoteTemplateString);
+        }
+
+        String proposalVoteConfirmationTemplateString = (String) attributes.get(
+                "proposalVoteConfirmationTemplateString");
+
+        if (proposalVoteConfirmationTemplateString != null) {
+            setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
         }
 
         String voteQuestionTemplateString = (String) attributes.get(
@@ -400,6 +416,12 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
         if (hideRibbons != null) {
             setHideRibbons(hideRibbons);
         }
+
+        Long resourceArticleId = (Long) attributes.get("resourceArticleId");
+
+        if (resourceArticleId != null) {
+            setResourceArticleId(resourceArticleId);
+        }
     }
 
     /**
@@ -443,6 +465,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     }
 
     /**
+    * Returns the contest type ID of this contest.
+    *
+    * @return the contest type ID of this contest
+    */
+    @Override
+    public long getContestTypeId() {
+        return _contest.getContestTypeId();
+    }
+
+    /**
+    * Sets the contest type ID of this contest.
+    *
+    * @param contestTypeId the contest type ID of this contest
+    */
+    @Override
+    public void setContestTypeId(long contestTypeId) {
+        _contest.setContestTypeId(contestTypeId);
+    }
+
+    /**
     * Returns the contest name of this contest.
     *
     * @return the contest name of this contest
@@ -480,6 +522,46 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setContestShortName(java.lang.String ContestShortName) {
         _contest.setContestShortName(ContestShortName);
+    }
+
+    /**
+    * Returns the contest url name of this contest.
+    *
+    * @return the contest url name of this contest
+    */
+    @Override
+    public java.lang.String getContestUrlName() {
+        return _contest.getContestUrlName();
+    }
+
+    /**
+    * Sets the contest url name of this contest.
+    *
+    * @param ContestUrlName the contest url name of this contest
+    */
+    @Override
+    public void setContestUrlName(java.lang.String ContestUrlName) {
+        _contest.setContestUrlName(ContestUrlName);
+    }
+
+    /**
+    * Returns the contest year of this contest.
+    *
+    * @return the contest year of this contest
+    */
+    @Override
+    public long getContestYear() {
+        return _contest.getContestYear();
+    }
+
+    /**
+    * Sets the contest year of this contest.
+    *
+    * @param ContestYear the contest year of this contest
+    */
+    @Override
+    public void setContestYear(long ContestYear) {
+        _contest.setContestYear(ContestYear);
     }
 
     /**
@@ -542,47 +624,6 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     public void setContestPositionsDescription(
         java.lang.String ContestPositionsDescription) {
         _contest.setContestPositionsDescription(ContestPositionsDescription);
-    }
-
-    /**
-    * Returns the default plan description of this contest.
-    *
-    * @return the default plan description of this contest
-    */
-    @Override
-    public java.lang.String getDefaultPlanDescription() {
-        return _contest.getDefaultPlanDescription();
-    }
-
-    /**
-    * Sets the default plan description of this contest.
-    *
-    * @param defaultPlanDescription the default plan description of this contest
-    */
-    @Override
-    public void setDefaultPlanDescription(
-        java.lang.String defaultPlanDescription) {
-        _contest.setDefaultPlanDescription(defaultPlanDescription);
-    }
-
-    /**
-    * Returns the plan type ID of this contest.
-    *
-    * @return the plan type ID of this contest
-    */
-    @Override
-    public long getPlanTypeId() {
-        return _contest.getPlanTypeId();
-    }
-
-    /**
-    * Sets the plan type ID of this contest.
-    *
-    * @param PlanTypeId the plan type ID of this contest
-    */
-    @Override
-    public void setPlanTypeId(long PlanTypeId) {
-        _contest.setPlanTypeId(PlanTypeId);
     }
 
     /**
@@ -775,6 +816,27 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     public void setProposalVoteTemplateString(
         java.lang.String proposalVoteTemplateString) {
         _contest.setProposalVoteTemplateString(proposalVoteTemplateString);
+    }
+
+    /**
+    * Returns the proposal vote confirmation template string of this contest.
+    *
+    * @return the proposal vote confirmation template string of this contest
+    */
+    @Override
+    public java.lang.String getProposalVoteConfirmationTemplateString() {
+        return _contest.getProposalVoteConfirmationTemplateString();
+    }
+
+    /**
+    * Sets the proposal vote confirmation template string of this contest.
+    *
+    * @param proposalVoteConfirmationTemplateString the proposal vote confirmation template string of this contest
+    */
+    @Override
+    public void setProposalVoteConfirmationTemplateString(
+        java.lang.String proposalVoteConfirmationTemplateString) {
+        _contest.setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
     }
 
     /**
@@ -1477,6 +1539,26 @@ public class ContestWrapper implements Contest, ModelWrapper<Contest> {
     @Override
     public void setHideRibbons(boolean hideRibbons) {
         _contest.setHideRibbons(hideRibbons);
+    }
+
+    /**
+    * Returns the resource article ID of this contest.
+    *
+    * @return the resource article ID of this contest
+    */
+    @Override
+    public long getResourceArticleId() {
+        return _contest.getResourceArticleId();
+    }
+
+    /**
+    * Sets the resource article ID of this contest.
+    *
+    * @param resourceArticleId the resource article ID of this contest
+    */
+    @Override
+    public void setResourceArticleId(long resourceArticleId) {
+        _contest.setResourceArticleId(resourceArticleId);
     }
 
     @Override

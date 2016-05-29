@@ -58,7 +58,7 @@ public class ReportInvalidUrlErrorActionController {
                     getMessageBody(url, simpleExceptionErrorReportWrapper, user)).sendMessage();
         }
 
-        response.sendRedirect("/web/guest/plans");
+        response.sendRedirect("/contests");
     }
 
     private boolean isUrlValid(String url) {

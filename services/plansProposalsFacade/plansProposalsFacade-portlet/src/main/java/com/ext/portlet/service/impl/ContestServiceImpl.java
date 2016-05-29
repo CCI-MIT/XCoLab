@@ -1,14 +1,9 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
-import com.ext.portlet.NoSuchMessageRecipientStatusException;
 import com.ext.portlet.service.base.ContestServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -17,6 +12,9 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The implementation of the contest remote service.
@@ -42,10 +40,10 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
 
     /**
      * Returns a list of open contest for regular users and returns all contests for staff users
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public List<Contest> getContestsOpenForProposals() throws PortalException, SystemException {
@@ -69,7 +67,7 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
                 if (statusStr != null) {
                     status = ContestStatus.valueOf(statusStr);
                 }
-                if (admin == true || (status != null && status.isCanCreate())) {
+                if (admin || (status != null && status.isCanCreate())) {
                     returnList.add(contest);
                 }
     		}
@@ -81,23 +79,5 @@ public class ContestServiceImpl extends ContestServiceBaseImpl {
         }
 
     	return returnList;
-    }
-
-    @JSONWebService
-     @AccessControlled(guestAccessEnabled=true)
-     public int getNumberOfUnreadMessages() throws PortalException, SystemException {
-        int unreadMessages = 0;
-        if (getUserId() != 0) {
-            try {
-                unreadMessages = MessageRecipientStatusLocalServiceUtil.countUnreadMessages(getUserId());
-            } catch (NoSuchMessageRecipientStatusException e) {
-                e.printStackTrace();
-            } catch (SystemException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return unreadMessages;
-
     }
 }

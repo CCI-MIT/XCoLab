@@ -21,6 +21,7 @@ public class ContestPhaseTypeSoap implements Serializable {
     private String _contestPhaseAutopromoteDefault;
     private boolean _invisible;
     private int _pointsAccessible;
+    private String _defaultPromotionType;
 
     public ContestPhaseTypeSoap() {
     }
@@ -36,6 +37,7 @@ public class ContestPhaseTypeSoap implements Serializable {
         soapModel.setContestPhaseAutopromoteDefault(model.getContestPhaseAutopromoteDefault());
         soapModel.setInvisible(model.getInvisible());
         soapModel.setPointsAccessible(model.getPointsAccessible());
+        soapModel.setDefaultPromotionType(model.getDefaultPromotionType());
 
         return soapModel;
     }
@@ -158,5 +160,13 @@ public class ContestPhaseTypeSoap implements Serializable {
 
     public void setPointsAccessible(int pointsAccessible) {
         _pointsAccessible = pointsAccessible;
+    }
+
+    public String getDefaultPromotionType() {
+        return _defaultPromotionType;
+    }
+
+    public void setDefaultPromotionType(String defaultPromotionType) {
+        _defaultPromotionType = defaultPromotionType;
     }
 }

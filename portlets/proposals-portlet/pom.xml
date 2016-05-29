@@ -8,7 +8,6 @@
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>org.xcolab.portlets</groupId>
 	<artifactId>proposals-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>proposals-portlet Portlet</name>
@@ -130,7 +129,7 @@
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
+			<version>3.2.2</version>
 		</dependency>
 
 		<dependency>
@@ -158,6 +157,13 @@
 			<artifactId>plansProposalsFacade-portlet-service</artifactId>
 			<version>2.0-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>emails-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -218,7 +224,19 @@
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+
+		<!-- microservice dependencies -->
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>members-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 		
 	</dependencies>
 	<repositories>

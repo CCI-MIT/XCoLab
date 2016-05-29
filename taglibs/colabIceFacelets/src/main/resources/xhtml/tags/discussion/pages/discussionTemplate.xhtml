@@ -20,7 +20,7 @@
                 <span>#{entitiesCount}</span> #{displayedEntityType} 
             </f:subview>
             
-            <ice:commandLink actionListener="#{discussionBean.changePageType}" rendered="#{!discussionBean.permissions.isLoggedIn or discussionBean.permissions.canAddThread}"
+            <ice:commandLink actionListener="#{discussionBean.changePageType}" rendered="#{!discussionBean.permissions.isLoggedIn or (discussionBean.permissions.canAddThread and discussionBean.pageType != 'THREAD_ADD')}"
                                            styleClass="prominantButton startDiscussion" onclick="if(!deferUntilLogin()) return false;">
                             <f:attribute name="pageType" value="THREAD_ADD"/>
                 <img src="/climatecolab-theme/images/icon_new-topic.gif" width="37" height="36" class="spc" /> new discussion

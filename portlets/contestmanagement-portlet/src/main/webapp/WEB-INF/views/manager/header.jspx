@@ -1,16 +1,16 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:cms="urn:jsptagdir:/WEB-INF/tags"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
-    xmlns:collab="http://climatecolab.org/tags/collab_1.0">
+	version="2.0">
+
+	<!--@elvariable id="tabs" type="java.util.List<org.xcolab.wrapper.TabWrapper>"-->
+	<!--@elvariable id="currentTabWrapped" type="org.xcolab.wrapper.TabWrapper"-->
+	<!--@elvariable id="contestWrapper" type="org.xcolab.wrappers.BaseContestWrapper"-->
+
 
 	<div class="proposal-head">
 		<div class="inner">
-			<div class="headline">
+			<div class="c-Headline">
 				<div class="proposal-image">
 					<img src="/climatecolab-theme/images/proposal_default.png" width="52" height="52" alt="Some fancy header image" />
 				</div>
@@ -18,17 +18,15 @@
 					<h1>Contest management tool - Contest manager</h1>
 				</div>
 			</div>
-			<div class="prop-tabs">
-				<ul>
-					<c:forEach var="singleTab" items="${tabs}">
-						<li class="${currentTabWrapped.name eq singleTab.name ? 'c' : ''}">
-							<cms:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
-										 tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
-										 activityCount="${singleTab.activityCount}" managerTab="true"/>
-						</li>
-					</c:forEach>
-				</ul>
-			</div>
+			<ul class="c-TabBar clearfix">
+				<c:forEach var="singleTab" items="${tabs}" varStatus="loopStatus">
+					<li class="${!loopStatus.last ? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first') : 'c-TabBar__tab--last'} ${currentTabWrapped.name == singleTab.tab ? 'active' : ''}">
+						<cms:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
+									 tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
+									 activityCount="${singleTab.activityCount}" managerTab="true"/>
+					</li>
+				</c:forEach>
+			</ul>
 		</div>
 	</div>
 
@@ -40,6 +38,7 @@
 
 	<c:remove var="actionSuccessMessage" scope="session" />
 
+    <!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
     <c:if test="${promptLoginWindow == 'true' }">
         <script>
             $( document ).ready(function() {

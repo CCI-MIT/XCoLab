@@ -11,7 +11,7 @@
         <ice:dataTable value="#{debateDetails.positionTrees}" var="positionTree" styleClass="debateMap"
                        columnClasses=" tree, votes, action " headerClasses=" tree , votes , action " varStatus="status">
             <ice:column styleClass="positionColumn" colspan="2">
-                <f:facet name="header"><table class="debateMapUglyHeader"><tr><td class="position">Position</td><td class="comments"><div></div></td></tr></table></f:facet>
+                <f:facet name="header"><table class="debateMapUglyHeader"><tr><td class="position">Position</td><td class="c-Comment__list"><div></div></td></tr></table></f:facet>
                 <ice:tree id="tree" value="#{positionTree}" var="item" hideRootNode="false" hideNavigation="false">
                     <ice:treeNode>
                         <f:facet name="content">

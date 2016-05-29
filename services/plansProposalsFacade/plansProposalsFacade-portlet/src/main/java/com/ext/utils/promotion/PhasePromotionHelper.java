@@ -105,7 +105,7 @@ public class PhasePromotionHelper {
                 == JudgingSystemActions.AdvanceDecision.MOVE_ON;
     }
 
-    public boolean isPhaseContestHasNoValidContest() throws PortalException, SystemException{
+    public boolean isPhaseContestHasNoValidContest() throws PortalException, SystemException {
         try{
             ContestPhaseLocalServiceUtil.getContest(phase);
         } catch(NoSuchContestException e){

@@ -1,12 +1,12 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.model.ContestDebate;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.base.ContestDebateLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the contest debate local service.
@@ -30,6 +30,7 @@ public class ContestDebateLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestDebateLocalServiceUtil} to access the contest debate local service.
      */
 
+    @Override
     public ContestDebate createContestDebate(Long debateId, Long contestId) throws SystemException {
         Long id = CounterLocalServiceUtil.increment(ContestDebate.class.getName());
         
@@ -42,11 +43,13 @@ public class ContestDebateLocalServiceImpl
         return contestDebate;
     }
     
+    @Override
     public List<ContestDebate> getContestDebates(Long contestId) throws SystemException {
         return contestDebatePersistence.findByContestPK(contestId);
     }
     
     
+    @Override
     public void store(ContestDebate contestDebate) throws SystemException {
         if (contestDebate.isNew()) {
             ContestDebateLocalServiceUtil.addContestDebate(contestDebate);
@@ -56,11 +59,9 @@ public class ContestDebateLocalServiceImpl
         }
     }
     
+    @Override
     public void delete(ContestDebate contestDebate) throws SystemException {
-        if (contestDebate.isNew()) {
-            // ignore
-        }
-        else {
+        if (!contestDebate.isNew()) {
             ContestDebateLocalServiceUtil.deleteContestDebate(contestDebate);
         }
     }

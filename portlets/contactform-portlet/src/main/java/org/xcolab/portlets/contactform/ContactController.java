@@ -1,17 +1,13 @@
 package org.xcolab.portlets.contactform;
 
-import java.io.IOException;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import com.liferay.portal.kernel.captcha.CaptchaException;
+import com.liferay.portal.kernel.captcha.CaptchaUtil;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
+import com.liferay.util.mail.MailEngineException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -25,17 +21,22 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.commons.utils.PropertiesUtils;
+import org.xcolab.client.emails.EmailClient;
+import org.xcolab.utils.PropertiesUtils;
 
-import com.liferay.portal.kernel.captcha.CaptchaException;
-import com.liferay.portal.kernel.captcha.CaptchaUtil;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 //import javax.validation.Validator;
 
@@ -56,9 +57,9 @@ public class ContactController {
 
     @Autowired
     private MessageSource messageSource;
-    
+
     private String fromAddress = "no-reply@climatecolab.org";
-    
+
     public ContactController() {
         fromAddress = PropertiesUtils.get("contact.form.from.email");
     }
@@ -70,11 +71,6 @@ public class ContactController {
 
     /**
      * Main view displayed when user enters page with contactform portlet
-     * 
-     * @param request
-     * @param response
-     * @param model
-     * @return
      */
     @RequestMapping
     public String showContact(PortletRequest request, PortletResponse response, Model model) {
@@ -100,7 +96,7 @@ public class ContactController {
 
     @RequestMapping(params = "error=true")
     public String contactError(PortletRequest request, Model model, @Valid ContactBean contactBean,
-            BindingResult result, @RequestParam(required = false) String redirect) {
+                               BindingResult result, @RequestParam(required = false) String redirect) {
         if (request.getParameter("recaptchaError") != null) {
             result.addError(new ObjectError("createUserBean", "Invalid words in captcha field"));
         }
@@ -108,10 +104,10 @@ public class ContactController {
 
         return "view";
     }
-    
+
     @RequestMapping(params = "success=true")
     public String sendMessageSuccess(PortletRequest request, Model model, @Valid ContactBean contactBean,
-            BindingResult result, @RequestParam(required = false) String redirect) {
+                                     BindingResult result, @RequestParam(required = false) String redirect) {
         if (request.getParameter("recaptchaError") != null) {
             result.addError(new ObjectError("createUserBean", "Invalid words in captcha field"));
         }
@@ -123,7 +119,7 @@ public class ContactController {
 
     @RequestMapping(params = "action=send")
     public void sendMessage(ActionRequest request, Model model, ActionResponse response,
-            @Valid ContactBean contactBean, BindingResult result, @RequestParam(required = false) String redirect) throws AddressException, MailEngineException {
+                            @Valid ContactBean contactBean, BindingResult result, @RequestParam(required = false) String redirect) throws AddressException, MailEngineException {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 
 
@@ -143,33 +139,32 @@ public class ContactController {
                 response.setRenderParameter("recaptchaError", "true");
             } else {
                 response.setRenderParameter("success", "true");
-                
+
                 String messageSubject = applyFilters(contactPreferences
                         .getMessageSubject(), contactBean);
                 String messageBody = applyFilters(contactPreferences.getMessageFormat(), contactBean);
 
-                InternetAddress addressFrom = new InternetAddress(fromAddress);
+
 
                 String[] recipients = contactPreferences.getRecipientsArray();
-                InternetAddress[] addressTo = new InternetAddress[recipients.length];
+                List<String> addressTo = new ArrayList<>();
+
                 for (int i = 0; i < recipients.length; i++) {
-                    addressTo[i] = new InternetAddress(recipients[i]);
+                    addressTo.add(recipients[i]);
                 }
 
-                InternetAddress replyTo[] = { new InternetAddress(contactBean.getEmail()) };
 
-                MailEngine.send(addressFrom, addressTo, null, null, null,
-                        messageSubject, messageBody, false, replyTo, null, null);
+                EmailClient.sendEmail(fromAddress, addressTo , messageSubject,
+                        messageBody, false, contactBean.getEmail());
 
                 response.setRenderParameter("success", "true");
             }
-        }
-        else {
+        } else {
             response.setRenderParameter("error", "true");
-        }        
+        }
 
     }
-    
+
 
     private String applyFilters(String msg, ContactBean contactBean) {
         msg = msg.replaceAll("USER_NAME", contactBean.getName());

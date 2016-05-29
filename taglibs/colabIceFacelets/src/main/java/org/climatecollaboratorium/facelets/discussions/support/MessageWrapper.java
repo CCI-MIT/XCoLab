@@ -11,7 +11,10 @@ import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
 
 import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.model.SpamReport;
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import com.liferay.portal.model.Role;
+import com.liferay.portal.util.PortalUtil;
 import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
 import org.climatecollaboratorium.utils.ContentFilterHelper;
 import org.climatecollaboratorium.utils.Helper;
@@ -34,6 +37,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.mail.EmailToAdminDispatcher;
 
 public class MessageWrapper implements Serializable {
     /**
@@ -47,16 +51,16 @@ public class MessageWrapper implements Serializable {
     private List<MessageWrapper> messages;
     private MessageWrapper newMessage;
     private MessageWrapper thread;
-    private Long categoryId;
-    private DiscussionBean discussionBean;
+    private long categoryId;
+    private final DiscussionBean discussionBean;
     private boolean editing;
     private String filteredDescription;
-    private boolean empty = false;
+    private boolean empty;
 
 
     private String shortDescription;
     private boolean goTo;
-    private boolean added = false;
+    private boolean added;
     private int messageNum;
     private boolean oldestFirst = true;
     
@@ -91,7 +95,7 @@ public class MessageWrapper implements Serializable {
     public MessageWrapper(DiscussionBean discussionBean) {
         this.discussionBean = discussionBean; 
         empty = true;
-        messages = new ArrayList<MessageWrapper>();
+        messages = new ArrayList<>();
     }
     
     public MessageWrapper(MessageWrapper thread) {
@@ -99,7 +103,7 @@ public class MessageWrapper implements Serializable {
         this.discussionBean = thread.discussionBean;
     }
     
-    public Long getId() {
+    public long getId() {
         return wrapped.getMessageId();
     }
 
@@ -123,8 +127,8 @@ public class MessageWrapper implements Serializable {
     
     
     public List<MessageWrapper> getThreadMessages() throws SystemException {
-        if (messages == null || messages.size() == 0) {
-            messages = new ArrayList<MessageWrapper>();
+        if (messages == null || messages.isEmpty()) {
+            messages = new ArrayList<>();
             messages.add(this);
             for (DiscussionMessage message: DiscussionMessageLocalServiceUtil.getThreadMessages(wrapped)) {
                 messages.add(new MessageWrapper(message, category, discussionBean, 0));
@@ -163,8 +167,7 @@ public class MessageWrapper implements Serializable {
                     !ValueRequiredValidator.validateComponent(messageInput)) {
                 return;
             }
-            
-            
+
             category = discussionBean.getCategoryById(categoryId);
             wrapped = DiscussionCategoryLocalServiceUtil.addThread(category.getWrapped(), 
                     title, description, Helper.getLiferayUser());
@@ -234,7 +237,7 @@ public class MessageWrapper implements Serializable {
             Helper.sendInfoMessage("Comment \"" + title + "\" has been added.");
         }
         }
-        catch (Exception ex) {
+        catch (SystemException | PortalException ex) {
             ex.printStackTrace();
         }
     }
@@ -256,12 +259,12 @@ public class MessageWrapper implements Serializable {
             editing = false;
         }
         }
-        catch (Exception ex) {
+        catch (SystemException ex) {
             ex.printStackTrace();
         }
     }
     
-    private Long getThreadId(DiscussionMessage msg) {
+    private long getThreadId(DiscussionMessage msg) {
         return msg.getThreadId() > 0 ? msg.getThreadId() : msg.getMessageId();
     }
     
@@ -275,24 +278,7 @@ public class MessageWrapper implements Serializable {
 
     public MemberRole getAuthorRole() throws SystemException, PortalException {
         List<Role> roles = getAuthor().getRoles();
-
-        // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-        MemberRole currentRole = MemberRole.MEMBER;
-        MemberRole role = MemberRole.MEMBER;
-
-        for (Role r : roles) {
-            final String roleString = r.getName();
-
-            currentRole = MemberRole.getMember(roleString);
-            if (currentRole != null && role != null) {
-                if (currentRole.ordinal() > role.ordinal()) {
-                    role = currentRole;
-                }
-            }
-        }
-
-        if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
-        return role;
+        return MemberRole.getHighestRole(roles);
     }
     
     public Date getCreateDate() {
@@ -324,21 +310,17 @@ public class MessageWrapper implements Serializable {
         return wrapped;
     }
     
-    public Long getAuthorId() {
+    public long getAuthorId() {
         return wrapped.getAuthorId();
     }
     
-    public Long getLastActivityAuthorId() {
+    public long getLastActivityAuthorId() {
         return wrapped.getLastActivityAuthorId();
     }
     
     public String getLastActivityDateStr() {
         return HumanTime.exactly(new Date().getTime() - (wrapped.getLastActivityDate() != null ? wrapped.getLastActivityDate() : wrapped.getCreateDate()).getTime());
     }
-    /*
-    public String getLastActivityDateAgo() {
-        //return Pretty
-    }*/
     
     public Date getLastActivityDate() {
         return wrapped.getLastActivityDate() != null ? wrapped.getLastActivityDate() : wrapped.getCreateDate();
@@ -348,14 +330,14 @@ public class MessageWrapper implements Serializable {
         return DiscussionMessageLocalServiceUtil.getLastActivityAuthor(wrapped);
     }
 
-    public Long getCategoryId() {
+    public long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
     }
-    
+
     public void delete(ActionEvent e) throws SystemException, PortalException {
         if (discussionBean.getPermissions().getCanAdminMessages()) {
             DiscussionMessageLocalServiceUtil.delete(wrapped);
@@ -366,19 +348,35 @@ public class MessageWrapper implements Serializable {
             if (category != null) {
                 category.messageDeleted(this);
             }
-            if (discussionBean != null && discussionBean.getCommentsThread() == this) {
+            if (discussionBean.getCommentsThread() == this) {
                 discussionBean.comentsThreadDeleted();
             }
-            
-            
-            //category.messageDeleted(this);
+
             Helper.sendInfoMessage("Message \"" + wrapped.getSubject() + "\" has been deleted.");
         }
+    }
+
+    public void markSpam(ActionEvent e) throws SystemException, PortalException {
+        SpamReportLocalServiceUtil.create(wrapped.getMessageId(), wrapped.getAuthorId(),
+                Helper.getThemeDisplay().getUserId(), discussionBean.getPermissions().getCanAdmin());
+        new EmailToAdminDispatcher("New spam report on Climate CoLab",
+                String.format("User %s reported a <a href=\"%s/web/guest/member/-/member/spamReport/%d\">new spam message</a>",
+                        Helper.getLiferayUser().getScreenName(), PortalUtil.getPortalURL(Helper.getThemeDisplay()), getAuthorId()),
+                EmailToAdminDispatcher.VERBOSITY_DEBUG).sendMessage();
+
+        Helper.sendInfoMessage("Message \"" + wrapped.getSubject() + "\" was reported as spam.");
+    }
+
+    public void removeSpamReport(ActionEvent e) throws SystemException, PortalException {
+        for (SpamReport spamReport : SpamReportLocalServiceUtil.getByDiscussionMessageId(getId())) {
+            SpamReportLocalServiceUtil.deleteSpamReport(spamReport);
+        }
+        Helper.sendInfoMessage("Spam mark removed for message \"" + wrapped.getSubject() + "\".");
     }
     
     public void messageDeleted(MessageWrapper messageWrapper) {
         messages.remove(messageWrapper);
-        int i=1;
+        int i = 1;
         for (MessageWrapper msg: messages) {
             msg.setMessageNum(i++);
         }
@@ -396,7 +394,7 @@ public class MessageWrapper implements Serializable {
         return editing;
     }
     
-    public Long getThreadId() {
+    public long getThreadId() {
         return wrapped.getThreadId() > 0 ? wrapped.getThreadId() : wrapped.getMessageId();
     }
 
@@ -459,4 +457,9 @@ public class MessageWrapper implements Serializable {
         
         DiscussionMessageLocalServiceUtil.removeFlag(wrapped, flagType);
     }
+
+    public int getSpamReportCount() throws SystemException {
+        return SpamReportLocalServiceUtil.getByDiscussionMessageId(getId()).size();
+    }
+
 }

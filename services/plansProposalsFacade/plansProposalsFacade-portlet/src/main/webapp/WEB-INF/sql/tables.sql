@@ -4,7 +4,7 @@ create table xcolab_ActivitySubscription (
 	classPK LONG,
 	type_ INTEGER,
 	automaticSubscriptionCounter INTEGER,
-	extraData TEXT null,
+	extraData VARCHAR(256) null,
 	receiverId LONG,
 	createDate DATE null,
 	modifiedDate DATE null
@@ -77,15 +77,25 @@ create table xcolab_BalloonUserTracking (
 	userAgent VARCHAR(500) null
 );
 
+create table xcolab_ConfigurationAttribute (
+	name VARCHAR(75) not null,
+	additionalId LONG not null,
+	numericValue LONG,
+	stringValue TEXT null,
+	realValue DOUBLE,
+	primary key (name, additionalId)
+);
+
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
+	contestTypeId LONG,
 	ContestName VARCHAR(1024) null,
 	ContestShortName VARCHAR(512) null,
+	ContestUrlName VARCHAR(75) null,
+	ContestYear LONG,
 	ContestDescription TEXT null,
 	ContestModelDescription TEXT null,
 	ContestPositionsDescription TEXT null,
-	defaultPlanDescription TEXT null,
-	PlanTypeId LONG,
 	created DATE null,
 	updated DATE null,
 	authorId LONG,
@@ -95,6 +105,7 @@ create table xcolab_Contest (
 	proposalCreationTemplateString VARCHAR(75) null,
 	voteTemplateString VARCHAR(75) null,
 	proposalVoteTemplateString VARCHAR(75) null,
+	proposalVoteConfirmationTemplateString VARCHAR(75) null,
 	voteQuestionTemplateString VARCHAR(75) null,
 	focusAreaId LONG,
 	contestTier LONG,
@@ -125,7 +136,8 @@ create table xcolab_Contest (
 	show_in_tile_view BOOLEAN,
 	show_in_list_view BOOLEAN,
 	show_in_outline_view BOOLEAN,
-	hideRibbons BOOLEAN
+	hideRibbons BOOLEAN,
+	resourceArticleId LONG
 );
 
 create table xcolab_ContestDebate (
@@ -185,7 +197,8 @@ create table xcolab_ContestPhaseRibbonType (
 	ribbon INTEGER,
 	hoverText VARCHAR(75) null,
 	description VARCHAR(75) null,
-	copyOnPromote BOOLEAN
+	copyOnPromote BOOLEAN,
+	sortOrder INTEGER
 );
 
 create table xcolab_ContestPhaseType (
@@ -196,7 +209,8 @@ create table xcolab_ContestPhaseType (
 	fellowScreeningActiveDefault BOOLEAN,
 	contestPhaseAutopromoteDefault VARCHAR(75) null,
 	invisible BOOLEAN,
-	pointsAccessible INTEGER
+	pointsAccessible INTEGER,
+	defaultPromotionType VARCHAR(75) null
 );
 
 create table xcolab_ContestSchedule (
@@ -211,7 +225,30 @@ create table xcolab_ContestTeamMember (
 	id_ LONG not null primary key,
 	contestId LONG,
 	userId LONG,
-	role VARCHAR(75) null
+	roleId LONG
+);
+
+create table xcolab_ContestTeamMemberRole (
+	id_ LONG not null primary key,
+	role VARCHAR(75) null,
+	sort INTEGER
+);
+
+create table xcolab_ContestType (
+	id_ LONG not null primary key,
+	contestName VARCHAR(75) null,
+	contestNamePlural VARCHAR(75) null,
+	proposalName VARCHAR(75) null,
+	proposalNamePlural VARCHAR(75) null,
+	portletName VARCHAR(75) null,
+	portletUrl VARCHAR(75) null,
+	friendlyUrlStringContests VARCHAR(75) null,
+	friendlyUrlStringProposal VARCHAR(75) null,
+	menuItemName VARCHAR(75) null,
+	hasDiscussion BOOLEAN,
+	suggestionContestId LONG,
+	rulesPageName VARCHAR(75) null,
+	rulesPageUrl VARCHAR(75) null
 );
 
 create table xcolab_DiscussionCategory (
@@ -336,6 +373,15 @@ create table xcolab_LoginLog (
 	city VARCHAR(75) null,
 	country VARCHAR(75) null,
 	entryUrl VARCHAR(255) null
+);
+
+create table xcolab_MemberCategory (
+	roleId LONG not null primary key,
+	displayName VARCHAR(75) null,
+	categoryName VARCHAR(75) null,
+	sortOrder LONG,
+	showInList BOOLEAN,
+	imageName VARCHAR(75) null
 );
 
 create table xcolab_Message (
@@ -518,152 +564,6 @@ create table xcolab_OntologyTermEntity (
 	classPK LONG
 );
 
-create table xcolab_Plan2Proposal (
-	planId LONG not null primary key,
-	proposalId LONG
-);
-
-create table xcolab_PlanAttribute (
-	attributeId LONG not null primary key,
-	planId LONG,
-	attributeName VARCHAR(256) null,
-	attributeValue VARCHAR(2048) null
-);
-
-create table xcolab_PlanAttributeFilter (
-	planAttributeFilterId LONG not null primary key,
-	attributeName VARCHAR(75) null,
-	planUserSettingsId LONG,
-	max DOUBLE,
-	min DOUBLE,
-	stringVal VARCHAR(2048) null
-);
-
-create table xcolab_PlanColumnSettings (
-	planColumnSettingsId LONG not null primary key,
-	columnName VARCHAR(75) null,
-	planUserSettingsId LONG,
-	visible BOOLEAN
-);
-
-create table xcolab_PlanDescription (
-	id_ LONG not null primary key,
-	planId LONG,
-	name VARCHAR(1024) null,
-	description TEXT null,
-	version LONG,
-	planVersion LONG,
-	created DATE null,
-	updateAuthorId LONG,
-	image LONG,
-	pitch VARCHAR(2048) null
-);
-
-create table xcolab_PlanFan (
-	id_ LONG not null primary key,
-	userId LONG,
-	planId LONG,
-	created DATE null,
-	deleted DATE null
-);
-
-create table xcolab_PlanItem (
-	id_ LONG not null primary key,
-	planId LONG,
-	state_ VARCHAR(75) null,
-	updated DATE null,
-	updateAuthorId LONG,
-	updateType VARCHAR(75) null,
-	version LONG
-);
-
-create table xcolab_PlanItemGroup (
-	planId LONG not null primary key,
-	groupId LONG
-);
-
-create table xcolab_PlanMeta (
-	id_ LONG not null primary key,
-	planId LONG,
-	planTypeId LONG,
-	planCreated LONG,
-	authorId LONG,
-	votes INTEGER,
-	planGroupId LONG,
-	open BOOLEAN,
-	status VARCHAR(75) null,
-	mbCategoryId LONG,
-	categoryGroupId LONG,
-	version LONG,
-	planVersion LONG,
-	created DATE null,
-	updateAuthorId LONG,
-	modelId LONG,
-	promoted BOOLEAN,
-	previousContestPhase LONG,
-	contestPhase LONG
-);
-
-create table xcolab_PlanModelRun (
-	id_ LONG not null primary key,
-	planId LONG,
-	scenarioId LONG,
-	planVersion LONG,
-	version LONG,
-	created DATE null,
-	updateAuthorId LONG
-);
-
-create table xcolab_PlanPosition (
-	planId LONG not null,
-	positionId LONG not null,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	primary key (planId, positionId)
-);
-
-create table xcolab_PlanPositionItem (
-	planPositionsId LONG not null,
-	positionId LONG not null,
-	primary key (planPositionsId, positionId)
-);
-
-create table xcolab_PlanPositions (
-	id_ LONG not null primary key,
-	planId LONG,
-	planVersion LONG,
-	version LONG,
-	created DATE null,
-	updateAuthorId LONG
-);
-
-create table xcolab_PlanPropertyFilter (
-	planPropertyFilterId LONG not null primary key,
-	propertyName VARCHAR(75) null,
-	planUserSettingsId LONG,
-	value VARCHAR(75) null
-);
-
-create table xcolab_PlanRelated (
-	sectionId LONG not null,
-	relatedPlanId LONG not null,
-	primary key (sectionId, relatedPlanId)
-);
-
-create table xcolab_PlanSection (
-	id_ LONG not null primary key,
-	planSectionDefinitionId LONG,
-	planId LONG,
-	content TEXT null,
-	numericValue LONG,
-	created DATE null,
-	version LONG,
-	planVersion LONG,
-	updateAuthorId LONG
-);
-
 create table xcolab_PlanSectionDefinition (
 	id_ LONG not null primary key,
 	type_ VARCHAR(75) null,
@@ -674,24 +574,11 @@ create table xcolab_PlanSectionDefinition (
 	characterLimit INTEGER,
 	focusAreaId LONG,
 	tier LONG,
+	allowedContestTypeIds VARCHAR(75) null,
+	allowedValues VARCHAR(75) null,
+	additionalIds VARCHAR(75) null,
 	locked BOOLEAN,
 	contestIntegrationRelevance BOOLEAN
-);
-
-create table xcolab_PlanSectionPlanMap (
-	sectionId LONG not null,
-	relatedPlanId LONG not null,
-	primary key (sectionId, relatedPlanId)
-);
-
-create table xcolab_PlanTeamHistory (
-	id_ LONG not null primary key,
-	planId LONG,
-	userId LONG,
-	action VARCHAR(75) null,
-	payload VARCHAR(75) null,
-	created DATE null,
-	updateAuthorId LONG
 );
 
 create table xcolab_PlanTemplate (
@@ -707,79 +594,6 @@ create table xcolab_PlanTemplateSection (
 	planSectionId LONG not null,
 	weight INTEGER,
 	primary key (planTemplateId, planSectionId)
-);
-
-create table xcolab_PlanType (
-	planTypeId LONG not null primary key,
-	name VARCHAR(75) null,
-	description VARCHAR(2048) null,
-	modelId LONG,
-	modelTypeName VARCHAR(75) null,
-	published BOOLEAN,
-	publishedCounterpartId LONG,
-	isDefault BOOLEAN,
-	defaultModelId LONG,
-	defaultScenarioId LONG
-);
-
-create table xcolab_PlanTypeAttribute (
-	planTypeAttributeId LONG not null primary key,
-	planTypeId LONG,
-	attributeName VARCHAR(75) null
-);
-
-create table xcolab_PlanTypeColumn (
-	planTypeColumnId LONG not null primary key,
-	planTypeId LONG,
-	weight INTEGER,
-	columnName VARCHAR(75) null,
-	visibleByDefault BOOLEAN
-);
-
-create table xcolab_PlanVote (
-	userId LONG not null,
-	contestId LONG not null,
-	planId LONG,
-	createDate DATE null,
-	primary key (userId, contestId)
-);
-
-create table xcolab_PlansFilter (
-	userId LONG not null,
-	planTypeId LONG not null,
-	name VARCHAR(75) null,
-	creator VARCHAR(75) null,
-	description VARCHAR(75) null,
-	CO2From DOUBLE,
-	CO2To DOUBLE,
-	votesFrom DOUBLE,
-	votesTo DOUBLE,
-	damageFrom DOUBLE,
-	damageTo DOUBLE,
-	mitigationFrom DOUBLE,
-	mitigationTo DOUBLE,
-	dateFrom DATE null,
-	dateTo DATE null,
-	filterPositionsAll BOOLEAN,
-	enabled BOOLEAN,
-	primary key (userId, planTypeId)
-);
-
-create table xcolab_PlansFilterPosition (
-	userId LONG not null,
-	planTypeId LONG not null,
-	positionId LONG not null,
-	primary key (userId, planTypeId, positionId)
-);
-
-create table xcolab_PlansUserSettings (
-	planUserSettingsId LONG not null primary key,
-	userId LONG,
-	planTypeId LONG,
-	sortColumn VARCHAR(75) null,
-	sortDirection VARCHAR(75) null,
-	filterEnabled BOOLEAN,
-	filterPositionsAll BOOLEAN
 );
 
 create table xcolab_PointDistributionTarget (
@@ -817,6 +631,7 @@ create table xcolab_PointsDistributionConfiguration (
 	pointTypeId LONG,
 	targetUserId LONG,
 	targetSubProposalId LONG,
+	targetPlanSectionDefinitionId LONG,
 	percentage DOUBLE,
 	creator LONG,
 	createDate DATE null
@@ -859,12 +674,6 @@ create table xcolab_ProposalAttribute (
 	realValue DOUBLE
 );
 
-create table xcolab_ProposalAttributeType (
-	name VARCHAR(75) not null primary key,
-	visibleInVersionHistory BOOLEAN,
-	copyOnPromote BOOLEAN
-);
-
 create table xcolab_ProposalContestPhaseAttribute (
 	id_ LONG not null primary key,
 	proposalId LONG,
@@ -876,9 +685,17 @@ create table xcolab_ProposalContestPhaseAttribute (
 	realValue DOUBLE
 );
 
-create table xcolab_ProposalContestPhaseAttributeType (
-	name VARCHAR(75) not null primary key,
-	copyOnPromote BOOLEAN
+create table xcolab_ProposalMoveHistory (
+	id_ LONG not null primary key,
+	sourceProposalId LONG,
+	sourceContestId LONG,
+	sourcePhaseId LONG,
+	targetProposalId LONG,
+	targetContestId LONG,
+	targetPhaseId LONG,
+	movingUserId LONG,
+	moveDate DATE null,
+	moveType VARCHAR(75) null
 );
 
 create table xcolab_ProposalRating (
@@ -909,11 +726,32 @@ create table xcolab_ProposalRatingValue (
 	description TEXT null
 );
 
+create table xcolab_ProposalReference (
+	proposalId LONG not null,
+	subProposalId LONG not null,
+	sectionAttributeId LONG,
+	primary key (proposalId, subProposalId)
+);
+
 create table xcolab_ProposalSupporter (
 	proposalId LONG not null,
 	userId LONG not null,
 	createDate DATE null,
 	primary key (proposalId, userId)
+);
+
+create table xcolab_ProposalUnversionedAttribute (
+	id_ LONG not null primary key,
+	proposalId LONG,
+	createAuthorId LONG,
+	lastAuthorId LONG,
+	createDate DATE null,
+	lastUpdateDate DATE null,
+	name VARCHAR(75) null,
+	addtionalId INTEGER,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE
 );
 
 create table xcolab_ProposalVersion (
@@ -931,6 +769,9 @@ create table xcolab_ProposalVote (
 	contestPhaseId LONG not null,
 	userId LONG not null,
 	createDate DATE null,
+	isValid BOOLEAN,
+	confirmationEmailSendDate DATE null,
+	confirmationToken VARCHAR(75) null,
 	primary key (contestPhaseId, userId)
 );
 
@@ -950,6 +791,14 @@ create table xcolab_SocialActivity (
 	userId LONG
 );
 
+create table xcolab_SpamReport (
+	id_ LONG not null primary key,
+	spamUserId LONG,
+	reporterUserId LONG,
+	discussionMessageId LONG,
+	isAdminReport BOOLEAN
+);
+
 create table xcolab_StaffMember (
 	id_ LONG not null primary key,
 	userId LONG,
@@ -963,6 +812,15 @@ create table xcolab_StaffMember (
 	sort INTEGER
 );
 
+
+create table xcolab_TestTable (
+	name VARCHAR(75) not null,
+	additionalId LONG not null,
+	numericValue LONG,
+	stringValue VARCHAR(75) null,
+	realValue DOUBLE,
+	primary key (name, additionalId)
+);
 
 create table xcolab_TrackedVisit (
 	id_ LONG not null primary key,
@@ -984,14 +842,21 @@ create table xcolab_TrackedVisitor2User (
 	createDate DATE null
 );
 
-create table xcolab_User_ (
-	userId LONG not null primary key,
-	createDate DATE null,
-	screenName VARCHAR(75) null
-);
-
-create table xcolab_Users_Roles (
-	roleId LONG not null,
-	userId LONG not null,
-	primary key (roleId, userId)
+create table members_Member (
+	id_ BIGINT(20) not null PRIMARY KEY,
+	screenName VARCHAR(42),
+	emailAddress  VARCHAR(75),
+	hashedPassword VARCHAR(75),
+	createDate datetime,
+	modifiedDate datetime,
+	passwordModifiedDate datetime,
+	firstName VARCHAR(75),
+	lastName VARCHAR(75),
+  country VARCHAR(75),
+  shortBio TEXT,
+	facebookId BIGINT(20),
+	openId VARCHAR(255),
+	loginIP VARCHAR(75),
+  loginDate datetime,
+	status int(11) DEFAULT 0
 );

@@ -1408,6 +1408,13 @@ public class ProposalAttributePersistenceImpl extends BasePersistenceImpl<Propos
                     FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_PROPOSALIDVERSIONNAMEADDITIONALID,
                         finderArgs, list);
                 } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "ProposalAttributePersistenceImpl.fetchByProposalIdVersionNameAdditionalId(long, int, String, long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
                     ProposalAttribute proposalAttribute = list.get(0);
 
                     result = proposalAttribute;

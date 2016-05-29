@@ -5,6 +5,7 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestDiscussion;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -15,10 +16,11 @@ import org.xcolab.interfaces.TabPermissions;
 import org.xcolab.utils.UrlBuilder;
 
 import javax.portlet.PortletRequest;
+import java.io.Serializable;
 
-public class TabWrapper {
+public class TabWrapper implements Serializable {
     private TabEnum tab;
-    private TabContext context;
+    private final TabContext context;
 
     private final PortletRequest request;
     private final TabPermissions permissions;
@@ -30,7 +32,6 @@ public class TabWrapper {
         this.context = context;
         this.permissions = context.getPermissions(request);
     }
-
 
     public TabEnum getTab() {
         return tab;
@@ -77,7 +78,7 @@ public class TabWrapper {
     }
 
     public long getDiscussionId() throws SystemException, PortalException{
-        Long discussionId = 0L;
+        Long discussionId;
         Contest contest = context.getContest(request);
         try {
             discussionId = ContestDiscussionLocalServiceUtil.
@@ -92,7 +93,7 @@ public class TabWrapper {
             throws SystemException, NoSuchContestDiscussionException{
 
         DiscussionCategoryGroup newDiscussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.
-                createDiscussionCategoryGroup("Contest " + contestId + " " + tabName + " discussion");
+                createDiscussionCategoryGroup(ContestTypeLocalServiceUtil.getContestTypeFromContestId(contestId).getContestName() + " " + contestId + " " + tabName + " discussion");
 
         newDiscussionCategoryGroup.setUrl(UrlBuilder.getContestCreationTabCommentsUrl(contestId, tabName));
         DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(newDiscussionCategoryGroup);

@@ -67,6 +67,12 @@ public class DiscussionCategoryLocalServiceClp
     private String[] _methodParameterTypes28;
     private String _methodName29;
     private String[] _methodParameterTypes29;
+    private String _methodName30;
+    private String[] _methodParameterTypes30;
+    private String _methodName31;
+    private String[] _methodParameterTypes31;
+    private String _methodName32;
+    private String[] _methodParameterTypes32;
 
     public DiscussionCategoryLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -170,7 +176,7 @@ public class DiscussionCategoryLocalServiceClp
 
         _methodParameterTypes20 = new String[] { "long" };
 
-        _methodName21 = "createDebateCategory";
+        _methodName21 = "createDiscussionCategory";
 
         _methodParameterTypes21 = new String[] {
                 "long", "java.lang.String", "java.lang.String",
@@ -226,6 +232,18 @@ public class DiscussionCategoryLocalServiceClp
         _methodParameterTypes29 = new String[] {
                 "com.ext.portlet.model.DiscussionCategory"
             };
+
+        _methodName30 = "subscribe";
+
+        _methodParameterTypes30 = new String[] { "long", "long", "long" };
+
+        _methodName31 = "unsubscribe";
+
+        _methodParameterTypes31 = new String[] { "long", "long", "long" };
+
+        _methodName32 = "isSubscribed";
+
+        _methodParameterTypes32 = new String[] { "long", "long", "long" };
     }
 
     @Override
@@ -807,7 +825,7 @@ public class DiscussionCategoryLocalServiceClp
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionCategory createDebateCategory(
+    public com.ext.portlet.model.DiscussionCategory createDiscussionCategory(
         long categoryGroupId, java.lang.String name,
         java.lang.String description, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -1082,5 +1100,90 @@ public class DiscussionCategoryLocalServiceClp
         }
 
         return (com.ext.portlet.model.DiscussionCategoryGroup) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public void subscribe(long userId, long categoryGroupId, long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName30,
+                _methodParameterTypes30,
+                new Object[] { userId, categoryGroupId, categoryId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName31,
+                _methodParameterTypes31,
+                new Object[] { userId, discussionCategoryGroupId, categoryId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName32,
+                    _methodParameterTypes32,
+                    new Object[] { userId, discussionCategoryGroupId, categoryId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
     }
 }

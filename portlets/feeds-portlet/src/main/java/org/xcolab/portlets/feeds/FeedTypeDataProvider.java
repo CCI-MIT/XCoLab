@@ -1,13 +1,12 @@
 package org.xcolab.portlets.feeds;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.ui.Model;
 import org.xcolab.commons.beans.SortFilterPage;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 public interface FeedTypeDataProvider {
 	String populateModel(PortletRequest request, PortletResponse response,

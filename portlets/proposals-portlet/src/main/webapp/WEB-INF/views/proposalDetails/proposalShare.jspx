@@ -1,6 +1,5 @@
-<jsp:root
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
     <portlet:resourceURL id="proposalShare-autocomplete" var="autocompleteURL">
     </portlet:resourceURL>
@@ -10,7 +9,7 @@
     </portlet:resourceURL>
 
     <div id="share-proposal-container">
-        <h4>Share this proposal</h4>
+        <h4>Share this ${contestType.proposalName}</h4>
         <form class="compose-message-form">
             <div class="errors-container">
                 &#160;
@@ -41,7 +40,7 @@
                 <tr>
                     <td class="b">Subject:</td>
                     <td>
-                        <input id="subject" class="required profile_input subject" value="I want to share a proposal with you!"/>
+                        <input id="subject" class="required profile_input subject" value="I want to share a ${contestType.proposalName} with you!"/>
                         <br/>
                     </td>
                 </tr>
@@ -49,19 +48,14 @@
                     <td class="b">Message:</td>
                     <td>
                         <div id="composemessage">
-                            <textarea id="body" rows="6" class="profile_about required" style="width: 90%; ">Check out the proposal "${proposal.name}" in the "${contest.contestName}" contest.</textarea>
+                            <textarea id="body" rows="6" class="profile_about required" style="width: 90%; ">Check out the ${contestType.proposalName} "${proposal.name}" in the "${contest.contestName}" ${contestType.contestName}.</textarea>
                         </div>
                     </td>
                 </tr>
             </table>
             <div>
-                <div class="blue-button">
-                    <a href="javascript:;" id="send-button" class="login-submit" onclick="send()">Send</a>
-                </div>
-
-                <div class="blue-button">
-                    <a href="javascript:;" class="login-submit" onclick="$('#messaging-overlay').hide()">Cancel</a>
-                </div>
+                <a class="c-Button__primary" href="javascript:;" id="send-button" onclick="send()">Send</a>
+                <a class="c-Button__primary" href="javascript:;" onclick="$('#messaging-overlay').hide()">Cancel</a>
             </div>
             <div id="send-error" class="recipient-error">
 
@@ -146,7 +140,8 @@
         }
 
         // jQuery autocomplete
-        $("#recipient-input")
+        var $recipientInputElement = $("#recipient-input");
+        $recipientInputElement
             // don't navigate away from the field on tab when selecting an item
                 .bind("keydown", function (event) {
                     if (event.keyCode === $.ui.keyCode.TAB &amp;&amp; $(this).data("ui-autocomplete").menu.active) {
@@ -183,7 +178,7 @@
                     }
                 });
 
-        $("#recipient-input").focusout(function(event) {
+        $recipientInputElement.focusout(function(event) {
             validateRecipients();
         });
     </script>

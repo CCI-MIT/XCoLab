@@ -1,33 +1,36 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
-    xmlns:collab="http://climatecolab.org/tags/collab_1.0">
+    xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	version="2.0">
 
-	<script>var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};</script>
+	<!--@elvariable id="edit" type="java.lang.Boolean"-->
+	<!--@elvariable id="tabs" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper>"-->
+	<!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
+
+	<script>
+        var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};
+        var proposalUrl = "${proposal.proposalUrl}"; var phaseUrl = "${contestPhase.contestPhaseUrl}";
+        var proposalUrlInPhase = "${proposal.getProposalUrl(contestPhase.wrapped)}";
+    </script>
 	<div class="proposal-head">
 		<div class="inner">
-			<div class="headline">
+			<div class="c-Headline">
 				<div class="proposal-image">
 					<c:choose>
 						<c:when test='${proposal.imageId > 0}'>
 							<img src="/image/proposal?img_id=${proposal.imageId}" width="52" height="52" alt="${proposal.name }" />
 						</c:when>
 						<c:otherwise>
-							<img src="/climatecolab-theme/images/proposal_default.png" width="52" height="52" alt="${proposal.name}" />
+							<img src="${themeDisplay.pathThemeImages}/proposal_default.png" width="52" height="52" alt="${proposal.name}" />
 						</c:otherwise>
 					</c:choose>
 				</div>
 				<div class="proposal-title">
 					<div class="prop-description">
-						Proposal for&amp;nbsp;
-						<proposalsPortlet:contestLink contestId="${contest.contestPK}" text="${contest.contestShortName} " />
-						by&amp;nbsp;
+						${contestType.proposalName} for
+						<collab:contestLink contest="${contest}" />
+						by
 						<c:choose>
 							<c:when test="${empty proposal.team}">
 								<proposalsPortlet:userLinkSimple userId="${proposal.authorId}" text="${proposal.author.screenName}" />
@@ -42,37 +45,38 @@
 			</div>
 			<c:if test="${not proposal.visible }">
 				<h3 class='portlet-msg-error'>
-					This proposal has been deleted!
+					This ${contestType.proposalName} has been deleted!
 				</h3>
 			</c:if>
-			<div class="prop-tabs">
-				<ul>
-					<c:forEach var="singleTab" items="${tabs }">
-						<li class="${currentTab == singleTab.tab ? 'c' : ''}">
-							<c:choose>
-								<c:when test="${singleTab.defaultTab and empty contestPhase }">
-									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}" />
-								</c:when>
-								<c:when test="${singleTab.defaultTab and not empty contestPhase }">
-									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/phaseId/${contestPhase.contestPhasePK }/planId/${proposal.proposalId}" />
-								</c:when>
-								<c:when test="${not singleTab.defaultTab and empty contestPhase }">
-									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/planId/${proposal.proposalId}/tab/${singleTab.name}" />
-								</c:when>
-								<c:otherwise>
-									<c:set var="proposalURL" value="/web/guest/plans/-/plans/contestId/${contest.contestPK}/phaseId/${contestPhase.contestPhasePK }/planId/${proposal.proposalId}/tab/${singleTab.name}" />
-								</c:otherwise>
-							</c:choose>
-							<a href="${proposalURL }">
-								${singleTab.displayName}
-								<c:if test="${singleTab.activityCount > 0}">
-									<div>${singleTab.activityCount}</div>
-								</c:if>
-							</a>
-						</li>
-					</c:forEach>
-				</ul>
-			</div>
+			<ul class="c-TabBar clearfix">
+				<c:forEach var="singleTab" items="${tabs }" varStatus="loopStatus">
+					<li class="${!loopStatus.last
+							? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first')
+							: 'c-TabBar__tab--last'}
+							${currentTab == singleTab.tab ? 'active' : singleTab.tab.tabType.cssModifier}">
+						<c:choose>
+							<c:when test="${singleTab.defaultTab and empty contestPhase }">
+								<c:set var="proposalUrl" value="${proposal.proposalUrl}" />
+							</c:when>
+							<c:when test="${singleTab.defaultTab and not empty contestPhase }">
+								<c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }" />
+							</c:when>
+							<c:when test="${not singleTab.defaultTab and empty contestPhase }">
+								<c:set var="proposalUrl" value="${proposal.proposalUrl}/tab/${singleTab.name}" />
+							</c:when>
+							<c:otherwise>
+								<c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }/tab/${singleTab.name}" />
+							</c:otherwise>
+						</c:choose>
+						<a href="${proposalUrl }">
+							${singleTab.displayName}
+							<c:if test="${singleTab.activityCount > 0}">
+								<span class="c-TabBar__tab__count">${singleTab.activityCount}</span>
+							</c:if>
+						</a>
+					</li>
+				</c:forEach>
+			</ul>
 		</div>
 		<!-- /inner -->
 	</div>
@@ -83,7 +87,7 @@
 			<div class="inner">
 				<div class="edit-prop">
 					<div class="edit-prop-butts">
-						<collab:proposalLink proposalId="${proposal.proposalId }" contestId="${contest.contestPK }" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
+						<collab:proposalLink proposal="${proposal}" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
 					</div>
 				</div>
 			</div>

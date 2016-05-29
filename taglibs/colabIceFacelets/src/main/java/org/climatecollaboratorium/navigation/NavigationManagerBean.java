@@ -14,7 +14,6 @@ public class NavigationManagerBean implements Serializable {
 	private String navigationToken;
     private EventBus eventBus;
     private boolean sendUnchanged;
-    private Map<String, Map<String, String>> lastTokenMap = new HashMap<String, Map<String,String>>();
     private int token = 0;
     
     public boolean isSendUnchanged() {
@@ -41,7 +40,6 @@ public class NavigationManagerBean implements Serializable {
         Map<String, Map<String, String>> tokenMap = decodeToken(navigationToken);
         NavigationEvent e = new NavigationEvent(tokenMap);
         eventBus.fireEvent(e);
-        lastTokenMap = tokenMap;
         return e.getResultName();
     }
     

@@ -1,12 +1,5 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 27/11/13
- * Time: 11:50
- * To change this template use File | Settings | File Templates.
- */
 public class SSOKeys {
 
     public final static String GOOGLE_ENDPOINT = "https://www.google.com/accounts/o8/id";
@@ -23,8 +16,7 @@ public class SSOKeys {
     public final static String SSO_LAST_NAME = "SSO_LAST_NAME";
     public final static String SSO_EMAIL = "SSO_EMAIL";
     public final static String SSO_OPENID_ID = "SSO_OPENID_ID";
-	public final static String SSO_CITY = "SSO_CITY";
-	public final static String SSO_COUNTRY = "SSO_COUNTRY";
+    public final static String SSO_COUNTRY = "SSO_COUNTRY";
     // other
     public final static String OPEN_ID_DISCO = "OPEN_ID_DISCO";
     public final static String SSO_SCREEN_NAME = "SSO_SCREEN_NAME";

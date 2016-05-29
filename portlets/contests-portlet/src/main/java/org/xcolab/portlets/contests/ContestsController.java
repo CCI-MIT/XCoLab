@@ -8,11 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 
 @Controller
@@ -27,9 +28,9 @@ public class ContestsController {
 
         ContestPreferences contestPreferences = new ContestPreferences(request);
 
-        List<ContestWrapper> ret = new ArrayList<>();
+        List<ContestWrapper> contestWrappers = new ArrayList<>();
         List<Contest> contests;
-        if (contestPreferences.getSelectedContests().length == 0) {
+        if (contestPreferences.getSelectedContests().isEmpty()) {
              contests = ContestLocalServiceUtil.findByActiveFeatured(true,true);
         } else {
             contests = new ArrayList<>();
@@ -40,17 +41,17 @@ public class ContestsController {
 
         Collections.shuffle(contests);
         for (Contest contest: contests) {
-            if(ret.size() >= contestPreferences.getFeedSize()) {
+            if(contestWrappers.size() >= contestPreferences.getFeedSize()) {
             	break;
             }
             if (contest.getContestPrivate()) {
             	continue;
             }
-            ret.add(new ContestWrapper(contest));
+            contestWrappers.add(new ContestWrapper(contest));
         }
         
-        model.addAttribute("contests", ret);
-        model.addAttribute("title", contestPreferences.getTitle());
+        model.addAttribute("contests", contestWrappers);
+        model.addAttribute("preferences", contestPreferences);
     	return "showContests";
     }
 }

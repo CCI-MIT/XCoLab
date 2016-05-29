@@ -56,9 +56,10 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
             { "fellowScreeningActiveDefault", Types.BOOLEAN },
             { "contestPhaseAutopromoteDefault", Types.VARCHAR },
             { "invisible", Types.BOOLEAN },
-            { "pointsAccessible", Types.INTEGER }
+            { "pointsAccessible", Types.INTEGER },
+            { "defaultPromotionType", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseType (id_ LONG not null primary key,name VARCHAR(1024) null,description TEXT null,status VARCHAR(75) null,fellowScreeningActiveDefault BOOLEAN,contestPhaseAutopromoteDefault VARCHAR(75) null,invisible BOOLEAN,pointsAccessible INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseType (id_ LONG not null primary key,name VARCHAR(1024) null,description TEXT null,status VARCHAR(75) null,fellowScreeningActiveDefault BOOLEAN,contestPhaseAutopromoteDefault VARCHAR(75) null,invisible BOOLEAN,pointsAccessible INTEGER,defaultPromotionType VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhaseType";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhaseType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhaseType.id_ ASC";
@@ -86,6 +87,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
     private String _contestPhaseAutopromoteDefault;
     private boolean _invisible;
     private int _pointsAccessible;
+    private String _defaultPromotionType;
     private ContestPhaseType _escapedModel;
 
     public ContestPhaseTypeModelImpl() {
@@ -112,6 +114,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         model.setContestPhaseAutopromoteDefault(soapModel.getContestPhaseAutopromoteDefault());
         model.setInvisible(soapModel.getInvisible());
         model.setPointsAccessible(soapModel.getPointsAccessible());
+        model.setDefaultPromotionType(soapModel.getDefaultPromotionType());
 
         return model;
     }
@@ -181,6 +184,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
             getContestPhaseAutopromoteDefault());
         attributes.put("invisible", getInvisible());
         attributes.put("pointsAccessible", getPointsAccessible());
+        attributes.put("defaultPromotionType", getDefaultPromotionType());
 
         return attributes;
     }
@@ -235,6 +239,13 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
         if (pointsAccessible != null) {
             setPointsAccessible(pointsAccessible);
+        }
+
+        String defaultPromotionType = (String) attributes.get(
+                "defaultPromotionType");
+
+        if (defaultPromotionType != null) {
+            setDefaultPromotionType(defaultPromotionType);
         }
     }
 
@@ -354,6 +365,21 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         _pointsAccessible = pointsAccessible;
     }
 
+    @JSON
+    @Override
+    public String getDefaultPromotionType() {
+        if (_defaultPromotionType == null) {
+            return StringPool.BLANK;
+        } else {
+            return _defaultPromotionType;
+        }
+    }
+
+    @Override
+    public void setDefaultPromotionType(String defaultPromotionType) {
+        _defaultPromotionType = defaultPromotionType;
+    }
+
     @Override
     public ExpandoBridge getExpandoBridge() {
         return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
@@ -389,6 +415,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         contestPhaseTypeImpl.setContestPhaseAutopromoteDefault(getContestPhaseAutopromoteDefault());
         contestPhaseTypeImpl.setInvisible(getInvisible());
         contestPhaseTypeImpl.setPointsAccessible(getPointsAccessible());
+        contestPhaseTypeImpl.setDefaultPromotionType(getDefaultPromotionType());
 
         contestPhaseTypeImpl.resetOriginalValues();
 
@@ -483,12 +510,21 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
         contestPhaseTypeCacheModel.pointsAccessible = getPointsAccessible();
 
+        contestPhaseTypeCacheModel.defaultPromotionType = getDefaultPromotionType();
+
+        String defaultPromotionType = contestPhaseTypeCacheModel.defaultPromotionType;
+
+        if ((defaultPromotionType != null) &&
+                (defaultPromotionType.length() == 0)) {
+            contestPhaseTypeCacheModel.defaultPromotionType = null;
+        }
+
         return contestPhaseTypeCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(17);
+        StringBundler sb = new StringBundler(19);
 
         sb.append("{id=");
         sb.append(getId());
@@ -506,6 +542,8 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         sb.append(getInvisible());
         sb.append(", pointsAccessible=");
         sb.append(getPointsAccessible());
+        sb.append(", defaultPromotionType=");
+        sb.append(getDefaultPromotionType());
         sb.append("}");
 
         return sb.toString();
@@ -513,7 +551,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(28);
+        StringBundler sb = new StringBundler(31);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ContestPhaseType");
@@ -550,6 +588,10 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
         sb.append(
             "<column><column-name>pointsAccessible</column-name><column-value><![CDATA[");
         sb.append(getPointsAccessible());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>defaultPromotionType</column-name><column-value><![CDATA[");
+        sb.append(getDefaultPromotionType());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

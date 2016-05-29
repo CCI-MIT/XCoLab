@@ -268,61 +268,6 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
         return _messageLocalService.invokeMethod(name, parameterTypes, arguments);
     }
 
-    @Override
-    public int countSentMessage(long userid)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _messageLocalService.countSentMessage(userid);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.Message> findSentMessages(
-        long userid, int pagerstart, int pagerend)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _messageLocalService.findSentMessages(userid, pagerstart,
-            pagerend);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.MessageRecipientStatus> getRecipients(
-        com.ext.portlet.model.Message msg)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _messageLocalService.getRecipients(msg);
-    }
-
-    @Override
-    public boolean hasReciever(com.ext.portlet.model.Message msg, long userid)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _messageLocalService.hasReciever(msg, userid);
-    }
-
-    @Override
-    public boolean isOpened(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _messageLocalService.isOpened(msg, userid);
-    }
-
-    @Override
-    public void setOpened(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _messageLocalService.setOpened(msg, userid);
-    }
-
-    @Override
-    public boolean isArchived(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _messageLocalService.isArchived(msg, userid);
-    }
-
-    @Override
-    public void setArchived(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _messageLocalService.setArchived(msg, userid);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

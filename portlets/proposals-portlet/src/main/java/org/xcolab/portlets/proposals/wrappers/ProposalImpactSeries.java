@@ -1,11 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-/**
- * Created by kmang on 13/03/15.
- */
-
+import com.ext.portlet.NoSuchImpactDefaultSeriesDataException;
 import com.ext.portlet.NoSuchImpactDefaultSeriesException;
-import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.ProposalImpactAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
@@ -19,10 +16,8 @@ import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
-import com.ext.portlet.service.ImpactIterationLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
-import com.ext.portlet.service.persistence.ImpactIterationUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -36,15 +31,11 @@ import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalImpactValueFilterAlgorithm;
 
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -58,17 +49,17 @@ public class ProposalImpactSeries {
 //    public static final String SERIES_TYPE_DDPP_KEY = "DDPP";
     public static final String SERIES_TYPE_RESULT_KEY = "RESULT";
 
-    private List<ImpactIteration> impactIterations;
-    private OntologyTerm whatTerm;
-    private OntologyTerm whereTerm;
-    private FocusArea focusArea;
-    private Proposal proposal;
+    private final List<ImpactIteration> impactIterations;
+    private final OntologyTerm whatTerm;
+    private final OntologyTerm whereTerm;
+    private final FocusArea focusArea;
+    private final Proposal proposal;
     private ProposalWrapper proposalWrapper;
     private ProposalVersion lastModifiedVersion;
-    private Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
-    private Map<String, Boolean> seriesTypeToEditableMap;
+    private final Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
+    private final Map<String, Boolean> seriesTypeToEditableMap;
 
-    private ImpactDefaultSeries bauSeries;
+    private final ImpactDefaultSeries bauSeries;
 //    private ImpactDefaultSeries ddppSeries;
 
     private ProposalImpactSeriesValues resultValues;
@@ -152,7 +143,7 @@ public class ProposalImpactSeries {
         return seriesTypeToSeriesMap.get(seriesType);
     }
 
-    public ProposalImpactSeriesValues getResultSeriesValues() throws PortalException, SystemException {
+    public ProposalImpactSeriesValues getResultSeriesValues() throws SystemException, NoSuchImpactDefaultSeriesDataException {
         if (Validator.isNull(resultValues)) {
             calculateResultSeriesValues();
         }
@@ -166,12 +157,14 @@ public class ProposalImpactSeries {
 
     public void persistWithAuthor(User author) throws SystemException, PortalException {
         // Persist all editable attributes
-        for (String seriesType : seriesTypeToEditableMap.keySet()) {
-            if (seriesTypeToEditableMap.get(seriesType)) {
+        for (Map.Entry<String, Boolean> entry: seriesTypeToEditableMap.entrySet()) {
+            final String seriesType = entry.getKey();
+            final Boolean isEditable = entry.getValue();
+            if (isEditable) {
                 ProposalImpactSeriesValues seriesValues = this.seriesTypeToSeriesMap.get(seriesType);
                 for (ImpactIteration iteration : impactIterations) {
                     double filteredValue = ProposalImpactValueFilterAlgorithm.filterValueForImpactSeriesType(seriesValues.getValueForYear(iteration.getYear()), seriesType);
-                    ProposalLocalServiceUtil.setAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
+                    ProposalAttributeLocalServiceUtil.setAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
                             focusArea.getId(), "", iteration.getYear(), filteredValue);
                 }
 
@@ -179,7 +172,7 @@ public class ProposalImpactSeries {
         }
     }
 
-    public JSONObject toJSONObject() throws SystemException, PortalException {
+    public JSONObject toJSONObject() throws SystemException, NoSuchImpactDefaultSeriesException {
         JSONObject returnObject = JSONFactoryUtil.createJSONObject();
         JSONObject serieses = JSONFactoryUtil.createJSONObject();
 
@@ -202,8 +195,10 @@ public class ProposalImpactSeries {
         }
 
         returnObject.put("serieses", serieses);
-        for (String seriesType : seriesTypeToSeriesMap.keySet()) {
-            ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
+        for (Map.Entry<String, ProposalImpactSeriesValues> entry : seriesTypeToSeriesMap.entrySet()) {
+            String seriesType = entry.getKey();
+            final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
+
             ImpactDefaultSeries defaultSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, seriesType);
 
             JSONObject series = JSONFactoryUtil.createJSONObject();
@@ -224,7 +219,7 @@ public class ProposalImpactSeries {
         return returnObject;
     }
 
-    public JSONObject toJSONObjectByFiltering(Set<String> filteredSeriesNames) throws PortalException, SystemException {
+    public JSONObject toJSONObjectByFiltering(Set<String> filteredSeriesNames) throws SystemException, NoSuchImpactDefaultSeriesException {
         JSONObject jsonObject = toJSONObject();
         JSONObject newSeriesObject = JSONFactoryUtil.createJSONObject();
         Iterator<String> seriesNameIterator = jsonObject.getJSONObject("serieses").keys();
@@ -240,22 +235,22 @@ public class ProposalImpactSeries {
         return jsonObject;
     }
 
-    private void loadEditableData() throws SystemException, PortalException {
+    private void loadEditableData() throws SystemException, NoSuchProposalVersionException {
         // Get default serieses
         List<ImpactDefaultSeries> impactDefaultSerieses =
                 ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea(focusArea);
 
         // TODO create query to filter by additionalId?
         List<ProposalAttribute> impactProposalAttributes =
-                ProposalLocalServiceUtil.getImpactProposalAttributes(proposal);
+                ProposalAttributeLocalServiceUtil.getImpactProposalAttributes(proposal);
 
         for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
-            boolean foundEnteredData = false;
 
             // Look for already entered data
             if (defaultSeries.isEditable()) {
 
                 // TODO write a separate finder for the proposal attribute that is being searched
+                boolean foundEnteredData = false;
                 for (ProposalAttribute attribute : impactProposalAttributes) {
                     if (attribute.getName().equals(defaultSeries.getName()) && attribute.getAdditionalId() == focusArea.getId()) {
                         foundEnteredData = true;
@@ -279,14 +274,14 @@ public class ProposalImpactSeries {
     /**
      * Calculate the result values for each time point in the Iteration
      */
-    private void calculateResultSeriesValues() throws SystemException, PortalException {
+    private void calculateResultSeriesValues() throws SystemException, NoSuchImpactDefaultSeriesDataException {
         resultValues = new ProposalImpactSeriesValues();
         for (ImpactIteration impactIteration : impactIterations) {
             int currentYear = impactIteration.getYear();
 
             double bauValue =
                     ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
-                            (int) currentYear).getValue();
+                            currentYear).getValue();
 
             double reductionRate = seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_REDUCTION).getValueForYear(currentYear);
             double adoptionRate = seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE).getValueForYear(currentYear);
@@ -319,10 +314,11 @@ public class ProposalImpactSeries {
 
     public User getSeriesAuthor() {
         try {
-            return UserLocalServiceUtil.getUser(lastModifiedVersion.getAuthorId());
-        } catch (Exception e) {
-            return null;
-        }
+            if (lastModifiedVersion != null) {
+                return UserLocalServiceUtil.getUser(lastModifiedVersion.getAuthorId());
+            }
+        } catch (SystemException | PortalException ignored) { }
+        return null;
     }
 
     public Date getUpdatedDate() {

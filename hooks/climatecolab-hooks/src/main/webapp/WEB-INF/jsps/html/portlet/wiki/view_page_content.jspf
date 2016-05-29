@@ -24,7 +24,7 @@ try {
 	<div class="wiki-body">
 		<c:choose>
 			<c:when test="<%= !followRedirect && (redirectPage != null) %>">
-				<div class="alert alert-info">
+				<div class="c-Alert alert-info">
 					<%= LanguageUtil.format(pageContext, "this-page-is-currently-redirected-to-x", redirectPage.getTitle()) %>
 				</div>
 
@@ -47,7 +47,7 @@ try {
 				</c:if>
 			</c:when>
 			<c:when test="<%= Validator.isNull(formattedContent) && WikiPagePermission.contains(permissionChecker, wikiPage, ActionKeys.UPDATE) %>">
-				<div class="alert alert-info">
+				<div class="c-Alert alert-info">
 					<aui:a href="<%= editPageURL.toString() %>" label="this-page-is-empty-edit-it-to-add-some-text" />
 				</div>
 			</c:when>
@@ -62,7 +62,7 @@ try {
 catch (WikiFormatException wfe) {
 %>
 
-	<div class="alert alert-error">
+	<div class="c-Alert c-Alert__error">
 		<liferay-ui:message key="the-format-of-this-page-is-not-supported-the-page-content-will-be-shown-unformatted" />
 	</div>
 
@@ -78,7 +78,7 @@ catch (Exception e) {
 	_log.error("Error formatting the wiki page " + wikiPage.getPageId() + " with the format " + wikiPage.getFormat(), e);
 %>
 
-	<div class="alert alert-error">
+	<div class="c-Alert c-Alert__error">
 		<liferay-ui:message key="an-error-occurred-while-formatting-the-wiki-page" />
 	</div>
 

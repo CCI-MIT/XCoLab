@@ -284,14 +284,6 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.PlanItem> getPlans(
-        com.ext.portlet.model.ContestPhase contestPhase)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestPhaseLocalService.getPlans(contestPhase);
-    }
-
-    @Override
     public com.ext.portlet.contests.ContestStatus getContestStatus(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -458,6 +450,18 @@ public class ContestPhaseLocalServiceWrapper implements ContestPhaseLocalService
             com.liferay.portal.kernel.exception.SystemException {
         return _contestPhaseLocalService.getNumberOfProposalsForJudge(judge,
             phase);
+    }
+
+    /**
+    * Returns the URL link address for the passed contest phase
+    *
+    * @param contestPhase   The contest object
+    * @return Contest phase URL as String
+    */
+    @Override
+    public java.lang.String getContestPhaseLinkUrl(
+        com.ext.portlet.model.ContestPhase contestPhase) {
+        return _contestPhaseLocalService.getContestPhaseLinkUrl(contestPhase);
     }
 
     /**

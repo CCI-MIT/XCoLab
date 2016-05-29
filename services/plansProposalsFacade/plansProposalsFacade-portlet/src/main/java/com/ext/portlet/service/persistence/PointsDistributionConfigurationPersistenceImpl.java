@@ -123,6 +123,21 @@ public class PointsDistributionConfigurationPersistenceImpl
             "countByTargetSubProposalId", new String[] { Long.class.getName() });
     private static final String _FINDER_COLUMN_TARGETSUBPROPOSALID_TARGETSUBPROPOSALID_2 =
         "pointsDistributionConfiguration.targetSubProposalId = ?";
+    public static final FinderPath FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID =
+        new FinderPath(PointsDistributionConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+            PointsDistributionConfigurationModelImpl.FINDER_CACHE_ENABLED,
+            PointsDistributionConfigurationImpl.class,
+            FINDER_CLASS_NAME_ENTITY, "fetchByTargetPlanSectionDefinitionId",
+            new String[] { Long.class.getName() },
+            PointsDistributionConfigurationModelImpl.TARGETPLANSECTIONDEFINITIONID_COLUMN_BITMASK);
+    public static final FinderPath FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID =
+        new FinderPath(PointsDistributionConfigurationModelImpl.ENTITY_CACHE_ENABLED,
+            PointsDistributionConfigurationModelImpl.FINDER_CACHE_ENABLED,
+            Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+            "countByTargetPlanSectionDefinitionId",
+            new String[] { Long.class.getName() });
+    private static final String _FINDER_COLUMN_TARGETPLANSECTIONDEFINITIONID_TARGETPLANSECTIONDEFINITIONID_2 =
+        "pointsDistributionConfiguration.targetPlanSectionDefinitionId = ?";
     public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PROPOSALID =
         new FinderPath(PointsDistributionConfigurationModelImpl.ENTITY_CACHE_ENABLED,
             PointsDistributionConfigurationModelImpl.FINDER_CACHE_ENABLED,
@@ -1143,6 +1158,213 @@ public class PointsDistributionConfigurationPersistenceImpl
     }
 
     /**
+     * Returns the points distribution configuration where targetPlanSectionDefinitionId = &#63; or throws a {@link com.ext.portlet.NoSuchPointsDistributionConfigurationException} if it could not be found.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @return the matching points distribution configuration
+     * @throws com.ext.portlet.NoSuchPointsDistributionConfigurationException if a matching points distribution configuration could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration findByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws NoSuchPointsDistributionConfigurationException, SystemException {
+        PointsDistributionConfiguration pointsDistributionConfiguration = fetchByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+
+        if (pointsDistributionConfiguration == null) {
+            StringBundler msg = new StringBundler(4);
+
+            msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+            msg.append("targetPlanSectionDefinitionId=");
+            msg.append(targetPlanSectionDefinitionId);
+
+            msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+            if (_log.isWarnEnabled()) {
+                _log.warn(msg.toString());
+            }
+
+            throw new NoSuchPointsDistributionConfigurationException(msg.toString());
+        }
+
+        return pointsDistributionConfiguration;
+    }
+
+    /**
+     * Returns the points distribution configuration where targetPlanSectionDefinitionId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @return the matching points distribution configuration, or <code>null</code> if a matching points distribution configuration could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration fetchByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) throws SystemException {
+        return fetchByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId,
+            true);
+    }
+
+    /**
+     * Returns the points distribution configuration where targetPlanSectionDefinitionId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @param retrieveFromCache whether to use the finder cache
+     * @return the matching points distribution configuration, or <code>null</code> if a matching points distribution configuration could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration fetchByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId, boolean retrieveFromCache)
+        throws SystemException {
+        Object[] finderArgs = new Object[] { targetPlanSectionDefinitionId };
+
+        Object result = null;
+
+        if (retrieveFromCache) {
+            result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+                    finderArgs, this);
+        }
+
+        if (result instanceof PointsDistributionConfiguration) {
+            PointsDistributionConfiguration pointsDistributionConfiguration = (PointsDistributionConfiguration) result;
+
+            if ((targetPlanSectionDefinitionId != pointsDistributionConfiguration.getTargetPlanSectionDefinitionId())) {
+                result = null;
+            }
+        }
+
+        if (result == null) {
+            StringBundler query = new StringBundler(3);
+
+            query.append(_SQL_SELECT_POINTSDISTRIBUTIONCONFIGURATION_WHERE);
+
+            query.append(_FINDER_COLUMN_TARGETPLANSECTIONDEFINITIONID_TARGETPLANSECTIONDEFINITIONID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(targetPlanSectionDefinitionId);
+
+                List<PointsDistributionConfiguration> list = q.list();
+
+                if (list.isEmpty()) {
+                    FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+                        finderArgs, list);
+                } else {
+                    if ((list.size() > 1) && _log.isWarnEnabled()) {
+                        _log.warn(
+                            "PointsDistributionConfigurationPersistenceImpl.fetchByTargetPlanSectionDefinitionId(long, boolean) with parameters (" +
+                            StringUtil.merge(finderArgs) +
+                            ") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+                    }
+
+                    PointsDistributionConfiguration pointsDistributionConfiguration =
+                        list.get(0);
+
+                    result = pointsDistributionConfiguration;
+
+                    cacheResult(pointsDistributionConfiguration);
+
+                    if ((pointsDistributionConfiguration.getTargetPlanSectionDefinitionId() != targetPlanSectionDefinitionId)) {
+                        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+                            finderArgs, pointsDistributionConfiguration);
+                    }
+                }
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+                    finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        if (result instanceof List<?>) {
+            return null;
+        } else {
+            return (PointsDistributionConfiguration) result;
+        }
+    }
+
+    /**
+     * Removes the points distribution configuration where targetPlanSectionDefinitionId = &#63; from the database.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @return the points distribution configuration that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public PointsDistributionConfiguration removeByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId)
+        throws NoSuchPointsDistributionConfigurationException, SystemException {
+        PointsDistributionConfiguration pointsDistributionConfiguration = findByTargetPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+
+        return remove(pointsDistributionConfiguration);
+    }
+
+    /**
+     * Returns the number of points distribution configurations where targetPlanSectionDefinitionId = &#63;.
+     *
+     * @param targetPlanSectionDefinitionId the target plan section definition ID
+     * @return the number of matching points distribution configurations
+     * @throws SystemException if a system exception occurred
+     */
+    @Override
+    public int countByTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) throws SystemException {
+        FinderPath finderPath = FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID;
+
+        Object[] finderArgs = new Object[] { targetPlanSectionDefinitionId };
+
+        Long count = (Long) FinderCacheUtil.getResult(finderPath, finderArgs,
+                this);
+
+        if (count == null) {
+            StringBundler query = new StringBundler(2);
+
+            query.append(_SQL_COUNT_POINTSDISTRIBUTIONCONFIGURATION_WHERE);
+
+            query.append(_FINDER_COLUMN_TARGETPLANSECTIONDEFINITIONID_TARGETPLANSECTIONDEFINITIONID_2);
+
+            String sql = query.toString();
+
+            Session session = null;
+
+            try {
+                session = openSession();
+
+                Query q = session.createQuery(sql);
+
+                QueryPos qPos = QueryPos.getInstance(q);
+
+                qPos.add(targetPlanSectionDefinitionId);
+
+                count = (Long) q.uniqueResult();
+
+                FinderCacheUtil.putResult(finderPath, finderArgs, count);
+            } catch (Exception e) {
+                FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+                throw processException(e);
+            } finally {
+                closeSession(session);
+            }
+        }
+
+        return count.intValue();
+    }
+
+    /**
      * Returns all the points distribution configurations where proposalId = &#63;.
      *
      * @param proposalId the proposal ID
@@ -2109,6 +2331,11 @@ public class PointsDistributionConfigurationPersistenceImpl
             pointsDistributionConfiguration.getPrimaryKey(),
             pointsDistributionConfiguration);
 
+        FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+            new Object[] {
+                pointsDistributionConfiguration.getTargetPlanSectionDefinitionId()
+            }, pointsDistributionConfiguration);
+
         pointsDistributionConfiguration.resetOriginalValues();
     }
 
@@ -2168,6 +2395,8 @@ public class PointsDistributionConfigurationPersistenceImpl
 
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
         FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+        clearUniqueFindersCache(pointsDistributionConfiguration);
     }
 
     @Override
@@ -2180,6 +2409,64 @@ public class PointsDistributionConfigurationPersistenceImpl
             EntityCacheUtil.removeResult(PointsDistributionConfigurationModelImpl.ENTITY_CACHE_ENABLED,
                 PointsDistributionConfigurationImpl.class,
                 pointsDistributionConfiguration.getPrimaryKey());
+
+            clearUniqueFindersCache(pointsDistributionConfiguration);
+        }
+    }
+
+    protected void cacheUniqueFindersCache(
+        PointsDistributionConfiguration pointsDistributionConfiguration) {
+        if (pointsDistributionConfiguration.isNew()) {
+            Object[] args = new Object[] {
+                    pointsDistributionConfiguration.getTargetPlanSectionDefinitionId()
+                };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID,
+                args, Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+                args, pointsDistributionConfiguration);
+        } else {
+            PointsDistributionConfigurationModelImpl pointsDistributionConfigurationModelImpl =
+                (PointsDistributionConfigurationModelImpl) pointsDistributionConfiguration;
+
+            if ((pointsDistributionConfigurationModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] {
+                        pointsDistributionConfiguration.getTargetPlanSectionDefinitionId()
+                    };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID,
+                    args, Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+                    args, pointsDistributionConfiguration);
+            }
+        }
+    }
+
+    protected void clearUniqueFindersCache(
+        PointsDistributionConfiguration pointsDistributionConfiguration) {
+        PointsDistributionConfigurationModelImpl pointsDistributionConfigurationModelImpl =
+            (PointsDistributionConfigurationModelImpl) pointsDistributionConfiguration;
+
+        Object[] args = new Object[] {
+                pointsDistributionConfiguration.getTargetPlanSectionDefinitionId()
+            };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID,
+            args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+            args);
+
+        if ((pointsDistributionConfigurationModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    pointsDistributionConfigurationModelImpl.getOriginalTargetPlanSectionDefinitionId()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_TARGETPLANSECTIONDEFINITIONID,
+                args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_TARGETPLANSECTIONDEFINITIONID,
+                args);
         }
     }
 
@@ -2411,6 +2698,9 @@ public class PointsDistributionConfigurationPersistenceImpl
             pointsDistributionConfiguration.getPrimaryKey(),
             pointsDistributionConfiguration);
 
+        clearUniqueFindersCache(pointsDistributionConfiguration);
+        cacheUniqueFindersCache(pointsDistributionConfiguration);
+
         return pointsDistributionConfiguration;
     }
 
@@ -2430,6 +2720,7 @@ public class PointsDistributionConfigurationPersistenceImpl
         pointsDistributionConfigurationImpl.setPointTypeId(pointsDistributionConfiguration.getPointTypeId());
         pointsDistributionConfigurationImpl.setTargetUserId(pointsDistributionConfiguration.getTargetUserId());
         pointsDistributionConfigurationImpl.setTargetSubProposalId(pointsDistributionConfiguration.getTargetSubProposalId());
+        pointsDistributionConfigurationImpl.setTargetPlanSectionDefinitionId(pointsDistributionConfiguration.getTargetPlanSectionDefinitionId());
         pointsDistributionConfigurationImpl.setPercentage(pointsDistributionConfiguration.getPercentage());
         pointsDistributionConfigurationImpl.setCreator(pointsDistributionConfiguration.getCreator());
         pointsDistributionConfigurationImpl.setCreateDate(pointsDistributionConfiguration.getCreateDate());

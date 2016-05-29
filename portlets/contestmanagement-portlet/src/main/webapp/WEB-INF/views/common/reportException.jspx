@@ -1,10 +1,3 @@
-<!--
-  Created by IntelliJ IDEA.
-  User: Thomas
-  Date: 9/11/2015
-  Time: 8:24 PM
-  To change this template use File | Settings | File Templates.
--->
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns="http://www.w3.org/1999/xhtml"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
@@ -22,8 +15,6 @@
 
     <portlet:actionURL var="submitUrl">
         <portlet:param name="action" value="reportException"/>
-        <portlet:param name="exceptionMessage" value="${exceptionMessage}"/>
-        <portlet:param name="exceptionStacktrace" value="${exceptionStacktrace}"/>
     </portlet:actionURL>
 
     <div id="content" style="width: 500px;">
@@ -33,8 +24,10 @@
 
         <p>${exceptionMessage}</p>
 
-        <form action="${submitUrl }" method="POST">
+        <form action="${submitUrl }" method="post">
             <input type="hidden" name="url" id="url-field"/>
+            <input type="hidden" name="exceptionMessage" value="${exceptionMessage}"/>
+            <input type="hidden" name="exceptionStacktrace" value="${exceptionStacktrace}"/>
 
             <p style="margin-top:15px">Please tell us the steps you took before receiving this message so our web development team can figure out how this could have happened.</p>
             <textarea style="width: 100%; padding: 3px;" name="stepsToReproduce" id="steps-entry" type="text" rows="4"
@@ -43,13 +36,9 @@
             <p style="margin-top:15px">Thanks!</p>
 
             <div class="btns" style="text-align: center;">
-                <div id="submit-button" class="blue-button disabled" style="display: inline-block;">
-                    <a href="javascript:;" class="login-submit"
+                <a id="submit-button" class="c-Button__primary disabled c-Header__login__submit" href="javascript:;"
                        onclick="jQuery(this).parents('form').submit();">Submit</a>
-                </div>
-                <div class="gray-button" style="display: inline-block;">
-                    <a href="/web/guest/cms/-/contestmanagement/manager" class="">Go back to contest manager</a>
-                </div>
+                <a class="c-Button__secondary" href="/web/guest/cms/-/contestmanagement/manager">Go back to contest manager</a>
             </div>
         </form>
     </div>
@@ -70,7 +59,6 @@
 
         function isInputValid() {
             var stepsToReproduce = $('textarea#steps-entry').val();
-
             return stepsToReproduce.length > 0;
         }
     </script>

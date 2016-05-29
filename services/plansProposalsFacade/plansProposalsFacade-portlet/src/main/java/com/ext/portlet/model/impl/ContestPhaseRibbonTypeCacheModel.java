@@ -25,10 +25,11 @@ public class ContestPhaseRibbonTypeCacheModel implements CacheModel<ContestPhase
     public String hoverText;
     public String description;
     public boolean copyOnPromote;
+    public int sortOrder;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(11);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{id=");
         sb.append(id);
@@ -40,6 +41,8 @@ public class ContestPhaseRibbonTypeCacheModel implements CacheModel<ContestPhase
         sb.append(description);
         sb.append(", copyOnPromote=");
         sb.append(copyOnPromote);
+        sb.append(", sortOrder=");
+        sb.append(sortOrder);
         sb.append("}");
 
         return sb.toString();
@@ -65,6 +68,7 @@ public class ContestPhaseRibbonTypeCacheModel implements CacheModel<ContestPhase
         }
 
         contestPhaseRibbonTypeImpl.setCopyOnPromote(copyOnPromote);
+        contestPhaseRibbonTypeImpl.setSortOrder(sortOrder);
 
         contestPhaseRibbonTypeImpl.resetOriginalValues();
 
@@ -78,6 +82,7 @@ public class ContestPhaseRibbonTypeCacheModel implements CacheModel<ContestPhase
         hoverText = objectInput.readUTF();
         description = objectInput.readUTF();
         copyOnPromote = objectInput.readBoolean();
+        sortOrder = objectInput.readInt();
     }
 
     @Override
@@ -99,5 +104,6 @@ public class ContestPhaseRibbonTypeCacheModel implements CacheModel<ContestPhase
         }
 
         objectOutput.writeBoolean(copyOnPromote);
+        objectOutput.writeInt(sortOrder);
     }
 }

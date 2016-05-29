@@ -3,25 +3,10 @@ package org.xcolab.portlets.reporting.web;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseRibbonType;
-import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalVote;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
+import com.ext.portlet.model.*;
+import com.ext.portlet.service.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
@@ -55,402 +40,445 @@ import java.util.*;
 @Controller
 public class ReportingController {
 
-    public static final int FIELDS_PER_CONTEST = 4;
+	public static final int FIELDS_PER_CONTEST = 4;
 
-    @RequestMapping
-    public String showHomePage(RenderRequest request) {
-        return "index";
-    }
+	@RequestMapping
+	public String showHomePage(RenderRequest request) {
+		return "index";
+	}
 
-    @RequestMapping(params="report=getProposalActivity2013")
-    public void getProposalActivity(ResourceRequest request, ResourceResponse response) throws Exception {
-        ProposalActivityExport pae = new ProposalActivityExport();
+	@RequestMapping(params = "report=getProposalActivity2013")
+	public void getProposalActivity(ResourceRequest request, ResourceResponse response) throws IOException, SystemException, PortalException {
+		ProposalActivityExport pae = new ProposalActivityExport();
 
-        Writer w = response.getWriter();
-        CSVWriter csvWriter = new CSVWriter(w);
+		Writer w = response.getWriter();
+		CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"id", "daysCreatedBeforeFinalist", "numUpdatesBeforeFinalist", "numUpdatesOnDifferentDaysBeforeFinalist", "authorId", "teamMemberIds"});
+		csvWriter.writeNext(new String[]{"id", "daysCreatedBeforeFinalist", "numUpdatesBeforeFinalist", "numUpdatesOnDifferentDaysBeforeFinalist", "authorId", "teamMemberIds"});
 
-        for (ProposalActivities a : pae.get()) {
-            String authorIds = "";
-            for (User u : ProposalLocalServiceUtil.getMembers(a.getProposal().getProposalId())) {
-                if (!"".equals(authorIds)) authorIds += " - ";
-                authorIds += u.getUserId();
-            }
+		for (ProposalActivities a : pae.get()) {
+			String authorIds = "";
+			for (User u : ProposalLocalServiceUtil.getMembers(a.getProposal().getProposalId())) {
+				if (!"".equals(authorIds)) {
+					authorIds += " - ";
+				}
+				authorIds += u.getUserId();
+			}
 
-            csvWriter.writeNext(new String[]{
-                    ""+a.getProposal().getProposalId(),
-                    ""+a.getNumDaysCreationIsBeforeFinalistSelection(),
-                    ""+a.getNumUpdates(),
-                    ""+a.getNumDifferentDaysProposalUpdates(),
-                    ""+a.getProposal().getAuthorId(),
-                    ""+authorIds
-            });
-        }
+			csvWriter.writeNext(new String[]{
+					"" + a.getProposal().getProposalId(),
+					"" + a.getNumDaysCreationIsBeforeFinalistSelection(),
+					"" + a.getNumUpdates(),
+					"" + a.getNumDifferentDaysProposalUpdates(),
+					"" + a.getProposal().getAuthorId(),
+					"" + authorIds
+			});
+		}
 
-        response.setContentType("text/csv");
-        response.addProperty("Content-Disposition", "attachment;filename=proposalActivities.csv");
+		response.setContentType("text/csv");
+		response.addProperty("Content-Disposition", "attachment;filename=proposalActivities.csv");
 
-        w.close();
-    }
+		w.close();
+	}
 
-    @RequestMapping(params="report=generateProposalTexts2013")
-    public void generateProposalTexts2013(ResourceRequest request, ResourceResponse response) throws Exception {
-        ProposalTextExtraction pte = new ProposalTextExtraction();
+	@RequestMapping(params = "report=generateProposalTexts2013")
+	public void generateProposalTexts2013(ResourceRequest request, ResourceResponse response) throws Exception {
+		ProposalTextExtraction pte = new ProposalTextExtraction();
 
-        Writer w = response.getWriter();
-        CSVWriter csvWriter = new CSVWriter(w);
+		Writer w = response.getWriter();
+		CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"id", "url", "rank","winsjudges", "winspopular","text", "htmlcontent"});
+		csvWriter.writeNext(new String[]{"id", "url", "rank", "winsjudges", "winspopular", "text", "htmlcontent"});
 
-        for (ProposalTextEntity e : pte.get()) {
-            csvWriter.writeNext(new String[]{
-                    ""+e.getId(),
-                    e.getUrl(),
-                    e.getRank().fileNum+"",
-                    e.isProposalWinsJudgesChoice() ? "1" : "0",
-                    e.isProposalWinsPopularChoice() ? "1" : "0",
-                    e.getContent(),
-                    e.getHtmlContent(),
-            });
-        }
+		for (ProposalTextEntity e : pte.get()) {
+			csvWriter.writeNext(new String[]{
+					"" + e.getId(),
+					e.getUrl(),
+					e.getRank().fileNum + "",
+					e.isProposalWinsJudgesChoice() ? "1" : "0",
+					e.isProposalWinsPopularChoice() ? "1" : "0",
+					e.getContent(),
+					e.getHtmlContent(),
+			});
+		}
 
-        response.setContentType("text/csv");
-        response.addProperty("Content-Disposition", "attachment;filename=proposalTexts.csv");
+		response.setContentType("text/csv");
+		response.addProperty("Content-Disposition", "attachment;filename=proposalTexts.csv");
 
-        w.close();
-    }
+		w.close();
+	}
 
 
-    @RequestMapping(params="report=generateProposalTexts2014CreationPhase")
-    public void generateProposalTexts2014CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
-        ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
-        pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(1L,
-                ContestFetcher.getContestPhasesIn2014()));
+	@RequestMapping(params = "report=generateProposalTexts2015CreationPhase")
+	public void generateProposalTexts2015CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
+		List<Contest> targetContests = ContestFetcher.getContestsIn2015();
+		ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
+		pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(Arrays.asList(1L, 201L),
+				ContestFetcher.getContestPhases(targetContests)));
 
-        Writer w = response.getWriter();
-        CSVWriter csvWriter = new CSVWriter(w);
+		Writer w = response.getWriter();
+		CSVWriter csvWriter = new CSVWriter(w);
 //, "content", "content_with_section_titles"
-        csvWriter.writeNext(new String[]{"proposalId","proposal_name", "url","contestId", "contest", "version_in_creation", "ribbon_type_in_completed", "isSemifinalist", "year", "proposalMoved"});
+		csvWriter.writeNext(new String[]{"proposalId", "proposal_name", "url", "contestId", "contest", "version_in_creation", "ribbon_type_in_completed", "isSemifinalist", "year", "proposalMoved", "content", "content_with_section_titles"});
 
-        for (ProposalWithFinalistAndContent e : pic.get(ContestFetcher.getContestsIn2014(), true)) {
-            csvWriter.writeNext(new String[]{
-                    ""+e.getId(),
-                    e.getProposalName(),
-                    e.getUrl(),
-					""+e.getContest().getContestPK(),
-                    e.getContest().getContestShortName(),
-                    ""+e.getUsedVersion(),
-                    ""+e.getProposalRibbon(),
-					""+(e.getProposalRibbon() == 0 || e.getProposalRibbon() == 6 ? 0 : 1),
+		for (ProposalWithFinalistAndContent e : pic.get(targetContests, true)) {
+			csvWriter.writeNext(new String[]{
+					"" + e.getId(),
+					e.getProposalName(),
+					e.getUrl(),
+					"" + e.getContest().getContestPK(),
+					e.getContest().getContestShortName(),
+					"" + e.getUsedVersion(),
+					"" + e.getProposalRibbon(),
+					"" + (e.getProposalRibbon() == 0 || e.getProposalRibbon() == 6 ? 0 : 1),
+					"2015",
+					"" + e.isProposalMoved(),
+					e.getContent(),
+					e.getContentWithSectionTitles()
+			});
+		}
+
+		response.setContentType("text/csv");
+		response.addProperty("Content-Disposition", "attachment;filename=proposals2015creation.csv");
+
+		w.close();
+	}
+
+	@RequestMapping(params = "report=generateProposalTexts2014CreationPhase")
+	public void generateProposalTexts2014CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
+		List<Contest> targetContests = ContestFetcher.getContestsIn2014();
+		ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
+		pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(1L,
+				ContestFetcher.getContestPhases(targetContests)));
+
+		Writer w = response.getWriter();
+		CSVWriter csvWriter = new CSVWriter(w);
+//, "content", "content_with_section_titles"
+		csvWriter.writeNext(new String[]{"proposalId", "proposal_name", "url", "contestId", "contest", "version_in_creation", "ribbon_type_in_completed", "isSemifinalist", "year", "proposalMoved"});
+
+		for (ProposalWithFinalistAndContent e : pic.get(targetContests, true)) {
+			csvWriter.writeNext(new String[]{
+					"" + e.getId(),
+					e.getProposalName(),
+					e.getUrl(),
+					"" + e.getContest().getContestPK(),
+					e.getContest().getContestShortName(),
+					"" + e.getUsedVersion(),
+					"" + e.getProposalRibbon(),
+					"" + (e.getProposalRibbon() == 0 || e.getProposalRibbon() == 6 ? 0 : 1),
 					"2014",
-					""+e.isProposalMoved(),
-                    //e.getContent(),
-                    //e.getContentWithSectionTitles()
-            });
-        }
+					"" + e.isProposalMoved(),
+					//e.getContent(),
+					//e.getContentWithSectionTitles()
+			});
+		}
 
-        response.setContentType("text/csv");
-        response.addProperty("Content-Disposition", "attachment;filename=proposals2014creation.csv");
+		response.setContentType("text/csv");
+		response.addProperty("Content-Disposition", "attachment;filename=proposals2014creation.csv");
 
-        w.close();
-    }
+		w.close();
+	}
 
-    @RequestMapping(params="report=generateProposalTexts2013CreationPhase")
-    public void generateProposalTexts2013CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
-        ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
-        pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(11L));
+	@RequestMapping(params = "report=generateProposalTexts2013CreationPhase")
+	public void generateProposalTexts2013CreationPhase(ResourceRequest request, ResourceResponse response) throws Exception {
+		ProposalsInSpecificContests pic = new ProposalsInSpecificContests();
+		pic.setProposalVersionDeterminer(new GetLastVersionOfPhaseType(Arrays.asList(11L)));
 
-        Writer w = response.getWriter();
-        CSVWriter csvWriter = new CSVWriter(w);
+		Writer w = response.getWriter();
+		CSVWriter csvWriter = new CSVWriter(w);
 
-        csvWriter.writeNext(new String[]{"id","proposal_name", "url", "contest", "version_in_creation", "ribbon_type_in_completed", "content", "content_with_section_titles"});
+		csvWriter.writeNext(new String[]{"id", "proposal_name", "url", "contest", "version_in_creation", "ribbon_type_in_completed", "content", "content_with_section_titles"});
 
-        for (ProposalWithFinalistAndContent e : pic.get()) {
-            csvWriter.writeNext(new String[]{
-                    ""+e.getId(),
-                    e.getProposalName(),
-                    e.getUrl(),
-                    e.getContest().getContestShortName(),
-                    ""+e.getUsedVersion(),
-                    ""+e.getProposalRibbon(),
-                    e.getContent(),
-                    e.getContentWithSectionTitles()
-            });
-        }
+		for (ProposalWithFinalistAndContent e : pic.get()) {
+			csvWriter.writeNext(new String[]{
+					"" + e.getId(),
+					e.getProposalName(),
+					e.getUrl(),
+					e.getContest().getContestShortName(),
+					"" + e.getUsedVersion(),
+					"" + e.getProposalRibbon(),
+					e.getContent(),
+					e.getContentWithSectionTitles()
+			});
+		}
 
-        response.setContentType("text/csv");
-        response.addProperty("Content-Disposition", "attachment;filename=proposals2013creation.csv");
+		response.setContentType("text/csv");
+		response.addProperty("Content-Disposition", "attachment;filename=proposals2013creation.csv");
 
-        w.close();
-    }
-
-
-    @RequestMapping(params="report=authorAttractionReport")
-    public void generateAuthorAttractionReport(ResourceRequest request, ResourceResponse response) throws Exception {
-        AuthorAttractionBean aab = new AuthorAttractionBean();
-
-        Writer w = response.getWriter();
-        CSVWriter csvWriter = new CSVWriter(w);
-
-        csvWriter.writeNext(new String[]{"authorScreenname", "voterScreenname"});
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-
-        for (AuthorAttractionBean.UserAttractionPairs pairs : aab.getSupportersOfFinalistsThatRegisteredBeforeVoting()) {
-            csvWriter.writeNext(new String[]{
-                    pairs.getAuthor().getScreenName(),
-                    pairs.getVoter().getScreenName()
-            });
-        }
+		w.close();
+	}
 
 
-        response.setContentType("text/csv");
-        response.addProperty("Content-Disposition", "attachment;filename=userAttractionReport.csv");
+	@RequestMapping(params = "report=authorAttractionReport")
+	public void generateAuthorAttractionReport(ResourceRequest request, ResourceResponse response) throws Exception {
+		AuthorAttractionBean aab = new AuthorAttractionBean();
+
+		Writer w = response.getWriter();
+		CSVWriter csvWriter = new CSVWriter(w);
+
+		csvWriter.writeNext(new String[]{"authorScreenname", "voterScreenname"});
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+
+		for (AuthorAttractionBean.UserAttractionPairs pairs : aab.getSupportersOfFinalistsThatRegisteredBeforeVoting()) {
+			csvWriter.writeNext(new String[]{
+					pairs.getAuthor().getScreenName(),
+					pairs.getVoter().getScreenName()
+			});
+		}
 
 
-        w.close();
-    }
-
-    @RequestMapping(params="report=userActivitiesByContestReport")
-    public void generateUserActivityReport(ResourceRequest request, ResourceResponse response) throws Exception {
-        AuthorAttractionBean aab = new AuthorAttractionBean();
-
-        Writer w = response.getWriter();
-        CSVWriter csvWriter = new CSVWriter(w);
-
-        String[] initialCells = {"user ID", "user screenname", "user email"};
-        List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
-        String[] contestNames = new String[contests.size()* FIELDS_PER_CONTEST];
-        for (int i = 0; i < contests.size(); i++) {
-            Contest contest = contests.get(i);
-            contestNames[i* FIELDS_PER_CONTEST] = contest.getContestShortName()+" / proposal count";
-            contestNames[i* FIELDS_PER_CONTEST +1] = contest.getContestShortName()+" / proposal-comments count";
-            contestNames[i* FIELDS_PER_CONTEST +2] = contest.getContestShortName()+" / votes count";
-            contestNames[i* FIELDS_PER_CONTEST +3] = contest.getContestShortName()+" / supports count";
-        }
-        String[] csvHeader = new String[contestNames.length+initialCells.length];
-        for (int i = 0; i < csvHeader.length; i++) {
-            if(i < initialCells.length)
-                csvHeader[i] = initialCells[i];
-            else {
-                int targetIndex = i-initialCells.length;
-                csvHeader[i] = contestNames[targetIndex];
-            }
-        }
-
-        csvWriter.writeNext(csvHeader);
-
-        for (UserActivityByContest activityByContest : new ActivitiesByContestBean().get()) {
-            String[] dataArray = new String[csvHeader.length];
-            //initial cells
-            dataArray[0] = activityByContest.getUser().getPrimaryKey()+"";
-            dataArray[1] = activityByContest.getUser().getScreenName();
-            dataArray[2] = activityByContest.getUser().getDisplayEmailAddress();
-
-            //contest cells
-            for (int i = 0; i < contests.size(); i++) {
-                Contest contest = contests.get(i);
-                ContestActivity ca= null;
-                for (ContestActivity contestActivity : activityByContest.getContestActivities()) {
-                    if(contestActivity.getContest().getContestPK() == contest.getContestPK()) {
-                        ca = contestActivity;
-                    }
-                }
-                dataArray[i* FIELDS_PER_CONTEST +initialCells.length] = ca == null ? "0" : ca.getAuthoredProposalCount()+"";
-                dataArray[i* FIELDS_PER_CONTEST +initialCells.length+1] = ca == null ? "0" :ca.getCommentCount()+"";
-                dataArray[i* FIELDS_PER_CONTEST +initialCells.length+2] = ca == null ? "0" :ca.getVotedProposalCount()+"";
-                dataArray[i* FIELDS_PER_CONTEST +initialCells.length+3] = ca == null ? "0" :ca.getSupportedProposalCount()+"";
-            }
-
-            csvWriter.writeNext(dataArray);
-        }
-
-        response.setContentType("text/csv");
-        response.addProperty("Content-Disposition", "attachment;filename=userAttractionReport.csv");
+		response.setContentType("text/csv");
+		response.addProperty("Content-Disposition", "attachment;filename=userAttractionReport.csv");
 
 
-        w.close();
-    }
+		w.close();
+	}
 
-    @RequestMapping(params = "report=userActivitiesReport")
-    public void generateUserActivitiesReport(ResourceRequest request, ResourceResponse response) throws IOException, SystemException, PortalException {
+	@RequestMapping(params = "report=userActivitiesByContestReport")
+	public void generateUserActivityReport(ResourceRequest request, ResourceResponse response) throws Exception {
+		AuthorAttractionBean aab = new AuthorAttractionBean();
 
-        Map<Long, UserActivityReportBean> userActivities = new HashMap<>();
+		Writer w = response.getWriter();
+		CSVWriter csvWriter = new CSVWriter(w);
 
-        for (User user : UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE)) {
-            userActivities.put(user.getUserId(), new UserActivityReportBean(user));
-        }
-        for (SocialActivity activity : SocialActivityLocalServiceUtil.getSocialActivities(0, Integer.MAX_VALUE)) {
-            if (!userActivities.containsKey(activity.getUserId())) continue;
-            userActivities.get(activity.getUserId()).addActivity();
-        }
+		String[] initialCells = {"user ID", "user screenname", "user email"};
+		List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
+		String[] contestNames = new String[contests.size() * FIELDS_PER_CONTEST];
+		for (int i = 0; i < contests.size(); i++) {
+			Contest contest = contests.get(i);
+			contestNames[i * FIELDS_PER_CONTEST] = contest.getContestShortName() + " / proposal count";
+			contestNames[i * FIELDS_PER_CONTEST + 1] = contest.getContestShortName() + " / proposal-comments count";
+			contestNames[i * FIELDS_PER_CONTEST + 2] = contest.getContestShortName() + " / votes count";
+			contestNames[i * FIELDS_PER_CONTEST + 3] = contest.getContestShortName() + " / supports count";
+		}
+		String[] csvHeader = new String[contestNames.length + initialCells.length];
+		for (int i = 0; i < csvHeader.length; i++) {
+			if (i < initialCells.length) {
+				csvHeader[i] = initialCells[i];
+			} else {
+				int targetIndex = i - initialCells.length;
+				csvHeader[i] = contestNames[targetIndex];
+			}
+		}
 
-        for (DiscussionMessage message : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0, Integer.MAX_VALUE)) {
-            if (!userActivities.containsKey(message.getAuthorId())) continue;
-            userActivities.get(message.getAuthorId()).addComment();
-        }
-        Map<Long, Set<Long>> proposalToTeamMemberIds = new HashMap<>();
-        Map<Long, Long> proposalToAuthorId = new HashMap<>();
+		csvWriter.writeNext(csvHeader);
 
-        for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE)) {
-            //determine all team members of this proposal
-            boolean authorIsInMembers = false;
-            for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
-                if (!userActivities.containsKey(user.getUserId())) continue;
+		for (UserActivityByContest activityByContest : new ActivitiesByContestBean().get()) {
+			String[] dataArray = new String[csvHeader.length];
+			//initial cells
+			dataArray[0] = activityByContest.getUser().getPrimaryKey() + "";
+			dataArray[1] = activityByContest.getUser().getScreenName();
+			dataArray[2] = activityByContest.getUser().getDisplayEmailAddress();
 
-                if (proposalToTeamMemberIds.get(proposal.getProposalId()) == null) {
-                    Set<Long> userIds = new HashSet<Long>();
-                    userIds.add(user.getUserId());
-                    proposalToTeamMemberIds.put(proposal.getProposalId(), userIds);
-                } else {
-                    proposalToTeamMemberIds.get(proposal.getProposalId()).add(user.getUserId());
-                }
-                userActivities.get(user.getUserId()).addProposalContributedTo();
-                userActivities.get(user.getUserId()).addProposalAuthoredOrContributedTo();
-                if (user.getUserId() == proposal.getAuthorId()) {
-                    authorIsInMembers = true;
-                }
-            }
-            //add the proposal author's id
-            if (userActivities.containsKey(proposal.getAuthorId())) {
-                proposalToAuthorId.put(proposal.getProposalId(), proposal.getAuthorId());
-                userActivities.get(proposal.getAuthorId()).addProposalAuthored();
-                if (!authorIsInMembers) {
-                    userActivities.get(proposal.getAuthorId()).addProposalAuthoredOrContributedTo();
-                }
-            }
-        }
+			//contest cells
+			for (int i = 0; i < contests.size(); i++) {
+				Contest contest = contests.get(i);
+				ContestActivity ca = null;
+				for (ContestActivity contestActivity : activityByContest.getContestActivities()) {
+					if (contestActivity.getContest().getContestPK() == contest.getContestPK()) {
+						ca = contestActivity;
+					}
+				}
+				dataArray[i * FIELDS_PER_CONTEST + initialCells.length] = ca == null ? "0" : ca.getAuthoredProposalCount() + "";
+				dataArray[i * FIELDS_PER_CONTEST + initialCells.length + 1] = ca == null ? "0" : ca.getCommentCount() + "";
+				dataArray[i * FIELDS_PER_CONTEST + initialCells.length + 2] = ca == null ? "0" : ca.getVotedProposalCount() + "";
+				dataArray[i * FIELDS_PER_CONTEST + initialCells.length + 3] = ca == null ? "0" : ca.getSupportedProposalCount() + "";
+			}
 
-        Set<Long> winningRibbonTypes = new HashSet<>();
-        for (ContestPhaseRibbonType cprt : ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE)) {
-            if (cprt.getRibbon() == 1) winningRibbonTypes.add(cprt.getId());
-        }
+			csvWriter.writeNext(dataArray);
+		}
 
-        Set<Long> finalistsContestPhases = new HashSet<>();
-        for (ContestPhase cp : ContestPhaseLocalServiceUtil.getContestPhases(0, Integer.MAX_VALUE)) {
-            if (ContestStatus.valueOf(ContestPhaseLocalServiceUtil.getContestStatusStr(cp)).isCanVote()) {
-                finalistsContestPhases.add(cp.getContestPhasePK());
-            }
-        }
+		response.setContentType("text/csv");
+		response.addProperty("Content-Disposition", "attachment;filename=userAttractionReport.csv");
 
 
-        for (ProposalContestPhaseAttribute pcpa : ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(0, Integer.MAX_VALUE)) {
-            //check if this attribute is a "winning" ribbon. if yes, increase the winners' count for the proposal authors and contributors
-            if (ProposalContestPhaseAttributeKeys.RIBBON.equals(pcpa.getName()) && winningRibbonTypes.contains(pcpa.getNumericValue())) {
-                Long authorId = proposalToAuthorId.get(pcpa.getProposalId());
-                //team members
-                boolean authorIsInMembers = false;
-                if (proposalToTeamMemberIds.get(pcpa.getProposalId()) != null) {
-                    for (Long userId : proposalToTeamMemberIds.get(pcpa.getProposalId())) {
-                        UserActivityReportBean uarb = userActivities.get(userId);
-                        if (uarb == null) continue;
-                        uarb.addProposalWinnerContributedTo();
-                        uarb.addProposalWinnerAuthoredOrContributedTo();
-                        if (userId.equals(authorId)) {
-                            authorIsInMembers = true;
-                        }
-                    }
-                }
-                //author
-                if (authorId != null) {
-                    UserActivityReportBean uarb = userActivities.get(authorId);
-                    if (uarb == null) continue;
-                    uarb.addProposalWinnerAuthored();
-                    if (!authorIsInMembers) {
-                        uarb.addProposalWinnerAuthoredOrContributedTo();
-                    }
-                }
-            }
-        }
+		w.close();
+	}
 
-        for (ProposalVote proposalVote : ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE)) {
-            UserActivityReportBean uarb = userActivities.get(proposalVote.getUserId());
-            if(uarb == null) continue;
-            uarb.addProposalVote();
-        }
+	@RequestMapping(params = "report=userActivitiesReport")
+	public void generateUserActivitiesReport(ResourceRequest request, ResourceResponse response) throws IOException, SystemException, PortalException {
 
-        for (Proposal2Phase p2p : Proposal2PhaseLocalServiceUtil.getProposal2Phases(0, Integer.MAX_VALUE)) {
-            if (finalistsContestPhases.contains(p2p.getContestPhaseId())) {
-                Long authorId = proposalToAuthorId.get(p2p.getProposalId());
-                //team members
-                boolean authorIsInMembers = false;
-                if (proposalToTeamMemberIds.get(p2p.getProposalId()) != null) {
-                    for (Long userId : proposalToTeamMemberIds.get(p2p.getProposalId())) {
-                        UserActivityReportBean uarb = userActivities.get(userId);
-                        if (uarb == null) continue;
-                        uarb.addProposalFinalistContributedTo();
-                        uarb.addProposalFinalistAuthoredOrContributedTo();
-                        if (userId.equals(authorId)) {
-                            authorIsInMembers = true;
-                        }
-                    }
-                }
-                //author
-                if (authorId != null) {
-                    UserActivityReportBean uarb = userActivities.get(authorId);
-                    if (uarb == null) continue;
-                    uarb.addProposalFinalistAuthored();
-                    if (!authorIsInMembers) {
-                        uarb.addProposalFinalistAuthoredOrContributedTo();
-                    }
-                }
-            }
-        }
+		Map<Long, UserActivityReportBean> userActivities = new HashMap<>();
 
-        Writer w = response.getWriter();
-        CSVWriter csvWriter = new CSVWriter(w);
+		for (User user : UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE)) {
+			userActivities.put(user.getUserId(), new UserActivityReportBean(user));
+		}
+		for (SocialActivity activity : SocialActivityLocalServiceUtil.getSocialActivities(0, Integer.MAX_VALUE)) {
+			if (!userActivities.containsKey(activity.getUserId())) {
+				continue;
+			}
+			userActivities.get(activity.getUserId()).addActivity();
+		}
 
-        csvWriter.writeNext(new String[]{
-                "userId", "screenName", "emailAddress",
-                "registrationDate", "fullName", "commentsCount",
-                "proposalsAuthoredCount", "proposalsContributedToCount", "proposalsAuthoredOrContributedToCount",
-                "proposalFinalistsAuthoredCount", "proposalFinalistsContributedToCount", "proposalFinalistsAuthoredOrContributedToCount",
-                "proposalWinnersAuthoredCount", "proposalWinnersContributedToCount", "proposalWinnersAuthoredOrContributedToCount",
-                "totalActivityCount", "amountOfVotesCast", "userRole"
-        });
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-        for (UserActivityReportBean uarb : userActivities.values()) {
-            User u = uarb.getUser();
-            //get highest role of user
-            List<Role> roles = u.getRoles();
-            MemberRole currentRole;
-            MemberRole role = MemberRole.MEMBER;
+		for (DiscussionMessage message : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0, Integer.MAX_VALUE)) {
+			if (!userActivities.containsKey(message.getAuthorId())) {
+				continue;
+			}
+			userActivities.get(message.getAuthorId()).addComment();
+		}
+		Map<Long, Set<Long>> proposalToTeamMemberIds = new HashMap<>();
+		Map<Long, Long> proposalToAuthorId = new HashMap<>();
 
-            for (Role r: roles) {
-                final String roleString = r.getName();
+		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE)) {
+			//determine all team members of this proposal
+			boolean authorIsInMembers = false;
+			for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
+				if (!userActivities.containsKey(user.getUserId())) {
+					continue;
+				}
 
-                currentRole = MemberRole.getMember(roleString);
-                if (currentRole != null && role != null) {
-                    if (currentRole.ordinal() > role.ordinal()) {
-                        role = currentRole;
-                    }
-                }
-            }
+				if (proposalToTeamMemberIds.get(proposal.getProposalId()) == null) {
+					Set<Long> userIds = new HashSet<>();
+					userIds.add(user.getUserId());
+					proposalToTeamMemberIds.put(proposal.getProposalId(), userIds);
+				} else {
+					proposalToTeamMemberIds.get(proposal.getProposalId()).add(user.getUserId());
+				}
+				userActivities.get(user.getUserId()).addProposalContributedTo();
+				userActivities.get(user.getUserId()).addProposalAuthoredOrContributedTo();
+				if (user.getUserId() == proposal.getAuthorId()) {
+					authorIsInMembers = true;
+				}
+			}
+			//add the proposal author's id
+			if (userActivities.containsKey(proposal.getAuthorId())) {
+				proposalToAuthorId.put(proposal.getProposalId(), proposal.getAuthorId());
+				userActivities.get(proposal.getAuthorId()).addProposalAuthored();
+				if (!authorIsInMembers) {
+					userActivities.get(proposal.getAuthorId()).addProposalAuthoredOrContributedTo();
+				}
+			}
+		}
 
-            csvWriter.writeNext(new String[]{
-                    String.valueOf(u.getUserId()), u.getScreenName(), u.getEmailAddress(),
-                    sdf.format(u.getCreateDate()), u.getFullName(), String.valueOf(uarb.getCommentsCount()),
+		Set<Long> winningRibbonTypes = new HashSet<>();
+		for (ContestPhaseRibbonType cprt : ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE)) {
+			if (cprt.getRibbon() == 1) {
+				winningRibbonTypes.add(cprt.getId());
+			}
+		}
 
-                    String.valueOf(uarb.getProposalsAuthoredCount()),
-                    String.valueOf(uarb.getProposalsContributedToCount()),
-                    String.valueOf(uarb.getProposalsAuthoredOrContributedToCount()),
-                    String.valueOf(uarb.getProposalFinalistsAuthoredCount()),
-                    String.valueOf(uarb.getProposalFinalistsContributedToCount()),
-                    String.valueOf(uarb.getProposalFinalistsAuthoredOrContributedToCount()),
-                    String.valueOf(uarb.getProposalWinnersAuthoredCount()),
-                    String.valueOf(uarb.getProposalWinnersContributedToCount()),
-                    String.valueOf(uarb.getProposalWinnersAuthoredOrContributedToCount()),
-
-                    String.valueOf(uarb.getTotalActivityCount()), ""+uarb.getProposalVotesCount(), String.valueOf(role.ordinal())
-            });
-        }
+		Set<Long> finalistsContestPhases = new HashSet<>();
+		for (ContestPhase cp : ContestPhaseLocalServiceUtil.getContestPhases(0, Integer.MAX_VALUE)) {
+			if (ContestStatus.valueOf(ContestPhaseLocalServiceUtil.getContestStatusStr(cp)).isCanVote()) {
+				finalistsContestPhases.add(cp.getContestPhasePK());
+			}
+		}
 
 
-        response.setContentType("text/csv");
-        response.addProperty("Content-Disposition", "attachment;filename=userActivitiesReport.csv");
+		for (ProposalContestPhaseAttribute pcpa : ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttributes(0, Integer.MAX_VALUE)) {
+			//check if this attribute is a "winning" ribbon. if yes, increase the winners' count for the proposal authors and contributors
+			if (ProposalContestPhaseAttributeKeys.RIBBON.equals(pcpa.getName()) && winningRibbonTypes.contains(pcpa.getNumericValue())) {
+				Long authorId = proposalToAuthorId.get(pcpa.getProposalId());
+				//team members
+				boolean authorIsInMembers = false;
+				if (proposalToTeamMemberIds.get(pcpa.getProposalId()) != null) {
+					for (Long userId : proposalToTeamMemberIds.get(pcpa.getProposalId())) {
+						UserActivityReportBean uarb = userActivities.get(userId);
+						if (uarb == null) {
+							continue;
+						}
+						uarb.addProposalWinnerContributedTo();
+						uarb.addProposalWinnerAuthoredOrContributedTo();
+						if (userId.equals(authorId)) {
+							authorIsInMembers = true;
+						}
+					}
+				}
+				//author
+				if (authorId != null) {
+					UserActivityReportBean uarb = userActivities.get(authorId);
+					if (uarb == null) {
+						continue;
+					}
+					uarb.addProposalWinnerAuthored();
+					if (!authorIsInMembers) {
+						uarb.addProposalWinnerAuthoredOrContributedTo();
+					}
+				}
+			}
+		}
+
+		for (ProposalVote proposalVote : ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE)) {
+			UserActivityReportBean uarb = userActivities.get(proposalVote.getUserId());
+			if (uarb == null) {
+				continue;
+			}
+			uarb.addProposalVote();
+		}
+
+		for (Proposal2Phase p2p : Proposal2PhaseLocalServiceUtil.getProposal2Phases(0, Integer.MAX_VALUE)) {
+			if (finalistsContestPhases.contains(p2p.getContestPhaseId())) {
+				Long authorId = proposalToAuthorId.get(p2p.getProposalId());
+				//team members
+				boolean authorIsInMembers = false;
+				if (proposalToTeamMemberIds.get(p2p.getProposalId()) != null) {
+					for (Long userId : proposalToTeamMemberIds.get(p2p.getProposalId())) {
+						UserActivityReportBean uarb = userActivities.get(userId);
+						if (uarb == null) {
+							continue;
+						}
+						uarb.addProposalFinalistContributedTo();
+						uarb.addProposalFinalistAuthoredOrContributedTo();
+						if (userId.equals(authorId)) {
+							authorIsInMembers = true;
+						}
+					}
+				}
+				//author
+				if (authorId != null) {
+					UserActivityReportBean uarb = userActivities.get(authorId);
+					if (uarb == null) {
+						continue;
+					}
+					uarb.addProposalFinalistAuthored();
+					if (!authorIsInMembers) {
+						uarb.addProposalFinalistAuthoredOrContributedTo();
+					}
+				}
+			}
+		}
+
+		Writer w = response.getWriter();
+		CSVWriter csvWriter = new CSVWriter(w);
+
+		csvWriter.writeNext(new String[]{
+				"userId", "screenName", "emailAddress",
+				"registrationDate", "fullName", "commentsCount",
+				"proposalsAuthoredCount", "proposalsContributedToCount", "proposalsAuthoredOrContributedToCount",
+				"proposalFinalistsAuthoredCount", "proposalFinalistsContributedToCount", "proposalFinalistsAuthoredOrContributedToCount",
+				"proposalWinnersAuthoredCount", "proposalWinnersContributedToCount", "proposalWinnersAuthoredOrContributedToCount",
+				"totalActivityCount", "amountOfVotesCast", "userRole"
+		});
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+		for (UserActivityReportBean uarb : userActivities.values()) {
+			User user = uarb.getUser();
+			//get highest role of user
+			MemberRole role = MemberRole.getHighestRole(user.getRoles());
+
+			csvWriter.writeNext(new String[]{
+					String.valueOf(user.getUserId()), user.getScreenName(), user.getEmailAddress(),
+					sdf.format(user.getCreateDate()), user.getFullName(), String.valueOf(uarb.getCommentsCount()),
+
+					String.valueOf(uarb.getProposalsAuthoredCount()),
+					String.valueOf(uarb.getProposalsContributedToCount()),
+					String.valueOf(uarb.getProposalsAuthoredOrContributedToCount()),
+					String.valueOf(uarb.getProposalFinalistsAuthoredCount()),
+					String.valueOf(uarb.getProposalFinalistsContributedToCount()),
+					String.valueOf(uarb.getProposalFinalistsAuthoredOrContributedToCount()),
+					String.valueOf(uarb.getProposalWinnersAuthoredCount()),
+					String.valueOf(uarb.getProposalWinnersContributedToCount()),
+					String.valueOf(uarb.getProposalWinnersAuthoredOrContributedToCount()),
+
+					String.valueOf(uarb.getTotalActivityCount()), "" + uarb.getProposalVotesCount(), String.valueOf(role.ordinal())
+			});
+		}
 
 
-        w.close();
-    }
+		response.setContentType("text/csv");
+		response.addProperty("Content-Disposition", "attachment;filename=userActivitiesReport.csv");
+
+
+		w.close();
+	}
 
 }

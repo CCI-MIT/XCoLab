@@ -159,9 +159,6 @@ function initializeTextEditors() {
 		else {
 			eventsToBind = {
 					keypress: function(event) {
-	                    if (! shouldAllowMoreCharacters(thiz)) {
-	                        //event.preventDefault();
-	                    }
 	                    if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
 	                        updateCharacterCounter(thiz);
 	                    }
@@ -257,15 +254,15 @@ function requestMembership() {
     $('#requestComment').slideDown('slow');
     $('.prop-butt-popover:first').css('background', 'url(/climatecolab-theme/images/search-bg.png)');
     $('#requestButtons').empty();
-    $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="hideRequestForm(true);">Cancel</a></div>');
-    $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a></div>');
+    $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton left" onclick="hideRequestForm(true);">Cancel</a></div>');
+    $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a></div>');
 }
 function hideRequestForm(animate) {
     var speed = animate ? 600 : 1;
     $('#requestComment').slideUp('slow', function () {
         $('.prop-butt-popover:first').css('background', 'none');
         $('#requestButtons').empty();
-        $('#requestButtons').append('<div class="blue-button" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a></div>');
+        $('#requestButtons').append('<div class="c-Button__primary" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a></div>');
     });
 }
 /* End of request membership form logic */
@@ -276,8 +273,8 @@ function inviteMember() {
     $('#invite-recipient').slideDown('slow');
     $('.prop-butt-popover:first').css('background', 'url(/climatecolab-theme/images/search-bg.png)');
     $('#requestButtons').empty();
-    $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="hideInviteForm(true);">Cancel</a></div>');
-    $('#requestButtons').append('<div class="blue-button"><a href="javascript:;" class="requestMembershipSubmitFormButton" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a></div>');
+    $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton left" onclick="hideInviteForm(true);">Cancel</a></div>');
+    $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a></div>');
 }
 
 function hideInviteForm(animate) {
@@ -285,7 +282,7 @@ function hideInviteForm(animate) {
     $('#invite-comment').slideUp('slow', function () {
         $('.prop-butt-popover:first').css('background', 'none');
         $('#requestButtons').empty();
-        $('#requestButtons').append('<div class="blue-button" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a></div>');
+        $('#requestButtons').append('<div class="c-Button__primary" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a></div>');
     });
     $('#invite-recipient').slideUp('slow');
 

@@ -11,11 +11,13 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +38,7 @@ public class ProposalTextExtraction {
         }
     }
 
-    public List<ProposalTextEntity> get() throws Exception {
+    public List<ProposalTextEntity> get() throws SystemException, com.liferay.portal.kernel.exception.PortalException {
         List<ProposalTextEntity> ret = new LinkedList<>();
         List<Contest> targetContests = getContestsIn2013();
         for (Contest contest : targetContests) {
@@ -45,7 +47,9 @@ public class ProposalTextExtraction {
             ContestPhase completedPhase = null;
 
             for (ContestPhase contestPhase : phasesForContest) {
-                if (contestPhase.getPhaseEndDate() == null) completedPhase = contestPhase;
+                if (contestPhase.getPhaseEndDate() == null) {
+                    completedPhase = contestPhase;
+                }
             }
 
             if (completedPhase == null) {
@@ -58,9 +62,9 @@ public class ProposalTextExtraction {
             for (Proposal visibleProposal : visibleProposals) {
                 ProposalTextEntity pte = new ProposalTextEntity();
                 pte.setId(visibleProposal.getProposalId());
-                pte.setUrl("http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "/planId/" + visibleProposal.getProposalId());
+                pte.setUrl("http://climatecolab.org" + ProposalLocalServiceUtil.getProposalLinkUrl(visibleProposal.getProposalId()));
 
-                List<ProposalAttribute> attributes = ProposalLocalServiceUtil.getAttributes(visibleProposal.getProposalId(), visibleProposal.getCurrentVersion());
+                List<ProposalAttribute> attributes = ProposalAttributeLocalServiceUtil.getAttributes(visibleProposal.getProposalId(), visibleProposal.getCurrentVersion());
                 for (ProposalAttribute attribute : attributes) {
                     if (attributeTypeAllowed(attribute)) {
                         String htmlValue = attribute.getStringValue();
@@ -99,12 +103,15 @@ public class ProposalTextExtraction {
     private List<Proposal> getVisibleProposals(ContestPhase creationPhase, List<Proposal> proposals) {
         List<Proposal> targetProposals = new LinkedList<>();
         for (Proposal proposal : proposals) {
-            if (!proposal.getVisible()) continue;
+            if (!proposal.getVisible()) {
+                continue;
+            }
 
-            ProposalContestPhaseAttribute proposalContestPhaseAttribute = null;
             try {
-                proposalContestPhaseAttribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), creationPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
-                if (proposalContestPhaseAttribute.getNumericValue() == 0) continue;
+                ProposalContestPhaseAttribute proposalContestPhaseAttribute = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), creationPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
+                if (proposalContestPhaseAttribute.getNumericValue() == 0) {
+                    continue;
+                }
             } catch (NoSuchProposalContestPhaseAttributeException e) {
                 //it's visible then
             } catch (SystemException e) {
@@ -117,9 +124,7 @@ public class ProposalTextExtraction {
 
     private boolean attributeTypeAllowed(ProposalAttribute attribute) {
         Set<String> allowedTypes = new HashSet<>();
-        for (String s : new String[]{"SECTION", "NAME", "PITCH", "DESCRIPTION"}) {
-            allowedTypes.add(s);
-        }
+        Collections.addAll(allowedTypes, "SECTION", "NAME", "PITCH", "DESCRIPTION");
         return allowedTypes.contains(attribute.getName());
     }
 
@@ -131,7 +136,9 @@ public class ProposalTextExtraction {
             ContestPhaseRibbonType contestPhaseRibbonType = getRibbonType(proposalContestPhaseAttribute);
 
             ProposalRank proposalRank = ProposalRank.fromRibbonType(contestPhaseRibbonType.getRibbon());
-            if (proposalRank != null) return proposalRank;
+            if (proposalRank != null) {
+                return proposalRank;
+            }
 
         } catch (Exception e) {
             return ProposalRank.NON_FINALIST;
@@ -155,8 +162,7 @@ public class ProposalTextExtraction {
                     return ribbon;
                 }
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) { }
         return null;
     }
 }

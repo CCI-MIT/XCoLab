@@ -2,27 +2,29 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import org.xcolab.wrapper.ContestWrapper;
+import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.ResourceResponse;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.Math;
 
 /**
  * Created by Thomas on 3/3/2015.
  */
 public class ContestOverviewWrapper {
 
-    private List<ContestWrapper> contestWrappers;
+    private List<BaseContestWrapper> contestWrappers;
     private Long selectedMassAction;
     private List<Boolean> selectedContest;
     private List<Long> selectedContestIds;
@@ -30,18 +32,16 @@ public class ContestOverviewWrapper {
     private MassMessageBean massMessageBean;
     private ContestFlagTextToolTipBean contestFlagTextToolTipBean;
     private ContestModelSettingsBean contestModelSettingsBean;
-    private Long userId;
 
-    public ContestOverviewWrapper() throws Exception{
+    public ContestOverviewWrapper() throws SystemException {
         initLists();
         populateContestWrappersAndSelectedContestList();
     }
 
-    public ContestOverviewWrapper(PortletRequest request) throws Exception {
+    public ContestOverviewWrapper(PortletRequest request) throws SystemException, PortalException {
         initLists();
-        userId = PortalUtil.getUserId(request);
         populateContestWrappersAndSelectedContestList();
-        populateSubscribedToContestList(userId);
+        populateSubscribedToContestList(PortalUtil.getUserId(request));
     }
 
     private void initLists() {
@@ -53,27 +53,28 @@ public class ContestOverviewWrapper {
         massMessageBean = new MassMessageBean();
     }
 
-    private void populateSubscribedToContestList(Long userId) throws Exception {
+    private void populateSubscribedToContestList(Long userId) throws SystemException, PortalException {
 
-        for (ContestWrapper contestWrapper : contestWrappers) {
-            Boolean isUserSubscribedToContest = ContestLocalServiceUtil.isSubscribed(contestWrapper.getContestPK(), userId);
+        for (BaseContestWrapper contestWrapper : contestWrappers) {
+            Boolean isUserSubscribedToContest =
+                    ContestLocalServiceUtil.isSubscribed(contestWrapper.getContestPK(), userId);
             subscribedToContest.add(isUserSubscribedToContest);
         }
     }
 
-    private void populateContestWrappersAndSelectedContestList() throws Exception {
+    private void populateContestWrappersAndSelectedContestList() throws SystemException {
         List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
         for (Contest contest : contests) {
-            contestWrappers.add(new ContestWrapper(contest));
-            selectedContest.add(new Boolean(false));
+            contestWrappers.add(new BaseContestWrapper(contest));
+            selectedContest.add(false);
         }
     }
 
-    public List<ContestWrapper> getContestWrappers() {
+    public List<BaseContestWrapper> getContestWrappers() {
         return contestWrappers;
     }
 
-    public void setContestWrappers(List<ContestWrapper> contestWrappers) {
+    public void setContestWrappers(List<BaseContestWrapper> contestWrappers) {
         this.contestWrappers = contestWrappers;
     }
 
@@ -133,33 +134,23 @@ public class ContestOverviewWrapper {
         return ContestModelSettingsBean.getAllModelIds();
     }
 
-    public void persistOrder() throws Exception {
-        for (ContestWrapper contestWrapper : contestWrappers) {
+    public void persistOrder() throws SystemException, PortalException {
+        for (BaseContestWrapper contestWrapper : contestWrappers) {
             Contest contest = ContestLocalServiceUtil.getContest(contestWrapper.getContestPK());
             contest.setWeight(contestWrapper.getWeight());
             contest.persist();
         }
     }
 
-    public String getSelectedMassActionTitle() throws Exception {
-        String selectedMassActionTitle = "";
-        Long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
-        for (ContestMassActions contestMassAction : ContestMassActions.values()) {
-            if (selectedMassActionAbsolute == contestMassAction.ordinal()) {
-                if (selectedMassAction.longValue() < 0) {
-                    selectedMassActionTitle = contestMassAction.getReverseActionDisplayName();
-                } else {
-                    selectedMassActionTitle = contestMassAction.getActionDisplayName();
-                }
-                break;
-            }
-        }
-        return selectedMassActionTitle;
+    public String getSelectedMassActionTitle() {
+        return MassActionUtil.getSelectedMassActionTitle(selectedMassAction);
     }
 
-    public void executeMassAction(PortletRequest request, ResourceResponse response) throws Exception {
+    public void executeMassAction(PortletRequest request, Object response)
+            throws PortalException, SystemException, IllegalArgumentException, InvocationTargetException,
+            IllegalAccessException {
         boolean isOrderMassAction = selectedMassAction == ContestMassActions.ORDER.ordinal();
-        if(isOrderMassAction){
+        if (isOrderMassAction) {
             persistOrder();
             return;
         }
@@ -168,7 +159,7 @@ public class ContestOverviewWrapper {
         Class massActionClass = massActionMethod.getDeclaringClass();
         selectedContestIds = getSelectedContestIds();
 
-        Boolean isReportMassAction =
+        Boolean isResponseObjectRequiredForMassAction =
                 (selectedMassAction == ContestMassActions.REPORT_PEOPLE_IN_CURRENT_PHASE.ordinal());
         Boolean isMessageMassAction =
                 (selectedMassAction == ContestMassActions.MESSAGE.ordinal());
@@ -177,9 +168,9 @@ public class ContestOverviewWrapper {
         Boolean isSetModelSettingsAction =
                 (selectedMassAction == ContestMassActions.MODEL_SETTINGS.ordinal());
         Boolean isMethodFromContestWrapper =
-                (massActionClass == ContestWrapper.class);
+                (massActionClass == BaseContestWrapper.class);
 
-        if (isReportMassAction) {
+        if (isResponseObjectRequiredForMassAction) {
             invokeMassActionReportMethod(massActionMethod, request, response);
         } else if (isMessageMassAction) {
             invokeMassActionMessageMethod(massActionMethod, request);
@@ -195,25 +186,30 @@ public class ContestOverviewWrapper {
         }
     }
 
-    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, ResourceResponse response) throws Exception {
+    private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, Object response)
+            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, response, request);
     }
 
-    private void invokeMassActionMessageMethod(Method massActionMethod, PortletRequest request) throws Exception {
+    private void invokeMassActionMessageMethod(Method massActionMethod, PortletRequest request)
+            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, massMessageBean, request);
     }
 
-    private void invokeSetFlagTextToolTipMethod(Method massActionMethod, PortletRequest request) throws Exception {
+    private void invokeSetFlagTextToolTipMethod(Method massActionMethod, PortletRequest request)
+            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, contestFlagTextToolTipBean, request);
     }
 
-    void invokeSetModelSettingsMethod(Method massActionMethod, PortletRequest request) throws Exception {
+    void invokeSetModelSettingsMethod(Method massActionMethod, PortletRequest request)
+            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, contestModelSettingsBean, request);
     }
 
-    private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request) throws Exception {
+    private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request)
+            throws SystemException, IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         Boolean executeSetAction = (selectedMassAction > 0);
-        for (ContestWrapper contestWrapper : contestWrappers) {
+        for (BaseContestWrapper contestWrapper : contestWrappers) {
             int index = contestWrappers.indexOf(contestWrapper);
             if (selectedContest.get(index)) {
                 massActionMethod.invoke(contestWrapper, executeSetAction);
@@ -222,9 +218,9 @@ public class ContestOverviewWrapper {
         }
     }
 
-    private List<Long> getSelectedContestIds() {
+    public List<Long> getSelectedContestIds() {
         List<Long> contestIds = new ArrayList<>();
-        for (ContestWrapper contestWrapper : contestWrappers) {
+        for (BaseContestWrapper contestWrapper : contestWrappers) {
             int index = contestWrappers.indexOf(contestWrapper);
             if (selectedContest.get(index)) {
                 contestIds.add(contestWrapper.getContestPK());
@@ -234,7 +230,7 @@ public class ContestOverviewWrapper {
     }
 
     private Method getSelectedMassActionMethod(Long selectedMassAction) {
-        Long selectedMassActionAbsolute = Math.abs(selectedMassAction.longValue());
+        Long selectedMassActionAbsolute = Math.abs(selectedMassAction);
         Method massActionMethod = null;
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
             if (selectedMassActionAbsolute == contestMassAction.ordinal()) {

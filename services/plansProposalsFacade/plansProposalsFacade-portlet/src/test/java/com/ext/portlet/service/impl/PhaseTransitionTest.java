@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.junit.Test;
 
 import java.text.ParseException;
+
 import static org.junit.Assert.assertTrue;
 
 public class PhaseTransitionTest extends XCoLabTest {

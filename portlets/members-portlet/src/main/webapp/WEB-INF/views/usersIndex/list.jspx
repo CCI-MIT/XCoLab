@@ -1,309 +1,213 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+		  xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 
 	<div class="main_long">
 
-	<div class="blueheaderbar">
-        <div class="user">
-        	<portlet:renderURL var="sortURL">
-        		<portlet:param name="sortColumn" value="USER_NAME" />
-        		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }" />
-                <portlet:param name="filter" value="${sortFilterPage.filter}" />
-                <portlet:param name="memberCategory" value="${memberCategory}" />
-        	</portlet:renderURL>
-           	<a class="fieldWithTooltip" href="${sortURL }">User</a>
-           	<div class="tooltip">
-           		Click to sort by user name
-           	</div>
-			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
-        </div>
-		<div class="points">
-			<portlet:renderURL var="sortURLPoints">
-				<portlet:param name="sortColumn" value="POINTS" />
-				<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : true }" />
-				<portlet:param name="filter" value="${sortFilterPage.filter}" />
-				<portlet:param name="memberCategory" value="${memberCategory}" />
-			</portlet:renderURL>
-			<span class="fieldWithTooltip tooltipAbove">
-				<img height="15" width="15" src="/climatecolab-theme/images/icon-addprop-question.png" />
-				<div class="tooltip">
-					Points listed here are for winning proposals. You can see Points from entered proposals by visiting each individual member’s profile
-					<div class="tt-arrow"><!--  --></div>
-				</div>
-			</span>
-			<a class="fieldWithTooltip" href="${sortURLPoints }"> Points</a>
-			<div class="tooltip">Click to sort by points</div>
-			<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
+		<table class="c-Table">
+			<thead>
+				<tr class="c-Table__row--title">
+					<th class="c-Table__cell--title user">
+						<portlet:renderURL var="sortURL">
+							<portlet:param name="sortColumn" value="USER_NAME" />
+							<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }" />
+							<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							<portlet:param name="memberCategory" value="${memberCategory}" />
+							<portlet:param name="page" value="1" />
+						</portlet:renderURL>
+						<a class="fieldWithTooltip" href="${sortURL }">User</a>
+						<div class="c-Tooltip">
+							Click to sort by user name
+						</div>
+						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
+					</th>
+					<th class="c-Table__cell--title points">
+						<portlet:renderURL var="sortURLPoints">
+							<portlet:param name="sortColumn" value="POINTS" />
+							<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : false }" />
+							<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							<portlet:param name="memberCategory" value="${memberCategory}" />
+							<portlet:param name="page" value="1" />
+						</portlet:renderURL>
+						<span class="fieldWithTooltip tooltipAbove">
+							<img style="width: 15px; height: 15px;" src="${themeDisplay.pathThemeImages}/icon-addprop-question-bar.png" />
+							<div class="c-Tooltip">
+								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
+								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+								<div class="c-Tooltip__arrow"><!-- --></div>
+							</div>
+						</span>
+						<a class="fieldWithTooltip" href="${sortURLPoints }"> Points</a>
+						<div class="c-Tooltip">Click to sort by points</div>
+						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
+					</th>
+					<th class="c-Table__cell--title activity">
+						<portlet:renderURL var="sortURLActivity">
+							<portlet:param name="sortColumn" value="ACTIVITY" />
+							<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : false }" />
+							<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							<portlet:param name="memberCategory" value="${memberCategory}" />
+							<portlet:param name="page" value="1" />
+						</portlet:renderURL>
+						<a class="fieldWithTooltip" href="${sortURLActivity }"> Activity</a>
+						<div class="c-Tooltip">Click to sort by activity</div>
+						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
+					</th>
+					<th class="c-Table__cell--title category">
+						<portlet:renderURL var="sortURLCategory">
+							<portlet:param name="sortColumn" value="CATEGORY" />
+							<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : false }" />
+							<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							<portlet:param name="memberCategory" value="${memberCategory}" />
+							<portlet:param name="page" value="1" />
+						</portlet:renderURL>
+						<a class="fieldWithTooltip" href="${sortURLCategory }"> Category</a>
+						<div class="c-Tooltip">Click to sort by category</div>
+						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
+					</th>
+					<th class="c-Table__cell--title member-since">
+						<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'MEMBER_SINCE' ? not sortFilterPage.sortAscending : false }" />
+						<portlet:renderURL var="sortURLSeniority">
+							<portlet:param name="sortColumn" value="MEMBER_SINCE" />
+							<portlet:param name="sortAscending" value="${sortAscending}" />
+							<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							<portlet:param name="memberCategory" value="${memberCategory}" />
+							<portlet:param name="page" value="1" />
+						</portlet:renderURL>
+						<a class="fieldWithTooltip" href="${sortURLSeniority }"> Member since</a>
+						<div class="c-Tooltip">Click to sort by seniority</div>
+						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="user" items="${users }">
+					<tr class="c-Table__row">
+						<td class="c-Table__cell user">
+							<div class="usersFlag">
+								<a href="/web/guest/member/-/member/userId/${user.userId}">${user.screenName}</a>
+							</div>
+						</td>
+						<td class="c-Table__cell points odd">
+							${user.pointsFormatted}
+						</td>
+						<td class="c-Table__cell activity">
+							${user.activityCountFormatted}
+						</td>
+						<td class="c-Table__cell category odd">
+							<img src="${themeDisplay.pathThemeImages}/${user.memberRole.memberCategory.imageName}.png"
+								 width="16" height="16" />
+							&#160;${user.memberRole.memberCategory.displayName}
+						</td>
+						<td class="c-Table__cell member-since">
+							${user.memberSince}
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+
+		<div class="users-pagination">
+			<c:if test="${pagesCount gt 0}">
+				<table>
+					<tbody>
+					<tr>
+						<td>
+							<span>Page ${pageNumber} of ${pagesCount}&#160;&#160;</span>
+						</td>
+						<td>
+							<span>
+
+							<portlet:renderURL var="firstPageURL">
+								<portlet:param name="page" value="1" />
+								<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+								<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+								<portlet:param name="memberCategory" value="${memberCategory}" />
+								<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							</portlet:renderURL>
+								<a href="${firstPageURL}">First</a>&#160;
+							</span>
+
+							<span>
+
+							<portlet:renderURL var="prevPageURL">
+								<portlet:param name="page" value="${startPage}" />
+								<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+								<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+								<portlet:param name="memberCategory" value="${memberCategory}" />
+								<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							</portlet:renderURL>
+								<a href="${prevPageURL}">&lt; Prev</a>&#160;
+							</span>
+
+							<c:forEach begin="${startPage}" end="${endPage}" var="p">
+								<span>
+									<portlet:renderURL var="pageURL">
+										<portlet:param name="page" value="${p}" />
+										<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+										<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+										<portlet:param name="memberCategory" value="${memberCategory}" />
+										<portlet:param name="filter" value="${sortFilterPage.filter}" />
+									</portlet:renderURL>
+									<a href="${pageURL}">${p}</a>&#160;
+								</span>
+							</c:forEach>
+
+							<span>
+							<portlet:renderURL var="nextPageURL">
+								<portlet:param name="page" value="${endPage}" />
+								<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+								<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+								<portlet:param name="memberCategory" value="${memberCategory}" />
+								<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							</portlet:renderURL>
+								<a href="${nextPageURL}">Next &gt;</a>&#160;
+							</span>
+
+							<span>
+
+							<portlet:renderURL var="lastPageURL">
+								<portlet:param name="page" value="${pagesCount}" />
+								<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+								<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+								<portlet:param name="memberCategory" value="${memberCategory}" />
+								<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							</portlet:renderURL>
+								<a href="${lastPageURL}">Last</a>
+							</span>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</c:if>
 		</div>
-        <div class="activity">
-        	<portlet:renderURL var="sortURLActivity">
-        		<portlet:param name="sortColumn" value="ACTIVITY" />
-        		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : true }" />
-                <portlet:param name="filter" value="${sortFilterPage.filter}" />
-                <portlet:param name="memberCategory" value="${memberCategory}" />
-			</portlet:renderURL>
-        	<a class="fieldWithTooltip" href="${sortURLActivity }"> Activity</a>
-            <div class="tooltip">Click to sort by activity</div>
-            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
-        </div>
-        <div class="category">
-        	<portlet:renderURL var="sortURLCategory">
-        		<portlet:param name="sortColumn" value="CATEGORY" />
-        		<portlet:param name="sortAscending" value="${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : true }" />
-                <portlet:param name="filter" value="${sortFilterPage.filter}" />
-                <portlet:param name="memberCategory" value="${memberCategory}" />
-			</portlet:renderURL>
-        	<a class="fieldWithTooltip" href="${sortURLCategory }"> Category</a>
-            <div class="tooltip">Click to sort by category</div>
-            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
-        </div>
-        <div class="seniority">
-        	<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'MEMBER_SINCE' ? not sortFilterPage.sortAscending : true }" />
-        	<portlet:renderURL var="sortURLSeniority">
-        		<portlet:param name="sortColumn" value="MEMBER_SINCE" />
-        		<portlet:param name="sortAscending" value="${sortAscending}" />
-                <portlet:param name="filter" value="${sortFilterPage.filter}" />
-                <portlet:param name="memberCategory" value="${memberCategory}" />
-			</portlet:renderURL>
-        	<a class="fieldWithTooltip" href="${sortURLSeniority }"> Member since</a>
-            <div class="tooltip">Click to sort by seniority</div>
-            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
-        </div>
-
-    </div>
-
-	<table class="userslist table">
-		<c:forEach var="user" items="${users }">
-			<tr>
-				<td class="column screenName" style="">
-					<div class="usersFlag">
-						<a href="/web/guest/member/-/member/userId/${user.userId}">${user.screenName}</a>
-					</div>
-				</td>
-				<td class="column usersPoints g">
-					${user.pointsFormatted}
-				</td>
-				<td class="column usersActivityCount">
-                    ${user.activityCountFormatted}
-				</td>
-				<td class="column usersCategory g">
-                    <img src="/climatecolab-theme/images/icon_mem-${user.category.imageUrl}.png"
-                         width="16" height="16" />
-					&#160;${user.category.printName}
-				</td>
-				<td class="column usersSeniority">
-					${user.memberSince}
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
 
 	</div>
 
-	<div class="right_col3">
+	<div class="c-Message__column">
 
 		<div class="members comm_list">
 			<h2>Categories</h2>
 			<ul class="membersCategories">
-				<li class="${memberCategory == 'Member' ? 'c' : ''}">
-					<img src="/climatecolab-theme/images/icon_mem-member.png"
-						 width="16" height="16" />&#160;
+				<c:forEach var="category" items="${memberCategories }">
+					<li class="${memberCategory == category.displayName ? 'c' : ''}">
+						<img src="${themeDisplay.pathThemeImages}/${category.imageName}.png"
+							 width="16" height="16" />&#160;
 
-					<portlet:renderURL var="memberCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-						<portlet:param name="memberCategory" value="Member" />
-						<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-						<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					</portlet:renderURL>
+						<portlet:renderURL var="memberCategoryURL">
+							<portlet:param name="filter" value="${sortFilterPage.filter}" />
+							<portlet:param name="memberCategory" value="${category.displayName}" />
+							<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+							<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+							<portlet:param name="page" value="1" />
+						</portlet:renderURL>
 
-					<a href="${memberCategoryURL }">Members</a>
-				</li>
-				<li class="${memberCategory == 'Catalyst' ? 'c' : ''}">
-					<img src="/climatecolab-theme/images/icon_mem-catalyst.png"
-						 width="16" height="16" />&#160;
-
-					<portlet:renderURL var="catalystCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-						<portlet:param name="memberCategory" value="Catalyst" />
-						<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-						<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					</portlet:renderURL>
-
-					<a href="${catalystCategoryURL }">Catalyst</a>
-				</li>
-				<li class="${memberCategory == 'Fellow' ? 'c' : ''}">
-					<img src="/climatecolab-theme/images/icon_mem-fellow.png"
-						 width="16" height="16" />&#160;
-
-					<portlet:renderURL var="fellowCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-						<portlet:param name="memberCategory" value="Fellow" />
-						<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-						<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					</portlet:renderURL>
-
-					<a href="${fellowCategoryURL }">Fellows</a>
-				</li>
-                <li class="${memberCategory == 'Impact Assessment Fellow' ? 'c' : ''}">
-                    <img src="/climatecolab-theme/images/icon_mem-fellow.png"
-                         width="16" height="16" />&#160;
-
-                    <portlet:renderURL var="fellowCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-                        <portlet:param name="memberCategory" value="Impact Assessment Fellow" />
-                        <portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-                        <portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-                    </portlet:renderURL>
-
-                    <a href="${fellowCategoryURL }">IA Fellows</a>
-                </li>
-				<li class="${memberCategory == 'Advisor' ? 'c' : ''}">
-					<img src="/climatecolab-theme/images/icon_mem-advisor.png"
-						 width="16" height="16" />&#160;
-
-					<portlet:renderURL var="advisorCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-						<portlet:param name="memberCategory" value="Advisor" />
-						<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-						<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					</portlet:renderURL>
-
-					<a href="${advisorCategoryURL }">Advisors</a>
-				</li>
-				<li class="${memberCategory == 'Expert' ? 'c' : ''}">
-					<img src="/climatecolab-theme/images/icon_mem-expert.png"
-						 width="16" height="16" />&#160;
-
-					<portlet:renderURL var="expertCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-						<portlet:param name="memberCategory" value="Expert" />
-						<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-						<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					</portlet:renderURL>
-
-					<a href="${expertCategoryURL }">Experts</a>
-				</li>
-				<li class="${memberCategory == 'Judges' ? 'c' : ''}">
-					<img src="/climatecolab-theme/images/icon_mem-judges.png"
-						 width="16" height="16" />&#160;
-
-					<portlet:renderURL var="judgesCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-						<portlet:param name="memberCategory" value="Judges" />
-						<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-						<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					</portlet:renderURL>
-
-					<a href="${judgesCategoryURL }">Judges</a>
-				</li>
-				<li class="${memberCategory == 'Staff' ? 'c' : ''}">
-					<img src="/climatecolab-theme/images/icon_mem-staff.png"
-						 width="16" height="16" />&#160;
-
-					<portlet:renderURL var="staffCategoryURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-						<portlet:param name="memberCategory" value="Staff" />
-						<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-						<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					</portlet:renderURL>
-
-					<a href="${staffCategoryURL }">Staff</a>
-				</li>
-				<li class="${memberCategory == '' ? 'c' : ''}">
-
-					<portlet:renderURL var="allCategoriesURL">
-                        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-						<portlet:param name="memberCategory" value="" />
-						<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-						<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					</portlet:renderURL>
-
-					<a href="${allCategoriesURL }">All</a>
-				</li>
+						<a href="${memberCategoryURL }">${category.categoryName}</a>
+					</li>
+				</c:forEach>
 			</ul>
 		</div>
 	</div>
-
-<br/>
-<div class="users-pagination">
-    <c:if test="${pagesCount gt 0}">
-<table>
-	<tbody>
-	<tr>
-		<td>
-		<span>Page ${pageNumber} of ${pagesCount}&#160;&#160;</span>
-		</td>
-		<td>
-	<span>
-
-	<portlet:renderURL var="firstPageURL">
-		<portlet:param name="page" value="1" />
-		<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-		<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-		<portlet:param name="memberCategory" value="${memberCategory}" />
-        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-	</portlet:renderURL>
-		<a href="${firstPageURL}">First</a>&#160;
-	</span>
-
-	<span>
-
-	<portlet:renderURL var="prevPageURL">
-		<portlet:param name="page" value="${startPage}" />
-		<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-		<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-		<portlet:param name="memberCategory" value="${memberCategory}" />
-        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-	</portlet:renderURL>
-		<a href="${prevPageURL}">&lt; Prev</a>&#160;
-	</span>
-
-	<c:forEach begin="${startPage}" end="${endPage}" var="p">
-		<span>
-			<portlet:renderURL var="pageURL">
-				<portlet:param name="page" value="${p}" />
-				<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-				<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-				<portlet:param name="memberCategory" value="${memberCategory}" />
-                <portlet:param name="filter" value="${sortFilterPage.filter}" />
-			</portlet:renderURL>
-			<a href="${pageURL}">${p}</a>&#160;
-		</span>
-	</c:forEach>
-
-	<span>
-	<portlet:renderURL var="nextPageURL">
-		<portlet:param name="page" value="${endPage}" />
-		<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-		<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-		<portlet:param name="memberCategory" value="${memberCategory}" />
-        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-	</portlet:renderURL>
-		<a href="${nextPageURL}">Next &gt;</a>&#160;
-	</span>
-
-	<span>
-
-	<portlet:renderURL var="lastPageURL">
-		<portlet:param name="page" value="${pagesCount}" />
-		<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-		<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-		<portlet:param name="memberCategory" value="${memberCategory}" />
-        <portlet:param name="filter" value="${sortFilterPage.filter}" />
-	</portlet:renderURL>
-		<a href="${lastPageURL}">Last</a>
-	</span>
-		</td>
-	</tr>
-	</tbody>
-</table>
-    </c:if>
-</div>
 
 </jsp:root>

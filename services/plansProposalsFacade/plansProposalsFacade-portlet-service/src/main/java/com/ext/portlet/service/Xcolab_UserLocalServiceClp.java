@@ -34,22 +34,6 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     private String[] _methodParameterTypes12;
     private String _methodName13;
     private String[] _methodParameterTypes13;
-    private String _methodName14;
-    private String[] _methodParameterTypes14;
-    private String _methodName15;
-    private String[] _methodParameterTypes15;
-    private String _methodName16;
-    private String[] _methodParameterTypes16;
-    private String _methodName17;
-    private String[] _methodParameterTypes17;
-    private String _methodName18;
-    private String[] _methodParameterTypes18;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
-    private String _methodName21;
-    private String[] _methodParameterTypes21;
 
     public Xcolab_UserLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -63,97 +47,67 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
 
         _methodParameterTypes1 = new String[] { "java.lang.String" };
 
-        _methodName3 = "getUsersSortedByScreenNameAsc";
+        _methodName3 = "getUsersSortedByScreenName";
 
-        _methodParameterTypes3 = new String[] { "int", "int", "java.lang.String" };
+        _methodParameterTypes3 = new String[] {
+                "int", "int", "java.lang.String", "boolean"
+            };
 
-        _methodName4 = "getUsersSortedByScreenNameAscFilteredByCategory";
+        _methodName4 = "getUsersSortedByScreenNameFilteredByCategory";
 
         _methodParameterTypes4 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String"
+                "int", "int", "java.lang.String", "java.lang.String", "boolean"
             };
 
-        _methodName5 = "getUsersSortedByScreenNameDesc";
+        _methodName5 = "getUsersSortedByRoleName";
 
-        _methodParameterTypes5 = new String[] { "int", "int", "java.lang.String" };
+        _methodParameterTypes5 = new String[] {
+                "int", "int", "java.lang.String", "boolean"
+            };
 
-        _methodName6 = "getUsersSortedByScreenNameDescFilteredByCategory";
+        _methodName6 = "getUsersSortedByMemberSince";
 
         _methodParameterTypes6 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String"
+                "int", "int", "java.lang.String", "boolean"
             };
 
-        _methodName7 = "getUsersSortedByRoleNameAsc";
+        _methodName7 = "getUsersSortedByMemberSinceFilteredByCategory";
 
-        _methodParameterTypes7 = new String[] { "int", "int", "java.lang.String" };
+        _methodParameterTypes7 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String", "boolean"
+            };
 
-        _methodName8 = "getUsersSortedByRoleNameDesc";
+        _methodName8 = "getUsersSortedByActivityCount";
 
-        _methodParameterTypes8 = new String[] { "int", "int", "java.lang.String" };
+        _methodParameterTypes8 = new String[] {
+                "int", "int", "java.lang.String", "boolean"
+            };
 
-        _methodName9 = "getUsersSortedByMemberSinceAsc";
+        _methodName9 = "getUsersSortedByActivityCountFilteredByCategory";
 
-        _methodParameterTypes9 = new String[] { "int", "int", "java.lang.String" };
+        _methodParameterTypes9 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String", "boolean"
+            };
 
-        _methodName10 = "getUsersSortedByMemberSinceAscFilteredByCategory";
+        _methodName10 = "getUsersSortedByPoints";
 
         _methodParameterTypes10 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String"
+                "int", "int", "java.lang.String", "boolean"
             };
 
-        _methodName11 = "getUsersSortedByMemberSinceDesc";
+        _methodName11 = "getUsersSortedByPointsFilteredByCategory";
 
-        _methodParameterTypes11 = new String[] { "int", "int", "java.lang.String" };
-
-        _methodName12 = "getUsersSortedByMemberSinceDescFilteredByCategory";
-
-        _methodParameterTypes12 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String"
+        _methodParameterTypes11 = new String[] {
+                "int", "int", "java.lang.String", "java.lang.String", "boolean"
             };
 
-        _methodName13 = "getUsersSortedByActivityCountAsc";
+        _methodName12 = "getUserActivityCount";
 
-        _methodParameterTypes13 = new String[] { "int", "int", "java.lang.String" };
+        _methodParameterTypes12 = new String[] { "java.lang.Long" };
 
-        _methodName14 = "getUsersSortedByActivityCountAscFilteredByCategory";
+        _methodName13 = "findUsersByLoginIP";
 
-        _methodParameterTypes14 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String"
-            };
-
-        _methodName15 = "getUsersSortedByActivityCountDesc";
-
-        _methodParameterTypes15 = new String[] { "int", "int", "java.lang.String" };
-
-        _methodName16 = "getUsersSortedByActivityCountDescFilteredByCategory";
-
-        _methodParameterTypes16 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String"
-            };
-
-        _methodName17 = "getUsersSortedByPointsAsc";
-
-        _methodParameterTypes17 = new String[] { "int", "int", "java.lang.String" };
-
-        _methodName18 = "getUsersSortedByPointsDesc";
-
-        _methodParameterTypes18 = new String[] { "int", "int", "java.lang.String" };
-
-        _methodName19 = "getUsersSortedByPointsAscFilteredByCategory";
-
-        _methodParameterTypes19 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String"
-            };
-
-        _methodName20 = "getUsersSortedByPointsDescFilteredByCategory";
-
-        _methodParameterTypes20 = new String[] {
-                "int", "int", "java.lang.String", "java.lang.String"
-            };
-
-        _methodName21 = "getUserActivityCount";
-
-        _methodParameterTypes21 = new String[] { "java.lang.Long" };
+        _methodParameterTypes13 = new String[] { "java.lang.String" };
     }
 
     @Override
@@ -203,8 +157,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameAsc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenName(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -216,7 +170,9 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     end,
                         
-                    ClpSerializer.translateInput(filter)
+                    ClpSerializer.translateInput(filter),
+                        
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -237,9 +193,9 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameAscFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -253,7 +209,9 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     ClpSerializer.translateInput(filter),
                         
-                    ClpSerializer.translateInput(memberCategory)
+                    ClpSerializer.translateInput(memberCategory),
+                        
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -274,8 +232,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameDesc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleName(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -287,7 +245,9 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     end,
                         
-                    ClpSerializer.translateInput(filter)
+                    ClpSerializer.translateInput(filter),
+                        
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -308,9 +268,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSince(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -324,7 +283,7 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     ClpSerializer.translateInput(filter),
                         
-                    ClpSerializer.translateInput(memberCategory)
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -345,8 +304,9 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleNameAsc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -358,7 +318,11 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     end,
                         
-                    ClpSerializer.translateInput(filter)
+                    ClpSerializer.translateInput(filter),
+                        
+                    ClpSerializer.translateInput(memberCategory),
+                        
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -379,8 +343,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleNameDesc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCount(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -392,7 +356,9 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     end,
                         
-                    ClpSerializer.translateInput(filter)
+                    ClpSerializer.translateInput(filter),
+                        
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -413,8 +379,9 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceAsc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -426,7 +393,11 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     end,
                         
-                    ClpSerializer.translateInput(filter)
+                    ClpSerializer.translateInput(filter),
+                        
+                    ClpSerializer.translateInput(memberCategory),
+                        
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -447,9 +418,8 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPoints(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -463,7 +433,7 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     ClpSerializer.translateInput(filter),
                         
-                    ClpSerializer.translateInput(memberCategory)
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -484,8 +454,9 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceDesc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsFilteredByCategory(
+        int begin, int end, java.lang.String filter,
+        java.lang.String memberCategoryFilter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -497,7 +468,11 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
                         
                     end,
                         
-                    ClpSerializer.translateInput(filter)
+                    ClpSerializer.translateInput(filter),
+                        
+                    ClpSerializer.translateInput(memberCategoryFilter),
+                        
+                    ascendingOrder
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -518,315 +493,13 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+    public long getUserActivityCount(java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
             returnObj = _invokableLocalService.invokeMethod(_methodName12,
                     _methodParameterTypes12,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter),
-                        
-                    ClpSerializer.translateInput(memberCategory)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName13,
-                    _methodParameterTypes13,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName14,
-                    _methodParameterTypes14,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter),
-                        
-                    ClpSerializer.translateInput(memberCategory)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName15,
-                    _methodParameterTypes15,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName16,
-                    _methodParameterTypes16,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter),
-                        
-                    ClpSerializer.translateInput(memberCategory)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAsc(
-        int begin, int end, java.lang.String filter) {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName17,
-                    _methodParameterTypes17,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsDesc(
-        int begin, int end, java.lang.String filter) {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName18,
-                    _methodParameterTypes18,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter) {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter),
-                        
-                    ClpSerializer.translateInput(memberCategoryFilter)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter) {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
-                    new Object[] {
-                        begin,
-                        
-                    end,
-                        
-                    ClpSerializer.translateInput(filter),
-                        
-                    ClpSerializer.translateInput(memberCategoryFilter)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<java.lang.Long> getUserActivityCount(
-        java.lang.Long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName21,
-                    _methodParameterTypes21,
                     new Object[] { ClpSerializer.translateInput(userId) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -843,6 +516,34 @@ public class Xcolab_UserLocalServiceClp implements Xcolab_UserLocalService {
             }
         }
 
-        return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
+        return ((Long) returnObj).longValue();
+    }
+
+    @Override
+    public java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
+        java.lang.String loginIP)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName13,
+                    _methodParameterTypes13,
+                    new Object[] { ClpSerializer.translateInput(loginIP) });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.liferay.portal.model.User>) ClpSerializer.translateOutput(returnObj);
     }
 }

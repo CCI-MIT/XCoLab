@@ -7,16 +7,17 @@ import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestEmailTemplateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
+
+import org.xcolab.client.admin.EmailTemplateClient;
 
 /**
  * This is a helper class that interprets the Judging Feedback message made during judging contest phases
@@ -29,8 +30,8 @@ public class ProposalJudgingCommentHelper {
 
     private final static Log _log = LogFactoryUtil.getLog(ProposalJudgingCommentHelper.class);
 
-    private Proposal proposal;
-    private ContestPhase contestPhase;
+    private final Proposal proposal;
+    private final ContestPhase contestPhase;
 
     public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
         this.proposal = proposal;
@@ -107,7 +108,7 @@ public class ProposalJudgingCommentHelper {
      * @throws SystemException
      */
     public String getPromotionComment(boolean isWrapWithTemplate) throws NoSuchProposalContestPhaseAttributeException, SystemException, PortalException {
-        String proposalName = ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
         String contestName = ContestLocalServiceUtil.getContest(contestPhase.getContestPK()).getContestShortName();
 
         //get fellow decision
@@ -134,7 +135,7 @@ public class ProposalJudgingCommentHelper {
                     String templateToLoad = (advanceDecision == JudgingSystemActions.AdvanceDecision.MOVE_ON) ? "ADVANCING_ADVANCE_TO_SEMIFINALIST" : "ADVANCING_DO_NOT_ADVANCE";
 
                     EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                            ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),
+                            EmailTemplateClient.getContestEmailTemplateByType(templateToLoad),
                             proposalName,
                             contestName
                     );
@@ -161,7 +162,7 @@ public class ProposalJudgingCommentHelper {
             }
 
             EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                    ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType(templateToLoad),
+                    EmailTemplateClient.getContestEmailTemplateByType(templateToLoad),
                     proposalName,
                     contestName
             );
@@ -169,22 +170,6 @@ public class ProposalJudgingCommentHelper {
         }
 
         return StringPool.BLANK;
-    }
-
-
-
-    private boolean persistAttribute(String attributeName, long numericValue) {
-        ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(attributeName);
-
-        attribute.setNumericValue(numericValue);
-
-        try {
-            ProposalContestPhaseAttributeLocalServiceUtil.updateProposalContestPhaseAttribute(attribute);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
     private boolean persistAttribute(String attributeName, String stringValue) {

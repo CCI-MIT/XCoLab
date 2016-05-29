@@ -13,6 +13,8 @@ import com.ext.portlet.service.BalloonTextServiceUtil;
 import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
+import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
+import com.ext.portlet.service.ConfigurationAttributeServiceUtil;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
@@ -32,7 +34,11 @@ import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.ext.portlet.service.ContestScheduleServiceUtil;
 import com.ext.portlet.service.ContestServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberRoleLocalServiceUtil;
+import com.ext.portlet.service.ContestTeamMemberRoleServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
@@ -63,6 +69,8 @@ import com.ext.portlet.service.LandingPageLocalServiceUtil;
 import com.ext.portlet.service.LandingPageServiceUtil;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.portlet.service.LoginLogServiceUtil;
+import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
+import com.ext.portlet.service.MemberCategoryServiceUtil;
 import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
 import com.ext.portlet.service.MessageRecipientStatusServiceUtil;
@@ -105,62 +113,12 @@ import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermServiceUtil;
-import com.ext.portlet.service.Plan2ProposalLocalServiceUtil;
-import com.ext.portlet.service.Plan2ProposalServiceUtil;
-import com.ext.portlet.service.PlanAttributeFilterLocalServiceUtil;
-import com.ext.portlet.service.PlanAttributeFilterServiceUtil;
-import com.ext.portlet.service.PlanAttributeLocalServiceUtil;
-import com.ext.portlet.service.PlanAttributeServiceUtil;
-import com.ext.portlet.service.PlanColumnSettingsLocalServiceUtil;
-import com.ext.portlet.service.PlanColumnSettingsServiceUtil;
-import com.ext.portlet.service.PlanDescriptionLocalServiceUtil;
-import com.ext.portlet.service.PlanDescriptionServiceUtil;
-import com.ext.portlet.service.PlanFanLocalServiceUtil;
-import com.ext.portlet.service.PlanFanServiceUtil;
-import com.ext.portlet.service.PlanItemGroupLocalServiceUtil;
-import com.ext.portlet.service.PlanItemGroupServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
-import com.ext.portlet.service.PlanItemServiceUtil;
-import com.ext.portlet.service.PlanMetaLocalServiceUtil;
-import com.ext.portlet.service.PlanMetaServiceUtil;
-import com.ext.portlet.service.PlanModelRunLocalServiceUtil;
-import com.ext.portlet.service.PlanModelRunServiceUtil;
-import com.ext.portlet.service.PlanPositionItemLocalServiceUtil;
-import com.ext.portlet.service.PlanPositionItemServiceUtil;
-import com.ext.portlet.service.PlanPositionLocalServiceUtil;
-import com.ext.portlet.service.PlanPositionServiceUtil;
-import com.ext.portlet.service.PlanPositionsLocalServiceUtil;
-import com.ext.portlet.service.PlanPositionsServiceUtil;
-import com.ext.portlet.service.PlanPropertyFilterLocalServiceUtil;
-import com.ext.portlet.service.PlanPropertyFilterServiceUtil;
-import com.ext.portlet.service.PlanRelatedLocalServiceUtil;
-import com.ext.portlet.service.PlanRelatedServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionServiceUtil;
-import com.ext.portlet.service.PlanSectionLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionPlanMapLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionPlanMapServiceUtil;
-import com.ext.portlet.service.PlanSectionServiceUtil;
-import com.ext.portlet.service.PlanTeamHistoryLocalServiceUtil;
-import com.ext.portlet.service.PlanTeamHistoryServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionServiceUtil;
 import com.ext.portlet.service.PlanTemplateServiceUtil;
-import com.ext.portlet.service.PlanTypeAttributeLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeAttributeServiceUtil;
-import com.ext.portlet.service.PlanTypeColumnLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeColumnServiceUtil;
-import com.ext.portlet.service.PlanTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeServiceUtil;
-import com.ext.portlet.service.PlanVoteLocalServiceUtil;
-import com.ext.portlet.service.PlanVoteServiceUtil;
-import com.ext.portlet.service.PlansFilterLocalServiceUtil;
-import com.ext.portlet.service.PlansFilterPositionLocalServiceUtil;
-import com.ext.portlet.service.PlansFilterPositionServiceUtil;
-import com.ext.portlet.service.PlansFilterServiceUtil;
-import com.ext.portlet.service.PlansUserSettingsLocalServiceUtil;
-import com.ext.portlet.service.PlansUserSettingsServiceUtil;
 import com.ext.portlet.service.PointDistributionTargetLocalServiceUtil;
 import com.ext.portlet.service.PointDistributionTargetServiceUtil;
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
@@ -173,26 +131,30 @@ import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeServiceUtil;
-import com.ext.portlet.service.ProposalAttributeTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeTypeServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeTypeServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalMoveHistoryLocalServiceUtil;
+import com.ext.portlet.service.ProposalMoveHistoryServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingServiceUtil;
 import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingTypeServiceUtil;
 import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingValueServiceUtil;
+import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
+import com.ext.portlet.service.ProposalReferenceServiceUtil;
 import com.ext.portlet.service.ProposalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
+import com.ext.portlet.service.SpamReportServiceUtil;
 import com.ext.portlet.service.StaffMemberLocalServiceUtil;
 import com.ext.portlet.service.StaffMemberServiceUtil;
 import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
@@ -236,6 +198,9 @@ public class ClpMessageListener extends BaseMessageListener {
             BalloonUserTrackingLocalServiceUtil.clearService();
 
             BalloonUserTrackingServiceUtil.clearService();
+            ConfigurationAttributeLocalServiceUtil.clearService();
+
+            ConfigurationAttributeServiceUtil.clearService();
             ContestLocalServiceUtil.clearService();
 
             ContestServiceUtil.clearService();
@@ -266,6 +231,12 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestTeamMemberLocalServiceUtil.clearService();
 
             ContestTeamMemberServiceUtil.clearService();
+            ContestTeamMemberRoleLocalServiceUtil.clearService();
+
+            ContestTeamMemberRoleServiceUtil.clearService();
+            ContestTypeLocalServiceUtil.clearService();
+
+            ContestTypeServiceUtil.clearService();
             DiscussionCategoryLocalServiceUtil.clearService();
 
             DiscussionCategoryServiceUtil.clearService();
@@ -311,6 +282,9 @@ public class ClpMessageListener extends BaseMessageListener {
             LoginLogLocalServiceUtil.clearService();
 
             LoginLogServiceUtil.clearService();
+            MemberCategoryLocalServiceUtil.clearService();
+
+            MemberCategoryServiceUtil.clearService();
             MessageLocalServiceUtil.clearService();
 
             MessageServiceUtil.clearService();
@@ -374,90 +348,15 @@ public class ClpMessageListener extends BaseMessageListener {
             OntologyTermEntityLocalServiceUtil.clearService();
 
             OntologyTermEntityServiceUtil.clearService();
-            Plan2ProposalLocalServiceUtil.clearService();
-
-            Plan2ProposalServiceUtil.clearService();
-            PlanAttributeLocalServiceUtil.clearService();
-
-            PlanAttributeServiceUtil.clearService();
-            PlanAttributeFilterLocalServiceUtil.clearService();
-
-            PlanAttributeFilterServiceUtil.clearService();
-            PlanColumnSettingsLocalServiceUtil.clearService();
-
-            PlanColumnSettingsServiceUtil.clearService();
-            PlanDescriptionLocalServiceUtil.clearService();
-
-            PlanDescriptionServiceUtil.clearService();
-            PlanFanLocalServiceUtil.clearService();
-
-            PlanFanServiceUtil.clearService();
-            PlanItemLocalServiceUtil.clearService();
-
-            PlanItemServiceUtil.clearService();
-            PlanItemGroupLocalServiceUtil.clearService();
-
-            PlanItemGroupServiceUtil.clearService();
-            PlanMetaLocalServiceUtil.clearService();
-
-            PlanMetaServiceUtil.clearService();
-            PlanModelRunLocalServiceUtil.clearService();
-
-            PlanModelRunServiceUtil.clearService();
-            PlanPositionLocalServiceUtil.clearService();
-
-            PlanPositionServiceUtil.clearService();
-            PlanPositionItemLocalServiceUtil.clearService();
-
-            PlanPositionItemServiceUtil.clearService();
-            PlanPositionsLocalServiceUtil.clearService();
-
-            PlanPositionsServiceUtil.clearService();
-            PlanPropertyFilterLocalServiceUtil.clearService();
-
-            PlanPropertyFilterServiceUtil.clearService();
-            PlanRelatedLocalServiceUtil.clearService();
-
-            PlanRelatedServiceUtil.clearService();
-            PlanSectionLocalServiceUtil.clearService();
-
-            PlanSectionServiceUtil.clearService();
             PlanSectionDefinitionLocalServiceUtil.clearService();
 
             PlanSectionDefinitionServiceUtil.clearService();
-            PlanSectionPlanMapLocalServiceUtil.clearService();
-
-            PlanSectionPlanMapServiceUtil.clearService();
-            PlansFilterLocalServiceUtil.clearService();
-
-            PlansFilterServiceUtil.clearService();
-            PlansFilterPositionLocalServiceUtil.clearService();
-
-            PlansFilterPositionServiceUtil.clearService();
-            PlansUserSettingsLocalServiceUtil.clearService();
-
-            PlansUserSettingsServiceUtil.clearService();
-            PlanTeamHistoryLocalServiceUtil.clearService();
-
-            PlanTeamHistoryServiceUtil.clearService();
             PlanTemplateLocalServiceUtil.clearService();
 
             PlanTemplateServiceUtil.clearService();
             PlanTemplateSectionLocalServiceUtil.clearService();
 
             PlanTemplateSectionServiceUtil.clearService();
-            PlanTypeLocalServiceUtil.clearService();
-
-            PlanTypeServiceUtil.clearService();
-            PlanTypeAttributeLocalServiceUtil.clearService();
-
-            PlanTypeAttributeServiceUtil.clearService();
-            PlanTypeColumnLocalServiceUtil.clearService();
-
-            PlanTypeColumnServiceUtil.clearService();
-            PlanVoteLocalServiceUtil.clearService();
-
-            PlanVoteServiceUtil.clearService();
             PointDistributionTargetLocalServiceUtil.clearService();
 
             PointDistributionTargetServiceUtil.clearService();
@@ -479,15 +378,12 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalAttributeLocalServiceUtil.clearService();
 
             ProposalAttributeServiceUtil.clearService();
-            ProposalAttributeTypeLocalServiceUtil.clearService();
-
-            ProposalAttributeTypeServiceUtil.clearService();
             ProposalContestPhaseAttributeLocalServiceUtil.clearService();
 
             ProposalContestPhaseAttributeServiceUtil.clearService();
-            ProposalContestPhaseAttributeTypeLocalServiceUtil.clearService();
+            ProposalMoveHistoryLocalServiceUtil.clearService();
 
-            ProposalContestPhaseAttributeTypeServiceUtil.clearService();
+            ProposalMoveHistoryServiceUtil.clearService();
             ProposalRatingLocalServiceUtil.clearService();
 
             ProposalRatingServiceUtil.clearService();
@@ -497,15 +393,24 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalRatingValueLocalServiceUtil.clearService();
 
             ProposalRatingValueServiceUtil.clearService();
+            ProposalReferenceLocalServiceUtil.clearService();
+
+            ProposalReferenceServiceUtil.clearService();
             ProposalSupporterLocalServiceUtil.clearService();
 
             ProposalSupporterServiceUtil.clearService();
+            ProposalUnversionedAttributeLocalServiceUtil.clearService();
+
+            ProposalUnversionedAttributeServiceUtil.clearService();
             ProposalVersionLocalServiceUtil.clearService();
 
             ProposalVersionServiceUtil.clearService();
             ProposalVoteLocalServiceUtil.clearService();
 
             ProposalVoteServiceUtil.clearService();
+            SpamReportLocalServiceUtil.clearService();
+
+            SpamReportServiceUtil.clearService();
             StaffMemberLocalServiceUtil.clearService();
 
             StaffMemberServiceUtil.clearService();

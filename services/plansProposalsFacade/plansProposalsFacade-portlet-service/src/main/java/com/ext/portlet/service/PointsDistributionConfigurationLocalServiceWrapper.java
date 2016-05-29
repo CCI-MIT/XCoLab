@@ -278,12 +278,11 @@ public class PointsDistributionConfigurationLocalServiceWrapper
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalPointType(
-        com.ext.portlet.model.Proposal proposal,
-        com.ext.portlet.model.PointType pointType)
+    public java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalIdPointTypeId(
+        long proposalId, long pointTypeId)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _pointsDistributionConfigurationLocalService.findByProposalPointType(proposal,
-            pointType);
+        return _pointsDistributionConfigurationLocalService.findByProposalIdPointTypeId(proposalId,
+            pointTypeId);
     }
 
     @Override
@@ -293,13 +292,27 @@ public class PointsDistributionConfigurationLocalServiceWrapper
     }
 
     @Override
+    public com.ext.portlet.model.PointsDistributionConfiguration getByPlanSectionDefinitionId(
+        long planSectionDefinitionId)
+        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _pointsDistributionConfigurationLocalService.getByPlanSectionDefinitionId(planSectionDefinitionId);
+    }
+
+    @Override
     public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
         long proposalId, long pointTypeId, java.lang.Long targetUserId,
         java.lang.Long targetSubProposalId, double percentage, long creator)
-        throws com.liferay.portal.NoSuchUserException,
-            com.liferay.portal.kernel.exception.SystemException {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return _pointsDistributionConfigurationLocalService.addDistributionConfiguration(proposalId,
             pointTypeId, targetUserId, targetSubProposalId, percentage, creator);
+    }
+
+    @Override
+    public void verifyDistributionConfigurationsForProposalId(long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _pointsDistributionConfigurationLocalService.verifyDistributionConfigurationsForProposalId(proposalId);
     }
 
     /**

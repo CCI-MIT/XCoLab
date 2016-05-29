@@ -1,11 +1,11 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.model.ModelPosition;
 import com.ext.portlet.service.base.ModelPositionLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the model position local service.
@@ -29,10 +29,12 @@ public class ModelPositionLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ModelPositionLocalServiceUtil} to access the model position local service.
      */
     
+    @Override
     public List<ModelPosition> getModelPositionsByModelId(Long modelId) throws SystemException {
         return modelPositionPersistence.findByModelId(modelId);
     }
     
+    @Override
     public void setModelPositions(Long modelId, List<Long> positionIds) throws SystemException {
         modelPositionPersistence.removeByModelId(modelId);
         

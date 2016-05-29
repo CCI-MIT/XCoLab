@@ -1,32 +1,30 @@
 package org.xcolab.portlets.feeds.wrappers;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.portlet.PortletRequest;
-
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
 import com.ext.portlet.Activity.ProposalActivityKeys;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
-import com.liferay.portal.model.User;
-import org.jsoup.Jsoup;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.ocpsoft.pretty.time.PrettyTime;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import javax.portlet.PortletRequest;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SocialActivityWrapper implements Serializable {
     /**

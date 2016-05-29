@@ -60,6 +60,20 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setContestPK(long ContestPK);
 
     /**
+     * Returns the contest type ID of this contest.
+     *
+     * @return the contest type ID of this contest
+     */
+    public long getContestTypeId();
+
+    /**
+     * Sets the contest type ID of this contest.
+     *
+     * @param contestTypeId the contest type ID of this contest
+     */
+    public void setContestTypeId(long contestTypeId);
+
+    /**
      * Returns the contest name of this contest.
      *
      * @return the contest name of this contest
@@ -88,6 +102,35 @@ public interface ContestModel extends BaseModel<Contest> {
      * @param ContestShortName the contest short name of this contest
      */
     public void setContestShortName(String ContestShortName);
+
+    /**
+     * Returns the contest url name of this contest.
+     *
+     * @return the contest url name of this contest
+     */
+    @AutoEscape
+    public String getContestUrlName();
+
+    /**
+     * Sets the contest url name of this contest.
+     *
+     * @param ContestUrlName the contest url name of this contest
+     */
+    public void setContestUrlName(String ContestUrlName);
+
+    /**
+     * Returns the contest year of this contest.
+     *
+     * @return the contest year of this contest
+     */
+    public long getContestYear();
+
+    /**
+     * Sets the contest year of this contest.
+     *
+     * @param ContestYear the contest year of this contest
+     */
+    public void setContestYear(long ContestYear);
 
     /**
      * Returns the contest description of this contest.
@@ -134,35 +177,6 @@ public interface ContestModel extends BaseModel<Contest> {
      */
     public void setContestPositionsDescription(
         String ContestPositionsDescription);
-
-    /**
-     * Returns the default plan description of this contest.
-     *
-     * @return the default plan description of this contest
-     */
-    @AutoEscape
-    public String getDefaultPlanDescription();
-
-    /**
-     * Sets the default plan description of this contest.
-     *
-     * @param defaultPlanDescription the default plan description of this contest
-     */
-    public void setDefaultPlanDescription(String defaultPlanDescription);
-
-    /**
-     * Returns the plan type ID of this contest.
-     *
-     * @return the plan type ID of this contest
-     */
-    public long getPlanTypeId();
-
-    /**
-     * Sets the plan type ID of this contest.
-     *
-     * @param PlanTypeId the plan type ID of this contest
-     */
-    public void setPlanTypeId(long PlanTypeId);
 
     /**
      * Returns the created of this contest.
@@ -300,6 +314,22 @@ public interface ContestModel extends BaseModel<Contest> {
      * @param proposalVoteTemplateString the proposal vote template string of this contest
      */
     public void setProposalVoteTemplateString(String proposalVoteTemplateString);
+
+    /**
+     * Returns the proposal vote confirmation template string of this contest.
+     *
+     * @return the proposal vote confirmation template string of this contest
+     */
+    @AutoEscape
+    public String getProposalVoteConfirmationTemplateString();
+
+    /**
+     * Sets the proposal vote confirmation template string of this contest.
+     *
+     * @param proposalVoteConfirmationTemplateString the proposal vote confirmation template string of this contest
+     */
+    public void setProposalVoteConfirmationTemplateString(
+        String proposalVoteConfirmationTemplateString);
 
     /**
      * Returns the vote question template string of this contest.
@@ -801,6 +831,20 @@ public interface ContestModel extends BaseModel<Contest> {
      * @param hideRibbons the hide ribbons of this contest
      */
     public void setHideRibbons(boolean hideRibbons);
+
+    /**
+     * Returns the resource article ID of this contest.
+     *
+     * @return the resource article ID of this contest
+     */
+    public long getResourceArticleId();
+
+    /**
+     * Sets the resource article ID of this contest.
+     *
+     * @param resourceArticleId the resource article ID of this contest
+     */
+    public void setResourceArticleId(long resourceArticleId);
 
     @Override
     public boolean isNew();

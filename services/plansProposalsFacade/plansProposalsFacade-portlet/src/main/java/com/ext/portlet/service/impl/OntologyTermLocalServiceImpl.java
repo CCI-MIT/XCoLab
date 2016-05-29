@@ -1,24 +1,23 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.OntologyTermEntity;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalService;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.base.OntologyTermLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * The implementation of the ontology term local service.
@@ -42,19 +41,23 @@ public class OntologyTermLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.OntologyTermLocalServiceUtil} to access the ontology term local service.
      */
 
+    @Override
     public List<OntologyTerm> findByParentId(Long parentId) throws SystemException {
         return ontologyTermPersistence.findByParentId(parentId);
     }
 
     
+    @Override
     public List<OntologyTerm> findByParentIdSpaceId(Long parentId, Long spaceId) throws SystemException {
         return ontologyTermPersistence.findByParentIdSpaceId(parentId, spaceId);
     }
 
+    @Override
     public List<OntologyTerm> findByOntologyTermName(String name) throws SystemException {
         return ontologyTermPersistence.findByName(name);
     }
     
+    @Override
     public OntologyTerm createTerm(Long parentId, String name, Long spaceId, String descriptionUrl) throws SystemException {
         Long termId = CounterLocalServiceUtil.increment(OntologyTerm.class.getName());
         
@@ -72,10 +75,12 @@ public class OntologyTermLocalServiceImpl
         
     }
 
+    @Override
     public int countChildTerms(Long parentId) throws SystemException {
         return ontologyTermPersistence.countByParentId(parentId);
     }
     
+    @Override
     public void clearClassTags(Class clasz, Long id) throws SystemException {
         
         Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
@@ -86,6 +91,7 @@ public class OntologyTermLocalServiceImpl
     }
     
     
+    @Override
     public void store(OntologyTerm ontologyTerm) throws SystemException {
         if (ontologyTerm.isNew()) {
             addOntologyTerm(ontologyTerm);
@@ -96,6 +102,7 @@ public class OntologyTermLocalServiceImpl
         }
     }
     
+    @Override
     public OntologyTerm getParent(OntologyTerm ontologyTerm) throws PortalException, SystemException {
         if (ontologyTerm.getParentId() > 0) {
             return OntologyTermLocalServiceUtil.getOntologyTerm(ontologyTerm.getParentId());
@@ -104,15 +111,18 @@ public class OntologyTermLocalServiceImpl
         return null;
     }
     
+    @Override
     public int getChildTermsCount(OntologyTerm ontologyTerm) throws SystemException {
         return OntologyTermLocalServiceUtil.countChildTerms(ontologyTerm.getId());
         
     }
     
+    @Override
     public List<OntologyTerm> getChildTerms(OntologyTerm ontologyTerm) throws SystemException {
         return OntologyTermLocalServiceUtil.findByParentId(ontologyTerm.getId());
     }
 
+    @Override
     public List<OntologyTerm> getAllDescendantTerms(OntologyTerm ontologyTerm) throws SystemException {
         List<OntologyTerm> terms = new ArrayList<>();
 
@@ -124,10 +134,12 @@ public class OntologyTermLocalServiceImpl
         return terms;
     }
     
+    @Override
     public OntologySpace getSpace(OntologyTerm ontologyTerm) throws PortalException, SystemException {
         return OntologySpaceLocalServiceUtil.getOntologySpace(ontologyTerm.getOntologySpaceId());
     }
     
+    @Override
     public void tagClass(OntologyTerm ontologyTerm, Class clasz, Long id) throws SystemException {
         Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
         
@@ -139,14 +151,14 @@ public class OntologyTermLocalServiceImpl
         OntologyTermEntityLocalServiceUtil.store(ote);
     }
     
+    @Override
     public List<Long> findTagedIdsForClass(OntologyTerm ontologyTerm, Class clasz) throws SystemException  {
-        Long classNameId = ClassNameLocalServiceUtil.getClassNameId(clasz);
-        
         return OntologyTermEntityLocalServiceUtil.findTagedIdsForClass(ontologyTerm.getId(), clasz);
     }
 
 
-    public Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(Long focusAreaId, Long ontologyTermId) throws Exception{
+    @Override
+    public Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(Long focusAreaId, Long ontologyTermId) throws PortalException, SystemException {
 
         OntologyTerm ontologyParentTerm = OntologyTermLocalServiceUtil.getOntologyTerm(ontologyTermId);
         List<OntologyTerm> ontologyTermList = OntologyTermLocalServiceUtil.getAllDescendantTerms(ontologyParentTerm);

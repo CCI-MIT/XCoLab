@@ -45,18 +45,21 @@ public class MessagingMessageConversionLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.MessagingMessageConversionLocalServiceUtil} to access the messaging message conversion local service.
      */
+    @Override
     public int countByType(Long messageId, MessagingMessageConversionType type) throws SystemException {
         return this.getMessagingMessageConversionPersistence().countByfindByType(messageId, type.getTypeId());
     }
     
+    @Override
     public int countByType(Long messageId, String typeName) throws SystemException {
         MessagingMessageConversionType type = MessagingMessageConversionTypeLocalServiceUtil.getByName(typeName);
         return this.getMessagingMessageConversionPersistence().countByfindByType(messageId, type.getTypeId());
     }
     
 
-    public void addConversion(Long messageId, String typeName, String clientIP, 
-            Object extraData, Object extraData2)
+    @Override
+    public void addConversion(Long messageId, String typeName, String clientIP,
+                              Object extraData, Object extraData2)
             throws SystemException, PortalException {
 
         Date now = new Date();
@@ -89,6 +92,7 @@ public class MessagingMessageConversionLocalServiceImpl
 
     }
     
+    @Override
     public int countConversionsByIP(Long messageId, String typeName) throws SystemException {
         
         DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MessagingMessageConversion.class);
@@ -113,6 +117,7 @@ public class MessagingMessageConversionLocalServiceImpl
         
     }
     
+    @Override
     public int countConversionsByRecipient(Long messageId, String typeName) throws SystemException {
         
         DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(MessagingMessageConversion.class);

@@ -47,6 +47,9 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
         attributes.put("characterLimit", getCharacterLimit());
         attributes.put("focusAreaId", getFocusAreaId());
         attributes.put("tier", getTier());
+        attributes.put("allowedContestTypeIds", getAllowedContestTypeIds());
+        attributes.put("allowedValues", getAllowedValues());
+        attributes.put("additionalIds", getAdditionalIds());
         attributes.put("locked", getLocked());
         attributes.put("contestIntegrationRelevance",
             getContestIntegrationRelevance());
@@ -108,6 +111,25 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
 
         if (tier != null) {
             setTier(tier);
+        }
+
+        String allowedContestTypeIds = (String) attributes.get(
+                "allowedContestTypeIds");
+
+        if (allowedContestTypeIds != null) {
+            setAllowedContestTypeIds(allowedContestTypeIds);
+        }
+
+        String allowedValues = (String) attributes.get("allowedValues");
+
+        if (allowedValues != null) {
+            setAllowedValues(allowedValues);
+        }
+
+        String additionalIds = (String) attributes.get("additionalIds");
+
+        if (additionalIds != null) {
+            setAdditionalIds(additionalIds);
         }
 
         Boolean locked = (Boolean) attributes.get("locked");
@@ -322,6 +344,66 @@ public class PlanSectionDefinitionWrapper implements PlanSectionDefinition,
     @Override
     public void setTier(long tier) {
         _planSectionDefinition.setTier(tier);
+    }
+
+    /**
+    * Returns the allowed contest type IDs of this plan section definition.
+    *
+    * @return the allowed contest type IDs of this plan section definition
+    */
+    @Override
+    public java.lang.String getAllowedContestTypeIds() {
+        return _planSectionDefinition.getAllowedContestTypeIds();
+    }
+
+    /**
+    * Sets the allowed contest type IDs of this plan section definition.
+    *
+    * @param allowedContestTypeIds the allowed contest type IDs of this plan section definition
+    */
+    @Override
+    public void setAllowedContestTypeIds(java.lang.String allowedContestTypeIds) {
+        _planSectionDefinition.setAllowedContestTypeIds(allowedContestTypeIds);
+    }
+
+    /**
+    * Returns the allowed values of this plan section definition.
+    *
+    * @return the allowed values of this plan section definition
+    */
+    @Override
+    public java.lang.String getAllowedValues() {
+        return _planSectionDefinition.getAllowedValues();
+    }
+
+    /**
+    * Sets the allowed values of this plan section definition.
+    *
+    * @param allowedValues the allowed values of this plan section definition
+    */
+    @Override
+    public void setAllowedValues(java.lang.String allowedValues) {
+        _planSectionDefinition.setAllowedValues(allowedValues);
+    }
+
+    /**
+    * Returns the additional IDs of this plan section definition.
+    *
+    * @return the additional IDs of this plan section definition
+    */
+    @Override
+    public java.lang.String getAdditionalIds() {
+        return _planSectionDefinition.getAdditionalIds();
+    }
+
+    /**
+    * Sets the additional IDs of this plan section definition.
+    *
+    * @param additionalIds the additional IDs of this plan section definition
+    */
+    @Override
+    public void setAdditionalIds(java.lang.String additionalIds) {
+        _planSectionDefinition.setAdditionalIds(additionalIds);
     }
 
     /**

@@ -1,17 +1,6 @@
 package com.ext.portlet.service.impl;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import org.junit.Test;
-import org.xcolab.services.EventBusService;
-
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
@@ -22,6 +11,16 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.junit.Test;
+import org.xcolab.services.EventBusService;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class ProposalTest extends XCoLabTest {
 	private Random rand = new Random();
@@ -66,7 +65,7 @@ public class ProposalTest extends XCoLabTest {
         
         Proposal proposal = proposalLocalService.create(authorId, 1);
         
-        ProposalAttribute attribute = proposalLocalService.setAttribute(
+        ProposalAttribute attribute = proposalAttributeLocalService.setAttribute(
                 authorId, 
                 proposal.getProposalId(), 
                 attributeName, 
@@ -75,7 +74,7 @@ public class ProposalTest extends XCoLabTest {
                 attributeNumericVal, 
                 attributeRealVal);
         
-        ProposalAttribute fetchedAttribute = proposalLocalService.getAttribute(proposal.getProposalId(), attributeName, attributeAdditionalId);
+        ProposalAttribute fetchedAttribute = proposalAttributeLocalService.getAttribute(proposal.getProposalId(), attributeName, attributeAdditionalId);
         
         assertEquals(attribute, fetchedAttribute);
         
@@ -105,7 +104,7 @@ public class ProposalTest extends XCoLabTest {
         Proposal proposal = proposalLocalService.create(authorId, 1);
         
         for (ProposalAttributeValues valueToSet: valuesToSet) {
-            proposalLocalService.setAttribute(valueToSet.authorId, proposal.getProposalId(), 
+            proposalAttributeLocalService.setAttribute(valueToSet.authorId, proposal.getProposalId(),
                     valueToSet.attributeName, valueToSet.additionalId, valueToSet.stringValue, 
                     valueToSet.numericValue, valueToSet.realValue);
         }
@@ -119,7 +118,7 @@ public class ProposalTest extends XCoLabTest {
             assertEquals(valuesToSet[i].additionalId, proposalVersion.getUpdateAdditionalId());
             
             
-            List<ProposalAttribute> proposalVersionAttributes = proposalLocalService.getAttributes(proposal.getProposalId(), version);
+            List<ProposalAttribute> proposalVersionAttributes = proposalAttributeLocalService.getAttributes(proposal.getProposalId(), version);
             
             for (ProposalAttribute attribute: proposalVersionAttributes) {
                 // find the value for current attribute in values to set by iterating from the beginning

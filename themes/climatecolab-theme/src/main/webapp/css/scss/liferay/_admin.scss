@@ -1,0 +1,216 @@
+//TODO: remove after liferay transition
+
+div#p_p_id_145_ {
+  height: 40px;
+}
+
+#p_p_id_145_ ul {
+  background: transparent none;
+}
+
+#p_p_id_145_ li {
+  background: transparent none;
+}
+
+#p_p_id_145_ div.navbar-inner {
+  width: 100%;
+  @include background-gradient($t-Color__primary);
+  color: contrasting-color($t-Color__primary);
+}
+
+#p_p_id_145_ div.container > div {
+  display: block;
+  position: static;
+}
+
+#_145_dockbar div.container > a {
+  display: none;
+}
+
+#p_p_id_145_ ul.nav {
+  display: inline-block;
+  float: left;
+  position: static;
+}
+
+#p_p_id_145_ ul.nav.nav-account-controls {
+  float: right;
+}
+
+#p_p_id_145_ .dropdown ul {
+  display: none;
+  width: 100%;
+}
+
+#p_p_id_145_ .dropdown ul li span {
+  padding-right: 5px;
+}
+
+#p_p_id_145_ ul.nav.nav-account-controls > li {
+  float: left;
+}
+
+#p_p_id_145_ li.open ul {
+  display: block;
+  background-color: $t-Color__primary;
+}
+
+#p_p_id_145_ ul.nav.nav-account-controls li.dropdown a {
+  display: block;
+}
+
+#p_p_id_145_ i {
+  width: 9px;
+  height: 9px;
+}
+
+#p_p_id_145_ i.icon-plus {
+  background-image: url(../images/contest-icon-plus.png) !important;
+}
+
+#p_p_id_145_ ul.nav.nav-add-controls li > a {
+  background: $t-Color__primary;
+  border: 1px solid;
+  border-radius: 3px;
+  padding-top: 2px;
+}
+
+#p_p_id_145_ ul.nav.nav-add-controls li a > span {
+  z-index: 100;
+}
+
+#p_p_id_145_ ul#_145_navAddControls > li {
+  display: inline-block;
+}
+
+#p_p_id_145_ .nav.nav-account-controls > li {
+  position: relative;
+}
+
+#p_p_id_145_ ul.nav.nav-account-controls li ul.dropdown-menu {
+  position: absolute;
+  z-index: 1000;
+  width: 200px;
+}
+
+#p_p_id_145_ .dropdown ul li span:hover {
+  color: black;
+}
+
+.admin-overlay-wrap {
+  background: url(../images/adminoverlay-top.png) repeat-x;
+  width: 100%;
+  padding-top: 13px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.admin-overlay {
+  background: url(../images/adminoverlay-bg.png);
+  width: 100%;
+  color: white;
+}
+
+.admin-left {
+  float: left;
+  width: 601px;
+  padding: 25px 0 25px 15px;
+  margin-right: 38px;
+  font-size: 20px;
+  line-height: 29px;
+}
+
+.admin-right {
+  float: left;
+  width: 330px;
+  padding: 25px 0;
+  font-size: 14px;
+  line-height: 29px;
+}
+
+.savechanges-wrap {
+  background: url(../images/adminoverlay-bg.png);
+  width: 528px;
+  padding: 11px 10px;
+  margin-left: -264px;
+  position: fixed;
+  left: 50%;
+  bottom: 350px;
+  z-index: 99;
+  @include border-radius(5px);
+}
+
+.c-Message__popup .savechanges-wrap {
+  bottom: auto;
+  top: 50px;
+}
+
+.savechanges {
+  background: white;
+  padding: 42px 60px 32px 46px;
+  @include border-radius(5px);
+}
+
+.savechanges h4 {
+  font-size: 22px;
+  color: $t-Color__grey--dark;
+  margin-bottom: 20px;
+  font-weight: $b-Typography__fontWeight;
+}
+
+.savechanges p {
+  font-size: 15px;
+  color: black;
+  line-height: 24px;
+  margin-bottom: 30px;
+}
+
+.savechanges .btns {
+  text-align: center;
+}
+
+.admin_left {
+  float: left;
+  width: 474px;
+}
+
+.admin_right {
+  float: left;
+  width: 454px;
+  margin: 0 0 0 56px;
+}
+
+.admin_box {
+  background: $t-Color__grey--lightest;
+  padding: 18px 20px;
+  margin: 10px 0 40px 0;
+}
+
+.admin_box span {
+  padding-left: 25px;
+  font-style: italic;
+}
+
+.admin_left input {
+  margin-right: 7px;
+}
+
+.adm {
+  margin: 15px 0 40px 0;
+}
+
+.adm2 {
+  margin: 0 0 40px 0;
+}
+
+.adm2 td.createdate {
+  padding: 5px 0 2px 10px;
+}
+
+.adm2 tr.t td {
+  border-bottom: 1px solid $t-Color__grey--darkest;
+  padding-bottom: 5px;
+  padding-left: 10px;
+}

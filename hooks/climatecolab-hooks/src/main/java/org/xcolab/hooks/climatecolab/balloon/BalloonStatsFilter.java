@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ext.portlet.model.BalloonStatsEntry;
 import com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil;
+import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -23,13 +24,14 @@ public class BalloonStatsFilter implements Filter {
 
     private static final String STATS_ID = "statsId";
     private static final String CONTEST_ID = "contestId";
-    private static final String CONTEST_LINK = "/web/guest/plans/-/plans/contestId/CONTEST_ID";
     private final static Log _log = LogFactoryUtil.getLog(BalloonStatsFilter.class);
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
 
@@ -44,20 +46,18 @@ public class BalloonStatsFilter implements Filter {
                 entry.setChoosenContest(entry.getChoosenContest() | 2);
             }
             BalloonStatsEntryLocalServiceUtil.store(entry);
-        } catch (SystemException e) {
+        } catch (SystemException | PortalException e) {
             _log.error(e);
             return;
 
-        } catch (PortalException e) {
-            _log.error(e);
-            return;
         }
 
         HttpServletResponse httpResp = (HttpServletResponse) response;
-        httpResp.sendRedirect(CONTEST_LINK.replaceAll("CONTEST_ID", String.valueOf(contestId)));
+        httpResp.sendRedirect(ContestLocalServiceUtil.getContestLinkUrl(contestId));
 
     }
 
+    @Override
     public void destroy() {
 
     }

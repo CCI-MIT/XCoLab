@@ -1,12 +1,5 @@
 package org.xcolab.portlets.feeds.wrappers;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.portlet.PortletRequest;
-
-import org.xcolab.portlets.feeds.Helper;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -15,6 +8,11 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.ocpsoft.pretty.time.PrettyTime;
+import org.xcolab.portlets.feeds.Helper;
+
+import javax.portlet.PortletRequest;
+import java.io.Serializable;
+import java.util.Date;
 
 public class MemberWrapper implements Serializable{
 	private static final long serialVersionUID = 1L;

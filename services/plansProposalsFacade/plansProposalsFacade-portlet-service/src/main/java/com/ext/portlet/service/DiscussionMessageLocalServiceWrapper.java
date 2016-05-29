@@ -371,13 +371,13 @@ public class DiscussionMessageLocalServiceWrapper
 
     @Override
     public com.ext.portlet.model.DiscussionMessage addThreadMessage(
-        com.ext.portlet.model.DiscussionMessage dMessage,
+        com.ext.portlet.model.DiscussionMessage thread,
         java.lang.String subject, java.lang.String body,
         com.liferay.portal.model.User author)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
-        return _discussionMessageLocalService.addThreadMessage(dMessage,
-            subject, body, author);
+        return _discussionMessageLocalService.addThreadMessage(thread, subject,
+            body, author);
     }
 
     @Override
@@ -460,6 +460,39 @@ public class DiscussionMessageLocalServiceWrapper
     public boolean hasFlag(long messageId, java.lang.String flag)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _discussionMessageLocalService.hasFlag(messageId, flag);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.getByAuthorId(authorId);
+    }
+
+    @Override
+    public void subscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        _discussionMessageLocalService.subscribe(userId,
+            discussionCategoryGroupId, categoryId, threadId);
+    }
+
+    @Override
+    public void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _discussionMessageLocalService.unsubscribe(userId,
+            discussionCategoryGroupId, categoryId, threadId);
+    }
+
+    @Override
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _discussionMessageLocalService.isSubscribed(userId,
+            discussionCategoryGroupId, categoryId, threadId);
     }
 
     /**

@@ -40,7 +40,7 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
         attributes.put("id", getId());
         attributes.put("contestId", getContestId());
         attributes.put("userId", getUserId());
-        attributes.put("role", getRole());
+        attributes.put("roleId", getRoleId());
 
         return attributes;
     }
@@ -65,10 +65,10 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
             setUserId(userId);
         }
 
-        String role = (String) attributes.get("role");
+        Long roleId = (Long) attributes.get("roleId");
 
-        if (role != null) {
-            setRole(role);
+        if (roleId != null) {
+            setRoleId(roleId);
         }
     }
 
@@ -175,23 +175,23 @@ public class ContestTeamMemberWrapper implements ContestTeamMember,
     }
 
     /**
-    * Returns the role of this contest team member.
+    * Returns the role ID of this contest team member.
     *
-    * @return the role of this contest team member
+    * @return the role ID of this contest team member
     */
     @Override
-    public java.lang.String getRole() {
-        return _contestTeamMember.getRole();
+    public long getRoleId() {
+        return _contestTeamMember.getRoleId();
     }
 
     /**
-    * Sets the role of this contest team member.
+    * Sets the role ID of this contest team member.
     *
-    * @param role the role of this contest team member
+    * @param roleId the role ID of this contest team member
     */
     @Override
-    public void setRole(java.lang.String role) {
-        _contestTeamMember.setRole(role);
+    public void setRoleId(long roleId) {
+        _contestTeamMember.setRoleId(roleId);
     }
 
     @Override

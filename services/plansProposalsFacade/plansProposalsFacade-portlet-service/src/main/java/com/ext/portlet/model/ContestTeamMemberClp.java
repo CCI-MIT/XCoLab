@@ -25,7 +25,7 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
     private long _contestId;
     private long _userId;
     private String _userUuid;
-    private String _role;
+    private long _roleId;
     private BaseModel<?> _contestTeamMemberRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
@@ -69,7 +69,7 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
         attributes.put("id", getId());
         attributes.put("contestId", getContestId());
         attributes.put("userId", getUserId());
-        attributes.put("role", getRole());
+        attributes.put("roleId", getRoleId());
 
         return attributes;
     }
@@ -94,10 +94,10 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
             setUserId(userId);
         }
 
-        String role = (String) attributes.get("role");
+        Long roleId = (Long) attributes.get("roleId");
 
-        if (role != null) {
-            setRole(role);
+        if (roleId != null) {
+            setRoleId(roleId);
         }
     }
 
@@ -178,21 +178,21 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
     }
 
     @Override
-    public String getRole() {
-        return _role;
+    public long getRoleId() {
+        return _roleId;
     }
 
     @Override
-    public void setRole(String role) {
-        _role = role;
+    public void setRoleId(long roleId) {
+        _roleId = roleId;
 
         if (_contestTeamMemberRemoteModel != null) {
             try {
                 Class<?> clazz = _contestTeamMemberRemoteModel.getClass();
 
-                Method method = clazz.getMethod("setRole", String.class);
+                Method method = clazz.getMethod("setRoleId", long.class);
 
-                method.invoke(_contestTeamMemberRemoteModel, role);
+                method.invoke(_contestTeamMemberRemoteModel, roleId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -271,7 +271,7 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
         clone.setId(getId());
         clone.setContestId(getContestId());
         clone.setUserId(getUserId());
-        clone.setRole(getRole());
+        clone.setRoleId(getRoleId());
 
         return clone;
     }
@@ -335,8 +335,8 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
         sb.append(getContestId());
         sb.append(", userId=");
         sb.append(getUserId());
-        sb.append(", role=");
-        sb.append(getRole());
+        sb.append(", roleId=");
+        sb.append(getRoleId());
         sb.append("}");
 
         return sb.toString();
@@ -363,8 +363,8 @@ public class ContestTeamMemberClp extends BaseModelImpl<ContestTeamMember>
         sb.append(getUserId());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>role</column-name><column-value><![CDATA[");
-        sb.append(getRole());
+            "<column><column-name>roleId</column-name><column-value><![CDATA[");
+        sb.append(getRoleId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

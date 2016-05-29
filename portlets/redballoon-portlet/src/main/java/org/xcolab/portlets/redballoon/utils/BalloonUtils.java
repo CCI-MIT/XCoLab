@@ -29,7 +29,7 @@ import java.util.UUID;
 public class BalloonUtils {
 	
 	private static Random rand = new Random();
-	private final static String SHARE_LINK_PATTERN = "%s/socialnetworkprize2015/-/link/%s";
+	private final static String SHARE_LINK_PATTERN = "%s/socialnetworkprize2016/-/link/%s";
 	private final static Log _log = LogFactoryUtil.getLog(BalloonUtils.class);
 	
 	public static BalloonUserTracking getBalloonUserTracking(PortletRequest request, PortletResponse response, 

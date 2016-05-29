@@ -1,9 +1,9 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import com.ext.portlet.model.OntologyTerm;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ext.portlet.model.OntologyTerm;
 
 public class OntologyTermWrapper {
 	private final OntologyTerm wrapped;

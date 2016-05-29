@@ -25,6 +25,7 @@ public class RibbonWrapper {
 
     public RibbonWrapper(ProposalWrapper proposalWrapper) {
         this.proposalWrapper = proposalWrapper;
+        contestPhaseRibbonType = getContestPhaseRibbonType();
     }
 
     private ContestPhaseRibbonType getContestPhaseRibbonType() {
@@ -52,11 +53,7 @@ public class RibbonWrapper {
                 } else {
                     _log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalId));
                 }
-            } catch (NoSuchProposalContestPhaseAttributeException e) {
-                //TODO: can (and should) we cache this failure to prevent repeated failed requests?
-                _log.info(String.format("Could not find attribute RIBBON for proposal %d, contest phase %d",
-                        proposalId,
-                        contestPhase.getContestPhasePK()));
+            } catch (NoSuchProposalContestPhaseAttributeException ignored) {
             } catch (PortalException | SystemException e) {
                 _log.error(String.format("Liferay exception occurred while getting ContestPhaseRibbonType for proposal %d",
                         proposalId), e);
@@ -66,27 +63,34 @@ public class RibbonWrapper {
     }
 
     public int getRibbon() {
-        if (getContestPhaseRibbonType() != null) {
-            return getContestPhaseRibbonType().getRibbon();
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getRibbon();
         }
         return 0;
     }
     public long getRibbonId() {
-        if (getContestPhaseRibbonType() != null) {
-            return getContestPhaseRibbonType().getId();
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getId();
         }
         return 0L;
     }
 
     public String getRibbonText() {
-        if (getContestPhaseRibbonType() != null) {
-            return getContestPhaseRibbonType().getHoverText();
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getHoverText();
         }
         return "";
     }
 
+    public int getSortOrder() {
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getSortOrder();
+        }
+        return Integer.MAX_VALUE;
+    }
+
     public String getRibbonTitle() {
-        if (getContestPhaseRibbonType() != null) {
+        if (contestPhaseRibbonType != null) {
             if (getRibbonText().equalsIgnoreCase("Finalist") || getRibbonText().equalsIgnoreCase("Judges' Special Commendation")){
                 return "Finalist";
             } else if (getRibbonText().equalsIgnoreCase("Semi-Finalist")) {
@@ -98,5 +102,4 @@ public class RibbonWrapper {
         _log.error(String.format("Could not get ribbon title: ContestPhaseRibbonType was null for proposal %d", proposalWrapper.getProposalId()));
         return "";
     }
-
 }

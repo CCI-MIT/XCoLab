@@ -1,4 +1,3 @@
-<%@ page import="java.net.URLDecoder" %>
 <%--
 /**
  * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
@@ -736,13 +735,18 @@
 
       StringBuilder stackTraceMessage = new StringBuilder();
       stackTraceMessage.append("<p><strong>Exception:</strong><br/>");
-      stackTraceMessage.append(e.toString() + "</p>");
-      stackTraceMessage.append("<p><strong>Stacktrace:</strong><br/><pre>");
-      for (StackTraceElement element : e.getStackTrace()) {
-        stackTraceMessage.append(element.toString());
-        stackTraceMessage.append("<br/>");
+      stackTraceMessage.append(e.toString()).append("</p>");
+      stackTraceMessage.append("<p><strong>Stacktrace:</strong><br/><p><pre>");
+      for (Throwable throwable = e; throwable != null; throwable = throwable.getCause()) {
+        if (throwable != e) {
+          stackTraceMessage.append("</pre></p><p><strong>Caused by ").append(throwable.toString()).append("</strong> <pre>");
+        }
+        for (StackTraceElement element : throwable.getStackTrace()) {
+          stackTraceMessage.append(element.toString());
+          stackTraceMessage.append("<br/>");
+        }
+        stackTraceMessage.append("</pre></p>");
       }
-      stackTraceMessage.append("</pre></p>");
       renderRequestImpl.setAttribute("stackTrace", URLEncoder.encode(stackTraceMessage.toString(), "UTF-8"));
 
       // Under parallel rendering context. An interrupted state means the call

@@ -52,13 +52,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     public static final String TABLE_NAME = "xcolab_Contest";
     public static final Object[][] TABLE_COLUMNS = {
             { "ContestPK", Types.BIGINT },
+            { "contestTypeId", Types.BIGINT },
             { "ContestName", Types.VARCHAR },
             { "ContestShortName", Types.VARCHAR },
+            { "ContestUrlName", Types.VARCHAR },
+            { "ContestYear", Types.BIGINT },
             { "ContestDescription", Types.VARCHAR },
             { "ContestModelDescription", Types.VARCHAR },
             { "ContestPositionsDescription", Types.VARCHAR },
-            { "defaultPlanDescription", Types.CLOB },
-            { "PlanTypeId", Types.BIGINT },
             { "created", Types.TIMESTAMP },
             { "updated", Types.TIMESTAMP },
             { "authorId", Types.BIGINT },
@@ -68,6 +69,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "proposalCreationTemplateString", Types.VARCHAR },
             { "voteTemplateString", Types.VARCHAR },
             { "proposalVoteTemplateString", Types.VARCHAR },
+            { "proposalVoteConfirmationTemplateString", Types.VARCHAR },
             { "voteQuestionTemplateString", Types.VARCHAR },
             { "focusAreaId", Types.BIGINT },
             { "contestTier", Types.BIGINT },
@@ -98,9 +100,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             { "show_in_tile_view", Types.BOOLEAN },
             { "show_in_list_view", Types.BOOLEAN },
             { "show_in_outline_view", Types.BOOLEAN },
-            { "hideRibbons", Types.BOOLEAN }
+            { "hideRibbons", Types.BOOLEAN },
+            { "resourceArticleId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,defaultPlanDescription TEXT null,PlanTypeId LONG,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,proposalVoteTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,fellowDiscussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN,hideRibbons BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_Contest (ContestPK LONG not null primary key,contestTypeId LONG,ContestName VARCHAR(1024) null,ContestShortName VARCHAR(512) null,ContestUrlName VARCHAR(75) null,ContestYear LONG,ContestDescription TEXT null,ContestModelDescription TEXT null,ContestPositionsDescription TEXT null,created DATE null,updated DATE null,authorId LONG,contestActive BOOLEAN,planTemplateId LONG,contestScheduleId LONG,proposalCreationTemplateString VARCHAR(75) null,voteTemplateString VARCHAR(75) null,proposalVoteTemplateString VARCHAR(75) null,proposalVoteConfirmationTemplateString VARCHAR(75) null,voteQuestionTemplateString VARCHAR(75) null,focusAreaId LONG,contestTier LONG,contestLogoId LONG,featured_ BOOLEAN,plansOpenByDefault BOOLEAN,sponsorLogoId LONG,sponsorText VARCHAR(500) null,sponsorLink VARCHAR(75) null,flag INTEGER,flagText VARCHAR(256) null,flagTooltip VARCHAR(512) null,groupId LONG,discussionGroupId LONG,fellowDiscussionGroupId LONG,weight INTEGER,resourcesUrl VARCHAR(1024) null,contestPrivate BOOLEAN,usePermissions BOOLEAN,contestCreationStatus VARCHAR(75) null,defaultModelId LONG,otherModels VARCHAR(75) null,defaultModelSettings VARCHAR(75) null,points DOUBLE,defaultParentPointType LONG,pointDistributionStrategy VARCHAR(75) null,emailTemplateUrl VARCHAR(500) null,show_in_tile_view BOOLEAN,show_in_list_view BOOLEAN,show_in_outline_view BOOLEAN,hideRibbons BOOLEAN,resourceArticleId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_Contest";
     public static final String ORDER_BY_JPQL = " ORDER BY contest.weight ASC, contest.created ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_Contest.weight ASC, xcolab_Contest.created ASC";
@@ -116,15 +119,16 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
                 "value.object.column.bitmask.enabled.com.ext.portlet.model.Contest"),
             true);
-    public static long PLANTYPEID_COLUMN_BITMASK = 1L;
-    public static long CONTESTACTIVE_COLUMN_BITMASK = 2L;
-    public static long CONTESTPRIVATE_COLUMN_BITMASK = 4L;
-    public static long CONTESTTIER_COLUMN_BITMASK = 8L;
-    public static long FEATURED_COLUMN_BITMASK = 16L;
-    public static long FLAG_COLUMN_BITMASK = 32L;
-    public static long FLAGTEXT_COLUMN_BITMASK = 64L;
-    public static long WEIGHT_COLUMN_BITMASK = 128L;
-    public static long CREATED_COLUMN_BITMASK = 256L;
+    public static long CONTESTURLNAME_COLUMN_BITMASK = 1L;
+    public static long CONTESTYEAR_COLUMN_BITMASK = 2L;
+    public static long CONTESTACTIVE_COLUMN_BITMASK = 4L;
+    public static long CONTESTPRIVATE_COLUMN_BITMASK = 8L;
+    public static long CONTESTTIER_COLUMN_BITMASK = 16L;
+    public static long CONTESTTYPEID_COLUMN_BITMASK = 32L;
+    public static long FEATURED_COLUMN_BITMASK = 64L;
+    public static long FLAG_COLUMN_BITMASK = 128L;
+    public static long WEIGHT_COLUMN_BITMASK = 256L;
+    public static long CREATED_COLUMN_BITMASK = 512L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
                 "lock.expiration.time.com.ext.portlet.model.Contest"));
     private static ClassLoader _classLoader = Contest.class.getClassLoader();
@@ -132,15 +136,19 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             Contest.class
         };
     private long _ContestPK;
+    private long _contestTypeId;
+    private long _originalContestTypeId;
+    private boolean _setOriginalContestTypeId;
     private String _ContestName;
     private String _ContestShortName;
+    private String _ContestUrlName;
+    private String _originalContestUrlName;
+    private long _ContestYear;
+    private long _originalContestYear;
+    private boolean _setOriginalContestYear;
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
-    private String _defaultPlanDescription;
-    private long _PlanTypeId;
-    private long _originalPlanTypeId;
-    private boolean _setOriginalPlanTypeId;
     private Date _created;
     private Date _updated;
     private long _authorId;
@@ -152,6 +160,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private String _proposalCreationTemplateString;
     private String _voteTemplateString;
     private String _proposalVoteTemplateString;
+    private String _proposalVoteConfirmationTemplateString;
     private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
@@ -169,7 +178,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private int _originalFlag;
     private boolean _setOriginalFlag;
     private String _flagText;
-    private String _originalFlagText;
     private String _flagTooltip;
     private long _groupId;
     private long _discussionGroupId;
@@ -192,6 +200,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
     private boolean _hideRibbons;
+    private long _resourceArticleId;
     private long _columnBitmask;
     private Contest _escapedModel;
 
@@ -212,13 +221,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         Contest model = new ContestImpl();
 
         model.setContestPK(soapModel.getContestPK());
+        model.setContestTypeId(soapModel.getContestTypeId());
         model.setContestName(soapModel.getContestName());
         model.setContestShortName(soapModel.getContestShortName());
+        model.setContestUrlName(soapModel.getContestUrlName());
+        model.setContestYear(soapModel.getContestYear());
         model.setContestDescription(soapModel.getContestDescription());
         model.setContestModelDescription(soapModel.getContestModelDescription());
         model.setContestPositionsDescription(soapModel.getContestPositionsDescription());
-        model.setDefaultPlanDescription(soapModel.getDefaultPlanDescription());
-        model.setPlanTypeId(soapModel.getPlanTypeId());
         model.setCreated(soapModel.getCreated());
         model.setUpdated(soapModel.getUpdated());
         model.setAuthorId(soapModel.getAuthorId());
@@ -228,6 +238,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setProposalCreationTemplateString(soapModel.getProposalCreationTemplateString());
         model.setVoteTemplateString(soapModel.getVoteTemplateString());
         model.setProposalVoteTemplateString(soapModel.getProposalVoteTemplateString());
+        model.setProposalVoteConfirmationTemplateString(soapModel.getProposalVoteConfirmationTemplateString());
         model.setVoteQuestionTemplateString(soapModel.getVoteQuestionTemplateString());
         model.setFocusAreaId(soapModel.getFocusAreaId());
         model.setContestTier(soapModel.getContestTier());
@@ -259,6 +270,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         model.setShow_in_list_view(soapModel.getShow_in_list_view());
         model.setShow_in_outline_view(soapModel.getShow_in_outline_view());
         model.setHideRibbons(soapModel.getHideRibbons());
+        model.setResourceArticleId(soapModel.getResourceArticleId());
 
         return model;
     }
@@ -318,14 +330,15 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         Map<String, Object> attributes = new HashMap<String, Object>();
 
         attributes.put("ContestPK", getContestPK());
+        attributes.put("contestTypeId", getContestTypeId());
         attributes.put("ContestName", getContestName());
         attributes.put("ContestShortName", getContestShortName());
+        attributes.put("ContestUrlName", getContestUrlName());
+        attributes.put("ContestYear", getContestYear());
         attributes.put("ContestDescription", getContestDescription());
         attributes.put("ContestModelDescription", getContestModelDescription());
         attributes.put("ContestPositionsDescription",
             getContestPositionsDescription());
-        attributes.put("defaultPlanDescription", getDefaultPlanDescription());
-        attributes.put("PlanTypeId", getPlanTypeId());
         attributes.put("created", getCreated());
         attributes.put("updated", getUpdated());
         attributes.put("authorId", getAuthorId());
@@ -337,6 +350,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("voteTemplateString", getVoteTemplateString());
         attributes.put("proposalVoteTemplateString",
             getProposalVoteTemplateString());
+        attributes.put("proposalVoteConfirmationTemplateString",
+            getProposalVoteConfirmationTemplateString());
         attributes.put("voteQuestionTemplateString",
             getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
@@ -370,6 +385,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
         attributes.put("hideRibbons", getHideRibbons());
+        attributes.put("resourceArticleId", getResourceArticleId());
 
         return attributes;
     }
@@ -382,6 +398,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
             setContestPK(ContestPK);
         }
 
+        Long contestTypeId = (Long) attributes.get("contestTypeId");
+
+        if (contestTypeId != null) {
+            setContestTypeId(contestTypeId);
+        }
+
         String ContestName = (String) attributes.get("ContestName");
 
         if (ContestName != null) {
@@ -392,6 +414,18 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (ContestShortName != null) {
             setContestShortName(ContestShortName);
+        }
+
+        String ContestUrlName = (String) attributes.get("ContestUrlName");
+
+        if (ContestUrlName != null) {
+            setContestUrlName(ContestUrlName);
+        }
+
+        Long ContestYear = (Long) attributes.get("ContestYear");
+
+        if (ContestYear != null) {
+            setContestYear(ContestYear);
         }
 
         String ContestDescription = (String) attributes.get(
@@ -413,19 +447,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (ContestPositionsDescription != null) {
             setContestPositionsDescription(ContestPositionsDescription);
-        }
-
-        String defaultPlanDescription = (String) attributes.get(
-                "defaultPlanDescription");
-
-        if (defaultPlanDescription != null) {
-            setDefaultPlanDescription(defaultPlanDescription);
-        }
-
-        Long PlanTypeId = (Long) attributes.get("PlanTypeId");
-
-        if (PlanTypeId != null) {
-            setPlanTypeId(PlanTypeId);
         }
 
         Date created = (Date) attributes.get("created");
@@ -483,6 +504,13 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         if (proposalVoteTemplateString != null) {
             setProposalVoteTemplateString(proposalVoteTemplateString);
+        }
+
+        String proposalVoteConfirmationTemplateString = (String) attributes.get(
+                "proposalVoteConfirmationTemplateString");
+
+        if (proposalVoteConfirmationTemplateString != null) {
+            setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
         }
 
         String voteQuestionTemplateString = (String) attributes.get(
@@ -680,6 +708,12 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         if (hideRibbons != null) {
             setHideRibbons(hideRibbons);
         }
+
+        Long resourceArticleId = (Long) attributes.get("resourceArticleId");
+
+        if (resourceArticleId != null) {
+            setResourceArticleId(resourceArticleId);
+        }
     }
 
     @JSON
@@ -691,6 +725,29 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     @Override
     public void setContestPK(long ContestPK) {
         _ContestPK = ContestPK;
+    }
+
+    @JSON
+    @Override
+    public long getContestTypeId() {
+        return _contestTypeId;
+    }
+
+    @Override
+    public void setContestTypeId(long contestTypeId) {
+        _columnBitmask |= CONTESTTYPEID_COLUMN_BITMASK;
+
+        if (!_setOriginalContestTypeId) {
+            _setOriginalContestTypeId = true;
+
+            _originalContestTypeId = _contestTypeId;
+        }
+
+        _contestTypeId = contestTypeId;
+    }
+
+    public long getOriginalContestTypeId() {
+        return _originalContestTypeId;
     }
 
     @JSON
@@ -721,6 +778,54 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     @Override
     public void setContestShortName(String ContestShortName) {
         _ContestShortName = ContestShortName;
+    }
+
+    @JSON
+    @Override
+    public String getContestUrlName() {
+        if (_ContestUrlName == null) {
+            return StringPool.BLANK;
+        } else {
+            return _ContestUrlName;
+        }
+    }
+
+    @Override
+    public void setContestUrlName(String ContestUrlName) {
+        _columnBitmask |= CONTESTURLNAME_COLUMN_BITMASK;
+
+        if (_originalContestUrlName == null) {
+            _originalContestUrlName = _ContestUrlName;
+        }
+
+        _ContestUrlName = ContestUrlName;
+    }
+
+    public String getOriginalContestUrlName() {
+        return GetterUtil.getString(_originalContestUrlName);
+    }
+
+    @JSON
+    @Override
+    public long getContestYear() {
+        return _ContestYear;
+    }
+
+    @Override
+    public void setContestYear(long ContestYear) {
+        _columnBitmask |= CONTESTYEAR_COLUMN_BITMASK;
+
+        if (!_setOriginalContestYear) {
+            _setOriginalContestYear = true;
+
+            _originalContestYear = _ContestYear;
+        }
+
+        _ContestYear = ContestYear;
+    }
+
+    public long getOriginalContestYear() {
+        return _originalContestYear;
     }
 
     @JSON
@@ -767,44 +872,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     public void setContestPositionsDescription(
         String ContestPositionsDescription) {
         _ContestPositionsDescription = ContestPositionsDescription;
-    }
-
-    @JSON
-    @Override
-    public String getDefaultPlanDescription() {
-        if (_defaultPlanDescription == null) {
-            return StringPool.BLANK;
-        } else {
-            return _defaultPlanDescription;
-        }
-    }
-
-    @Override
-    public void setDefaultPlanDescription(String defaultPlanDescription) {
-        _defaultPlanDescription = defaultPlanDescription;
-    }
-
-    @JSON
-    @Override
-    public long getPlanTypeId() {
-        return _PlanTypeId;
-    }
-
-    @Override
-    public void setPlanTypeId(long PlanTypeId) {
-        _columnBitmask |= PLANTYPEID_COLUMN_BITMASK;
-
-        if (!_setOriginalPlanTypeId) {
-            _setOriginalPlanTypeId = true;
-
-            _originalPlanTypeId = _PlanTypeId;
-        }
-
-        _PlanTypeId = PlanTypeId;
-    }
-
-    public long getOriginalPlanTypeId() {
-        return _originalPlanTypeId;
     }
 
     @JSON
@@ -936,6 +1003,22 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     @Override
     public void setProposalVoteTemplateString(String proposalVoteTemplateString) {
         _proposalVoteTemplateString = proposalVoteTemplateString;
+    }
+
+    @JSON
+    @Override
+    public String getProposalVoteConfirmationTemplateString() {
+        if (_proposalVoteConfirmationTemplateString == null) {
+            return StringPool.BLANK;
+        } else {
+            return _proposalVoteConfirmationTemplateString;
+        }
+    }
+
+    @Override
+    public void setProposalVoteConfirmationTemplateString(
+        String proposalVoteConfirmationTemplateString) {
+        _proposalVoteConfirmationTemplateString = proposalVoteConfirmationTemplateString;
     }
 
     @JSON
@@ -1118,17 +1201,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public void setFlagText(String flagText) {
-        _columnBitmask |= FLAGTEXT_COLUMN_BITMASK;
-
-        if (_originalFlagText == null) {
-            _originalFlagText = _flagText;
-        }
-
         _flagText = flagText;
-    }
-
-    public String getOriginalFlagText() {
-        return GetterUtil.getString(_originalFlagText);
     }
 
     @JSON
@@ -1423,6 +1496,17 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         _hideRibbons = hideRibbons;
     }
 
+    @JSON
+    @Override
+    public long getResourceArticleId() {
+        return _resourceArticleId;
+    }
+
+    @Override
+    public void setResourceArticleId(long resourceArticleId) {
+        _resourceArticleId = resourceArticleId;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -1455,13 +1539,14 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         ContestImpl contestImpl = new ContestImpl();
 
         contestImpl.setContestPK(getContestPK());
+        contestImpl.setContestTypeId(getContestTypeId());
         contestImpl.setContestName(getContestName());
         contestImpl.setContestShortName(getContestShortName());
+        contestImpl.setContestUrlName(getContestUrlName());
+        contestImpl.setContestYear(getContestYear());
         contestImpl.setContestDescription(getContestDescription());
         contestImpl.setContestModelDescription(getContestModelDescription());
         contestImpl.setContestPositionsDescription(getContestPositionsDescription());
-        contestImpl.setDefaultPlanDescription(getDefaultPlanDescription());
-        contestImpl.setPlanTypeId(getPlanTypeId());
         contestImpl.setCreated(getCreated());
         contestImpl.setUpdated(getUpdated());
         contestImpl.setAuthorId(getAuthorId());
@@ -1471,6 +1556,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setProposalCreationTemplateString(getProposalCreationTemplateString());
         contestImpl.setVoteTemplateString(getVoteTemplateString());
         contestImpl.setProposalVoteTemplateString(getProposalVoteTemplateString());
+        contestImpl.setProposalVoteConfirmationTemplateString(getProposalVoteConfirmationTemplateString());
         contestImpl.setVoteQuestionTemplateString(getVoteQuestionTemplateString());
         contestImpl.setFocusAreaId(getFocusAreaId());
         contestImpl.setContestTier(getContestTier());
@@ -1502,6 +1588,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         contestImpl.setShow_in_list_view(getShow_in_list_view());
         contestImpl.setShow_in_outline_view(getShow_in_outline_view());
         contestImpl.setHideRibbons(getHideRibbons());
+        contestImpl.setResourceArticleId(getResourceArticleId());
 
         contestImpl.resetOriginalValues();
 
@@ -1563,9 +1650,15 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
     public void resetOriginalValues() {
         ContestModelImpl contestModelImpl = this;
 
-        contestModelImpl._originalPlanTypeId = contestModelImpl._PlanTypeId;
+        contestModelImpl._originalContestTypeId = contestModelImpl._contestTypeId;
 
-        contestModelImpl._setOriginalPlanTypeId = false;
+        contestModelImpl._setOriginalContestTypeId = false;
+
+        contestModelImpl._originalContestUrlName = contestModelImpl._ContestUrlName;
+
+        contestModelImpl._originalContestYear = contestModelImpl._ContestYear;
+
+        contestModelImpl._setOriginalContestYear = false;
 
         contestModelImpl._originalContestActive = contestModelImpl._contestActive;
 
@@ -1583,8 +1676,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         contestModelImpl._setOriginalFlag = false;
 
-        contestModelImpl._originalFlagText = contestModelImpl._flagText;
-
         contestModelImpl._originalContestPrivate = contestModelImpl._contestPrivate;
 
         contestModelImpl._setOriginalContestPrivate = false;
@@ -1597,6 +1688,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         ContestCacheModel contestCacheModel = new ContestCacheModel();
 
         contestCacheModel.ContestPK = getContestPK();
+
+        contestCacheModel.contestTypeId = getContestTypeId();
 
         contestCacheModel.ContestName = getContestName();
 
@@ -1613,6 +1706,16 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         if ((ContestShortName != null) && (ContestShortName.length() == 0)) {
             contestCacheModel.ContestShortName = null;
         }
+
+        contestCacheModel.ContestUrlName = getContestUrlName();
+
+        String ContestUrlName = contestCacheModel.ContestUrlName;
+
+        if ((ContestUrlName != null) && (ContestUrlName.length() == 0)) {
+            contestCacheModel.ContestUrlName = null;
+        }
+
+        contestCacheModel.ContestYear = getContestYear();
 
         contestCacheModel.ContestDescription = getContestDescription();
 
@@ -1639,17 +1742,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
                 (ContestPositionsDescription.length() == 0)) {
             contestCacheModel.ContestPositionsDescription = null;
         }
-
-        contestCacheModel.defaultPlanDescription = getDefaultPlanDescription();
-
-        String defaultPlanDescription = contestCacheModel.defaultPlanDescription;
-
-        if ((defaultPlanDescription != null) &&
-                (defaultPlanDescription.length() == 0)) {
-            contestCacheModel.defaultPlanDescription = null;
-        }
-
-        contestCacheModel.PlanTypeId = getPlanTypeId();
 
         Date created = getCreated();
 
@@ -1699,6 +1791,15 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         if ((proposalVoteTemplateString != null) &&
                 (proposalVoteTemplateString.length() == 0)) {
             contestCacheModel.proposalVoteTemplateString = null;
+        }
+
+        contestCacheModel.proposalVoteConfirmationTemplateString = getProposalVoteConfirmationTemplateString();
+
+        String proposalVoteConfirmationTemplateString = contestCacheModel.proposalVoteConfirmationTemplateString;
+
+        if ((proposalVoteConfirmationTemplateString != null) &&
+                (proposalVoteConfirmationTemplateString.length() == 0)) {
+            contestCacheModel.proposalVoteConfirmationTemplateString = null;
         }
 
         contestCacheModel.voteQuestionTemplateString = getVoteQuestionTemplateString();
@@ -1833,29 +1934,33 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
         contestCacheModel.hideRibbons = getHideRibbons();
 
+        contestCacheModel.resourceArticleId = getResourceArticleId();
+
         return contestCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(103);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
+        sb.append(", contestTypeId=");
+        sb.append(getContestTypeId());
         sb.append(", ContestName=");
         sb.append(getContestName());
         sb.append(", ContestShortName=");
         sb.append(getContestShortName());
+        sb.append(", ContestUrlName=");
+        sb.append(getContestUrlName());
+        sb.append(", ContestYear=");
+        sb.append(getContestYear());
         sb.append(", ContestDescription=");
         sb.append(getContestDescription());
         sb.append(", ContestModelDescription=");
         sb.append(getContestModelDescription());
         sb.append(", ContestPositionsDescription=");
         sb.append(getContestPositionsDescription());
-        sb.append(", defaultPlanDescription=");
-        sb.append(getDefaultPlanDescription());
-        sb.append(", PlanTypeId=");
-        sb.append(getPlanTypeId());
         sb.append(", created=");
         sb.append(getCreated());
         sb.append(", updated=");
@@ -1874,6 +1979,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getVoteTemplateString());
         sb.append(", proposalVoteTemplateString=");
         sb.append(getProposalVoteTemplateString());
+        sb.append(", proposalVoteConfirmationTemplateString=");
+        sb.append(getProposalVoteConfirmationTemplateString());
         sb.append(", voteQuestionTemplateString=");
         sb.append(getVoteQuestionTemplateString());
         sb.append(", focusAreaId=");
@@ -1936,6 +2043,8 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getShow_in_outline_view());
         sb.append(", hideRibbons=");
         sb.append(getHideRibbons());
+        sb.append(", resourceArticleId=");
+        sb.append(getResourceArticleId());
         sb.append("}");
 
         return sb.toString();
@@ -1943,7 +2052,7 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(148);
+        StringBundler sb = new StringBundler(157);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1954,12 +2063,24 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(getContestPK());
         sb.append("]]></column-value></column>");
         sb.append(
+            "<column><column-name>contestTypeId</column-name><column-value><![CDATA[");
+        sb.append(getContestTypeId());
+        sb.append("]]></column-value></column>");
+        sb.append(
             "<column><column-name>ContestName</column-name><column-value><![CDATA[");
         sb.append(getContestName());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestShortName</column-name><column-value><![CDATA[");
         sb.append(getContestShortName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ContestUrlName</column-name><column-value><![CDATA[");
+        sb.append(getContestUrlName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ContestYear</column-name><column-value><![CDATA[");
+        sb.append(getContestYear());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestDescription</column-name><column-value><![CDATA[");
@@ -1972,14 +2093,6 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>ContestPositionsDescription</column-name><column-value><![CDATA[");
         sb.append(getContestPositionsDescription());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>defaultPlanDescription</column-name><column-value><![CDATA[");
-        sb.append(getDefaultPlanDescription());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>PlanTypeId</column-name><column-value><![CDATA[");
-        sb.append(getPlanTypeId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>created</column-name><column-value><![CDATA[");
@@ -2016,6 +2129,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>proposalVoteTemplateString</column-name><column-value><![CDATA[");
         sb.append(getProposalVoteTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>proposalVoteConfirmationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getProposalVoteConfirmationTemplateString());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>voteQuestionTemplateString</column-name><column-value><![CDATA[");
@@ -2140,6 +2257,10 @@ public class ContestModelImpl extends BaseModelImpl<Contest>
         sb.append(
             "<column><column-name>hideRibbons</column-name><column-value><![CDATA[");
         sb.append(getHideRibbons());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>resourceArticleId</column-name><column-value><![CDATA[");
+        sb.append(getResourceArticleId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

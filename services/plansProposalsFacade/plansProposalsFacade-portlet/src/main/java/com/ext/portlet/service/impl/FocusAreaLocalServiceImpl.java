@@ -1,9 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.ext.portlet.NoSuchOntologyTermException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
@@ -17,6 +13,10 @@ import com.ext.portlet.service.persistence.FocusAreaOntologyTermPK;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the focus area local service.
@@ -39,6 +39,7 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.FocusAreaLocalServiceUtil} to access the focus area local service.
      */
 
+    @Override
     public void store(FocusArea focusArea) throws SystemException {
         if (focusArea.isNew()) {
             if (focusArea.getId() <= 0) {
@@ -50,8 +51,9 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
         }
     }
     
+    @Override
     public List<OntologyTerm> getTerms(FocusArea focusArea) throws PortalException, SystemException {
-        List<OntologyTerm> ret = new ArrayList<OntologyTerm>();
+        List<OntologyTerm> ret = new ArrayList<>();
         for (FocusAreaOntologyTerm faot: FocusAreaOntologyTermLocalServiceUtil.findTermsByFocusArea(focusArea.getId())) {
             try {
                 ret.add(FocusAreaOntologyTermLocalServiceUtil.getTerm(faot));
@@ -64,10 +66,12 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
         return ret;
     }
     
+    @Override
     public void removeTerm(FocusArea focusArea, Long termId) throws PortalException, SystemException {
         FocusAreaOntologyTermLocalServiceUtil.deleteFocusAreaOntologyTerm(new FocusAreaOntologyTermPK(focusArea.getId(), termId));
     }
     
+    @Override
     public void addTerm(FocusArea focusArea, Long termId) throws PortalException, SystemException {
         OntologyTerm term = OntologyTermLocalServiceUtil.getOntologyTerm(termId);
         /*
@@ -84,6 +88,7 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
         store(focusArea);
     }
     
+    @Override
     public void tagClass(FocusArea focusArea, Class clasz, Long pk) throws SystemException, PortalException {
         OntologyTermLocalServiceUtil.clearClassTags(clasz, pk);
         for (OntologyTerm t: getTerms(focusArea)) {
@@ -91,6 +96,7 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
         }
     }
 
+    @Override
     public OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(FocusArea focusArea, OntologySpace ontologySpace) throws SystemException, PortalException {
         for (OntologyTerm term : getTerms(focusArea)) {
             if (term.getOntologySpaceId() == ontologySpace.getId()) {
@@ -101,6 +107,7 @@ public class FocusAreaLocalServiceImpl extends FocusAreaLocalServiceBaseImpl {
         return null;
     }
 
+    @Override
     public List<OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(FocusArea focusArea, OntologySpace ontologySpace) throws SystemException, PortalException {
         List<OntologyTerm> matchingOntologyTerms = new ArrayList<>();
         for (OntologyTerm term : getTerms(focusArea)) {

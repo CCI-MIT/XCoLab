@@ -1,36 +1,11 @@
-var pollerUrl = "/api/jsonws/plansProposalsFacade-portlet.contest/get-number-of-unread-messages/";
 var intervalMinutes = 10;
 var interval = intervalMinutes * 60 * 1000;
 
 $().ready(function() {
     if ($('#userPopupTrigger').length > 0) {
-        setTimeout(pollData,interval);
+        setTimeout(extendSession() ,interval);
     }
 });
-
-function pollData() {
-    // Reset the session expiration timer
-    extendSession();
-
-    $.getJSON(pollerUrl, function(data) {
-        parseData(data);
-        setTimeout(pollData,interval);
-    });
-}
-
-function parseData(json) {
-    var unreadMessages = json;
-    // console.log("data: " + unreadMessages);
-
-    var element = $('.user-notification.user-notification-top');
-    if (unreadMessages > 0) {
-        element.show();
-        element.html(unreadMessages);
-    } else {
-        element.hide();
-    }
-}
-
 
 function extendSession(){
     try { if ('noWarning' == mySessionRenewAtWarning()) { mySessionRenew(); } } catch(e) {}

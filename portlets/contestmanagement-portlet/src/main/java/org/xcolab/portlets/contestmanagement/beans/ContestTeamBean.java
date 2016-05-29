@@ -5,16 +5,17 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import org.xcolab.portlets.contestmanagement.utils.RequestParameterParser;
+import org.xcolab.utils.IdListUtil;
 
 import javax.portlet.PortletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Created by Thomas on 2/10/2015.
  */
-public class ContestTeamBean implements Serializable{
+public class ContestTeamBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private List<Long> userIdsJudges = new ArrayList<>();
@@ -34,53 +35,47 @@ public class ContestTeamBean implements Serializable{
 
     public ContestTeamBean(Contest contest) {
 
-        if(contest != null) {
+        if (contest != null) {
             try {
                 this.contest = contest;
                 populateJudges();
                 populateFellows();
                 populateAdvisors();
                 //populateContestManagers();
-            } catch (Exception e){
-
+            } catch (SystemException | PortalException ignored) {
             }
         }
     }
 
-    private void parseAndPopulateMember() throws NumberFormatException{
-        RequestParameterParser requestParameterParser = new RequestParameterParser();
-        userIdsJudges = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsJudges");
-        userIdsFellows = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsFellows");
-        userIdsAdvisors = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsAdvisors");
-        //userIdsContestManagers = requestParameterParser.parseStringParameterFromRequestToLongList(request, "userIdsManagers");
+    private void parseAndPopulateMember() throws NumberFormatException {
+        userIdsJudges = IdListUtil.getIdsFromString(request.getParameter("userIdsJudges"));
+        userIdsFellows = IdListUtil.getIdsFromString(request.getParameter("userIdsFellows"));
+        userIdsAdvisors = IdListUtil.getIdsFromString(request.getParameter("userIdsAdvisors"));
+        //userIdsContestManagers = IdListUtil.getIdsFromString(request.getParameter("userIdsManagers"));
     }
 
-    private void populateJudges() throws SystemException, PortalException{
+    private void populateJudges() throws SystemException, PortalException {
         for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
             userIdsJudges.add(judge.getUserId());
         }
     }
 
-    private void populateFellows() throws SystemException, PortalException{
+    private void populateFellows() throws SystemException, PortalException {
         for (User fellow : ContestLocalServiceUtil.getFellowsForContest(contest)) {
             userIdsFellows.add(fellow.getUserId());
         }
     }
 
-    private void populateAdvisors() throws SystemException, PortalException{
+    private void populateAdvisors() throws SystemException, PortalException {
         for (User advisor : ContestLocalServiceUtil.getAdvisorsForContest(contest)) {
             userIdsAdvisors.add(advisor.getUserId());
         }
     }
 
-    private void populateContestManagers() throws SystemException, PortalException{
+    private void populateContestManagers() throws SystemException, PortalException {
         for (User contestManager : ContestLocalServiceUtil.getContestManagersForContest(contest)) {
             userIdsContestManagers.add(contestManager.getUserId());
         }
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public List<Long> getUserIdsJudges() {

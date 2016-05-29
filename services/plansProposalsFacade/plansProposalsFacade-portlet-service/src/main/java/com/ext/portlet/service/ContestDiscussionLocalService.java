@@ -244,6 +244,6 @@ public interface ContestDiscussionLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.Long getDiscussionIdByContestIdAndTabName(
         java.lang.Long contestId, java.lang.String tabName)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchContestDiscussionException,
             com.liferay.portal.kernel.exception.SystemException;
 }

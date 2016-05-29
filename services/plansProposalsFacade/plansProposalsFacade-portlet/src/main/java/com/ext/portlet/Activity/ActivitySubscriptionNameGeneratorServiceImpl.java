@@ -1,8 +1,8 @@
 package com.ext.portlet.Activity;
 
-import java.util.List;
-
 import com.ext.portlet.model.ActivitySubscription;
+
+import java.util.List;
 
 public class ActivitySubscriptionNameGeneratorServiceImpl implements ActivitySubscriptionNameGeneratorService {
     

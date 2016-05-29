@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: members-service
+  jmx:
+    default-domain: ${spring.application.name}

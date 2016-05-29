@@ -3,11 +3,11 @@ package org.xcolab.portlets.contestmanagement.entities;
 /**
  * Created by Thomas on 2/9/2015.
  */
-public class LabelValue implements Comparable<LabelValue>{
+public class LabelValue implements Comparable<LabelValue> {
     private String lable;
     private Long value;
 
-    public LabelValue(Long value, String lable){
+    public LabelValue(Long value, String lable) {
         this.value = value;
         this.lable = lable;
     }
@@ -29,8 +29,8 @@ public class LabelValue implements Comparable<LabelValue>{
         this.lable = lable;
     }
 
-    public int compareTo(LabelValue o)
-    {
+    @Override
+    public int compareTo(LabelValue o) {
         return this.getLable().compareTo(o.getLable());
     }
 }

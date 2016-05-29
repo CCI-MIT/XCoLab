@@ -1,5 +1,40 @@
 package org.xcolab.portlets.loginregister;
 
+import com.liferay.portal.CookieNotSupportedException;
+import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.PasswordExpiredException;
+import com.liferay.portal.UserEmailAddressException;
+import com.liferay.portal.UserIdException;
+import com.liferay.portal.UserLockoutException;
+import com.liferay.portal.UserPasswordException;
+import com.liferay.portal.UserScreenNameException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.AuthException;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.liferay.LoginRegisterUtil;
+import org.xcolab.utils.GlobalMessagesUtil;
+import org.xcolab.utils.ModelAttributeUtil;
+import org.xcolab.utils.emailnotification.member.MemberForgotPasswordNotification;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,147 +46,171 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-import org.xcolab.utils.GlobalMessagesUtil;
-
-import com.ext.utils.authentication.service.AuthenticationServiceUtil;
-import com.liferay.portal.CookieNotSupportedException;
-import com.liferay.portal.NoSuchUserException;
-import com.liferay.portal.PasswordExpiredException;
-import com.liferay.portal.UserEmailAddressException;
-import com.liferay.portal.UserIdException;
-import com.liferay.portal.UserLockoutException;
-import com.liferay.portal.UserPasswordException;
-import com.liferay.portal.UserScreenNameException;
-import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.security.auth.AuthException;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-
 @Controller
-@RequestMapping(value="view")
+@RequestMapping(value = "view")
 public class ForgotPasswordController {
 
-    private long DEFAULT_COMPANY_ID = 10112L;
-    
-    @ActionMapping(params={"isForgotpass=true"})
+    private static final long DEFAULT_COMPANY_ID = 10112L;
+
+    private static final String FORGOTPASSWORDURL = "/web/guest/loginregister/-/login/forgotPassword/";
+
+
+    @ActionMapping(params = {"isForgotpass=true"})
     public void sendPassword(ActionRequest request, ActionResponse response) throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-                WebKeys.THEME_DISPLAY); 
-        
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
+                WebKeys.THEME_DISPLAY);
+
         HttpServletRequest httpRequest = PortletUtils.getOryginalRequest(request);
-        
+
         String redirect = httpRequest.getParameter("redirect");
         String referer = httpRequest.getHeader("referer");
-        redirect = ! StringUtils.isBlank(redirect) ? redirect : referer;
-        
-        redirect = ! StringUtils.isBlank(redirect) ? redirect : themeDisplay.getURLHome();
-        
-        
+        redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
+
+        redirect = !StringUtils.isBlank(redirect) ? redirect : themeDisplay.getURLHome();
 
         redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
         redirect = Helper.removeParamFromRequestStr(redirect, "isSigningIn");
         redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
-        
+
         try {
-            
+
             PortletPreferences preferences = request.getPreferences();
             String userNameEmail = request.getParameter("screenName");
-            
-            User user = null;
+
+            User user;
             if (userNameEmail.contains("@")) {
                 user = UserLocalServiceUtil.getUserByEmailAddress(DEFAULT_COMPANY_ID, userNameEmail);
-            }
-            else {
+            } else {
                 user = UserLocalServiceUtil.getUserByScreenName(DEFAULT_COMPANY_ID, userNameEmail);
             }
 
-            String languageId = LanguageUtil.getLanguageId(request);
 
-            String emailFromName = preferences.getValue("emailFromName", null);
-            String emailFromAddress = preferences.getValue(
-                "emailFromAddress", null);
-            String emailToAddress = user.getEmailAddress();
+            String token = MembersClient.createForgotPasswordToken(user.getUserId());
+            String colabUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue();
+            String passwordLink = colabUrl + FORGOTPASSWORDURL + "" + token;
 
-            String emailParam = "emailPasswordSent";
-            
-            String subject = preferences.getValue(
-                emailParam + "Subject_" + languageId, null);
-            String body = preferences.getValue(
-                emailParam + "Body_" + languageId, null);
-            
-            AuthenticationServiceUtil.sendPassword(request, emailFromName, emailFromAddress, emailToAddress, subject, body);
-        }
-        catch (Exception e) {
+            sendEmailNotificationToForPasswordReset(PortalUtil.getHttpServletRequest(request).getRemoteAddr(), passwordLink, themeDisplay, user);
+
+        } catch (Exception e) {
             if (e instanceof AuthException) {
                 Throwable cause = e.getCause();
 
                 if (cause instanceof PasswordExpiredException ||
-                    cause instanceof UserLockoutException) {
+                        cause instanceof UserLockoutException) {
 
                     SessionErrors.add(
-                        request, cause.getClass().getName());
-                }
-                else {
+                            request, cause.getClass().getName());
+                } else {
                     SessionErrors.add(request, e.getClass().getName());
                 }
-            }
-            else if (e instanceof CookieNotSupportedException ||
-                     e instanceof NoSuchUserException ||
-                     e instanceof PasswordExpiredException ||
-                     e instanceof UserEmailAddressException ||
-                     e instanceof UserIdException ||
-                     e instanceof UserLockoutException ||
-                     e instanceof UserPasswordException ||
-                     e instanceof UserScreenNameException) {
+            } else if (e instanceof CookieNotSupportedException ||
+                    e instanceof NoSuchUserException ||
+                    e instanceof PasswordExpiredException ||
+                    e instanceof UserEmailAddressException ||
+                    e instanceof UserIdException ||
+                    e instanceof UserLockoutException ||
+                    e instanceof UserPasswordException ||
+                    e instanceof UserScreenNameException) {
 
                 SessionErrors.add(request, e.getClass().getName());
-            }
-            else {
+            } else {
                 PortalUtil.sendError(e, request, response);
             }
         }
-        
-        if (! SessionErrors.isEmpty(request)) {
+
+        if (!SessionErrors.isEmpty(request)) {
             // url parameters
-            Map<String, String> parameters = new HashMap<String, String>();
+            Map<String, String> parameters = new HashMap<>();
             //boolean isSigningInPopup = ParamUtil.getBoolean(actionRequest, "isSigningInPopup");
 
             parameters.put("isPasswordReminder", "true");
 
             redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
-            
+
+        } else {
+            GlobalMessagesUtil
+                    .addMessage("A password retrieval message has been sent, please check your email", request);
         }
-        else {
-            GlobalMessagesUtil.addMessage("A password retrieval message has been sent, please check your email", request);
-        }
-        
+
         SessionErrors.clear(request);
         SessionMessages.clear(request);
-        
+
         response.sendRedirect(redirect);
     }
 
-	@RequestMapping(params="isError=true")
-	public String register(PortletRequest request, PortletResponse response,
-						   Model model) {
+    private static void sendEmailNotificationToForPasswordReset(String memberIp, String link, ThemeDisplay themeDisplay, User recipient)
+            throws PortalException, SystemException {
+        ServiceContext serviceContext = new ServiceContext();
+        serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		model.addAttribute("message", "Your password reset ticket has expired. Please try to reset your password again.");
-		model.addAttribute("redirect_url", themeDisplay.getPortalURL());
+        new MemberForgotPasswordNotification(memberIp, link, recipient, serviceContext).sendEmailNotification();
+    }
 
-		return "password_reset_error";
-	}
+    @RequestMapping(params = "isError=true")
+    public String register(PortletRequest request, PortletResponse response,
+                           Model model) throws SystemException {
+
+        return redirectToErrorPageOnPasswordReset(model, request);
+    }
+
+    public String redirectToErrorPageOnPasswordReset(Model model, PortletRequest request)
+            throws SystemException {
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        model.addAttribute("message",
+                "Your password reset ticket has expired. Please try to reset your password again.");
+        model.addAttribute("redirect_url", themeDisplay.getPortalURL());
+
+        ModelAttributeUtil.populateModelWithPlatformConstants(model);
+        return "password_reset_error";
+    }
+
+
+    @RequestMapping(params = "pageToDisplay=password_reset")
+    public String openResetPassword(PortletRequest request,
+                                    PortletResponse response,
+                                    Model model,
+                                    @RequestParam String resetTicket) throws SystemException {
+
+        if (!MembersClient.isForgotPasswordTokenValid(resetTicket)) {
+            return redirectToErrorPageOnPasswordReset(model, request);
+        } else {
+            CreateUserBean userBean = new CreateUserBean();
+            model.addAttribute("createUserBean", userBean);
+            model.addAttribute("passwordResetToken", resetTicket);
+            model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+            return "password_reset";
+        }
+    }
+
+    @ActionMapping(params = {"isUpdatingPassword=true"})
+    public void updatePassword(ActionRequest request, Model model,
+                               ActionResponse response, CreateUserBean newAccountBean,
+                               BindingResult result,
+                               @RequestParam(required = false) String passwordResetToken) throws IOException, SystemException {
+
+        String newPassword = newAccountBean.getPassword();
+
+        if (MembersClient.isForgotPasswordTokenValid(passwordResetToken)) {
+            try {
+                LoginRegisterUtil.updatePassword(passwordResetToken, newPassword );
+                GlobalMessagesUtil
+                        .addMessage("Your password was successfully updated! ", request);
+                SessionErrors.clear(request);
+                SessionMessages.clear(request);
+                response.sendRedirect("/");
+
+            } catch (MemberNotFoundException e) {
+                response.setRenderParameter("isError", "true");
+            } catch (PortalException e) {
+                response.setRenderParameter("isError", "true");
+            }
+
+        } else {
+            response.setRenderParameter("isError", "true");
+        }
+
+    }
 
 }

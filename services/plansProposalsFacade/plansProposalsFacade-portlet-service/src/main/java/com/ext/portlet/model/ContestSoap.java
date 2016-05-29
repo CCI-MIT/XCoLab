@@ -15,13 +15,14 @@ import java.util.List;
  */
 public class ContestSoap implements Serializable {
     private long _ContestPK;
+    private long _contestTypeId;
     private String _ContestName;
     private String _ContestShortName;
+    private String _ContestUrlName;
+    private long _ContestYear;
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
-    private String _defaultPlanDescription;
-    private long _PlanTypeId;
     private Date _created;
     private Date _updated;
     private long _authorId;
@@ -31,6 +32,7 @@ public class ContestSoap implements Serializable {
     private String _proposalCreationTemplateString;
     private String _voteTemplateString;
     private String _proposalVoteTemplateString;
+    private String _proposalVoteConfirmationTemplateString;
     private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
@@ -62,6 +64,7 @@ public class ContestSoap implements Serializable {
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
     private boolean _hideRibbons;
+    private long _resourceArticleId;
 
     public ContestSoap() {
     }
@@ -70,13 +73,14 @@ public class ContestSoap implements Serializable {
         ContestSoap soapModel = new ContestSoap();
 
         soapModel.setContestPK(model.getContestPK());
+        soapModel.setContestTypeId(model.getContestTypeId());
         soapModel.setContestName(model.getContestName());
         soapModel.setContestShortName(model.getContestShortName());
+        soapModel.setContestUrlName(model.getContestUrlName());
+        soapModel.setContestYear(model.getContestYear());
         soapModel.setContestDescription(model.getContestDescription());
         soapModel.setContestModelDescription(model.getContestModelDescription());
         soapModel.setContestPositionsDescription(model.getContestPositionsDescription());
-        soapModel.setDefaultPlanDescription(model.getDefaultPlanDescription());
-        soapModel.setPlanTypeId(model.getPlanTypeId());
         soapModel.setCreated(model.getCreated());
         soapModel.setUpdated(model.getUpdated());
         soapModel.setAuthorId(model.getAuthorId());
@@ -86,6 +90,7 @@ public class ContestSoap implements Serializable {
         soapModel.setProposalCreationTemplateString(model.getProposalCreationTemplateString());
         soapModel.setVoteTemplateString(model.getVoteTemplateString());
         soapModel.setProposalVoteTemplateString(model.getProposalVoteTemplateString());
+        soapModel.setProposalVoteConfirmationTemplateString(model.getProposalVoteConfirmationTemplateString());
         soapModel.setVoteQuestionTemplateString(model.getVoteQuestionTemplateString());
         soapModel.setFocusAreaId(model.getFocusAreaId());
         soapModel.setContestTier(model.getContestTier());
@@ -117,6 +122,7 @@ public class ContestSoap implements Serializable {
         soapModel.setShow_in_list_view(model.getShow_in_list_view());
         soapModel.setShow_in_outline_view(model.getShow_in_outline_view());
         soapModel.setHideRibbons(model.getHideRibbons());
+        soapModel.setResourceArticleId(model.getResourceArticleId());
 
         return soapModel;
     }
@@ -173,6 +179,14 @@ public class ContestSoap implements Serializable {
         _ContestPK = ContestPK;
     }
 
+    public long getContestTypeId() {
+        return _contestTypeId;
+    }
+
+    public void setContestTypeId(long contestTypeId) {
+        _contestTypeId = contestTypeId;
+    }
+
     public String getContestName() {
         return _ContestName;
     }
@@ -187,6 +201,22 @@ public class ContestSoap implements Serializable {
 
     public void setContestShortName(String ContestShortName) {
         _ContestShortName = ContestShortName;
+    }
+
+    public String getContestUrlName() {
+        return _ContestUrlName;
+    }
+
+    public void setContestUrlName(String ContestUrlName) {
+        _ContestUrlName = ContestUrlName;
+    }
+
+    public long getContestYear() {
+        return _ContestYear;
+    }
+
+    public void setContestYear(long ContestYear) {
+        _ContestYear = ContestYear;
     }
 
     public String getContestDescription() {
@@ -212,22 +242,6 @@ public class ContestSoap implements Serializable {
     public void setContestPositionsDescription(
         String ContestPositionsDescription) {
         _ContestPositionsDescription = ContestPositionsDescription;
-    }
-
-    public String getDefaultPlanDescription() {
-        return _defaultPlanDescription;
-    }
-
-    public void setDefaultPlanDescription(String defaultPlanDescription) {
-        _defaultPlanDescription = defaultPlanDescription;
-    }
-
-    public long getPlanTypeId() {
-        return _PlanTypeId;
-    }
-
-    public void setPlanTypeId(long PlanTypeId) {
-        _PlanTypeId = PlanTypeId;
     }
 
     public Date getCreated() {
@@ -305,6 +319,15 @@ public class ContestSoap implements Serializable {
 
     public void setProposalVoteTemplateString(String proposalVoteTemplateString) {
         _proposalVoteTemplateString = proposalVoteTemplateString;
+    }
+
+    public String getProposalVoteConfirmationTemplateString() {
+        return _proposalVoteConfirmationTemplateString;
+    }
+
+    public void setProposalVoteConfirmationTemplateString(
+        String proposalVoteConfirmationTemplateString) {
+        _proposalVoteConfirmationTemplateString = proposalVoteConfirmationTemplateString;
     }
 
     public String getVoteQuestionTemplateString() {
@@ -585,5 +608,13 @@ public class ContestSoap implements Serializable {
 
     public void setHideRibbons(boolean hideRibbons) {
         _hideRibbons = hideRibbons;
+    }
+
+    public long getResourceArticleId() {
+        return _resourceArticleId;
+    }
+
+    public void setResourceArticleId(long resourceArticleId) {
+        _resourceArticleId = resourceArticleId;
     }
 }

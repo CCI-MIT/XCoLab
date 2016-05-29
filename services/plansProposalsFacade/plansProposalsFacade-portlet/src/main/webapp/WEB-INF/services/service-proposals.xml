@@ -65,8 +65,9 @@
     		<finder-column name="version" comparator="&gt;="/>
     		<finder-column name="versionWhenCreated" comparator="&lt;=" />
     	</finder>
-    	  	
-    	<finder return-type="ProposalAttribute" name="ProposalIdVersionNameAdditionalId" unique="true">
+
+		<!--TODO: this should be unique, but the database contains duplicates-->
+    	<finder return-type="ProposalAttribute" name="ProposalIdVersionNameAdditionalId">
     		<finder-column name="proposalId" />
     		<finder-column name="version" />
     		<finder-column name="name" />
@@ -80,12 +81,6 @@
     		<finder-column name="name" />
     		<finder-column name="additionalId" />
     	</finder>
-    </entity>
-    
-    <entity name="ProposalAttributeType" local-service="true" >
-    	<column name="name" type="String" primary="true" />
-    	<column name="visibleInVersionHistory" type="boolean" />
-    	<column name="copyOnPromote" type="boolean" />
     </entity>
     
     <entity name="Proposal2Phase" local-service="true" >
@@ -104,17 +99,6 @@
     		<finder-column name="contestPhaseId" />
     	</finder>
     </entity>
-    
-    <entity name="Plan2Proposal" local-service="true">
-    	<column name="planId" type="long" primary="true" />
-    	<column name="proposalId" type="long" />
-    	
-    	<finder return-type="Collection" name="ProposalId">
-    		<finder-column name="proposalId" />
-    	</finder>
-    	
-    </entity>
-    
     
     <entity name="ProposalSupporter" local-service="true">
     	<column name="proposalId" type="long" primary="true" />
@@ -136,6 +120,9 @@
     	<column name="contestPhaseId" type="long" primary="true" />
     	<column name="userId" type="long" primary="true" />
     	<column name="createDate" type="Date" />
+		<column name="isValid" type="boolean"/>
+		<column name="confirmationEmailSendDate" type="Date"/>
+		<column name="confirmationToken" type="String"/>
     	
     	<finder return-type="Collection" name="ProposalId">
     		<finder-column name="proposalId" />
@@ -145,7 +132,11 @@
     		<finder-column name="proposalId" />
     		<finder-column name="contestPhaseId" />
     	</finder>
-    	
+
+		<finder return-type="ProposalVote" name="ProposalIdUserId">
+			<finder-column name="proposalId"/>
+			<finder-column name="userId"/>
+		</finder>
     	
     	<finder return-type="Collection" name="UserId">
     		<finder-column name="userId" />
@@ -164,6 +155,7 @@
     	<column name="hoverText" type="String" />
     	<column name="description" type="String" />
     	<column name="copyOnPromote" type="boolean" />
+		<column name="sortOrder" type="int" />
     </entity>
     
     <entity name="ProposalContestPhaseAttribute" local-service="true">
@@ -199,11 +191,6 @@
 			<finder-column name="proposalId" />
 		</finder>
     </entity>
-    
-    <entity name="ProposalContestPhaseAttributeType" local-service="true" >
-    	<column name="name" type="String" primary="true" />
-    	<column name="copyOnPromote" type="boolean" />
-    </entity>
 
     <entity name="ProposalRating" local-service="true" >
         <column name="id" type="long" primary="true" />
@@ -232,10 +219,89 @@
         <column name="name" type="String" />
         <column name="description" type="String" />
 
-        <column name="proposalRatings" type="Collection" entity="ProposalRating" mapping-key="ratingValueId"/>
-    </entity>
+		<column name="proposalRatings" type="Collection" entity="ProposalRating" mapping-key="ratingValueId"/>
+	</entity>
 
+	<entity name="ProposalReference" local-service="true">
+		<column name="proposalId" type="long" primary="true"/>
+		<column name="subProposalId" type="long" primary="true"/>
+		<column name="sectionAttributeId" type="long" />
+
+		<finder return-type="Collection" name="ProposalId">
+			<finder-column name="proposalId" />
+		</finder>
+
+		<finder return-type="Collection" name="SubProposalId">
+			<finder-column name="subProposalId" />
+		</finder>
+	</entity>
+	<entity name="ProposalUnversionedAttribute" local-service="true">
+		<column name="id" type="long" primary="true" />
+		<column name="proposalId" type="long" />
+		<column name="createAuthorId" type="long" />
+		<column name="lastAuthorId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="lastUpdateDate" type="Date" />
+		<column name="name" type="String" />
+		<column name="addtionalId" type="int" />
+		<column name="numericValue" type="long" />
+
+		<column name="stringValue" type="String" />
+		<column name="realValue" type="double" />
+
+		<finder return-type="Collection" name="ProposalId_ProposalUnversionedAttribute">
+			<finder-column name="proposalId" />
+		</finder>
+
+		<finder return-type="ProposalUnversionedAttribute" name="ProposalId_ProposalUnversionedAttributeName">
+			<finder-column name="proposalId" />
+			<finder-column name="name" />
+		</finder>
+
+	</entity>
 	<!-- Proposal impact -->
+
+	<entity name="ProposalMoveHistory" local-service="true">
+		<column name="id_" type="long" primary="true"/>
+		<column name="sourceProposalId" type="long"/>
+		<column name="sourceContestId" type="long"/>
+		<column name="sourcePhaseId" type="long"/>
+		<column name="targetProposalId" type="long"/>
+		<column name="targetContestId" type="long"/>
+		<column name="targetPhaseId" type="long"/>
+		<column name="movingUserId" type="long"/>
+		<column name="moveDate" type="Date"/>
+		<column name="moveType" type="String"/>
+
+        <finder name="SourceProposalId" return-type="Collection">
+            <finder-column name="sourceProposalId"/>
+        </finder>
+        <finder name="SourceContestId" return-type="Collection">
+            <finder-column name="sourceContestId"/>
+        </finder>
+        <finder name="SourcePhaseId" return-type="Collection">
+            <finder-column name="sourcePhaseId"/>
+        </finder>
+        <finder name="TargetProposalId" return-type="Collection">
+            <finder-column name="targetProposalId"/>
+        </finder>
+        <finder name="TargetContestId" return-type="Collection">
+            <finder-column name="targetContestId"/>
+        </finder>
+        <finder name="TargetPhaseId" return-type="Collection">
+            <finder-column name="targetPhaseId"/>
+        </finder>
+
+        <finder name="SourceProposalIdContestId" return-type="Collection">
+            <finder-column name="sourceProposalId"/>
+            <finder-column name="sourceContestId"/>
+        </finder>
+        <finder name="TargetProposalIdContestId" return-type="ProposalMoveHistory">
+            <finder-column name="targetProposalId"/>
+            <finder-column name="targetContestId"/>
+        </finder>
+
+	</entity>
 
 
 </service-builder>

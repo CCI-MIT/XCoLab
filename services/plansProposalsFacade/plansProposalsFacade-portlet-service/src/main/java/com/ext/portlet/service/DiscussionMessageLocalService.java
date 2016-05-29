@@ -301,7 +301,7 @@ public interface DiscussionMessageLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public com.ext.portlet.model.DiscussionMessage addThreadMessage(
-        com.ext.portlet.model.DiscussionMessage dMessage,
+        com.ext.portlet.model.DiscussionMessage thread,
         java.lang.String subject, java.lang.String body,
         com.liferay.portal.model.User author)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
@@ -362,4 +362,24 @@ public interface DiscussionMessageLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean hasFlag(long messageId, java.lang.String flag)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void subscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

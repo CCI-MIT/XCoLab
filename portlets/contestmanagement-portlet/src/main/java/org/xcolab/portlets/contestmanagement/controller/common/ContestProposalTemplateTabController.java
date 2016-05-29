@@ -1,30 +1,37 @@
 package org.xcolab.portlets.contestmanagement.controller.common;
 
-import com.ext.portlet.model.OntologySpace;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.PointType;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.PointTypeLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.portlets.contestmanagement.beans.SectionDefinitionBean;
+import org.xcolab.points.DistributionStrategy;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
+import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.faces.model.SelectItem;
-import javax.portlet.*;
+import javax.portlet.PortletRequest;
+import javax.portlet.ResourceResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,75 +45,99 @@ import java.util.Stack;
 public abstract class ContestProposalTemplateTabController extends BaseTabController {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestProposalTemplateTabController.class);
-    static final public String TAB_VIEW = "common/proposalTemplateTab";
+    static final public String TAB_VIEW = "manager/proposalTemplateTab";
     static final public String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
     static final public String NOT_FOUND_TAB_VIEW = "common/notFound";
 
     protected TabWrapper tabWrapper;
 
-    @ModelAttribute("currentTabWrapped")
-    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException;
-
     @ModelAttribute("levelSelectionItems")
-    public List<LabelValue> populateLevelSelectionItems(){
+    public List<LabelValue> populateLevelSelectionItems() {
         return getContestLevelSelectionItems();
     }
 
     @ModelAttribute("sectionTypeSelectionItems")
-    public List<LabelStringValue> populateSectionTypesSelectionItems(){
+    public List<LabelStringValue> populateSectionTypesSelectionItems() {
         return getSectionTypesSelectionItems();
+    }
+
+    @ModelAttribute("contestTypeSelectionItems")
+    public List<LabelValue> populateContestTypeSelectionItems() throws PortalException, SystemException {
+        return getContestTypeSelectionItems();
+    }
+
+    @ModelAttribute("pointTypeSelectionItems")
+    public List<LabelValue> populatePointTypeSelectionItems() throws PortalException, SystemException {
+        return getPointTypeSelectionItems();
     }
 
     @ModelAttribute("whatTerms")
     public List<LabelValue> populateWhatTerms() throws PortalException, SystemException {
         return getWhatTerms();
     }
+
     @ModelAttribute("whereTerms")
     public List<LabelValue> populateWhereTerms() throws PortalException, SystemException {
         return getWhereTerms();
     }
+
     @ModelAttribute("whoTerms")
     public List<LabelValue> populateWhoTerms() throws PortalException, SystemException {
         return getWhoTerms();
     }
+
     @ModelAttribute("howTerms")
     public List<LabelValue> populateHowTerms() throws PortalException, SystemException {
         return getHowTerms();
     }
 
-    @ResourceMapping(value="getSectionDefinition")
-    public @ResponseBody
-    void getSectionDefinition(
-            @RequestParam("sectionDefinitionId") Long sectionDefinitionId,
-            ResourceResponse response
-    ) throws Exception{
+    @ResourceMapping(value = "getSectionDefinition")
+    public
+    @ResponseBody
+    void getSectionDefinition(@RequestParam("sectionDefinitionId") Long sectionDefinitionId, ResourceResponse response)
+            throws PortalException, SystemException, java.io.IOException {
 
         PlanSectionDefinition planSectionDefinition =
                 PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionId);
-        SectionDefinitionBean sectionDefinitionBean = new SectionDefinitionBean(planSectionDefinition);
+        SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper(planSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
-        response.getWriter().write(mapper.writeValueAsString(sectionDefinitionBean));
+        response.getWriter().write(mapper.writeValueAsString(sectionDefinitionWrapper));
     }
 
-    private List<LabelValue> getContestLevelSelectionItems(){
+    private List<LabelValue> getContestLevelSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        try {
-            for (ContestTier contestLevel : ContestTier.values()) {
-                selectItems.add(new LabelValue(new Long(contestLevel.getTierType()), contestLevel.getTierName()));
-            }
-        } catch (Exception e){
+        for (ContestTier contestLevel : ContestTier.values()) {
+            selectItems.add(new LabelValue(contestLevel.getTierType(), contestLevel.getTierName()));
         }
         return selectItems;
     }
 
-    private List<LabelStringValue> getSectionTypesSelectionItems(){
-        List<LabelStringValue> selectItems = new ArrayList<>();
-        try {
-            for (SectionTypes sectionTypes : SectionTypes.values()) {
-                selectItems.add(new LabelStringValue(sectionTypes.getSectionType(), sectionTypes.getDisplayName()));
+    private List<LabelValue> getContestTypeSelectionItems() throws SystemException {
+        List<LabelValue> selectItems = new ArrayList<>();
+        for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
+            selectItems.add(new LabelValue(contestType.getId(), ContestTypeLocalServiceUtil.getLabelName(contestType)));
+        }
+        return selectItems;
+    }
+
+    private List<LabelValue> getPointTypeSelectionItems() throws SystemException {
+        List<LabelValue> selectItems = new ArrayList<>();
+        selectItems.add(new LabelValue(0L, "Default"));
+        for (PointType pointType : PointTypeLocalServiceUtil.getPointTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (pointType.getDistributionStrategy().equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
+                selectItems.add(new LabelValue(pointType.getId(),
+                        String.format("%d - %s : %s", pointType.getId(),
+                                pointType.getDistributionStrategy(), pointType.getReceiverLimitationStrategy())));
             }
-        } catch (Exception e){
+        }
+        return selectItems;
+    }
+
+    private List<LabelStringValue> getSectionTypesSelectionItems() {
+        List<LabelStringValue> selectItems = new ArrayList<>();
+        for (SectionTypes sectionTypes : SectionTypes.values()) {
+            selectItems.add(new LabelStringValue(sectionTypes.getSectionType(), sectionTypes.getDisplayName()));
         }
         return selectItems;
     }
@@ -127,16 +158,18 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return getTermsFromOntologySpace(OntologySpaceEnum.HOW);
     }
 
-    private List<LabelValue> getTermsFromOntologySpace(OntologySpaceEnum ontologySpace) throws SystemException, PortalException {
+    private List<LabelValue> getTermsFromOntologySpace(OntologySpaceEnum ontologySpace)
+            throws SystemException, PortalException {
         List<Stack<OntologyTerm>> allParentsPaths = getAllOntologyTermParentPathStacks(ontologySpace);
         sortOntologyTermParentPathsAlphabetically(allParentsPaths);
 
         return buildOntologyTermParentPathSelectItemList(allParentsPaths);
     }
 
-    private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(OntologySpaceEnum ontologySpace) throws SystemException, PortalException {
+    private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(OntologySpaceEnum ontologySpace)
+            throws SystemException, PortalException {
         List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
-        for (OntologyTerm term: OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE)) {
+        for (OntologyTerm term : OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE)) {
             // Just consider terms in the passed ontologySpace
             if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
                 continue;
@@ -162,13 +195,13 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
     private int compareOntologyTermStacks(Stack<OntologyTerm> stack1, Stack<OntologyTerm> stack2) {
-        String stack1FirstItemName = null;
-        String stack2FirstItemName = null;
+        String stack1FirstItemName;
         try {
             stack1FirstItemName = stack1.pop().getName();
         } catch (EmptyStackException e) {
             return -1;
         }
+        String stack2FirstItemName;
         try {
             stack2FirstItemName = stack2.pop().getName();
         } catch (EmptyStackException e) {
@@ -182,12 +215,13 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return stack1FirstItemName.compareTo(stack2FirstItemName);
     }
 
-    private List<LabelValue> buildOntologyTermParentPathSelectItemList(List<Stack<OntologyTerm>> allParentsPaths) throws PortalException, SystemException {
+    private List<LabelValue> buildOntologyTermParentPathSelectItemList(List<Stack<OntologyTerm>> allParentsPaths)
+            throws PortalException, SystemException {
         List<LabelValue> termSelectItems = new ArrayList<>();
 
         for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
             OntologyTerm childTerm = ontologyTermParentsPath.firstElement();
-            String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath, childTerm);
+            String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath);
             termSelectItems.add(new LabelValue(childTerm.getId(), ontologyTermPathString));
         }
 
@@ -196,7 +230,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
 
     private Stack<OntologyTerm> getOntologyTermParentPath(OntologyTerm term) throws SystemException, PortalException {
-        Stack<OntologyTerm> parentsPath = new Stack<OntologyTerm>();
+        Stack<OntologyTerm> parentsPath = new Stack<>();
         OntologyTerm current = term;
         while (current != null) {
             parentsPath.push(current);
@@ -206,7 +240,8 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return parentsPath;
     }
 
-    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath, OntologyTerm childTerm) throws SystemException, PortalException {
+    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath)
+            throws SystemException, PortalException {
         if (parentsPath.size() == 1) {
             return parentsPath.pop().getName();
         }
@@ -215,7 +250,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         OntologyTerm currentTerm = parentsPath.pop();
         StringBuilder nameStr = new StringBuilder();
         boolean firstItem = true;
-        while (! parentsPath.isEmpty()) {
+        while (!parentsPath.isEmpty()) {
             currentTerm = parentsPath.pop();
             if (firstItem) {
                 nameStr.append("-");
@@ -223,18 +258,11 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
             }
             nameStr.append("-|-");
         }
-        nameStr.append("- " + currentTerm.getName());
+        nameStr.append("- ").append(currentTerm.getName());
         return nameStr.toString();
     }
 
-//    private String cropStringToMaxCharacters(String inputString, int maxChars) {
-//        if (inputString.length() <= maxChars) {
-//            return inputString;
-//        }
-//
-//        return inputString.substring(0, maxChars) + "...";
-//    }
-
+    @Override
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
             throws PortalException, SystemException {
     }

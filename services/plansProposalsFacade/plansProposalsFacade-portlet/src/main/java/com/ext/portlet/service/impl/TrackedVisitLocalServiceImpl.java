@@ -28,6 +28,7 @@ public class TrackedVisitLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.TrackedVisitLocalServiceUtil} to access the tracked visit local service.
      */
 
+    @Override
     public TrackedVisit addTrackedVisit(
             String uuid,
             String url,
@@ -54,7 +55,7 @@ public class TrackedVisitLocalServiceImpl
         trackedVisit.setUuid(uuid);
         trackedVisit.setIp(ip);
 
-        super.addTrackedVisit(trackedVisit);
+        addTrackedVisit(trackedVisit);
 
         return trackedVisit;
     }

@@ -1,23 +1,20 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.ContestEmailTemplate;
+
+import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 
 import java.util.regex.Matcher;
 
-/**
- * Created by Manuel Thurner
- */
 public class ContestEmailTemplateWrapper {
-    private ContestEmailTemplate template;
-    private String proposalName;
-    private String contestName;
+    private final ContestEmailTemplate template;
+    private final String proposalName;
+    private final String contestName;
 
 
     public ContestEmailTemplateWrapper(ContestEmailTemplate template, String proposalName, String contestName) {
         this.template = template;
         this.proposalName = proposalName;
         this.contestName = contestName;
-
     }
 
     public String getHeader() {
@@ -37,9 +34,8 @@ public class ContestEmailTemplateWrapper {
     }
 
     private String replaceVariables(String subject) {
-        String result = subject.replaceAll("<contest-title/>", Matcher.quoteReplacement(this.contestName))
+        return subject.replaceAll("<contest-title/>", Matcher.quoteReplacement(this.contestName))
             .replaceAll("<proposal-title/>", Matcher.quoteReplacement(this.proposalName))
             .replaceAll("\n", "\n<br/>");
-        return result;
     }
 }

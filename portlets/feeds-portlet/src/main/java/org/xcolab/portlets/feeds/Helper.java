@@ -1,13 +1,13 @@
 package org.xcolab.portlets.feeds;
 
-import javax.portlet.PortletRequest;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+
+import javax.portlet.PortletRequest;
 
 
 public class Helper {

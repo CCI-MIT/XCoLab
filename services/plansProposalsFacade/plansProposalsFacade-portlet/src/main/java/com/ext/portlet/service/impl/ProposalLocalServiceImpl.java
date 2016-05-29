@@ -1,64 +1,41 @@
 package com.ext.portlet.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.mail.internet.AddressException;
-import javax.portlet.PortletRequest;
-
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.service.*;
-import com.liferay.portal.NoSuchUserException;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
-import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
-import org.xcolab.proposals.events.ProposalMemberAddedEvent;
-import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
-import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
-import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
-import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
-import org.xcolab.proposals.events.ProposalVotedOnEvent;
-import org.xcolab.services.EventBusService;
-import org.xcolab.utils.ProposalAttributeDetectUpdateAlgorithm;
-import org.xcolab.utils.UrlBuilder;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
-
 import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
-import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
 import com.ext.portlet.service.persistence.ProposalVotePK;
-import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.Criterion;
@@ -73,6 +50,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
@@ -82,7 +60,6 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.GroupService;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
@@ -91,6 +68,33 @@ import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.xcolab.enums.MembershipRequestStatus;
+import org.xcolab.mail.EmailToAdminDispatcher;
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.proposals.events.ProposalMemberAddedEvent;
+import org.xcolab.proposals.events.ProposalMemberRemovedEvent;
+import org.xcolab.proposals.events.ProposalRemovedVoteEvent;
+import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
+import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
+import org.xcolab.proposals.events.ProposalVotedOnEvent;
+import org.xcolab.services.EventBusService;
+import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.utils.UrlBuilder;
+import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.PortletRequest;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The implementation of the proposal local service.
@@ -112,32 +116,22 @@ import com.liferay.util.mail.MailEngineException;
  */
 public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
-    private static Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
+    private static final Log _log = LogFactoryUtil.getLog(ProposalLocalServiceImpl.class);
 
     private static final long ADMINISTRATOR_USER_ID = 10144L;
 
-    /**
-     * Default community permissions for community forum category.
-     */
-    public static final String[] DEFAULT_CATEGORY_COMMUNITY_PERMISSIONS = {ActionKeys.VIEW, ActionKeys.SUBSCRIBE,
-            ActionKeys.REPLY_TO_MESSAGE, ActionKeys.ADD_MESSAGE};
 
-    /**
-     * Default guest permissions for community forum category.
-     */
-    public static final String[] DEFAULT_CATEGORY_GUEST_PERMISSIONS = {ActionKeys.VIEW, ActionKeys.SUBSCRIBE};
 
     /**
      * Default description of group working on a plan.
      */
-    public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on plan %s";
+    public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on <proposal/> %s";
 
     @BeanReference(type = EventBusService.class)
     private EventBusService eventBus;
 
     @BeanReference(type = GroupService.class)
     private GroupService groupService;
-
 
     @BeanReference(type = RoleLocalService.class)
     private RoleLocalService roleLocalService;
@@ -168,6 +162,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of a Liferay error
      * @author janusz
      */
+    @Override
     @Transactional
     public Proposal create(long authorId, long contestPhaseId) throws SystemException, PortalException {
         long proposalId = counterLocalService.increment(Proposal.class.getName());
@@ -197,6 +192,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of a Liferay error
      * @author janusz
      */
+    @Override
     @Transactional
     public Proposal create(long authorId, long contestPhaseId, long proposalId, boolean publishActivity) throws SystemException, PortalException {
 
@@ -206,43 +202,45 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposal.setCreateDate(new Date());
 
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-
+        final Contest contest = contestLocalService.fetchContest(contestPhase.getContestPK());
+        ContestType contestType = contestTypeLocalService.getContestType(contest);
         // create discussions
+        final String proposalEntityName = contestType.getProposalName()+" ";
         DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " main discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " main discussion");
 
-        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contestPhase.getContestPK(), proposalId));
+        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contest, proposal));
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
         proposal.setDiscussionId(proposalDiscussion.getId());
 
         DiscussionCategoryGroup resultsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " results discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " results discussion");
         resultsDiscussion.setIsQuiet(true);
 
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(resultsDiscussion);
         proposal.setResultsDiscussionId(resultsDiscussion.getId());
 
         DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " judges discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " judges discussion");
         judgesDiscussion.setIsQuiet(true);
 
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(judgesDiscussion);
         proposal.setJudgeDiscussionId(judgesDiscussion.getId());
 
         DiscussionCategoryGroup advisorsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " advisors discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " advisors discussion");
         advisorsDiscussion.setIsQuiet(true);
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(advisorsDiscussion);
         proposal.setAdvisorDiscussionId(advisorsDiscussion.getId());
 
         DiscussionCategoryGroup fellowsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup("Proposal " + proposalId + " fellows discussion");
+                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " fellows discussion");
         fellowsDiscussion.setIsQuiet(true);
         discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(fellowsDiscussion);
         proposal.setFellowDiscussionId(fellowsDiscussion.getId());
 
         // create group
-        Group group = createGroupAndSetUpPermissions(authorId, proposalId);
+        Group group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
         proposal.setGroupId(group.getGroupId());
 
 
@@ -254,8 +252,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             p2p.setVersionFrom(proposal.getCurrentVersion());
             p2p.setVersionTo(-1);
             proposal2PhaseLocalService.addProposal2Phase(p2p);
-            if (publishActivity) eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal,
-                    contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
+            if (publishActivity) {
+                eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal,
+                        contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
+            }
         }
 
         // Automatically subscribe author to own proposal
@@ -264,358 +264,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return proposal;
     }
 
+    @Override
     @Transactional
     public void setVisibility(Long proposalId, Boolean visibility, Long authorId) throws SystemException, PortalException {
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
         proposal.setVisible(visibility);
         ProposalLocalServiceUtil.updateProposal(proposal);
 
-        setAttribute(authorId, proposalId, ProposalAttributeKeys.VISIBLE, (visibility) ? 1l : 0l);
+        proposalAttributeLocalService.setAttribute(authorId, proposalId, ProposalAttributeKeys.VISIBLE, (visibility) ? 1L : 0L);
 
-    }
-
-    /**
-     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
-     * <p>The algorithm for setting an attribute value is as follows:</p>
-     * <ol>
-     * <li>new proposal version is created</li>
-     * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
-     * it is copied to the new version</li>
-     * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new value</li>
-     * </ol>
-     *
-     * @param authorId      id of a change author
-     * @param proposalId    id of a proposal
-     * @param attributeName name of an attribute
-     * @param additionalId  additional id for an attribute
-     * @param stringValue   string value for an attribute
-     * @param numericValue  numeric value for an attribute
-     * @param realValue     double value for an attribute
-     * @return ProposalAttribute that represents newly set attribute
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    @Transactional
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
-                                          String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, stringValue, numericValue, realValue, new Date(), true);
-    }
-
-    /**
-     * <p>Sets attribute value and creates new version for a proposal that reflects the change</p>
-     * <p>The algorithm for setting an attribute value is as follows:</p>
-     * <ol>
-     * <li>new proposal version is created</li>
-     * <li>for each attribute that was already present in the proposal (excluding the one that is currently being set)
-     * it is copied to the new version</li>
-     * <li>for attribute that is being set it's value (if present) isn't copied to the new version as it gets new val`ue</li>
-     * </ol>
-     *
-     * @param authorId      id of a change author
-     * @param proposalId    id of a proposal
-     * @param attributeName name of an attribute
-     * @param additionalId  additional id for an attribute
-     * @param stringValue   string value for an attribute
-     * @param numericValue  numeric value for an attribute
-     * @param realValue     double value for an attribute
-     * @param updatedDate   date of update
-     * @return ProposalAttribute that represents newly set attribute
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
-     * @author patrickhiesel
-     */
-    @Transactional
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId,
-                                          String stringValue, long numericValue, double realValue, Date updatedDate, boolean publishActivity) throws PortalException, SystemException {
-        Proposal proposal = getProposal(proposalId);
-        ProposalAttribute oldAttribute = null;
-
-        int currentVersion = proposal.getCurrentVersion();
-        int newVersion = currentVersion + 1;
-
-        // find attributes for current version of a proposal
-        List<ProposalAttribute> currentProposalAttributes = proposalAttributePersistence.findByProposalIdVersion(
-                proposalId, currentVersion);
-
-        // for each attribute, if it isn't the one that we are changing, simply
-        // update it to the most recent version
-        // if it is the one that we are changing then leave old one as it is and
-        // create new one for new proposal version
-        for (ProposalAttribute attribute : currentProposalAttributes) {
-            ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
-            if (!updateAlgorithm.hasBeenUpdated(attributeName, additionalId, numericValue, realValue)) {
-                // clone the attribute and set its version to the new value
-                attribute.setVersion(newVersion);
-                proposalAttributeLocalService.updateProposalAttribute(attribute);
-            } else {
-                oldAttribute = attribute;
-            }
-        }
-
-        // set new value for provided attribute
-        ProposalAttribute attribute = setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
-
-        proposal.setCurrentVersion(newVersion);
-        proposal.setUpdatedDate(updatedDate);
-
-        // create newly created version descriptor
-        createPlanVersionDescription(authorId, proposalId, newVersion, attributeName, additionalId, updatedDate);
-        updateProposal(proposal);
-
-        // Update the proposal name in the discussion category
-        if (attributeName.equals(ProposalAttributeKeys.NAME)) {
-            DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            dcg.setDescription(String.format(DiscussionActivityKeys.PROPOSAL_DISCUSSION_FORMAT_STRING, stringValue));
-            discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(dcg);
-        }
-
-        if (publishActivity)
-            eventBus.post(new ProposalAttributeUpdatedEvent(proposal, userLocalService.getUser(authorId),
-                    attributeName, oldAttribute, attribute));
-
-        return attribute;
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param stringValue
-     * @return
-     * @throws PortalException
-     * @throws SystemException
-     */
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName,
-                                          String stringValue, long numericValue, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, 0L, stringValue, numericValue, realValue);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param additionalId
-     * @param stringValue
-     * @return
-     * @throws PortalException
-     * @throws SystemException
-     */
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, String stringValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, stringValue, 0, 0);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param stringValue
-     * @return
-     * @throws PortalException
-     * @throws SystemException
-     */
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, String stringValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, 0, stringValue, 0, 0);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param additionalId
-     * @param numericValue
-     * @return
-     * @throws PortalException
-     * @throws SystemException
-     */
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, long numericValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, null, numericValue, 0);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param numericValue
-     * @return
-     * @throws PortalException
-     * @throws SystemException
-     */
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long numericValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, 0, null, numericValue, 0);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param additionalId
-     * @param realValue
-     * @return
-     * @throws PortalException
-     * @throws SystemException
-     */
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, long additionalId, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, additionalId, null, 0, realValue);
-    }
-
-    /**
-     * <p>Sets an attribute for a proposal. See  {@link #setAttribute(long, long, String, long, String, long, double)}
-     * it uses nulls/zeros for unspecified values</p>
-     *
-     * @param authorId
-     * @param proposalId
-     * @param attributeName
-     * @param realValue
-     * @return
-     * @throws PortalException
-     * @throws SystemException
-     */
-    public ProposalAttribute setAttribute(long authorId, long proposalId, String attributeName, double realValue) throws PortalException, SystemException {
-        return setAttribute(authorId, proposalId, attributeName, 0, null, 0, realValue);
-    }
-
-    /**
-     * <p>Returns all attributes for current version of a proposal.</p>
-     *
-     * @param proposalId id of a proposal
-     * @return list of proposal attributes for current version of a proposal
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    public List<ProposalAttribute> getAttributes(long proposalId) throws SystemException, PortalException {
-        Proposal proposal = getProposal(proposalId);
-
-        return getAttributes(proposalId, proposal.getCurrentVersion());
-    }
-
-    /**
-     * <p>Returns all attributes for given version of a proposal.</p>
-     *
-     * @param proposalId id of a proposal
-     * @param version    version number of a proposal
-     * @return list of proposal attributes for current version of a proposal
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    public List<ProposalAttribute> getAttributes(long proposalId, int version) throws SystemException, PortalException {
-        return proposalAttributePersistence.findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual(proposalId, version, version);
-    }
-
-    /**
-     * <p>Returns an attribute for current version of a proposal.</p>
-     *
-     * @param proposalId    id of a proposal
-     * @param attributeName name of an attribute
-     * @param additionalId  additionalId of an attribute
-     * @return proposal attribute
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    public ProposalAttribute getAttribute(long proposalId, String attributeName, long additionalId) throws PortalException, SystemException {
-        Proposal proposal = getProposal(proposalId);
-        return getAttribute(proposalId, proposal.getCurrentVersion(), attributeName, additionalId);
-    }
-
-    /**
-     * <p>Returns an attribute for concrete version of a proposal.</p>
-     *
-     * @param proposalId    id of a proposal
-     * @param version       version of a proposal
-     * @param attributeName name of an attribute
-     * @param additionalId  additionalId of an attribute
-     * @return proposal attribute
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
-     * @author janusz
-     */
-    public ProposalAttribute getAttribute(long proposalId, int version, String attributeName, long additionalId) throws NoSuchProposalAttributeException, SystemException {
-        List<ProposalAttribute> attribute = proposalAttributePersistence.
-                findByProposalId_VersionGreaterEqual_VersionWhenCreatedLesserEqual_NameAdditionalId(
-                        proposalId, version, version, attributeName, additionalId);
-
-        if (attribute.isEmpty()) throw new NoSuchProposalAttributeException("Can't find attribute [" +
-                "proposalId: " + proposalId + ", " +
-                "version: " + version + ", " +
-                "attributeName: " + attributeName + ", " +
-                "additionalId: " + additionalId + "]");
-
-        return attribute.get(0);
-    }
-
-    /**
-     * <p>Removes a proposal attribute. All other proposal attributes in the current version are being promoted to the next version.</p>
-     * @param authorId
-     * @param attributeToDelete
-     * @param publishActivity
-     * @throws SystemException
-     * @throws PortalException
-     */
-    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete, boolean publishActivity) throws SystemException, PortalException {
-        Proposal proposal = getProposal(attributeToDelete.getProposalId());
-
-        int currentVersion = proposal.getCurrentVersion();
-        int newVersion = currentVersion + 1;
-
-        // find attributes for current version of a proposal
-        List<ProposalAttribute> currentProposalAttributes = proposalAttributePersistence.findByProposalIdVersion(
-                proposal.getProposalId(), currentVersion);
-
-        // for each attribute, if it isn't the one that we are deleting, simply
-        // update it to the most recent version
-        for (ProposalAttribute attribute : currentProposalAttributes) {
-            ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
-            if (attribute.getId() != attributeToDelete.getId()) {
-                // clone the attribute and set its version to the new value
-                attribute.setVersion(newVersion);
-                proposalAttributeLocalService.updateProposalAttribute(attribute);
-            }
-        }
-
-        Date now = new Date();
-        proposal.setCurrentVersion(newVersion);
-        proposal.setUpdatedDate(now);
-
-        // create newly created version descriptor
-        createPlanVersionDescription(authorId, attributeToDelete.getProposalId(), newVersion, attributeToDelete.getName(), attributeToDelete.getAdditionalId(), now);
-        updateProposal(proposal);
-
-        if (publishActivity)
-            eventBus.post(new ProposalAttributeRemovedEvent(proposal, userLocalService.getUser(authorId),
-                    attributeToDelete.getName(), attributeToDelete));
-    }
-
-    /**
-     * <p>Removes a proposal attribute. This method is currently only used for the Proposal impact feature to delete already saved proposal impact serieses.</p>
-     *
-     * @param authorId
-     * @param attributeToDelete
-     * @throws PortalException
-     * @throws SystemException
-     */
-    public void removeAttribute(long authorId, ProposalAttribute attributeToDelete) throws PortalException, SystemException {
-        removeAttribute(authorId, attributeToDelete, true);
     }
 
     /**
@@ -627,6 +284,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of an LR error
      * @author janusz
      */
+    @Override
     public List<ProposalVersion> getProposalVersions(long proposalId) throws PortalException, SystemException {
         return proposalVersionPersistence.findByProposalId(proposalId);
     }
@@ -641,6 +299,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of an LR error
      * @author janusz
      */
+    @Override
     public ProposalVersion getProposalVersion(long proposalId, int version) throws PortalException, SystemException {
         return proposalVersionLocalService.getProposalVersion(new ProposalVersionPK(proposalId, version));
     }
@@ -653,6 +312,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public List<Proposal> getProposalsInContestPhase(long contestPhaseId) throws PortalException, SystemException {
         List<Proposal> proposals = new ArrayList<>();
 
@@ -668,8 +328,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return proposals;
     }
 
+    @Override
     public List<Proposal> getProposalsInContestPhase(long contestPhaseId, String sortProperty, boolean sortAscending, int start, int end)
-            throws PortalException, SystemException {
+            throws SystemException, NoSuchProposalException {
 
         List<Proposal> proposals = new ArrayList<>();
 
@@ -687,6 +348,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public List<Proposal> getActiveProposalsInContestPhase(long contestPhaseId)
             throws PortalException, SystemException {
 
@@ -716,6 +378,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public List<Proposal> getProposalsInContest(long contestId) throws PortalException, SystemException {
         List<Proposal> proposals = new ArrayList<>();
 
@@ -743,6 +406,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @return A list of proposals the user has contributed to
      * @throws SystemException
      */
+    @Override
     public List<Proposal> getUserProposals(long userId) throws SystemException, PortalException {
         // Get all groups the user is in
         List<Long> groupIds = new ArrayList<>();
@@ -762,41 +426,17 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 .add(criterion)
                 .add(PropertyFactoryUtil.forName("visible").eq(true))
                 .addOrder(OrderFactoryUtil.desc("createDate"));
-        List<Proposal> proposals = proposalLocalService.dynamicQuery(query);
+        //make an editable copy so we can remove proposals
+        List<Proposal> proposals = new ArrayList<>(proposalLocalService.dynamicQuery(query));
 
-        // Filter out "deleted" proposals
-        List<Proposal> returnList = new ArrayList<>();
-        for (Proposal proposal : proposals) {
-            List<Proposal2Phase> p2Phases = proposal2PhaseLocalService.getByProposalId(proposal.getProposalId());
-
-            // Count number of invisible attributes
-            int invisibleCount = 0;
-            int overallCount = 0;
-            for (Proposal2Phase phase : p2Phases) {
-                overallCount++;
-
-                // Try to get
-                try {
-                    final ProposalContestPhaseAttribute visibleAttribute = proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
-                            phase.getProposalId(), phase.getContestPhaseId(), ProposalContestPhaseAttributeKeys.VISIBLE);
-
-                    if (visibleAttribute.getNumericValue() == 0) {
-                        invisibleCount++;
-                    }
-
-                } catch (NoSuchProposalContestPhaseAttributeException e) {
-                    // We ignore the exception here since it does not have an impact
-                }
-
-            }
-
-            // Either we don't have an invisible entry in the attributes table or there is at least one visible
-            if ((overallCount == 0) || (overallCount != invisibleCount)) {
-                returnList.add(proposal);
+        for (Iterator<Proposal> iterator = proposals.iterator(); iterator.hasNext(); ) {
+            Proposal proposal = iterator.next();
+            if (isDeleted(proposal)) {
+                iterator.remove();
             }
         }
 
-        return returnList;
+        return proposals;
     }
 
     /**
@@ -807,6 +447,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public long countProposalsInContestPhase(long contestPhaseId) throws PortalException, SystemException {
 
         List<Proposal> activeProposals = getActiveProposalsInContestPhase(contestPhaseId);
@@ -821,6 +462,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public List<User> getMembers(long proposalId) throws SystemException, PortalException {
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
 
@@ -835,6 +477,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public List<User> getSupporters(long proposalId) throws SystemException, PortalException {
         List<User> ret = new ArrayList<>();
         for (ProposalSupporter supporter : proposalSupporterPersistence.findByProposalId(proposalId)) {
@@ -855,6 +498,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public int getSupportersCount(long proposalId) throws SystemException, PortalException {
         return proposalSupporterPersistence.countByProposalId(proposalId);
     }
@@ -867,6 +511,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public boolean isSupporter(long proposalId, long userId) throws SystemException, PortalException {
         try {
             proposalSupporterPersistence.findByPrimaryKey(new ProposalSupporterPK(proposalId, userId));
@@ -876,7 +521,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
     }
 
-
     /**
      * <p>Adds supporter to a proposal</p>
      *
@@ -885,6 +529,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of an LR error
      * @throws PortalException
      */
+    @Override
     @Transactional
     public void addSupporter(long proposalId, long userId) throws SystemException, PortalException {
         addSupporter(proposalId, userId, true);
@@ -898,6 +543,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of an LR error
      * @throws PortalException
      */
+    @Override
     @Transactional
     public void addSupporter(long proposalId, long userId, boolean publishActivity) throws SystemException, PortalException {
         ProposalSupporter supporter =
@@ -906,8 +552,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         supporter.setCreateDate(new Date());
         proposalSupporterLocalService.addProposalSupporter(supporter);
 
-        if (publishActivity)
+        if (publishActivity) {
             eventBus.post(new ProposalSupporterAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+        }
     }
 
     /**
@@ -918,6 +565,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of an LR error
      * @throws PortalException
      */
+    @Override
     @Transactional
     public void removeSupporter(long proposalId, long userId) throws SystemException, PortalException {
         ProposalSupporter supporter =
@@ -936,6 +584,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public List<User> getVoters(long proposalId, long contestPhaseId) throws SystemException, PortalException {
         List<User> ret = new ArrayList<>();
         for (ProposalVote proposalVote : proposalVotePersistence.findByProposalIdContestPhaseId(proposalId, contestPhaseId)) {
@@ -950,9 +599,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId     proposal id
      * @param contestPhaseId contest phase id
      * @return number of votes
-     * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public long getVotesCount(long proposalId, long contestPhaseId) throws SystemException {
         return proposalVotePersistence.countByProposalIdContestPhaseId(proposalId, contestPhaseId);
     }
@@ -968,6 +617,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     @Transactional
     public void addVote(long proposalId, long contestPhaseId, long userId)
             throws SystemException, PortalException {
@@ -985,6 +635,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     @Transactional
     public void addVote(long proposalId, long contestPhaseId, long userId, boolean publishActivity)
             throws SystemException, PortalException {
@@ -999,10 +650,12 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         ProposalVote vote = proposalVoteLocalService.createProposalVote(new ProposalVotePK(contestPhaseId, userId));
         vote.setCreateDate(new Date());
         vote.setProposalId(proposalId);
+        vote.setIsValid(true);
 
         proposalVoteLocalService.addProposalVote(vote);
-        if (publishActivity)
+        if (publishActivity) {
             eventBus.post(new ProposalVotedOnEvent(getProposal(proposalId), userLocalService.getUser(userId), voted));
+        }
     }
 
     /**
@@ -1013,6 +666,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     @Transactional
     public void removeVote(long contestPhaseId, long userId) throws SystemException, PortalException {
         try {
@@ -1020,11 +674,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             proposalVoteLocalService.deleteProposalVote(proposalVote);
             eventBus.post(new ProposalRemovedVoteEvent(getProposal(proposalVote.getProposalId()), userLocalService.getUser(userId)));
 
-        } catch (NoSuchProposalVoteException e) {
-            // ignore
-            return;
-        }
-
+        } catch (NoSuchProposalVoteException ignored) { }
     }
 
     /**
@@ -1035,6 +685,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public long getCommentsCount(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
         return discussionCategoryGroupLocalService.getCommentsCount(proposal.getDiscussionId());
@@ -1048,6 +699,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public long getFellowReviewCommentsCount(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
         final long fellowDiscussionId = proposal.getFellowDiscussionId();
@@ -1066,6 +718,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public boolean isUserAMember(long proposalId, long userId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
         return GroupLocalServiceUtil.hasUserGroup(userId, proposal.getGroupId());
@@ -1079,9 +732,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of an LR error
      * @throws SystemException in case of an LR error
      */
+    @Override
     public boolean isOpen(long proposalId) throws PortalException, SystemException {
         try {
-            ProposalAttribute attribute = getAttribute(proposalId, ProposalAttributeKeys.OPEN, 0);
+            ProposalAttribute attribute = proposalAttributeLocalService.getAttribute(proposalId, ProposalAttributeKeys.OPEN, 0);
             return attribute.getNumericValue() > 0;
 
         } catch (NoSuchProposalAttributeException e) {
@@ -1098,10 +752,21 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of LR error
      * @throws PortalException in case of LR error
      */
+    @Override
     public List<MembershipRequest> getMembershipRequests(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
-        return MembershipRequestLocalServiceUtil.search(proposal.getGroupId(),
+        List<MembershipRequest>  invited = MembershipRequestLocalServiceUtil.search(proposal.getGroupId(),
+                MembershipRequestStatus.STATUS_PENDING_INVITED, 0, Integer.MAX_VALUE);
+        List<MembershipRequest>  requested = MembershipRequestLocalServiceUtil.search(proposal.getGroupId(),
+                MembershipRequestStatus.STATUS_PENDING_REQUESTED, 0, Integer.MAX_VALUE);
+        List<MembershipRequest>  olderRequests = MembershipRequestLocalServiceUtil.search(proposal.getGroupId(),
                 MembershipRequestConstants.STATUS_PENDING, 0, Integer.MAX_VALUE);
+        List<MembershipRequest> combined = new ArrayList<>();
+        if(invited!=null&&invited.size()> 0){combined.addAll(invited);}
+        if(requested!=null&&requested.size()> 0){combined.addAll(requested);}
+        if(olderRequests!=null&&olderRequests.size()> 0){combined.addAll(olderRequests);}
+
+        return combined;
     }
 
     /**
@@ -1113,12 +778,48 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public MembershipRequest addMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
 
-        return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment, null);
+        return MembershipRequestLocalServiceUtil.addMembershipRequest(userId, proposal.getGroupId(), comment == null? StringPool.BLANK : comment, null);
     }
 
+    /**
+     * <p>Sends a request to join proposal team</p>
+     *
+     * @param proposalId proposal id
+     * @param userId     user id
+     * @param comment    optional comment
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    @Override
+    public MembershipRequest addRequestedMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
+        Proposal proposal = getProposal(proposalId);
+        MembershipRequest membershipRequest = addMembershipRequest(proposalId,userId,comment);
+        MembershipRequestLocalServiceUtil.updateStatus(0l,membershipRequest.getMembershipRequestId(),null,
+                MembershipRequestStatus.STATUS_PENDING_REQUESTED,false,null);
+        return membershipRequest;
+    }
+
+    /**
+     * <p>Sends a request to join proposal team</p>
+     *
+     * @param proposalId proposal id
+     * @param userId     user id
+     * @param comment    optional comment
+     * @throws PortalException in case of LR error
+     * @throws SystemException in case of LR error
+     */
+    @Override
+    public MembershipRequest addInvitedMembershipRequest(long proposalId, long userId, String comment) throws PortalException, SystemException {
+        Proposal proposal = getProposal(proposalId);
+        MembershipRequest membershipRequest = addMembershipRequest(proposalId,userId,comment);
+        MembershipRequestLocalServiceUtil.updateStatus(0l,membershipRequest.getMembershipRequestId(),null,
+                MembershipRequestStatus.STATUS_PENDING_INVITED,false,null);
+        return membershipRequest;
+    }
 
     /**
      * <p>Remove a user from a proposal team</p>
@@ -1128,13 +829,30 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public void removeUserFromTeam(long proposalId, long userId) throws PortalException, SystemException {
         Proposal proposal = getProposal(proposalId);
+        if (userId == proposal.getAuthorId()) {
+            final String errorMessage = String.format("Cannot delete user %d from proposal %d: userId == proposal.getAuthorId()", userId, proposalId);
+            try {
+                throw new PortalException(errorMessage);
+            } catch(PortalException e) {
+                //TODO: remove debug email
+                StringBuilder stringBuilder = new StringBuilder();
+                User deletedUser = UserLocalServiceUtil.fetchUser(userId);
+                stringBuilder.append(String.format("Deleted member: %s, %d <br/>", deletedUser.getScreenName(), deletedUser.getUserId()));
+                stringBuilder.append(String.format("Deleted from group: %d <br/>", proposal.getGroupId()));
+                stringBuilder.append(String.format("Proposal: %d <br/>",  proposalId));
+                stringBuilder.append("<br/>Stack trace: <br/>");
+                stringBuilder.append(ExceptionUtils.getStackTrace(e));
+                new EmailToAdminDispatcher(errorMessage, stringBuilder.toString()).sendMessage();
+                throw e;
+            }
+        }
         GroupLocalServiceUtil.unsetUserGroups(userId, new long[]{proposal.getGroupId()});
 
         eventBus.post(new ProposalMemberRemovedEvent(proposal, userLocalService.getUser(userId)));
     }
-
 
     /**
      * <p>Denies user as a member of proposal team</p>
@@ -1144,6 +862,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public void dennyMembershipRequest(long proposalId, long userId, long membershipRequestId, String reply, long updateAuthorId)
             throws PortalException, SystemException {
         if (hasUserRequestedMembership(proposalId, userId)) {
@@ -1160,6 +879,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public void approveMembershipRequest(long proposalId, Long userId, MembershipRequest request, String reply, Long updateAuthorId)
             throws PortalException, SystemException {
 
@@ -1183,9 +903,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public boolean hasUserRequestedMembership(long proposalId, long userId) throws PortalException, SystemException {
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
-        return !MembershipRequestLocalServiceUtil.getMembershipRequests(userId, proposal.getGroupId(), MembershipRequestConstants.STATUS_PENDING).isEmpty();
+        boolean hasRequested = !MembershipRequestLocalServiceUtil.getMembershipRequests(userId, proposal.getGroupId(),
+                MembershipRequestStatus.STATUS_PENDING_REQUESTED).isEmpty();
+        boolean hasBeenInvited = !MembershipRequestLocalServiceUtil.getMembershipRequests(userId, proposal.getGroupId(),
+                MembershipRequestStatus.STATUS_PENDING_INVITED).isEmpty();
+        return hasRequested||hasBeenInvited;
 
     }
 
@@ -1197,6 +922,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public void joinIfNotAMemberAndProposalIsOpen(long proposalId, long userId) throws PortalException, SystemException {
         Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
         if (isOpen(proposalId) && !isUserAMember(proposalId, userId)) {
@@ -1213,6 +939,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public boolean isSubscribed(long proposalId, long userId) throws PortalException, SystemException {
         return activitySubscriptionLocalService.isSubscribed(userId, Proposal.class, proposalId, 0, "");
     }
@@ -1225,6 +952,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public void subscribe(long proposalId, long userId) throws PortalException, SystemException {
         subscribe(proposalId, userId, false);
     }
@@ -1240,6 +968,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
 
@@ -1247,7 +976,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
         activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
     }
-
 
     /**
      * <p>Unsubscribes user from given proposal</p>
@@ -1257,10 +985,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public void unsubscribe(long proposalId, long userId) throws PortalException, SystemException {
         unsubscribe(proposalId, userId, false);
     }
-
 
     /**
      * <p>Unsubscribes user from given proposal (supports removal of automatic subscriptions).
@@ -1274,6 +1002,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public void unsubscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.deleteSubscription(userId, Proposal.class, proposalId, 0, "", automatic);
 
@@ -1291,6 +1020,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @return true if user has voted for proposal in context of a contest phase
      * @throws SystemException
      */
+    @Override
     public boolean hasUserVoted(long proposalId, long contestPhaseId, long userId) throws SystemException {
         try {
             ProposalVote proposalVote = proposalVotePersistence.findByPrimaryKey(new ProposalVotePK(contestPhaseId, userId));
@@ -1303,10 +1033,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * Returns number of proposals that user supports
      *
-     * @param userId
-     * @return
      * @throws SystemException
      */
+    @Override
     public int getUserSupportedProposalsCount(long userId) throws SystemException {
         return proposalSupporterPersistence.countByUserId(userId);
     }
@@ -1314,14 +1043,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     /**
      * Returns number of proposals that user has given his vote to
      *
-     * @param userId
-     * @return
      * @throws SystemException
      */
+    @Override
     public int getUserVotedProposalsCount(long userId) throws SystemException {
         return proposalVotePersistence.countByUserId(userId);
     }
 
+    @Override
     public List<Proposal> getModifiedAfter(Date date) throws SystemException {
         return proposalPersistence.findByModifiedAfter(date);
     }
@@ -1333,15 +1062,16 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param contestPhase  The contestPhase in which the proposal is in
      * @param request       A PortletRequest object to extract the Portal's base URL (may be null - choose default portal URL in that case)
      */
+    @Override
     public void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase, PortletRequest request)
-            throws PortalException, SystemException, AddressException, MailEngineException {
+            throws PortalException, SystemException, AddressException, MailEngineException, UnsupportedEncodingException {
 
-        String subject = "Judging Results on your Proposal " + ProposalLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+        String subject = "Judging Results on your Proposal " + proposalAttributeLocalService.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);
         if (Validator.isNotNull(messageBody)) {
-            MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal), request);
+            MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
         }
     }
 
@@ -1349,6 +1079,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * Posts the judges' review about the proposal's advance decision on the proposal's comment thread
      * @param proposal  The proposal for which the notification should be sent
      */
+    @Override
     public void contestPhasePromotionCommentNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String commentBody = reviewContentHelper.getPromotionComment(false);
@@ -1365,11 +1096,12 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
     }
 
+    @Override
     public Long getDiscussionIdAndGenerateIfNull(Proposal proposal) throws SystemException{
 
         Long discussionId = proposal.getResultsDiscussionId();
 
-        if(discussionId == null || discussionId == 0) {
+        if(discussionId == 0) {
 
             DiscussionCategoryGroup resultsDiscussion = DiscussionCategoryGroupLocalServiceUtil.
                     createDiscussionCategoryGroup("Proposal " + proposal.getProposalId() + " results discussion");
@@ -1383,7 +1115,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         return discussionId;
     }
 
-
     private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {
         List<Long> recipientIds = new ArrayList<>();
 
@@ -1393,62 +1124,32 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         return recipientIds;
     }
-    /**
-     * <p>Helper method that sets an attribute value by creating a new attribute and setting all values according to passed parameters. This method doesn't care about other attributes.</p>
-     *
-     * @param proposalId    id of a proposal
-     * @param version       proposal version
-     * @param attributeName name of an attribute
-     * @param additionalId  additional id for an attribute
-     * @param stringValue   string value for an attribute
-     * @param numericValue  numeric value for an attribute
-     * @param realValue     real value for an attribute
-     * @return newly created proposal attribute
-     * @throws SystemException in case of a LR error
-     * @author janusz
-     */
-    @Transactional
-    private ProposalAttribute setAttributeValue(long proposalId, int version, String attributeName, long additionalId,
-                                                String stringValue, long numericValue, double realValue) throws SystemException {
-        ProposalAttribute attribute = proposalAttributeLocalService.createProposalAttribute(
-                CounterLocalServiceUtil.increment(ProposalAttribute.class.getName()));
-
-        attribute.setName(attributeName);
-        attribute.setProposalId(proposalId);
-        attribute.setVersion(version);
-        attribute.setVersionWhenCreated(version);
-        attribute.setAdditionalId(additionalId);
-
-        attribute.setNumericValue(numericValue);
-        attribute.setStringValue(stringValue);
-        attribute.setRealValue(realValue);
-
-        proposalAttributeLocalService.addProposalAttribute(attribute);
-
-        return attribute;
-    }
 
     /**
      * <p>Creates a Liferay group for proposal and sets up proper permissions on it.</p>
      *
      * @param authorId   id of a proposal author
      * @param proposalId id of a proposal
+     * @param contest
      * @return newly created group
      * @throws PortalException in case on LR error
      * @throws SystemException in case on LR error
      * @author janusz
      */
     @Transactional
-    private Group createGroupAndSetUpPermissions(long authorId, long proposalId) throws PortalException,
+    private Group createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) throws PortalException,
             SystemException {
 
         // create new gropu
         ServiceContext groupServiceContext = new ServiceContext();
         groupServiceContext.setUserId(authorId);
-        String groupName = "Proposal_" + proposalId + "_" + new Date().getTime();
+        final ContestType contestType = contestTypeLocalService.getContestType(contest);
 
+        String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
+
+        final String groupDescription = TemplateReplacementUtil.replaceContestTypeStrings(DEFAULT_GROUP_DESCRIPTION, contestType);
         Group group = groupService.addGroup(StringUtils.substring(groupName, 0, 80),
-                String.format(DEFAULT_GROUP_DESCRIPTION, StringUtils.substring(groupName, 0, 80)),
+                String.format(groupDescription, StringUtils.substring(groupName, 0, 80)),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
 
         // set up permissions
@@ -1481,7 +1182,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         String[] guestActions = {};
 
-        Map<Long, String[]> rolesActionsMap = new HashMap<Long, String[]>();
+        Map<Long, String[]> rolesActionsMap = new HashMap<>();
 
         rolesActionsMap.put(owner.getRoleId(), ownerActions);
         rolesActionsMap.put(admin.getRoleId(), adminActions);
@@ -1500,46 +1201,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     }
 
     /**
-     * <p>Creates new plan version descriptor</p>
+     * Returns the URL link address for the passed proposal in the latest contest
      *
-     * @param authorId     id of a change author
-     * @param proposalId   id of a proposal
-     * @param version      proposal version
-     * @param updateType   name of updated attribute
-     * @param additionalId additional id of an updated attribute
-     * @throws SystemException
+     * @param proposalId The proposal id
+     * @return Proposal URL as String
      */
-    @Transactional
-    private void createPlanVersionDescription(long authorId, long proposalId, int version, String updateType,
-                                              long additionalId) throws SystemException {
-        createPlanVersionDescription(authorId, proposalId, version, updateType, additionalId, new Date());
-    }
-
-
-    /**
-     * <p>Creates new plan version descriptor</p>
-     *
-     * @param authorId     id of a change author
-     * @param proposalId   id of a proposal
-     * @param version      proposal version
-     * @param updateType   name of updated attribute
-     * @param additionalId additional id of an updated attribute
-     * @param updatedDate  date when this version has been created
-     * @throws SystemException
-     */
-    @Transactional
-    private void createPlanVersionDescription(long authorId, long proposalId, int version, String updateType,
-                                              long additionalId, Date updatedDate) throws SystemException {
-
-        ProposalVersion proposalVersion = proposalVersionLocalService.createProposalVersion(new ProposalVersionPK(
-                proposalId, version));
-
-        proposalVersion.setAuthorId(authorId);
-        proposalVersion.setUpdateType(updateType);
-        proposalVersion.setUpdateAdditionalId(additionalId);
-        proposalVersion.setCreateDate(updatedDate);
-
-        proposalVersionLocalService.addProposalVersion(proposalVersion);
+    @Override
+    public String getProposalLinkUrl(Long proposalId) throws SystemException, PortalException {
+        return getProposalLinkUrl(proposal2PhaseLocalService.getCurrentContestForProposal(proposalId), proposalId, 0L);
     }
 
     /**
@@ -1549,9 +1218,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposal The proposal object (must not be null)
      * @return Proposal URL as String
      */
+    @Override
     public String getProposalLinkUrl(Contest contest, Proposal proposal) {
-        String link = "/web/guest/plans/-/plans/contestId/%d/planId/%d";
-        return String.format(link, contest.getContestPK(), proposal.getProposalId());
+        return getProposalLinkUrl(contest, proposal.getProposalId(), 0L);
     }
 
     /**
@@ -1562,20 +1231,50 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param contestPhase  The associated contestPhase of the proposal
      * @return Proposal URL as String
      */
+    @Override
     public String getProposalLinkUrl(Contest contest, Proposal proposal, ContestPhase contestPhase) {
-        String link = "/web/guest/plans/-/plans/contestId/%d/phaseId/%d/planId/%d";
-        return String.format(link, contest.getContestPK(), contestPhase.getContestPhasePK(), proposal.getProposalId());
+        return getProposalLinkUrl(contest, proposal.getProposalId(), contestPhase.getContestPhasePK());
     }
 
+    @Override
+    public String getProposalLinkUrl(Contest contest, long proposalId, long contestPhaseId) {
+        String link = "/";
+        String friendlyUrlStringProposal;
+        try {
+            final ContestType contestType = contestTypeLocalService.getContestType(contest);
+            link += contestType.getFriendlyUrlStringContests();
+            friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
+        } catch (SystemException e) {
+            link += "contests";
+            friendlyUrlStringProposal = "proposal";
+        }
+
+        if (contestPhaseId > 0) {
+            try {
+                long activePhaseId = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest).getContestPhasePK();
+                if (activePhaseId == contestPhaseId) {
+                    link += "/%d/%s/c/" + friendlyUrlStringProposal + "/%d";
+                    return String.format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
+                }
+            } catch (PortalException | SystemException ignored) { }
+            link += "/%d/%s/phase/%d/" + friendlyUrlStringProposal + "/%d";
+            return String.format(link, contest.getContestYear(), contest.getContestUrlName(),
+                    contestPhaseId, proposalId);
+        }
+
+        link += "/%d/%s/c/" + friendlyUrlStringProposal + "/%d";
+        return String.format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
+    }
 
     /**
      * Returns list of proposals referenced by given proposal that are relevant for the ingtegration contests
      * @param proposalId                        The proposal for which subproposals should be returned
      * @return collection of referenced proposals
      */
+    @Override
     public List<Proposal> getContestIntegrationRelevantSubproposals(long proposalId) throws SystemException, PortalException {
-        boolean onlyWithContestIntegrationRelevance = true;
-        boolean includeProposalsInSameContest = false;
+        final boolean onlyWithContestIntegrationRelevance = true;
+        final boolean includeProposalsInSameContest = false;
         return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
     }
 
@@ -1586,8 +1285,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *                                          should be included in the result or not
      * @return collection of referenced proposals
      */
+    @Override
     public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest) throws SystemException, PortalException {
-        boolean onlyWithContestIntegrationRelevance = false;
+        final boolean onlyWithContestIntegrationRelevance = false;
         return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
     }
 
@@ -1600,72 +1300,45 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @return collection of referenced proposals
      */
-    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance) throws SystemException, PortalException {
-        Set<Long> detectedIds = new HashSet<>();
-
-        for (ProposalAttribute attribute: getAttributes(proposalId)) {
-
-            if (attribute.getName().equals(ProposalAttributeKeys.SECTION)) {
-                PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
-
-                if (StringUtils.isBlank(psd.getType())) {
-                    continue;
-                }
-
-                if(onlyWithContestIntegrationRelevance && !psd.getContestIntegrationRelevance()){
-                    continue;
-                }
-
-                PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType());
-                switch (type) {
-                    case PROPOSAL_REFERENCE:
-                        if (attribute.getNumericValue() != 0) {
-                            detectedIds.add(attribute.getNumericValue());
-                        }
-                        break;
-                    case PROPOSAL_LIST_REFERENCE:
-                        if (Validator.isNull(attribute.getStringValue())) {
-                            break;
-                        }
-                        String[] referencedProposals = attribute.getStringValue().split(",");
-                        for (String referencedProposal : referencedProposals) {
-                            detectedIds.add(Long.parseLong(referencedProposal));
-                        }
-                        break;
-                    case PROPOSAL_LIST_TEXT_REFERENCE:
-                        Pattern proposalLinkPattern = Pattern.compile("(href=|https?://).*?/plans/-/plans/contestId/(\\d*)/(?:phaseId/\\d*/)?planId/(\\d*)");
-                        Matcher m = proposalLinkPattern.matcher(attribute.getStringValue());
-                        while (m.find()) {
-                            detectedIds.add(Long.parseLong(m.group(3)));
-                        }
-                        break;
-                }
-            }
-        }
+    @Override
+    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance)
+            throws SystemException, PortalException {
+        List<ProposalReference> proposalReferences = ProposalReferenceLocalServiceUtil.getByProposalId(proposalId);
 
         List<Proposal> proposals = new ArrayList<>();
-        for (Long subProposalId: detectedIds) {
+        for (ProposalReference proposalReference : proposalReferences) {
+            if (onlyWithContestIntegrationRelevance) {
+                ProposalAttribute attribute = ProposalAttributeLocalServiceUtil.fetchProposalAttribute(proposalReference.getSectionAttributeId());
+                PlanSectionDefinition psd = PlanSectionDefinitionLocalServiceUtil.fetchPlanSectionDefinition(attribute.getAdditionalId());
+                if (!psd.getContestIntegrationRelevance()) {
+                    continue;
+                }
+            }
+            final long subProposalId = proposalReference.getSubProposalId();
             Proposal p = getProposal(subProposalId);
             if (p != null) {
-                //do not allow subproposals to be in the same contest as the current proposal if specified.
-                // this saves a lot of headaches regarding transitive loops
-                if (includeProposalsInSameContest || !getLatestProposalContest(proposalId).equals(getLatestProposalContest(subProposalId))) {
+                if (!includeProposalsInSameContest) {
+                    if (getLatestProposalContest(proposalId).equals(getLatestProposalContest(subProposalId))) {
+                        continue;
+                    }
+                }
+                if (p.getProposalId() != proposalId) {
                     proposals.add(p);
                 }
             }
-
         }
         return proposals;
     }
 
     /**
-     * Returns latest contest phase to which proposal was submited
+     * Returns latest contest phase to which proposal was submitted
      *
      * @param proposalId id of a proposal
-     * @return last contest phase to which proposal was submited
+     * @return last contest phase to which proposal was submitted
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     public ContestPhase getLatestProposalContestPhase(long proposalId) throws PortalException, SystemException {
         Proposal2Phase latestP2p = null;
         for (Proposal2Phase p2p: proposal2PhaseLocalService.getByProposalId(proposalId)) {
@@ -1682,49 +1355,35 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 }
             }
         }
-        return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
+        if (latestP2p != null) {
+            return contestPhaseLocalService.getContestPhase(latestP2p.getContestPhaseId());
+        }
+        return null;
     }
 
-
-
     /**
-     * Returns latest contest to which proposal was submited
+     * Returns latest contest to which proposal was submitted
      * 
      * @param proposalId id of a proposal
-     * @return last contest to which proposal was submited
+     * @return last contest to which proposal was submitted
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     public Contest getLatestProposalContest(long proposalId) throws PortalException, SystemException {
     	return contestLocalService.getContest(this.getLatestProposalContestPhase(proposalId).getContestPK());
-    }
-
-    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) throws SystemException {
-        return proposalAttributeFinder.findByProposalIdVersionGreaterThanVersionWhenCreatedLessThanNameLikeImpact(proposal.getProposalId(),
-                proposal.getCurrentVersion(), proposal.getCurrentVersion());
-    }
-
-    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal, FocusArea focusArea) throws SystemException {
-        List<ProposalAttribute> filteredProposalAttributes = new ArrayList<>();
-        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
-            if (attribute.getAdditionalId() == focusArea.getId()) {
-                filteredProposalAttributes.add(attribute);
-            }
-        }
-        return filteredProposalAttributes;
     }
 
     /**
      * Returns all focus areas, for which entered proposal impact data is available
      *
-     * @param proposal
-     * @return
      */
+    @Override
     public List<FocusArea> getImpactProposalFocusAreas(Proposal proposal) throws SystemException, PortalException {
         Set<Long> focusAreaIdSet = new HashSet<>();
         List<FocusArea> impactSeriesFocusAreas = new ArrayList<>();
 
-        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
+        for (ProposalAttribute attribute : proposalAttributeLocalService.getImpactProposalAttributes(proposal)) {
             if (!focusAreaIdSet.contains(attribute.getAdditionalId())) {
                 focusAreaIdSet.add(attribute.getAdditionalId());
                 impactSeriesFocusAreas.add(FocusAreaLocalServiceUtil.getFocusArea(attribute.getAdditionalId()));
@@ -1732,5 +1391,22 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         }
 
         return impactSeriesFocusAreas;
+    }
+
+    @Override
+    public boolean isDeleted(Proposal proposal) throws SystemException, PortalException {
+        final ContestPhase contestPhase = getLatestProposalContestPhase(proposal.getProposalId());
+        long visibleAttributeValue = 1;
+        if (contestPhase != null) {
+            visibleAttributeValue = ProposalContestPhaseAttributeLocalServiceUtil.getAttributeLongValue(proposal.getProposalId(),
+                    contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE, 0, 1);
+        }
+        return !proposal.isVisible() || visibleAttributeValue == 0;
+    }
+
+    @Override
+    public boolean isVisibleInContest(Proposal proposal, long contestId) throws PortalException, SystemException {
+        final Contest currentContest = proposal2PhaseLocalService.getCurrentContestForProposal(proposal.getProposalId());
+        return !isDeleted(proposal) && currentContest.getContestPK() == contestId;
     }
 }

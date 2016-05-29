@@ -22,13 +22,14 @@ import java.util.Map;
 
 public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private long _ContestPK;
+    private long _contestTypeId;
     private String _ContestName;
     private String _ContestShortName;
+    private String _ContestUrlName;
+    private long _ContestYear;
     private String _ContestDescription;
     private String _ContestModelDescription;
     private String _ContestPositionsDescription;
-    private String _defaultPlanDescription;
-    private long _PlanTypeId;
     private Date _created;
     private Date _updated;
     private long _authorId;
@@ -38,6 +39,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private String _proposalCreationTemplateString;
     private String _voteTemplateString;
     private String _proposalVoteTemplateString;
+    private String _proposalVoteConfirmationTemplateString;
     private String _voteQuestionTemplateString;
     private long _focusAreaId;
     private long _contestTier;
@@ -69,6 +71,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private boolean _show_in_list_view;
     private boolean _show_in_outline_view;
     private boolean _hideRibbons;
+    private long _resourceArticleId;
     private BaseModel<?> _contestRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
@@ -110,14 +113,15 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         Map<String, Object> attributes = new HashMap<String, Object>();
 
         attributes.put("ContestPK", getContestPK());
+        attributes.put("contestTypeId", getContestTypeId());
         attributes.put("ContestName", getContestName());
         attributes.put("ContestShortName", getContestShortName());
+        attributes.put("ContestUrlName", getContestUrlName());
+        attributes.put("ContestYear", getContestYear());
         attributes.put("ContestDescription", getContestDescription());
         attributes.put("ContestModelDescription", getContestModelDescription());
         attributes.put("ContestPositionsDescription",
             getContestPositionsDescription());
-        attributes.put("defaultPlanDescription", getDefaultPlanDescription());
-        attributes.put("PlanTypeId", getPlanTypeId());
         attributes.put("created", getCreated());
         attributes.put("updated", getUpdated());
         attributes.put("authorId", getAuthorId());
@@ -129,6 +133,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("voteTemplateString", getVoteTemplateString());
         attributes.put("proposalVoteTemplateString",
             getProposalVoteTemplateString());
+        attributes.put("proposalVoteConfirmationTemplateString",
+            getProposalVoteConfirmationTemplateString());
         attributes.put("voteQuestionTemplateString",
             getVoteQuestionTemplateString());
         attributes.put("focusAreaId", getFocusAreaId());
@@ -162,6 +168,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("show_in_list_view", getShow_in_list_view());
         attributes.put("show_in_outline_view", getShow_in_outline_view());
         attributes.put("hideRibbons", getHideRibbons());
+        attributes.put("resourceArticleId", getResourceArticleId());
 
         return attributes;
     }
@@ -174,6 +181,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
             setContestPK(ContestPK);
         }
 
+        Long contestTypeId = (Long) attributes.get("contestTypeId");
+
+        if (contestTypeId != null) {
+            setContestTypeId(contestTypeId);
+        }
+
         String ContestName = (String) attributes.get("ContestName");
 
         if (ContestName != null) {
@@ -184,6 +197,18 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (ContestShortName != null) {
             setContestShortName(ContestShortName);
+        }
+
+        String ContestUrlName = (String) attributes.get("ContestUrlName");
+
+        if (ContestUrlName != null) {
+            setContestUrlName(ContestUrlName);
+        }
+
+        Long ContestYear = (Long) attributes.get("ContestYear");
+
+        if (ContestYear != null) {
+            setContestYear(ContestYear);
         }
 
         String ContestDescription = (String) attributes.get(
@@ -205,19 +230,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (ContestPositionsDescription != null) {
             setContestPositionsDescription(ContestPositionsDescription);
-        }
-
-        String defaultPlanDescription = (String) attributes.get(
-                "defaultPlanDescription");
-
-        if (defaultPlanDescription != null) {
-            setDefaultPlanDescription(defaultPlanDescription);
-        }
-
-        Long PlanTypeId = (Long) attributes.get("PlanTypeId");
-
-        if (PlanTypeId != null) {
-            setPlanTypeId(PlanTypeId);
         }
 
         Date created = (Date) attributes.get("created");
@@ -275,6 +287,13 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (proposalVoteTemplateString != null) {
             setProposalVoteTemplateString(proposalVoteTemplateString);
+        }
+
+        String proposalVoteConfirmationTemplateString = (String) attributes.get(
+                "proposalVoteConfirmationTemplateString");
+
+        if (proposalVoteConfirmationTemplateString != null) {
+            setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
         }
 
         String voteQuestionTemplateString = (String) attributes.get(
@@ -472,6 +491,12 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         if (hideRibbons != null) {
             setHideRibbons(hideRibbons);
         }
+
+        Long resourceArticleId = (Long) attributes.get("resourceArticleId");
+
+        if (resourceArticleId != null) {
+            setResourceArticleId(resourceArticleId);
+        }
     }
 
     @Override
@@ -490,6 +515,28 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                 Method method = clazz.getMethod("setContestPK", long.class);
 
                 method.invoke(_contestRemoteModel, ContestPK);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getContestTypeId() {
+        return _contestTypeId;
+    }
+
+    @Override
+    public void setContestTypeId(long contestTypeId) {
+        _contestTypeId = contestTypeId;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestTypeId", long.class);
+
+                method.invoke(_contestRemoteModel, contestTypeId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -535,6 +582,51 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         String.class);
 
                 method.invoke(_contestRemoteModel, ContestShortName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getContestUrlName() {
+        return _ContestUrlName;
+    }
+
+    @Override
+    public void setContestUrlName(String ContestUrlName) {
+        _ContestUrlName = ContestUrlName;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestUrlName",
+                        String.class);
+
+                method.invoke(_contestRemoteModel, ContestUrlName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public long getContestYear() {
+        return _ContestYear;
+    }
+
+    @Override
+    public void setContestYear(long ContestYear) {
+        _ContestYear = ContestYear;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setContestYear", long.class);
+
+                method.invoke(_contestRemoteModel, ContestYear);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -605,51 +697,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         String.class);
 
                 method.invoke(_contestRemoteModel, ContestPositionsDescription);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
-    public String getDefaultPlanDescription() {
-        return _defaultPlanDescription;
-    }
-
-    @Override
-    public void setDefaultPlanDescription(String defaultPlanDescription) {
-        _defaultPlanDescription = defaultPlanDescription;
-
-        if (_contestRemoteModel != null) {
-            try {
-                Class<?> clazz = _contestRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setDefaultPlanDescription",
-                        String.class);
-
-                method.invoke(_contestRemoteModel, defaultPlanDescription);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
-    public long getPlanTypeId() {
-        return _PlanTypeId;
-    }
-
-    @Override
-    public void setPlanTypeId(long PlanTypeId) {
-        _PlanTypeId = PlanTypeId;
-
-        if (_contestRemoteModel != null) {
-            try {
-                Class<?> clazz = _contestRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setPlanTypeId", long.class);
-
-                method.invoke(_contestRemoteModel, PlanTypeId);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -860,6 +907,31 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
                         String.class);
 
                 method.invoke(_contestRemoteModel, proposalVoteTemplateString);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
+    @Override
+    public String getProposalVoteConfirmationTemplateString() {
+        return _proposalVoteConfirmationTemplateString;
+    }
+
+    @Override
+    public void setProposalVoteConfirmationTemplateString(
+        String proposalVoteConfirmationTemplateString) {
+        _proposalVoteConfirmationTemplateString = proposalVoteConfirmationTemplateString;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setProposalVoteConfirmationTemplateString",
+                        String.class);
+
+                method.invoke(_contestRemoteModel,
+                    proposalVoteConfirmationTemplateString);
             } catch (Exception e) {
                 throw new UnsupportedOperationException(e);
             }
@@ -1602,6 +1674,29 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         }
     }
 
+    @Override
+    public long getResourceArticleId() {
+        return _resourceArticleId;
+    }
+
+    @Override
+    public void setResourceArticleId(long resourceArticleId) {
+        _resourceArticleId = resourceArticleId;
+
+        if (_contestRemoteModel != null) {
+            try {
+                Class<?> clazz = _contestRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setResourceArticleId",
+                        long.class);
+
+                method.invoke(_contestRemoteModel, resourceArticleId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getContestRemoteModel() {
         return _contestRemoteModel;
     }
@@ -1670,13 +1765,14 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         ContestClp clone = new ContestClp();
 
         clone.setContestPK(getContestPK());
+        clone.setContestTypeId(getContestTypeId());
         clone.setContestName(getContestName());
         clone.setContestShortName(getContestShortName());
+        clone.setContestUrlName(getContestUrlName());
+        clone.setContestYear(getContestYear());
         clone.setContestDescription(getContestDescription());
         clone.setContestModelDescription(getContestModelDescription());
         clone.setContestPositionsDescription(getContestPositionsDescription());
-        clone.setDefaultPlanDescription(getDefaultPlanDescription());
-        clone.setPlanTypeId(getPlanTypeId());
         clone.setCreated(getCreated());
         clone.setUpdated(getUpdated());
         clone.setAuthorId(getAuthorId());
@@ -1686,6 +1782,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setProposalCreationTemplateString(getProposalCreationTemplateString());
         clone.setVoteTemplateString(getVoteTemplateString());
         clone.setProposalVoteTemplateString(getProposalVoteTemplateString());
+        clone.setProposalVoteConfirmationTemplateString(getProposalVoteConfirmationTemplateString());
         clone.setVoteQuestionTemplateString(getVoteQuestionTemplateString());
         clone.setFocusAreaId(getFocusAreaId());
         clone.setContestTier(getContestTier());
@@ -1717,6 +1814,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setShow_in_list_view(getShow_in_list_view());
         clone.setShow_in_outline_view(getShow_in_outline_view());
         clone.setHideRibbons(getHideRibbons());
+        clone.setResourceArticleId(getResourceArticleId());
 
         return clone;
     }
@@ -1778,24 +1876,26 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(103);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
+        sb.append(", contestTypeId=");
+        sb.append(getContestTypeId());
         sb.append(", ContestName=");
         sb.append(getContestName());
         sb.append(", ContestShortName=");
         sb.append(getContestShortName());
+        sb.append(", ContestUrlName=");
+        sb.append(getContestUrlName());
+        sb.append(", ContestYear=");
+        sb.append(getContestYear());
         sb.append(", ContestDescription=");
         sb.append(getContestDescription());
         sb.append(", ContestModelDescription=");
         sb.append(getContestModelDescription());
         sb.append(", ContestPositionsDescription=");
         sb.append(getContestPositionsDescription());
-        sb.append(", defaultPlanDescription=");
-        sb.append(getDefaultPlanDescription());
-        sb.append(", PlanTypeId=");
-        sb.append(getPlanTypeId());
         sb.append(", created=");
         sb.append(getCreated());
         sb.append(", updated=");
@@ -1814,6 +1914,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getVoteTemplateString());
         sb.append(", proposalVoteTemplateString=");
         sb.append(getProposalVoteTemplateString());
+        sb.append(", proposalVoteConfirmationTemplateString=");
+        sb.append(getProposalVoteConfirmationTemplateString());
         sb.append(", voteQuestionTemplateString=");
         sb.append(getVoteQuestionTemplateString());
         sb.append(", focusAreaId=");
@@ -1876,6 +1978,8 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getShow_in_outline_view());
         sb.append(", hideRibbons=");
         sb.append(getHideRibbons());
+        sb.append(", resourceArticleId=");
+        sb.append(getResourceArticleId());
         sb.append("}");
 
         return sb.toString();
@@ -1883,7 +1987,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(148);
+        StringBundler sb = new StringBundler(157);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -1894,12 +1998,24 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getContestPK());
         sb.append("]]></column-value></column>");
         sb.append(
+            "<column><column-name>contestTypeId</column-name><column-value><![CDATA[");
+        sb.append(getContestTypeId());
+        sb.append("]]></column-value></column>");
+        sb.append(
             "<column><column-name>ContestName</column-name><column-value><![CDATA[");
         sb.append(getContestName());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestShortName</column-name><column-value><![CDATA[");
         sb.append(getContestShortName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ContestUrlName</column-name><column-value><![CDATA[");
+        sb.append(getContestUrlName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>ContestYear</column-name><column-value><![CDATA[");
+        sb.append(getContestYear());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>ContestDescription</column-name><column-value><![CDATA[");
@@ -1912,14 +2028,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>ContestPositionsDescription</column-name><column-value><![CDATA[");
         sb.append(getContestPositionsDescription());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>defaultPlanDescription</column-name><column-value><![CDATA[");
-        sb.append(getDefaultPlanDescription());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>PlanTypeId</column-name><column-value><![CDATA[");
-        sb.append(getPlanTypeId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>created</column-name><column-value><![CDATA[");
@@ -1956,6 +2064,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>proposalVoteTemplateString</column-name><column-value><![CDATA[");
         sb.append(getProposalVoteTemplateString());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>proposalVoteConfirmationTemplateString</column-name><column-value><![CDATA[");
+        sb.append(getProposalVoteConfirmationTemplateString());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>voteQuestionTemplateString</column-name><column-value><![CDATA[");
@@ -2080,6 +2192,10 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>hideRibbons</column-name><column-value><![CDATA[");
         sb.append(getHideRibbons());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>resourceArticleId</column-name><column-value><![CDATA[");
+        sb.append(getResourceArticleId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

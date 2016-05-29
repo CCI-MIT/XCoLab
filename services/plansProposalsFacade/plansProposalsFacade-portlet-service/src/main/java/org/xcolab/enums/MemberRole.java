@@ -1,95 +1,128 @@
 package org.xcolab.enums;
 
+import com.ext.portlet.model.MemberCategory;
+import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Role;
 import org.apache.commons.lang.WordUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public enum MemberRole {
     /**
      * Important:
      * Whenever these roles are modified (which should never happen) these Ids should be updated as well
      */
+    DEFAULT(0L, "Default"),
 	ALL(0L, "All"),
     GUEST(10119L, "Guest"),
-    MEMBER(10122L, "User"),
+    MEMBER(10122L, "User", "Member"),
     FELLOW(193261L, "Fellow"),
     ADVISOR(193260L, "Advisor"),
     EXPERT(44201L, "Experts"),
-    JUDGES(1251483L, "Judges", "Judge"),
-    STAFF(31704L, "Staff", "Moderator", "Administrator"),
+    JUDGE(1251483L, "Judges", "Judge"),
+    STAFF(31704L, new Long[]{10118L}, "Staff", "Moderator", "Administrator"),
     MODERATOR(31213L, "Staff"),
     CATALYST(1430078L, "Catalyst"),
-    CONTESTMANAGER(1950101L, "Contest Manager"),
+    CONTEST_MANAGER(1958405L, "Contest Manager"),
     IMPACT_ASSESSMENT_FELLOW(1975251L, "Impact Assessment Fellow");
 
-    
     private final String[] roleNames;
-    private Long roleId;
+    private final long roleId;
+    private final List<Long> otherRoleIds;
 
-   
-    
     MemberRole(Long roleId, String... roleNames) {
-        this.roleId = roleId;
+        this(roleId, new Long[0], roleNames);
+    }
+
+    MemberRole(Long roleId, Long[] otherRoleIds, String... roleNames) {
         this.roleNames = roleNames;
-    } 
-
-    public String getPrintName() {
-        String printName = WordUtils.capitalizeFully((name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase()).replaceAll("_"," "));
-            if (printName.equalsIgnoreCase("Contestmanager")) {
-                return "Staff";
-            }
-        else
-            return printName;
+        this.roleId = roleId;
+        this.otherRoleIds = Arrays.asList(otherRoleIds);
     }
 
-    public String getImageUrl() {
-        if (name().equalsIgnoreCase(MemberRole.IMPACT_ASSESSMENT_FELLOW.name())){
-            return MemberRole.FELLOW.name().toLowerCase();
-        }
-        else if (name().equalsIgnoreCase(MemberRole.CONTESTMANAGER.name()) ){
-            return MemberRole.STAFF.name().toLowerCase();
-        }
-        else
-            return name().toLowerCase();
+    public String getPrintName() throws SystemException {
+        return WordUtils.capitalizeFully((getMemberCategory().getDisplayName()));
     }
-    
-    public String getLowerCase() {
 
-        return name().toLowerCase();
+    public String getImageUrl() throws SystemException {
+        return getMemberCategory().getImageName();
+    }
+
+    public MemberCategory getMemberCategory() throws SystemException {
+        final MemberCategory memberCategory = MemberCategoryLocalServiceUtil.fetchMemberCategory(roleId);
+        if (memberCategory == null) {
+            throw new SystemException(String.format("No member category with roleId %d exists", roleId));
+        }
+        return memberCategory;
     }
 
     public String[] getRoleNames() {
-        return roleNames;
+        return roleNames.clone();
     }
 
-    public Long getRoleId() {
+    public long getRoleId() {
         return roleId;
     }
 
-    static public MemberRole getMember(String aName) {
-        MemberRole[] roles = MemberRole.values();
-        for (MemberRole r : roles)
-            if (isMemberInList(aName, r.getRoleNames()))
-                return r;
-        return null;
-    }
-
-    public static MemberRole getMemberByRoleId(Long roleId) {
+    public static MemberRole fromRoleId(long roleId) throws NoSuchMemberRoleException {
         for (MemberRole memberRole : MemberRole.values()) {
-            if (memberRole.getRoleId() == roleId) {
+            if (roleId == memberRole.getRoleId() || memberRole.getOtherRoleIds().contains(roleId)) {
                 return memberRole;
             }
         }
-
-        return null;
+        throw new NoSuchMemberRoleException("Unknown role id given: " + roleId);
     }
 
-    private static boolean isMemberInList(String name, String[] names) {
+    public static MemberRole fromRoleName(String roleName) throws NoSuchMemberRoleException {
+        for (MemberRole memberRole : MemberRole.values()) {
+            if (isStringInList(roleName, memberRole.getRoleNames())) {
+                return memberRole;
+            }
+        }
+        throw new NoSuchMemberRoleException("Unknown role name given: " + roleName);
+    }
+
+    public static MemberRole getHighestRole(List<Role> roles) throws NoSuchMemberRoleException, SystemException {
+        MemberRole role = MemberRole.MEMBER;
+
+        for (Role r: roles) {
+            final String roleString = r.getName();
+            try {
+                MemberRole currentRole = MemberRole.fromRoleName(roleString);
+                if (currentRole != null) {
+                    if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory().getSortOrder()) {
+                        role = currentRole;
+                    }
+                }
+            } catch (NoSuchMemberRoleException ignored) { }
+        }
+
+        if (role == MemberRole.MODERATOR) {
+            role = MemberRole.STAFF;
+        }
+
+        return role;
+    }
+
+    private static boolean isStringInList(String name, String[] names) {
         for (String n : names) {
             if (name.equalsIgnoreCase(n)) {
                 return true;
             }
         }
-
         return false;
     }
 
+    public List<Long> getOtherRoleIds() {
+        return otherRoleIds;
+    }
+
+    public static class NoSuchMemberRoleException extends PortalException {
+        public NoSuchMemberRoleException(String message) {
+            super(message);
+        }
+    }
 }

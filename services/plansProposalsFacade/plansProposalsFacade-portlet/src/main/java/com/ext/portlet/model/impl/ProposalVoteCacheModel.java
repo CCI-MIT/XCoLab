@@ -3,6 +3,7 @@ package com.ext.portlet.model.impl;
 import com.ext.portlet.model.ProposalVote;
 
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
 import java.io.Externalizable;
@@ -25,10 +26,13 @@ public class ProposalVoteCacheModel implements CacheModel<ProposalVote>,
     public long contestPhaseId;
     public long userId;
     public long createDate;
+    public boolean isValid;
+    public long confirmationEmailSendDate;
+    public String confirmationToken;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{proposalId=");
         sb.append(proposalId);
@@ -38,6 +42,12 @@ public class ProposalVoteCacheModel implements CacheModel<ProposalVote>,
         sb.append(userId);
         sb.append(", createDate=");
         sb.append(createDate);
+        sb.append(", isValid=");
+        sb.append(isValid);
+        sb.append(", confirmationEmailSendDate=");
+        sb.append(confirmationEmailSendDate);
+        sb.append(", confirmationToken=");
+        sb.append(confirmationToken);
         sb.append("}");
 
         return sb.toString();
@@ -57,6 +67,21 @@ public class ProposalVoteCacheModel implements CacheModel<ProposalVote>,
             proposalVoteImpl.setCreateDate(new Date(createDate));
         }
 
+        proposalVoteImpl.setIsValid(isValid);
+
+        if (confirmationEmailSendDate == Long.MIN_VALUE) {
+            proposalVoteImpl.setConfirmationEmailSendDate(null);
+        } else {
+            proposalVoteImpl.setConfirmationEmailSendDate(new Date(
+                    confirmationEmailSendDate));
+        }
+
+        if (confirmationToken == null) {
+            proposalVoteImpl.setConfirmationToken(StringPool.BLANK);
+        } else {
+            proposalVoteImpl.setConfirmationToken(confirmationToken);
+        }
+
         proposalVoteImpl.resetOriginalValues();
 
         return proposalVoteImpl;
@@ -68,6 +93,9 @@ public class ProposalVoteCacheModel implements CacheModel<ProposalVote>,
         contestPhaseId = objectInput.readLong();
         userId = objectInput.readLong();
         createDate = objectInput.readLong();
+        isValid = objectInput.readBoolean();
+        confirmationEmailSendDate = objectInput.readLong();
+        confirmationToken = objectInput.readUTF();
     }
 
     @Override
@@ -77,5 +105,13 @@ public class ProposalVoteCacheModel implements CacheModel<ProposalVote>,
         objectOutput.writeLong(contestPhaseId);
         objectOutput.writeLong(userId);
         objectOutput.writeLong(createDate);
+        objectOutput.writeBoolean(isValid);
+        objectOutput.writeLong(confirmationEmailSendDate);
+
+        if (confirmationToken == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(confirmationToken);
+        }
     }
 }

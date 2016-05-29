@@ -95,6 +95,14 @@ public class DiscussionMessageLocalServiceClp
     private String[] _methodParameterTypes42;
     private String _methodName43;
     private String[] _methodParameterTypes43;
+    private String _methodName44;
+    private String[] _methodParameterTypes44;
+    private String _methodName45;
+    private String[] _methodParameterTypes45;
+    private String _methodName46;
+    private String[] _methodParameterTypes46;
+    private String _methodName47;
+    private String[] _methodParameterTypes47;
 
     public DiscussionMessageLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -326,6 +334,22 @@ public class DiscussionMessageLocalServiceClp
         _methodName43 = "hasFlag";
 
         _methodParameterTypes43 = new String[] { "long", "java.lang.String" };
+
+        _methodName44 = "getByAuthorId";
+
+        _methodParameterTypes44 = new String[] { "long" };
+
+        _methodName45 = "subscribe";
+
+        _methodParameterTypes45 = new String[] { "long", "long", "long", "long" };
+
+        _methodName46 = "unsubscribe";
+
+        _methodParameterTypes46 = new String[] { "long", "long", "long", "long" };
+
+        _methodName47 = "isSubscribed";
+
+        _methodParameterTypes47 = new String[] { "long", "long", "long", "long" };
     }
 
     @Override
@@ -1225,7 +1249,7 @@ public class DiscussionMessageLocalServiceClp
 
     @Override
     public com.ext.portlet.model.DiscussionMessage addThreadMessage(
-        com.ext.portlet.model.DiscussionMessage dMessage,
+        com.ext.portlet.model.DiscussionMessage thread,
         java.lang.String subject, java.lang.String body,
         com.liferay.portal.model.User author)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
@@ -1236,7 +1260,7 @@ public class DiscussionMessageLocalServiceClp
             returnObj = _invokableLocalService.invokeMethod(_methodName32,
                     _methodParameterTypes32,
                     new Object[] {
-                        ClpSerializer.translateInput(dMessage),
+                        ClpSerializer.translateInput(thread),
                         
                     ClpSerializer.translateInput(subject),
                         
@@ -1589,6 +1613,143 @@ public class DiscussionMessageLocalServiceClp
                     new Object[] { messageId, ClpSerializer.translateInput(flag) });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName44,
+                    _methodParameterTypes44, new Object[] { authorId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.ext.portlet.model.DiscussionMessage>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public void subscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName45,
+                _methodParameterTypes45,
+                new Object[] {
+                    userId,
+                    
+                discussionCategoryGroupId,
+                    
+                categoryId,
+                    
+                threadId
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName46,
+                _methodParameterTypes46,
+                new Object[] {
+                    userId,
+                    
+                discussionCategoryGroupId,
+                    
+                categoryId,
+                    
+                threadId
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName47,
+                    _methodParameterTypes47,
+                    new Object[] {
+                        userId,
+                        
+                    discussionCategoryGroupId,
+                        
+                    categoryId,
+                        
+                    threadId
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
                 throw (com.liferay.portal.kernel.exception.SystemException) t;

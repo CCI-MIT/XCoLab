@@ -505,6 +505,35 @@ public class ProposalContestPhaseAttributeLocalServiceWrapper
             contestPhaseId, attributeName);
     }
 
+    @Override
+    public com.ext.portlet.model.ProposalContestPhaseAttribute getAttributeOrNull(
+        long proposalId, long contestPhaseId, java.lang.String attributeName,
+        long additionalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalContestPhaseAttributeLocalService.getAttributeOrNull(proposalId,
+            contestPhaseId, attributeName, additionalId);
+    }
+
+    @Override
+    public long getAttributeLongValue(long proposalId, long contestPhaseId,
+        java.lang.String attributeName, long additionalId, long defaultVal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalContestPhaseAttributeLocalService.getAttributeLongValue(proposalId,
+            contestPhaseId, attributeName, additionalId, defaultVal);
+    }
+
+    @Override
+    public java.lang.String getAttributeStringValue(long proposalId,
+        long contestPhaseId, java.lang.String attributeName, long additionalId,
+        java.lang.String defaultVal)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _proposalContestPhaseAttributeLocalService.getAttributeStringValue(proposalId,
+            contestPhaseId, attributeName, additionalId, defaultVal);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

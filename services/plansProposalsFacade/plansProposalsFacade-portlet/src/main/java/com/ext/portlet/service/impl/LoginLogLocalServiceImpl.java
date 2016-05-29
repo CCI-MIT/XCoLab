@@ -1,9 +1,6 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.LoginLog;
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.portlet.service.base.LoginLogLocalServiceBaseImpl;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
@@ -12,8 +9,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
-import com.liferay.portlet.expando.model.ExpandoValue;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 import java.util.Date;
 
@@ -38,7 +33,8 @@ public class LoginLogLocalServiceImpl extends LoginLogLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.LoginLogLocalServiceUtil} to access the login log local service.
      */
 
-	public LoginLog createLoginLog(User user, String ipAddr, String entryUrl) throws SystemException, PortalException {
+	@Override
+    public LoginLog createLoginLog(User user, String ipAddr, String entryUrl) throws SystemException, PortalException {
 		Long pk = CounterLocalServiceUtil.increment(LoginLog.class.getName());
 		LoginLog newLog = createLoginLog(pk);
 

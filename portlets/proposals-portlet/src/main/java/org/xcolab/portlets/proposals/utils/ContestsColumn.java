@@ -1,13 +1,13 @@
 package org.xcolab.portlets.proposals.utils;
 
-import java.util.Comparator;
-
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import jodd.util.StringUtil;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+
+import java.util.Comparator;
 
 
 public enum ContestsColumn {
@@ -24,9 +24,7 @@ public enum ContestsColumn {
         public int compare(ContestWrapper o1, ContestWrapper o2) {
             try {
                 return (int) (o1.getProposalsCount() - o2.getProposalsCount());
-            } catch (PortalException e) {
-                _log.error("Can't get proposals count", e);
-            } catch (SystemException e) {
+            } catch (PortalException | SystemException e) {
                 _log.error("Can't get proposals count", e);
             }
             return 0;
@@ -38,9 +36,7 @@ public enum ContestsColumn {
         public int compare(ContestWrapper o1, ContestWrapper o2) {
             try {
                 return (int) (o1.getCommentsCount() - o2.getCommentsCount());
-            } catch (PortalException e) {
-                _log.error("Can't get comments count", e);
-            } catch (SystemException e) {
+            } catch (PortalException | SystemException e) {
                 _log.error("Can't get comments count", e);
             }
             return 0;
@@ -53,9 +49,7 @@ public enum ContestsColumn {
 
             try {
                 return (int) (o1.getVotesCount() - o2.getVotesCount());
-            } catch (PortalException e) {
-                _log.error("Can't get votes count", e);
-            } catch (SystemException e) {
+            } catch (PortalException | SystemException e) {
                 _log.error("Can't get votes count", e);
             }
             return 0;
@@ -68,16 +62,9 @@ public enum ContestsColumn {
             try {
             	String s1 = o1.getWhatName();
             	String s2 = o2.getWhatName();
-            	
-            	if (s1 == null) {
-            		if (s2 == null) return (int) (o1.getContestPK() - o2.getContestPK());
-            		return -1;
-            	}
-            	else if (s2 == null) return 1;
-            	return s1.toLowerCase().compareTo(s2.toLowerCase());
-            } catch (PortalException e) {
-                _log.error("Can't get what for contest", e);
-            } catch (SystemException e) {
+                return compareContestsByStringValues(o1, s1, o2, s2);
+
+            } catch (PortalException | SystemException e) {
                 _log.error("Can't get what for contest", e);
             }
             return 0;
@@ -90,16 +77,9 @@ public enum ContestsColumn {
             try {
             	String s1 = o1.getWhereName();
             	String s2 = o2.getWhereName();
-            	
-            	if (s1 == null) {
-            		if (s2 == null) return (int) (o1.getContestPK() - o2.getContestPK());
-            		return -1;
-            	}
-            	else if (s2 == null) return 1;
-            	return s1.toLowerCase().compareTo(s2.toLowerCase());
-            } catch (PortalException e) {
-                _log.error("Can't get where for contest", e);
-            } catch (SystemException e) {
+            	return compareContestsByStringValues(o1, s1, o2, s2);
+
+            } catch (PortalException | SystemException e) {
                 _log.error("Can't get where for contest", e);
             }
             return 0;
@@ -112,16 +92,9 @@ public enum ContestsColumn {
             try {
             	String s1 = o1.getWhoName();
             	String s2 = o2.getWhoName();
-            	
-            	if (s1 == null) {
-            		if (s2 == null) return (int) (o1.getContestPK() - o2.getContestPK());
-            		return -1;
-            	}
-            	else if (s2 == null) return 1;
-            	return s1.toLowerCase().compareTo(s2.toLowerCase());
-            } catch (PortalException e) {
-                _log.error("Can't get who for contest", e);
-            } catch (SystemException e) {
+                return compareContestsByStringValues(o1, s1, o2, s2);
+
+            } catch (PortalException | SystemException e) {
                 _log.error("Can't get who for contest", e);
             }
             return 0;
@@ -134,16 +107,9 @@ public enum ContestsColumn {
             try {
             	String s1 = o1.getHowName();
             	String s2 = o2.getHowName();
-            	
-            	if (s1 == null) {
-            		if (s2 == null) return (int) (o1.getContestPK() - o2.getContestPK());
-            		return -1;
-            	}
-            	else if (s2 == null) return 1;
-            	return s1.toLowerCase().compareTo(s2.toLowerCase());
-            } catch (PortalException e) {
-                _log.error("Can't get who for contest", e);
-            } catch (SystemException e) {
+                return compareContestsByStringValues(o1, s1, o2, s2);
+
+            } catch (PortalException | SystemException e) {
                 _log.error("Can't get who for contest", e);
             }
             return 0;
@@ -160,7 +126,7 @@ public enum ContestsColumn {
                     return 1;
                 }
             } catch (PortalException | SystemException e) {
-                e.printStackTrace();
+                _log.error("Can't get reference date for contest", e);
             }
             return 0;
         }
@@ -176,7 +142,7 @@ public enum ContestsColumn {
     
     private final Comparator<ContestWrapper> columnComparator;
 
-    private ContestsColumn(Comparator<ContestWrapper> columnComparator) {
+    ContestsColumn(Comparator<ContestWrapper> columnComparator) {
         this.columnComparator = columnComparator;
     }
     
@@ -185,4 +151,17 @@ public enum ContestsColumn {
     }
 
     private final static Log _log = LogFactoryUtil.getLog(ContestsColumn.class);
+
+    private static int compareContestsByStringValues(ContestWrapper c1, String s1, ContestWrapper c2, String s2) {
+        if (StringUtil.isEmpty(s1)) {
+            if (StringUtil.isEmpty(s2)) {
+                return (int) (c1.getContestPK() - c2.getContestPK());
+            }
+            return -1;
+        }
+        if (StringUtil.isEmpty(s2)) {
+            return 1;
+        }
+        return s1.toLowerCase().compareTo(s2.toLowerCase());
+    }
 }

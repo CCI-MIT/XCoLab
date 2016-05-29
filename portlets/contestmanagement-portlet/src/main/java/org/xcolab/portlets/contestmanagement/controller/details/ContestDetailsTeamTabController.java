@@ -22,6 +22,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +58,10 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
 
     @RequestMapping(params = "tab=TEAM")
     public String showTeamTabController(PortletRequest request, PortletResponse response, Model model,
-                                        @RequestParam(required = false) Long contestId)
+            @RequestParam(required = false) Long contestId)
             throws PortalException, SystemException {
 
-        if(!tabWrapper.getCanView()) {
+        if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
@@ -72,7 +73,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
     @RequestMapping(params = "action=updateContestTeam")
     public void updateTeamTabController(ActionRequest request, Model model, ActionResponse response) {
 
-        if(!tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
@@ -82,7 +83,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
             ContestTeamWrapper contestTeamWrapper = new ContestTeamWrapper(contestTeamBeam);
             contestTeamWrapper.updateContestTeamMembers();
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(Exception e){
+        } catch (SystemException | IOException | PortalException e) {
             _log.warn("Update contest team failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

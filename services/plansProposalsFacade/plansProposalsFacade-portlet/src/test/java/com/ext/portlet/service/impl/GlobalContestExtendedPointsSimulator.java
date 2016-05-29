@@ -9,6 +9,7 @@ import com.ext.portlet.model.Points;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.impl.helper.points.ContestTierDataStructure;
 import com.ext.portlet.service.impl.helper.points.DistributionConfiguration;
 import com.liferay.portal.NoSuchUserException;
@@ -24,7 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class extends the basic GlobalContestPointsSimulator class.
@@ -503,7 +506,7 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                     contestProposals.add(proposal);
                     proposalTeamMembers.setProposalTeamMembers(proposalIdx, setTeamMembers(proposal, author));
 
-                    testInstance.proposalLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Tier " + (tierIdx + 1) + " Contest " + (contestIdx + 1) + " Proposal " + (proposalIdx + 1));
+                    testInstance.proposalAttributeLocalService.setAttribute(proposal.getAuthorId(), proposal.getProposalId(), ProposalAttributeKeys.NAME, 0, "Tier " + (tierIdx + 1) + " Contest " + (contestIdx + 1) + " Proposal " + (proposalIdx + 1));
 
                     initializePhasesForProposal(proposal, proposalIdx, startPhase, contestPhases, contestProposalsInLastPhase);
 
@@ -533,14 +536,14 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                         for (int toProposalIdx = 0; toProposalIdx < nextContestTierDataStructure.getAmountOfProposals(); toProposalIdx++) {
                             final Proposal toProposal = nextContestTierDataStructure.getProposals(toContestIdx).get(toProposalIdx);
                             if (doWithProbability(probabilityToLinkToOtherProposal)) {
-                                sectionText += "http://127.0.0.1:8080/web/guest/plans/-/plans/contestId/" + toContest.getContestPK() + "/planId/" + toProposal.getProposalId() + "\n\n";
+                                sectionText += "http://127.0.0.1:8080" + ProposalLocalServiceUtil.getProposalLinkUrl(toContest, toProposal) + "\n\n";
                                 contestTierDataStructure.getProposalLinks(contestIdx).addProposalLink(fromProposalIdx, tierIdx - 1, toContestIdx, toProposalIdx, toProposal.getProposalId());
                             }
                         }
                     }
 
                     //1300907 is the sub proposal plan section definition
-                    testInstance.proposalLocalService.setAttribute(
+                    testInstance.proposalAttributeLocalService.setAttribute(
                             contestProposals.get(fromProposalIdx).getAuthorId(),
                             contestProposals.get(fromProposalIdx).getProposalId(),
                             ProposalAttributeKeys.SECTION,

@@ -122,6 +122,20 @@ public interface ContestPhaseRibbonTypeModel extends BaseModel<ContestPhaseRibbo
      */
     public void setCopyOnPromote(boolean copyOnPromote);
 
+    /**
+     * Returns the sort order of this contest phase ribbon type.
+     *
+     * @return the sort order of this contest phase ribbon type
+     */
+    public int getSortOrder();
+
+    /**
+     * Sets the sort order of this contest phase ribbon type.
+     *
+     * @param sortOrder the sort order of this contest phase ribbon type
+     */
+    public void setSortOrder(int sortOrder);
+
     @Override
     public boolean isNew();
 

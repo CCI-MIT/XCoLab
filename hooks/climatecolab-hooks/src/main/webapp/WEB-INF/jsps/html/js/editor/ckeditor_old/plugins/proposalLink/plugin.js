@@ -4,7 +4,6 @@ CKEDITOR.plugins.add( 'proposalLink', {
     	
     	console.log('editor', editor);
 
-    	var sectionContainer = null;//jQuery(editor.container.$).parents('.addpropbox');
     	var sectionId = null;
     	
     	jQuery(document).on("proposalPicker_proposalSelected", function(event) {
@@ -17,10 +16,7 @@ CKEDITOR.plugins.add( 'proposalLink', {
     		var proposalLinkHtml = [];
     		proposalLinkHtml.push("<a href=\"");
     		proposalLinkHtml.push(host);
-    		proposalLinkHtml.push("/web/guest/plans/-/plans/contestId/");
-    		proposalLinkHtml.push(event.contestId);
-    		proposalLinkHtml.push("/planId/");
-    		proposalLinkHtml.push(event.proposalId);
+    		proposalLinkHtml.push(event.linkUrl);
     		proposalLinkHtml.push("\" class=\"proposalLink\">");
     		proposalLinkHtml.push(event.proposalName);
     		proposalLinkHtml.push("</a>");
@@ -30,24 +26,21 @@ CKEDITOR.plugins.add( 'proposalLink', {
     	var editorSectionType = jQuery(editor.element).attr('data-section-type');
     	var supportedSectionTypes = {'PROPOSAL_REFERENCE': true, 'PROPOSAL_LIST_REFERENCE': true, 'PROPOSAL_LIST_TEXT_REFERENCE': true};
     	var addProposalPickerButton = editorSectionType && editorSectionType in supportedSectionTypes;
-    	
     	if (addProposalPickerButton) {
+            sectionId = jQuery(editor.element).attr('data-section-id');
+            var contestTypeNames = sectionContestTypeNames[sectionId];
+
     		editor.ui.addButton( 'ProposalLink', {
-    			label: 'Proposal link',
+    			label: contestTypeNames[0] + ' link',
     			command: 'proposalLink',
     			toolbar: 'insert'
     		});
     	
     		editor.addCommand( 'proposalLink', new CKEDITOR.command( editor, {
-    			exec: function( editor ) {
-    				sectionContainer = jQuery(editor.container.$).parents('.addpropbox');
-    				sectionId = sectionContainer.attr("data-section-id");
-    	    	
-    				pickProposal(sectionId);
+    			exec: function() {
+    				pickProposal(sectionId, contestTypeNames[0], contestTypeNames[1], contestTypeNames[2], contestTypeNames[3]);
     			}}));
     	}
     	
-    },
-    
-    
+    }
 });

@@ -4,7 +4,6 @@ import com.ext.portlet.NoSuchModelOutputItemException;
 import com.ext.portlet.model.ModelOutputItem;
 import com.ext.portlet.service.base.ModelOutputItemLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import edu.mit.cci.roma.client.MetaData;
 
 /**
@@ -29,6 +28,7 @@ public class ModelOutputItemLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ModelOutputItemLocalServiceUtil} to access the model output item local service.
      */
 
+    @Override
     public ModelOutputItem getOutputItem(MetaData md) throws SystemException, NoSuchModelOutputItemException {
         return modelOutputItemPersistence.findByModelOutputId(md.getId());
     }

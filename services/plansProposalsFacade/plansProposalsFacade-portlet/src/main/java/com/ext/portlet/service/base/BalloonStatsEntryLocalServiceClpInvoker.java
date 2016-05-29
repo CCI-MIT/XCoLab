@@ -41,12 +41,12 @@ public class BalloonStatsEntryLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName632;
-    private String[] _methodParameterTypes632;
-    private String _methodName633;
-    private String[] _methodParameterTypes633;
-    private String _methodName638;
-    private String[] _methodParameterTypes638;
+    private String _methodName518;
+    private String[] _methodParameterTypes518;
+    private String _methodName519;
+    private String[] _methodParameterTypes519;
+    private String _methodName524;
+    private String[] _methodParameterTypes524;
 
     public BalloonStatsEntryLocalServiceClpInvoker() {
         _methodName0 = "addBalloonStatsEntry";
@@ -131,17 +131,17 @@ public class BalloonStatsEntryLocalServiceClpInvoker {
                 "com.ext.portlet.model.BalloonStatsEntry"
             };
 
-        _methodName632 = "getBeanIdentifier";
+        _methodName518 = "getBeanIdentifier";
 
-        _methodParameterTypes632 = new String[] {  };
+        _methodParameterTypes518 = new String[] {  };
 
-        _methodName633 = "setBeanIdentifier";
+        _methodName519 = "setBeanIdentifier";
 
-        _methodParameterTypes633 = new String[] { "java.lang.String" };
+        _methodParameterTypes519 = new String[] { "java.lang.String" };
 
-        _methodName638 = "store";
+        _methodName524 = "store";
 
-        _methodParameterTypes638 = new String[] {
+        _methodParameterTypes524 = new String[] {
                 "com.ext.portlet.model.BalloonStatsEntry"
             };
     }
@@ -235,20 +235,20 @@ public class BalloonStatsEntryLocalServiceClpInvoker {
             return BalloonStatsEntryLocalServiceUtil.updateBalloonStatsEntry((com.ext.portlet.model.BalloonStatsEntry) arguments[0]);
         }
 
-        if (_methodName632.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes632, parameterTypes)) {
+        if (_methodName518.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
             return BalloonStatsEntryLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName633.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes633, parameterTypes)) {
+        if (_methodName519.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
             BalloonStatsEntryLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName638.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes638, parameterTypes)) {
+        if (_methodName524.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
             return BalloonStatsEntryLocalServiceUtil.store((com.ext.portlet.model.BalloonStatsEntry) arguments[0]);
         }
 

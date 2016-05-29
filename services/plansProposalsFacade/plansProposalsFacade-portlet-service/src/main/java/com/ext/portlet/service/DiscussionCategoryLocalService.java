@@ -251,7 +251,7 @@ public interface DiscussionCategoryLocalService extends BaseLocalService,
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException;
 
-    public com.ext.portlet.model.DiscussionCategory createDebateCategory(
+    public com.ext.portlet.model.DiscussionCategory createDiscussionCategory(
         long categoryGroupId, java.lang.String name,
         java.lang.String description, com.liferay.portal.model.User author)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -292,6 +292,20 @@ public interface DiscussionCategoryLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.model.DiscussionCategoryGroup getCategoryGroup(
         com.ext.portlet.model.DiscussionCategory dCategory)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void subscribe(long userId, long categoryGroupId, long categoryId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean isSubscribed(long userId, long discussionCategoryGroupId,
+        long categoryId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 }

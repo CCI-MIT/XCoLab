@@ -19,6 +19,7 @@ public class PointsDistributionConfigurationSoap implements Serializable {
     private long _pointTypeId;
     private long _targetUserId;
     private long _targetSubProposalId;
+    private long _targetPlanSectionDefinitionId;
     private double _percentage;
     private long _creator;
     private Date _createDate;
@@ -35,6 +36,7 @@ public class PointsDistributionConfigurationSoap implements Serializable {
         soapModel.setPointTypeId(model.getPointTypeId());
         soapModel.setTargetUserId(model.getTargetUserId());
         soapModel.setTargetSubProposalId(model.getTargetSubProposalId());
+        soapModel.setTargetPlanSectionDefinitionId(model.getTargetPlanSectionDefinitionId());
         soapModel.setPercentage(model.getPercentage());
         soapModel.setCreator(model.getCreator());
         soapModel.setCreateDate(model.getCreateDate());
@@ -127,6 +129,15 @@ public class PointsDistributionConfigurationSoap implements Serializable {
 
     public void setTargetSubProposalId(long targetSubProposalId) {
         _targetSubProposalId = targetSubProposalId;
+    }
+
+    public long getTargetPlanSectionDefinitionId() {
+        return _targetPlanSectionDefinitionId;
+    }
+
+    public void setTargetPlanSectionDefinitionId(
+        long targetPlanSectionDefinitionId) {
+        _targetPlanSectionDefinitionId = targetPlanSectionDefinitionId;
     }
 
     public double getPercentage() {

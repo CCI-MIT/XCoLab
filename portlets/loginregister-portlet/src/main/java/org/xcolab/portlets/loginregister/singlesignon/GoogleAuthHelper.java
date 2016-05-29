@@ -17,6 +17,8 @@ import jodd.util.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -24,93 +26,83 @@ import java.util.regex.Pattern;
 
 /**
  * Requested from https://github.com/mdanter/OAuth2v1
- *
- *
+ * <p/>
+ * <p/>
  * A helper class for Google's OAuth2 authentication API.
- * @version 20130224
+ *
  * @author Matyas Danter
+ * @version 20130224
  */
 public final class GoogleAuthHelper {
 
-	/**
-	 * Please provide a value for the CLIENT_ID constant before proceeding, set this up at https://code.google.com/apis/console/
-	 */
-	private static final String CLIENT_ID = "80428061050-82nn9e48p8qobkjsc6j531fv4quimjqi.apps.googleusercontent.com";
+    // start google authentication constants
+    private static final Iterable<String> SCOPE = Arrays.asList(
+            "https://www.googleapis.com/auth/userinfo.profile;https://www.googleapis.com/auth/userinfo.email"
+                    .split(";"));
+    private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
+    private static final JsonFactory JSON_FACTORY = new JacksonFactory();
+    private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+    // end google authentication constants
+    private final GoogleAuthorizationCodeFlow flow;
+    private String stateToken;
+    private final String redirectUri;
 
-	/**
-	 * Please provide a value for the CLIENT_SECRET constant before proceeding, set this up at https://code.google.com/apis/console/
-	 */
-	private static final String CLIENT_SECRET = "J2bw5mchXcEooJtcIIg5Rfpq";
-
-
-	// start google authentication constants
-	private static final Iterable<String> SCOPE = Arrays.asList("https://www.googleapis.com/auth/userinfo.profile;https://www.googleapis.com/auth/userinfo.email".split(";"));
-	private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
-	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
-	// end google authentication constants
-	
-	private String stateToken;
-	
-	private final GoogleAuthorizationCodeFlow flow;
-
-    private String redirectUri;
-	
-	/**
-	 * Constructor initializes the Google Authorization Code Flow with CLIENT ID, SECRET, and SCOPE 
-	 */
-	public GoogleAuthHelper(String redirectURI) {
+    /**
+     * Constructor initializes the Google Authorization Code Flow with CLIENT ID, SECRET, and SCOPE
+     */
+    public GoogleAuthHelper(String redirectURI) {
         this.redirectUri = redirectURI;
-		flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
-				JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, SCOPE).build();
-		
-		generateStateToken();
-	}
+        flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
+                JSON_FACTORY, ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_ID.getStringValue(),
+                ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_SECRET.getStringValue(),
+                SCOPE).build();
 
-	/**
-	 * Builds a login URL based on client ID, secret, callback URI, and scope 
-	 */
-	public String buildLoginUrl() {
-		
-		final GoogleAuthorizationCodeRequestUrl url = flow.newAuthorizationUrl();
+        generateStateToken();
+    }
 
-		return url.setRedirectUri(redirectUri).setState(stateToken).build();
-	}
-	
-	/**
-	 * Generates a secure state token 
-	 */
-	private void generateStateToken(){
-		
-		SecureRandom sr1 = new SecureRandom();
-		
-		stateToken = "google;"+sr1.nextInt();
-		
-	}
-	
-	/**
-	 * Accessor for state token
-	 */
-	public String getStateToken(){
-		return stateToken;
-	}
-	
-	/**
-	 * Expects an Authentication Code, and makes an authenticated request for the user's profile information
-	 * @return JSON formatted user profile information
-	 * @param authCode authentication code provided by google
-	 */
-	public JSONObject getUserInfoJson(final String authCode) throws IOException {
+    /**
+     * Generates a secure state token
+     */
+    private void generateStateToken() {
+        SecureRandom sr1 = new SecureRandom();
 
-		final GoogleTokenResponse response = flow.newTokenRequest(authCode).setRedirectUri(redirectUri).execute();
+        stateToken = "google;" + sr1.nextInt();
+    }
+
+    /**
+     * Builds a login URL based on client ID, secret, callback URI, and scope
+     */
+    public String buildLoginUrl() {
+
+        final GoogleAuthorizationCodeRequestUrl url = flow.newAuthorizationUrl();
+
+        return url.setRedirectUri(redirectUri).setState(stateToken).build();
+    }
+
+    /**
+     * Accessor for state token
+     */
+    public String getStateToken() {
+        return stateToken;
+    }
+
+    /**
+     * Expects an Authentication Code, and makes an authenticated request for the user's profile information
+     *
+     * @param authCode authentication code provided by google
+     * @return JSON formatted user profile information
+     */
+    public JSONObject getUserInfoJson(final String authCode) throws IOException {
+
+        final GoogleTokenResponse response = flow.newTokenRequest(authCode).setRedirectUri(redirectUri).execute();
 
         final Credential credential = flow.createAndStoreCredential(response, null);
-		final HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(credential);
-		// Make an authenticated request
-		final GenericUrl url = new GenericUrl(USER_INFO_URL);
-		final HttpRequest request = requestFactory.buildGetRequest(url);
-		request.getHeaders().setContentType("application/json");
-		final String jsonIdentity = request.execute().parseAsString();
+        final HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory(credential);
+        // Make an authenticated request
+        final GenericUrl url = new GenericUrl(USER_INFO_URL);
+        final HttpRequest request = requestFactory.buildGetRequest(url);
+        request.getHeaders().setContentType("application/json");
+        final String jsonIdentity = request.execute().parseAsString();
 
         JSONObject userInfo = null;
 
@@ -128,7 +120,7 @@ public final class GoogleAuthHelper {
 
         return userInfo;
 
-	}
+    }
 
     private String deserialize(String tokenString) {
         String[] pieces = splitTokenString(tokenString);

@@ -346,7 +346,8 @@ public class OntologyTermLocalServiceUtil {
 
     public static java.lang.Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
         java.lang.Long focusAreaId, java.lang.Long ontologyTermId)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId,
             ontologyTermId);

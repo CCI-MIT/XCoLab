@@ -1,88 +1,57 @@
 package com.ext.portlet.service.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import com.ext.portlet.contests.ContestStatus;
-import com.ext.portlet.model.ImpactIteration;
-import com.ext.portlet.model.ImpactTemplateFocusAreaList;
-import com.ext.portlet.model.ImpactTemplateMaxFocusArea;
-import com.ext.portlet.model.ImpactTemplateSeries;
-import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
-import com.ext.portlet.service.persistence.ImpactTemplateSeriesUtil;
-import com.google.common.collect.ImmutableSet;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.enums.ContestPhasePromoteType;
-import org.xcolab.enums.ContestPhaseType;
-import org.xcolab.enums.ContestTier;
-import org.xcolab.enums.MemberRole;
-import org.xcolab.utils.emailnotification.ContestVoteNotification;
-import org.xcolab.utils.emailnotification.ContestVoteQuestionNotification;
-import org.xcolab.utils.judging.ProposalRatingWrapper;
-import org.xcolab.utils.judging.ProposalReview;
-import org.xcolab.utils.judging.ProposalReviewCsvExporter;
-
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.discussions.DiscussionActions;
-
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestDebate;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestTeamMember;
+import com.ext.portlet.model.ContestTeamMemberRole;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
+import com.ext.portlet.model.ImpactIteration;
+import com.ext.portlet.model.ImpactTemplateFocusAreaList;
+import com.ext.portlet.model.ImpactTemplateMaxFocusArea;
+import com.ext.portlet.model.ImpactTemplateSeries;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.model.PlanType;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.ext.portlet.service.ClpSerializer;
-import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.ext.portlet.service.PlanTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanVoteLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
+import com.google.common.collect.ImmutableSet;
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
@@ -97,11 +66,34 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
-
 import edu.mit.cci.roma.client.Simulation;
-import scala.Array;
+import org.apache.commons.lang3.StringUtils;
+
+import org.xcolab.enums.ContestPhaseTypeValue;
+import org.xcolab.enums.ContestTier;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.utils.IdListUtil;
+import org.xcolab.utils.emailnotification.contest.ContestVoteQuestionNotification;
+import org.xcolab.utils.emailnotification.proposal.ContestVoteNotification;
+import org.xcolab.utils.judging.ProposalRatingWrapper;
+import org.xcolab.utils.judging.ProposalReview;
+import org.xcolab.utils.judging.ProposalReviewCsvExporter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.TreeMap;
 
 
 /**
@@ -122,32 +114,34 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     /*
      * NOTE FOR DEVELOPERS:
      *
-     * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestLocalServiceUtil} to access the contest local service.
+     * Never reference this interface directly. Always use {@link com.ext.portlet.service.contestLocalService} to access the contest local service.
      */
 
     public static final List<Long> ANY_TERM_IDS = Arrays.asList(1L,2L,3L, 1300601L);
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on contest %s";
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     private final static Log _log = LogFactoryUtil.getLog(ContestLocalServiceImpl.class);
 
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
+    @Override
     public Contest getContestByActiveFlag(boolean contestActive) throws SystemException, NoSuchContestException {
-        List<Contest> contests = contestPersistence.findByContestActive(contestActive);
+        List<Contest> contests = contestPersistence.findByActive(contestActive);
         if (contests.isEmpty()) {
         	throw new NoSuchContestException();
         }
         return contests.get(0);
     }
 
+    @Override
     public Contest createNewContest(Long userId, String name) throws SystemException, PortalException {
-        Contest c = ContestLocalServiceUtil.createContest(CounterLocalServiceUtil.increment(Contest.class.getName()));
-
+        Contest c = contestLocalService.createContest(CounterLocalServiceUtil.increment(Contest.class.getName()));
 
         c.setAuthorId(userId);
         c.setContestName(name);
         c.setContestShortName(name);
+        c.setContestUrlName(generateContestUrlName(c));
 
         setGroupAndDiscussionForContest(c);
 
@@ -155,8 +149,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return c;
     }
 
+    @Override
     public void updateContestGroupsAndDiscussions() throws SystemException, PortalException {
-        for (Contest c : ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE)) {
+        for (Contest c : contestLocalService.getContests(0, Integer.MAX_VALUE)) {
             if (c.getGroupId() <= 0) {
                 setGroupAndDiscussionForContest(c);
             }
@@ -169,20 +164,14 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         groupServiceContext.setUserId(c.getAuthorId());
 
         String groupName = c.getContestName() + "_" + System.currentTimeMillis() + "_" + rand.nextLong();
-        Group group = null;
-        
-        /*
-        group = GroupServiceUtil.add.addGroup("CONTEST:  " + c.getContestShortName(), String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
-                    GroupConstants.TYPE_COMMUNITY_RESTRICTED, null, true, groupServiceContext);
-        */
-        group = GroupLocalServiceUtil.addGroup(c.getAuthorId(), null, c.getContestPK(), "CONTEST:  " + c.getContestPK(),
+        Group group = GroupLocalServiceUtil.addGroup(c.getAuthorId(), null, c.getContestPK(), "CONTEST:  " + c.getContestPK(),
                 String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
 
         DiscussionCategoryGroup categoryGroup = DiscussionCategoryGroupLocalServiceUtil
                 .createDiscussionCategoryGroup(c.getContestName() + " discussion");
 
-        categoryGroup.setUrl("/web/guest/plans/-/plans/contestId/" + c.getContestPK() + "/page/discussion");
+        categoryGroup.setUrl(getContestLinkUrl(c) + "/discussion");
 
         DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
 
@@ -217,7 +206,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
         String[] guestActions = {};
 
-        Map<Role, String[]> rolesActionsMap = new HashMap<Role, String[]>();
+        Map<Role, String[]> rolesActionsMap = new HashMap<>();
 
         rolesActionsMap.put(owner, ownerActions);
         rolesActionsMap.put(admin, adminActions);
@@ -226,53 +215,70 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         rolesActionsMap.put(guest, guestActions);
         rolesActionsMap.put(moderator, moderatorActions);
 
-        for (Role role : rolesActionsMap.keySet()) {
+        for (Map.Entry<Role, String[]> entry : rolesActionsMap.entrySet()) {
+            final Role role = entry.getKey();
+            final String[] actionIds = entry.getValue();
             ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId,
                     DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-                    String.valueOf(group.getGroupId()), role.getRoleId(), rolesActionsMap.get(role));
+                    String.valueOf(group.getGroupId()), role.getRoleId(), actionIds);
         }
 
         c.setGroupId(group.getGroupId());
         c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
         store(c);
     }
-    
-    public List<Contest> findByActive(boolean active) throws SystemException {
-        return contestPersistence.findByContestActive(active);
+
+    @Override
+    public List<Contest> getByContestUrlName(String contestUrlName) throws SystemException {
+        return contestPersistence.findByContestUrlName(contestUrlName);
+    }
+
+    @Override
+    public List<Contest> findByContestYear(long contestYear) throws SystemException {
+        return contestPersistence.findByContestYear(contestYear);
+    }
+
+    public Contest getByContestUrlNameContestYear(String contestUrlName, long year)
+            throws SystemException, NoSuchContestException {
+        return contestPersistence.findByContestUrlNameContestYear(contestUrlName, year);
     }
     
+    @Override
+    public List<Contest> findByActive(boolean active) throws SystemException {
+        return contestPersistence.findByActive(active);
+    }
+    
+    @Override
     public List<Contest> findByActiveFeatured(boolean active, boolean featured) throws SystemException {
         return contestPersistence.findByActiveFeatured(active, featured);
     }
 
+    @Override
     public List<Contest> findByActiveFlag(boolean active, int flag) throws SystemException {
         return contestPersistence.findByActiveFlag(active, flag);
     }
 
-    public List<Contest> findByActiveFlagText(boolean active, String flagText) throws SystemException {
-        return contestPersistence.findByActiveFlagText(active, flagText);
-    }
-
-
     /**
      * Methods from ContestImpl *
      */
+    @Override
     public List<ContestPhase> getAllPhases(Contest contest) {
         try {
-            return ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
+            return contestPhaseLocalService.getPhasesForContest(contest);
         } catch (SystemException e) {
             _log.error(e);
-            return new ArrayList<ContestPhase>();
+            return new ArrayList<>();
 
         }
     }
 
+    @Override
     public List<ContestPhase> getVisiblePhases(Contest contest) throws SystemException, PortalException {
         List<ContestPhase> allPhases = getAllPhases(contest);
 
         List<ContestPhase> visiblePhases = new ArrayList<>();
         for (ContestPhase phase : allPhases) {
-            com.ext.portlet.model.ContestPhaseType phaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(phase.getContestPhaseType());
+            com.ext.portlet.model.ContestPhaseType phaseType = contestPhaseTypeLocalService.getContestPhaseType(phase.getContestPhaseType());
             if (!phaseType.getInvisible()) {
                 visiblePhases.add(phase);
             }
@@ -281,82 +287,66 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return visiblePhases;
     }
 
-    public PlanType getPlanType(Contest contest) throws SystemException, PortalException {
-        try {
-            return (PlanType) ClpSerializer.translateOutput(PlanTypeLocalServiceUtil.getPlanType(contest.getPlanTypeId()));
-        } catch (PortalException | SystemException e) {
-            _log.error(e);
-            return null;
-        }
-    }
-
+    @Override
     public List<ContestPhase> getActivePhases(Contest contest) throws SystemException, PortalException {
         List<ContestPhase> result = getVisiblePhases(contest);
         for (Iterator<ContestPhase> i = result.iterator(); i.hasNext(); ) {
-            if (!ContestPhaseLocalServiceUtil.getPhaseActive(i.next())) {
+            if (!contestPhaseLocalService.getPhaseActive(i.next())) {
                 i.remove();
             }
         }
         return result;
     }
 
+    @Override
     public ContestPhase getActivePhase(Contest contest) throws SystemException, PortalException {
 
         for (ContestPhase phase : getVisiblePhases(contest)) {
-            if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
+            if (contestPhaseLocalService.getPhaseActive(phase)) {
+                return phase;
+            }
         }
         return null;
     }
 
+    @Override
     public ContestPhase getActiveOrLastPhase(Contest contest) throws SystemException, PortalException {
         ContestPhase lastPhase = null;
         for (ContestPhase phase : getAllPhases(contest)) {
-            if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) lastPhase = phase;
-            if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) return phase;
+            if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) {
+                lastPhase = phase;
+            }
+            if (contestPhaseLocalService.getPhaseActive(phase)) {
+                return phase;
+            }
         }
         return lastPhase;
     }
 
-    public boolean isActive(Contest contest) throws SystemException {
+    @Override
+    public boolean isActive(Contest contest) {
         try {
-            ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            contestPhaseLocalService.getActivePhaseForContest(contest);
             return true;
-        } catch (Exception e) {
-            // ignore
-        }
+        } catch (SystemException | PortalException ignored) { }
         return false;
     }
 
-    public List<Long> getDebatesIds(Contest contest) throws SystemException {
-        List<Long> ret = new ArrayList<Long>();
-        for (ContestDebate pos : ContestDebateLocalServiceUtil.getContestDebates(contest.getContestPK())) {
-            ret.add(pos.getDebateId());
-        }
-        return ret;
-    }
-
-    public Integer getTotalVotes(Contest contest) throws SystemException {
-        return PlanVoteLocalServiceUtil.countPlanVotes(contest);
-    }
-
-    public void updateDefaultPlanDescription(Contest contest, String description) throws SystemException {
-        contest.setDefaultPlanDescription(description);
-        ContestLocalServiceUtil.updateContest(contest);
-    }
-
+    @Override
     public void store(Contest contest) throws SystemException {
         if (contest.isNew()) {
             if (contest.getContestPK() <= 0L) {
                 contest.setContestPK(CounterLocalServiceUtil.increment(Contest.class.getName()));
             }
-            ContestLocalServiceUtil.addContest(contest);
+            contestLocalService.addContest(contest);
         } else {
-            ContestLocalServiceUtil.updateContest(contest);
+            contestLocalService.updateContest(contest);
         }
 
         reindex(contest);
     }
 
+    @Override
     public PlanTemplate getPlanTemplate(Contest contest) throws PortalException, SystemException {
         if (contest.getPlanTemplateId() > 0) {
             return PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
@@ -364,6 +354,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return null;
     }
 
+    @Override
     public FocusArea getFocusArea(Contest contest) throws PortalException, SystemException {
         if (contest.getFocusAreaId() > 0) {
             return FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
@@ -371,36 +362,21 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return null;
     }
 
+    @Override
     public Image getLogo(Contest contest) throws PortalException, SystemException {
         return contest.getContestLogoId() > 0 ?
                 ImageLocalServiceUtil.getImage(contest.getContestLogoId()) :
                 null;
     }
 
+    @Override
     public Image getSponsorLogo(Contest contest) throws PortalException, SystemException {
         return contest.getSponsorLogoId() > 0 ?
                 ImageLocalServiceUtil.getImage(contest.getSponsorLogoId()) :
                 null;
     }
 
-    public void setLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
-//        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
-//        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
-//        
-//        ImageLocalServiceUtil.addImage(i);
-//        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
-//        contest.setContestLogoId(i.getImageId());
-    }
-
-    public void setSponsorLogo(Contest contest, File logoFile) throws IOException, SystemException, PortalException {
-//        Image i = ImageLocalServiceUtil.getImage(logoFile);//.getImage(logoFile);   
-//        i.setImageId(CounterLocalServiceUtil.increment(Image.class.getName()));
-//        
-//        ImageLocalServiceUtil.addImage(i);
-//        ImageLocalServiceUtil.updateImage(i.getImageId(), i.getTextObj());
-//        contest.setSponsorLogoId(i.getImageId());
-    }
-
+    @Override
     public String getLogoPath(Contest contest) throws PortalException, SystemException {
         Image i = getLogo(contest);
         if (i != null) {
@@ -409,6 +385,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return "";
     }
 
+    @Override
     public String getSponsorLogoPath(Contest contest) throws PortalException, SystemException {
         Image i = getSponsorLogo(contest);
         if (i != null) {
@@ -417,7 +394,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return "";
     }
 
-
+    @Override
     public long getProposalsCount(Contest contest) throws PortalException, SystemException {
         // first - get current phase
         ContestPhase activePhase = getActiveOrLastPhase(contest);
@@ -427,30 +404,33 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 activePhase = phases.get(phases.size() - 1);
             }
         }
-        if (activePhase == null)
+        if (activePhase == null) {
             return 0;
+        }
         
         return proposalLocalService.countProposalsInContestPhase(activePhase.getContestPhasePK());
     }
 
+    @Override
     public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest) throws PortalException, SystemException {
-        DiscussionCategoryGroup dcg =
-                DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
-        return dcg;
+        return DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
     }
 
+    @Override
     public long getTotalCommentsCount(Contest contest) throws PortalException, SystemException {
         return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest)) + getProposalsCommentsCount(contest);
     }
 
+    @Override
     public long getCommentsCount(Contest contest) throws PortalException, SystemException {
         return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest));
     }
 
+    @Override
     public long getProposalsCommentsCount(Contest contest) throws SystemException, PortalException {
         long proposalsCommentsCount = 0;
         try {
-            ContestPhase activeContestPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+            ContestPhase activeContestPhase = contestPhaseLocalService.getActivePhaseForContest(contest);
             for (Proposal proposal: proposalLocalService.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK())) {
                 proposalsCommentsCount += proposalLocalService.getCommentsCount(proposal.getProposalId());
             }
@@ -460,6 +440,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return proposalsCommentsCount;
     }
 
+    @Override
     public long getVotesCount(Contest contest) throws SystemException, PortalException {
         ContestPhase contestPhase = contestPhaseLocalService.getActivePhaseForContest(contest);
         List<Long> proposalIds = new ArrayList<>();
@@ -467,7 +448,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             proposalIds.add(proposal.getProposalId());
         }
 
-        if (proposalIds.size() == 0) {
+        if (proposalIds.isEmpty()) {
             return 0L;
         }
 
@@ -478,12 +459,19 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return dynamicQueryCount(votesQuery);
     }
 
+    @Override
     public long getTotalComments(Contest contest) throws PortalException, SystemException {
         return getCommentsCount(contest) + getProposalsCommentsCount(contest);
     }
 
+    @Override
     public List<ContestTeamMember> getTeamMembers(Contest contest) throws SystemException {
-        return ContestTeamMemberLocalServiceUtil.findForContest(contest.getContestPK());
+        return contestTeamMemberLocalService.findForContest(contest.getContestPK());
+    }
+
+    @Override
+    public ContestTeamMemberRole getRoleForMember(ContestTeamMember contestTeamMember) throws SystemException, NoSuchModelException {
+        return contestTeamMemberRoleLocalService.findForContestTeamMember(contestTeamMember.getRoleId());
     }
 
     /**
@@ -495,8 +483,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     public boolean isSubscribed(long contestPK, long userId) throws PortalException, SystemException {
-        return ActivitySubscriptionLocalServiceUtil.isSubscribed(userId, Contest.class, contestPK, 0, "");
+        return activitySubscriptionLocalService.isSubscribed(userId, Contest.class, contestPK, 0, "");
     }
 
     /**
@@ -507,15 +496,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     @Transactional
     public void subscribe(long contestPK, long userId) throws PortalException, SystemException {
-        ActivitySubscriptionLocalServiceUtil.addSubscription(Contest.class, contestPK, 0, "", userId);
-        Set<Long> proposalsProcessed = new HashSet<Long>();
+        activitySubscriptionLocalService.addSubscription(Contest.class, contestPK, 0, "", userId);
+        Set<Long> proposalsProcessed = new HashSet<>();
         // automatically subscribe user to all proposals in the phase but
-        for (ContestPhase contestPhase : ContestPhaseLocalServiceUtil.getPhasesForContest(contestPK)) {
-            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+        for (ContestPhase contestPhase : contestPhaseLocalService.getPhasesForContest(contestPK)) {
+            for (Proposal proposal : proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
                 if (!proposalsProcessed.contains(proposal.getProposalId())) {
-                    ProposalLocalServiceUtil.subscribe(proposal.getProposalId(), userId, true);
+                    proposalLocalService.subscribe(proposal.getProposalId(), userId, true);
                 }
                 proposalsProcessed.add(proposal.getProposalId());
             }
@@ -530,11 +520,12 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @throws PortalException in case of LR error
      * @throws SystemException in case of LR error
      */
+    @Override
     @Transactional
     public void unsubscribe(long contestPK, long userId) throws PortalException, SystemException {
         activitySubscriptionLocalService.deleteSubscription(userId, Contest.class, contestPK, 0, "");
 
-        Set<Long> proposalsProcessed = new HashSet<Long>();
+        Set<Long> proposalsProcessed = new HashSet<>();
         // unsubscribe user from all proposals in the phase to which he was automatically registered  
         for (ContestPhase contestPhase : contestPhaseLocalService.getPhasesForContest(contestPK)) {
             for (Proposal proposal : proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
@@ -547,31 +538,24 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
     }
 
+    @Override
     public List<Long> getModelIds(long contestPK) throws SystemException, PortalException {
         Contest contest = getContest(contestPK);
-        List<Long> ret = new ArrayList<>();
-        boolean addedDefault = false;
+        List<Long> modelIds = new ArrayList<>();
 
         if (StringUtils.isNotBlank(contest.getOtherModels())) {
-        	for (String modelId:  contest.getOtherModels().split(",")) {
-        		long modelIdLong = Long.parseLong(modelId);
-        		ret.add(modelIdLong);
-        		if (modelIdLong == contest.getDefaultModelId()) {
-        			addedDefault = true;
-        		}
-        	}
+            modelIds.addAll(IdListUtil.getIdsFromString(contest.getOtherModels()));
         }
-        if (! addedDefault) {
-        	ret.add(contest.getDefaultModelId());
+        if (!modelIds.contains(contest.getDefaultModelId())) {
+        	modelIds.add(contest.getDefaultModelId());
         }
 
-        return ret;
+        return modelIds;
     }
     
+    @Override
     public Map<Long, String> getModelIdsAndNames(long contestPK) throws SystemException, PortalException {
     	List<Long> modelIds = getModelIds(contestPK);
-    	
-        Contest contest = getContest(contestPK);
 
         Map<Long, String> ret = new HashMap<>();
         for (Long modelId: modelIds) {
@@ -587,7 +571,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return ret;
     }
 
-
+    @Override
     public Long getDefaultModelId(long contestPK) throws PortalException, SystemException {
         Contest contest = getContest(contestPK);
         return contest.getDefaultModelId();
@@ -599,28 +583,34 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         String errorMessage = "Can't reindex contest " + contest.getContestPK();
         try {
             indexer.reindex(contest.getContestPK());
-        } catch (SearchException e) {
-            _log.error(errorMessage, e);
-        } catch (NullPointerException e) {
+        } catch (SearchException | NullPointerException e) {
             _log.error(errorMessage, e);
         }
     }
     
-    public List<Contest> getContestsByActivePrivate(boolean active, boolean privateContest) throws SystemException {
-    	return contestPersistence.findByContestActivecontestPrivate(active, privateContest);	
+    @Override
+    public List<Contest> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) throws SystemException {
+    	return contestPersistence.findByActivePrivate(contestActive, contestPrivate);
     }
 
+    @Override
+    public List<Contest> getContestsByActivePrivateType(boolean contestActive, boolean contestPrivate, long contestTypeId)
+            throws SystemException {
+        return contestPersistence.findByActivePrivateType(contestActive, contestPrivate, contestTypeId);
+    }
+
+    @Override
     public List<Contest> getContestsMatchingOntologyTerms(List<OntologyTerm> ontologyTerms) throws PortalException, SystemException{
 
         // remove terms that are root elements
         for (Iterator<OntologyTerm> i = ontologyTerms.iterator(); i.hasNext();){
             OntologyTerm o = i.next();
-
-            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) i.remove();
-
+            if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) {
+                i.remove();
+            }
         }
 
-        if (ontologyTerms.size() == 0) {
+        if (ontologyTerms.isEmpty()) {
             //if no terms are left (i.e. they were all root elements), return all contests
             return getContests(0, Integer.MAX_VALUE);
         }
@@ -629,7 +619,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         // get all child elements and add id's to array
         int i = 0;
         for (OntologyTerm ot : ontologyTerms){
-            List<OntologyTerm> childTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(ot);
+            List<OntologyTerm> childTerms = ontologyTermLocalService.getAllDescendantTerms(ot);
             terms[i] = new Long[childTerms.size() + 1];
             terms[i][0] = ot.getId();
             int k = 1;
@@ -650,7 +640,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
             DynamicQuery contestQuery =  DynamicQueryFactoryUtil.forClass(Contest.class, portletClassLoader);
             contestQuery.add(PropertyFactoryUtil.forName("focusAreaId").in(dq));
-            contestsMatchingTerms[l] = ContestLocalServiceUtil.dynamicQuery(contestQuery);
+            contestsMatchingTerms[l] = contestLocalService.dynamicQuery(contestQuery);
         }
 
         List<Contest> listOfContests = new ArrayList<>(contestsMatchingTerms[0]);
@@ -671,11 +661,20 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     public List<Contest> getContestsMatchingTier(long contestTierType) throws PortalException, SystemException {
         if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
             return contestPersistence.findAll();
         }
-        return contestPersistence.findByContestTier(contestTierType);
+        return contestPersistence.findByTier(contestTierType);
+    }
+
+    @Override
+    public List<Contest> getContestsMatchingTierInType(long contestTierType, long contestTypeId) throws PortalException, SystemException {
+        if (ContestTier.getContestTierByTierType(contestTierType) == ContestTier.NONE) {
+            return contestPersistence.findByContestType(contestTypeId);
+        }
+        return contestPersistence.findByTierType(contestTierType, contestTypeId);
     }
 
     /**
@@ -686,6 +685,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @throws PortalException
      * @throws SystemException
      */
+    @Override
     public List<Contest> getContestsMatchingOntologyTermsAndTier(List<OntologyTerm> ontologyTerms, long contestTierType) throws PortalException, SystemException{
         List<Contest> matchedOntologyContests = getContestsMatchingOntologyTerms(ontologyTerms);
 
@@ -711,16 +711,17 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @throws SystemException
      * @throws PortalException
      */
+    @Override
     public void transferSupportsToVote(Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
         ContestPhase lastOrActivePhase = contestLocalService.getActiveOrLastPhase(contestLocalService.getContest(contest.getContestPK()));
         // Vote is only possible in Winner Selection phase
-        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS.getTypeId() &&
-                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.WINNERS_SELECTION.getTypeId() &&
-                lastOrActivePhase.getContestPhaseType() != ContestPhaseType.SELECTION_OF_WINNERS_NEW.getTypeId()) {
+        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() &&
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() &&
+                lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId()) {
             return;
         }
         
-        Set<Long> proposalsUserCanVoteOn = new HashSet<Long>();
+        Set<Long> proposalsUserCanVoteOn = new HashSet<>();
         for (Proposal proposal: proposalLocalService.getProposalsInContestPhase(lastOrActivePhase.getContestPhasePK())) {
         	proposalsUserCanVoteOn.add(proposal.getProposalId());
         }
@@ -731,17 +732,17 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 continue;
             }
 
-            List<Proposal> proposals = new ArrayList<Proposal>();
+            List<Proposal> proposals = new ArrayList<>();
             if (userToSupportsMap.containsKey(user)) {
-            	for (Proposal p: userToSupportsMap.get(user))
-            		if (proposalsUserCanVoteOn.contains(p.getProposalId())) {
-            			proposals.add(p);
-            		}
+            	for (Proposal p: userToSupportsMap.get(user)) {
+                    if (proposalsUserCanVoteOn.contains(p.getProposalId())) {
+                        proposals.add(p);
+                    }
+                }
             }
             if (proposals.isEmpty()) {
             	continue;
             }
-
 
             // Directly transfer the support to a vote
             if (proposals.size() == 1) {
@@ -764,17 +765,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @param contest           The contest for which the review should be created
      * @param currentPhase      The currently active ContestPhase which should be used for proposal filtering
      * @param serviceContext    A serviceContext which must include the Portal's base URL
-     * @return
      * @throws SystemException
      * @throws PortalException
      */
+    @Override
     public String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase, ServiceContext serviceContext) throws SystemException, PortalException {
         Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
         List<Proposal> stillActiveProposals = proposalLocalService.getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
-        Set<ProposalRatingType> occurringRatingTypes = new HashSet<ProposalRatingType>();
-        Set<User> occurringJudges = new HashSet<User>();
-
+        Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
+        Set<User> occurringJudges = new HashSet<>();
 
         for (ContestPhase judgingPhase : getAllPhases(contest)) {
             if(!judgingPhase.getFellowScreeningActive()){
@@ -802,8 +802,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 final String proposalUrl = serviceContext.getPortalURL() + proposalLocalService.getProposalLinkUrl(contest, proposal, judgingPhase);
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
                 proposalReview.setReviewers(ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase)));
-                List<ProposalRating> ratings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
-                Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<ProposalRatingType, List<Long>>();
+                List<ProposalRating> ratings = proposalRatingLocalService.getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
+                Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
 
                 for (ProposalRating rating: ratings) {
                     ProposalRatingWrapper wrapper = new ProposalRatingWrapper(rating);
@@ -841,7 +841,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             }
         }
 
-        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, new ArrayList(occurringJudges), new ArrayList(occurringRatingTypes));
+        ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, new ArrayList<>(occurringRatingTypes));
 
         return csvExporter.getCsvString();
     }
@@ -850,9 +850,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * Returns all Judge Users that have been selected by Fellows for the proposal review or all
      * Contest Judges if fellow screening is disabled
      *
-     * @param proposal
-     * @param judgingPhase
-     * @return
      * @throws SystemException
      * @throws PortalException
      */
@@ -884,6 +881,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return selectedJudges;
     }
 
+    @Override
     public List<User> getAdvisorsForContest(Contest contest) throws SystemException, PortalException {
         Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.ADVISOR))) {
@@ -892,14 +890,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return new ArrayList<>();
     }
 
+    @Override
     public List<User> getJudgesForContest(Contest contest) throws SystemException, PortalException {
         Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
-        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.JUDGES))) {
-            return roleToUserMap.get(MemberRole.JUDGES);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.JUDGE))) {
+            return roleToUserMap.get(MemberRole.JUDGE);
         }
         return new ArrayList<>();
     }
 
+    @Override
     public List<User> getFellowsForContest(Contest contest) throws SystemException, PortalException {
         Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.FELLOW))) {
@@ -908,48 +908,52 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return new ArrayList<>();
     }
 
+    @Override
     public List<User> getContestManagersForContest(Contest contest) throws SystemException, PortalException {
         Map<MemberRole, List<User>> roleToUserMap = getContestTeamMembersByRole(contest);
-        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.CONTESTMANAGER))) {
-            return roleToUserMap.get(MemberRole.CONTESTMANAGER);
+        if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.CONTEST_MANAGER))) {
+            return roleToUserMap.get(MemberRole.CONTEST_MANAGER);
         }
         return new ArrayList<>();
     }
 
-    private List<ContestPhase> getJudgingContestPhases(Contest contest) throws SystemException {
-        List<ContestPhase> judgingPhases = new ArrayList<>();
-
-        for (ContestPhase contestPhase : contestPhaseLocalService.getPhasesForContest(contest)) {
-            ContestPhasePromoteType promoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
-            if (promoteType == ContestPhasePromoteType.PROMOTE_JUDGED) {
-                judgingPhases.add(contestPhase);
-            }
-        }
-
-        return judgingPhases;
-    }
     /**
      * Returns a map object that maps MemberRoles to a list of associated users for the respective MemberRole
      * according to the ContestTeamMember table
      *
      * @param contest           The contest for which the mapping is requested
-     * @return
      * @throws PortalException
      * @throws SystemException
      */
     private Map<MemberRole, List<User>> getContestTeamMembersByRole(Contest contest) throws PortalException, SystemException {
         Map<MemberRole, List<User>> teamRoleToUsersMap = new TreeMap<>();
-        for (ContestTeamMember ctm : ContestLocalServiceUtil.getTeamMembers(contest)) {
-            MemberRole teamRole = MemberRole.getMember(ctm.getRole());
-            List<User> roleUsers = teamRoleToUsersMap.get(teamRole);
-            if (roleUsers == null) {
-                roleUsers = new ArrayList<>();
-                teamRoleToUsersMap.put(teamRole, roleUsers);
-            }
-            roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
-        }
+        for (ContestTeamMember ctm : getTeamMembers(contest)) {
+            ContestTeamMemberRole role;
+            try {
+                role = ContestLocalServiceUtil.getRoleForMember(ctm);
+                MemberRole memberRole = MemberRole.fromRoleId(role.getPrimaryKey());
+                List<User> roleUsers = teamRoleToUsersMap.get(memberRole);
 
+                if (roleUsers == null) {
+                    roleUsers = new ArrayList<>();
+                    teamRoleToUsersMap.put(memberRole, roleUsers);
+                }
+
+                roleUsers.add(contestTeamMemberLocalService.getUser(ctm));
+            } catch (NoSuchModelException e) {
+                e.printStackTrace();
+            }
+        }
         return teamRoleToUsersMap;
+    }
+
+    @Override
+    public String getContestLinkUrl(long contestId) {
+        try {
+            return getContestLinkUrl(getContest(contestId));
+        } catch (PortalException | SystemException e) {
+            return "/contests";
+        }
     }
 
     /**
@@ -958,9 +962,16 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @param contest   The contest object
      * @return          Contest URL as String
      */
+    @Override
     public String getContestLinkUrl(Contest contest) {
-        String link = "/web/guest/plans/-/plans/contestId/%d";
-        return String.format(link, contest.getContestPK());
+        String link = "/";
+        try {
+            link += contestTypeLocalService.getContestType(contest).getFriendlyUrlStringContests();
+        } catch (SystemException e) {
+            link += "contests";
+        }
+        link += "/%d/%s";
+        return String.format(link, contest.getContestYear(), contest.getContestUrlName());
     }
 
     private Map<User, List<Proposal>> getContestSupportingUser(Contest contest) throws SystemException, PortalException {
@@ -973,7 +984,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
             List<Proposal> proposals = userToSupportsMap.get(user);
             if (proposals == null) {
-                proposals = new ArrayList<Proposal>();
+                proposals = new ArrayList<>();
                 userToSupportsMap.put(user, proposals);
             }
 
@@ -985,46 +996,27 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     private void voteForProposal(long userId, long proposalId, long contestPhaseId) throws SystemException, PortalException {
         proposalLocalService.addVote(proposalId, contestPhaseId, userId);
-        int analyticsValue = 0;
-        int supportedCount = ProposalLocalServiceUtil.getUserVotedProposalsCount(userId);
-        if (supportedCount > 0) {
-            if (supportedCount == 1) {
-                analyticsValue = 1;
-            }
-            else if ( supportedCount < 5) {
-                analyticsValue = 2;
-            }
-            else {
-                analyticsValue = 3;
-            }/*
-            AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY + analyticsValue,
-                    VOTE_ANALYTICS_CATEGORY,
-                    VOTE_ANALYTICS_ACTION,
-                    VOTE_ANALYTICS_LABEL,
-                    analyticsValue);
-        }*/
-        }
     }
     
+    @Override
     public boolean hasContestEnded(long contestPK) throws SystemException, PortalException {
     	return hasContestEnded(getContest(contestPK));
     }
 
+    @Override
     public boolean hasContestEnded(Contest contest) throws SystemException, PortalException {
     	ContestPhase activePhase = getActiveOrLastPhase(contest);
-        com.ext.portlet.model.ContestPhaseType type = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(activePhase.getContestPhaseType());
+        com.ext.portlet.model.ContestPhaseType type = contestPhaseTypeLocalService.getContestPhaseType(activePhase.getContestPhaseType());
         boolean typeIsClosed =
                 ContestStatus.COMPLETED.toString().toUpperCase().equals(type.getStatus().toUpperCase()) ||
                 ContestStatus.CLOSED.toString().toUpperCase().equals(type.getStatus().toUpperCase()) ||
                 ContestStatus.FINISHED.toString().toUpperCase().equals(type.getStatus().toUpperCase());
         //Either, the active or last phase has no end date (which means the contest ended), or the current date is after it's end date.
-    	if (typeIsClosed && (activePhase.getPhaseEndDate() == null || new Date().after(activePhase.getPhaseEndDate()))) {
-    		return true;
-    	}
-    	return false;
+        return typeIsClosed && (activePhase.getPhaseEndDate() == null || new Date().after(activePhase.getPhaseEndDate()));
     }
     
     
+    @Override
     public Proposal getWinnerProposal(long contestPK) throws SystemException, PortalException {
     	Contest contest = getContest(contestPK);
         //only return a winner if the contest is done
@@ -1032,38 +1024,32 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             return null;
         }
     	ContestPhase lastPhase = getActiveOrLastPhase(contest);
-        //this is the winner of combined award such as judges & popular choice award. he will be returned if no one won the popular choice award directly
-        Proposal winnerOfCombinedAwards = null;
 
-        for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(lastPhase.getContestPhasePK())) {
-            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhase.getContestPhasePK());
+        for (Proposal proposal : proposalLocalService.getActiveProposalsInContestPhase(lastPhase.getContestPhasePK())) {
             try {
             	ProposalContestPhaseAttribute pcpa = 
             			proposalContestPhaseAttributeLocalService.getProposalContestPhaseAttribute(
             					proposal.getProposalId(), 
             					lastPhase.getContestPhasePK(), 
             					ProposalContestPhaseAttributeKeys.RIBBON);
-            	if (pcpa.getNumericValue() == 2) {
+            	if (pcpa.getNumericValue() == 2 || pcpa.getNumericValue() == 5 || pcpa.getNumericValue() == 7
+                        || pcpa.getNumericValue() == 8 || pcpa.getNumericValue() == 9) {
             		// FIXME - this has to be improved to make sure that we select proper ribbon
             		return proposal;
-            	} else if (pcpa.getNumericValue() == 5 || pcpa.getNumericValue() == 7|| pcpa.getNumericValue() == 8|| pcpa.getNumericValue() == 9) {
-                    winnerOfCombinedAwards = proposal;
-                }
+            	}
             }
-            catch (NoSuchProposalContestPhaseAttributeException e) {
-            	// ignore
-            }
+            catch (NoSuchProposalContestPhaseAttributeException ignored) { }
             
         }
-        return winnerOfCombinedAwards;
-    	
+        return null;
     }
 
+    @Override
     public Integer getPointsAccessibleForActivePhaseOfContest(Contest contest) throws SystemException, PortalException {
         //check if the phase, the contest is currently in, allows for editing
-        ContestPhase activePhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+        ContestPhase activePhase = contestPhaseLocalService.getActivePhaseForContest(contest);
         if (activePhase != null) {
-            com.ext.portlet.model.ContestPhaseType cpType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(activePhase.getContestPhaseType());
+            com.ext.portlet.model.ContestPhaseType cpType = contestPhaseTypeLocalService.getContestPhaseType(activePhase.getContestPhaseType());
             if (cpType != null) {
                 return cpType.getPointsAccessible();
             }
@@ -1073,31 +1059,52 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     // Proposal impact implementation
 
+    @Override
     public ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest) throws SystemException, PortalException {
-        PlanTemplate planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
-        ImpactTemplateSeries impactTemplateSeries = ImpactTemplateSeriesUtil.findByPrimaryKey(planTemplate.getImpactSeriesTemplateId());
-
-        return impactTemplateSeries;
+        PlanTemplate planTemplate = planTemplateLocalService.getPlanTemplate(contest.getPlanTemplateId());
+        return impactTemplateSeriesPersistence.findByPrimaryKey(planTemplate.getImpactSeriesTemplateId());
     }
 
+    @Override
     public List<ImpactIteration> getContestImpactIterations(Contest contest) throws PortalException, SystemException {
         ImpactTemplateSeries impactSeries = getContestImpactTemplateSeries(contest);
         return impactIterationPersistence.findByIterationId(impactSeries.getIterationId());
     }
 
+    @Override
     public ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) throws SystemException, PortalException {
-        PlanTemplate planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(contest.getPlanTemplateId());
-        return ImpactTemplateFocusAreaListLocalServiceUtil.getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
+        PlanTemplate planTemplate = planTemplateLocalService.getPlanTemplate(contest.getPlanTemplateId());
+        return impactTemplateFocusAreaListLocalService.getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
     }
 
+    @Override
     public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) throws PortalException, SystemException {
         ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
         return impactTemplateMaxFocusAreaPersistence.findByFocusAreaListId(focusAreaList.getFocusAreaListId());
     }
 
+    @Override
+    public List<Contest> getContestsByContestType(Long contestTypeId) throws SystemException {
+        return contestPersistence.findByContestType(contestTypeId);
+    }
 
-    public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds) throws Exception{
+    @Override
+    public List<Contest> getContestsByContestTypeIds(List<Long> contestTypeIds) throws SystemException {
+        List<Contest> contests = new ArrayList<>();
+        for (long contestTypeId : contestTypeIds) {
+            contests.addAll(getContestsByContestType(contestTypeId));
+        }
+        return contests;
+    }
 
+    @Override
+    public int countContestsByContestType(Long contestTypeId) throws SystemException {
+        return contestPersistence.countByContestType(contestTypeId);
+    }
+
+    @Override
+    public List<Contest> getContestsByTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTermIds)
+            throws SystemException {
         DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
             DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
                     .add(PropertyFactoryUtil.forName("contestTier").eq(contestTier))
@@ -1106,7 +1113,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
     }
 
-    public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) throws Exception{
+    @Override
+    public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) throws SystemException {
 
         DynamicQuery queryContestsByTierLevelAndOntologyTermIds =
                 DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
@@ -1116,7 +1124,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return contestPersistence.findWithDynamicQuery(queryContestsByTierLevelAndOntologyTermIds);
     }
 
-    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) throws Exception{
+    @Override
+    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) throws SystemException {
 
         DynamicQuery queryContestsByPlanTemplateId =
                 DynamicQueryFactoryUtil.forClass(Contest.class, PortletClassLoaderUtil.getClassLoader())
@@ -1127,13 +1136,15 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
 
-    public List<Contest> getSubContestsByOntologySpaceId(Contest contest, Long ontologySpaceId) throws Exception{
+    @Override
+    public List<Contest> getSubContestsByOntologySpaceId(Contest contest, Long ontologySpaceId)
+            throws SystemException, PortalException {
         long focusAreaId = contest.getFocusAreaId();
         long contestTier =  contest.getContestTier();
         long lowerContestTier = contestTier - 1;
 
         if(lowerContestTier < 1) {
-            new Exception("Contest " + contest.getContestPK() + " has no sub-contests!" );
+            throw new PortalException("Contest " + contest.getContestPK() + " has no sub-contests!" );
         }
 
         List<Long> focusAreaOntologyTermIds =
@@ -1146,6 +1157,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * This method adds a year suffix to already completed contests. It iterates over all completed contests
      * and automatically adds the year of the completed contest phase as a suffix to the Contest's ShortName, if necessary
      */
+    @Override
     public void addContestYearSuffixToCompletedContests() throws SystemException, PortalException {
         for (Contest priorContest : getContestsByActivePrivate(true, false)) {
             addContestYearSuffixToContest(priorContest, true);
@@ -1159,6 +1171,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @param ignoreInactiveContests    A flag indicating whether the method should include inactive contests or not
      * @return                          A list of contests mathing the criteria
      */
+    @Override
     public List<Contest> getPointsEnabledContests(boolean ignoreInactiveContests) throws SystemException {
         List<Contest> returnList = new ArrayList<>();
         for (Contest contest : contestLocalService.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
@@ -1180,47 +1193,55 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @param contest               The contest that should get a year suffix
      * @param checkForCompleted     Indicates whether contests that are not in a COMPLETED active contest phase should be ignored
      */
+    @Override
     public void addContestYearSuffixToContest(Contest contest, boolean checkForCompleted) {
         try {
             ContestPhase latestPhase = getActiveOrLastPhase(contest);
             String[] contestNameParts = contest.getContestShortName().split(" ");
-
+            _log.info("addContestYearSuffixToContest: " + contest.getContestPK());
             // Is in completed phase and inactive? - or is flag set to false?
             boolean isCompleted = (ArrayUtil.isNotEmpty(contestNameParts) &&
-                    (latestPhase.getContestPhaseType() == ContestPhaseType.COMPLETED.getTypeId() ||
-                            latestPhase.getContestPhaseType() == ContestPhaseType.WINNERS_AWARDED.getTypeId()));
+                    (latestPhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
+                            latestPhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId()));
             if (!checkForCompleted || isCompleted) {
-                String lastNamePart = contestNameParts[contestNameParts.length - 1];
-                String phaseEndYear = getYearStringFromDate(latestPhase.getPhaseStartDate());
+                _log.info("Contest phase type : " + latestPhase.getContestPhaseType());
 
-                String newContestShortName = null;
+                String lastNamePart = contestNameParts[contestNameParts.length - 1];
+                Integer phaseEndYear = getYearFromDate(latestPhase.getPhaseStartDate());
+
+                String newContestShortName;
                 try {
-                    Integer.parseInt(lastNamePart);
+                    final int suffixYear = Integer.parseInt(lastNamePart);
 
                     // Same year suffix detected - skip contest
-                    if (lastNamePart.equals(phaseEndYear)) {
+                    if (suffixYear == phaseEndYear) {
                         return;
                     }
 
                     // Unlikely event that a suffix has been created but the phase end date has changed - adapt to new suffix
-                    contestNameParts[contestNameParts.length - 1] = phaseEndYear;
+                    contestNameParts[contestNameParts.length - 1] = phaseEndYear.toString();
                     newContestShortName = StringUtils.join(contestNameParts, " ");
                 } catch (NumberFormatException e) {
                     // No year suffix detected - add new one
                     newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
                 }
-
                 contest.setContestShortName(newContestShortName);
                 contest.persist();
             }
-        } catch (Exception e) {
+        } catch (SystemException | PortalException e) {
             _log.error("Could not get latest contest phase of contest '" + contest.getContestPK() + "' to add year suffix or persist contest", e);
         }
     }
 
-    private String getYearStringFromDate(Date date) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy");
-        df.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
-        return df.format(date);
+    private Integer getYearFromDate(Date date) {
+        GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Eastern"));
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
+    }
+
+    @Override
+    public String generateContestUrlName(Contest contest) {
+        String contestUrlName = contest.getContestShortName().toLowerCase();
+        return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
     }
 }

@@ -16,17 +16,13 @@ public enum DiscussionActivityKeys implements SubscriberFactory {
 	ADD_FORUM_COMMENT("Discussion post added"),
 	ADD_PROPOSAL_DISCUSSION_COMMENT("Comment added");
 
-    /**
-     * Used to describe the action of a proposal discussion activity
-     */
-    public static final String PROPOSAL_DISCUSSION_FORMAT_STRING = "Proposal %s";
-
-	private String prettyName;
+	private final String prettyName;
 	
-	private DiscussionActivityKeys(String name) {
+	DiscussionActivityKeys(String name) {
 		this.prettyName = name;
 	}
 	
+	@Override
 	public String getPrettyName() {
 		return prettyName;
 	}
@@ -39,55 +35,44 @@ public enum DiscussionActivityKeys implements SubscriberFactory {
 		return DiscussionActivityKeys.values()[id];
 	}
 	
-	public void subcribe(long userid, long entityid, SubscriptionProvider service) throws SystemException {
+	@Override
+	public void subscribe(long userId, long entityId, SubscriptionProvider service) throws SystemException {
 		if (this == ALL) {
 			for (DiscussionActivityKeys key:values()) {
-				if (key == ALL) continue;
-				else key.subcribe(userid,entityid,service);
+				if (key != ALL) {
+					key.subscribe(userId, entityId, service);
+				}
 			}
 		}
-		service.createSubscription("debates", userid, entityid,ordinal());
+		service.createSubscription("debates", userId, entityId,ordinal());
 	}
 
-	public void unsubcribe(long userid, long entityid, SubscriptionProvider service) throws SystemException {
+	@Override
+	public void unsubscribe(long userId, long entityId, SubscriptionProvider service) throws SystemException {
 		if (this == ALL) {
 			for (DiscussionActivityKeys key:values()) {
-				if (key == ALL) continue;
-				else key.unsubcribe(userid,entityid,service);
+				if (key != ALL) {
+					key.unsubscribe(userId, entityId, service);
+				}
 			}
 		}
-		service.deleteSubscription("debates", userid, entityid,ordinal());
+		service.deleteSubscription("debates", userId, entityId,ordinal());
 		
 	}
 
-     public boolean isSubscribed(long userid, long entityid, SubscriptionProvider service) throws SystemException {
-       if (this == ALL) {
+     @Override
+	 public boolean isSubscribed(long userId, long entityId, SubscriptionProvider service) throws SystemException {
+		 if (this == ALL) {
 			for (DiscussionActivityKeys key:values()) {
-				if (key == ALL) continue;
-				if (!key.isSubscribed(userid,entityid,service)) return false;
+				if (key == ALL) {
+					continue;
+				}
+				if (!key.isSubscribed(userId, entityId,service)) {
+					return false;
+				}
 			}
-		}
-		boolean result = service.isSubscribed("debates", userid, entityid,ordinal());
-        return result;
+		 }
+		 return service.isSubscribed("debates", userId, entityId,ordinal());
      }
 	
 }
-	
-	
-	
-//	public static final int ADD_QUESTION = 1;
-//	public static final int EDIT_QUESTION = 2;
-//	public static final int REMOVE_QUESTION = 3;
-//	
-//	public static final int ADD_POSITION = 4;
-//	public static final int EDIT_POSITION = 5;
-//	public static final int REMOVE_POSITION = 6;
-//	
-//	public static final int ADD_ARGUMENT = 7;
-//	public static final int EDIT_ARGUMENT = 8;
-//	public static final int REMOVE_ARGUMENT = 9;
-//	
-//	public static final int VOTE_FOR_POSITION = 10;
-//	public static final int RETRACT_VOTE_FOR_POSITION = 11;
-	
-

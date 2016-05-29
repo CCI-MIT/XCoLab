@@ -755,7 +755,8 @@ public class PlanTemplateSectionLocalServiceClp
 
     @Override
     public java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanSectionDefinitionId(
-        java.lang.Long planSectionDefinitionId) throws java.lang.Exception {
+        java.lang.Long planSectionDefinitionId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
         try {
@@ -767,8 +768,8 @@ public class PlanTemplateSectionLocalServiceClp
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof java.lang.Exception) {
-                throw (java.lang.Exception) t;
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
             }
 
             if (t instanceof RuntimeException) {

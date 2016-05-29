@@ -1,15 +1,8 @@
 package org.xcolab.portlets.admintasks;
 
-import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.utils.UserAccountGenerator;
+import org.xcolab.utils.UserCreationUtil;
 import com.liferay.portal.NoSuchUserException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
@@ -21,41 +14,40 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.portlet.social.model.SocialActivity;
-import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-import javax.faces.context.FacesContext;
-import javax.portlet.PortletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.StringTokenizer;
 
 public class BatchRegisterUsers {
     private String csvInput;
     private String resultMessage;
 
-    private static long DEFAULT_COMPANY_ID = 10112L;
+    private static final long DEFAULT_COMPANY_ID = 10112L;
 
 	public String registerUsers() throws Exception {
         List<String> csvLines = Arrays.asList(csvInput.split("\r?\n"));
 
         ServiceContext ctx = new ServiceContext();
         ctx.setAttribute("anonymousUser", true);
-        UserAccountGenerator userAccountGenerator = new UserAccountGenerator();
 
         //do some permission stuff necessary for being able to run the addUserWithWorkflow action
         Role adminRole = RoleLocalServiceUtil.getRole(DEFAULT_COMPANY_ID, "Administrator");
         List<User> adminUsers = UserLocalServiceUtil.getRoleUsers(adminRole.getRoleId());
         PrincipalThreadLocal.setName(adminUsers.get(0).getUserId());
-        PermissionChecker permissionChecker = PermissionCheckerFactoryUtil.create(adminUsers.get(0), true);
+        PermissionChecker permissionChecker = PermissionCheckerFactoryUtil.create(adminUsers.get(0));
         PermissionThreadLocal.setPermissionChecker(permissionChecker);
 
         //register each line as a user
-        int skippedUsers = 0;
         resultMessage = "";
-        for (int i = 0; i < csvLines.size(); i++) {
-            if (!csvLines.get(i).trim().isEmpty()) {
+        int skippedUsers = 0;
+        for (String csvLine : csvLines) {
+            if (!csvLine.trim().isEmpty()) {
                 //split once again into the specific fields
-                StringTokenizer st = new StringTokenizer(csvLines.get(i).replaceAll(";;", "; ;")+" ", ";");
-                List<String> fields = new ArrayList<String>();
+                StringTokenizer st = new StringTokenizer(csvLine.replaceAll(";;", "; ;") + " ", ";");
+                List<String> fields = new ArrayList<>();
                 while (st.hasMoreTokens()) {
                     fields.add(st.nextToken().trim());
                 }
@@ -85,12 +77,9 @@ public class BatchRegisterUsers {
                         resultMessage += "User with email " + email + " was already registered. Skipping this row<br/>\n";
                         continue;
                     }
-                } catch (NoSuchUserException e) {
-                    //intentionally do nothing
-                }
+                } catch (NoSuchUserException ignored) { }
 
-
-                String screenName = userAccountGenerator.generateUsername(firstName, lastName);
+                String screenName = UserCreationUtil.generateUsername(firstName, lastName);
 
                 User user = UserServiceUtil.addUserWithWorkflow(
                         DEFAULT_COMPANY_ID, true,

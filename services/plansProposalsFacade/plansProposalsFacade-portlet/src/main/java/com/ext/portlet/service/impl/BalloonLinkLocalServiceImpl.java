@@ -1,10 +1,10 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.model.BalloonLink;
 import com.ext.portlet.service.base.BalloonLinkLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the balloon link local service.
@@ -27,6 +27,7 @@ public class BalloonLinkLocalServiceImpl extends BalloonLinkLocalServiceBaseImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.BalloonLinkLocalServiceUtil} to access the balloon link local service.
      */
 	
+	@Override
 	public BalloonLink getBalloonLinkForUser(String uuid) throws SystemException {
 		List<BalloonLink> links = balloonLinkPersistence.findByBalloonUserUuid(uuid);
 		if (links == null || links.isEmpty()) {

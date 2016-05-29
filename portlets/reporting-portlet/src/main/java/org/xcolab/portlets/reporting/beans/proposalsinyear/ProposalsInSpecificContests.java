@@ -2,16 +2,34 @@ package org.xcolab.portlets.reporting.beans.proposalsinyear;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseRibbonType;
+import com.ext.portlet.model.PlanSectionDefinition;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.Proposal2Phase;
+import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.reporting.beans.contests.ContestFetcher;
 import org.xcolab.portlets.reporting.beans.proposalsinyear.proposalversiondeterminer.NewestProposal;
 import org.xcolab.portlets.reporting.beans.proposalsinyear.proposalversiondeterminer.ProposalVersionDeterminer;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author pdeboer
@@ -75,11 +93,11 @@ public class ProposalsInSpecificContests {
 				pte.setContest(contest);
 				pte.setId(visibleProposal.getProposalId());
 				pte.setProposalMoved(movedProposalIds.contains(visibleProposal.getProposalId()));
-				pte.setUrl("http://climatecolab.org/web/guest/plans/-/plans/contestId/" + contest.getContestPK() + "/planId/" + visibleProposal.getProposalId());
+				pte.setUrl("http://climatecolab.org"+ProposalLocalServiceUtil.getProposalLinkUrl(visibleProposal.getProposalId()));
 				pte.setUsedVersion(targetVersion);
 				pte.setProposalRibbon(getProposalRibbon(visibleProposal, completedPhase));
 
-				List<ProposalAttribute> attributes = ProposalLocalServiceUtil.getAttributes(visibleProposal.getProposalId(), targetVersion);
+				List<ProposalAttribute> attributes = ProposalAttributeLocalServiceUtil.getAttributes(visibleProposal.getProposalId(), targetVersion);
 				for (ProposalAttribute attribute : attributes) {
 					if (attribute.getName().equals("NAME")) {
 						pte.setProposalName(attribute.getStringValue());

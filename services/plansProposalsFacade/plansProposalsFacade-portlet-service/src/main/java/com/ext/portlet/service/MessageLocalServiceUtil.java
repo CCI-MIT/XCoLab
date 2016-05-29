@@ -259,55 +259,6 @@ public class MessageLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static int countSentMessage(long userid)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().countSentMessage(userid);
-    }
-
-    public static java.util.List<com.ext.portlet.model.Message> findSentMessages(
-        long userid, int pagerstart, int pagerend)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findSentMessages(userid, pagerstart, pagerend);
-    }
-
-    public static java.util.List<com.ext.portlet.model.MessageRecipientStatus> getRecipients(
-        com.ext.portlet.model.Message msg)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getRecipients(msg);
-    }
-
-    public static boolean hasReciever(com.ext.portlet.model.Message msg,
-        long userid) throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().hasReciever(msg, userid);
-    }
-
-    public static boolean isOpened(com.ext.portlet.model.Message msg,
-        long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().isOpened(msg, userid);
-    }
-
-    public static void setOpened(com.ext.portlet.model.Message msg, long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().setOpened(msg, userid);
-    }
-
-    public static boolean isArchived(com.ext.portlet.model.Message msg,
-        long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().isArchived(msg, userid);
-    }
-
-    public static void setArchived(com.ext.portlet.model.Message msg,
-        long userid)
-        throws com.ext.portlet.NoSuchMessageRecipientStatusException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().setArchived(msg, userid);
-    }
-
     public static void clearService() {
         _service = null;
     }

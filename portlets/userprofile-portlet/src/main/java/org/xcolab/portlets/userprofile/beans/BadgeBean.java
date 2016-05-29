@@ -3,10 +3,16 @@ package org.xcolab.portlets.userprofile.beans;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.*;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -18,70 +24,55 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 9/6/13
- * Time: 5:13 PM
- * To change this template use File | Settings | File Templates.
- */
-public class BadgeBean implements Serializable{
+public class BadgeBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private final static Log _log = LogFactoryUtil.getLog(BadgeBean.class);
-    private long userID; // USER the Badges belong to
-    private List<Badge> badges;
+    private final long userID;
+    private final List<Badge> badges;
 
-
-    public BadgeBean(long userID){
+    public BadgeBean(long userID) {
         this.userID = userID;
-        badges = new ArrayList<Badge>();
-        try{
+        badges = new ArrayList<>();
+        try {
             fetchBadges();
-        } catch (Exception e){ e.printStackTrace(); }
+        } catch (SystemException | PortalException e) {
+            e.printStackTrace();
+        }
     }
 
-
-
-    private void fetchBadges() throws SystemException,PortalException{
-        // Iterate over all plans
-        for(Proposal p : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-            if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(),userID)) continue;
+    private void fetchBadges() throws SystemException, PortalException {
+        for (Proposal p : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+            if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(), userID)) {
+                continue;
+            }
             try {
                 ContestPhaseRibbonType ribbon = getRibbonType(p);
-                int planRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
-                if (planRibbon > 0) {
-                    // Plan won a contest
+                int proposalRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
+                if (proposalRibbon > 0) {
                     String badgeText = ribbon.getHoverText();
-                    long contestId = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestPK();
-                    String planTitle =  ProposalLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME,0).getStringValue();
-                    badges.add(new Badge(planRibbon, badgeText, p.getProposalId(), planTitle, contestId));
+                    Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId());
+                    String proposalTitle = ProposalAttributeLocalServiceUtil
+                            .getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
+                    badges.add(new Badge(proposalRibbon, badgeText, p, proposalTitle, contest));
                 }
-            } catch (Exception e) {
-                _log.warn("Could nod add badge to user profile view for userId: " + userID + " and proposalId: " + p.getProposalId(), e);
+            } catch (SystemException | PortalException e) {
+                _log.warn("Could nod add badge to user profile view for userId: " + userID + " and proposalId: " + p
+                        .getProposalId(), e);
             }
         }
     }
 
-    public List<Badge> getBadges(){
-        return badges;
-    }
-
-    @Override
-    public String toString(){
-        return badges.toString();
-    }
-
     private ContestPhaseRibbonType getRibbonType(Proposal p) throws PortalException, SystemException {
         ContestPhaseRibbonType contestPhaseRibbonType = null;
-        List<Long> phasesForProposal =  Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
+        List<Long> phasesForProposal = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
 
         long contestPhaseType = 0;
         for (Long phaseId : phasesForProposal) {
             try {
-                long typeId = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(),
-                        phaseId, ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+                long typeId = ProposalContestPhaseAttributeLocalServiceUtil
+                        .getProposalContestPhaseAttribute(p.getProposalId(),
+                                phaseId, ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
 
                 ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
 
@@ -91,12 +82,19 @@ public class BadgeBean implements Serializable{
                     contestPhaseType = contestPhase.getContestPhaseType();
                 }
 
-            }
-            catch (NoSuchProposalContestPhaseAttributeException e) {
-                // ignore
+            } catch (NoSuchProposalContestPhaseAttributeException ignored) {
             }
         }
 
         return contestPhaseRibbonType;
+    }
+
+    public List<Badge> getBadges() {
+        return badges;
+    }
+
+    @Override
+    public String toString() {
+        return badges.toString();
     }
 }

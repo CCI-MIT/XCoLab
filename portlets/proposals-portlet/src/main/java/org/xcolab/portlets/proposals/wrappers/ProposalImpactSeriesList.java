@@ -4,7 +4,6 @@ import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -20,11 +19,9 @@ import java.util.Map;
 
 /**
  * A collection of ProposalImpactSeries representing all data series of each sector-region pair.
- *
- * Created by kmang on 12/03/15.
  */
 public class ProposalImpactSeriesList {
-    private List<ProposalImpactSeries> impactSerieses;
+    private final List<ProposalImpactSeries> impactSerieses;
 
     private static final Map<Long, Map<Integer,Double>> ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR;
     private static final Double[] US_YEAR_TO_VALUE_FACTOR = {0.1832 , 0.1740 , 0.1592 , 0.1464 , 0.1348 , 0.1595 };
@@ -297,10 +294,12 @@ public class ProposalImpactSeriesList {
 
             ProposalImpactSeriesValues impactSeriesValues = impactSeries.getResultSeriesValues();
 
-            for (String sectorOntologyTermId : ontologyTermIdToSeriesSumMap.keySet()) {
+            for (Map.Entry<String, ProposalImpactSeriesValues> entry : ontologyTermIdToSeriesSumMap.entrySet()) {
+
+                final String sectorOntologyTermId = entry.getKey();
+                final ProposalImpactSeriesValues integratedSeriesValues = entry.getValue();
 
                 OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(Long.parseLong(sectorOntologyTermId));
-                ProposalImpactSeriesValues integratedSeriesValues = ontologyTermIdToSeriesSumMap.get(sectorOntologyTermId);
 
                 if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm) && impactSeries.getWhereTerm().equals(regionOntologyTerm))){
                     for (Integer year : impactSeriesValues.getYearToValueMap().keySet()) {
@@ -329,10 +328,12 @@ public class ProposalImpactSeriesList {
 
             ProposalImpactSeriesValues impactSeriesValues = impactSeries.getResultSeriesValues();
 
-            for (String sectorOntologyTermId : ontologyTermIdToSeriesSumMap.keySet()) {
+            for (Map.Entry<String, ProposalImpactSeriesValues> entry : ontologyTermIdToSeriesSumMap.entrySet()) {
+
+                final String sectorOntologyTermId = entry.getKey();
+                final ProposalImpactSeriesValues integratedSeriesValues = entry.getValue();
 
                 OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(Long.parseLong(sectorOntologyTermId));
-                ProposalImpactSeriesValues integratedSeriesValues = ontologyTermIdToSeriesSumMap.get(sectorOntologyTermId);
 
                 if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm))){
                     for (Integer year : impactSeriesValues.getYearToValueMap().keySet()) {

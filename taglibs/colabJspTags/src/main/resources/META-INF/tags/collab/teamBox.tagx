@@ -1,5 +1,4 @@
-<jsp:root
-        xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
         xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:collab="http://climatecolab.org/tags/collab_1.0"
         version="2.0">
@@ -15,15 +14,14 @@
 
   <div class="addpropbox  teamBox">
     <div class="teamMemberHeader">
-      <h2>${title}</h2>
-      <img id="${unsavedStar}" src="/climatecolab-theme/images/reg-star.png" width="10" height="9" align="texttop" style="display: none;" />
+      <h2 id="${unsavedStar}">${title}</h2>
     </div>
     <div class="teamMemberAdd">
       <input id="${inputBox}" type="text" class="profile_input teamMembers" />
       <div class="clear"><!-- --></div>
-      <div id="${pleaseChooseFromList}" style="display: none;" class="alert alert-error">Please choose a user from list.</div>
+      <div id="${pleaseChooseFromList}" style="display: none;" class="c-Alert c-Alert__error">Please choose a user from list.</div>
       <div class="clear"><!-- --></div>
-      <div id="${unknownUsersContainer}"  style="display: none;" class="alert alert-error">Unknown users: <ul></ul></div>
+      <div id="${unknownUsersContainer}"  style="display: none;" class="c-Alert c-Alert__error">Unknown users: <ul></ul></div>
     </div>
     <div class="teamMemberListing">
       <input type="hidden" name="${memberList}" id="${memberList}"/>
@@ -48,15 +46,19 @@
       var unsavedStarTitle = "${unsavedStar}";
       var membersTitle = "${title}";
       var members = [];
+      var initialMembers = [];
       var memberList = "${memberList}";
+      var currentUserMap = {};
 
       <c:forEach var="member" items="${list}">
         members.push(usersMap["${member.screenName}"]);
+        initialMembers.push(usersMap["${member.screenName}"]);
       </c:forEach>
 
       function updateMemberList(){
         jQuery("#"+memberList).val(members);
         console.log("members",members);
+        console.log("initialMembers",initialMembers);
       }
 
       function removeMemberFromList(userId, userName, userListId){
@@ -65,7 +67,12 @@
         jQuery("#"+memberList).val(members);
         jQuery("#"+userListId +" #" +userId).remove();
         jQuery.growlUI('',userName + ' was removed from ' + membersTitle);
-        jQuery("#"+unsavedStarTitle).show();
+        if ($(members).not(initialMembers).length === 0 &amp;&amp; $(initialMembers).not(members).length === 0) {
+          jQuery("#"+unsavedStarTitle).removeClass("boxChanged");
+        } else {
+          jQuery("#"+unsavedStarTitle).addClass("boxChanged");
+        }
+
         updateMemberList();
       }
 
@@ -84,24 +91,18 @@
         spanPortrait.appendChild(imgPortrait);
 
         var spanName = document.createElement("span");
-        spanName.className="name";
+        spanName.className = "name";
+        spanName.className += " boxChanged";
+
         var userName = document.createTextNode(screenName);
         spanName.appendChild(userName);
 
         newLiElement.appendChild(spanPortrait);
         newLiElement.appendChild(spanName);
 
-        var unsavedStarImage = document.createElement("img");
-        unsavedStarImage.height = "7";
-        unsavedStarImage.width = "7";
-        unsavedStarImage.align= "texttop";
-        var imageSrcStar ="/climatecolab-theme/images/reg-star.png";
-        unsavedStarImage.setAttribute("src", imageSrcStar);
-
-        newLiElement.appendChild(unsavedStarImage);
-
         document.getElementById(userListId).appendChild(newLiElement);
-        document.getElementById(unsavedStarTitle).style.display="";
+
+        jQuery("#"+unsavedStarTitle).addClass("boxChanged");
 
         // Make the element fully transparent.
         newLiElement.style.opacity = 0;
@@ -145,22 +146,35 @@
                   .autocomplete({
                     minLength: 0,
                     source: function (request, response) {
-                      // delegate back to autocomplete, but extract the last term
-                      response($.ui.autocomplete.filter(
-                              userNames, request.term));
+                      $.ajax({
+                        type: "GET",
+                        url: "/web/guest/members/-/members/users/partialName/" + $(userSelectorInput).val(),
+                        dataType: 'json',
+                        async: true,
+                        success: function (data, textStatus, jqXHR) {
+                          var screenNames = [];
+                          currentUserMap = {};
+                          $.each(data, function(index, value) {
+                            screenNames.push(value["screenName"]);
+                            currentUserMap[value["screenName"]] = value["userId"];
+                          });
+                          response(screenNames);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                          response([]);
+                        }
+                      });
                     },
                     focus: function () {
                       // prevent value inserted on focus
                       return false;
                     },
                     select: function (event, ui) {
-
-                      var userId = usersMap[jQuery.trim(ui.item.value)];
+                      var userId = currentUserMap[jQuery.trim(ui.item.value)]; //userMap
                       if(members.indexOf(userId) == -1) {
                         members.push(userId);
                         addUserToList(userId, ui.item.value, userListId);
                       }
-
                       this.value = "";
                       return false;
                     }

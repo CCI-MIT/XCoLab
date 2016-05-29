@@ -1,13 +1,10 @@
 package org.xcolab.portlets.contestmanagement.entities;
 
-/**
- * Created by Thomas on 2/9/2015.
- */
 public class LabelStringValue {
     private String lable;
     private String value;
 
-    public LabelStringValue(String value, String lable){
+    public LabelStringValue(String value, String lable) {
         this.value = value;
         this.lable = lable;
     }

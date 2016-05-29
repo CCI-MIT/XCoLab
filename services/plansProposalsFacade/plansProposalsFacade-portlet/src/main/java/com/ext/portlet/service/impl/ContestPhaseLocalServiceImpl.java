@@ -8,14 +8,12 @@ import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseColumn;
-import com.ext.portlet.model.PlanItem;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanItemLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -23,6 +21,7 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
 import com.ext.utils.promotion.AutoPromoteHelper;
+import com.ext.utils.promotion.PhasePromotionHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -42,21 +41,19 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import com.liferay.util.portlet.PortletProps;
-
 import org.apache.commons.lang3.StringUtils;
-import com.ext.utils.promotion.PhasePromotionHelper;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.utils.Clock;
 import org.xcolab.utils.ClockImpl;
 
 import javax.mail.internet.AddressException;
-
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The implementation of the contest phase local service.
@@ -89,27 +86,25 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
     private Clock clock = new ClockImpl();
 
     /** This can be used by unit tests to set a different clock than the standard one */
+    @Override
     public void overrideClock(Clock clock) {
         this.clock = clock;
     }
 
-    public List<PlanItem> getPlans(ContestPhase contestPhase) throws SystemException, PortalException {
-        return PlanItemLocalServiceUtil.getPlans(Collections.emptyMap(), Collections.emptyMap(), 0L,
-                contestPhase.getContestPhasePK(), 0, Integer.MAX_VALUE, "", "", false);
-        // return PlanItemLocalServiceUtil.getPlansInContestPhase(this);
-    }
-
+    @Override
     public ContestStatus getContestStatus(ContestPhase contestPhase) throws SystemException, PortalException {
         String status = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType())
                 .getStatus();
         return status == null ? null : ContestStatus.valueOf(status);
     }
 
+    @Override
     public String getContestStatusStr(ContestPhase contestPhase) throws SystemException, PortalException {
         return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType())
                 .getStatus();
     }
 
+    @Override
     public List<String> getPhaseColumns(ContestPhase contestPhase) throws SystemException {
         List<String> ret = new ArrayList<>();
         for (ContestPhaseColumn phaseColumn : ContestPhaseColumnLocalServiceUtil.getPhaseColumns(contestPhase
@@ -119,10 +114,12 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return ret;
     }
 
+    @Override
     public List<ContestPhaseColumn> getPhaseColumnsRaw(ContestPhase contestPhase) throws SystemException {
         return ContestPhaseColumnLocalServiceUtil.getPhaseColumns(contestPhase.getContestPhasePK());
     }
 
+    @Override
     public List<ContestPhase> getPreviousPhases(ContestPhase contestPhase) throws SystemException, PortalException {
         List<ContestPhase> phases = ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase));
         List<ContestPhase> ret = new ArrayList<>();
@@ -134,6 +131,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return ret;
     }
 
+    @Override
     public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws SystemException, PortalException {
         // First sort by contest phase type (the list has to be initialized as modifiable..)
         List<ContestPhase> contestPhases = new ArrayList<>(ContestPhaseLocalServiceUtil.getPhasesForContest(getContest(contestPhase)));
@@ -156,6 +154,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         throw new SystemException("Can't find next phase for phase with id: " + contestPhase.getContestPhasePK());
     }
 
+    @Override
     public boolean getPhaseActive(ContestPhase contestPhase) {
         if (contestPhase.getPhaseActiveOverride()) {
             return contestPhase.getPhaseActiveOverride();
@@ -173,23 +172,28 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return false;
     }
 
+    @Override
     public List<ContestPhase> getPhasesForContest(Contest contest) throws SystemException {
         return contestPhasePersistence.findByContestId(contest.getContestPK());
     }
 
+    @Override
     public List<ContestPhase> getPhasesForContest(long contestPK) throws SystemException {
         return contestPhasePersistence.findByContestId(contestPK);
     }
 
+    @Override
     public List<ContestPhase> getPhasesForContestScheduleId(long contestScheduleId) throws SystemException {
         return contestPhasePersistence.findByContestScheduleId(contestScheduleId, ColabConstants.DEFAULT_CONTEST_SCHEDULE_ID);
     }
 
+    @Override
     public List<ContestPhase> getPhasesForContestScheduleIdAndContest(long contestScheduleId, long contestPK) throws SystemException {
         return contestPhasePersistence.findByContestScheduleId(contestScheduleId, contestPK);
     }
 
 
+    @Override
     public List<ContestPhase> getPhasesForContestScheduleIdAndPhaseType(long contestScheduleId, long contestPhaseType) throws SystemException {
 
         DynamicQuery queryPhasesForContestScheduleIdAndPhaseType =
@@ -201,13 +205,14 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
     }
 
+    @Override
     public ContestPhase getActivePhaseForContest(Contest contest) throws SystemException, PortalException {
         Date now = clock.now();
         try {
             return contestPhasePersistence.findByPhaseActiveOverride_Last(contest.getContestPK(), true,
                     new OrderByComparator() {
 
-                        private final String[] ORDERY_BY_FIELDS = new String[]{"PhaseStartDate"};
+                        private final String[] ORDERY_BY_FIELDS = {"PhaseStartDate"};
 
                         @Override
                         public String[] getOrderByFields() {
@@ -223,9 +228,8 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
                             return 1;
                         }
                     });
-        } catch (NoSuchContestPhaseException e) {
-            // ignore
-        }
+        } catch (NoSuchContestPhaseException ignored) { }
+
         List<ContestPhase> phases = contestPhasePersistence.findByContestIdStartEnd(contest.getContestPK(), now, now);
         // Either there is no contest phase or there is a phase which enddate is open
         if (phases.isEmpty()) {
@@ -257,14 +261,17 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      * from ContestPhaseImpl *
      */
 
+    @Override
     public Contest getContest(ContestPhase contestPhase) throws SystemException, PortalException {
         return ContestLocalServiceUtil.getContest(contestPhase.getContestPK());
     }
 
+    @Override
     public String getName(ContestPhase contestPhase) throws PortalException, SystemException {
         return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType()).getName();
     }
 
+    @Override
     public void promoteProposal(long proposalId, long nextPhaseId, long currentPhaseId) throws SystemException, PortalException {
     	try {
         	// check if proposal isn't already associated with requested phase
@@ -282,7 +289,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             throw new SystemException("Proposal not found");
         }
         ContestPhase nextPhase = getContestPhase(nextPhaseId);
-        if (nextPhase == null) throw new SystemException("phase not found");
+        if (nextPhase == null) {
+            throw new SystemException("phase not found");
+        }
 
         //find phase the proposal is in currently in contest c
         List<Long> phases = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(proposalId);
@@ -296,7 +305,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         }
 
         boolean isBoundedVersion = false;
-        if (candidatePhase.size() > 0) {
+        if (!candidatePhase.isEmpty()) {
             //candidate phase now contains all contestphases the proposal has been submitted to of the target contest
             //we now need to find the one that is closest to the next phase in order to provide a smooth promotion
             //set end version of previous phase to now
@@ -311,7 +320,9 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
             if (o.getVersionTo() < 0) {
                 o.setVersionTo(currentProposalVersion.intValue());
                 Proposal2PhaseLocalServiceUtil.updateProposal2Phase(o);
-            } else isBoundedVersion = true;
+            } else {
+                isBoundedVersion = true;
+            }
         }
 
         Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposalId, nextPhaseId);
@@ -328,6 +339,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      * @throws SystemException
      * @throws PortalException
      */
+    @Override
     public void autoPromoteProposals() throws SystemException, PortalException {
     	
         Date now = clock.now();
@@ -354,6 +366,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
      * Creates a new contest phase object by copying all attributes of the original contest phase
      * @param originalPhase     The contest phase to copy
      */
+    @Override
     public ContestPhase createFromContestPhase(ContestPhase originalPhase) throws SystemException {
         ContestPhase newPhase = createContestPhase(CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
 
@@ -376,6 +389,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
         return newPhase;
     }
 
+    @Override
     public void forcePromotionOfProposalInPhase(Proposal p, ContestPhase phase) throws SystemException, PortalException {
         ContestPhase nextPhase = getNextContestPhase(phase);
         PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
@@ -394,23 +408,46 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
         try {
             proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
-        } catch (MailEngineException | AddressException e) {
+        } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
             _log.error("Could not send proposal promotion colab messaging notification", e);
         }
 
         _log.info("done forcefully promoting proposal "+ p.getProposalId() +" from phase " + phase.getContestPhasePK());
     }
 
+    @Override
     public int getNumberOfProposalsForJudge(User judge, ContestPhase phase) throws PortalException, SystemException{
         List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK());
-        int counter=0;
+        int counter = 0;
         for (Proposal p : proposals){
             String judges = "";
             try{
                 judges = ProposalContestPhaseAttributeLocalServiceUtil.getProposalContestPhaseAttribute(p.getProposalId(), phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
             } catch (NoSuchProposalContestPhaseAttributeException ignored) {  }
-            if (StringUtils.containsIgnoreCase(judges, judge.getUserId() + "")) counter++;
+            if (StringUtils.containsIgnoreCase(judges, judge.getUserId() + "")) {
+                counter++;
+            }
         }
         return counter;
+    }
+
+    /**
+     * Returns the URL link address for the passed contest phase
+     *
+     * @param contestPhase   The contest object
+     * @return          Contest phase URL as String
+     */
+    @Override
+    public String getContestPhaseLinkUrl(ContestPhase contestPhase) {
+        try {
+            String link = "/";
+            Contest contest = contestLocalService.fetchContest(contestPhase.getContestPK());
+            link += contestTypeLocalService.getContestType(contest).getFriendlyUrlStringContests();
+            link += "/%d/%s/phase/%d";
+            return String.format(link, contest.getContestYear(), contest.getContestUrlName(), contestPhase.getContestPhasePK());
+        } catch (SystemException e) {
+            _log.error("Could not create link Url for contestPhase " + contestPhase.getContestPhasePK());
+            return "/contests/";
+        }
     }
 }

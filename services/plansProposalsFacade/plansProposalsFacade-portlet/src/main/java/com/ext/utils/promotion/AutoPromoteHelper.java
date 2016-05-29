@@ -2,14 +2,12 @@ package com.ext.utils.promotion;
 
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
@@ -25,8 +23,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.util.mail.MailEngineException;
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.mail.EmailToAdminDispatcher;
 
+import javax.mail.internet.AddressException;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -46,8 +48,8 @@ public class AutoPromoteHelper {
     public static final long SEMIFINALIST_RIBBON_ID = 3L;
     public static final long FINALIST_RIBBON_ID = 1L;
 
-    private Date now;
-    private ServiceContext serviceContext;
+    private final Date now;
+    private final ServiceContext serviceContext;
 
     public AutoPromoteHelper(Date now, ServiceContext serviceContext) {
         this.now = now;
@@ -70,6 +72,7 @@ public class AutoPromoteHelper {
                 try {
                 	_log.info("promoting phase " + phase.getContestPhasePK());
                 	Contest contest = ContestLocalServiceUtil.getContest(phase.getContestPK());
+                    _log.info("promoting contest " + contest.getContestPK());
                     ContestPhase nextPhase = ContestPhaseLocalServiceUtil.getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                         //skip already promoted proposal
@@ -122,6 +125,7 @@ public class AutoPromoteHelper {
                 // Only do the promotion if all proposals have been successfully reviewed
                 if (phasePromotionHelper.allProposalsReviewed()) {
                 	Contest contest = ContestLocalServiceUtil.getContest(phase.getContestPK());
+                    _log.info("promoting contest " + contest.getContestPK() + " (judging) ");
                     ContestPhase nextPhase = ContestPhaseLocalServiceUtil.getNextContestPhase(phase);
                     for (Proposal p : ProposalLocalServiceUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                     	try {
@@ -136,13 +140,13 @@ public class AutoPromoteHelper {
                     	}
                         //skip already promoted proposal
                         if (phasePromotionHelper.hasProposalAlreadyBeenPromoted(p)) {
-                            System.out.println("Proposal already promoted "+p.getProposalId());
+                            _log.trace("Proposal already promoted "+p.getProposalId());
                             continue;
                         }
 
                         // Decide about the promotion
                         if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
-                            System.out.println("Promote proposal "+p.getProposalId());
+                            _log.info("Promote proposal "+p.getProposalId());
                             ContestPhaseLocalServiceUtil.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                         }
 
@@ -154,7 +158,7 @@ public class AutoPromoteHelper {
                             try {
                                 ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
-                            } catch (Throwable e) {
+                            } catch (SystemException | PortalException | AddressException | MailEngineException | UnsupportedEncodingException e) {
                                 _log.error("Could not send proposal promotion colab messaging notification", e);
                             }
                         }
@@ -217,9 +221,7 @@ public class AutoPromoteHelper {
                     }
 
                     Set<Proposal> allProposals = new HashSet<>();
-                    List<Proposal> finalists = null;
-                    List<Proposal> semifinalists = null;
-                    if (proposalCreationPhases.size() > 0) {
+                    if (!proposalCreationPhases.isEmpty()) {
                         for (ContestPhase creationPhase : proposalCreationPhases) {
                             final List<Proposal> proposalsInContestPhase = ProposalLocalServiceUtil.getProposalsInContestPhase(creationPhase.getContestPhasePK());
                             addAllVisibleProposalsToCollection(proposalsInContestPhase, allProposals, creationPhase);
@@ -228,6 +230,8 @@ public class AutoPromoteHelper {
                         _log.error(String.format("Can't distribute ribbons: No proposal creation phase found in contest %d", phase.getContestPK()));
                     }
 
+                    List<Proposal> finalists = null;
+                    List<Proposal> semifinalists = null;
                     if (finalistSelection != null) {
                         ContestPhase finalsPhase = ContestPhaseLocalServiceUtil.getNextContestPhase(finalistSelection);
                         finalists = ProposalLocalServiceUtil.getProposalsInContestPhase(finalsPhase.getContestPhasePK());
@@ -248,9 +252,14 @@ public class AutoPromoteHelper {
                     }
 
                     associateProposalsWithCompletedPhase(allProposals, phase, nextPhase);
-
-                    assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists, nextPhase.getContestPhasePK());
-                    assignRibbonsToProposals(FINALIST_RIBBON_ID, finalists, nextPhase.getContestPhasePK());
+                    if (semifinalists != null) {
+                        assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists, nextPhase.getContestPhasePK());
+                    }
+                    if (finalists != null) {
+                        assignRibbonsToProposals(FINALIST_RIBBON_ID, finalists, nextPhase.getContestPhasePK());
+                    } else {
+                        _log.warn("No finalists found to distribute ribbons to.");
+                    }
 
                     // We want to wait showing all ribbons until the winners are determined
                     contest.setHideRibbons(true);
@@ -286,27 +295,45 @@ public class AutoPromoteHelper {
 
         for (Proposal proposal : proposals) {
             //update the last phase association - set the end version to the current version
-            Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
+            final long proposalId = proposal.getProposalId();
+            Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposalId);
             if (currentProposalVersion <= 0) {
-                _log.error(String.format("Proposal %d not found: version was %d", proposal.getProposalId(), currentProposalVersion));
+                _log.error(String.format("Proposal %d not found: version was %d", proposalId, currentProposalVersion));
                 throw new SystemException("Proposal not found");
             }
 
+            final int currentProposalVersionNumber = currentProposalVersion.intValue();
             try {
                 //make sure that proposals in the phase directly before have final versions
-                Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), previousPhase.getContestPhasePK());
+                Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, previousPhase.getContestPhasePK());
 
                 if (oldP2p != null) {
                     if (oldP2p.getVersionTo() < 0) {
-                        oldP2p.setVersionTo(currentProposalVersion.intValue());
+                        oldP2p.setVersionTo(currentProposalVersionNumber);
                         Proposal2PhaseLocalServiceUtil.updateProposal2Phase(oldP2p);
                     }
                 }
             } catch (NoSuchProposal2PhaseException ignored) {}
 
-            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.create(proposal.getProposalId(), completedPhase.getContestPhasePK());
-            p2p.setVersionFrom(currentProposalVersion.intValue());
-            p2p.setVersionTo(currentProposalVersion.intValue());
+            Proposal2Phase p2p;
+            final long completedPhasePK = completedPhase.getContestPhasePK();
+            try {
+                //This is a workaround for a bug that caused two new p2p's to be created
+                p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(
+                        proposalId, completedPhasePK);
+                //If this succeeds, we want to log the error to help diagnose the problem
+                _log.error(String.format("P2p found while associating proposal %d with phase %d.", proposalId, completedPhasePK));
+                new EmailToAdminDispatcher("Duplicate primary key for P2p in auto promotion",
+                        String.format("Unexpectedly found p2p. Setting versionFrom = %d and versionTo = %d: %s",
+                                currentProposalVersionNumber, currentProposalVersionNumber, p2p)).sendMessage();
+            } catch (NoSuchProposal2PhaseException e) {
+                p2p = Proposal2PhaseLocalServiceUtil.create(
+                        proposalId, completedPhasePK);
+                _log.debug(String.format("Created new p2p: %s", p2p));
+            }
+
+            p2p.setVersionFrom(currentProposalVersionNumber);
+            p2p.setVersionTo(currentProposalVersionNumber);
             Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
         }
     }

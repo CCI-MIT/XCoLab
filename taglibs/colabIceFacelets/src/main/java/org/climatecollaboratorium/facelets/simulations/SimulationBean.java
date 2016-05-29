@@ -222,8 +222,6 @@ public class SimulationBean implements Serializable {
             e.printStackTrace();
         } catch (ScenarioNotFoundException e) {
             e.printStackTrace();
-        } catch (ModelNotFoundException e) {
-            e.printStackTrace();
         } catch (Throwable e) {
             // FIXME
             e.printStackTrace();

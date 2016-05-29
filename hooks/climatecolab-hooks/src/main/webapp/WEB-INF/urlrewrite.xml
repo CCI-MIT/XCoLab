@@ -30,4 +30,48 @@
         <from>^/web/guest/home/journal/rss/14/news$</from>
         <to type="permanent-redirect">/web/guest/home/-/journal/rss/14/news</to>
     </rule>
+
+    <rule>
+        <from>^/contests(.*)$</from>
+        <to>/web/guest/plans/-/plans/contests$1</to>
+    </rule>
+
+    <rule>
+        <from>^/events(.*)$</from>
+        <to>/web/guest/events/-/plans/contests$1</to>
+    </rule>
+
+    <rule>
+        <from>^/trends(.*)$</from>
+        <to>/web/guest/trends/-/plans/contests$1</to>
+    </rule>
+
+    <rule>
+        <from>^/challenges(.*)$</from>
+        <to>/web/guest/challenges/-/plans/contests$1</to>
+    </rule>
+
+    <rule>
+        <from>^(.*)plans/contestId/1302903/phaseId/1313504(.*)$</from>
+        <to>$1plans/contestId/1302903$2</to>
+    </rule>
+
+    <!-- wiki page redirects -->
+    <rule>
+        <from>^/web/guest/resources/-/wiki/Main/(.*)$</from>
+        <to>/web/guest/wiki/-/wiki/page/$1</to>
+    </rule>
+    <rule>
+        <from>^/resources/-/wiki/Main/(.*)$</from>
+        <to>/web/guest/wiki/-/wiki/page/$1</to>
+    </rule>
+    <rule>
+        <from>^/handbook/-/wiki/Main/(.*)$</from>
+        <to>/web/guest/handbook/-/wiki/page/$1</to>
+    </rule>
+    <rule>
+        <from>^/web/guest/handbook/-/wiki/Main/(.*)$</from>
+        <to>/web/guest/handbook/-/wiki/page/$1</to>
+    </rule>
+
 </urlrewrite>

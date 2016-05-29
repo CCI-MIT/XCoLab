@@ -7,13 +7,13 @@ import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.base.PlanSectionDefinitionLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactory;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import org.xcolab.enums.ContestTier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,9 @@ public class PlanSectionDefinitionLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil} to access the plan section definition local service.
      */
 
+    private static final Log _log = LogFactoryUtil.getLog(PlanSectionDefinitionServiceImpl.class);
+
+    @Override
     public void store(PlanSectionDefinition psd) throws SystemException {
         if (psd.isNew()) {
             if (psd.getId() == 0L || psd.getId() <= 0) {
@@ -53,6 +56,7 @@ public class PlanSectionDefinitionLocalServiceImpl
         }
     }
     
+    @Override
     public FocusArea getFocusArea(PlanSectionDefinition psd) throws PortalException, SystemException {
         if (psd.getFocusAreaId() > 0L) {
             return FocusAreaLocalServiceUtil.getFocusArea(psd.getFocusAreaId());
@@ -70,6 +74,7 @@ public class PlanSectionDefinitionLocalServiceImpl
      * @return                  The matched PlanSectionDefinition object or null, if it does not exist
      * @throws SystemException
      */
+    @Override
     public PlanSectionDefinition getPlanSectionDefinition(FocusArea focusArea, String type, long contestTierType) throws SystemException {
         DynamicQuery sectionDefinitionQuery = DynamicQueryFactoryUtil.forClass(PlanSectionDefinition.class);
         sectionDefinitionQuery.add(RestrictionsFactoryUtil.eq("focusAreaId", focusArea.getId()));
@@ -77,10 +82,30 @@ public class PlanSectionDefinitionLocalServiceImpl
         sectionDefinitionQuery.add(RestrictionsFactoryUtil.eq("tier", contestTierType));
 
         List<PlanSectionDefinition> sectionDefinitions = dynamicQuery(sectionDefinitionQuery);
-        if (Validator.isNotNull(sectionDefinitions) && sectionDefinitions.size() > 0) {
+        if (Validator.isNotNull(sectionDefinitions) && !sectionDefinitions.isEmpty()) {
             return sectionDefinitions.get(0);
         }
 
         return null;
+    }
+
+    @Override
+    public List<Long> getAdditionalIds(PlanSectionDefinition planSectionDefinition) {
+        List<Long> longIds = new ArrayList<>();
+        final String stringOfStringIds = planSectionDefinition.getAdditionalIds();
+        if (stringOfStringIds != null) {
+            String[] stringIds = stringOfStringIds.split(",");
+            for (String stringId : stringIds) {
+                if (!stringId.isEmpty()) {
+                    try {
+                        longIds.add(Long.parseLong(stringId));
+                    } catch (NumberFormatException e) {
+                        _log.error(String.format("Could not parse the additionalId of '%s' for PlansSectionDefinition %d",
+                                stringId, planSectionDefinition.getId()), e);
+                    }
+                }
+            }
+        }
+        return longIds;
     }
 }

@@ -54,7 +54,6 @@ public class ContestServiceUtil {
     /**
     * Returns a list of open contest for regular users and returns all contests for staff users
     *
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -62,12 +61,6 @@ public class ContestServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsOpenForProposals();
-    }
-
-    public static int getNumberOfUnreadMessages()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getNumberOfUnreadMessages();
     }
 
     public static void clearService() {

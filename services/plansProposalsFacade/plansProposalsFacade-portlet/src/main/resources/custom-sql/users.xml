@@ -90,25 +90,25 @@ ORDER BY r.categoryName DESC
 
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByActivityCountAsc'>
         <![CDATA[
-			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount ASC
+			SELECT DISTINCT us.*, us.userId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = us.userId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByActivityCountAscFilteredByCategory'>
         <![CDATA[
-			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount ASC
+			SELECT DISTINCT us.*, us.userId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = us.userId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByActivityCountDesc'>
         <![CDATA[
-			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount DESC
+			SELECT DISTINCT us.*, us.userId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = us.userId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY activityCount DESC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByActivityCountDescFilteredByCategory'>
         <![CDATA[
-			SELECT DISTINCT us.*, us.userId as uId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = uId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount DESC
+			SELECT DISTINCT us.*, us.userId, (SELECT COUNT(*) FROM SocialActivity WHERE SocialActivity.userId = us.userId) as activityCount FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY activityCount DESC
 		]]>
     </sql>
 
@@ -120,25 +120,25 @@ ORDER BY r.categoryName DESC
 
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByPointsAsc'>
         <![CDATA[
-			SELECT DISTINCT us.*, us.userId as uId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = uId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY points ASC
+			SELECT DISTINCT us.*, us.userId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = us.userId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY points ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByPointsAscFilteredByCategory'>
         <![CDATA[
-			SELECT DISTINCT us.*, us.userId as uId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = uId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY points ASC
+			SELECT DISTINCT us.*, us.userId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = us.userId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY points ASC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByPointsDesc'>
         <![CDATA[
-			SELECT DISTINCT us.*, us.userId as uId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = uId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY points DESC
+			SELECT DISTINCT us.*, us.userId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = us.userId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName not like '%Staff%' ORDER BY points DESC
 		]]>
     </sql>
 
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUsersSortedByPointsDescFilteredByCategory'>
         <![CDATA[
-			SELECT DISTINCT us.*, us.userId as uId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = uId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY points DESC
+			SELECT DISTINCT us.*, us.userId, (SELECT SUM(materializedPoints) FROM xcolab_Points WHERE xcolab_Points.userId = us.userId) as points FROM User_ as us INNER JOIN Users_Roles as ur ON us.userId = ur.userId INNER JOIN xcolab_RolesCategory as ro ON ur.roleId = ro.roleId WHERE (us.screenName like ? or us.firstName like ? or us.lastName like ?) AND ro.categoryName like ? ORDER BY points DESC
 		]]>
     </sql>
 
@@ -151,6 +151,12 @@ ORDER BY r.categoryName DESC
     <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.getUserHypotheticalPoints'>
         <![CDATA[
 			SELECT SUM(hypotheticalPoints) FROM xcolab_Points WHERE xcolab_Points.userId = ?
+		]]>
+    </sql>
+
+    <sql id='com.ext.portlet.service.persistence.Xcolab_UserFinder.findUsersByLoginIP'>
+        <![CDATA[
+			SELECT * FROM User_ WHERE loginIP = ? or lastLoginIP = ?
 		]]>
     </sql>
 

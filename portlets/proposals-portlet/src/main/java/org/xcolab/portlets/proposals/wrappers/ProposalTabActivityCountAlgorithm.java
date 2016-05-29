@@ -1,14 +1,12 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import javax.portlet.PortletRequest;
-
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.portlets.proposals.utils.ProposalsContext;
+
+import javax.portlet.PortletRequest;
 
 public interface ProposalTabActivityCountAlgorithm {
     int getActivityCount(ProposalsContext context, PortletRequest request);

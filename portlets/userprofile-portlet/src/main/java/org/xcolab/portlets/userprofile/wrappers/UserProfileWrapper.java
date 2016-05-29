@@ -1,92 +1,98 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
+import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.messaging.MessageConstants;
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.Message;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-import org.xcolab.enums.MemberRole;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.enums.Plurality;
+import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.legacy.enums.MessageType;
+import org.xcolab.client.members.pojo.Message;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
-import org.xcolab.utils.SendMessagePermissionChecker;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.utils.EntityGroupingUtil;
+import org.xcolab.wrappers.BaseProposalWrapper;
+import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
-
-import javax.portlet.PortletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class
-        UserProfileWrapper implements Serializable {
+import javax.portlet.PortletRequest;
 
-    /**
-     *
-     */
+public class UserProfileWrapper implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private static final long DEFAULT_COMPANY_ID = 10112L;
-    private User user = null;
-    private UserBean userBean = null;
 
+    private static final int MAX_ACTIVITIES_COUNT = 50;
+    private static final boolean FIRE_GOOGLE_EVENT = false;
+    private static final boolean DISPLAY_EMAIL_ERROR_MESSAGE = false;
+
+    private Member user;
+    private UserBean userBean;
     private String realName;
     private Boolean attendsConference;
     private MemberRole role;
     private int subscriptionsPageSize = 20;
-    private int subscriptionsPaginationPageId = 0;
-    private int maxActivitiesCount = 50;
+    private int subscriptionsPaginationPageId;
+    private String proposalsString;
+    private String proposalString;
 
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
-    private List<SupportedPlanWrapper> supportedPlans = new ArrayList<SupportedPlanWrapper>();
-    private List<ProposalWrapper> userProposals = new ArrayList<ProposalWrapper>();
-    private ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
+    private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
+    private final Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
+    private List<BaseProposalWrapper> linkingProposals;
+    private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
 
-    private boolean profileWasComplete = false;
-    private boolean fireGoogleEvent = false;
-    private boolean displayEMailErrorMessage = false;
-    private boolean viewingOwnProfile = false;
+    private boolean viewingOwnProfile;
 
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
-    private ThemeDisplay themeDisplay;
+    private final ThemeDisplay themeDisplay;
 
-    private final static Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
-
-    public UserProfileWrapper(String userIdString, PortletRequest request) throws PortalException, SystemException {
+    public UserProfileWrapper(String userIdString, PortletRequest request)
+            throws PortalException, SystemException, MemberNotFoundException {
         Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        user = UserLocalServiceUtil.getUser(userId);
+        user = MembersClient.getMember(userId);
         if (user.isActive()) {
             User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
             if (loggedInUser != null) {
-                messagePermissionChecker = new SendMessagePermissionChecker(loggedInUser);
-                if(loggedInUser.getUserId() == user.getUserId()) {
+                Member logUser = MembersClient.getMember(loggedInUser.getUserId());
+                messagePermissionChecker = new SendMessagePermissionChecker(logUser);
+                if (loggedInUser.getUserId() == user.getId_()) {
                     viewingOwnProfile = true;
                 }
             }
@@ -94,7 +100,7 @@ public class
         }
     }
 
-    private void init(User user) throws PortalException, SystemException {
+    private void init(Member user) throws PortalException, SystemException {
         this.user = user;
 
         userBean = new UserBean(user);
@@ -107,66 +113,56 @@ public class
             realName = user.getFirstName();
         }
 
-        profileWasComplete = profileIsComplete();
-        attendsConference = ExpandoValueLocalServiceUtil.getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO, CommunityConstants.CONFERENCE2014, user.getUserId(), "").equals("1");
-        badges = new BadgeBean(user.getUserId());
+        attendsConference = ExpandoValueLocalServiceUtil
+                .getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO,
+                        CommunityConstants.CONFERENCE2014, user.getId_(), "").equals("1");
+        badges = new BadgeBean(user.getId_());
 
-        List<Role> roles = user.getRoles();
-        // Determine the highest role of the user (copied from {@link org.xcolab.portlets.members.MemberListItemBean})
-        MemberRole currentRole = MemberRole.MEMBER;
-        role = MemberRole.MEMBER;
-
-        for (Role r: roles) {
-            final String roleString = r.getName();
-
-            currentRole = MemberRole.getMember(roleString);
-            if (currentRole != null && role != null) {
-                if (currentRole.ordinal() > role.ordinal()) {
-                    role = currentRole;
-                }
-            }
+        try {
+            role = MemberRole.getHighestRole(user.getRoles());
+        } catch (MemberRole.NoSuchMemberRoleException ignored) {
         }
 
-        if (role == MemberRole.MODERATOR) role = MemberRole.STAFF;
-
         userSubscriptions = new UserSubscriptionsWrapper(user);
-        supportedPlans.clear();
+        supportedProposals.clear();
         userActivities.clear();
-        userProposals.clear();
-        for (Object o : ProposalSupporterLocalServiceUtil.getProposals(user.getUserId())) {
-            ProposalSupporter ps = (ProposalSupporter) o;
-            try {
-                Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(ps.getProposalId());
-                supportedPlans.add(new SupportedPlanWrapper(ps));
-            } catch (Exception e) {
-                _log.warn("Could not add supported plan with id: " + ps.getProposalId());
-                //e.printStackTrace();
-            }
+        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(user.getId_())) {
+            supportedProposals.add(new SupportedProposalWrapper(ps));
         }
 
         for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
-                .getUserActivities(user.getUserId(), 0, maxActivitiesCount))) {
+                .getUserActivities(user.getId_(), 0, MAX_ACTIVITIES_COUNT))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
-            if (a.getBody() != null && !a.getBody().equals(""))
+            if (a.getBody() != null && !a.getBody().equals("")) {
                 userActivities.add(a);
+            }
         }
 
-        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getUserId());
-        for (Proposal p : proposals) {
-            userProposals.add(new ProposalWrapper(p));
+        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getId_());
+        Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil.groupByContestType(proposals);
+        for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
+            contestTypeProposalWrappersByContestTypeId
+                    .put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
+            final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
+            for (Proposal p : proposalsInContestType) {
+                try {
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals()
+                            .add(new BaseProposalWrapper(p));
+                } catch (NoSuchContestException ignored) {
+                }
+            }
         }
     }
 
-    private boolean profileIsComplete() {
-        //ignore mandatory fields, only care about optional ones
-        String[] blankCheck = {userBean.getShortBio(), userBean.getCountry()};
-        for (String s : blankCheck) if (s == null || s.equals(StringPool.BLANK)) return false;
-
-        return true;
+    private String getName(String name, String defaultName) {
+        if (name == null || name.trim().equals("")) {
+            return defaultName;
+        }
+        return name;
     }
 
-    public boolean isStaffMemberProfile(){
+    public boolean isStaffMemberProfile() {
         return this.role == MemberRole.STAFF;
     }
 
@@ -182,108 +178,121 @@ public class
         return viewingOwnProfile;
     }
 
-    public void setUser(User user){ this.user=user; }
-
-    public User getUser(){ return user; }
-
-    public Long getUserId() {
-        return user.getUserId();
+    public Member getUser() {
+        return user;
     }
 
-    public UserBean getUserBean(){ return userBean; }
-
-    public void setUserBean(UserBean userBean){ this.userBean=userBean; }
-
-    private String getName(String name, String defaultName) {
-        if (name == null || name.trim().equals("")) {
-            return defaultName;
-        }
-        return name;
+    public void setUser(Member user) {
+        this.user = user;
     }
 
-    public Date getJoinDate() { return user.getCreateDate(); }
+    public UserBean getUserBean() {
+        return userBean;
+    }
 
-    public Boolean getAttendsConference() { return attendsConference; }
+    public void setUserBean(UserBean userBean) {
+        this.userBean = userBean;
+    }
 
-    public void setAttendsConference(Boolean attendsConference) { this.attendsConference = attendsConference; }
+    public Date getJoinDate() {
+        return user.getCreateDate();
+    }
 
-    public String getRealName() { return realName; }
+    public Boolean getAttendsConference() {
+        return attendsConference;
+    }
 
-    public UserSubscriptionsWrapper getUserSubscriptions(){return userSubscriptions;}
+    public void setAttendsConference(Boolean attendsConference) {
+        this.attendsConference = attendsConference;
+    }
 
-    public int getSubscriptionsPageSize(){return subscriptionsPageSize; }
+    public String getRealName() {
+        return realName;
+    }
 
-    public void setSubscriptionsPageSize(int subscriptionsPageSize) {this.subscriptionsPageSize = subscriptionsPageSize;}
+    public UserSubscriptionsWrapper getUserSubscriptions() {
+        return userSubscriptions;
+    }
 
-    public int getSubscriptionsPaginationPageId() {return subscriptionsPaginationPageId;}
+    public int getSubscriptionsPageSize() {
+        return subscriptionsPageSize;
+    }
 
-    public void setSubscriptionsPaginationPageId(int subscriptionsPaginationPageId){this.subscriptionsPaginationPageId = subscriptionsPaginationPageId;}
+    public void setSubscriptionsPageSize(int subscriptionsPageSize) {
+        this.subscriptionsPageSize = subscriptionsPageSize;
+    }
 
-    public int getSubscriptionsPaginationPageMax(){
+    public int getSubscriptionsPaginationPageId() {
+        return subscriptionsPaginationPageId;
+    }
+
+    public void setSubscriptionsPaginationPageId(int subscriptionsPaginationPageId) {
+        this.subscriptionsPaginationPageId = subscriptionsPaginationPageId;
+    }
+
+    public int getSubscriptionsPaginationPageMax() {
         if (subscribedActivities != null && subscriptionsPageSize != 0) {
-            double d1=subscribedActivities.size();
-            double d2=subscriptionsPageSize;
-            return (int) Math.ceil(d1/d2);
+            double d1 = subscribedActivities.size();
+            double d2 = subscriptionsPageSize;
+            return (int) Math.ceil(d1 / d2);
         }
-        else return 0;
+        return 0;
     }
 
     public int getSubscribedActivitiesCount() {
         if (subscribedActivities != null) {
             return subscribedActivities.size();
         }
-        else return 0;
+        return 0;
     }
 
-    // TODO check this
-    // public void setAbout(String about) throws UserInputException { this.about = UserInputFilterUtil.filterHtml(about); }
-    //public String getFilteredAbout() {        return filteredAbout;    }
-
     public boolean getHasFacebookId() {
-        return user.getFacebookId() != 0;
+        return user.getFacebookId() != null && user.getFacebookId() != 0;
     }
 
     public boolean getHasOpenId() {
         return (user.getOpenId() != null && !user.getOpenId().isEmpty());
     }
 
-    public void setMessagingPortletId(String messagingPortletId) {
-        this.messagingPortletId = messagingPortletId;
-    }
-
     public String getMessagingPortletId() {
         return messagingPortletId;
     }
 
-    public User getWrapped() {
+    public void setMessagingPortletId(String messagingPortletId) {
+        this.messagingPortletId = messagingPortletId;
+    }
+
+    public Member getWrapped() {
         return user;
     }
 
     public boolean isFireGoogleEvent() {
-        return fireGoogleEvent;
+        return FIRE_GOOGLE_EVENT;
     }
 
-    public MemberRole getRole() { return role; }
+    public MemberRole getRole() {
+        return role;
+    }
 
     public boolean isDisplayEMailErrorMessage() {
-        return displayEMailErrorMessage;
+        return DISPLAY_EMAIL_ERROR_MESSAGE;
     }
 
     public ThemeDisplay getThemeDisplay() {
         return themeDisplay;
     }
 
-    public boolean getCanSendMessage() throws SystemException {
+    public boolean getCanSeeSendMessageButton() throws SystemException, MemberRole.NoSuchMemberRoleException {
         if (messagePermissionChecker != null) {
             return messagePermissionChecker.canSendToUser(this.user);
         }
-        return false;
+        return true;
     }
 
     public List<MessageBean> getMessages() throws SystemException, PortalException {
         if (messages == null) {
-            messages = new ArrayList<MessageBean>();
-            for (Message msg: MessageUtil.getMessages(this.user.getUserId(), 0, 2, MessageConstants.INBOX)) {
+            messages = new ArrayList<>();
+            for (Message msg : MessageUtil.getMessages(this.user.getId_(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }
@@ -292,31 +301,49 @@ public class
 
     public List<UserActivityWrapper> getSubscribedActivities() throws SystemException, PortalException {
         if (subscribedActivities == null) {
-            subscribedActivities = new ArrayList<UserActivityWrapper>();
-            for (SocialActivity activity: ActivityUtil.groupActivities(ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getUserId(), 0, 1000))) {
-                try {
-                    subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
-                } catch (Exception e) {
-                }
+            subscribedActivities = new ArrayList<>();
+            for (SocialActivity activity : ActivityUtil.groupActivities(
+                    ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getId_(), 0, 1000))) {
+                subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
         }
         return subscribedActivities;
     }
 
-    public List<SupportedPlanWrapper> getSupportedPlans() { return supportedPlans; }
+    public List<SupportedProposalWrapper> getSupportedProposals() {
+        return supportedProposals;
+    }
 
-    public List<UserActivityWrapper> getActivities() { return userActivities; }
+    public List<UserActivityWrapper> getActivities() {
+        return userActivities;
+    }
 
-    public List<ProposalWrapper> getProposals() { return userProposals; }
+    public Collection<ContestTypeProposalWrapper> getContestTypeProposalWrappersByContestTypeId() {
+        return contestTypeProposalWrappersByContestTypeId.values();
+    }
 
-    public List<Badge> getBadges() { return badges.getBadges(); }
+    public List<Badge> getBadges() {
+        return badges.getBadges();
+    }
+
+    public String getUserActivityCountFormatted() {
+        return String.format("%,d", getUserActivityCount());
+    }
 
     public long getUserActivityCount() {
         try {
-            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId()).get(0).longValue();
+            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId());
         } catch (SystemException e) {
             return 0;
         }
+    }
+
+    public Long getUserId() {
+        return user.getId_();
+    }
+
+    public String getActualPointsFormatted() {
+        return String.format("%,d", getActualPoints());
     }
 
     public long getActualPoints() {
@@ -327,6 +354,10 @@ public class
         }
     }
 
+    public String getPotentialPointsFormatted() {
+        return String.format("%,d", getPotentialPoints());
+    }
+
     public long getPotentialPoints() {
         try {
             return PointsLocalServiceUtil.getUserHypotheticalPoints(getUserId());
@@ -335,4 +366,35 @@ public class
         }
     }
 
+    public List<BaseProposalWrapper> getLinkingProposals() {
+        if (linkingProposals == null) {
+            try {
+                linkingProposals = new ArrayList<>();
+                List<Proposal> proposals = PointsLocalServiceUtil.getLinkingProposalsForUser(getUserId());
+                for (Proposal p : proposals) {
+                    linkingProposals.add(new BaseProposalWrapper(p));
+                }
+            } catch (PortalException | SystemException ignored) {
+            }
+        }
+        return linkingProposals;
+    }
+
+    public String getProposalsString() {
+        if (proposalsString == null) {
+            proposalsString = ContestTypeLocalServiceUtil.getProposalNames(
+                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(),
+                    "or");
+        }
+        return proposalsString;
+    }
+
+    public String getProposalString() {
+        if (proposalString == null) {
+            proposalString = ContestTypeLocalServiceUtil.getProposalNames(
+                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(),
+                    "or");
+        }
+        return proposalString;
+    }
 }

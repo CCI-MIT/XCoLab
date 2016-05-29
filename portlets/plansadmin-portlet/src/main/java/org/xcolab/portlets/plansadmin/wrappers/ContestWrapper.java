@@ -1,21 +1,12 @@
 package org.xcolab.portlets.plansadmin.wrappers;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
-
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
-import org.xcolab.enums.ContestTier;
-import org.xcolab.portlets.plansadmin.Helper;
-
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.PlanTemplate;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.FocusAreaLocalServiceUtil;
+import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -24,6 +15,18 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.service.ImageLocalServiceUtil;
+import org.xcolab.enums.ContestTier;
+import org.xcolab.portlets.plansadmin.Helper;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContestWrapper {
 	private Contest contest;
@@ -140,7 +143,6 @@ public class ContestWrapper {
         }
         
         ContestLocalServiceUtil.deleteContest(contest);
-        return;
     }
     
     private Image addImage(File file) throws  SystemException, IOException, PortalException{
@@ -154,7 +156,7 @@ public class ContestWrapper {
     }
     
 	public List<SelectItem> getAvailablePlanTemplates() throws SystemException {
-		List<SelectItem> ret = new ArrayList<SelectItem>();
+		List<SelectItem> ret = new ArrayList<>();
 
 		ret.add(new SelectItem(null, "-- none --"));
 		for (PlanTemplate tmpl : PlanTemplateLocalServiceUtil.getPlanTemplates(
@@ -165,7 +167,7 @@ public class ContestWrapper {
 	}
 
 	public List<SelectItem> getAvailableFocusAreas() throws SystemException {
-		List<SelectItem> ret = new ArrayList<SelectItem>();
+		List<SelectItem> ret = new ArrayList<>();
 		ret.add(new SelectItem(null, "-- none --"));
 
 		for (FocusArea fa : FocusAreaLocalServiceUtil.getFocusAreas(0,
@@ -176,7 +178,7 @@ public class ContestWrapper {
 	}
 
 	public List<SelectItem> getAvailableContestTiers() throws SystemException {
-		List<SelectItem> ret = new ArrayList<SelectItem>();
+		List<SelectItem> ret = new ArrayList<>();
 
 		for (ContestTier contestTier: ContestTier.values()) {
 			ret.add(new SelectItem(contestTier.getTierType(), contestTier.getTierName()));
@@ -221,19 +223,6 @@ public class ContestWrapper {
 
 		contest.setContestTier(contestTier.getTierType());
 		ContestLocalServiceUtil.store(contest);
-	}
-
-	public void populateFAtoPlans(ActionEvent e) throws PortalException,
-			SystemException {
-		FocusArea fa = ContestLocalServiceUtil.getFocusArea(contest);
-
-		for (ContestPhase phase : ContestLocalServiceUtil.getAllPhases(contest)) {
-			for (PlanItem plan : PlanItemLocalServiceUtil
-					.getPlansInContestPhase(phase.getContestPhasePK())) {
-				FocusAreaLocalServiceUtil.tagClass(fa, PlanItem.class,
-						plan.getPlanId());
-			}
-		}
 	}
 
 	public void uploadLogo(ActionEvent e) throws IOException, PortalException,

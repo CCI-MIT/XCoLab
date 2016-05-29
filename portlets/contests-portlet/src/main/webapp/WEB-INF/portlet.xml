@@ -19,7 +19,7 @@
 			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT Contests (ICE)</title>
+			<title>MIT Contests</title>
 			<short-title>contests</short-title>
 			<keywords>contests</keywords>
 		</portlet-info>

@@ -6,17 +6,13 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalSupporterLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalSupporterPK;
-import com.ext.portlet.service.persistence.ProposalSupporterUtil;
 import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -47,11 +43,13 @@ public class ProposalSupporterLocalServiceImpl
 
     private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
+    @Override
     public ProposalSupporter create(long proposalID, long userID) {
         return createProposalSupporter(new ProposalSupporterPK(proposalID, userID));
     }
 
 
+    @Override
     public List<ProposalSupporter> getProposals(long userId) throws PortalException, com.liferay.portal.kernel.exception.SystemException {
         try {
             final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
@@ -59,13 +57,14 @@ public class ProposalSupporterLocalServiceImpl
                     ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
             dq.add(PropertyFactoryUtil.forName("primaryKey.userId").eq(userId));
             return (List<ProposalSupporter>) ProposalSupporterLocalServiceUtil.dynamicQuery(dq);
-        } catch (Throwable e) {
+        } catch (SystemException | BeanLocatorException e) {
             System.out.println("got exception:"+e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
 
+    @Override
     public List<User> getSupportingUsersForProposal(long proposalId) throws SystemException, com.liferay.portal.kernel.exception.PortalException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class,
                 (ClassLoader) PortletBeanLocatorUtil.locate(ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
@@ -80,8 +79,9 @@ public class ProposalSupporterLocalServiceImpl
         return users;
     }
 
+    @Override
     public List<ProposalSupporter> getProposalSupportersForProposals(List<Proposal> proposals) throws SystemException {
-        if (proposals.size() == 0) {
+        if (proposals.isEmpty()) {
             return new ArrayList<>();
         }
         List<Long> proposalIds = new ArrayList<>();

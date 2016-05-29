@@ -6,13 +6,10 @@
 
 package org.xcolab.portlets.discussions.activity;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.climatecollaboratorium.facelets.discussions.activity.NavigationUrl;
-
-import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.Activity.BaseFeedEntryWithMailInfo;
 import com.ext.portlet.Activity.DiscussionActivityKeys;
 import com.ext.portlet.Activity.ICollabActivityInterpreter;
+import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.community.CommunityUtil;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
@@ -32,32 +29,40 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.social.model.BaseSocialActivityInterpreter;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
+import org.xcolab.jspTags.discussion.wrappers.DiscussionCategoryGroupWrapper;
+import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
+import org.xcolab.utils.IdListUtil;
+
+import java.util.List;
 
 public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter implements ICollabActivityInterpreter {
 
     private static final String[] _CLASS_NAMES = { DiscussionCategoryGroup.class.getName(),
             DiscussionCategory.class.getName(), DiscussionMessage.class.getName() };
 
+    @Override
     public String[] getClassNames() {
         return _CLASS_NAMES;
     }
 
-    private static Log _log = LogFactoryUtil.getLog(DiscussionActivityFeedEntry.class);
+    private static final Log _log = LogFactoryUtil.getLog(DiscussionActivityFeedEntry.class);
 
-    public static String CATEGORY_ADDED = "%s added a category %s to %s"; // user,
+    public static final String CATEGORY_ADDED = "%s added a category %s to %s"; // user,
                                                                         // categorygroup
-    public static String DISCUSSION_ADDED = "%s started a new discussion %s in %s"; // user,
+    public static final String DISCUSSION_ADDED = "%s started a new discussion %s in %s"; // user,
                                                                                   // thread,
                                                                                   // categorygroup
-    public static String FORUM_COMMENT_ADDED = "%s added a comment to %s in %s"; // user,
+    public static final String FORUM_COMMENT_ADDED = "%s added a comment to %s in %s"; // user,
                                                                          // thread,
                                                                          // category
-    public static String PROPOSAL_COMMENT_ADDED = "%s added a comment to %s"; // user,
+    public static final String PROPOSAL_COMMENT_ADDED = "%s added a comment to %s"; // user,
                                                                               // comment,
                                                                               // thread,
                                                                               // categorygroup
 
-    public static String hyperlink = "<a href=\"%s\">%s</a>";
+    public static final String HYPERLINK_FORMAT = "<a href=\"%s\">%s</a>";
 
     /**
      * Activities format is as follows: a) activity.className should be
@@ -68,7 +73,8 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
      * mentioned above will be used only when activity class name is
      * DiscussionCategoryGroup
      */
-    protected SocialActivityFeedEntry doInterpret(SocialActivity activity, ThemeDisplay themeDisplay) throws Exception {
+    @Override
+    protected SocialActivityFeedEntry doInterpret(SocialActivity activity, ThemeDisplay themeDisplay) throws PortalException, SystemException {
 
         try {
             DiscussionActivityKeys activityType = DiscussionActivityKeys.fromId(activity.getType());
@@ -77,13 +83,13 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             String mailSubject = activityType.getPrettyName();
             String mailBody = "";
             String title = activityType.getPrettyName();
-            Long[] ids = ActivityUtil.getIdsFromExtraData(activity.getExtraData());
+            List<Long> ids = IdListUtil.getIdsFromString(activity.getExtraData());
 
             if (activityType == DiscussionActivityKeys.ADD_CATEGORY) {
-                DiscussionCategory category = null;
+                DiscussionCategory category;
 
                 if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                    category = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(ids[0]);
+                    category = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(ids.get(0));
                 } else {
                     category = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(activity.getClassPK());
                 }
@@ -104,28 +110,27 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
                  * classPK
                  */
 
-                DiscussionMessage discussion = null;
+                DiscussionMessage discussion;
                 try{
                     if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                        discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(ids[1]);
+                        discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(ids.get(1));
                     } else {
                         discussion = DiscussionMessageLocalServiceUtil.getThreadByThreadId(activity.getClassPK());
                     }
-                } catch (Exception e){
+                } catch (SystemException | NoSuchDiscussionMessageException e){
                     // No discussion could be found - return null and discard activity
                     return null;
                 }
                 DiscussionCategory category = DiscussionMessageLocalServiceUtil.getCategory(discussion);
-                DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion);
 
                 body = String.format(DISCUSSION_ADDED, getUser(activity), getDiscussionMessageLink(discussion),
                         getDiscussionCategoryLink(category));
                 mailBody = getMailBodyForForumComment(discussion);
             } else if (activityType == DiscussionActivityKeys.ADD_FORUM_COMMENT) {
-                DiscussionMessage comment = null;
+                DiscussionMessage comment;
 
                 if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                    comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(ids[2]);
+                    comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(ids.get(2));
                 } else {
                     comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(activity.getClassPK());
                 }
@@ -142,10 +147,10 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
                     mailBody = getMailBodyForForumComment(comment);
                 }
             } else if (activityType == DiscussionActivityKeys.ADD_PROPOSAL_DISCUSSION_COMMENT) {
-                DiscussionMessage comment = null;
+                DiscussionMessage comment;
 
                 if (activity.getClassName().equals(DiscussionCategoryGroup.class.getName())) {
-                    comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(ids[2]);
+                    comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(ids.get(2));
                 } else {
                     comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(activity.getClassPK());
                 }
@@ -161,7 +166,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             return new BaseFeedEntryWithMailInfo("", title, body, mailSubject, mailBody);
         }
 
-        catch (Exception e) {
+        catch (SystemException | PortalException e) {
         	_log.error(String.format("Can't interpret activity (%s)", activity.toString()) , e);
         }
         
@@ -170,65 +175,55 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
     }
 
     private String getUser(SocialActivity activity) {
-        String result = "<user removed>";
         try {
             return CommunityUtil.generateUserURL(activity.getUserId());
-        } catch (PortalException e) {
-            _log.info(e.getMessage());
-        } catch (SystemException e) {
+        } catch (PortalException | SystemException e) {
             _log.info(e.getMessage());
         }
-        return result;
+        return "<user removed>";
     }
 
     public String getCategoryGroupLink(DiscussionCategoryGroup categoryGroup) {
-
-        NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
-        return String.format(hyperlink, StringEscapeUtils.escapeHtml(navUrl.toString()), categoryGroup.getDescription());
+        return String.format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(categoryGroup.getUrl()), categoryGroup.getDescription());
     }
 
     public String getDiscussionCategoryLink(DiscussionCategory category) throws PortalException, SystemException {
-        DiscussionCategoryGroup categoryGroup = DiscussionCategoryLocalServiceUtil.getCategoryGroup(category);
-
-        NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
+        CategoryWrapper categoryWrapper = new CategoryWrapper(category);
 
         return String.format(
-                hyperlink,
-                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "CATEGORY", "categoryId",
-                        String.valueOf(category.getCategoryId())).toString()), category.getName());
+                HYPERLINK_FORMAT,
+                StringEscapeUtils.escapeHtml4(categoryWrapper.getLinkUrl()), category.getName());
     }
 
     public String getDiscussionMessageLink(DiscussionMessage discussion) throws PortalException, SystemException {
-        DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion);
-
         DiscussionMessage thread = discussion.getThreadId() > 0 ? DiscussionMessageLocalServiceUtil
                 .getThread(discussion) : discussion;
 
         String linkText;
         if (Validator.isNull(thread.getSubject())) {
-            linkText = "climatecolab.org";
+            linkText = "Discussion in "
+                    + new DiscussionCategoryGroupWrapper(thread.getCategoryGroupId()).getDescription();
         } else {
             linkText = thread.getSubject();
         }
-        NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
+        ThreadWrapper threadWrapper = new ThreadWrapper(thread);
         return String.format(
-                hyperlink,
-                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
-                        String.valueOf(thread.getMessageId())).toString()), linkText);
+                HYPERLINK_FORMAT,
+                StringEscapeUtils.escapeHtml4(threadWrapper.getLinkUrl()), linkText);
     }
 
     public String getDiscussionComment(DiscussionMessage comment) throws PortalException, SystemException {
-        DiscussionCategoryGroup categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(comment);
-        NavigationUrl navUrl = new NavigationUrl(categoryGroup.getUrl());
 
         String text = comment.getBody().trim();
         text = text.substring(0, Math.min(20, text.length())) + "...";
 
-        return String.format(
-                hyperlink,
-                StringEscapeUtils.escapeHtml(navUrl.getUrlWithParameters("discussion", "pageType", "THREAD", "threadId",
-                        String.valueOf(comment.getThreadId()), "messageId", String.valueOf(comment.getMessageId()))
-                        .toString()), text);
+        long threadId = comment.getThreadId();
+        if (threadId == 0) {
+            threadId = comment.getMessageId();
+        }
+        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
+        return String.format(HYPERLINK_FORMAT,
+                StringEscapeUtils.escapeHtml4(threadWrapper.getLinkUrl()), text);
     }
 
     @Override
@@ -237,9 +232,9 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
          * activity stream name for given parameters is decoded in following
          * way: 1. find discussion group category and take it name 2. if
          * extraData is null end procedure 3. if extraData isn't null split it
-         * by comma 4. take first part of splited string, it represents id of
+         * by comma 4. take first part of split string, it represents id of
          * discussioncategory (get name of that category) 5. take second part of
-         * splited string (if exists), it represents id of discussionthread
+         * split string (if exists), it represents id of discussionthread
          * 
          * After all of that return combined string.
          */
@@ -249,28 +244,24 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             DiscussionCategoryGroup group = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(classPK);
             name.append(getCategoryGroupLink(group));
 
-            if (extraData != null && extraData.length() > 0) {
-                String[] ids = extraData.split(",");
-                if (ids.length > 0) {
-                    Long categoryId = Long.parseLong(ids[0]);
+            if (extraData != null && !extraData.isEmpty()) {
+                List<Long> ids = IdListUtil.getIdsFromString(extraData);
+                if (!ids.isEmpty()) {
+                    long categoryId = ids.get(0);
                     DiscussionCategory category = DiscussionCategoryLocalServiceUtil
                             .getDiscussionCategoryById(categoryId);
                     name.append(" &gt; ");
                     name.append(getDiscussionCategoryLink(category));
                 }
-                if (ids.length > 1) {
-                    Long threadId = Long.parseLong(ids[1]);
+                if (ids.size() > 1) {
+                    long threadId = ids.get(1);
                     DiscussionMessage message = DiscussionMessageLocalServiceUtil.getThreadByThreadId(threadId);
 
                     name.append(" &gt; ");
                     name.append(getDiscussionMessageLink(message));
                 }
             }
-        } catch (PortalException e) {
-            _log.error("Can't read activity name for discussion classPk: " + classPK + "\textra data: " + extraData, e);
-        } catch (SystemException e) {
-            _log.error("Can't read activity name for discussion classPk: " + classPK + "\textra data: " + extraData, e);
-        } catch (NumberFormatException e) {
+        } catch (PortalException | SystemException | NumberFormatException e) {
             _log.error("Can't read activity name for discussion classPk: " + classPK + "\textra data: " + extraData, e);
         }
 
@@ -295,7 +286,7 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             tmp = StringUtil.replace(tmp, THREAD_TOPIC_PLACEHOLDER, getCategoryGroupLink(DiscussionMessageLocalServiceUtil.getCategoryGroup(message)));
             tmp = StringUtil.replace(tmp, MESSAGE_BODY_PLACEHOLDER, message.getBody().replace("\\n", "<br/>"));
             return tmp;
-        } catch (Throwable t) {
+        } catch (SystemException | PortalException t) {
             _log.error(t);
         }
         return StringPool.BLANK;
@@ -309,15 +300,14 @@ public class DiscussionActivityFeedEntry extends BaseSocialActivityInterpreter i
             tmp = StringUtil.replace(tmp, THREAD_GROUP_PLACEHOLDER, getDiscussionCategoryLink(DiscussionMessageLocalServiceUtil.getCategory(message)));
             tmp = StringUtil.replace(tmp, MESSAGE_BODY_PLACEHOLDER, message.getBody());
             return tmp;
-        } catch (Throwable t) {
-            _log.error(t);
+        } catch (SystemException e) {
+            _log.error(e);
         }
         return StringPool.BLANK;
     }
 
     private String getUserLink(User user) {
-        return "<a style='color: black' href='http://climatecolab.org/web/guest/member/-/member/userId/" + user.getUserId() + "'>"
-                + user.getScreenName() + "</a>";
+        return "<a href='/web/guest/member/-/member/userId/" + user.getUserId() + "'>" + user.getScreenName() + "</a>";
     }
 
 }

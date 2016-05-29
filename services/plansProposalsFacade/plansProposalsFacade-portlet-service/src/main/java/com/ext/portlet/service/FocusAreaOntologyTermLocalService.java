@@ -1,6 +1,5 @@
 package com.ext.portlet.service;
 
-import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -271,5 +270,7 @@ public interface FocusAreaOntologyTermLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<java.lang.Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(
-        long focusAreaId, long ontologySpaceId) throws java.lang.Exception;
+        long focusAreaId, long ontologySpaceId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

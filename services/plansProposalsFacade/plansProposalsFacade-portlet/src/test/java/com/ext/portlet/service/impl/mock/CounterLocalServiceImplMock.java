@@ -1,8 +1,5 @@
 package com.ext.portlet.service.impl.mock;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.liferay.counter.model.Counter;
 import com.liferay.counter.service.CounterLocalService;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -13,6 +10,9 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.PersistedModel;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>A mock class that realizes a counter contract.</p>

@@ -26,13 +26,12 @@ public class MessagingUserPreferencesLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil} to access the messaging user preferences local service.
      */
+    @Override
     public MessagingUserPreferences findByUser(long userId) throws SystemException {
         try {
             return messagingUserPreferencesPersistence.findBymessagingPreferences(userId);
         } catch (NoSuchMessagingUserPreferencesException e) {
             return null;
-        } catch (SystemException e) {
-            throw(e);
         }
     }
 }

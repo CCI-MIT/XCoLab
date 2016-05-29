@@ -1,210 +1,89 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.security.permission.ActionKeys;
-import org.xcolab.enums.ColabConstants;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portlet.wiki.NoSuchPageException;
-import com.liferay.portlet.wiki.NoSuchPageResourceException;
-import com.liferay.portlet.wiki.model.WikiPage;
-import com.liferay.portlet.wiki.model.WikiPageResource;
-import com.liferay.portlet.wiki.service.WikiPageLocalServiceUtil;
-import com.liferay.portlet.wiki.service.WikiPageResourceLocalServiceUtil;
-import org.xcolab.enums.MemberRole;
+
+import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.exceptions.ContentNotFoundException;
+import org.xcolab.client.contents.pojo.ContentArticle;
+import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 
-import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 
-/**
- * Created by Thomas on 2/15/2015.
- */
 public class WikiPageWrapper {
 
-    private WikiPage wikiPage;
-    private WikiPageResource wikiPageResource;
-    final private String contestTitle;
-    final private Contest contest;
-    final private Long loggedInUserId;
+    private final Contest contest;
+    private final Long loggedInUserId;
+    private ContentArticle contentArticle;
+    private ContentArticleVersion contentArticleVersion;
 
-    final static Long WIKI_NODE_ID = 18855L;
-    final static Long WIKI_GROUP_ID = 10136L;
-    final static Long DEFAULT_COMPANY_ID = 10112L;
-    final static Long WIKI_USER_ID  = 10144L;
-
-
-    public WikiPageWrapper(Contest contest, Long loggedInUserId) throws Exception{
+    public WikiPageWrapper(Contest contest, Long loggedInUserId) throws SystemException {
         this.contest = contest;
-        String contestTitle = contest.getContestShortName();
-        this.contestTitle = removeSpecialChars(contestTitle);
         this.loggedInUserId = loggedInUserId;
-        initWikiPageResourceAndCreateIfNoneExistsForThisContest();
-        initWikiPageAndCreateIfNoneExistsForThisContest();
+        initWikiPage();
     }
 
-    private static String removeSpecialChars(String stringToHaveSpecialCharacterRemoved){
-        return stringToHaveSpecialCharacterRemoved.replace(":", "").replace(",","").replace(";","");
+    public static void updateContestWiki(Contest contest) {
+        try {
+            final ContentArticleVersion resourceArticleVersion = ContentsClient
+                    .getLatestContentArticleVersion(contest.getResourceArticleId());
+            resourceArticleVersion.setTitle(contest.getContestShortName());
+            ContentsClient.updateContentArticleVersion(resourceArticleVersion);
+        } catch (ContentNotFoundException ignored) {
+        }
     }
 
-    public ContestResourcesBean getContestResourcesBean() throws Exception{
-        ContestResourcesBean contestResourcesBean = new ContestResourcesBean();
-        String resourcesContent = wikiPage.getContent();
+    public ContestResourcesBean getContestResourcesBean() throws SystemException {
+        final ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
+        ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
+        String resourcesContent = contentArticleVersion.getContent();
         contestResourcesBean.fillSectionsWithContent(resourcesContent);
         return contestResourcesBean;
     }
 
-    public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean) throws Exception{
+    public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean)
+            throws UnsupportedEncodingException, ParseException, SystemException {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
-        if(!wikiPage.getContent().equals(updatedResourcesContent)) {
-            Double currentVersion = wikiPage.getVersion() * 10;
-            double newVersion = (double) (currentVersion.intValue() + 1) / (double) 10;
-            removeHeadFlagFromCurrentWikiPage();
-            addWikiPage(newVersion, updatedResourcesContent);
+        if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {
+            contentArticleVersion.setTitle(contest.getContestShortName());
+            contentArticleVersion.setContent(updatedResourcesContent);
+            contentArticleVersion.setContentArticleId(contentArticle.getContentArticleId());
+            contentArticleVersion.setAuthorId(loggedInUserId);
+            ContentsClient.updateContentArticleVersion(contentArticleVersion);
         }
     }
 
-    public static void updateWikiPageTitleIfExists(String oldTitleRaw, String newTitleRaw) throws Exception{
-        String oldTitle = removeSpecialChars(oldTitleRaw);
-        String newTitle = removeSpecialChars(newTitleRaw);
-        if(isWikiPageCreatedForContest(removeSpecialChars(oldTitle))){
-            WikiPageResource wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, oldTitle);
-            WikiPage wikiPage;
-            try {
-                wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
-                updateWikiPageResourceTitle(wikiPageResource, newTitle);
-                updateWikiPageTitle(wikiPage, wikiPageResource, newTitle);
-            } catch (NoSuchPageException e){
-                updateWikiPageResourceTitle(wikiPageResource, newTitle);
+    private void initWikiPage() throws SystemException {
+        try {
+            if (contest.getResourceArticleId() > 0) {
+                contentArticle = ContentsClient.getContentArticle(contest.getResourceArticleId());
+                contentArticleVersion =
+                        ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+            } else {
+                contentArticleVersion = new ContentArticleVersion();
+                contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
+                contentArticleVersion.setAuthorId(loggedInUserId);
+                contentArticleVersion.setTitle(contest.getContestShortName());
+                contentArticleVersion.setContent("");
+                contentArticleVersion = ContentsClient
+                        .createContentArticleVersion(contentArticleVersion);
+
+                contentArticle = ContentsClient.getContentArticle(
+                        contentArticleVersion.getContentArticleId());
+
+                final long resourceArticleId = contentArticle.getContentArticleId();
+                contest.setResourceArticleId(resourceArticleId);
+                ContestLocalServiceUtil.updateContest(contest);
             }
+        } catch (ContentNotFoundException e) {
+            //TODO: logging
         }
-    }
-
-    private static void updateWikiPageTitle(WikiPage wikiPage, WikiPageResource wikiPageResource, String newTitle) throws Exception{
-        wikiPage.setTitle(newTitle);
-        wikiPage.setResourcePrimKey(wikiPageResource.getResourcePrimKey());
-        wikiPage.persist();
-        WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
-    }
-
-    private static void updateWikiPageResourceTitle(WikiPageResource wikiPageResource, String newTitle) throws Exception{
-        wikiPageResource.setTitle(newTitle);
-        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(wikiPageResource.getResourcePrimKey(), MemberRole.GUEST);
-        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(wikiPageResource.getResourcePrimKey(), MemberRole.MEMBER);
-
-        wikiPageResource.persist();
-        WikiPageResourceLocalServiceUtil.updateWikiPageResource(wikiPageResource);
-    }
-
-    private static boolean isWikiPageCreatedForContest(String oldTitle) throws Exception{
-        boolean isWikiPageCreatedForContest = false;
-        try {
-            WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, oldTitle);
-            isWikiPageCreatedForContest = true;
-        } catch(NoSuchPageResourceException e){
-        }
-        return isWikiPageCreatedForContest;
-    }
-
-    private void initWikiPageResourceAndCreateIfNoneExistsForThisContest() throws Exception{
-        try {
-            wikiPageResource = WikiPageResourceLocalServiceUtil.getPageResource(WIKI_NODE_ID, contestTitle);
-        } catch(NoSuchPageResourceException e){
-            createWikiPageResource();
-        }
-    }
-
-    private void createWikiPageResource() throws Exception{
-        wikiPageResource = WikiPageResourceLocalServiceUtil.addPageResource(WIKI_NODE_ID, contestTitle);
-    }
-
-    private void initWikiPageAndCreateIfNoneExistsForThisContest() throws Exception{
-        try {
-            wikiPage = WikiPageLocalServiceUtil.getPage(wikiPageResource.getResourcePrimKey());
-        } catch(NoSuchPageException e){
-            //createWikiPage();
-            addWikiPage((double) 1, "");
-        }
-    }
-
-    private void createWikiPage() throws Exception {
-        if(wikiPageResource == null) initWikiPageResourceAndCreateIfNoneExistsForThisContest();
-        Long resourcePrimaryKey = wikiPageResource.getPrimaryKey();
-        wikiPage = WikiPageLocalServiceUtil.createWikiPage(CounterLocalServiceUtil.increment(WikiPage.class.getName()));
-        wikiPage.setUserId(loggedInUserId);
-        wikiPage.setNodeId(WIKI_NODE_ID);
-        wikiPage.setTitle(contestTitle);
-        wikiPage.setFormat("html");
-        wikiPage.setResourcePrimKey(resourcePrimaryKey);
-        wikiPage.persist();
-        WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
-
-        updateContestResourceUrl();
-    }
-
-
-    private void addWikiPage(double version, String content) throws Exception{
-        ServiceContext serviceContext = new ServiceContext();
-        if(wikiPageResource == null) initWikiPageResourceAndCreateIfNoneExistsForThisContest();
-
-        Long resourcePrimaryKey = wikiPageResource.getPrimaryKey();
-        String summary = "";
-        boolean minorEdit = false;
-        boolean head = true;
-
-        wikiPage = WikiPageLocalServiceUtil.addPage(
-                loggedInUserId,
-                WIKI_NODE_ID,
-                contestTitle,
-                version,
-                content,
-                summary,
-                minorEdit,
-                "html",
-                head,
-                "", "",
-                serviceContext);
-        wikiPage.setGroupId(WIKI_GROUP_ID);
-        wikiPage.setResourcePrimKey(resourcePrimaryKey);
-        wikiPage.persist();
-        WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
-
-        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(resourcePrimaryKey, MemberRole.GUEST);
-        addWikiPageRessourceViewPermissionsForRoleIfNoneExist(resourcePrimaryKey, MemberRole.GUEST);
-
-        updateContestResourceUrl();
-    }
-
-    private void updateContestResourceUrl() throws Exception{
-        updateContestResourceUrl(contest, wikiPage.getTitle());
-    }
-
-    public static void updateContestResourceUrl(Contest contest, String wikiPageTitle) throws Exception{
-        String wikiPageTitleWithoutColon = removeSpecialChars(wikiPageTitle);
-        String escapedWikiPageUrlLink = "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(wikiPageTitleWithoutColon,"UTF-8");
-        contest.setResourcesUrl(escapedWikiPageUrlLink);
-        contest.persist();
-        ContestLocalServiceUtil.updateContest(contest);
-    }
-
-    private void removeHeadFlagFromCurrentWikiPage() throws Exception{
-        wikiPage.setHead(false);
-        wikiPage.persist();
-        WikiPageLocalServiceUtil.updateWikiPage(wikiPage);
-    }
-
-
-    private static void addWikiPageRessourceViewPermissionsForRoleIfNoneExist(long wikiPageRessourcePK, MemberRole role) throws SystemException, PortalException {
-        if (!ResourcePermissionLocalServiceUtil.hasResourcePermission(ColabConstants.COLAB_COMPANY_ID, WikiPage.class.getName(),
-                ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageRessourcePK), role.getRoleId(), ActionKeys.VIEW)) {
-            ResourcePermissionLocalServiceUtil.setResourcePermissions(ColabConstants.COLAB_COMPANY_ID, WikiPage.class.getName(),
-                    ResourceConstants.SCOPE_INDIVIDUAL, Long.toString(wikiPageRessourcePK), role.getRoleId(), new String[]{ActionKeys.VIEW});
-        }
-
     }
 }

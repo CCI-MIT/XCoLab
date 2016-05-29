@@ -19,7 +19,7 @@ interface ProposalTabCanAccessAlgorithm {
 	boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request);
 
 
-	public final static ProposalTabCanAccessAlgorithm alwaysTrue = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm alwaysTrue = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -27,7 +27,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm alwaysFalse = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm alwaysFalse = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -35,7 +35,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm adminOnlyAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm adminOnlyAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -43,7 +43,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm advancingAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm advancingAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -61,7 +61,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 				ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
 				ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(proposalWrapper, context.getUser(request));
-				return wrapper.shouldShowJudgingTab(context.getContestPhase(request).getContestPhasePK());
+				return wrapper.shouldShowJudgingTab();
 
 			} catch (PortalException | SystemException e) {
 				e.printStackTrace();
@@ -71,7 +71,7 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm fellowReviewAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm fellowReviewAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -83,12 +83,14 @@ interface ProposalTabCanAccessAlgorithm {
 			} catch (PortalException | SystemException e) {
 				e.printStackTrace();
 			}
-			return permissions.getCanAdminAll() || permissions.getCanJudgeActions()
-					|| permissions.getCanFellowActions() || permissions.getCanIAFActions();
+            //TODO: [COLAB-1161] temporarily hid fellow review tab -> decide what to do with it
+			return false;
+//			return permissions.getCanAdminAll() || permissions.getCanJudgeActions()
+//					|| permissions.getCanFellowActions() || permissions.getCanIAFActions();
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm screeningAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm screeningAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -110,15 +112,13 @@ interface ProposalTabCanAccessAlgorithm {
 		}
 	};
 
-	public final static ProposalTabCanAccessAlgorithm canEditAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm canEditAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
 			try {
 				return permissions.getCanEdit();
-			} catch (SystemException e) {
-				_log.error("can't check if user is allowed to edit proposal", e);
-			} catch (PortalException e) {
+			} catch (SystemException | PortalException e) {
 				_log.error("can't check if user is allowed to edit proposal", e);
 			}
 			return false;
@@ -128,7 +128,7 @@ interface ProposalTabCanAccessAlgorithm {
 	};
 
 
-	public final static ProposalTabCanAccessAlgorithm pointsViewAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm pointsViewAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -151,7 +151,7 @@ interface ProposalTabCanAccessAlgorithm {
 	};
 
 
-	public final static ProposalTabCanAccessAlgorithm pointsEditAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm pointsEditAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -173,7 +173,7 @@ interface ProposalTabCanAccessAlgorithm {
 		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
 	};
 
-	public final static ProposalTabCanAccessAlgorithm impactViewAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm impactViewAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -185,12 +185,10 @@ interface ProposalTabCanAccessAlgorithm {
 				boolean isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm =
 						OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
 
-				if ((contest != null && contest.getContestTier() != ContestTier.NONE.getTierType() &&
-						contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() &&
-						!isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
+				if ((contest.getContestTier() != ContestTier.NONE.getTierType() && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() && !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
 					return true;
 				}
-			} catch (Exception e) {
+			} catch (SystemException | PortalException  e) {
 				_log.error("can't check if user is allowed to view impact tab", e);
 			}
 			return false;
@@ -199,7 +197,7 @@ interface ProposalTabCanAccessAlgorithm {
 		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
 	};
 
-	public final static ProposalTabCanAccessAlgorithm impactEditAccess = new ProposalTabCanAccessAlgorithm() {
+	ProposalTabCanAccessAlgorithm impactEditAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
@@ -207,11 +205,11 @@ interface ProposalTabCanAccessAlgorithm {
 				Contest contest = context.getContest(request);
 
 				// Only let team members, IAF fellows or admins edit impact
-				if ((contest != null && (
-						contest.getContestTier() == ContestTier.BASIC.getTierType()) ||
-						contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
-						contest.getContestTier() == ContestTier.GLOBAL.getTierType()) &&
-						(permissions.getIsTeamMember() || permissions.getCanAdminProposal() || permissions.getCanIAFActions())) {
+				if (contest != null && (
+							contest.getContestTier() == ContestTier.BASIC.getTierType() ||
+							contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
+							contest.getContestTier() == ContestTier.GLOBAL.getTierType()
+						) && (permissions.getIsTeamMember() || permissions.getCanAdminProposal() || permissions.getCanIAFActions())) {
 					return true;
 				}
 			} catch (SystemException | PortalException e) {

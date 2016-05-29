@@ -1,8 +1,8 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.portlet.NoSuchContestDiscussionException;
 import com.ext.portlet.model.ContestDiscussion;
 import com.ext.portlet.service.base.ContestDiscussionLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 /**
@@ -27,7 +27,8 @@ public class ContestDiscussionLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestDiscussionLocalServiceUtil} to access the contest discussion local service.
      */
 
-    public Long getDiscussionIdByContestIdAndTabName(Long contestId, String tabName) throws SystemException, PortalException {
+    @Override
+    public Long getDiscussionIdByContestIdAndTabName(Long contestId, String tabName) throws SystemException, NoSuchContestDiscussionException {
         ContestDiscussion contestDiscussion =  contestDiscussionPersistence.findByContestIdAndTab(contestId, tabName);
         return contestDiscussion.getDiscussionId();
     }

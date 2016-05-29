@@ -1,19 +1,5 @@
 package com.liferay.portal.service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.cache.CacheRegistryImpl;
 import com.liferay.portal.configuration.ConfigurationFactoryImpl;
@@ -42,6 +28,18 @@ import com.liferay.portal.security.lang.DoPrivilegedUtil;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsImpl;
 import com.sun.syndication.io.XmlReader;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * <p>

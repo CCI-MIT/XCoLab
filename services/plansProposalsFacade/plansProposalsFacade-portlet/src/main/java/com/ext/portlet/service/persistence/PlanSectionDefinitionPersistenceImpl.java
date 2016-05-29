@@ -345,6 +345,9 @@ public class PlanSectionDefinitionPersistenceImpl extends BasePersistenceImpl<Pl
         planSectionDefinitionImpl.setCharacterLimit(planSectionDefinition.getCharacterLimit());
         planSectionDefinitionImpl.setFocusAreaId(planSectionDefinition.getFocusAreaId());
         planSectionDefinitionImpl.setTier(planSectionDefinition.getTier());
+        planSectionDefinitionImpl.setAllowedContestTypeIds(planSectionDefinition.getAllowedContestTypeIds());
+        planSectionDefinitionImpl.setAllowedValues(planSectionDefinition.getAllowedValues());
+        planSectionDefinitionImpl.setAdditionalIds(planSectionDefinition.getAdditionalIds());
         planSectionDefinitionImpl.setLocked(planSectionDefinition.isLocked());
         planSectionDefinitionImpl.setContestIntegrationRelevance(planSectionDefinition.isContestIntegrationRelevance());
 

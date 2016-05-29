@@ -312,6 +312,69 @@ public interface ProposalVotePersistence extends BasePersistence<ProposalVote> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns the proposal vote where proposalId = &#63; and userId = &#63; or throws a {@link com.ext.portlet.NoSuchProposalVoteException} if it could not be found.
+    *
+    * @param proposalId the proposal ID
+    * @param userId the user ID
+    * @return the matching proposal vote
+    * @throws com.ext.portlet.NoSuchProposalVoteException if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalVote findByProposalIdUserId(
+        long proposalId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the proposal vote where proposalId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param proposalId the proposal ID
+    * @param userId the user ID
+    * @return the matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalVote fetchByProposalIdUserId(
+        long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the proposal vote where proposalId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param proposalId the proposal ID
+    * @param userId the user ID
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching proposal vote, or <code>null</code> if a matching proposal vote could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalVote fetchByProposalIdUserId(
+        long proposalId, long userId, boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes the proposal vote where proposalId = &#63; and userId = &#63; from the database.
+    *
+    * @param proposalId the proposal ID
+    * @param userId the user ID
+    * @return the proposal vote that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.ProposalVote removeByProposalIdUserId(
+        long proposalId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of proposal votes where proposalId = &#63; and userId = &#63;.
+    *
+    * @param proposalId the proposal ID
+    * @param userId the user ID
+    * @return the number of matching proposal votes
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByProposalIdUserId(long proposalId, long userId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the proposal votes where userId = &#63;.
     *
     * @param userId the user ID

@@ -1,9 +1,7 @@
 package org.xcolab.jsp.tags.judging;
 
 import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;

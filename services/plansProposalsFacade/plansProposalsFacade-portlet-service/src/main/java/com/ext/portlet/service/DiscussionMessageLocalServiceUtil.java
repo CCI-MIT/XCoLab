@@ -345,12 +345,12 @@ public class DiscussionMessageLocalServiceUtil {
     }
 
     public static com.ext.portlet.model.DiscussionMessage addThreadMessage(
-        com.ext.portlet.model.DiscussionMessage dMessage,
+        com.ext.portlet.model.DiscussionMessage thread,
         java.lang.String subject, java.lang.String body,
         com.liferay.portal.model.User author)
         throws com.ext.portlet.NoSuchDiscussionCategoryException,
             com.liferay.portal.kernel.exception.SystemException {
-        return getService().addThreadMessage(dMessage, subject, body, author);
+        return getService().addThreadMessage(thread, subject, body, author);
     }
 
     public static com.liferay.portal.model.User getAuthor(
@@ -425,6 +425,36 @@ public class DiscussionMessageLocalServiceUtil {
     public static boolean hasFlag(long messageId, java.lang.String flag)
         throws com.liferay.portal.kernel.exception.SystemException {
         return getService().hasFlag(messageId, flag);
+    }
+
+    public static java.util.List<com.ext.portlet.model.DiscussionMessage> getByAuthorId(
+        long authorId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByAuthorId(authorId);
+    }
+
+    public static void subscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .subscribe(userId, discussionCategoryGroupId, categoryId, threadId);
+    }
+
+    public static void unsubscribe(long userId, long discussionCategoryGroupId,
+        long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .unsubscribe(userId, discussionCategoryGroupId, categoryId, threadId);
+    }
+
+    public static boolean isSubscribed(long userId,
+        long discussionCategoryGroupId, long categoryId, long threadId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .isSubscribed(userId, discussionCategoryGroupId, categoryId,
+            threadId);
     }
 
     public static void clearService() {

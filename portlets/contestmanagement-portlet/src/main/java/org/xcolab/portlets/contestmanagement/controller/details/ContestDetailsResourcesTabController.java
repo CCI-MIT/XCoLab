@@ -13,6 +13,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -20,14 +21,13 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import java.io.IOException;
+import java.text.ParseException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-
-/**
- * Created by Thomas on 2/13/2015.
- */
 
 @Controller
 @RequestMapping("view")
@@ -48,7 +48,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException{
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
@@ -58,7 +58,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
     public String showResourcesTabController(PortletRequest request, PortletResponse response, Model model)
             throws PortalException, SystemException {
 
-        if(!tabWrapper.getCanView() || request.getRemoteUser() == null) {
+        if (!tabWrapper.getCanView() || request.getRemoteUser() == null) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
@@ -68,7 +68,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
             setPageAttributes(request, model, tab);
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
             return TAB_VIEW;
-        } catch (Exception e){
+        } catch (Exception e) {
             _log.warn("Could not show resources tab:", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
@@ -77,9 +77,9 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
 
     @RequestMapping(params = "action=updateContestResources")
     public void updateResourcesTabController(ActionRequest request, Model model, ActionResponse response,
-                                             @ModelAttribute ContestResourcesBean updatedContestResourcesBean, BindingResult result) {
+            @ModelAttribute ContestResourcesBean updatedContestResourcesBean, BindingResult result) {
 
-        if(!tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
@@ -89,10 +89,10 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
             return;
         }
 
-        try{
+        try {
             wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch(Exception e){
+        } catch (SystemException | ParseException | IOException e) {
             _log.warn("Update contest resources failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -102,6 +102,5 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
     public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
         return TAB_VIEW;
     }
-
 
 }

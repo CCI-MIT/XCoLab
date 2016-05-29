@@ -1,6 +1,6 @@
 .rss {position:absolute; right:47px;}
-.blue-button, .gray-button {display:inline;}
-.comm-butt img, .prop-butt img {position:relative; top:-10px;}
-.blueheaderbar .proposalname a {vertical-align:middle;}
+.c-Button__primary, .c-Button__secondary {display:inline;}
+.c-Comment__button img, .prop-butt img {position:relative; top:-10px;}
+.p-ContestProposals__list__element--proposalname a {vertical-align:middle;}
 #footright #txt {width:410px;}
 #footright {float:right; width:520px;}

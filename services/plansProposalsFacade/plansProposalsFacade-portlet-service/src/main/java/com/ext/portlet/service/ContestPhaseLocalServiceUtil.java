@@ -270,13 +270,6 @@ public class ContestPhaseLocalServiceUtil {
         getService().overrideClock(clock);
     }
 
-    public static java.util.List<com.ext.portlet.model.PlanItem> getPlans(
-        com.ext.portlet.model.ContestPhase contestPhase)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getPlans(contestPhase);
-    }
-
     public static com.ext.portlet.contests.ContestStatus getContestStatus(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -424,6 +417,17 @@ public class ContestPhaseLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getNumberOfProposalsForJudge(judge, phase);
+    }
+
+    /**
+    * Returns the URL link address for the passed contest phase
+    *
+    * @param contestPhase   The contest object
+    * @return Contest phase URL as String
+    */
+    public static java.lang.String getContestPhaseLinkUrl(
+        com.ext.portlet.model.ContestPhase contestPhase) {
+        return getService().getContestPhaseLinkUrl(contestPhase);
     }
 
     public static void clearService() {

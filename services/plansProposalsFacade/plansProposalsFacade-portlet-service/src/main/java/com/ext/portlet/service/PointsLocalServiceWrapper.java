@@ -270,8 +270,6 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
     /**
     * Returns number of materialized points for given user.
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     @Override
@@ -281,10 +279,8 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
     }
 
     /**
-    * Returns number of points for hypothetical user.
+    * Returns number of hypothetical points for given user.
     *
-    * @param userId
-    * @return
     * @throws SystemException
     */
     @Override
@@ -294,10 +290,31 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
     }
 
     /**
+    * Returns number of materialized points for given proposal.
+    *
+    * @throws SystemException
+    */
+    @Override
+    public int getProposalMaterializedPoints(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.getProposalMaterializedPoints(proposalId);
+    }
+
+    /**
+    * Returns number of hypothetical points for given propsal.
+    *
+    * @throws SystemException
+    */
+    @Override
+    public int getProposalHypotheticalPoints(long proposalId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.getProposalHypotheticalPoints(proposalId);
+    }
+
+    /**
     * Calculates the hypothetical points for all proposals for a given contest and
     * if the contest ended, materializes the points for winning proposals.
     *
-    * @param contestPK
     * @throws SystemException
     * @throws PortalException
     */
@@ -314,6 +331,22 @@ public class PointsLocalServiceWrapper implements PointsLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _pointsLocalService.previewMaterializedPoints(contestPK);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getLinkingProposals(
+        long proposalId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.getLinkingProposals(proposalId);
+    }
+
+    @Override
+    public java.util.List<com.ext.portlet.model.Proposal> getLinkingProposalsForUser(
+        long userId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _pointsLocalService.getLinkingProposalsForUser(userId);
     }
 
     /**

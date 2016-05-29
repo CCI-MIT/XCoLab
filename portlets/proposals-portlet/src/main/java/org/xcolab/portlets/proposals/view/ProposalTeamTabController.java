@@ -25,13 +25,10 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
         
         setCommonModelAndPageAttributes(request, model, ProposalTab.TEAM);
-        
+
         model.addAttribute("requestMembershipBean", new RequestMembershipBean());
         model.addAttribute("requestMembershipInviteBean", new RequestMembershipInviteBean());
 
         return "proposalTeam";
     }
-
-
-
 }

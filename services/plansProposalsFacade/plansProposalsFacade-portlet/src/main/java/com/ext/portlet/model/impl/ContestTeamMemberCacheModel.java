@@ -3,7 +3,6 @@ package com.ext.portlet.model.impl;
 import com.ext.portlet.model.ContestTeamMember;
 
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 
 import java.io.Externalizable;
@@ -23,7 +22,7 @@ public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember
     public long id;
     public long contestId;
     public long userId;
-    public String role;
+    public long roleId;
 
     @Override
     public String toString() {
@@ -35,8 +34,8 @@ public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember
         sb.append(contestId);
         sb.append(", userId=");
         sb.append(userId);
-        sb.append(", role=");
-        sb.append(role);
+        sb.append(", roleId=");
+        sb.append(roleId);
         sb.append("}");
 
         return sb.toString();
@@ -49,12 +48,7 @@ public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember
         contestTeamMemberImpl.setId(id);
         contestTeamMemberImpl.setContestId(contestId);
         contestTeamMemberImpl.setUserId(userId);
-
-        if (role == null) {
-            contestTeamMemberImpl.setRole(StringPool.BLANK);
-        } else {
-            contestTeamMemberImpl.setRole(role);
-        }
+        contestTeamMemberImpl.setRoleId(roleId);
 
         contestTeamMemberImpl.resetOriginalValues();
 
@@ -66,7 +60,7 @@ public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember
         id = objectInput.readLong();
         contestId = objectInput.readLong();
         userId = objectInput.readLong();
-        role = objectInput.readUTF();
+        roleId = objectInput.readLong();
     }
 
     @Override
@@ -75,11 +69,6 @@ public class ContestTeamMemberCacheModel implements CacheModel<ContestTeamMember
         objectOutput.writeLong(id);
         objectOutput.writeLong(contestId);
         objectOutput.writeLong(userId);
-
-        if (role == null) {
-            objectOutput.writeUTF(StringPool.BLANK);
-        } else {
-            objectOutput.writeUTF(role);
-        }
+        objectOutput.writeLong(roleId);
     }
 }

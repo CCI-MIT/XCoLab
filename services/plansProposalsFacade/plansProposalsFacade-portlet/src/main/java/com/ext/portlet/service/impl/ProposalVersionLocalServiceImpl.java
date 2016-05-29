@@ -1,12 +1,12 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
+import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.base.ProposalVersionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ProposalVersionPK;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the proposal version local service.
@@ -36,6 +36,7 @@ public class ProposalVersionLocalServiceImpl
      * @return proposal versions count
      * @throws SystemException
      */
+    @Override
     public long countByProposalId(long proposalId) throws SystemException {
         return proposalVersionPersistence.countByProposalId(proposalId);
     }
@@ -48,11 +49,14 @@ public class ProposalVersionLocalServiceImpl
      * @return list of proposal versions
      * @throws SystemException
      */
+    @Override
     public List<ProposalVersion> getByProposalId(long proposalId, int start, int end) throws SystemException {
         return proposalVersionPersistence.findByProposalId(proposalId, start, end);
     }
 
-    public ProposalVersion getByProposalIdVersion(long proposalId, int version) throws SystemException, PortalException{
+    @Override
+    public ProposalVersion getByProposalIdVersion(long proposalId, int version) throws SystemException,
+            NoSuchProposalVersionException {
         ProposalVersionPK pk = new ProposalVersionPK(proposalId,version);
         return proposalVersionPersistence.findByPrimaryKey(pk);
     }

@@ -40,9 +40,9 @@
                 <c:when test="${displayPhoto and not empty staffMember.photoUrl}">
                     <img src="${staffMember.photoUrl}"/>
                 </c:when>
-                <c:otherwise>
+                <c:when test="${displayPhoto and empty staffMember.photoUrl}">
                     <img src="/image/user_male_portrait" />
-                </c:otherwise>
+                </c:when>
             </c:choose>
         </li>
     </c:forEach>

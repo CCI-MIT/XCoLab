@@ -24,137 +24,344 @@ public interface ContestPersistence extends BasePersistence<Contest> {
      */
 
     /**
-    * Returns all the contests where PlanTypeId = &#63;.
+    * Returns all the contests where ContestYear = &#63;.
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByType(
-        long PlanTypeId)
+    public java.util.List<com.ext.portlet.model.Contest> findByContestYear(
+        long ContestYear)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns a range of all the contests where PlanTypeId = &#63;.
+    * Returns a range of all the contests where ContestYear = &#63;.
     *
     * <p>
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @param start the lower bound of the range of contests
     * @param end the upper bound of the range of contests (not inclusive)
     * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByType(
-        long PlanTypeId, int start, int end)
+    public java.util.List<com.ext.portlet.model.Contest> findByContestYear(
+        long ContestYear, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns an ordered range of all the contests where PlanTypeId = &#63;.
+    * Returns an ordered range of all the contests where ContestYear = &#63;.
     *
     * <p>
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @param start the lower bound of the range of contests
     * @param end the upper bound of the range of contests (not inclusive)
     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
     * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByType(
-        long PlanTypeId, int start, int end,
+    public java.util.List<com.ext.portlet.model.Contest> findByContestYear(
+        long ContestYear, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the first contest in the ordered set where PlanTypeId = &#63;.
+    * Returns the first contest in the ordered set where ContestYear = &#63;.
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching contest
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByType_First(long PlanTypeId,
+    public com.ext.portlet.model.Contest findByContestYear_First(
+        long ContestYear,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the first contest in the ordered set where PlanTypeId = &#63;.
+    * Returns the first contest in the ordered set where ContestYear = &#63;.
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByType_First(long PlanTypeId,
+    public com.ext.portlet.model.Contest fetchByContestYear_First(
+        long ContestYear,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where PlanTypeId = &#63;.
+    * Returns the last contest in the ordered set where ContestYear = &#63;.
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching contest
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByType_Last(long PlanTypeId,
+    public com.ext.portlet.model.Contest findByContestYear_Last(
+        long ContestYear,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where PlanTypeId = &#63;.
+    * Returns the last contest in the ordered set where ContestYear = &#63;.
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByType_Last(long PlanTypeId,
+    public com.ext.portlet.model.Contest fetchByContestYear_Last(
+        long ContestYear,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the contests before and after the current contest in the ordered set where PlanTypeId = &#63;.
+    * Returns the contests before and after the current contest in the ordered set where ContestYear = &#63;.
     *
     * @param ContestPK the primary key of the current contest
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next contest
     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest[] findByType_PrevAndNext(
-        long ContestPK, long PlanTypeId,
+    public com.ext.portlet.model.Contest[] findByContestYear_PrevAndNext(
+        long ContestPK, long ContestYear,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the contests where PlanTypeId = &#63; from the database.
+    * Removes all the contests where ContestYear = &#63; from the database.
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @throws SystemException if a system exception occurred
     */
-    public void removeByType(long PlanTypeId)
+    public void removeByContestYear(long ContestYear)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the number of contests where PlanTypeId = &#63;.
+    * Returns the number of contests where ContestYear = &#63;.
     *
-    * @param PlanTypeId the plan type ID
+    * @param ContestYear the contest year
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByType(long PlanTypeId)
+    public int countByContestYear(long ContestYear)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all the contests where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @return the matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByContestUrlName(
+        java.lang.String ContestUrlName)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the contests where ContestUrlName = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param ContestUrlName the contest url name
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @return the range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByContestUrlName(
+        java.lang.String ContestUrlName, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the contests where ContestUrlName = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param ContestUrlName the contest url name
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByContestUrlName(
+        java.lang.String ContestUrlName, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByContestUrlName_First(
+        java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByContestUrlName_First(
+        java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByContestUrlName_Last(
+        java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByContestUrlName_Last(
+        java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where ContestUrlName = &#63;.
+    *
+    * @param ContestPK the primary key of the current contest
+    * @param ContestUrlName the contest url name
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest[] findByContestUrlName_PrevAndNext(
+        long ContestPK, java.lang.String ContestUrlName,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where ContestUrlName = &#63; from the database.
+    *
+    * @param ContestUrlName the contest url name
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByContestUrlName(java.lang.String ContestUrlName)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where ContestUrlName = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByContestUrlName(java.lang.String ContestUrlName)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contest where ContestUrlName = &#63; and ContestYear = &#63; or throws a {@link com.ext.portlet.NoSuchContestException} if it could not be found.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @return the matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contest where ContestUrlName = &#63; and ContestYear = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @return the matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contest where ContestUrlName = &#63; and ContestYear = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @param retrieveFromCache whether to use the finder cache
+    * @return the matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear,
+        boolean retrieveFromCache)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes the contest where ContestUrlName = &#63; and ContestYear = &#63; from the database.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @return the contest that was removed
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest removeByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where ContestUrlName = &#63; and ContestYear = &#63;.
+    *
+    * @param ContestUrlName the contest url name
+    * @param ContestYear the contest year
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByContestUrlNameContestYear(
+        java.lang.String ContestUrlName, long ContestYear)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -164,7 +371,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestTier(
+    public java.util.List<com.ext.portlet.model.Contest> findByTier(
         long contestTier)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -181,7 +388,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestTier(
+    public java.util.List<com.ext.portlet.model.Contest> findByTier(
         long contestTier, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -199,7 +406,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestTier(
+    public java.util.List<com.ext.portlet.model.Contest> findByTier(
         long contestTier, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -213,8 +420,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByContestTier_First(
-        long contestTier,
+    public com.ext.portlet.model.Contest findByTier_First(long contestTier,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -227,8 +433,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByContestTier_First(
-        long contestTier,
+    public com.ext.portlet.model.Contest fetchByTier_First(long contestTier,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -241,8 +446,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByContestTier_Last(
-        long contestTier,
+    public com.ext.portlet.model.Contest findByTier_Last(long contestTier,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -255,8 +459,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByContestTier_Last(
-        long contestTier,
+    public com.ext.portlet.model.Contest fetchByTier_Last(long contestTier,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -270,7 +473,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest[] findByContestTier_PrevAndNext(
+    public com.ext.portlet.model.Contest[] findByTier_PrevAndNext(
         long ContestPK, long contestTier,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -282,7 +485,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param contestTier the contest tier
     * @throws SystemException if a system exception occurred
     */
-    public void removeByContestTier(long contestTier)
+    public void removeByTier(long contestTier)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -292,7 +495,155 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByContestTier(long contestTier)
+    public int countByTier(long contestTier)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all the contests where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @return the matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByTierType(
+        long contestTier, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the contests where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @return the range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByTierType(
+        long contestTier, long contestTypeId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the contests where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByTierType(
+        long contestTier, long contestTypeId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByTierType_First(
+        long contestTier, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByTierType_First(
+        long contestTier, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByTierType_Last(long contestTier,
+        long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByTierType_Last(
+        long contestTier, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * @param ContestPK the primary key of the current contest
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest[] findByTierType_PrevAndNext(
+        long ContestPK, long contestTier, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where contestTier = &#63; and contestTypeId = &#63; from the database.
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByTierType(long contestTier, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestTier = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestTier the contest tier
+    * @param contestTypeId the contest type ID
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByTierType(long contestTier, long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -303,7 +654,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestActivecontestPrivate(
+    public java.util.List<com.ext.portlet.model.Contest> findByActivePrivate(
         boolean contestActive, boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -321,7 +672,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestActivecontestPrivate(
+    public java.util.List<com.ext.portlet.model.Contest> findByActivePrivate(
         boolean contestActive, boolean contestPrivate, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -340,7 +691,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestActivecontestPrivate(
+    public java.util.List<com.ext.portlet.model.Contest> findByActivePrivate(
         boolean contestActive, boolean contestPrivate, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -355,7 +706,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByContestActivecontestPrivate_First(
+    public com.ext.portlet.model.Contest findByActivePrivate_First(
         boolean contestActive, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -370,7 +721,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByContestActivecontestPrivate_First(
+    public com.ext.portlet.model.Contest fetchByActivePrivate_First(
         boolean contestActive, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -385,7 +736,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByContestActivecontestPrivate_Last(
+    public com.ext.portlet.model.Contest findByActivePrivate_Last(
         boolean contestActive, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -400,7 +751,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByContestActivecontestPrivate_Last(
+    public com.ext.portlet.model.Contest fetchByActivePrivate_Last(
         boolean contestActive, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -416,7 +767,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest[] findByContestActivecontestPrivate_PrevAndNext(
+    public com.ext.portlet.model.Contest[] findByActivePrivate_PrevAndNext(
         long ContestPK, boolean contestActive, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -429,7 +780,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param contestPrivate the contest private
     * @throws SystemException if a system exception occurred
     */
-    public void removeByContestActivecontestPrivate(boolean contestActive,
+    public void removeByActivePrivate(boolean contestActive,
         boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -441,8 +792,171 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByContestActivecontestPrivate(boolean contestActive,
+    public int countByActivePrivate(boolean contestActive,
         boolean contestPrivate)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all the contests where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @return the matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActivePrivateType(
+        boolean contestActive, boolean contestPrivate, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the contests where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @return the range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActivePrivateType(
+        boolean contestActive, boolean contestPrivate, long contestTypeId,
+        int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the contests where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActivePrivateType(
+        boolean contestActive, boolean contestPrivate, long contestTypeId,
+        int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActivePrivateType_First(
+        boolean contestActive, boolean contestPrivate, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActivePrivateType_First(
+        boolean contestActive, boolean contestPrivate, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActivePrivateType_Last(
+        boolean contestActive, boolean contestPrivate, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActivePrivateType_Last(
+        boolean contestActive, boolean contestPrivate, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param ContestPK the primary key of the current contest
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest[] findByActivePrivateType_PrevAndNext(
+        long ContestPK, boolean contestActive, boolean contestPrivate,
+        long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByActivePrivateType(boolean contestActive,
+        boolean contestPrivate, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByActivePrivateType(boolean contestActive,
+        boolean contestPrivate, long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -452,7 +966,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestActive(
+    public java.util.List<com.ext.portlet.model.Contest> findByActive(
         boolean contestActive)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -469,7 +983,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestActive(
+    public java.util.List<com.ext.portlet.model.Contest> findByActive(
         boolean contestActive, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -487,7 +1001,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByContestActive(
+    public java.util.List<com.ext.portlet.model.Contest> findByActive(
         boolean contestActive, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -501,7 +1015,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByContestActive_First(
+    public com.ext.portlet.model.Contest findByActive_First(
         boolean contestActive,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -515,7 +1029,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByContestActive_First(
+    public com.ext.portlet.model.Contest fetchByActive_First(
         boolean contestActive,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -529,7 +1043,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByContestActive_Last(
+    public com.ext.portlet.model.Contest findByActive_Last(
         boolean contestActive,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -543,7 +1057,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByContestActive_Last(
+    public com.ext.portlet.model.Contest fetchByActive_Last(
         boolean contestActive,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -558,7 +1072,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest[] findByContestActive_PrevAndNext(
+    public com.ext.portlet.model.Contest[] findByActive_PrevAndNext(
         long ContestPK, boolean contestActive,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -570,7 +1084,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param contestActive the contest active
     * @throws SystemException if a system exception occurred
     */
-    public void removeByContestActive(boolean contestActive)
+    public void removeByActive(boolean contestActive)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -580,7 +1094,155 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByContestActive(boolean contestActive)
+    public int countByActive(boolean contestActive)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all the contests where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @return the matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveType(
+        boolean contestActive, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the contests where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @return the range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveType(
+        boolean contestActive, long contestTypeId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the contests where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveType(
+        boolean contestActive, long contestTypeId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActiveType_First(
+        boolean contestActive, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveType_First(
+        boolean contestActive, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActiveType_Last(
+        boolean contestActive, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveType_Last(
+        boolean contestActive, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * @param ContestPK the primary key of the current contest
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest[] findByActiveType_PrevAndNext(
+        long ContestPK, boolean contestActive, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where contestActive = &#63; and contestTypeId = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByActiveType(boolean contestActive, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param contestTypeId the contest type ID
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByActiveType(boolean contestActive, long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -732,6 +1394,168 @@ public interface ContestPersistence extends BasePersistence<Contest> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns all the contests where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @return the matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedType(
+        boolean contestActive, boolean featured, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the contests where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @return the range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedType(
+        boolean contestActive, boolean featured, long contestTypeId, int start,
+        int end) throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the contests where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedType(
+        boolean contestActive, boolean featured, long contestTypeId, int start,
+        int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActiveFeaturedType_First(
+        boolean contestActive, boolean featured, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFeaturedType_First(
+        boolean contestActive, boolean featured, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActiveFeaturedType_Last(
+        boolean contestActive, boolean featured, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFeaturedType_Last(
+        boolean contestActive, boolean featured, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * @param ContestPK the primary key of the current contest
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest[] findByActiveFeaturedType_PrevAndNext(
+        long ContestPK, boolean contestActive, boolean featured,
+        long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where contestActive = &#63; and featured = &#63; and contestTypeId = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByActiveFeaturedType(boolean contestActive,
+        boolean featured, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63; and featured = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestTypeId the contest type ID
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByActiveFeaturedType(boolean contestActive,
+        boolean featured, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the contests where contestActive = &#63; and featured = &#63; and contestPrivate = &#63;.
     *
     * @param contestActive the contest active
@@ -740,7 +1564,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedcontestPrivate(
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedPrivate(
         boolean contestActive, boolean featured, boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -759,7 +1583,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedcontestPrivate(
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedPrivate(
         boolean contestActive, boolean featured, boolean contestPrivate,
         int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -780,7 +1604,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedcontestPrivate(
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedPrivate(
         boolean contestActive, boolean featured, boolean contestPrivate,
         int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
@@ -797,7 +1621,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByActiveFeaturedcontestPrivate_First(
+    public com.ext.portlet.model.Contest findByActiveFeaturedPrivate_First(
         boolean contestActive, boolean featured, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -813,7 +1637,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByActiveFeaturedcontestPrivate_First(
+    public com.ext.portlet.model.Contest fetchByActiveFeaturedPrivate_First(
         boolean contestActive, boolean featured, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -829,7 +1653,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByActiveFeaturedcontestPrivate_Last(
+    public com.ext.portlet.model.Contest findByActiveFeaturedPrivate_Last(
         boolean contestActive, boolean featured, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -845,7 +1669,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByActiveFeaturedcontestPrivate_Last(
+    public com.ext.portlet.model.Contest fetchByActiveFeaturedPrivate_Last(
         boolean contestActive, boolean featured, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -862,7 +1686,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest[] findByActiveFeaturedcontestPrivate_PrevAndNext(
+    public com.ext.portlet.model.Contest[] findByActiveFeaturedPrivate_PrevAndNext(
         long ContestPK, boolean contestActive, boolean featured,
         boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
@@ -877,7 +1701,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param contestPrivate the contest private
     * @throws SystemException if a system exception occurred
     */
-    public void removeByActiveFeaturedcontestPrivate(boolean contestActive,
+    public void removeByActiveFeaturedPrivate(boolean contestActive,
         boolean featured, boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -890,8 +1714,186 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByActiveFeaturedcontestPrivate(boolean contestActive,
+    public int countByActiveFeaturedPrivate(boolean contestActive,
         boolean featured, boolean contestPrivate)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns all the contests where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @return the matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedPrivateType(
+        boolean contestActive, boolean featured, boolean contestPrivate,
+        long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the contests where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @return the range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedPrivateType(
+        boolean contestActive, boolean featured, boolean contestPrivate,
+        long contestTypeId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the contests where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFeaturedPrivateType(
+        boolean contestActive, boolean featured, boolean contestPrivate,
+        long contestTypeId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActiveFeaturedPrivateType_First(
+        boolean contestActive, boolean featured, boolean contestPrivate,
+        long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFeaturedPrivateType_First(
+        boolean contestActive, boolean featured, boolean contestPrivate,
+        long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActiveFeaturedPrivateType_Last(
+        boolean contestActive, boolean featured, boolean contestPrivate,
+        long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFeaturedPrivateType_Last(
+        boolean contestActive, boolean featured, boolean contestPrivate,
+        long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param ContestPK the primary key of the current contest
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest[] findByActiveFeaturedPrivateType_PrevAndNext(
+        long ContestPK, boolean contestActive, boolean featured,
+        boolean contestPrivate, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByActiveFeaturedPrivateType(boolean contestActive,
+        boolean featured, boolean contestPrivate, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63; and featured = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param featured the featured
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByActiveFeaturedPrivateType(boolean contestActive,
+        boolean featured, boolean contestPrivate, long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
@@ -1043,6 +2045,167 @@ public interface ContestPersistence extends BasePersistence<Contest> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns all the contests where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @return the matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagType(
+        boolean contestActive, int flag, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the contests where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @return the range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagType(
+        boolean contestActive, int flag, long contestTypeId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the contests where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+    * </p>
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @param start the lower bound of the range of contests
+    * @param end the upper bound of the range of contests (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagType(
+        boolean contestActive, int flag, long contestTypeId, int start,
+        int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActiveFlagType_First(
+        boolean contestActive, int flag, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first contest in the ordered set where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFlagType_First(
+        boolean contestActive, int flag, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest
+    * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest findByActiveFlagType_Last(
+        boolean contestActive, int flag, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last contest in the ordered set where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching contest, or <code>null</code> if a matching contest could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest fetchByActiveFlagType_Last(
+        boolean contestActive, int flag, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * @param ContestPK the primary key of the current contest
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next contest
+    * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.ext.portlet.model.Contest[] findByActiveFlagType_PrevAndNext(
+        long ContestPK, boolean contestActive, int flag, long contestTypeId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Removes all the contests where contestActive = &#63; and flag = &#63; and contestTypeId = &#63; from the database.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByActiveFlagType(boolean contestActive, int flag,
+        long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of contests where contestActive = &#63; and flag = &#63; and contestTypeId = &#63;.
+    *
+    * @param contestActive the contest active
+    * @param flag the flag
+    * @param contestTypeId the contest type ID
+    * @return the number of matching contests
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByActiveFlagType(boolean contestActive, int flag,
+        long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the contests where contestActive = &#63; and flag = &#63; and contestPrivate = &#63;.
     *
     * @param contestActive the contest active
@@ -1051,7 +2214,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagContest(
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagPrivate(
         boolean contestActive, int flag, boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -1070,7 +2233,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagContest(
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagPrivate(
         boolean contestActive, int flag, boolean contestPrivate, int start,
         int end) throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -1090,7 +2253,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagContest(
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagPrivate(
         boolean contestActive, int flag, boolean contestPrivate, int start,
         int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
@@ -1107,7 +2270,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByActiveFlagContest_First(
+    public com.ext.portlet.model.Contest findByActiveFlagPrivate_First(
         boolean contestActive, int flag, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -1123,7 +2286,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByActiveFlagContest_First(
+    public com.ext.portlet.model.Contest fetchByActiveFlagPrivate_First(
         boolean contestActive, int flag, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -1139,7 +2302,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByActiveFlagContest_Last(
+    public com.ext.portlet.model.Contest findByActiveFlagPrivate_Last(
         boolean contestActive, int flag, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
@@ -1155,7 +2318,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByActiveFlagContest_Last(
+    public com.ext.portlet.model.Contest fetchByActiveFlagPrivate_Last(
         boolean contestActive, int flag, boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -1172,7 +2335,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest[] findByActiveFlagContest_PrevAndNext(
+    public com.ext.portlet.model.Contest[] findByActiveFlagPrivate_PrevAndNext(
         long ContestPK, boolean contestActive, int flag,
         boolean contestPrivate,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
@@ -1187,7 +2350,7 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @param contestPrivate the contest private
     * @throws SystemException if a system exception occurred
     */
-    public void removeByActiveFlagContest(boolean contestActive, int flag,
+    public void removeByActiveFlagPrivate(boolean contestActive, int flag,
         boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -1200,325 +2363,324 @@ public interface ContestPersistence extends BasePersistence<Contest> {
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByActiveFlagContest(boolean contestActive, int flag,
+    public int countByActiveFlagPrivate(boolean contestActive, int flag,
         boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns all the contests where contestActive = &#63; and flagText = &#63;.
+    * Returns all the contests where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
-        boolean contestActive, java.lang.String flagText)
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagPrivateType(
+        boolean contestActive, int flag, boolean contestPrivate,
+        long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns a range of all the contests where contestActive = &#63; and flagText = &#63;.
+    * Returns a range of all the contests where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * <p>
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param start the lower bound of the range of contests
     * @param end the upper bound of the range of contests (not inclusive)
     * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
-        boolean contestActive, java.lang.String flagText, int start, int end)
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagPrivateType(
+        boolean contestActive, int flag, boolean contestPrivate,
+        long contestTypeId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns an ordered range of all the contests where contestActive = &#63; and flagText = &#63;.
+    * Returns an ordered range of all the contests where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * <p>
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param start the lower bound of the range of contests
     * @param end the upper bound of the range of contests (not inclusive)
     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
     * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
-        boolean contestActive, java.lang.String flagText, int start, int end,
+    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagPrivateType(
+        boolean contestActive, int flag, boolean contestPrivate,
+        long contestTypeId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the first contest in the ordered set where contestActive = &#63; and flagText = &#63;.
+    * Returns the first contest in the ordered set where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching contest
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByActiveFlagText_First(
-        boolean contestActive, java.lang.String flagText,
+    public com.ext.portlet.model.Contest findByActiveFlagPrivateType_First(
+        boolean contestActive, int flag, boolean contestPrivate,
+        long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the first contest in the ordered set where contestActive = &#63; and flagText = &#63;.
+    * Returns the first contest in the ordered set where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByActiveFlagText_First(
-        boolean contestActive, java.lang.String flagText,
+    public com.ext.portlet.model.Contest fetchByActiveFlagPrivateType_First(
+        boolean contestActive, int flag, boolean contestPrivate,
+        long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where contestActive = &#63; and flagText = &#63;.
+    * Returns the last contest in the ordered set where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching contest
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByActiveFlagText_Last(
-        boolean contestActive, java.lang.String flagText,
+    public com.ext.portlet.model.Contest findByActiveFlagPrivateType_Last(
+        boolean contestActive, int flag, boolean contestPrivate,
+        long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where contestActive = &#63; and flagText = &#63;.
+    * Returns the last contest in the ordered set where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByActiveFlagText_Last(
-        boolean contestActive, java.lang.String flagText,
+    public com.ext.portlet.model.Contest fetchByActiveFlagPrivateType_Last(
+        boolean contestActive, int flag, boolean contestPrivate,
+        long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and flagText = &#63;.
+    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * @param ContestPK the primary key of the current contest
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next contest
     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest[] findByActiveFlagText_PrevAndNext(
-        long ContestPK, boolean contestActive, java.lang.String flagText,
+    public com.ext.portlet.model.Contest[] findByActiveFlagPrivateType_PrevAndNext(
+        long ContestPK, boolean contestActive, int flag,
+        boolean contestPrivate, long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the contests where contestActive = &#63; and flagText = &#63; from the database.
+    * Removes all the contests where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63; from the database.
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByActiveFlagText(boolean contestActive,
-        java.lang.String flagText)
+    public void removeByActiveFlagPrivateType(boolean contestActive, int flag,
+        boolean contestPrivate, long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the number of contests where contestActive = &#63; and flagText = &#63;.
+    * Returns the number of contests where contestActive = &#63; and flag = &#63; and contestPrivate = &#63; and contestTypeId = &#63;.
     *
     * @param contestActive the contest active
-    * @param flagText the flag text
+    * @param flag the flag
+    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByActiveFlagText(boolean contestActive,
-        java.lang.String flagText)
+    public int countByActiveFlagPrivateType(boolean contestActive, int flag,
+        boolean contestPrivate, long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns all the contests where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns all the contests where contestTypeId = &#63;.
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @return the matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagTextcontestPrivate(
-        boolean contestActive, java.lang.String flagText, boolean contestPrivate)
+    public java.util.List<com.ext.portlet.model.Contest> findByContestType(
+        long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns a range of all the contests where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns a range of all the contests where contestTypeId = &#63;.
     *
     * <p>
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param start the lower bound of the range of contests
     * @param end the upper bound of the range of contests (not inclusive)
     * @return the range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagTextcontestPrivate(
-        boolean contestActive, java.lang.String flagText,
-        boolean contestPrivate, int start, int end)
+    public java.util.List<com.ext.portlet.model.Contest> findByContestType(
+        long contestTypeId, int start, int end)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns an ordered range of all the contests where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns an ordered range of all the contests where contestTypeId = &#63;.
     *
     * <p>
     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.ext.portlet.model.impl.ContestModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
     * </p>
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param start the lower bound of the range of contests
     * @param end the upper bound of the range of contests (not inclusive)
     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
     * @return the ordered range of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagTextcontestPrivate(
-        boolean contestActive, java.lang.String flagText,
-        boolean contestPrivate, int start, int end,
+    public java.util.List<com.ext.portlet.model.Contest> findByContestType(
+        long contestTypeId, int start, int end,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the first contest in the ordered set where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns the first contest in the ordered set where contestTypeId = &#63;.
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching contest
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByActiveFlagTextcontestPrivate_First(
-        boolean contestActive, java.lang.String flagText,
-        boolean contestPrivate,
+    public com.ext.portlet.model.Contest findByContestType_First(
+        long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the first contest in the ordered set where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns the first contest in the ordered set where contestTypeId = &#63;.
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the first matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByActiveFlagTextcontestPrivate_First(
-        boolean contestActive, java.lang.String flagText,
-        boolean contestPrivate,
+    public com.ext.portlet.model.Contest fetchByContestType_First(
+        long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns the last contest in the ordered set where contestTypeId = &#63;.
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching contest
     * @throws com.ext.portlet.NoSuchContestException if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest findByActiveFlagTextcontestPrivate_Last(
-        boolean contestActive, java.lang.String flagText,
-        boolean contestPrivate,
+    public com.ext.portlet.model.Contest findByContestType_Last(
+        long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the last contest in the ordered set where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns the last contest in the ordered set where contestTypeId = &#63;.
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the last matching contest, or <code>null</code> if a matching contest could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest fetchByActiveFlagTextcontestPrivate_Last(
-        boolean contestActive, java.lang.String flagText,
-        boolean contestPrivate,
+    public com.ext.portlet.model.Contest fetchByContestType_Last(
+        long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the contests before and after the current contest in the ordered set where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns the contests before and after the current contest in the ordered set where contestTypeId = &#63;.
     *
     * @param ContestPK the primary key of the current contest
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
     * @return the previous, current, and next contest
     * @throws com.ext.portlet.NoSuchContestException if a contest with the primary key could not be found
     * @throws SystemException if a system exception occurred
     */
-    public com.ext.portlet.model.Contest[] findByActiveFlagTextcontestPrivate_PrevAndNext(
-        long ContestPK, boolean contestActive, java.lang.String flagText,
-        boolean contestPrivate,
+    public com.ext.portlet.model.Contest[] findByContestType_PrevAndNext(
+        long ContestPK, long contestTypeId,
         com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
         throws com.ext.portlet.NoSuchContestException,
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Removes all the contests where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63; from the database.
+    * Removes all the contests where contestTypeId = &#63; from the database.
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @throws SystemException if a system exception occurred
     */
-    public void removeByActiveFlagTextcontestPrivate(boolean contestActive,
-        java.lang.String flagText, boolean contestPrivate)
+    public void removeByContestType(long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
-    * Returns the number of contests where contestActive = &#63; and flagText = &#63; and contestPrivate = &#63;.
+    * Returns the number of contests where contestTypeId = &#63;.
     *
-    * @param contestActive the contest active
-    * @param flagText the flag text
-    * @param contestPrivate the contest private
+    * @param contestTypeId the contest type ID
     * @return the number of matching contests
     * @throws SystemException if a system exception occurred
     */
-    public int countByActiveFlagTextcontestPrivate(boolean contestActive,
-        java.lang.String flagText, boolean contestPrivate)
+    public int countByContestType(long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

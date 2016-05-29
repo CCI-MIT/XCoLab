@@ -1,13 +1,13 @@
 package com.ext.portlet.service.impl;
 
-import java.util.List;
-
 import com.ext.portlet.model.ModelCategory;
 import com.ext.portlet.model.ModelGlobalPreference;
 import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.ext.portlet.service.base.ModelCategoryLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the model category local service.
@@ -31,12 +31,14 @@ public class ModelCategoryLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ModelCategoryLocalServiceUtil} to access the model category local service.
      */
     
+    @Override
     public List<ModelGlobalPreference> getModelPreferences(ModelCategory category) throws SystemException {
         return ModelGlobalPreferenceLocalServiceUtil.findByCategory(category);
 
     }
     
-    public ModelCategory addCategory(String name,String description) throws SystemException {
+    @Override
+    public ModelCategory addCategory(String name, String description) throws SystemException {
         Long pk = CounterLocalServiceUtil.increment(ModelCategory.class.getName());
         ModelCategory cat = createModelCategory(pk);
         cat.setModelCategoryName(name);

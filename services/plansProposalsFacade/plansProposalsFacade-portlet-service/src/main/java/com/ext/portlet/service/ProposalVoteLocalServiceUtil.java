@@ -289,6 +289,13 @@ public class ProposalVoteLocalServiceUtil {
         return getService().hasUserVoted(contestPhaseId, userId);
     }
 
+    public static com.ext.portlet.model.ProposalVote findByProposalIdUserId(
+        long proposalId, long userId)
+        throws com.ext.portlet.NoSuchProposalVoteException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().findByProposalIdUserId(proposalId, userId);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -175,6 +175,51 @@ public interface PlanSectionDefinitionModel extends BaseModel<PlanSectionDefinit
     public void setTier(long tier);
 
     /**
+     * Returns the allowed contest type IDs of this plan section definition.
+     *
+     * @return the allowed contest type IDs of this plan section definition
+     */
+    @AutoEscape
+    public String getAllowedContestTypeIds();
+
+    /**
+     * Sets the allowed contest type IDs of this plan section definition.
+     *
+     * @param allowedContestTypeIds the allowed contest type IDs of this plan section definition
+     */
+    public void setAllowedContestTypeIds(String allowedContestTypeIds);
+
+    /**
+     * Returns the allowed values of this plan section definition.
+     *
+     * @return the allowed values of this plan section definition
+     */
+    @AutoEscape
+    public String getAllowedValues();
+
+    /**
+     * Sets the allowed values of this plan section definition.
+     *
+     * @param allowedValues the allowed values of this plan section definition
+     */
+    public void setAllowedValues(String allowedValues);
+
+    /**
+     * Returns the additional IDs of this plan section definition.
+     *
+     * @return the additional IDs of this plan section definition
+     */
+    @AutoEscape
+    public String getAdditionalIds();
+
+    /**
+     * Sets the additional IDs of this plan section definition.
+     *
+     * @param additionalIds the additional IDs of this plan section definition
+     */
+    public void setAdditionalIds(String additionalIds);
+
+    /**
      * Returns the locked of this plan section definition.
      *
      * @return the locked of this plan section definition

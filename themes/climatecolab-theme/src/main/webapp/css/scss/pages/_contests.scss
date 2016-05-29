@@ -1,0 +1,306 @@
+$p-Contests__userslist__a__fontWeight: 700 !default;
+
+$p-Contests__userslist__td--g__background: url(../images/pattern-tbl-6x6.png) !default;
+$p-Contests__usersFilter__paddingRight: 0px !default;
+
+/* columns  ------------- */
+.contest-left {
+  float: left;
+  width: 500px;
+}
+
+.contest-right {
+  float: left;
+  width: 484px;
+}
+
+/* grid-view / list-view button */
+.c-Headline .view {
+  float: left;
+  height: 34px;
+  line-height: 34px;
+  background: $t-Color__grey--lightest;
+  border: solid 1px $t-Color__grey--medium;
+  @include border-radius(6px);
+  margin-right: 16px;
+  font-size: 12px;
+  font-weight: $b-Typography__fontWeight--bold;
+  text-transform: uppercase;
+
+  > div {
+    float: left;
+    padding-left: 35px;
+    padding-right: 6px;
+
+    &.selected {
+      @include border-radius(5px);
+      color: white;
+
+      border: solid 1px #4746ad;
+      box-shadow: 0px 0px 4px #3e3e3e;
+      margin-top: -1px;
+      margin-left: -1px;
+    }
+  }
+
+  .grid {
+    background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
+
+    &.selected {
+      background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $t-Color__primary;
+    }
+  }
+
+  .outline {
+    background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
+
+    &.selected {
+      background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px $t-Color__primary;
+    }
+  }
+
+  .list {
+    background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
+
+    &.selected {
+      background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $t-Color__primary;
+    }
+  }
+}
+
+.p-Contests__ListViewTable { //table.contest-list-view
+
+  %image-only {
+    background-position-y: 8px;
+    background-repeat: no-repeat;
+    a {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+    }
+  }
+
+  %image-text {
+    background-position-y: 8px;
+    background-repeat: no-repeat;
+    padding-left: 35px;
+  }
+
+  th.proposals {
+    @extend %image-only;
+    background-image: url(../images/icon-list-proposals.png);
+  }
+
+  th.votes {
+    @extend %image-only;
+  }
+
+  th.comments {
+    @extend %image-only;
+    background-image: url(../images/icon-list-comment.png);
+  }
+
+  .ontology_what {
+    @extend %image-text;
+    background-image: url(../images/icon-list-what.png);
+  }
+
+  .ontology_where {
+    @extend %image-text;
+    background-image: url(../images/icon-list-where.png);
+  }
+
+  .ontology_who {
+    @extend %image-text;
+    background-image: url(../images/icon-list-who.png);
+  }
+
+  .ontology_how {
+    @extend %image-text;
+    background-image: url(../images/contest-icon-how.png);
+  }
+}
+
+.list a {
+  width: 100%;
+}
+
+.grid a {
+  width: 100%;
+}
+
+.filter {
+  float: right;
+  width: 180px;
+  height: 27px;
+}
+
+.filter input {
+  width: 170px;
+  height: 27px;
+  padding: 1px 0 0 8px;
+  border: 1px solid $t-Color__grey--light;
+  font: 12px "Lucida Grande", Arial, sans-serif;
+}
+
+.users-filter {
+  float: right;
+  padding-right: $p-Contests__usersFilter__paddingRight;
+  height: 27px;
+}
+
+.users-filter input {
+  font: 12px "Lucida Grande", Arial, sans-serif;
+}
+
+#userFilterInput {
+  height: 24px;
+}
+
+#usersFilterSubmit {
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+
+.users-pagination {
+  float: left;
+  width: 100%;
+  border-bottom: 1px solid $t-Color__grey--light;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+
+.contest-featured-seperator {
+  width: 50%;
+  border-bottom: 1px solid gray;
+  float: left;
+  margin: 20px 25% 44px 25%;
+  height: 0;
+}
+
+.prop {
+  float: left;
+  display: inline;
+  padding-right: 18px;
+}
+
+.comm {
+  float: left;
+  display: inline;
+}
+
+.prop a, .comm a {
+  font-weight: $b-Typography__fontWeight--bold;
+}
+
+/* the table with rows of users  */
+.userslist {
+  clear: both;
+  margin-top: -4px;
+}
+
+.userslist td {
+  height: 30px;
+  padding: 11px 10px 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: $t-Color__grey--darkest;
+  border-bottom: 1px solid $t-Color__grey--lightest;
+}
+
+.userslist a {
+  font-weight: $p-Contests__userslist__a__fontWeight;
+}
+
+.userslist tr.top td {
+  height: 61px;
+  padding-top: 15px;
+}
+
+.userslist td.g {
+  background: $p-Contests__userslist__td--g__background;
+}
+
+.userslist.featured td {
+  background-color: $t-Color__grey--lightest;
+}
+
+.userslist tr.feat-bot {
+  border-bottom: 1px solid $t-Color__primary__grey;
+}
+
+#priorActiveAllWidget {
+  border: 1px solid $t-Color__primary;
+  -moz-box-shadow: 0 2px 2px #666;
+  -webkit-box-shadow: 0 2px 2px #666;
+  box-shadow: 0 2px 2px #666;
+  position: absolute;
+  display: none;
+  z-index: 1000;
+  background: white;
+  text-align: left;
+  padding: 10px 10px 10px 10px;
+  width: 125px;
+}
+
+#priorActiveAllWidget ul {
+  margin-left: 0;
+  list-style: none;
+}
+
+#priorActiveAllWidget ul li {
+  margin-left: 0;
+  list-style: none;
+  background: none;
+  padding: 5px;
+}
+
+#priorActiveAllWidget ul li.active,
+#priorActiveAllWidget ul li:hover {
+  background: $t-Color__primary__grey--light;
+}
+
+#priorActiveAllWidget ul li.active,
+#priorActiveAllWidget ul li:hover {
+  background: $t-Color__primary__grey--light;
+}
+
+#priorActiveAllWidget ul li a,
+#priorActiveAllWidget ul li a:after {
+  background: none;
+  border: 0;
+}
+
+@import 'scss/pages/outline_view';
+
+
+//TODO: what exactly are these?
+#contestsFilterClear {
+  background: url(../images/filter-cancel.png) no-repeat;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  display: block;
+
+}
+
+#archivedContestsMarkerContainer {
+  margin-bottom: 15px;
+}
+
+#archivedContestsMarkerContainer img {
+  vertical-align: middle;
+  margin-right: 20px;
+}
+
+//TODO: prop-description is for proposals?
+.contest-discussion .prop-description a {
+  font-size: 18px;
+}
+
+//contest outline view
+.accordion, .accordion li {
+  list-style: none;
+}

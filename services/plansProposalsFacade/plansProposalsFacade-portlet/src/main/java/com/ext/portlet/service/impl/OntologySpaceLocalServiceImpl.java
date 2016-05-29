@@ -32,6 +32,7 @@ public class OntologySpaceLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.OntologySpaceLocalServiceUtil} to access the ontology space local service.
      */
     
+    @Override
     public OntologySpace createSpace(String name, String description) throws SystemException  {
         OntologySpace space = createOntologySpace(CounterLocalServiceUtil.increment(OntologySpace.class.getName()));
         
@@ -45,6 +46,7 @@ public class OntologySpaceLocalServiceImpl
         return space;
     }
     
+    @Override
     public void store(OntologySpace space) throws SystemException {
         if (space.isNew()) {
             OntologySpaceLocalServiceUtil.addOntologySpace(space);
@@ -54,6 +56,7 @@ public class OntologySpaceLocalServiceImpl
         }
     }
     
+    @Override
     public List<OntologyTerm> getTopTerms(OntologySpace space) throws SystemException {
         return OntologyTermLocalServiceUtil.findByParentIdSpaceId(0L, space.getId());
     }

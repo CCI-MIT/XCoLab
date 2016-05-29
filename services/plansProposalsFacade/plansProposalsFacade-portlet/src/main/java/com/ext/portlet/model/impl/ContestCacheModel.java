@@ -22,13 +22,14 @@ import java.util.Date;
  */
 public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public long ContestPK;
+    public long contestTypeId;
     public String ContestName;
     public String ContestShortName;
+    public String ContestUrlName;
+    public long ContestYear;
     public String ContestDescription;
     public String ContestModelDescription;
     public String ContestPositionsDescription;
-    public String defaultPlanDescription;
-    public long PlanTypeId;
     public long created;
     public long updated;
     public long authorId;
@@ -38,6 +39,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public String proposalCreationTemplateString;
     public String voteTemplateString;
     public String proposalVoteTemplateString;
+    public String proposalVoteConfirmationTemplateString;
     public String voteQuestionTemplateString;
     public long focusAreaId;
     public long contestTier;
@@ -69,27 +71,30 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public boolean show_in_list_view;
     public boolean show_in_outline_view;
     public boolean hideRibbons;
+    public long resourceArticleId;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(97);
+        StringBundler sb = new StringBundler(103);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
+        sb.append(", contestTypeId=");
+        sb.append(contestTypeId);
         sb.append(", ContestName=");
         sb.append(ContestName);
         sb.append(", ContestShortName=");
         sb.append(ContestShortName);
+        sb.append(", ContestUrlName=");
+        sb.append(ContestUrlName);
+        sb.append(", ContestYear=");
+        sb.append(ContestYear);
         sb.append(", ContestDescription=");
         sb.append(ContestDescription);
         sb.append(", ContestModelDescription=");
         sb.append(ContestModelDescription);
         sb.append(", ContestPositionsDescription=");
         sb.append(ContestPositionsDescription);
-        sb.append(", defaultPlanDescription=");
-        sb.append(defaultPlanDescription);
-        sb.append(", PlanTypeId=");
-        sb.append(PlanTypeId);
         sb.append(", created=");
         sb.append(created);
         sb.append(", updated=");
@@ -108,6 +113,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(voteTemplateString);
         sb.append(", proposalVoteTemplateString=");
         sb.append(proposalVoteTemplateString);
+        sb.append(", proposalVoteConfirmationTemplateString=");
+        sb.append(proposalVoteConfirmationTemplateString);
         sb.append(", voteQuestionTemplateString=");
         sb.append(voteQuestionTemplateString);
         sb.append(", focusAreaId=");
@@ -170,6 +177,8 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(show_in_outline_view);
         sb.append(", hideRibbons=");
         sb.append(hideRibbons);
+        sb.append(", resourceArticleId=");
+        sb.append(resourceArticleId);
         sb.append("}");
 
         return sb.toString();
@@ -180,6 +189,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         ContestImpl contestImpl = new ContestImpl();
 
         contestImpl.setContestPK(ContestPK);
+        contestImpl.setContestTypeId(contestTypeId);
 
         if (ContestName == null) {
             contestImpl.setContestName(StringPool.BLANK);
@@ -192,6 +202,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             contestImpl.setContestShortName(ContestShortName);
         }
+
+        if (ContestUrlName == null) {
+            contestImpl.setContestUrlName(StringPool.BLANK);
+        } else {
+            contestImpl.setContestUrlName(ContestUrlName);
+        }
+
+        contestImpl.setContestYear(ContestYear);
 
         if (ContestDescription == null) {
             contestImpl.setContestDescription(StringPool.BLANK);
@@ -210,14 +228,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             contestImpl.setContestPositionsDescription(ContestPositionsDescription);
         }
-
-        if (defaultPlanDescription == null) {
-            contestImpl.setDefaultPlanDescription(StringPool.BLANK);
-        } else {
-            contestImpl.setDefaultPlanDescription(defaultPlanDescription);
-        }
-
-        contestImpl.setPlanTypeId(PlanTypeId);
 
         if (created == Long.MIN_VALUE) {
             contestImpl.setCreated(null);
@@ -252,6 +262,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             contestImpl.setProposalVoteTemplateString(StringPool.BLANK);
         } else {
             contestImpl.setProposalVoteTemplateString(proposalVoteTemplateString);
+        }
+
+        if (proposalVoteConfirmationTemplateString == null) {
+            contestImpl.setProposalVoteConfirmationTemplateString(StringPool.BLANK);
+        } else {
+            contestImpl.setProposalVoteConfirmationTemplateString(proposalVoteConfirmationTemplateString);
         }
 
         if (voteQuestionTemplateString == null) {
@@ -346,6 +362,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         contestImpl.setShow_in_list_view(show_in_list_view);
         contestImpl.setShow_in_outline_view(show_in_outline_view);
         contestImpl.setHideRibbons(hideRibbons);
+        contestImpl.setResourceArticleId(resourceArticleId);
 
         contestImpl.resetOriginalValues();
 
@@ -355,13 +372,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     @Override
     public void readExternal(ObjectInput objectInput) throws IOException {
         ContestPK = objectInput.readLong();
+        contestTypeId = objectInput.readLong();
         ContestName = objectInput.readUTF();
         ContestShortName = objectInput.readUTF();
+        ContestUrlName = objectInput.readUTF();
+        ContestYear = objectInput.readLong();
         ContestDescription = objectInput.readUTF();
         ContestModelDescription = objectInput.readUTF();
         ContestPositionsDescription = objectInput.readUTF();
-        defaultPlanDescription = objectInput.readUTF();
-        PlanTypeId = objectInput.readLong();
         created = objectInput.readLong();
         updated = objectInput.readLong();
         authorId = objectInput.readLong();
@@ -371,6 +389,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         proposalCreationTemplateString = objectInput.readUTF();
         voteTemplateString = objectInput.readUTF();
         proposalVoteTemplateString = objectInput.readUTF();
+        proposalVoteConfirmationTemplateString = objectInput.readUTF();
         voteQuestionTemplateString = objectInput.readUTF();
         focusAreaId = objectInput.readLong();
         contestTier = objectInput.readLong();
@@ -402,12 +421,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         show_in_list_view = objectInput.readBoolean();
         show_in_outline_view = objectInput.readBoolean();
         hideRibbons = objectInput.readBoolean();
+        resourceArticleId = objectInput.readLong();
     }
 
     @Override
     public void writeExternal(ObjectOutput objectOutput)
         throws IOException {
         objectOutput.writeLong(ContestPK);
+        objectOutput.writeLong(contestTypeId);
 
         if (ContestName == null) {
             objectOutput.writeUTF(StringPool.BLANK);
@@ -420,6 +441,14 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         } else {
             objectOutput.writeUTF(ContestShortName);
         }
+
+        if (ContestUrlName == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(ContestUrlName);
+        }
+
+        objectOutput.writeLong(ContestYear);
 
         if (ContestDescription == null) {
             objectOutput.writeUTF(StringPool.BLANK);
@@ -439,13 +468,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(ContestPositionsDescription);
         }
 
-        if (defaultPlanDescription == null) {
-            objectOutput.writeUTF(StringPool.BLANK);
-        } else {
-            objectOutput.writeUTF(defaultPlanDescription);
-        }
-
-        objectOutput.writeLong(PlanTypeId);
         objectOutput.writeLong(created);
         objectOutput.writeLong(updated);
         objectOutput.writeLong(authorId);
@@ -469,6 +491,12 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(proposalVoteTemplateString);
+        }
+
+        if (proposalVoteConfirmationTemplateString == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(proposalVoteConfirmationTemplateString);
         }
 
         if (voteQuestionTemplateString == null) {
@@ -563,5 +591,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         objectOutput.writeBoolean(show_in_list_view);
         objectOutput.writeBoolean(show_in_outline_view);
         objectOutput.writeBoolean(hideRibbons);
+        objectOutput.writeLong(resourceArticleId);
     }
 }

@@ -1,6 +1,5 @@
 package com.ext.utils.subscriptions;
 
-import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

@@ -8,7 +8,6 @@ import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import org.xcolab.enums.ColabConstants;
-import org.xcolab.enums.ContestPhaseType;
 
 /**
  * The implementation of the contest schedule local service.
@@ -32,6 +31,7 @@ public class ContestScheduleLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestScheduleLocalServiceUtil} to access the contest schedule local service.
      */
 
+    @Override
     public Boolean isContestScheduleUsed(long contestScheduleId) throws SystemException {
 
         DynamicQuery queryPhasesForContestScheduleIdNotEqualDefaultScheduleContestId =

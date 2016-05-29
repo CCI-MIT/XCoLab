@@ -29,12 +29,15 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
     public int characterLimit;
     public long focusAreaId;
     public long tier;
+    public String allowedContestTypeIds;
+    public String allowedValues;
+    public String additionalIds;
     public boolean locked;
     public boolean contestIntegrationRelevance;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(23);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{id=");
         sb.append(id);
@@ -54,6 +57,12 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         sb.append(focusAreaId);
         sb.append(", tier=");
         sb.append(tier);
+        sb.append(", allowedContestTypeIds=");
+        sb.append(allowedContestTypeIds);
+        sb.append(", allowedValues=");
+        sb.append(allowedValues);
+        sb.append(", additionalIds=");
+        sb.append(additionalIds);
         sb.append(", locked=");
         sb.append(locked);
         sb.append(", contestIntegrationRelevance=");
@@ -102,6 +111,25 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         planSectionDefinitionImpl.setCharacterLimit(characterLimit);
         planSectionDefinitionImpl.setFocusAreaId(focusAreaId);
         planSectionDefinitionImpl.setTier(tier);
+
+        if (allowedContestTypeIds == null) {
+            planSectionDefinitionImpl.setAllowedContestTypeIds(StringPool.BLANK);
+        } else {
+            planSectionDefinitionImpl.setAllowedContestTypeIds(allowedContestTypeIds);
+        }
+
+        if (allowedValues == null) {
+            planSectionDefinitionImpl.setAllowedValues(StringPool.BLANK);
+        } else {
+            planSectionDefinitionImpl.setAllowedValues(allowedValues);
+        }
+
+        if (additionalIds == null) {
+            planSectionDefinitionImpl.setAdditionalIds(StringPool.BLANK);
+        } else {
+            planSectionDefinitionImpl.setAdditionalIds(additionalIds);
+        }
+
         planSectionDefinitionImpl.setLocked(locked);
         planSectionDefinitionImpl.setContestIntegrationRelevance(contestIntegrationRelevance);
 
@@ -121,6 +149,9 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         characterLimit = objectInput.readInt();
         focusAreaId = objectInput.readLong();
         tier = objectInput.readLong();
+        allowedContestTypeIds = objectInput.readUTF();
+        allowedValues = objectInput.readUTF();
+        additionalIds = objectInput.readUTF();
         locked = objectInput.readBoolean();
         contestIntegrationRelevance = objectInput.readBoolean();
     }
@@ -163,6 +194,25 @@ public class PlanSectionDefinitionCacheModel implements CacheModel<PlanSectionDe
         objectOutput.writeInt(characterLimit);
         objectOutput.writeLong(focusAreaId);
         objectOutput.writeLong(tier);
+
+        if (allowedContestTypeIds == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(allowedContestTypeIds);
+        }
+
+        if (allowedValues == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(allowedValues);
+        }
+
+        if (additionalIds == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(additionalIds);
+        }
+
         objectOutput.writeBoolean(locked);
         objectOutput.writeBoolean(contestIntegrationRelevance);
     }

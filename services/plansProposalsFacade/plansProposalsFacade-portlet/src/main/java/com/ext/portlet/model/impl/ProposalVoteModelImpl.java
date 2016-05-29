@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.util.PortalUtil;
@@ -51,9 +52,12 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
             { "proposalId", Types.BIGINT },
             { "contestPhaseId", Types.BIGINT },
             { "userId", Types.BIGINT },
-            { "createDate", Types.TIMESTAMP }
+            { "createDate", Types.TIMESTAMP },
+            { "isValid", Types.BOOLEAN },
+            { "confirmationEmailSendDate", Types.TIMESTAMP },
+            { "confirmationToken", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalVote (proposalId LONG,contestPhaseId LONG not null,userId LONG not null,createDate DATE null,primary key (contestPhaseId, userId))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalVote (proposalId LONG,contestPhaseId LONG not null,userId LONG not null,createDate DATE null,isValid BOOLEAN,confirmationEmailSendDate DATE null,confirmationToken VARCHAR(75) null,primary key (contestPhaseId, userId))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalVote";
     public static final String ORDER_BY_JPQL = " ORDER BY proposalVote.id.contestPhaseId ASC, proposalVote.id.userId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalVote.contestPhaseId ASC, xcolab_ProposalVote.userId ASC";
@@ -89,6 +93,9 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
     private long _originalUserId;
     private boolean _setOriginalUserId;
     private Date _createDate;
+    private boolean _isValid;
+    private Date _confirmationEmailSendDate;
+    private String _confirmationToken;
     private long _columnBitmask;
     private ProposalVote _escapedModel;
 
@@ -112,6 +119,9 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         model.setContestPhaseId(soapModel.getContestPhaseId());
         model.setUserId(soapModel.getUserId());
         model.setCreateDate(soapModel.getCreateDate());
+        model.setIsValid(soapModel.getIsValid());
+        model.setConfirmationEmailSendDate(soapModel.getConfirmationEmailSendDate());
+        model.setConfirmationToken(soapModel.getConfirmationToken());
 
         return model;
     }
@@ -175,6 +185,10 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         attributes.put("contestPhaseId", getContestPhaseId());
         attributes.put("userId", getUserId());
         attributes.put("createDate", getCreateDate());
+        attributes.put("isValid", getIsValid());
+        attributes.put("confirmationEmailSendDate",
+            getConfirmationEmailSendDate());
+        attributes.put("confirmationToken", getConfirmationToken());
 
         return attributes;
     }
@@ -203,6 +217,25 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
 
         if (createDate != null) {
             setCreateDate(createDate);
+        }
+
+        Boolean isValid = (Boolean) attributes.get("isValid");
+
+        if (isValid != null) {
+            setIsValid(isValid);
+        }
+
+        Date confirmationEmailSendDate = (Date) attributes.get(
+                "confirmationEmailSendDate");
+
+        if (confirmationEmailSendDate != null) {
+            setConfirmationEmailSendDate(confirmationEmailSendDate);
+        }
+
+        String confirmationToken = (String) attributes.get("confirmationToken");
+
+        if (confirmationToken != null) {
+            setConfirmationToken(confirmationToken);
         }
     }
 
@@ -296,6 +329,48 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         _createDate = createDate;
     }
 
+    @JSON
+    @Override
+    public boolean getIsValid() {
+        return _isValid;
+    }
+
+    @Override
+    public boolean isIsValid() {
+        return _isValid;
+    }
+
+    @Override
+    public void setIsValid(boolean isValid) {
+        _isValid = isValid;
+    }
+
+    @JSON
+    @Override
+    public Date getConfirmationEmailSendDate() {
+        return _confirmationEmailSendDate;
+    }
+
+    @Override
+    public void setConfirmationEmailSendDate(Date confirmationEmailSendDate) {
+        _confirmationEmailSendDate = confirmationEmailSendDate;
+    }
+
+    @JSON
+    @Override
+    public String getConfirmationToken() {
+        if (_confirmationToken == null) {
+            return StringPool.BLANK;
+        } else {
+            return _confirmationToken;
+        }
+    }
+
+    @Override
+    public void setConfirmationToken(String confirmationToken) {
+        _confirmationToken = confirmationToken;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -318,6 +393,9 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         proposalVoteImpl.setContestPhaseId(getContestPhaseId());
         proposalVoteImpl.setUserId(getUserId());
         proposalVoteImpl.setCreateDate(getCreateDate());
+        proposalVoteImpl.setIsValid(getIsValid());
+        proposalVoteImpl.setConfirmationEmailSendDate(getConfirmationEmailSendDate());
+        proposalVoteImpl.setConfirmationToken(getConfirmationToken());
 
         proposalVoteImpl.resetOriginalValues();
 
@@ -394,12 +472,30 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
             proposalVoteCacheModel.createDate = Long.MIN_VALUE;
         }
 
+        proposalVoteCacheModel.isValid = getIsValid();
+
+        Date confirmationEmailSendDate = getConfirmationEmailSendDate();
+
+        if (confirmationEmailSendDate != null) {
+            proposalVoteCacheModel.confirmationEmailSendDate = confirmationEmailSendDate.getTime();
+        } else {
+            proposalVoteCacheModel.confirmationEmailSendDate = Long.MIN_VALUE;
+        }
+
+        proposalVoteCacheModel.confirmationToken = getConfirmationToken();
+
+        String confirmationToken = proposalVoteCacheModel.confirmationToken;
+
+        if ((confirmationToken != null) && (confirmationToken.length() == 0)) {
+            proposalVoteCacheModel.confirmationToken = null;
+        }
+
         return proposalVoteCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(9);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{proposalId=");
         sb.append(getProposalId());
@@ -409,6 +505,12 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         sb.append(getUserId());
         sb.append(", createDate=");
         sb.append(getCreateDate());
+        sb.append(", isValid=");
+        sb.append(getIsValid());
+        sb.append(", confirmationEmailSendDate=");
+        sb.append(getConfirmationEmailSendDate());
+        sb.append(", confirmationToken=");
+        sb.append(getConfirmationToken());
         sb.append("}");
 
         return sb.toString();
@@ -416,7 +518,7 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(16);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.ProposalVote");
@@ -437,6 +539,18 @@ public class ProposalVoteModelImpl extends BaseModelImpl<ProposalVote>
         sb.append(
             "<column><column-name>createDate</column-name><column-value><![CDATA[");
         sb.append(getCreateDate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>isValid</column-name><column-value><![CDATA[");
+        sb.append(getIsValid());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>confirmationEmailSendDate</column-name><column-value><![CDATA[");
+        sb.append(getConfirmationEmailSendDate());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>confirmationToken</column-name><column-value><![CDATA[");
+        sb.append(getConfirmationToken());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

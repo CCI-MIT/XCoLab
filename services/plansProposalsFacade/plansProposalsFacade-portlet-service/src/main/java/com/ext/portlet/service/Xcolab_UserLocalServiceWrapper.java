@@ -47,158 +47,92 @@ public class Xcolab_UserLocalServiceWrapper implements Xcolab_UserLocalService,
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameAsc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenName(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByScreenNameAsc(begin,
-            end, filter);
+        return _xcolab_UserLocalService.getUsersSortedByScreenName(begin, end,
+            filter, ascendingOrder);
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameAscFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByScreenNameAscFilteredByCategory(begin,
-            end, filter, memberCategory);
+        return _xcolab_UserLocalService.getUsersSortedByScreenNameFilteredByCategory(begin,
+            end, filter, memberCategory, ascendingOrder);
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameDesc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleName(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByScreenNameDesc(begin,
-            end, filter);
+        return _xcolab_UserLocalService.getUsersSortedByRoleName(begin, end,
+            filter, ascendingOrder);
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByScreenNameDescFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSince(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _xcolab_UserLocalService.getUsersSortedByMemberSince(begin, end,
+            filter, ascendingOrder);
+    }
+
+    @Override
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByScreenNameDescFilteredByCategory(begin,
-            end, filter, memberCategory);
+        return _xcolab_UserLocalService.getUsersSortedByMemberSinceFilteredByCategory(begin,
+            end, filter, memberCategory, ascendingOrder);
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleNameAsc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCount(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByRoleNameAsc(begin, end,
-            filter);
+        return _xcolab_UserLocalService.getUsersSortedByActivityCount(begin,
+            end, filter, ascendingOrder);
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByRoleNameDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByRoleNameDesc(begin,
-            end, filter);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByMemberSinceAsc(begin,
-            end, filter);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceAscFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategory, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByMemberSinceAscFilteredByCategory(begin,
-            end, filter, memberCategory);
+        return _xcolab_UserLocalService.getUsersSortedByActivityCountFilteredByCategory(begin,
+            end, filter, memberCategory, ascendingOrder);
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceDesc(
-        int begin, int end, java.lang.String filter)
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPoints(
+        int begin, int end, java.lang.String filter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByMemberSinceDesc(begin,
-            end, filter);
+        return _xcolab_UserLocalService.getUsersSortedByPoints(begin, end,
+            filter, ascendingOrder);
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByMemberSinceDescFilteredByCategory(
+    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsFilteredByCategory(
         int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
+        java.lang.String memberCategoryFilter, boolean ascendingOrder)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByMemberSinceDescFilteredByCategory(begin,
-            end, filter, memberCategory);
+        return _xcolab_UserLocalService.getUsersSortedByPointsFilteredByCategory(begin,
+            end, filter, memberCategoryFilter, ascendingOrder);
     }
 
     @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountAsc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByActivityCountAsc(begin,
-            end, filter);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByActivityCountAscFilteredByCategory(begin,
-            end, filter, memberCategory);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountDesc(
-        int begin, int end, java.lang.String filter)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByActivityCountDesc(begin,
-            end, filter);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByActivityCountDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategory)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _xcolab_UserLocalService.getUsersSortedByActivityCountDescFilteredByCategory(begin,
-            end, filter, memberCategory);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAsc(
-        int begin, int end, java.lang.String filter) {
-        return _xcolab_UserLocalService.getUsersSortedByPointsAsc(begin, end,
-            filter);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsDesc(
-        int begin, int end, java.lang.String filter) {
-        return _xcolab_UserLocalService.getUsersSortedByPointsDesc(begin, end,
-            filter);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsAscFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter) {
-        return _xcolab_UserLocalService.getUsersSortedByPointsAscFilteredByCategory(begin,
-            end, filter, memberCategoryFilter);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getUsersSortedByPointsDescFilteredByCategory(
-        int begin, int end, java.lang.String filter,
-        java.lang.String memberCategoryFilter) {
-        return _xcolab_UserLocalService.getUsersSortedByPointsDescFilteredByCategory(begin,
-            end, filter, memberCategoryFilter);
-    }
-
-    @Override
-    public java.util.List<java.lang.Long> getUserActivityCount(
-        java.lang.Long userId)
+    public long getUserActivityCount(java.lang.Long userId)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _xcolab_UserLocalService.getUserActivityCount(userId);
+    }
+
+    @Override
+    public java.util.List<com.liferay.portal.model.User> findUsersByLoginIP(
+        java.lang.String loginIP)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _xcolab_UserLocalService.findUsersByLoginIP(loginIP);
     }
 
     /**

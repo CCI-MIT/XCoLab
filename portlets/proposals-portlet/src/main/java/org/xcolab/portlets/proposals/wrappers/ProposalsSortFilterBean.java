@@ -1,48 +1,59 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.portlets.proposals.utils.ProposalsColumn;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.portlets.proposals.utils.ProposalsColumn;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 public class ProposalsSortFilterBean {
+
     private final List<ProposalWrapper> proposals;
-    private final SortFilterPage sortFilterPage;
     private Comparator<ProposalWrapper> proposalComparator;
     
-    private List<ProposalWrapper> proposalsWithRibbons = new ArrayList<ProposalWrapper>();
-    private List<ProposalWrapper> proposalsNormal = new ArrayList<ProposalWrapper>();
-    
+    private List<ProposalWrapper> proposalsWithRibbons = new ArrayList<>();
+    private List<ProposalWrapper> proposalsNormal = new ArrayList<>();
 
     public ProposalsSortFilterBean(List<ProposalWrapper> proposals, final SortFilterPage sortFilterPage) throws PortalException, SystemException {
         super();
-        this.sortFilterPage = sortFilterPage;
         this.proposals = proposals;
+
+        if (sortFilterPage == null) {
+            throw new PortalException("sortFilterPage was null");
+        }
         
         // sort proposals
-        if (sortFilterPage != null && StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("NAME")) proposalComparator = ProposalsColumn.NAME.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("AUTHOR")) proposalComparator = ProposalsColumn.AUTHOR.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("COMMENTS")) proposalComparator = ProposalsColumn.COMMENTS.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("CONTRIBUTORS")) proposalComparator = ProposalsColumn.CONTRIBUTORS.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("MODIFIED")) proposalComparator = ProposalsColumn.MODIFIED.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("SUPPORTERS")) proposalComparator = ProposalsColumn.SUPPORTERS.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("VOTES")) proposalComparator = ProposalsColumn.VOTES.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("JUDGESTATUS")) proposalComparator = ProposalsColumn.JUDGESTATUS.getComparator();
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("SCREENINGSTATUS")) proposalComparator = ProposalsColumn.SCREENINGSTATUS.getComparator();
-
-            if (sortFilterPage.getSortColumn().equalsIgnoreCase("OVERALLSTATUS")) proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator();
+        if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
+            switch (sortFilterPage.getSortColumn().toUpperCase()) {
+                case "NAME":
+                    proposalComparator = ProposalsColumn.NAME.getComparator(); break;
+                case "AUTHOR":
+                    proposalComparator = ProposalsColumn.AUTHOR.getComparator(); break;
+                case "COMMENTS":
+                    proposalComparator = ProposalsColumn.COMMENTS.getComparator(); break;
+                case "CONTRIBUTORS":
+                    proposalComparator = ProposalsColumn.CONTRIBUTORS.getComparator(); break;
+                case "MODIFIED":
+                    proposalComparator = ProposalsColumn.MODIFIED.getComparator(); break;
+                case "SUPPORTERS":
+                    proposalComparator = ProposalsColumn.SUPPORTERS.getComparator(); break;
+                case "VOTES":
+                    proposalComparator = ProposalsColumn.VOTES.getComparator(); break;
+                case "JUDGESTATUS":
+                    proposalComparator = ProposalsColumn.JUDGESTATUS.getComparator(); break;
+                case "SCREENINGSTATUS":
+                    proposalComparator = ProposalsColumn.SCREENINGSTATUS.getComparator(); break;
+                case "OVERALLSTATUS":
+                    proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator(); break;
+                default:
+                    throw new PortalException("Unknown sort column");
+            }
         }
-
         
         if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
             proposalComparator = ProposalsColumn.valueOf(sortFilterPage.getSortColumn()).getComparator();
@@ -52,40 +63,42 @@ public class ProposalsSortFilterBean {
             sortFilterPage.setSortAscending(!sortFilterPage.isSortAscending()); // default sort is date DESC
         }
         
-        
         Collections.sort(this.proposals, new Comparator<ProposalWrapper>() {
             @Override
             public int compare(ProposalWrapper o1, ProposalWrapper o2) {
                 if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
-                    try {
-                        int ribbonDiff = o1.getRibbonWrapper().getRibbon() - o2.getRibbonWrapper().getRibbon();
-                        if (ribbonDiff != 0) {
-                            return ribbonDiff;
-                        }
+                    final RibbonWrapper ribbon1 = o1.getRibbonWrapper();
+                    final RibbonWrapper ribbon2 = o2.getRibbonWrapper();
+
+                    int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
+                    if (sortOrderDiff != 0) {
+                        return sortOrderDiff;
                     }
-                    catch (Exception e) {
-                        _log.error("can't compare proposals", e);
+
+                    int ribbonDiff = ribbon1.getRibbon() - ribbon2.getRibbon();
+                    if (ribbonDiff != 0) {
+                        return ribbonDiff;
                     }
                 }
-                int ret = proposalComparator.compare(o1, o2);
-
-                return sortFilterPage.isSortAscending() ? ret : - ret;
+                if (sortFilterPage.isSortAscending()) {
+                    return proposalComparator.compare(o1, o2);
+                }
+                return proposalComparator.compare(o2, o1);
             }
         });
         
         for (ProposalWrapper contest: this.proposals) {
-            if (contest.getRibbonWrapper().getRibbon() > 0) proposalsWithRibbons.add(contest);
-            else proposalsNormal.add(contest);
+            if (contest.getRibbonWrapper().getRibbon() > 0) {
+                proposalsWithRibbons.add(contest);
+            } else {
+                proposalsNormal.add(contest);
+            }
         }
     }
 
-    
-    
     public List<ProposalWrapper> getProposalsWithRibbons() {
         return proposalsWithRibbons;
     }
-
-
 
     public void setProposalsWithRibbons(List<ProposalWrapper> proposalsWithRibbons) {
         this.proposalsWithRibbons = proposalsWithRibbons;
@@ -95,19 +108,11 @@ public class ProposalsSortFilterBean {
         return proposalsNormal;
     }
 
-
-
     public void setProposalsNormal(List<ProposalWrapper> proposalsNormal) {
         this.proposalsNormal = proposalsNormal;
     }
 
-
-
     public List<ProposalWrapper> getProposals() {
         return proposals;
     }
-
-
-
-    private final static Log _log = LogFactoryUtil.getLog(ProposalsSortFilterBean.class);
 }

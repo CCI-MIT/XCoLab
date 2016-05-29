@@ -1,22 +1,21 @@
-<jsp:root
-        xmlns:c="http://java.sun.com/jsp/jstl/core"
-        xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-        xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-        xmlns:form="http://www.springframework.org/tags/form"
-        version="2.0">
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+
+    <liferay-theme:defineObjects />
+
     <jsp:directive.attribute name="value" type="java.lang.Integer" required="true" rtexprvalue="true" description="Status value of the icon" />
 
     <span class="fieldWithTooltip">
         <c:choose>
             <c:when test="${value == 0}">
-                <img src="/climatecolab-theme/images/icon_question-chk-qm.png"/>
+                <img src="${themeDisplay.pathThemeImages}/icon_question-chk-qm.png"/>
             </c:when>
             <c:when test="${value == 1}">
-                <img src="/climatecolab-theme/images/icon_question-x.png"/>
+                <img src="${themeDisplay.pathThemeImages}/icon_question-x.png"/>
             </c:when>
             <c:otherwise>
-                <img src="/climatecolab-theme/images/icon_question-chk.png"/>
+                <img src="${themeDisplay.pathThemeImages}/icon_question-chk.png"/>
             </c:otherwise>
         </c:choose>
         </span>

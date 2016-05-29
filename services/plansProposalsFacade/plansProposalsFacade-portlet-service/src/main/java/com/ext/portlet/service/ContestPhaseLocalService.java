@@ -247,12 +247,6 @@ public interface ContestPhaseLocalService extends BaseLocalService,
     public void overrideClock(org.xcolab.utils.Clock clock);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.PlanItem> getPlans(
-        com.ext.portlet.model.ContestPhase contestPhase)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public com.ext.portlet.contests.ContestStatus getContestStatus(
         com.ext.portlet.model.ContestPhase contestPhase)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -372,4 +366,14 @@ public interface ContestPhaseLocalService extends BaseLocalService,
         com.ext.portlet.model.ContestPhase phase)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the URL link address for the passed contest phase
+    *
+    * @param contestPhase   The contest object
+    * @return Contest phase URL as String
+    */
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getContestPhaseLinkUrl(
+        com.ext.portlet.model.ContestPhase contestPhase);
 }

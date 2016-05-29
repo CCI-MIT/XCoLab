@@ -6,7 +6,6 @@
 
 package com.ext.portlet.models.ui;
 
-import com.liferay.portal.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -27,9 +26,9 @@ import edu.mit.cci.roma.client.Variable;
  */
 public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
 
-    private MetaData md;
+    private final MetaData md;
 
-    private static Log _log = LogFactoryUtil.getLog(ModelOutputScalarDisplayItem.class);
+    private static final Log _log = LogFactoryUtil.getLog(ModelOutputScalarDisplayItem.class);
 
 
     /**
@@ -56,6 +55,7 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
 
     }
 
+    @Override
     public String getName() {
         return md.getName();
     }
@@ -66,7 +66,7 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
     }
 
     @Override
-    public void setOrder(int o) throws SystemException {
+    public void setOrder(int o) {
        _log.warn("Setting order on scalar items is not currently supported");
     }
     
@@ -97,11 +97,11 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
         return true;
     }
     
-    public void setVisible(boolean visible) throws SystemException {
+    public void setVisible(boolean visible) {
        _log.warn("Setting visibility on scalar items is not currently supported");
     }
 
-   // @Override
+    @Override
     public JSONObject toJson() {
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
         jsonObject.put("id", md.getId());

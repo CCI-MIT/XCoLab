@@ -53,7 +53,6 @@ public class ContestServiceSoap {
     /**
     * Returns a list of open contest for regular users and returns all contests for staff users
     *
-    * @return
     * @throws PortalException
     * @throws SystemException
     */
@@ -63,18 +62,6 @@ public class ContestServiceSoap {
             java.util.List<com.ext.portlet.model.Contest> returnValue = ContestServiceUtil.getContestsOpenForProposals();
 
             return com.ext.portlet.model.ContestSoap.toSoapModels(returnValue);
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
-
-    public static int getNumberOfUnreadMessages() throws RemoteException {
-        try {
-            int returnValue = ContestServiceUtil.getNumberOfUnreadMessages();
-
-            return returnValue;
         } catch (Exception e) {
             _log.error(e, e);
 

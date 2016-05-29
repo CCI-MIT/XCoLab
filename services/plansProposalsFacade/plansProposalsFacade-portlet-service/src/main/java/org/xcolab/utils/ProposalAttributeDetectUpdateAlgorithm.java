@@ -28,9 +28,9 @@ public class ProposalAttributeDetectUpdateAlgorithm {
         }
     };
 
-    private ProposalAttribute proposalAttribute;
+    private final ProposalAttribute proposalAttribute;
 
-    private Map<String, ProposalAttributeDetectUpdateImpl> attributeNameToAlgorithmMap;
+    private final Map<String, ProposalAttributeDetectUpdateImpl> attributeNameToAlgorithmMap;
 
     public ProposalAttributeDetectUpdateAlgorithm(ProposalAttribute attribute) {
         this.proposalAttribute = attribute;
@@ -53,6 +53,6 @@ public class ProposalAttributeDetectUpdateAlgorithm {
 
 
     interface ProposalAttributeDetectUpdateImpl {
-        public abstract boolean hasBeenUpdated(ProposalAttribute attribute, String attributeName, long additionalId, long numericValue, double realValue);
+        boolean hasBeenUpdated(ProposalAttribute attribute, String attributeName, long additionalId, long numericValue, double realValue);
     }
 }

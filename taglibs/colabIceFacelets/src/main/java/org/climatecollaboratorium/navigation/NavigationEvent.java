@@ -13,7 +13,7 @@ public class NavigationEvent implements Event, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<String, Map<String, String>> parameters = new HashMap<String, Map<String,String>>();
+	private Map<String, Map<String, String>> parameters = new HashMap<>();
     private String resultName;
     
     public NavigationEvent(Map<String, Map<String, String>> sourcesAndParameters) {
@@ -39,9 +39,4 @@ public class NavigationEvent implements Event, Serializable {
     public void setResultName(String resultName) {
         this.resultName = resultName;
     }
-    
-    
-    
-    
-
 }

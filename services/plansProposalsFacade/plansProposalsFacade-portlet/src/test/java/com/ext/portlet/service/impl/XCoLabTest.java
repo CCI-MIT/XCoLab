@@ -1,6 +1,5 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PointType;
@@ -19,6 +18,7 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalService;
 import com.ext.portlet.service.ProposalLocalService;
 import com.ext.portlet.service.persistence.PointTypePersistence;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
+import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,13 +36,10 @@ import com.liferay.portal.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator;
 import com.liferay.portal.util.InitUtil;
 import org.junit.BeforeClass;
-import org.xcolab.utils.HtmlUtil;
 
-import javax.jcr.query.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +70,7 @@ public class XCoLabTest {
     protected int numberOfCreatedUsers;
 
     @BeforeClass
-    public static void beforeTest() throws Exception {
+    public static void beforeTest() throws SystemException, BeanLocatorException, PortalException {
         new DataSourceFactoryImpl();
 
         new ServiceBeanAutoProxyCreator();
@@ -83,7 +80,7 @@ public class XCoLabTest {
         InitUtil.initWithSpring();
         System.out.println("after init with spring before ctx");
         ResourceActionLocalServiceUtil.checkResourceActions();
-        CompanyThreadLocal.setCompanyId(10112l);
+        CompanyThreadLocal.setCompanyId(10112L);
 
         System.out.println("initialized?");
         contestPhaseTypeLocalService = (ContestPhaseTypeLocalService) PortalBeanLocatorUtil.locate(ContestPhaseTypeLocalService.class.getName());
@@ -113,7 +110,6 @@ public class XCoLabTest {
     /**
      * Create a set of new user model objects
      * @param numberOfUsers number of objects that should be created
-     * @return
      * @throws PortalException
      * @throws SystemException
      */

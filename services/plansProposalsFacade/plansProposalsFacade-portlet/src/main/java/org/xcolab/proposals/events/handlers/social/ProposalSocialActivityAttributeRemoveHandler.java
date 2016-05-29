@@ -5,7 +5,6 @@ import com.google.common.eventbus.Subscribe;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
-import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
 
 public class ProposalSocialActivityAttributeRemoveHandler extends BaseProposalSocialActivityEventHandler {
     

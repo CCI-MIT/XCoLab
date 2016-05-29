@@ -10,8 +10,6 @@ import com.liferay.portal.service.BaseLocalService;
 import com.liferay.portal.service.InvokableLocalService;
 import com.liferay.portal.service.PersistedModelLocalService;
 
-import java.util.*;
-
 /**
  * Provides the local service interface for Contest. Methods of this
  * service will not have security checks based on the propagated JAAS
@@ -254,6 +252,21 @@ public interface ContestLocalService extends BaseLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getByContestUrlName(
+        java.lang.String contestUrlName)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public java.util.List<com.ext.portlet.model.Contest> findByContestYear(
+        long contestYear)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.Contest getByContestUrlNameContestYear(
+        java.lang.String contestUrlName, long year)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException;
+
     public java.util.List<com.ext.portlet.model.Contest> findByActive(
         boolean active)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -266,10 +279,6 @@ public interface ContestLocalService extends BaseLocalService,
         boolean active, int flag)
         throws com.liferay.portal.kernel.exception.SystemException;
 
-    public java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
-        boolean active, java.lang.String flagText)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
     /**
     * Methods from ContestImpl *
     */
@@ -279,12 +288,6 @@ public interface ContestLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.ContestPhase> getVisiblePhases(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.PlanType getPlanType(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
@@ -308,22 +311,7 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public boolean isActive(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<java.lang.Long> getDebatesIds(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.Integer getTotalVotes(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void updateDefaultPlanDescription(
-        com.ext.portlet.model.Contest contest, java.lang.String description)
-        throws com.liferay.portal.kernel.exception.SystemException;
+    public boolean isActive(com.ext.portlet.model.Contest contest);
 
     public void store(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
@@ -351,18 +339,6 @@ public interface ContestLocalService extends BaseLocalService,
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
-
-    public void setLogo(com.ext.portlet.model.Contest contest,
-        java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException;
-
-    public void setSponsorLogo(com.ext.portlet.model.Contest contest,
-        java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.String getLogoPath(com.ext.portlet.model.Contest contest)
@@ -415,6 +391,12 @@ public interface ContestLocalService extends BaseLocalService,
     public java.util.List<com.ext.portlet.model.ContestTeamMember> getTeamMembers(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.ext.portlet.model.ContestTeamMemberRole getRoleForMember(
+        com.ext.portlet.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.NoSuchModelException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * <p>Returns true if user is subscribed to a contest, false otherwise</p>
@@ -474,7 +456,12 @@ public interface ContestLocalService extends BaseLocalService,
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
-        boolean active, boolean privateContest)
+        boolean contestActive, boolean contestPrivate)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivateType(
+        boolean contestActive, boolean contestPrivate, long contestTypeId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -495,6 +482,12 @@ public interface ContestLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingTier(
         long contestTierType)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsMatchingTierInType(
+        long contestTierType, long contestTypeId)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
 
@@ -538,7 +531,6 @@ public interface ContestLocalService extends BaseLocalService,
     * @param contest           The contest for which the review should be created
     * @param currentPhase      The currently active ContestPhase which should be used for proposal filtering
     * @param serviceContext    A serviceContext which must include the Portal's base URL
-    * @return
     * @throws SystemException
     * @throws PortalException
     */
@@ -573,6 +565,9 @@ public interface ContestLocalService extends BaseLocalService,
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.lang.String getContestLinkUrl(long contestId);
 
     /**
     * Returns the URL link address for the passed contest
@@ -630,23 +625,39 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByContestType(
+        java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.ext.portlet.model.Contest> getContestsByContestTypeIds(
+        java.util.List<java.lang.Long> contestTypeIds)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public int countContestsByContestType(java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
         java.lang.Long contestTier,
         java.util.List<java.lang.Long> focusAreaOntologyTermIds)
-        throws java.lang.Exception;
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
-        java.lang.Long contestScheduleId) throws java.lang.Exception;
+        java.lang.Long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
-        java.lang.Long planTemplateId) throws java.lang.Exception;
+        java.lang.Long planTemplateId)
+        throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
         com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
-        throws java.lang.Exception;
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 
     /**
     * This method adds a year suffix to already completed contests. It iterates over all completed contests
@@ -678,4 +689,7 @@ public interface ContestLocalService extends BaseLocalService,
     */
     public void addContestYearSuffixToContest(
         com.ext.portlet.model.Contest contest, boolean checkForCompleted);
+
+    public java.lang.String generateContestUrlName(
+        com.ext.portlet.model.Contest contest);
 }

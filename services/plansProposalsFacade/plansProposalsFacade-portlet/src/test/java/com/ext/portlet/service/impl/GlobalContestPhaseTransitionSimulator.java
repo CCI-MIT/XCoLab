@@ -10,11 +10,20 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.model.User;
+import org.xcolab.enums.MemberRole;
 import org.xcolab.services.tasks.ProposalContestPhaseAutopromoteTask;
 import org.xcolab.utils.Clock;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -117,7 +126,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                 User randomUser = getRandomUserNotInList(fellows);
                 fellows.add(randomUser);
                 testInstance.userLocalService.addRoleUser(FELLOW_ROLE_ID, randomUser.getUserId());
-                testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), "Fellow");
+                testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), MemberRole.FELLOW);
             } while (doWithProbability(0.6));
 
             //judges
@@ -126,7 +135,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
                 User randomUser = getRandomUserNotInList(judges);
                 judges.add(randomUser);
                 testInstance.userLocalService.addRoleUser(JUDGE_ROLE_ID, randomUser.getUserId());
-                testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), "Judge");
+                testInstance.contestTeamMemberLocalService.addContestTeamMember(randomUser.getUserId(), contest.getContestPK(), MemberRole.JUDGE);
 
 
             } while (doWithProbability(0.6));
@@ -261,7 +270,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
             if (doWithProbability(0.8)) {
                 int fellowAction = randomInt(0, 5);
                 User judgingFellow = contestFellows.get(contestIndex).get(randomInt(0, contestFellows.get(contestIndex).size()));
-                testInstance.proposalLocalService.setAttribute(judgingFellow.getUserId(), p.getProposalId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, fellowAction);
+                testInstance.proposalAttributeLocalService.setAttribute(judgingFellow.getUserId(), p.getProposalId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION, fellowAction);
 
                 System.out.println("contestIndex: "+contestIndex+" proposal: "+p.getProposalId()+" fellowAction: "+fellowAction);
 

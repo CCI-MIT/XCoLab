@@ -1,12 +1,11 @@
 package org.xcolab.portlets.feeds;
 
-import java.io.IOException;
-import java.io.Serializable;
-
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
+import java.io.IOException;
+import java.io.Serializable;
 
 public class FeedsPreferences implements Serializable {
 

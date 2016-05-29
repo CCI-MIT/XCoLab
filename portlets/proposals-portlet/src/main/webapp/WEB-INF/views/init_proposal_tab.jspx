@@ -1,0 +1,9 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+
+	<jsp:directive.include file="./init_proposal.jspx" />
+
+	<!--BaseProposalTabController-->
+	<jsp:useBean id="currentTab" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalTab"/>
+	<jsp:useBean id="currentTabWrapped" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper"/>
+	
+</jsp:root>

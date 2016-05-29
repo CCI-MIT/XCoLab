@@ -279,6 +279,25 @@ public class ContestLocalServiceUtil {
         getService().updateContestGroupsAndDiscussions();
     }
 
+    public static java.util.List<com.ext.portlet.model.Contest> getByContestUrlName(
+        java.lang.String contestUrlName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByContestUrlName(contestUrlName);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> findByContestYear(
+        long contestYear)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().findByContestYear(contestYear);
+    }
+
+    public static com.ext.portlet.model.Contest getByContestUrlNameContestYear(
+        java.lang.String contestUrlName, long year)
+        throws com.ext.portlet.NoSuchContestException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getByContestUrlNameContestYear(contestUrlName, year);
+    }
+
     public static java.util.List<com.ext.portlet.model.Contest> findByActive(
         boolean active)
         throws com.liferay.portal.kernel.exception.SystemException {
@@ -297,12 +316,6 @@ public class ContestLocalServiceUtil {
         return getService().findByActiveFlag(active, flag);
     }
 
-    public static java.util.List<com.ext.portlet.model.Contest> findByActiveFlagText(
-        boolean active, java.lang.String flagText)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByActiveFlagText(active, flagText);
-    }
-
     /**
     * Methods from ContestImpl *
     */
@@ -316,13 +329,6 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getVisiblePhases(contest);
-    }
-
-    public static com.ext.portlet.model.PlanType getPlanType(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getPlanType(contest);
     }
 
     public static java.util.List<com.ext.portlet.model.ContestPhase> getActivePhases(
@@ -346,27 +352,8 @@ public class ContestLocalServiceUtil {
         return getService().getActiveOrLastPhase(contest);
     }
 
-    public static boolean isActive(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public static boolean isActive(com.ext.portlet.model.Contest contest) {
         return getService().isActive(contest);
-    }
-
-    public static java.util.List<java.lang.Long> getDebatesIds(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getDebatesIds(contest);
-    }
-
-    public static java.lang.Integer getTotalVotes(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getTotalVotes(contest);
-    }
-
-    public static void updateDefaultPlanDescription(
-        com.ext.portlet.model.Contest contest, java.lang.String description)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().updateDefaultPlanDescription(contest, description);
     }
 
     public static void store(com.ext.portlet.model.Contest contest)
@@ -400,22 +387,6 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getSponsorLogo(contest);
-    }
-
-    public static void setLogo(com.ext.portlet.model.Contest contest,
-        java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        getService().setLogo(contest, logoFile);
-    }
-
-    public static void setSponsorLogo(com.ext.portlet.model.Contest contest,
-        java.io.File logoFile)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        getService().setSponsorLogo(contest, logoFile);
     }
 
     public static java.lang.String getLogoPath(
@@ -483,6 +454,13 @@ public class ContestLocalServiceUtil {
         return getService().getTeamMembers(contest);
     }
 
+    public static com.ext.portlet.model.ContestTeamMemberRole getRoleForMember(
+        com.ext.portlet.model.ContestTeamMember contestTeamMember)
+        throws com.liferay.portal.NoSuchModelException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getRoleForMember(contestTeamMember);
+    }
+
     /**
     * <p>Returns true if user is subscribed to a contest, false otherwise</p>
     *
@@ -546,9 +524,18 @@ public class ContestLocalServiceUtil {
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivate(
-        boolean active, boolean privateContest)
+        boolean contestActive, boolean contestPrivate)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getContestsByActivePrivate(active, privateContest);
+        return getService()
+                   .getContestsByActivePrivate(contestActive, contestPrivate);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByActivePrivateType(
+        boolean contestActive, boolean contestPrivate, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getContestsByActivePrivateType(contestActive,
+            contestPrivate, contestTypeId);
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> getContestsMatchingOntologyTerms(
@@ -572,6 +559,14 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsMatchingTier(contestTierType);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsMatchingTierInType(
+        long contestTierType, long contestTypeId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getContestsMatchingTierInType(contestTierType, contestTypeId);
     }
 
     /**
@@ -620,7 +615,6 @@ public class ContestLocalServiceUtil {
     * @param contest           The contest for which the review should be created
     * @param currentPhase      The currently active ContestPhase which should be used for proposal filtering
     * @param serviceContext    A serviceContext which must include the Portal's base URL
-    * @return
     * @throws SystemException
     * @throws PortalException
     */
@@ -661,6 +655,10 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestManagersForContest(contest);
+    }
+
+    public static java.lang.String getContestLinkUrl(long contestId) {
+        return getService().getContestLinkUrl(contestId);
     }
 
     /**
@@ -728,28 +726,48 @@ public class ContestLocalServiceUtil {
         return getService().getContestImpactFocusAreas(contest);
     }
 
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByContestType(
+        java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestsByContestType(contestTypeId);
+    }
+
+    public static java.util.List<com.ext.portlet.model.Contest> getContestsByContestTypeIds(
+        java.util.List<java.lang.Long> contestTypeIds)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getContestsByContestTypeIds(contestTypeIds);
+    }
+
+    public static int countContestsByContestType(java.lang.Long contestTypeId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().countContestsByContestType(contestTypeId);
+    }
+
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByTierLevelAndOntologyTermIds(
         java.lang.Long contestTier,
         java.util.List<java.lang.Long> focusAreaOntologyTermIds)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .getContestsByTierLevelAndOntologyTermIds(contestTier,
             focusAreaOntologyTermIds);
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByContestScheduleId(
-        java.lang.Long contestScheduleId) throws java.lang.Exception {
+        java.lang.Long contestScheduleId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsByContestScheduleId(contestScheduleId);
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> getContestsByPlanTemplateId(
-        java.lang.Long planTemplateId) throws java.lang.Exception {
+        java.lang.Long planTemplateId)
+        throws com.liferay.portal.kernel.exception.SystemException {
         return getService().getContestsByPlanTemplateId(planTemplateId);
     }
 
     public static java.util.List<com.ext.portlet.model.Contest> getSubContestsByOntologySpaceId(
         com.ext.portlet.model.Contest contest, java.lang.Long ontologySpaceId)
-        throws java.lang.Exception {
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
         return getService()
                    .getSubContestsByOntologySpaceId(contest, ontologySpaceId);
     }
@@ -788,6 +806,11 @@ public class ContestLocalServiceUtil {
     public static void addContestYearSuffixToContest(
         com.ext.portlet.model.Contest contest, boolean checkForCompleted) {
         getService().addContestYearSuffixToContest(contest, checkForCompleted);
+    }
+
+    public static java.lang.String generateContestUrlName(
+        com.ext.portlet.model.Contest contest) {
+        return getService().generateContestUrlName(contest);
     }
 
     public static void clearService() {

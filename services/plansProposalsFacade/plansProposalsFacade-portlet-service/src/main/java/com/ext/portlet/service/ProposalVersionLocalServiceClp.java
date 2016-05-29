@@ -746,7 +746,7 @@ public class ProposalVersionLocalServiceClp
     @Override
     public com.ext.portlet.model.ProposalVersion getByProposalIdVersion(
         long proposalId, int version)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchProposalVersionException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -757,8 +757,8 @@ public class ProposalVersionLocalServiceClp
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            if (t instanceof com.ext.portlet.NoSuchProposalVersionException) {
+                throw (com.ext.portlet.NoSuchProposalVersionException) t;
             }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {

@@ -9,25 +9,25 @@
     xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
 
-    <div class="headline prophead">
+    <div class="c-Headline prophead">
         <h2><span>#{discussionBean.commentsCount}</span> comments</h2>
-        <div class="comm-butt">
+        <div class="c-Comment__button">
 	        <img src="/climatecolab-theme/images/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="add a comment" /> 
-	        <div class="blue-button" id="addcomment_button2"><a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery("#thecomment")[0].scrollIntoView(); return false;'>Jump to comment form</a></div>
-            <div class="comm-share">
+	        <div class="c-Button__primary" id="addcomment_button2"><a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery(".c-Comment__new")[0].scrollIntoView(); return false;'>Jump to comment form</a></div>
+            <div class="c-Comment__share">
                     <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
                         addthis:title="#{discussionBean.discussion.description}"
                         addthis:description="#{discussionBean.discussion.description}"
                         addthis:url="#{discussionBean.discussionUrl}"
                     >
 
-                    <img src="/climatecolab-theme/images/share.png" width="24" height="24" alt="Share" class="icon_share" />
+                    <img src="/climatecolab-theme/images/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
                     Share conversation
                 </a>
             
             </div>
         </div>
-    </div> <!-- /headline -->
+    </div> <!-- /c-Headline -->
   
     <ice:panelGroup  rendered="#{discussionBean.commentsThread.newMsg}">
         <div>
@@ -35,7 +35,7 @@
         </div>
     </ice:panelGroup> 
     
-    <ice:dataTable value="#{discussionBean.commentsThread.threadMessages}" var="message" varStatus="messageStatus" columnClasses="commentor,the-comment" rowClasses="odd,even" styleClass="comments" id="commentsTable" rendered="#{not discussionBean.commentsThread.newMsg}">
+    <ice:dataTable value="#{discussionBean.commentsThread.threadMessages}" var="message" varStatus="messageStatus" columnClasses="c-Comment__commentor,c-Comment" rowClasses="odd,even" styleClass="c-Comment__list" id="commentsTable" rendered="#{not discussionBean.commentsThread.newMsg}">
         <ice:column styleClass="#{message.expertReview ? 'expertReview' : ''}">
             
             <collab:userPortrait screenName="#{message.author.screenName}" portraitId="#{message.author.portraitId}" width="59" height="59" /><br />
@@ -54,7 +54,7 @@
             <div class="role-indicator">
                 <div style="width: 16px">
                     <img
-                            src="/climatecolab-theme/images/icon_mem-${message.authorRole.lowerCase}.png"
+                            src="/climatecolab-theme/images/${message.authorRole.imageUrl}.png"
                             width="16" height="16" />
                 </div>
                 ${message.authorRole.printName}
@@ -83,7 +83,7 @@
             		<div class="content">
 						<ice:outputText value="#{message.filteredDescription}" escape="false" />
                 	</div>
-                	<div class="commentsActions">
+                	<div class="c-Comment__actions">
                 		<f:subview rendered='#{discussionBean.permissions.canAdminMessages}'>
 							<button class="toggleEditView">Edit</button>
 						</f:subview>
@@ -125,22 +125,22 @@
     		window['comments_toggle_initialized'] = true;
     	}
     </script>
-    <ice:panelGroup styleClass="addcomment" rendered="#{discussionBean.permissions.canAddComment}">
+    <ice:panelGroup styleClass="c-Comment__add" rendered="#{discussionBean.permissions.canAddComment}">
     <script type="text/javascript">
         window.disableAddComment = function() {
-            if (jQuery.trim(jQuery("#thecomment .commentContent").val()) != '') {
-                jQuery("#thecomment .addCommentButton").attr('disabled', true);
+            if (jQuery.trim(jQuery(".c-Comment__new .commentContent").val()) != '') {
+                jQuery(".c-Comment__new .addCommentButton").attr('disabled', true);
             }
         }
         
         window.isAddCommentFormValid = function() {
-            var isValid = (jQuery.trim(jQuery("#thecomment .commentContent").val()) != '');
+            var isValid = (jQuery.trim(jQuery(".c-Comment__new .commentContent").val()) != '');
             
             if (isValid) {
-                jQuery('#thecomment .errorMsg').hide();
+                jQuery('.c-Comment__new .errorMsg').hide();
             }
             else {
-                jQuery('#thecomment .errorMsg').show();
+                jQuery('.c-Comment__new .errorMsg').show();
             }
             return isValid;
         }
@@ -148,22 +148,22 @@
         window.disableAddComment = disableAddComment;
         
         window.enableAddComment = function() {
-            jQuery("#thecomment .addCommentButton").removeAttr('disabled');
+            jQuery(".c-Comment__new .addCommentButton").removeAttr('disabled');
         }
         
         
         enableAddComment();
         
     </script>
-        <div id="add">
+        <div class="c-Comment__add__info">
             <strong>ADD YOUR COMMENT</strong>
         </div>
-        <div id="thecomment">
+        <div class="c-Comment__new">
             <ice:inputHidden id="messageTitle" value="#{discussionBean.newComment.title}" styleClass="title text" maxlength="255"/>
-            <ice:inputTextarea id="messageContent" value="#{discussionBean.newComment.description}" styleClass="commentbox commentContent"/>
+            <ice:inputTextarea id="messageContent" value="#{discussionBean.newComment.description}" styleClass="c-Comment__box commentContent"/>
             <br />
             <span class="errorMsg portlet-msg-error" style="display: none;">Value is required</span>
-            <div class="blue-button"><ice:commandLink  actionListener="#{discussionBean.newComment.addComment}" onclick="if (! window.isAddCommentFormValid()) return false; window.disableAddComment();">Add Comment</ice:commandLink></div>
+            <div class="c-Button__primary"><ice:commandLink  actionListener="#{discussionBean.newComment.addComment}" onclick="if (! window.isAddCommentFormValid()) return false; window.disableAddComment();">Add Comment</ice:commandLink></div>
         </div>
     </ice:panelGroup>
     

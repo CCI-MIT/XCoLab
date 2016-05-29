@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilter;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
@@ -23,24 +25,21 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * User: patrickhiesel Date: 03/12/13 Time: 09:46
- */
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 @Controller
 @RequestMapping("view")
 public class ProposalPickerJSONController {
 
-	private static int MAX_CHARS_FOR_NAMES = 75;
-	private static Log _log = LogFactoryUtil.getLog(ProposalPickerJSONController.class);
+	private static final int MAX_CHARS_FOR_NAMES = 75;
+	private static final Log _log = LogFactoryUtil.getLog(ProposalPickerJSONController.class);
 
 	@Autowired
 	private ProposalsContext proposalsContext;
@@ -60,36 +59,46 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) long contestPK) throws IOException,
 			SystemException, PortalException {
 
-		String user = request.getRemoteUser();
+		List<Pair<Proposal, Date>> proposals;
+		final long userId = Long.parseLong(request.getRemoteUser());
 
-		List<Pair<Proposal, Date>> proposals = null;
-
-		final long userId = Long.parseLong(user);
-		if (requestType.equalsIgnoreCase("subscriptionsAndSupporting")) {
-			proposals = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
-					userId, filterType, sectionId, request, proposalsContext);
-		} else if (requestType.equalsIgnoreCase("subscriptions")) {
-			proposals = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
-					userId, filterType, sectionId, request, proposalsContext);
-		} else if (requestType.equalsIgnoreCase("supporting")) {
-			proposals = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
-					userId, filterType, sectionId, request, proposalsContext);
-		} else if (requestType.equalsIgnoreCase("all")
-				|| requestType.equalsIgnoreCase("contests")) {
-			proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterType,
-					sectionId, contestPK, request, proposalsContext);
+		switch (requestType.toUpperCase()) {
+			case "SUBSCRIPTIONSANDSUPPORTING":
+				proposals = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
+						userId, filterType, sectionId, request, proposalsContext);
+				break;
+			case "SUBSCRIPTIONS":
+				proposals = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
+						userId, filterType, sectionId, request, proposalsContext);
+				break;
+			case "SUPPORTING":
+				proposals = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
+						userId, filterType, sectionId, request, proposalsContext);
+				break;
+			case "ALL":
+			case "CONTESTS":
+				proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterType,
+						sectionId, contestPK, request, proposalsContext);
+				break;
+			default:
+				_log.error("Proposal picker was loaded with unknown requestType " + requestType);
+				throw new PortalException("Unknown requestType " + requestType);
 		}
+
 		int totalCount;
 		if (proposals != null) {
-			if (filterText != null && filterText.length() > 0)
+			if (filterText != null && !filterText.isEmpty()) {
 				ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
+			}
 			totalCount = proposals.size();
 
 			ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
-			if (end >= totalCount && totalCount > 0)
+			if (end >= totalCount && totalCount > 0) {
 				end = totalCount;
-			if (totalCount > (end - start))
+			}
+			if (totalCount > (end - start)) {
 				proposals = proposals.subList(start, end);
+			}
 
 		} else {
 			totalCount = 0;
@@ -118,14 +127,13 @@ public class ProposalPickerJSONController {
 		Map<Long, String> removedContests = ProposalPickerFilterUtil.filterContests(
 				new ArrayList<>(contests), sectionId, request, proposalsContext, true);
 
-		if (filterText != null && filterText.length() > 0) {
+		if (filterText != null && !filterText.isEmpty()) {
 			ProposalPickerFilter.TEXT_BASED.filterContests(contests,
 					filterText);
 		}
 		int totalCount = contests.size();
 
-		// sortList(sortOrder,sortColumn,contests);
-		if (end >= contests.size() && contests.size() > 0) {
+		if (end >= contests.size() && !contests.isEmpty()) {
 			end = contests.size();
 		}
 		ProposalPickerSortingUtil.sortContestsList(sortOrder, sortColumn, contests, removedContests);
@@ -181,6 +189,7 @@ public class ProposalPickerJSONController {
 					StringEscapeUtils.unescapeXml(wrappedProposal.getName()), MAX_CHARS_FOR_NAMES));
 			o.put("contestName", StringUtils.abbreviate(wrappedProposal
 					.getContest().getContestShortName(), MAX_CHARS_FOR_NAMES));
+			o.put("linkUrl", ProposalLocalServiceUtil.getProposalLinkUrl(wrappedProposal.getContest(), wrappedProposal.getWrapped()));
 			o.put("contestId", wrappedProposal.getContest().getContestPK());
 			if (StringUtils.isNotBlank(wrappedProposal.getTeam())) {
 				o.put("team", wrappedProposal.getTeam());

@@ -1,13 +1,13 @@
 package org.xcolab.portlets.userprofile.beans;
 
-import com.ext.portlet.model.Message;
-import com.ext.portlet.model.MessageRecipientStatus;
-import com.ext.portlet.service.MessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.hibernate.validator.constraints.NotBlank;
+import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.MessagingClient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,49 +16,54 @@ import java.util.List;
 import java.util.Random;
 
 public class MessageBean implements Serializable {
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
+    private List<Member> recipients = new ArrayList<>();
     @NotBlank
     private String messageSubject;
-
     @NotBlank
     private String messageText;
-
     private String messageHoneypot;
     private int messageHoneypotPosition;
-
-	private Message message;
+    private Message message;
     private boolean selected;
-    private List<User> recipients = new ArrayList<User>();
 
-    public MessageBean(){
+    public MessageBean() {
         messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
     }
 
     public MessageBean(Message message) throws PortalException, SystemException {
         this.message = message;
-        for (MessageRecipientStatus receipient: MessageLocalServiceUtil.getRecipients(message)) {
-            recipients.add(UserLocalServiceUtil.getUser(receipient.getUserId()));
-        }
+        this.recipients = MessagingClient.getMessageRecipients(message.getMessageId());
     }
 
-    public void setMessageSubject(String messageSubject) { this.messageSubject=messageSubject; }
+    public String getMessageSubject() {
+        return messageSubject;
+    }
 
-    public String getMessageSubject() { return messageSubject; }
+    public void setMessageSubject(String messageSubject) {
+        this.messageSubject = messageSubject;
+    }
 
-    public void setMessageText(String messageText) { this.messageText=messageText; }
+    public String getMessageText() {
+        return messageText;
+    }
 
-    public String getMessageText() { return messageText; }
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
 
-    public void setMessageHoneypot(String messageHoneypot) { this.messageHoneypot=messageHoneypot; }
+    public String getMessageHoneypot() {
+        return messageHoneypot;
+    }
 
-    public String getMessageHoneypot() { return messageHoneypot; }
+    public void setMessageHoneypot(String messageHoneypot) {
+        this.messageHoneypot = messageHoneypot;
+    }
 
-    public int getMessageHoneypotPosition() { return messageHoneypotPosition; }
+    public int getMessageHoneypotPosition() {
+        return messageHoneypotPosition;
+    }
 
     public String getSubject() {
         return message.getSubject();
@@ -73,9 +78,9 @@ public class MessageBean implements Serializable {
     }
 
     public long getDaysAgo() {
-        final int milisecondsInDay = 1000 * 60 * 60 * 24;
-        long createDay = message.getCreateDate().getTime() / milisecondsInDay;
-        long daysNow = new Date().getTime() / milisecondsInDay;
+        final int millisecondsInDay = 1000 * 60 * 60 * 24;
+        long createDay = message.getCreateDate().getTime() / millisecondsInDay;
+        long daysNow = new Date().getTime() / millisecondsInDay;
         return daysNow - createDay;
     }
 
@@ -83,25 +88,24 @@ public class MessageBean implements Serializable {
         return UserLocalServiceUtil.getUser(message.getFromId());
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
     public boolean isSelected() {
         return selected;
     }
 
-    public Message getMessage() {
-        return message;
-
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
-    public List<User> getTo() {
+    public Message getMessage() {
+        return message;
+    }
+
+    public List<Member> getTo() {
         return recipients;
     }
 
-    public void addRecipientUser(User recipientUser) {
-         recipients.add(recipientUser);
+    public void addRecipientUser(Member recipientUser) {
+        recipients.add(recipientUser);
     }
 
     public Long getMessageId() {

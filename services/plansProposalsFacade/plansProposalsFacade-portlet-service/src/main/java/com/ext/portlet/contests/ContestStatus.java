@@ -6,13 +6,6 @@
 
 package com.ext.portlet.contests;
 
-/**
- * Created by IntelliJ IDEA.
- * User: jintrone
- * Date: Aug 5, 2010
- * Time: 2:59:51 PM
- * To change this template use File | Settings | File Templates.
- */
 public enum ContestStatus {
 
     NOT_YET_OPEN("Not yet open",false, false,false),
@@ -25,8 +18,7 @@ public enum ContestStatus {
     CLOSED("Closed",false, false,false),
     COMPLETED("Completed",false, false,false);
 
-
-    private String myName;
+    private final String myName;
 
     public boolean isCanEdit() {
         return canEdit;
@@ -45,7 +37,6 @@ public enum ContestStatus {
         this.canEdit = canEdit;
         this.canVote = canVote;
         this.myName = name;
-
     }
 
     public String toString() {

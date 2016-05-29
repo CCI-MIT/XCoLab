@@ -24,7 +24,7 @@ public class BalloonCookie implements Serializable {
     private String uuid;
     private String extraDataLogged;
 
-    public static final String COOKIE_NAME = "climatecolabBalloonCookie2015";
+    public static final String COOKIE_NAME = "climatecolabBalloonCookie2016";
 
     /**
 	 * 

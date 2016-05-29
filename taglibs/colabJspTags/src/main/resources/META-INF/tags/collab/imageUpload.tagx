@@ -1,5 +1,4 @@
-<jsp:root 
-  xmlns:c="http://java.sun.com/jsp/jstl/core" 
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
   xmlns:jsp="http://java.sun.com/JSP/Page"  
   version="2.0">
 
@@ -39,10 +38,11 @@
             if(jQuery(this).contents().text()) {
               var response;
               if (isJSONavailable()) {
-                response = JSON.parse(jQuery(this).contents().text());
+                response = JSON.parse(jQuery(this).contents().find("body").text());
               } else {
-                response = eval("(" + jQuery(this).contents().text() + ")");
+                response = eval("(" + jQuery(this).contents().find("body").text() + ")");
               }
+              console.log(response);
               if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
                 updatePictureId(uploadImageDivId, response.imageId);
                 jQuery(uploadImageDivId).unblock();
@@ -52,7 +52,7 @@
           }
           catch (e) {
             jQuery.growlUI('', 'Image upload failed.');
-            //console.log("fileUploadFrame error",e);
+            console.log("fileUploadFrame error",e);
           }
 
         });

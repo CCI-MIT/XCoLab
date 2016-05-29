@@ -1,12 +1,12 @@
 package com.ext.portlet.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
 import com.ext.portlet.model.DiscussionMessageFlag;
 import com.ext.portlet.service.base.DiscussionMessageFlagLocalServiceBaseImpl;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the discussion message flag local service.
@@ -30,10 +30,12 @@ public class DiscussionMessageFlagLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.DiscussionMessageFlagLocalServiceUtil} to access the discussion message flag local service.
      */
 
+    @Override
     public List<DiscussionMessageFlag> findMessageFlags(Long messageId) throws SystemException {
         return discussionMessageFlagPersistence.findByMessageId(messageId);
     }
     
+    @Override
     public DiscussionMessageFlag createFlag(Long messageId, String flagType, String data, Long userId) throws SystemException {
         Long pk = CounterLocalServiceUtil.increment(DiscussionMessageFlag.class.getName());
         DiscussionMessageFlag flag = createDiscussionMessageFlag(pk);

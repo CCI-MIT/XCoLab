@@ -669,7 +669,7 @@ public class ContestDiscussionLocalServiceClp
     @Override
     public java.lang.Long getDiscussionIdByContestIdAndTabName(
         java.lang.Long contestId, java.lang.String tabName)
-        throws com.liferay.portal.kernel.exception.PortalException,
+        throws com.ext.portlet.NoSuchContestDiscussionException,
             com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -684,8 +684,8 @@ public class ContestDiscussionLocalServiceClp
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
 
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            if (t instanceof com.ext.portlet.NoSuchContestDiscussionException) {
+                throw (com.ext.portlet.NoSuchContestDiscussionException) t;
             }
 
             if (t instanceof com.liferay.portal.kernel.exception.SystemException) {

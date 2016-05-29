@@ -1,5 +1,7 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.struts.StrutsAction;
@@ -55,8 +57,7 @@ public class UpdatePasswordStrutsAction extends BaseStrutsAction {
 
 			TicketLocalServiceUtil.deleteTicket(ticket);
 		}
-		catch (Exception e) {
-		}
+		catch (SystemException | PortalException ignored) { }
 
 		return null;
 	}

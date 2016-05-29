@@ -1,25 +1,92 @@
 <?xml version="1.0"?>
-<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.2.0//EN"
-"http://www.liferay.com/dtd/liferay-friendly-url-routes_6_2_0.dtd">
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN"
+        "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
 <routes>
+
     <route>
-        <pattern>/page/{page}/{instanceId}</pattern>
+        <pattern>/</pattern>
+        <implicit-parameter name="page">1</implicit-parameter>
+        <implicit-parameter name="memberCategory"/>
+        <implicit-parameter name="sortColumn">POINTS</implicit-parameter>
+        <implicit-parameter name="sortAscending">false</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/page/{page}</pattern>
         <generated-parameter name="page">{page}</generated-parameter>
+        <implicit-parameter name="memberCategory"/>
+        <implicit-parameter name="sortColumn">POINTS</implicit-parameter>
+        <implicit-parameter name="sortAscending">false</implicit-parameter>
     </route>
-    
+
     <route>
-        <pattern>/userId/{userId}/{instanceId}</pattern>
-        <generated-parameter name="userId">{userId}</generated-parameter>
+        <pattern>/category/{memberCategory}</pattern>
+        <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
+        <implicit-parameter name="sortColumn">POINTS</implicit-parameter>
+        <implicit-parameter name="sortAscending">false</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
     </route>
-    
+
     <route>
-        <pattern>/userId/{userId}/page/{page}/{instanceId}</pattern>
-        <generated-parameter name="userId">{userId}</generated-parameter>
+        <pattern>/category/{memberCategory}/page/{page}</pattern>
+        <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
         <generated-parameter name="page">{page}</generated-parameter>
+        <implicit-parameter name="sortColumn">POINTS</implicit-parameter>
+        <implicit-parameter name="sortAscending">false</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/sort/{sortColumn}</pattern>
+        <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
+        <implicit-parameter name="memberCategory"/>
+        <implicit-parameter name="sortAscending">false</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/sort/{sortColumn}/ascending</pattern>
+        <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
+        <implicit-parameter name="memberCategory"/>
+        <implicit-parameter name="sortAscending">true</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/category/{memberCategory}/sort/{sortColumn}</pattern>
+        <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
+        <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
+        <implicit-parameter name="sortAscending">false</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/category/{memberCategory}/sort/{sortColumn}/ascending</pattern>
+        <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
+        <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
+        <implicit-parameter name="sortAscending">true</implicit-parameter>
+        <implicit-parameter name="page">1</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/category/{memberCategory}/page/{page}/sort/{sortColumn}</pattern>
+        <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
+        <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
+        <generated-parameter name="page">{page}</generated-parameter>
+        <implicit-parameter name="sortAscending">false</implicit-parameter>
+    </route>
+    <route>
+        <pattern>/category/{memberCategory}/page/{page}/sort/{sortColumn}/ascending</pattern>
+        <generated-parameter name="memberCategory">{memberCategory}</generated-parameter>
+        <generated-parameter name="sortColumn">{sortColumn}</generated-parameter>
+        <generated-parameter name="page">{page}</generated-parameter>
+        <implicit-parameter name="sortAscending">true</implicit-parameter>
     </route>
     
+    <!-- user search API for autocompletion in other portlets -->
     <route>
-        <pattern>/generateDump/{instanceId}/activities.zip</pattern>
-        <generated-parameter name="action">generateDump</generated-parameter>
+        <pattern>/users/partialName/{partialName}</pattern>
+        <generated-parameter name="partialName">{partialName}</generated-parameter>
+        <implicit-parameter name="p_p_id">membersportlet_WAR_membersportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getUsersByPartialName</implicit-parameter>
     </route>
+    
 </routes>

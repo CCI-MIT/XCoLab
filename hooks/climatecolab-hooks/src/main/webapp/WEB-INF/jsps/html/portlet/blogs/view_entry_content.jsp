@@ -65,10 +65,10 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
                 <div class="comm_icons">
                     <a href="<%= viewEntryURL %>#_33_messages_top" title="comments">
                         <c:if test="<%= messagesCount > 0 %>">
-                            <img src="/climatecolab-theme/images/icon_comments2.gif" width="25" height="23" alt="messagesCount comments" />&nbsp;<%= messagesCount %>
+                            <img src="${themeDisplay.pathThemeImages}/icon_comments2.gif" height="23" alt="messagesCount comments" />&nbsp;<%= messagesCount %>
                         </c:if>
                         <c:if test="<%= messagesCount <= 0 %>">
-                            <img src="/climatecolab-theme/images/icon_comments2-none.gif" width="25" height="23" alt="no comments" /> 
+                            <img src="${themeDisplay.pathThemeImages}/icon_comments2-none.png" height="23" alt="no comments" />
                         </c:if>
                     </a>
                                     
@@ -86,7 +86,7 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
                       addthis:description="<%= description %>"
                 
                 >
-                    <img src="/climatecolab-theme/images/icon_share.gif" width="19" height="23" alt="Share" class="icon_share" />
+                    <img src="${themeDisplay.pathThemeImages}/icon_share.png" height="23" alt="Share" class="c-Comment__share" />
                 </a>
                 <!-- AddThis Button BEGIN -->
                 <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
@@ -266,7 +266,7 @@ int messagesCount = MBMessageLocalServiceUtil.getDiscussionMessagesCount(classNa
 					</c:if>
 
 					<c:if test="<%= enableComments %>">
-						<span class="comments">
+						<span class="c-Comment__list">
 
 							<c:choose>
 								<c:when test='<%= strutsAction.equals("/blogs/view_entry") %>'>

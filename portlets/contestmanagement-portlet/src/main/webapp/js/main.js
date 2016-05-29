@@ -16,8 +16,7 @@ function initializeTextEditors() {
             thiz.attr({maxCharacters: limitCharactersMax.text(), validateLength: true});
             this.limitCharacterCounter = limitCharacterCount;
             updateCharacterCounter(thiz);
-        }
-        else {
+        } else {
             thiz.attr({validateLength: false});
         }
 
@@ -60,9 +59,6 @@ function initializeTextEditors() {
         else {
             eventsToBind = {
                 keypress: function(event) {
-                    if (! shouldAllowMoreCharacters(thiz)) {
-                        event.preventDefault();
-                    }
                     if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
                         updateCharacterCounter(thiz);
                     }
@@ -80,8 +76,7 @@ function initializeTextEditors() {
         }
         jQuery(this).addClass('rteInitialized');
     });
-
-};
+}
 
 function updateCharacterCounter(input, editor) {
     var parent = input.parents('.addpropbox');

@@ -42,6 +42,10 @@ public class ProposalVoteWrapper implements ProposalVote,
         attributes.put("contestPhaseId", getContestPhaseId());
         attributes.put("userId", getUserId());
         attributes.put("createDate", getCreateDate());
+        attributes.put("isValid", getIsValid());
+        attributes.put("confirmationEmailSendDate",
+            getConfirmationEmailSendDate());
+        attributes.put("confirmationToken", getConfirmationToken());
 
         return attributes;
     }
@@ -70,6 +74,25 @@ public class ProposalVoteWrapper implements ProposalVote,
 
         if (createDate != null) {
             setCreateDate(createDate);
+        }
+
+        Boolean isValid = (Boolean) attributes.get("isValid");
+
+        if (isValid != null) {
+            setIsValid(isValid);
+        }
+
+        Date confirmationEmailSendDate = (Date) attributes.get(
+                "confirmationEmailSendDate");
+
+        if (confirmationEmailSendDate != null) {
+            setConfirmationEmailSendDate(confirmationEmailSendDate);
+        }
+
+        String confirmationToken = (String) attributes.get("confirmationToken");
+
+        if (confirmationToken != null) {
+            setConfirmationToken(confirmationToken);
         }
     }
 
@@ -194,6 +217,77 @@ public class ProposalVoteWrapper implements ProposalVote,
     @Override
     public void setCreateDate(java.util.Date createDate) {
         _proposalVote.setCreateDate(createDate);
+    }
+
+    /**
+    * Returns the is valid of this proposal vote.
+    *
+    * @return the is valid of this proposal vote
+    */
+    @Override
+    public boolean getIsValid() {
+        return _proposalVote.getIsValid();
+    }
+
+    /**
+    * Returns <code>true</code> if this proposal vote is is valid.
+    *
+    * @return <code>true</code> if this proposal vote is is valid; <code>false</code> otherwise
+    */
+    @Override
+    public boolean isIsValid() {
+        return _proposalVote.isIsValid();
+    }
+
+    /**
+    * Sets whether this proposal vote is is valid.
+    *
+    * @param isValid the is valid of this proposal vote
+    */
+    @Override
+    public void setIsValid(boolean isValid) {
+        _proposalVote.setIsValid(isValid);
+    }
+
+    /**
+    * Returns the confirmation email send date of this proposal vote.
+    *
+    * @return the confirmation email send date of this proposal vote
+    */
+    @Override
+    public java.util.Date getConfirmationEmailSendDate() {
+        return _proposalVote.getConfirmationEmailSendDate();
+    }
+
+    /**
+    * Sets the confirmation email send date of this proposal vote.
+    *
+    * @param confirmationEmailSendDate the confirmation email send date of this proposal vote
+    */
+    @Override
+    public void setConfirmationEmailSendDate(
+        java.util.Date confirmationEmailSendDate) {
+        _proposalVote.setConfirmationEmailSendDate(confirmationEmailSendDate);
+    }
+
+    /**
+    * Returns the confirmation token of this proposal vote.
+    *
+    * @return the confirmation token of this proposal vote
+    */
+    @Override
+    public java.lang.String getConfirmationToken() {
+        return _proposalVote.getConfirmationToken();
+    }
+
+    /**
+    * Sets the confirmation token of this proposal vote.
+    *
+    * @param confirmationToken the confirmation token of this proposal vote
+    */
+    @Override
+    public void setConfirmationToken(java.lang.String confirmationToken) {
+        _proposalVote.setConfirmationToken(confirmationToken);
     }
 
     @Override
