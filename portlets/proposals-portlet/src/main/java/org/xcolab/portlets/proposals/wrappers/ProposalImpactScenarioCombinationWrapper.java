@@ -24,9 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by Thomas on 6/22/2015.
- */
 public class ProposalImpactScenarioCombinationWrapper {
 
     private static final Map<String, Double> REGION_AVG_FACTOR;
@@ -156,7 +153,7 @@ public class ProposalImpactScenarioCombinationWrapper {
     private void initRomaClient() {
         try {
             romaClient = CollaboratoriumModelingService.repository();
-        } catch (Exception e) {
+        } catch (SystemException e) {
             // TODO implement: Wait for roma Client Thread to be stared!
         }
     }
@@ -305,17 +302,15 @@ public class ProposalImpactScenarioCombinationWrapper {
     public Long getOutputScenarioId() {
         if (combinedScenario != null) {
             return combinedScenario.getId();
-        } else {
-            return null;
         }
+        return null;
     }
 
     public Long getOutputModelId() {
         if (combinedSimulation != null) {
             return combinedSimulation.getId();
-        } else {
-            return null;
         }
+        return null;
     }
 
 }

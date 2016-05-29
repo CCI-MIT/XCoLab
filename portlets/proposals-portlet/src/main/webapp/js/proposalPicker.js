@@ -18,7 +18,7 @@ function loadProposals(){
     var URL = replaceURLPlaceholders(proposalPickerURL);
     $.getJSON(URL, { get_param: 'value' }, function(data) {
     	$("#proposalPicker_proposalsContainer").empty();
-        $('#proposalPickerTable > tbody').empty();
+        $('#proposalPickerTable').find('> tbody').empty();
         var even = true;
         $.each(data.proposals, function(index, attr) {
             addToProposalPickerTable(attr,even);
@@ -38,7 +38,7 @@ function loadContests(){
     
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         contests = data.contests;
-        $('#proposalPickerTable > tbody').empty();
+        $('#proposalPickerTable').find('> tbody').empty();
         var even = true;
         var container = $("#proposalPicker_contestsContainer");
         container.empty();
@@ -89,21 +89,21 @@ function proposalPickerTabSelected(element, type){
     element.parent().addClass('c'); proposalPickerPage = 0;
     // check if date should be displayed
     if (type == 'all'){
-        $('#proposalPickerTable > thead > tr > td:nth-child(3)').children().hide();
+        $('#proposalPickerTable').find('> thead > tr > td:nth-child(3)').children().hide();
     } else {
-        $('#proposalPickerTable > thead > tr > td:nth-child(3) > a').show();
+        $('#proposalPickerTable').find('> thead > tr > td:nth-child(3) > a').show();
     }
     if (type == 'contests') {
     	$("#proposalsPicker_proposalsContainer").hide();
     	$("#proposalPickerTableContests").show();
-    	$("#proposalsPicker_proposalsContainer .breadcrumb").show();
+    	$("#proposalsPicker_proposalsContainer").find(".breadcrumb").show();
     	loadContests();
     }
     else {
     	contestPK = 0;
     	$("#proposalsPicker_proposalsContainer").show();
     	$("#proposalPickerTableContests").hide();
-    	$("#proposalsPicker_proposalsContainer .breadcrumb").hide();
+    	$("#proposalsPicker_proposalsContainer").find(".breadcrumb").hide();
     	loadProposals();
     }
 }
@@ -140,7 +140,7 @@ function pickProposal(sectionId, proposalNames, proposalNamesPlural, contestName
     pickMultipleProposals = false;
     updateTabRibbons();
     $('#popup_proposalPicker').show();
-    proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'contests');
+    proposalPickerTabSelected($('#popup_proposalPicker').find('> div > .prop-tabs > ul > li:first > a'),'contests');
 }
 
 /* Pick a list of proposals */
@@ -152,7 +152,7 @@ function pickProposalList(sectionId, proposalNames, proposalNamePlural, contestN
     pickMultipleProposals = true;
     updateTabRibbons();
     $('#popup_proposalPicker').show();
-    proposalPickerTabSelected($('#popup_proposalPicker > div > .prop-tabs > ul > li:first > a'),'contests');
+    proposalPickerTabSelected($('#popup_proposalPicker').find('> div > .prop-tabs > ul > li:first > a'),'contests');
 }
 
 function replaceContestTypeNameVariables(proposalNames, proposalNamesPlural, contestNames, contestNamesPlural) {
@@ -261,7 +261,7 @@ function addPaginationToProposalPickerTable(prev,next,totalPages){
     output += ' Page ' + (proposalPickerPage + 1) + ' of ' + totalPages + ' ';
     if (next) output += '<a href="javascript:;" onClick="proposalPickerPage = (proposalPickerPage + 1); loadProposals();" class="blue-arrow-right"></a>';
     output += '</span>';
-    $('#proposalPickerTable > tbody').append('<tr><td colspan="4" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
+    $('#proposalPickerTable').find('> tbody').append('<tr><td colspan="4" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
 
 function addPaginationToContestsPickerTable(prev,next,totalPages){

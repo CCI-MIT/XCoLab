@@ -1,7 +1,7 @@
 if (typeof(XCoLab) == 'undefined')
-    throw new "XCoLab isn't defined";
+    throw new Error("XCoLab isn't defined");
 if (typeof(XCoLab.modeling) == 'undefined')
-    throw new "XCoLab.modeling isn't defined";
+    throw new Error("XCoLab.modeling isn't defined");
 
 (function () {
     function CustomInputsRenderer(modelingWidget) {
