@@ -1,9 +1,6 @@
 package org.xcolab.activityEntry.discussion;
 
 public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
-    public static final String DISCUSSION_ADDED = "%s started a new discussion %s in %s"; // user,
-    // thread,
-    // categorygroup
 
 
     @Override
@@ -15,8 +12,8 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
         String template = "%s started a new discussion %s in %s";
 
-        return String.format(template, getUserLink(), getDiscussionMessageLink(),
-                getDiscussionCategoryLink());
+        return String.format(template, getUserLink(), getThreadLink(),
+                getCategoryLink());
 
     }
 

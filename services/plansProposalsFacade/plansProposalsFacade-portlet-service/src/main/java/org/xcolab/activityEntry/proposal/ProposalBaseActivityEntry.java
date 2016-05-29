@@ -15,9 +15,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
 
 public abstract class ProposalBaseActivityEntry implements ActivityEntryContentProvider {
 
@@ -37,16 +34,11 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         this.activityEntry = activityEntry;
 
         try {
-            Member member = MembersClient.getMember(activityEntry.getMemberId());
             rawProposal = ProposalLocalServiceUtil.getProposal(this.activityEntry.getClassPrimaryKey());
             contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(rawProposal.getProposalId());
 
             contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(rawProposal.getProposalId());
 
-
-
-        } catch (MemberNotFoundException e) {
-            _log.error("Member not found " + activityEntry.getMemberId());
         } catch (PortalException e){
             _log.error("Portal exception  " + e.getMessage());
         } catch (SystemException e){
@@ -87,7 +79,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
     abstract protected String getBodyTemplate();
 
-    private String getUserLink() {
+    protected String getUserLink() {
         try {
             return CommunityUtil.generateUserURL(activityEntry.getMemberId());
         } catch (PortalException | SystemException e) {

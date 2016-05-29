@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.domain.activityEntry;
+package org.xcolab.service.activities.domain.activityentry;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.records.ActivityEntryRecord;
+import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
@@ -40,6 +41,19 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
             return null;
         }
     }
+
+    public ActivityEntry get(Long activityEntryId) throws NotFoundException {
+
+        final Record record = this.dslContext.selectFrom(ACTIVITY_ENTRY)
+                .where(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID.eq(activityEntryId)).fetchOne();
+
+        if (record == null) {
+            throw new NotFoundException("ActivityEntry with id " + activityEntryId + " does not exist");
+        }
+        return record.into(ActivityEntry.class);
+
+    }
+
 
     public List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,
                                            Long memberId, List<Long> memberIdsToExclude) {

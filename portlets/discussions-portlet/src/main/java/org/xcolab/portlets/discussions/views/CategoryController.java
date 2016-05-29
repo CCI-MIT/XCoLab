@@ -1,20 +1,20 @@
 package org.xcolab.portlets.discussions.views;
 
 import com.ext.portlet.model.DiscussionCategory;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-
+import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadSortColumn;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -71,8 +71,9 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("threads", threads);
         model.addAttribute("sortColumn", threadSortColumn);
         model.addAttribute("sortAscending", sortAscending);
-        model.addAttribute("isSubscribed", ActivitySubscriptionLocalServiceUtil.isSubscribed(
-                themeDisplay.getUserId(), DiscussionCategoryGroup.class, categoryGroup.getGroupId(), 0, ""));
+
+        model.addAttribute("isSubscribed", ActivitiesClient.isSubscribedToActivity(themeDisplay.getUserId(),
+                ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0, ""));
 
         return "category";
     }
@@ -103,8 +104,8 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("threads", currentCategory.getThreads(threadSortColumn, sortAscending));
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
-        model.addAttribute("isSubscribed", ActivitySubscriptionLocalServiceUtil.isSubscribed(
-                themeDisplay.getUserId(), DiscussionCategoryGroup.class, categoryGroup.getGroupId(), 0, Long.toString(categoryId)));
+        model.addAttribute("isSubscribed", ActivitiesClient.isSubscribedToActivity(themeDisplay.getUserId(),
+                ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0,Long.toString(categoryId) ));
 
         return "category";
     }
@@ -167,11 +168,10 @@ public class CategoryController extends BaseDiscussionController {
 
         if (!themeDisplay.getUser().isDefaultUser()) {
             if (categoryId > 0) {
-                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, categoryGroup.getGroupId(),
-                        0, Long.toString(categoryId), themeDisplay.getUserId());
+                ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 , Long.toString(categoryId),themeDisplay.getUserId() );
             } else {
-                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, categoryGroup.getGroupId(),
-                        0, "", themeDisplay.getUserId());
+                ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 ,
+                        "",themeDisplay.getUserId() );
             }
         }
     }
@@ -186,11 +186,15 @@ public class CategoryController extends BaseDiscussionController {
 
         if (!themeDisplay.getUser().isDefaultUser()) {
             if (categoryId > 0) {
-                ActivitySubscriptionLocalServiceUtil.deleteSubscription(themeDisplay.getUserId(),
-                        DiscussionCategoryGroup.class, categoryGroup.getGroupId(), 0, Long.toString(categoryId));
+
+                ActivitiesClient.deleteSubscription(themeDisplay.getUserId(),
+                        ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 ,
+                        Long.toString(categoryId) );
+
             } else {
-                ActivitySubscriptionLocalServiceUtil.deleteSubscription(themeDisplay.getUserId(),
-                        DiscussionCategoryGroup.class, categoryGroup.getGroupId(), 0, "");
+                ActivitiesClient.deleteSubscription(themeDisplay.getUserId(),
+                        ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 ,
+                        "");
             }
         }
     }

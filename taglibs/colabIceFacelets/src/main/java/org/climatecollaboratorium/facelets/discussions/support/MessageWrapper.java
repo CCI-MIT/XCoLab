@@ -1,5 +1,35 @@
 package org.climatecollaboratorium.facelets.discussions.support;
 
+import com.ext.portlet.Activity.ActivityUtil;
+import com.ext.portlet.Activity.DiscussionActivityKeys;
+import com.ext.portlet.model.DiscussionCategoryGroup;
+import com.ext.portlet.model.DiscussionMessage;
+import com.ext.portlet.model.DiscussionMessageFlag;
+import com.ext.portlet.model.SpamReport;
+import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
+import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
+import com.ext.portlet.service.SpamReportLocalServiceUtil;
+import com.ext.utils.userInput.UserInputException;
+import com.ext.utils.userInput.service.UserInputFilterUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
+import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
+import org.climatecollaboratorium.utils.ContentFilterHelper;
+import org.climatecollaboratorium.utils.Helper;
+import org.climatecollaboratorium.utils.HumanTime;
+import org.climatecollaboratorium.validation.ValueRequiredValidator;
+import org.xcolab.activityEntry.discussion.DiscussionAddedActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.enums.MemberRole;
+import org.xcolab.mail.EmailToAdminDispatcher;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,38 +39,6 @@ import java.util.List;
 
 import javax.faces.component.UIInput;
 import javax.faces.event.ActionEvent;
-
-import com.ext.portlet.Activity.DiscussionActivityKeys;
-import com.ext.portlet.model.SpamReport;
-import com.ext.portlet.service.SpamReportLocalServiceUtil;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.util.PortalUtil;
-import org.climatecollaboratorium.facelets.discussions.DiscussionBean;
-import org.climatecollaboratorium.utils.ContentFilterHelper;
-import org.climatecollaboratorium.utils.Helper;
-import org.climatecollaboratorium.utils.HumanTime;
-import org.climatecollaboratorium.validation.ValueRequiredValidator;
-
-import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.discussions.DiscussionMessageFlagType;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.model.DiscussionMessageFlag;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.utils.userInput.UserInputException;
-import com.ext.utils.userInput.service.UserInputFilterUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
-import org.xcolab.activityEntry.discussion.DiscussionCategoryAddedActivityEntry;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.enums.MemberRole;
-import org.xcolab.mail.EmailToAdminDispatcher;
 
 public class MessageWrapper implements Serializable {
     /**
@@ -188,7 +186,7 @@ public class MessageWrapper implements Serializable {
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryId(), wrapped.getMessageId()), 0);
 
             ActivityEntryHelper.createActivityEntry(td.getUserId(), discussionBean.getDiscussionId(),null,
-                    new DiscussionCategoryAddedActivityEntry());
+                    new DiscussionAddedActivityEntry());
         }
     }
     
@@ -433,13 +431,7 @@ public class MessageWrapper implements Serializable {
         return shortDescription;
     }
 
-    public boolean isExpertReview() throws SystemException {
-        return hasFlag(DiscussionMessageFlagType.EXPERT_REVIEW);
-    }
-    
-    public boolean hasFlag(DiscussionMessageFlagType flagType) throws SystemException {
-        return hasFlag(flagType.name());
-    }
+
     
     public boolean hasFlag(String flagType) throws SystemException {
         if (wrapped != null && wrapped.getMessageId() > 0) {

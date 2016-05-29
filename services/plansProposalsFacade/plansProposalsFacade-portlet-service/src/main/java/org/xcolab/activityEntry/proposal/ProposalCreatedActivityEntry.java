@@ -10,7 +10,7 @@ public class ProposalCreatedActivityEntry extends ProposalBaseActivityEntry{
 
     @Override
     public String getBodyTemplate() {
-        return "created <proposal/>";
+        return " created <proposal/>";
     }
 
     @Override

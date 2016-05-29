@@ -5,7 +5,6 @@ import com.ext.portlet.NoSuchDiscussionMessageException;
 import com.ext.portlet.model.DiscussionCategory;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -13,6 +12,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
+
 import org.climatecollaboratorium.events.EventBus;
 import org.climatecollaboratorium.events.EventHandler;
 import org.climatecollaboratorium.events.HandlerRegistration;
@@ -23,10 +23,9 @@ import org.climatecollaboratorium.facelets.discussions.support.CategoryWrapper;
 import org.climatecollaboratorium.facelets.discussions.support.MessageWrapper;
 import org.climatecollaboratorium.navigation.NavigationEvent;
 import org.climatecollaboratorium.utils.Helper;
+import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.client.activities.ActivitiesClient;
 
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,13 +34,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
+
 public class DiscussionBean implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
     private static final boolean SORT_BY_NEWEST = true;
-	protected static final DiscussionPageType DEFAULT_PAGE_TYPE = DiscussionPageType.DISCUSSIONS;
+    protected static final DiscussionPageType DEFAULT_PAGE_TYPE = DiscussionPageType.DISCUSSIONS;
     private Long discussionId;
     private Long categoryId;
     private Long threadId;
@@ -80,17 +83,13 @@ public class DiscussionBean implements Serializable {
 
     public DiscussionBean() {
     }
-    
+
     /**
-     * Method initializes all elements within the bean. If bean wasn't correctly
-     * initialized (there is no such discussion) false is returned. True
-     * otherwise.
-     *
-     * @throws SystemException
-     * @throws PortalException
+     * Method initializes all elements within the bean. If bean wasn't correctly initialized (there
+     * is no such discussion) false is returned. True otherwise.
      */
-    public boolean init(Long discussionId, Long owningGroupId, DiscussionsPermissions permissions, Boolean comments) 
-    throws PortalException, SystemException {
+    public boolean init(Long discussionId, Long owningGroupId, DiscussionsPermissions permissions, Boolean comments)
+            throws PortalException, SystemException {
         if (discussionId == null) {
             return false;
         }
@@ -98,7 +97,7 @@ public class DiscussionBean implements Serializable {
         if (discussionId.equals(lastInitDiscussionId)
                 && (owningGroupId == null && lastInitOwningGroupId == null
                 || owningGroupId != null && owningGroupId.equals(lastInitOwningGroupId)
-                )) {
+        )) {
             // initialization with the same parameters, do nothing as this would
             // cause reset to internal discussion state
             return discussion != null;
@@ -106,10 +105,10 @@ public class DiscussionBean implements Serializable {
         lastInitDiscussionId = discussionId;
         lastInitOwningGroupId = owningGroupId;
         showOnlyComments = comments != null ? comments : false;
-        
+
         this.discussionId = discussionId;
         this.owningGroupId = owningGroupId;
-        
+
         try {
             discussion = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
 
@@ -118,8 +117,8 @@ public class DiscussionBean implements Serializable {
             commentsThread = null;
 
             updatePageType();
-            
-            if (DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion) != null) { 
+
+            if (DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion) != null) {
                 commentsThread = new MessageWrapper(DiscussionCategoryGroupLocalServiceUtil.getCommentThread(discussion), null, this, 0);
             }
         } catch (SystemException | PortalException e) {
@@ -164,12 +163,12 @@ public class DiscussionBean implements Serializable {
     }
 
     private void bindEvents() {
-        for (HandlerRegistration registration: handlerRegistrations) {
+        for (HandlerRegistration registration : handlerRegistrations) {
             registration.unregister();
         }
         handlerRegistrations.clear();
-        
-        
+
+
         handlerRegistrations.add(eventBus.registerHandler(NavigationEvent.class, new EventHandler<NavigationEvent>() {
 
             @Override
@@ -212,7 +211,7 @@ public class DiscussionBean implements Serializable {
             }
 
         }));
-        
+
     }
 
     public void changePageType(ActionEvent e) throws SystemException,
@@ -231,7 +230,7 @@ public class DiscussionBean implements Serializable {
             try {
                 Object obj = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("categoryId");
                 if (obj != null && !obj.toString().trim().isEmpty()) {
-                
+
                     categoryId = Long.parseLong(FacesContext.getCurrentInstance().getExternalContext()
                             .getRequestParameterMap().get("categoryId"));
                 }
@@ -257,7 +256,7 @@ public class DiscussionBean implements Serializable {
         if (showOnlyComments) {
             pageType = DiscussionPageType.COMMENTS;
         }
-        switch(pageType) {
+        switch (pageType) {
             case CATEGORY:
                 getCategories();
                 currentCategory = categoriesById.get(categoryId);
@@ -445,60 +444,60 @@ public class DiscussionBean implements Serializable {
         }
         return owningGroupId;
     }
-    
+
     public void subscribe(ActionEvent e) throws SystemException, PortalException {
         if (Helper.isUserLoggedIn()) {
             StringBuilder extraData = new StringBuilder();
             if (pageType == DiscussionPageType.CATEGORY) {
                 extraData.append(currentCategory.getId());
-            }
-            else if (pageType == DiscussionPageType.THREAD) {
+            } else if (pageType == DiscussionPageType.THREAD) {
                 extraData.append(currentThread.getCategoryId());
                 extraData.append(",");
                 extraData.append(currentThread.getId());
-                
+
             }
             final User liferayUser = Helper.getLiferayUser();
             if (liferayUser != null) {
                 if (isSubscribed()) {
                     // user is subscribed, unsubscribe
-                    ActivitySubscriptionLocalServiceUtil.deleteSubscription(liferayUser.getUserId(),
-                            DiscussionCategoryGroup.class, getDiscussionId(), 0, extraData.toString());
+                    ActivitiesClient.deleteSubscription(liferayUser.getUserId(), ActivityEntryType
+                            .DISCUSSION.getPrimaryTypeId(), getDiscussionId(), 0, extraData.toString());
+                    ;
                 } else {
-                    ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, getDiscussionId(),
-                            0, extraData.toString(), liferayUser.getUserId());
+                    ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(),
+                            getDiscussionId(), 0, extraData.toString(), liferayUser.getUserId());
                 }
             } else {
                 _log.error("Could not retrieve user for subscription: user was null");
             }
         }
     }
-    
+
     public boolean isSubscribed() throws PortalException, SystemException {
         if (Helper.isUserLoggedIn()) {
             StringBuilder extraData = new StringBuilder();
             if (pageType == DiscussionPageType.CATEGORY && currentCategory != null) {
                 extraData.append(currentCategory.getId());
-            }
-            else if (pageType == DiscussionPageType.THREAD) {
+            } else if (pageType == DiscussionPageType.THREAD) {
                 if (currentThread == null) {
                     return false;
                 }
                 extraData.append(currentThread.getCategoryId());
                 extraData.append(",");
-                extraData.append(currentThread.getId());   
+                extraData.append(currentThread.getId());
             }
             final User liferayUser = Helper.getLiferayUser();
             if (liferayUser == null) {
                 _log.error("Could not retrieve user to test subscription: user was null");
                 return false;
             }
-            return ActivitySubscriptionLocalServiceUtil.isSubscribed(
-                    liferayUser.getUserId(), DiscussionCategoryGroup.class, getDiscussionId(), 0, extraData.toString());
+            return ActivitiesClient.isSubscribedToActivity(liferayUser.getUserId(), ActivityEntryType.DISCUSSION.getPrimaryTypeId(),
+                    getDiscussionId(), 0, extraData.toString());
+
         }
         return false;
     }
-    
+
     public Long getDiscussionId() {
         return discussionId;
     }
@@ -506,19 +505,19 @@ public class DiscussionBean implements Serializable {
     public MessageWrapper getCommentsThread() {
         return commentsThread;
     }
-    
+
     public void comentsThreadDeleted() throws PortalException, SystemException {
         discussion = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
         discussion.setCommentsThread(0);
         DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(discussion);
-        
+
         commentsThread = new MessageWrapper(this);
     }
-    
+
     public int getCommentsCount() throws SystemException, PortalException {
         return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(discussion);
     }
-    
+
     public int getThreadsCount() throws SystemException {
         if (threads == null) {
             getThreads();
@@ -530,48 +529,46 @@ public class DiscussionBean implements Serializable {
         if (commentsThread == null || commentsThread.isNewMsg()) {
             commentsThread = messageWrapper;
             messageWrapper.setTitle(messageWrapper.getTitle() + " " + 1);
-        }
-        else {
+        } else {
             messageWrapper.setTitle(messageWrapper.getTitle() + " " + commentsThread.getThreadMessagesCount() + 2);
             getCommentsThread().addMessage(messageWrapper);
         }
         newComment = new MessageWrapper(this);
     }
-    
+
     public MessageWrapper getNewComment() {
         return newComment;
     }
-    
+
     public boolean getHasComments() throws SystemException {
-        return commentsThread.getWrapped() != null;  
+        return commentsThread.getWrapped() != null;
     }
-    
+
     public boolean isByNewest() {
         return SORT_BY_NEWEST;
     }
-    
+
     public void resort() {
-        
+
         Collections.sort(threads, new Comparator<MessageWrapper>() {
 
             @Override
             public int compare(MessageWrapper o1, MessageWrapper o2) {
                 int ret = 0;
-                
+
                 if (sortColumn.equals(ThreadSortColumns.QUESTION.name())) {
                     ret = o1.getTitle().compareToIgnoreCase(o2.getTitle());
-                }
-                else if (sortColumn.equals(ThreadSortColumns.REPLIES.name())) {
+                } else if (sortColumn.equals(ThreadSortColumns.REPLIES.name())) {
                     try {
                         ret = o1.getThreadMessagesCount() - o2.getThreadMessagesCount();
-                    } catch (SystemException ignored) {  }
-                }
-                else if (sortColumn.equals(ThreadSortColumns.LAST_COMMENT.name())) {
+                    } catch (SystemException ignored) {
+                    }
+                } else if (sortColumn.equals(ThreadSortColumns.LAST_COMMENT.name())) {
                     try {
                         ret = o1.getLastActivityAuthor().getScreenName().compareToIgnoreCase(o2.getLastActivityAuthor().getScreenName());
-                    } catch (PortalException | SystemException ignored) { }
-                }
-                else {
+                    } catch (PortalException | SystemException ignored) {
+                    }
+                } else {
                     ret = o1.getLastActivityDate().compareTo(o2.getLastActivityDate());
                 }
                 return sortAscending ? -ret : ret;
@@ -596,15 +593,15 @@ public class DiscussionBean implements Serializable {
     public String getSortColumn() {
         return sortColumn;
     }
-    
+
     public boolean isThreadNull() {
         return currentThread == null;
     }
-    
+
     public boolean isUserLoggedIn() {
         return Helper.isUserLoggedIn();
     }
-    
+
     public String getDiscussionUrl() {
         return discussion.getUrl();
     }

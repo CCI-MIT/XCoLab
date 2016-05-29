@@ -19,6 +19,7 @@
     <modules>
         <module>activities-service</module>
         <module>admin-service</module>
+        <module>comment-service</module>
         <module>contents-service</module>
         <module>contest-service</module>
         <module>emails-service</module>

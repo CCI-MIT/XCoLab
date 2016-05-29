@@ -4,13 +4,15 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-
+import org.xcolab.activityEntry.discussion.DiscussionAddedActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
@@ -95,6 +97,11 @@ public class ThreadController extends BaseDiscussionController {
             comment.setContent(HtmlUtil.cleanSome(body, ""));
             comment.setAuthorId(userId);
             CommentClient.createComment(comment);
+
+            if( !thread.getIsQuiet()) {
+                ActivityEntryHelper.createActivityEntry(userId, comment.getCommentId(), null,
+                        new DiscussionAddedActivityEntry());
+            }
 
             response.sendRedirect(thread.getLinkUrl());
         } else {

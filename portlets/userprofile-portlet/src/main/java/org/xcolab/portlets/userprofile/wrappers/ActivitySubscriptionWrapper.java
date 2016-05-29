@@ -1,8 +1,10 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.SubscriptionType;
-import com.ext.portlet.model.ActivitySubscription;
+
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+
+import org.xcolab.client.activities.pojo.ActivitySubscription;
 
 import java.io.Serializable;
 import java.util.Date;

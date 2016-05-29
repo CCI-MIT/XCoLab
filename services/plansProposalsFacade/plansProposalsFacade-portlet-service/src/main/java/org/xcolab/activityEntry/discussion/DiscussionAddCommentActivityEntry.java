@@ -1,12 +1,10 @@
 package org.xcolab.activityEntry.discussion;
 
-public class DiscussionAddProposalCommentActivityEntry extends DiscussionBaseActivityEntry {
-
-
+public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEntry {
 
     @Override
     public Long getSecondaryType() {
-        return DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId();
+        return DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId();
     }
 
     @Override
@@ -20,11 +18,11 @@ public class DiscussionAddProposalCommentActivityEntry extends DiscussionBaseAct
 
     @Override
     public String getTitle() {
-        return getUserLink() + " added a comment to proposal";
+        return getUserLink() + " added a comment to thread";
     }
 
     @Override
     public String getName() {
-        return "Comment to proposal";
+        return "Comment to thread";
     }
 }

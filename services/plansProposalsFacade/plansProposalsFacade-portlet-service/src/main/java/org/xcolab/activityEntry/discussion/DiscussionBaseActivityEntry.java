@@ -1,21 +1,22 @@
 package org.xcolab.activityEntry.discussion;
 
 import com.ext.portlet.community.CommunityUtil;
-import com.ext.portlet.model.DiscussionCategory;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
+import org.xcolab.client.comment.exceptions.CommentNotFoundException;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.Category;
+import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.CommentThread;
 
 public abstract class DiscussionBaseActivityEntry implements ActivityEntryContentProvider {
 
@@ -23,11 +24,11 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
 
     private static final Log _log = LogFactoryUtil.getLog(DiscussionAddProposalCommentActivityEntry.class);
 
-    protected DiscussionCategoryGroup categoryGroup;
+    protected Comment comment;
 
-    protected DiscussionCategory discussionCategory;
+    protected CommentThread thread;
 
-    protected DiscussionMessage discussion;
+    protected Category category;
 
     public static final String HYPERLINK_FORMAT = "<a href=\"%s\">%s</a>";
 
@@ -35,51 +36,24 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     public void setActivityEntry(ActivityEntry activityEntry) {
         this.activityEntry = activityEntry;
         try {
-            DiscussionMessage comment = DiscussionMessageLocalServiceUtil.getMessageByMessageId(this.activityEntry.getClassPrimaryKey());
-            discussion = DiscussionMessageLocalServiceUtil.getThread(comment);
-
-            categoryGroup = DiscussionMessageLocalServiceUtil.getCategoryGroup(discussion);
-            discussionCategory = DiscussionCategoryLocalServiceUtil.getDiscussionCategoryById(comment.getCategoryId());
-        }catch( SystemException | PortalException ignore){
-
+            comment = CommentClient.getComment(activityEntry.getClassPrimaryKey());
+            thread = CommentClient.getThread(comment.getThreadId());
+            category = CommentClient.getCategory(thread.getCategoryId());
+        }catch(CommentNotFoundException | ThreadNotFoundException | CategoryNotFoundException ignored){
         }
     }
 
-    protected String getDiscussionMessageLink() {
-        try {
-            DiscussionMessage thread = discussion.getThreadId() > 0 ? DiscussionMessageLocalServiceUtil
-                    .getThread(discussion) : discussion;
-
-            String linkText;
-            if (Validator.isNull(thread.getSubject())) {
-                linkText = "Discussion in "
-                        + categoryGroup.getDescription().replaceAll("\"", "'");
-            } else {
-                linkText = thread.getSubject();
-            }
-
-            return String.format(
-                    HYPERLINK_FORMAT,
-                    StringEscapeUtils.escapeHtml4("/web/guest/discussion/-/discussion/thread/" + thread.getThreadId()), linkText);
-
-        } catch (PortalException | SystemException e) {
-            _log.info(e.getMessage());
-        }
-        return "<message not found>";
-    }
-
-    protected String getDiscussionCategoryLink() {
-        String linkUrl = "/web/guest/discussion/-/discussion/category/"+discussionCategory.getCategoryId();
-
+    protected String getThreadLink(){
         return String.format(
                 HYPERLINK_FORMAT,
-                StringEscapeUtils.escapeHtml4(linkUrl), discussionCategory.getName());
+                StringEscapeUtils.escapeHtml4(thread.getLinkUrl()), thread.getTitle());
     }
 
-    protected String getCategoryGroupLink() {
-        return String.format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(categoryGroup.getUrl()), categoryGroup.getDescription());
+    protected String getCategoryLink(){
+        return String.format(
+                HYPERLINK_FORMAT,
+                StringEscapeUtils.escapeHtml4(category.getLinkUrl()), category.getName());
     }
-
     protected String getUserLink() {
         try {
             return CommunityUtil.generateUserURL(this.activityEntry.getMemberId());
@@ -99,7 +73,8 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
         DISCUSSION_PROPOSAL_COMMENT(1l),
         DISCUSSION_CATEGORY_ADDED(2l),
         DISCUSSION_ADDED(3l),
-        DISCUSSION_FORUM_COMMENT(4l);
+        DISCUSSION_FORUM_COMMENT(4l),
+        DISCUSSION_ADDED_COMMENT(5l);
 
         private final Long secondaryTypeId;
         DiscussionActivitySubType(Long type) {
