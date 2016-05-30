@@ -70,7 +70,10 @@ function updateTabRibbons(){
 /* Replace the URL placeholders with actual values */
 function replaceURLPlaceholders(rawUrl){
     var URL = rawUrl.replace('%40%40REPLACE-TYPE%40%40',proposalType).replace('%40%40REPLACE-FILTERKEY%40%40',filterKey);
-    if ($('#prop-search').val() != 'Filter') URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40',$('#prop-search').val());
+    var $propSearch = $('#prop-search');
+    if ($propSearch.val() != 'Filter') {
+        URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40',$propSearch.val());
+    }
     else URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40','');
     URL = URL.replace('%40%40REPLACE-START%40%40',proposalPickerPage * proposalsPerPage);
     URL = URL.replace('%40%40REPLACE-END%40%40',(proposalPickerPage + 1) * proposalsPerPage);
@@ -93,17 +96,19 @@ function proposalPickerTabSelected(element, type){
     } else {
         $('#proposalPickerTable').find('> thead > tr > td:nth-child(3) > a').show();
     }
+    var proposalsPickerProposalsContainer = $("#proposalsPicker_proposalsContainer");
     if (type == 'contests') {
-    	$("#proposalsPicker_proposalsContainer").hide();
+
+        proposalsPickerProposalsContainer.hide();
     	$("#proposalPickerTableContests").show();
-    	$("#proposalsPicker_proposalsContainer").find(".breadcrumb").show();
+        proposalsPickerProposalsContainer.find(".breadcrumb").show();
     	loadContests();
     }
     else {
     	contestPK = 0;
-    	$("#proposalsPicker_proposalsContainer").show();
+        proposalsPickerProposalsContainer.show();
     	$("#proposalPickerTableContests").hide();
-    	$("#proposalsPicker_proposalsContainer").find(".breadcrumb").hide();
+        proposalsPickerProposalsContainer.find(".breadcrumb").hide();
     	loadProposals();
     }
 }
@@ -139,8 +144,9 @@ function pickProposal(sectionId, proposalNames, proposalNamesPlural, contestName
     
     pickMultipleProposals = false;
     updateTabRibbons();
-    $('#popup_proposalPicker').show();
-    proposalPickerTabSelected($('#popup_proposalPicker').find('> div > .prop-tabs > ul > li:first > a'),'contests');
+    var popupProposalPicker = $('#popup_proposalPicker');
+    popupProposalPicker.show();
+    proposalPickerTabSelected(popupProposalPicker.find('> div > .prop-tabs > ul > li:first > a'),'contests');
 }
 
 /* Pick a list of proposals */
@@ -151,8 +157,9 @@ function pickProposalList(sectionId, proposalNames, proposalNamePlural, contestN
     
     pickMultipleProposals = true;
     updateTabRibbons();
-    $('#popup_proposalPicker').show();
-    proposalPickerTabSelected($('#popup_proposalPicker').find('> div > .prop-tabs > ul > li:first > a'),'contests');
+    var popupProposalPicker = $('#popup_proposalPicker');
+    popupProposalPicker.show();
+    proposalPickerTabSelected(popupProposalPicker.find('> div > .prop-tabs > ul > li:first > a'),'contests');
 }
 
 function replaceContestTypeNameVariables(proposalNames, proposalNamesPlural, contestNames, contestNamesPlural) {
@@ -270,7 +277,7 @@ function addPaginationToContestsPickerTable(prev,next,totalPages){
     output += ' Page ' + (proposalPickerPage + 1) + ' of ' + totalPages + ' ';
     if (next) output += '<a href="javascript:;" onClick="proposalPickerPage = (proposalPickerPage + 1); loadContests();" class="blue-arrow-right"></a>';
     output += '</span>';
-    $('#proposalPicker_contestsContainer > tbody').append('<tr><td colspan="6" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
+    $('#proposalPicker_contestsContainer').find('> tbody').append('<tr><td colspan="6" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
 
 var pickerTimer;
@@ -419,7 +426,7 @@ $("#savePickedProposals").click(function(event) {
 	return false;
 });
 
-$("#popup_proposalPicker .c-TitleBar a").click(function(event) {
+$("#popup_proposalPicker").find(".c-TitleBar a").click(function(event) {
 	event.preventDefault();
 	var link = $(this);
 	var parentContainer = link.parents(".c-TitleBar");

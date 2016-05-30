@@ -375,6 +375,40 @@ table.judgingForm {
   font-style: normal;
 }
 
+.box_tooltip {
+  display: inline;
+  position: relative;
+}
+
+.box_tooltip:hover:after {
+  background: #333;
+  background: rgba(0, 0, 0, .8);
+  border-radius: 5px;
+  bottom: 26px;
+  color: #fff;
+  content: attr(title);
+  left: 20%;
+  padding: 5px 15px;
+  position: absolute;
+  z-index: 98;
+  width: 220px;
+}
+
+.box_tooltip:hover:before {
+  border: solid;
+  border-color: #333 transparent;
+  border-width: 6px 6px 0 6px;
+  bottom: 20px;
+  content: "";
+  left: 50%;
+  position: absolute;
+  z-index: 99;
+}
+
+.greyed_out {
+  color: #aaa;
+}
+
 #popup_proposalPicker .contestlist td {
   height: 45px;
 }
@@ -642,9 +676,11 @@ span.stars span {
 .modelsSelectBox input[type=radio] {
   margin-right: 5px;
 }
+
 .impactComments {
   padding-top: 30px;
 }
+
 .impactComments textarea {
   float: right;
   border: 1px solid #888888;
@@ -653,6 +689,7 @@ span.stars span {
   padding: 5px;
   height: 100px;
 }
+
 .impactComments h3 {
   font-size: 22px;
   margin-bottom: 13px;
