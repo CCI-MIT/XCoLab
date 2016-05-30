@@ -38,8 +38,19 @@
                 <form:textarea path="messageContent" cssClass="rte commentbox commentContent"/> <br />
             </label>
 
-            <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#sendMessageForm').submit()">Send</a>
+            <a id="messageSendButton" class="c-Button__primary" href="#">Send</a>
         </form:form>
     </div>
+
+    <script type="text/javascript">
+        jQuery(function() {
+            enableDirtyCheck();
+
+            jQuery("#messageSendButton").click(function () {
+                disableDirtyCheck();
+                jQuery("#sendMessageForm").submit();
+            });
+        });
+    </script>
 
 </jsp:root>

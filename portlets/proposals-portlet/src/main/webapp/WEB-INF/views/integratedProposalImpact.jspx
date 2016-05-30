@@ -418,6 +418,11 @@
             });
         </script>
     </c:if>
+    <script type="text/javascript">
+        jQuery(function() {
+            enableDirtyCheck();
+        });
+    </script>
 
     <script type="text/javascript">
         var MODEL_DATA_ROW = "GHG emissions";
@@ -540,5 +545,4 @@
             registerHelpEventHandler();
         });
     </script>
-
 </jsp:root>

@@ -110,8 +110,8 @@
                     </div>
                     <c:choose>
                         <c:when test="${proposalsPermissions.canFellowActions}">
-                            <a style="display:block; float:right;" href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
-                                   onclick="jQuery(this).parents('form').submit();">Save ${contestType.proposalName} decision</a>
+                            <a id="saveProposalScreeningDecision" style="display:block; float:right;" href="#" class="c-Button__primary requestMembershipSubmitButton">
+                                Save ${contestType.proposalName} decision</a>
                         </c:when>
                         <c:otherwise>
                             <p class="submitStatus error">
@@ -143,8 +143,8 @@
                             <h4>Rating comment:</h4>
                             <i>Your comment will be visible to other Fellows and Judges only.</i>
                             <form:textarea id="fellowRatingComment" cssClass="c-Comment__box" path="comment" style="width:100%;"/>
-                                <a style="display:block; float:right;" href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
-                                onclick="jQuery(this).parents('form').submit();">Save</a>
+                                <a id="saveProposalScreeningComment" style="display:block; float:right;" href="#" class="c-Button__primary requestMembershipSubmitButton">
+                                    Save</a>
                         </c:when>
                         <c:otherwise>
                             <p class="submitStatus error">
@@ -189,6 +189,17 @@
     <script type="text/javascript">
 
         jQuery( document ).ready(function() {
+            jQuery("#saveProposalScreeningDecision").click(function () {
+                disableDirtyCheck();
+                jQuery("#fellowRatingForm").submit();
+            });
+
+            jQuery("#saveProposalScreeningComment").click(function () {
+
+                disableDirtyCheck();
+                jQuery(this).parents('form').submit();
+            });
+
             jQuery('#fellowScreeningAction').change(function() {
                 refreshCommentFieldVisibility();
                 refreshEmailTemplates();
@@ -242,4 +253,9 @@
         </script>
     </c:if>
 
+    <script type="text/javascript">
+        jQuery(function() {
+            enableDirtyCheck();
+        });
+    </script>
 </jsp:root>

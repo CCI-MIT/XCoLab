@@ -42,12 +42,30 @@
                         </label>
                     </div>
                     <div>
-                        <input type="submit" class="c-Button__primary" value="Add" />
-                        <a class="c-Button__secondary" href="/web/guest/discussion">Cancel</a>
+                        <a class="c-Button__primary" id="addThreadButton" href="#">Add</a>
+                        <a class="c-Button__secondary" id="canelAddThreadButton" href="/web/guest/discussion">Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        jQuery(function() {
+            initializeTextEditors();
+            initializeDropDowns();
+            enableDirtyCheck();
+
+            jQuery("#addThreadButton").click(function () {
+                disableDirtyCheck();
+                jQuery("#addThreadForm").submit();
+            });
+
+            jQuery("#canelAddThreadButton").click(function () {
+                disableDirtyCheck();
+                window.location.replace("/web/guest/discussion");
+            });
+        });
+    </script>
 
 </jsp:root>

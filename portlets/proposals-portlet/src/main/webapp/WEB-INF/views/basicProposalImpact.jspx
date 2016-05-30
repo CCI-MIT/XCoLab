@@ -1035,13 +1035,14 @@
         var impactSeriesAuthorTemplate = Handlebars.compile($('#impactSeriesAuthorTemplate').html());
 
         function discardComment(){
+            disableDirtyCheck();
             leaveEditMode();
         }
         function leaveEditMode(){
             window.location = jQuery(".c-TabBar__tab.active a").prop("href");//gets the current link for the impact tab
         }
         function saveComment(sender) {
-
+            disableDirtyCheck();
 
             var url = saveCommentURL;
 
@@ -1088,5 +1089,10 @@
             }
         }
 
+    </script>
+    <script type="text/javascript">
+        jQuery(function() {
+            enableDirtyCheck();
+        });
     </script>
 </jsp:root>

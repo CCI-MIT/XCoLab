@@ -86,6 +86,7 @@ jQuery(function() {
                 if (! window.isAddCommentFormValid()) {
                     return false;
                 }
+                disableDirtyCheck();
                 window.disableAddComment();
                 $('#addCommentForm').submit();
             }
