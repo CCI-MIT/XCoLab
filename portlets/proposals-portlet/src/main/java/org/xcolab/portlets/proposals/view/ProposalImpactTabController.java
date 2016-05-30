@@ -67,18 +67,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         proposalWrapper = proposalsContext.getProposalWrapped(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
         boolean userAllowedToEdit = false;
-        boolean userCanCommentAsAuthor;
-        boolean userCanCommentAsAIF;
 
         if (edit) {
             userAllowedToEdit = canEditImpactTab(request);
-            userCanCommentAsAuthor = canCommentAsAuthor(request);
+            boolean userCanCommentAsAuthor = canCommentAsAuthor(request);
             model.addAttribute("canCommentAsAuthor", userCanCommentAsAuthor);
-            userCanCommentAsAIF = canCommentAsAIF(request);
+            boolean userCanCommentAsAIF = canCommentAsAIF(request);
             model.addAttribute("canCommentAsAIF", userCanCommentAsAIF);
         }
-
-
 
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
                 getAttributes(proposalWrapper.getProposalId());
