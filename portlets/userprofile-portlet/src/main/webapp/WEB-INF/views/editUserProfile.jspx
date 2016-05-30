@@ -8,6 +8,8 @@
     <!--@elvariable id="colabShortName" type="java.lang.String"-->
     <!--@elvariable id="colabName" type="java.lang.String"-->
 	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
+	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
+	<!--@elvariable id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper"-->
 
 	<c:if test="${updateError}">
 		<script type="text/javascript" >
@@ -37,6 +39,7 @@
 
     <portlet:actionURL var="deleteProfileUrl">
         <portlet:param name="action" value="deleteProfile" />
+        <portlet:param name="userId" value="${userBean.userId}" />
     </portlet:actionURL>
 
 	<form style="margin-top: 20px;" action="/fileUpload" method="post"
@@ -186,6 +189,10 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<c:if test="${permissions.canAdmin}">
+					<a href="/?doAsUserId=${currentUserProfile.doAsUserString}">Impersonate ${userBean.firstName}</a>
+				</c:if>
 
 				<div class="profile_about-head">Short bio</div>
 				<div class="userProfileAbout" >

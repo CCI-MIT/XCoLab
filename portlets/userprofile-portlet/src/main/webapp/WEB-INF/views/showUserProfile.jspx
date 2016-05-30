@@ -9,6 +9,8 @@
 
 	<!--@elvariable id="colabName" type="java.lang.String"-->
 	<!--@elvariable id="colabShortName" type="java.lang.String"-->
+	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
+	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
 
     <jsp:useBean id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper" scope="request" />
     <c:if test="${not empty userBean}">
@@ -149,7 +151,7 @@
 						</tr>
 					</c:if>
 
-					<c:if test="${currentUserProfile.viewingOwnProfile}">
+					<c:if test="${permissions.getCanEditMemberProfile(userBean.userId)}">
 						<tr>
 							<td colspan="4">
 								<a class="c-Button__primary"

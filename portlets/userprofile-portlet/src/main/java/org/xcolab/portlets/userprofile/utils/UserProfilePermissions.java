@@ -15,7 +15,6 @@ public class UserProfilePermissions {
 
     public UserProfilePermissions(PortletRequest request) {
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
     }
 
     public boolean getCanAdminProfile(long userId) {
@@ -34,6 +33,11 @@ public class UserProfilePermissions {
         if (!getCanAdminSpamReports()) {
             throw new UserProfileAuthorizationException("Admin Spam Report permissions required");
         }
+    }
+
+    public boolean getCanEditMemberProfile(long memberId) {
+        return memberId == themeDisplay.getUserId()
+                || getCanAdmin();
     }
 
     public boolean getCanAdminSpamReports() {
