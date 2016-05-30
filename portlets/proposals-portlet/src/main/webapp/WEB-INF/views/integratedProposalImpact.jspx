@@ -4,6 +4,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
@@ -93,7 +94,7 @@
                                                            target="_blank">${proposalToModel.value.proposalName}</a>
                                                     </c:when>
                                                     <c:otherwise>
-                                                            ${proposalToModel.value.proposalName}
+                                                        ${proposalToModel.value.proposalName}
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
@@ -168,8 +169,8 @@
                                         <c:otherwise>
                                             <!--  proposal creation, return to contest proposals page on discard -->
                                             <collab:contestLink contest="${contest }" cssClass="c-Button__secondary"
-                                                                          linkId="discardChangesButton"
-                                                                          text="DISCARD changes"/>
+                                                                linkId="discardChangesButton"
+                                                                text="DISCARD changes"/>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
@@ -212,7 +213,7 @@
         <br/>
         <br/>
 
-        <c:if test="${not isGlobalContest and not isRegionalContest}">
+        <c:if test="${showDataTable}">
             <div id="impact" class="cmsDetailsBox">
                 <h2 class="model_name">Regional
                     <c:if test="${not empty isRegionalSectorContest and isRegionalSectorContest}">
@@ -261,48 +262,53 @@
                     <!-- TODO: where is impactSeries defined?-->
                     <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}"
                                varStatus="index">
-                        <c:set var="seriesValues"
-                               value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}"/>
-                        <tr>
-                            <td class="sector">${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}</td>
-                            <c:catch var="catchException">
-                                <c:forEach var="impactIteration" items="${impactIterations}">
-                                    <!--TODO: where is yearToValueMap defined?-->
-                                    <fmt:formatNumber var="value"
-                                                      value="${seriesValues.yearToValueMap[impactIteration.year]}"
-                                                      maxFractionDigits="2"/>
-                                    <td class="impact-value">${value}</td>
-                                </c:forEach>
-                            </c:catch>
+                        <tr id="series${fn:replace(impactSeries.seriesTypeToDescriptionMap[seriesEntry.key],' ', '')}">
+                            <modeling:impactSeriesDataRow
+                                    seriesName="${impactSeries.seriesTypeToDescriptionMap[seriesEntry.key]}"
+                                    seriesValues="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}"
+                                    impactIterations="${impactIterations}"
+                                    seriesNameClass="${fn:containsIgnoreCase(impactSeries.seriesTypeToDescriptionMap[seriesEntry.key], 'Business as usual') ?
+                                    'blue-bg' : 'sector'}"/>
                         </tr>
+                        <c:if test="${fn:containsIgnoreCase(impactSeries.seriesTypeToDescriptionMap[seriesEntry.key], 'Business as usual')}">
+                            <tr>
+                                <td class="blue-bg" style="text-align: left">Emission reductions from BAU (by sector)
+                                </td>
+                                <td class="impact-value"></td>
+                                <td class="impact-value"></td>
+                                <td class="impact-value"></td>
+                                <td class="impact-value"></td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
                     <tr id="totalSectors">
-                        <td class="sector total">Total of above sectors</td>
-                        <c:forEach var="impactIteration" items="${impactIterations}">
-                            <fmt:formatNumber var="value"
-                                              value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
-                                              maxFractionDigits="2"/>
-                            <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
-                        </c:forEach>
+                        <modeling:impactSeriesDataRow
+                                seriesName="Total emission reductions"
+                                seriesValues="${impactSeries.resultSeriesValues}"
+                                impactIterations="${impactIterations}"
+                                seriesNameClass="sector italic"/>
+                    </tr>
+                    <tr id="totalProjectedEmissions">
+                        <modeling:impactSeriesDataRow
+                                seriesName="Total projected emissions"
+                                seriesValues="${impactSeries.resultSeriesValues}"
+                                impactIterations="${impactIterations}"
+                                seriesNameClass="total blue-bg"/>
                     </tr>
                     <c:if test="${empty isRegionalSectorContest or not isRegionalSectorContest}">
                         <tr id="modelAdjustments">
-                            <td class="sector">Adjustments to total, to correspond with model results</td>
-                            <c:forEach var="impactIteration" items="${impactIterations}">
-                                <fmt:formatNumber var="value"
-                                                  value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}"
-                                                  maxFractionDigits="2"/>
-                                <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
-                            </c:forEach>
+                            <modeling:impactSeriesDataRow
+                                    seriesName="Adjustments to total, to correspond with model results"
+                                    seriesValues="${impactSeries.resultSeriesValues}"
+                                    impactIterations="${impactIterations}"
+                                    seriesNameClass="italic"/>
                         </tr>
                         <tr id="modelTotal">
-                            <td class="sector model">Total from model</td>
-                            <c:forEach var="impactIteration" items="${impactIterations}">
-                                <fmt:formatNumber var="value"
-                                                  value="0"
-                                                  maxFractionDigits="2"/>
-                                <td class="impact-value" data-attr-year="${impactIteration.year}">${value}</td>
-                            </c:forEach>
+                            <modeling:impactSeriesDataRow
+                                    seriesName="Total from model"
+                                    seriesValues="${impactSeries.resultSeriesValues}"
+                                    impactIterations="${impactIterations}"
+                                    seriesNameClass="model total"/>
                         </tr>
                     </c:if>
 
@@ -324,7 +330,7 @@
                         <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
                             <tr class="impact-series-clickable" id="impact-row-${index.index}">
                                 <td class="region">
-                                        ${impactSeries.proposalWrapper.name}
+                                    ${impactSeries.proposalWrapper.name}
                             <span
                                     id="${impactSeries.whereTerm.id}">(region: ${impactSeries.whereTerm.name}, </span>
                             <span
@@ -341,33 +347,33 @@
     </div>
     <div class="impactComments">
         <c:if test="${edit}">
-                <div>
-                    <c:if test="${canCommentAsAuthor}">
-                        <div class="addpropbox q1">
-                            <label>
-                                <strong>Comments from Author </strong>
-                            </label>
-                            <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
-                            <div class="addpropInputContainer">
-                                <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment.stringValue}</c:if></textarea>
-                                <div class="clearfix"><!--  --></div>
-                            </div>
+            <div>
+                <c:if test="${canCommentAsAuthor}">
+                    <div class="addpropbox q1">
+                        <label>
+                            <strong>Comments from Author </strong>
+                        </label>
+                        <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
+                        <div class="addpropInputContainer">
+                            <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment.stringValue}</c:if></textarea>
+                            <div class="clearfix"><!--  --></div>
                         </div>
-                    </c:if>
-                    <c:if test="${canCommentAsAIF}">
-                        <div class="addpropbox q1">
-                            <label>
-                                <strong>Comments from Impact Assessment Fellow</strong>
-                            </label>
-                            <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
-                            <div class="addpropInputContainer">
-                                <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment.stringValue}</c:if></textarea>
-                                <div class="clearfix"><!--  --></div>
+                    </div>
+                </c:if>
+                <c:if test="${canCommentAsAIF}">
+                    <div class="addpropbox q1">
+                        <label>
+                            <strong>Comments from Impact Assessment Fellow</strong>
+                        </label>
+                        <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
+                        <div class="addpropInputContainer">
+                            <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment.stringValue}</c:if></textarea>
+                            <div class="clearfix"><!--  --></div>
 
-                            </div>
                         </div>
-                    </c:if>
-                </div>
+                    </div>
+                </c:if>
+            </div>
 
         </c:if>
         <c:if test="${ not edit}">
@@ -456,43 +462,55 @@
         var scenarioFetchedCallback = function (event) {
             selectModelForFetchedScenario(event);
             var modelOutputs = event.scenario.outputs;
+
+            var bauRow = document.getElementById("seriesBusinessasusual(BAU)");
             var totalSectorsRow = document.getElementById("totalSectors");
-            if (totalSectorsRow) {
+
+            if (!!bauRow &amp;&amp; !!totalSectorsRow) {
+                var bauValuesToYears = mapValuesToYear(bauRow);
                 var totalSectorsValuesToYears = mapValuesToYear(totalSectorsRow);
-                var modelSeriesValuesToYears = {};
-                modelOutputs.forEach(function (modelOutput) {
-                    console.log("modelOutput", modelOutput);
-                    if (modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()) {
-                        var modelSeries;
-                        if (event.scenario.modelName.toLowerCase().includes("emf")) {
-                            modelSeries = calculateAverage(modelOutput.series);
-                            console.log("avg", modelSeries);
-                        } else {
-                            modelSeries = modelOutput.series[0];
-                        }
-                        var modelSeriesValues = modelSeries.variable.values;
-                        modelSeriesValues.forEach(function (modelSeriesValue) {
-                            modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1];
-                        });
+            } else return;
+
+            var totalProjectedEmissionsRow = document.getElementById("totalProjectedEmissions");
+            if (totalProjectedEmissionsRow) {
+                var totalProjectedEmissionsValues = totalProjectedEmissionsRow.querySelectorAll('[data-attr-year]');
+                var totalProjectedEmissionsValuesToYears = {};
+                [].forEach.call(totalProjectedEmissionsValues, function (totalProjectedEmissionsYearValue) {
+                    var year = totalProjectedEmissionsYearValue.getAttribute("data-attr-year");
+                    totalProjectedEmissionsValuesToYears[year] = parseFloat(bauValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
+                    totalProjectedEmissionsYearValue.innerHTML = totalProjectedEmissionsValuesToYears[year].toFixed(2);
+                });
+            } else return;
+
+            var modelSeriesValuesToYears = {};
+            modelOutputs.forEach(function (modelOutput) {
+                if (modelOutput.name.toLowerCase() === MODEL_DATA_ROW.toLowerCase()) {
+                    var modelSeries;
+                    if (event.scenario.modelName.toLowerCase().includes("emf")) {
+                        modelSeries = calculateAverage(modelOutput.series);
+                    } else {
+                        modelSeries = modelOutput.series[0];
                     }
-                });
+                    var modelSeriesValues = modelSeries.variable.values;
+                    modelSeriesValues.forEach(function (modelSeriesValue) {
+                        modelSeriesValuesToYears[modelSeriesValue[0]] = modelSeriesValue[1]*1000.0;
+                    });
+                }
+            });
 
-                var modelTotalRow = document.getElementById("modelTotal");
-                var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
-                [].forEach.call(modelTotalValues, function (totalYearValue) {
-                    var year = totalYearValue.getAttribute("data-attr-year");
-                    var valueToYear = parseFloat(modelSeriesValuesToYears[year]);
-                    totalYearValue.innerHTML = valueToYear.toFixed(2);
-                });
+            var modelTotalRow = document.getElementById("modelTotal");
+            var modelTotalValues = modelTotalRow.querySelectorAll('[data-attr-year]');
+            [].forEach.call(modelTotalValues, function (totalYearValue) {
+                var year = totalYearValue.getAttribute("data-attr-year");
+                totalYearValue.innerHTML = parseFloat(modelSeriesValuesToYears[year]).toFixed(2);
+            });
 
-                var modelAdjustmentsRow = document.getElementById("modelAdjustments");
-                var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
-                [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
-                    var year = modelAdjustmentValue.getAttribute("data-attr-year");
-                    var valueToYear = parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalSectorsValuesToYears[year]);
-                    modelAdjustmentValue.innerHTML = valueToYear.toFixed(2);
-                });
-            }
+            var modelAdjustmentsRow = document.getElementById("modelAdjustments");
+            var modelAdjustmentValues = modelAdjustmentsRow.querySelectorAll('[data-attr-year]');
+            [].forEach.call(modelAdjustmentValues, function (modelAdjustmentValue) {
+                var year = modelAdjustmentValue.getAttribute("data-attr-year");
+                modelAdjustmentValue.innerHTML = (parseFloat(modelSeriesValuesToYears[year]) - parseFloat(totalProjectedEmissionsValuesToYears[year])).toFixed(2);
+            });
         };
 
         function registerHelpEventHandler() {
@@ -521,97 +539,6 @@
             }
             registerHelpEventHandler();
         });
-        /*
-         var tableColors = [];
-
-         $().ready(function() {
-         tableColors = palette('tol-rainbow', 10); // TODO use dynamic value from server
-         tableColors.forEach(function(part, index, theArray) {theArray[index] = "#"+part;});
-
-         // Color table columns
-         var hitFirstRow = false;
-         $('div#impact > table tr').each(function(idx) {
-         if (!hitFirstRow) {
-         hitFirstRow = true;
-         } else {
-         $(this).children('td.sector').css('background-color', tableColors[idx - 1]);
-         }
-         });
-
-         });
-
-         google.load('visualization', '1', {packages: ['corechart', 'line']});
-
-         // Set a callback to run when the Google Visualization API is loaded.
-         google.setOnLoadCallback(drawChart);
-
-         function drawChart() {
-         var minValue = Number.MAX_VALUE;
-         var maxValue = 0;
-
-         // Chart labels
-         var data = new google.visualization.DataTable();
-         data.addColumn('string', 'Year');
-         <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToDescriptionMap}" varStatus="index">
-         data.addColumn('number', '${seriesEntry.value}');
-         </c:forEach>
-         data.addColumn('number', 'Total of sectors');
-
-         // Build chart data
-         <c:forEach var="impactIteration" items="${impactIterations}">
-         var dataRow = ["${impactIteration.year}"];
-
-         <c:forEach var="seriesEntry" items="${impactSeries.seriesTypeToAggregatedSeriesMap}" varStatus="index">
-         <c:set var="seriesValues" value="${impactSeries.seriesTypeToAggregatedSeriesMap[seriesEntry.key]}" />
-         <c:set var="value" value="${seriesValues.yearToValueMap[impactIteration.year]}" />
-
-         dataRow.push(${value});
-         minValue = Math.min(minValue, ${value});
-         maxValue = Math.max(maxValue, ${value});
-         </c:forEach>
-
-         <c:set var="value" value="${impactSeries.resultSeriesValues.yearToValueMap[impactIteration.year]}" />
-
-         dataRow.push(${value});
-         data.addRow(dataRow);
-         minValue = Math.min(minValue, ${value});
-         maxValue = Math.max(maxValue, ${value});
-         </c:forEach>
-
-         var dataValueRange = maxValue - minValue;
-
-         var options = {
-         title: "Total emissions of ${contest.contestShortName} (Mt CO2)",
-         titleTextStyle: {
-         fontSize: "16"
-         },
-         hAxis: {
-         title: 'Year',
-         gridlines: {
-         color: '#333',
-         count: 5
-         }
-         },
-         vAxis: {
-         title: 'MtCO2',
-         viewWindow: {
-         max: (maxValue + Math.max((Math.round(dataValueRange / 100.0) + 1) * 5, 5)),
-         min: (minValue - Math.max((Math.round(dataValueRange / 100.0) + 1) * 5, 5))
-         }
-         },
-         legend: { position: 'top' },
-         pointShape: 'circle',
-         pointSize: 6,
-         colors:tableColors,
-         width:500,
-         height:Math.min(150 * Math.max(Math.round(dataValueRange / 50.0), 2), 600.0)
-         };
-
-         var chart = new google.visualization.LineChart(document.getElementById('impact-chart'));
-         chart.draw(data, options);
-         }
-         */
-
     </script>
 
 </jsp:root>

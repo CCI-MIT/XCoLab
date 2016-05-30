@@ -107,11 +107,20 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
         }
 
-        boolean showSubProposalListing = (isRegionalSectorContest(contest));
-        if (showSubProposalListing) {
+        boolean showSubProposalListing = (isRegionalContest(contest));
+        boolean showDataTable = (isRegionalContest(contest));
+        if (showDataTable) {
+            IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest);
+            model.addAttribute("impactSeries", integratedProposalImpactSeries);
+            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+            model.addAttribute("impactIterations", impactIterations);
+        }
+
+        if(showSubProposalListing){
             model.addAttribute("impactSerieses", getImpactTabBasicProposal(proposalWrapper.getWrapped()));
         }
         model.addAttribute("showSubProposalListing", showSubProposalListing);
+        model.addAttribute("showDataTable", showDataTable);
 
         final ContestTier contestTier = ContestTier.getContestTierByTierType(contest.getContestTier());
         if (contestTier != null) {
@@ -192,8 +201,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     isProposalUsingCombinedScenario = true;
                     proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
 
-                    if (!isScenarioUsingSameModelId ||
-                            proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
+                    if (!isScenarioUsingSameModelId || proposalImpactScenarioCombinationWrapper.
+                            scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
                         proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
                         model.addAttribute("consolidatedScenarioId",
                                 proposalImpactScenarioCombinationWrapper.getOutputScenarioId());

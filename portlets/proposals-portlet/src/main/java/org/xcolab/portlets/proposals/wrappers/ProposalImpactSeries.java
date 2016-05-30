@@ -76,7 +76,8 @@ public class ProposalImpactSeries {
         this.impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_BAU_KEY);
-        addSeriesWithType(bauSeries, false);
+        Boolean invertSeriesSign = false;
+        addSeriesWithType(bauSeries, false, invertSeriesSign);
 
 //        ddppSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
 //        addSeriesWithType(ddppSeries, false);
@@ -130,9 +131,16 @@ public class ProposalImpactSeries {
         }
     }
 
-    public void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable) throws SystemException {
+    public void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable, boolean invertSeriesSign) throws SystemException {
         List<ImpactDefaultSeriesData> seriesDataList = ImpactDefaultSeriesDataLocalServiceUtil.
                 getDefaultSeriesDataBySeriesId(defaultSeries.getSeriesId());
+        if(invertSeriesSign){
+            for (ImpactDefaultSeriesData seriesData : seriesDataList) {
+                if(Validator.isNotNull(seriesData.getValue())) {
+                    seriesData.setValue(seriesData.getValue() * (-1.0));
+                }
+            }
+        }
         addSeriesWithType(defaultSeries.getName(), seriesDataList, editable);
     }
 
