@@ -53,7 +53,7 @@
                 <tbody>
                 <tr>
                     <c:forEach var="pointType" varStatus="status" items="${pointType.children}">
-                        <td class="${status.count > childrenSize/2 ? 'right' : 'left'} ${(smallColumnExists and largeColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
+                        <td class="${status.count > childrenSize/2 ? 'rightBranch' : 'leftBranch'} ${(smallColumnExists and largeColumnExists ? (pointType.children.size() == 0 ? 'small' : 'large') : '')}">
                             <div class="content">
                                 <p class="percentage">
                                     <fmt:formatNumber type="percent" value="${parentPercentageOfTotalPoints * pointType.percentageOfParent}" minFractionDigits="0" maxFractionDigits="2"/>
