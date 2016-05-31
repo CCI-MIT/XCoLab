@@ -33,8 +33,11 @@
                 </c:forEach>
             </select>
         </c:if>
-        <i style="font-size:10pt;">Please rate this ${contestType.proposalName} and write your comments in the box below. All your responses
-            are saved when clicking on save.
+        <i style="font-size:10pt;">Please <br />
+            1) Rate this proposal; <br />
+            2) Provide written feedback in the text box below; and <br />
+            3) Click save. <br />
+            Both ratings and feedback must be completed for the evaluation to save.
             <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
                 Your rating will be visible to the Judging team only.
             </c:if>
