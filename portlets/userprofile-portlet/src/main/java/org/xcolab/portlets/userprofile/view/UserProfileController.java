@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
@@ -23,10 +22,8 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +37,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
@@ -49,6 +47,7 @@ import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
+import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.util.HtmlUtil;
@@ -101,14 +100,16 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam String userId)
+                                      @RequestParam Long userId)
             throws SystemException, PortalException {
         return showUserProfileOrNotInitialized(request, model, userId);
     }
 
-    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, String userId)
+    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, Long userId)
             throws SystemException {
         try {
+            UserProfilePermissions permissions = new UserProfilePermissions(request);
+            model.addAttribute("permissions", permissions);
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
             return "showUserProfile";
@@ -118,7 +119,7 @@ public class UserProfileController {
         return "showProfileNotInitialized";
     }
 
-    void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
+    public void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
         model.addAttribute("currentUserProfile", currentUserProfile);
         model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
         model.addAttribute("userBean", currentUserProfile.getUserBean());
@@ -127,15 +128,18 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=edit")
     public String showUserProfileEdit(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam String userId)
+                                      @RequestParam long userId)
             throws SystemException {
 
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        model.addAttribute("permissions", permissions);
+
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
             populateUserWrapper(currentUserProfile, model);
-            if (currentUserProfile.isViewingOwnProfile()) {
+            if (permissions.getCanEditMemberProfile(currentUserProfile.getUserId())) {
                 model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
+                        new NewsletterBean(currentUserProfile.getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -149,10 +153,10 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=subscriptions")
     public String showUserProfileSubscriptions(PortletRequest request, PortletResponse response, Model model,
-                                               @RequestParam(required = true) String userId,
+                                               @RequestParam Long userId,
                                                @RequestParam(required = false, defaultValue = "1") int paginationId) {
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
             populateUserWrapper(currentUserProfile, model);
             currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
             return "showUserSubscriptions";
@@ -164,11 +168,11 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=subscriptionsManage")
     public String showUserSubscriptionsManage(PortletRequest request, PortletResponse response, Model model,
-                                              @RequestParam(required = true) String userId,
+                                              @RequestParam long userId,
                                               @RequestParam(required = false) String typeFilter)
             throws SystemException {
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
             populateUserWrapper(currentUserProfile, model);
             if (typeFilter != null) {
                 currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
@@ -187,11 +191,12 @@ public class UserProfileController {
 
     @RequestMapping(params = "action=navigateSubscriptions")
     public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
-                                      @RequestParam(required = true) String paginationAction)
+                                      @RequestParam String paginationAction)
             throws SystemException, PortalException, IOException, MemberNotFoundException {
 
         Integer paginationPageId = 1;
-        UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+        UserProfileWrapper currentUserProfile =
+                new UserProfileWrapper(Long.parseLong(request.getRemoteUser()), request);
         switch (paginationAction) {
             case "First":
                 paginationPageId = 1;
@@ -214,8 +219,10 @@ public class UserProfileController {
     public String updateProfileError(PortletRequest request, Model model,
                                      @RequestParam(required = false) boolean emailError,
                                      @RequestParam(required = false) boolean passwordError,
-                                     @RequestParam(required = true) String userId)
+                                     @RequestParam Long userId)
             throws SystemException {
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        model.addAttribute("permissions", permissions);
         model.addAttribute("updateError", true);
         if (emailError) {
             model.addAttribute("emailError", true);
@@ -223,16 +230,16 @@ public class UserProfileController {
         if (passwordError) {
             model.addAttribute("passwordError", true);
         }
+        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
-            if (currentUserProfile.isViewingOwnProfile()) {
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
+            if (permissions.getCanEditMemberProfile(userId)) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-            model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-            model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
@@ -243,11 +250,13 @@ public class UserProfileController {
 
     @RequestMapping(params = "updateSuccess=true")
     public String updateProfileSuccess(PortletRequest request, Model model,
-                                       @RequestParam(required = true) String userId) throws SystemException {
+                                       @RequestParam Long userId) throws SystemException {
 
         model.addAttribute("updateSuccess", true);
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        model.addAttribute("permissions", permissions);
         try {
-            populateUserWrapper(new UserProfileWrapper(request.getRemoteUser(), request), model);
+            populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
         } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
@@ -260,13 +269,15 @@ public class UserProfileController {
     public void updateUserProfile(ActionRequest request, Model model, ActionResponse response,
                                   @ModelAttribute UserBean updatedUserBean, BindingResult result)
             throws IOException, UserProfileAuthorizationException, SystemException, PortalException, MemberNotFoundException {
-        Long loggedInUserId = Long.parseLong(request.getRemoteUser());
-        if (!loggedInUserId.equals(updatedUserBean.getUserId())) {
+        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        model.addAttribute("permissions", permissions);
+
+        if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())) {
             throw new UserProfileAuthorizationException(String.format(
-                    "User %d does not have the permissions to update the profile of user %d",
-                    loggedInUserId, updatedUserBean.getUserId()));
+                    "User %s does not have the permissions to update the profile of user %d",
+                    request.getRemoteUser(), updatedUserBean.getUserId()));
         }
-        UserProfileWrapper currentUserProfile = new UserProfileWrapper(request.getRemoteUser(), request);
+        UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(), request);
         model.addAttribute("currentUserProfile", currentUserProfile);
         model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
         model.addAttribute("messageBean", new MessageBean());
@@ -275,7 +286,8 @@ public class UserProfileController {
         boolean changedUserPart = false;
         boolean validationError = false;
         if (updatedUserBean.getPassword() != null && !updatedUserBean.getPassword().trim().isEmpty()) {
-            if (isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())) {
+            if (isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())
+                    || (permissions.getCanAdmin() && !currentUserProfile.isViewingOwnProfile())) {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
@@ -503,13 +515,21 @@ public class UserProfileController {
     }
 
     @RequestMapping(params = "action=deleteProfile")
-    public void deleteUserProfile(ActionRequest request, ActionResponse response, Model model)
+    public void deleteUserProfile(ActionRequest request, ActionResponse response, Model model,
+                long userId)
             throws IOException, SystemException, PortalException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        UserProfilePermissions permission = new UserProfilePermissions(request);
 
-        UserLocalServiceUtil.updateStatus(themeDisplay.getUserId(), WorkflowConstants.STATUS_INACTIVE,
-                ServiceContextFactory.getInstance(request));
+        if (permission.getCanEditMemberProfile(userId)) {
+            UserLocalServiceUtil.updateStatus(userId, WorkflowConstants.STATUS_INACTIVE,
+                    ServiceContextFactory.getInstance(request));
+            MembersClient.deleteMember(userId);
+        }
 
-        response.sendRedirect("/c/portal/logout");
+        if (userId == permission.getCurrentUser().getUserId()) {
+            response.sendRedirect("/c/portal/logout");
+        } else {
+            response.sendRedirect("/web/guest/members");
+        }
     }
 }

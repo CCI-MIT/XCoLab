@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.utils.IdListUtil;
@@ -33,12 +34,6 @@ import java.util.Set;
 
 import static org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil.SectionDefFocusAreaArgument;
 
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 04/12/13
- * Time: 10:43
- */
 public class ProposalPickerFilter {
     private static final Log _log = LogFactoryUtil.getLog(ProposalPickerFilter.class);
     private static final List<Long> ANY_TERM_IDS = Arrays.asList(1L, 2L, 3L, 1300601L);
@@ -264,7 +259,7 @@ public class ProposalPickerFilter {
         }
     };
 
-    public final static ProposalPickerFilter WINNERSONLY= new ProposalPickerFilter() {
+    public final static ProposalPickerFilter WINNERS_ONLY = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
@@ -300,6 +295,8 @@ public class ProposalPickerFilter {
                         ContestTier contestTier = ContestTier.getContestTierByTierType(tier);
                         if (contestTier != null) {
                             tierFilteredContests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType()));
+                        } else {
+                            _log.error(String.format("Could not find contest tier %d. Tier ignored in filtering.", tier));
                         }
                     }
 
@@ -333,6 +330,8 @@ public class ProposalPickerFilter {
                     if (!allowedContestTiers.contains(contest.getContestTier())) {
                         removedContests.add(contest.getContestPK());
                         i.remove();
+                        _log.error(String.format("Contest %d caused an error while filtering for contest tier." +
+                                "Removing contests from list...", contest.getContestPK()));
                     }
                 }
             }
@@ -341,18 +340,15 @@ public class ProposalPickerFilter {
 
         private Set<Long> getAllowedTiers(Long filterTier) {
             // if filterTier < 0:
-            //  allow tier < (-filterTier)
+            //  allow tier <= (-filterTier)
             // else if filterTier > 0
-            //  only allow tier == filterTier - 1
-            // else (i.e. filterTier = 0)
-            //  no filtering
+            //  only allow tier == filterTier
             Set<Long> allowedTiers = new HashSet<>();
-            if (filterTier > 0) {
-                allowedTiers.add(filterTier);
-            }
+            final long positiveFilterTier = Math.abs(filterTier);
+            allowedTiers.add(positiveFilterTier);
 
             if (filterTier < 0) {
-                for (Long currentTier = Math.abs(filterTier) - 1; currentTier >= 0; currentTier--) {
+                for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
                     allowedTiers.add(currentTier);
                 }
             }

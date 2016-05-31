@@ -79,7 +79,7 @@
                         </span>
                     </th>
                     <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
-                        <th class="c-Table__cell--title center votes">
+                        <th class="c-Table__cell--title b-layout__center votes">
                             <portlet:renderURL var="sortURL">
                                 <portlet:param name="contestYear" value="${contest.contestYear }" />
                                 <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -99,7 +99,7 @@
                         </th>
                     </c:if>
                     <c:if test="${not contestPhase.canVote}">
-                        <th class="c-Table__cell--title center supporters">
+                        <th class="c-Table__cell--title b-layout__center supporters">
                             <portlet:renderURL var="sortURL">
                                 <portlet:param name="contestYear" value="${contest.contestYear }" />
                                 <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -118,7 +118,7 @@
                             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
                         </th>
                     </c:if>
-                    <th class="c-Table__cell--title center comments">
+                    <th class="c-Table__cell--title b-layout__center comments">
                         <portlet:renderURL var="sortURL">
                             <portlet:param name="contestYear" value="${contest.contestYear }" />
                             <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -137,7 +137,7 @@
                         <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
                     </th>
                     <c:if test="${not contest.isContestCompleted(contestPhase)}">
-                        <th class="c-Table__cell--title center modified">
+                        <th class="c-Table__cell--title b-layout__center modified">
                             <portlet:renderURL var="sortURL">
                                 <portlet:param name="contestYear" value="${contest.contestYear }" />
                                 <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -153,7 +153,7 @@
                             </div>
                             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
                         </th>
-                        <th class="c-Table__cell--title center contributors">
+                        <th class="c-Table__cell--title b-layout__center contributors">
                             <portlet:renderURL var="sortURL">
                                 <portlet:param name="contestYear" value="${contest.contestYear }" />
                                 <portlet:param name="contestUrlName" value="${contest.contestUrlName }" />
@@ -171,7 +171,7 @@
                         </th>
                     </c:if>
                     <c:if test="${not contestCompleted and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
-                        <th class="c-Table__cell--title center advancing-status">
+                        <th class="c-Table__cell--title b-layout__center advancing-status">
                             Advancing Status<br />
 
                             <!-- Sorting by Fellows -->

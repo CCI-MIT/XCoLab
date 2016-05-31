@@ -9,7 +9,13 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 
 	<div id="content">
-		<discussionsTagFiles:evaluationComments threadId="${discussionId}" />
+		<discussionsTagFiles:evaluationComments evaluationDiscussionId="${discussionId }" />
 	</div>
+
+	<script type="text/javascript">
+		jQuery(function() {
+			enableDirtyCheck();
+		});
+	</script>
 
 </jsp:root>

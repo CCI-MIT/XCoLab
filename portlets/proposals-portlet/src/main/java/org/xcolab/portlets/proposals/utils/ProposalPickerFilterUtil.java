@@ -23,23 +23,22 @@ import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 04/12/13
- * Time: 10:25
- */
 public class ProposalPickerFilterUtil {
 
-    private static Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
+    public static final String CONTEST_FILTER_REASON_FOCUS_AREA = "FOCUS_AREA";
+    public static final String CONTEST_FILTER_REASON_TIER = "TIER";
+
+    private static final Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
 
     /**
      * Parse filter from frontend parameter and filter the contents of the proposals parameter
@@ -48,25 +47,33 @@ public class ProposalPickerFilterUtil {
      */
     public static void filterByParameter(String filterKey, List<Pair<Proposal, Date>> proposals) {
         if (filterKey != null && filterKey.equalsIgnoreCase("WINNERSONLY")) {
-            ProposalPickerFilter.WINNERSONLY.filter(proposals);
+            ProposalPickerFilter.WINNERS_ONLY.filter(proposals);
         } else {
             ProposalPickerFilter.ACCEPT_ALL.filter(proposals);
         }
     }
 
     public static List<Pair<ContestWrapper, Date>> getFilteredContests(
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext) throws SystemException,
-            PortalException {
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext)
+            throws SystemException, PortalException {
+        List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+        ProposalPickerFilterUtil.filterContests(contests, sectionId, request, proposalsContext, false);
+        return contests;
+    }
 
-
-
+    public static List<Pair<ContestWrapper, Date>> getAllContests() throws SystemException, PortalException {
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
         for (Contest c: ContestLocalServiceUtil.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
             contests.add(Pair.of(new ContestWrapper(c),
                     c.getCreated() == null ? new Date(0) : c.getCreated()));
         }
+        return contests;
+    }
 
+    public static Map<Long, String> filterContests(List<Pair<ContestWrapper, Date>> contests,
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
+            throws SystemException, PortalException {
         PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
 
@@ -80,16 +87,27 @@ public class ProposalPickerFilterUtil {
         } else {
             contestFocusAreaId = 0;
         }
+
         _log.debug(String.format("%d contests before filtering", contests.size()));
-        ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
-                new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, alwaysIncludedContestIds));
+        Set<Long> focusAreaRemovedContests = ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
+                Pair.of(sectionFocusAreaId, contestFocusAreaId));
+
         _log.debug(String.format("%d contests left after filtering for focus areas %d and %d",
                 contests.size(), sectionFocusAreaId, contestFocusAreaId));
         final long filterTier = planSectionDefinition.getTier();
-        ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
+        Set<Long> tierRemovedContests = ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
         _log.debug(String.format("%d contests left after filtering for tier %d", contests.size(), filterTier));
 
-        return contests;
+        Map<Long, String> removedContests = new HashMap<>();
+        if (trackRemovedContests) {
+            for (Long contestId : focusAreaRemovedContests) {
+                removedContests.put(contestId, CONTEST_FILTER_REASON_FOCUS_AREA);
+            }
+            for (Long contestId : tierRemovedContests) {
+                removedContests.put(contestId, CONTEST_FILTER_REASON_TIER);
+            }
+        }
+        return removedContests;
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(

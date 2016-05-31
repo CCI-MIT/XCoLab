@@ -1,8 +1,6 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
     xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <portlet:resourceURL id="proposalShare-autocomplete" var="autocompleteURL">
-    </portlet:resourceURL>
     <portlet:resourceURL id="proposalShare-send" var="sendURL">
     </portlet:resourceURL>
     <portlet:resourceURL id="proposalShare-validate" var="validationURL">
@@ -63,7 +61,6 @@
         </form>
     </div>
     <script type="text/javascript">
-        var autocompleteURL = '${autocompleteURL}';
         var validationURL = '${validationURL}';
         var sendURL  = '${sendURL}';
 
@@ -150,9 +147,22 @@
                 })
                 .autocomplete({
                     source: function (request, response) {
-                        $.getJSON(autocompleteURL, {
-                            term: extractLast(request.term)
-                        }, response);
+                        $.ajax({
+                            type: "GET",
+                            url: "/web/guest/members/-/members/users/partialName/" + extractLast(request.term),
+                            dataType: 'json',
+                            async: true,
+                            success: function (data, textStatus, jqXHR) {
+                                var screenNames = [];
+                                $.each(data, function(index, value) {
+                                    screenNames.push(value["screenName"]);
+                                });
+                                response(screenNames);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                response([]);
+                            }
+                        });
                     },
                     search: function () {
                         // custom minLength

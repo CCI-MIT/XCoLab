@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.ContestEmailTemplate;
 import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
+import org.xcolab.service.admin.exceptions.NotFoundException;
 import org.xcolab.service.admin.service.EmailTemplateService;
 
 import java.util.List;
@@ -29,13 +30,19 @@ public class EmailTemplateController {
     }
 
     @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.GET)
-    public ContestEmailTemplate getEmailTemplates(@PathVariable("emailTemplateType") String emailTemplateType) {
-        return this.emailTemplateDao.getEmailTemplate(emailTemplateType);
+    public ContestEmailTemplate getEmailTemplates(@PathVariable String emailTemplateType)
+            throws NotFoundException {
+        final ContestEmailTemplate emailTemplate = emailTemplateDao
+                .getEmailTemplate(emailTemplateType);
+        if (emailTemplate == null) {
+            throw new NotFoundException();
+        }
+        return emailTemplate;
     }
 
     @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.PUT)
     public boolean updateEmailTemplates(@RequestBody ContestEmailTemplate contestEmailTemplate,
-                                       @PathVariable("emailTemplateType") String emailTemplateType) {
+                                       @PathVariable String emailTemplateType) {
         return this.emailTemplateDao.getEmailTemplate(emailTemplateType) != null
                 && emailTemplateDao.updateEmailTemplate(contestEmailTemplate);
     }

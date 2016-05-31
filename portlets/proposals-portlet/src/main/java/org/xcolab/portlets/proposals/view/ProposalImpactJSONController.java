@@ -1,6 +1,11 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.*;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.FocusArea;
+import com.ext.portlet.model.OntologyTerm;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.model.ProposalAttribute;
+import com.ext.portlet.model.ProposalUnversionedAttribute;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -30,8 +36,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.HtmlUtil;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,9 +43,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by kmang on 12/03/15.
- */
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 @Controller
 @RequestMapping("view")
@@ -100,7 +103,7 @@ public class ProposalImpactJSONController {
             // Create a impact series with all data series for one sector-region pair
             ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), selectedFocusArea);
 
-            response.getPortletOutputStream().write(impactSeries.toJSONObject().toString().getBytes());
+            response.getPortletOutputStream().write(impactSeries.toJSONObject() .toString().getBytes());
         } catch (PortalException | SystemException | IOException e) {
             _log.error("Could not load impact series for contestId " + proposalsContext.getContest(request).getContestPK(), e);
             JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
@@ -115,7 +118,6 @@ public class ProposalImpactJSONController {
             ResourceResponse response,
             @RequestParam(value = "focusAreaId", required = true) Long focusAreaId) throws IOException,
             SystemException, PortalException {
-
 
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -203,7 +205,8 @@ public class ProposalImpactJSONController {
             _log.info(e);
             responseJSON.put("success", false);
             responseJSON.put("message", e.getMessage());
-        } catch(Exception e) {
+
+        } catch(PortalException | SystemException e) {
             _log.error(e);
             responseJSON.put("success", false);
         }

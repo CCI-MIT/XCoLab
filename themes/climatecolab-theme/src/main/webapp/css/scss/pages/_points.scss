@@ -33,11 +33,11 @@ p.arrow-down {
   position: relative;
 }
 
-td.right.small .points-container, td.right.small .arrow-down {
+td.rightBranch.small .points-container, td.rightBranch.small .arrow-down {
   left: -4.15%;
 }
 
-td.left.small .points-container, td.left.small .arrow-down {
+td.leftBranch.small .points-container, td.leftBranch.small .arrow-down {
   left: 4.15%;
 }
 
@@ -64,31 +64,31 @@ td.left.small .points-container, td.left.small .arrow-down {
     margin-right: 10px;
   }
 
-  td.left {
+  td.leftBranch {
     background: url(../images/points/arrow-left.png) 69.5% 0;
   }
-  td.left.large {
+  td.leftBranch.large {
     background-position: 62.5% 0;
   }
-  td.right.large {
+  td.rightBranch.large {
     background-position: 37.5% 0;
   }
-  td.right.small {
+  td.rightBranch.small {
     background-position: 0 0;
   }
-  td.left.small {
+  td.leftBranch.small {
     background-position: 100% 0;
   }
-  td.right {
+  td.rightBranch {
     background: url(../images/points/arrow-right.png) 30.5% 0;
   }
-  td.left, td.right {
+  td.leftBranch, td.rightBranch {
     background-repeat: no-repeat;
     position: relative;
     top: -50px;
     padding-top: 80px;
 
-    td.left, td.right {
+    td.leftBranch, td.rightBranch {
       padding-left: 10px;
       padding-right: 10px;
       top: -30px;
@@ -99,17 +99,17 @@ td.left.small .points-container, td.left.small .arrow-down {
         top: -100px;
       }
     }
-    td.left {
+    td.leftBranch {
       background-position: 60% 0;
     }
-    td.right {
+    td.rightBranch {
       background-position: 40% 0;
     }
     td {
-      td.left {
+      td.leftBranch {
         background-position: 30% 0;
       }
-      td.right {
+      td.rightBranch {
         background-position: 70% 0;
       }
     }

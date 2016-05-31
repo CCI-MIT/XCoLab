@@ -186,11 +186,25 @@ public final class RequestUtils {
     }
 
     public static <T> boolean put(UriComponentsBuilder uriBuilder, T entity) {
+        return put(uriBuilder, entity, null);
+    }
+
+    public static <T> boolean put(UriComponentsBuilder uriBuilder, T entity, String cacheKey) {
+
+        final boolean cacheActive = cacheProvider.isActive() && cacheKey != null;
+        if (cacheActive) {
+            cacheProvider.replace(cacheKey, MEMCACHED_TIMEOUT, entity);
+        }
+
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);
 
         return restTemplate
                 .exchange(uriBuilder.build().toString(), HttpMethod.PUT, httpEntity, Boolean.class)
                 .getBody();
+    }
+
+    public static <T> void delete(UriComponentsBuilder uriBuilder) {
+        restTemplate.delete(uriBuilder.build().toString());
     }
 
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {

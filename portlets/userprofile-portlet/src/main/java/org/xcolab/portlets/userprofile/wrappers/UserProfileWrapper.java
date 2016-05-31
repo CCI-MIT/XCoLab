@@ -15,26 +15,30 @@ import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+import com.liferay.util.Encryptor;
+import com.liferay.util.EncryptorException;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.enums.Plurality;
 import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.enums.Plurality;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.utils.EntityGroupingUtil;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
@@ -83,9 +87,8 @@ public class UserProfileWrapper implements Serializable {
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
     private final ThemeDisplay themeDisplay;
 
-    public UserProfileWrapper(String userIdString, PortletRequest request)
+    public UserProfileWrapper(long userId, PortletRequest request)
             throws PortalException, SystemException, MemberNotFoundException {
-        Long userId = Long.parseLong(userIdString);
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         user = MembersClient.getMember(userId);
         if (user.isActive()) {
@@ -397,5 +400,14 @@ public class UserProfileWrapper implements Serializable {
                     "or");
         }
         return proposalString;
+    }
+
+    public String getDoAsUserString() {
+        try {
+            final Company company = CompanyLocalServiceUtil.getCompany(DEFAULT_COMPANY_ID);
+            return Encryptor.encrypt(company.getKeyObj(), String.valueOf(getUserId()));
+        } catch (PortalException | SystemException | EncryptorException e) {
+            return "";
+        }
     }
 }

@@ -18,9 +18,6 @@ import java.util.List;
 
 public class PlanSectionDefinitionWrapper implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private PlanSectionDefinition definition;
 
@@ -96,12 +93,12 @@ public class PlanSectionDefinitionWrapper implements Serializable {
         definition.setFocusAreaId(focusAreaId);
     }
 
-    public Long getTier() {
+    public Long getTier() throws PortalException {
         ContestTier contestTier = ContestTier.getContestTierByTierType(definition.getTier());
         return contestTier.getTierType();
     }
 
-    public void setTier(Long tierType) {
+    public void setTier(Long tierType) throws PortalException {
         ContestTier contestTier = ContestTier.getContestTierByTierType(tierType);
         definition.setTier(contestTier.getTierType());
     }

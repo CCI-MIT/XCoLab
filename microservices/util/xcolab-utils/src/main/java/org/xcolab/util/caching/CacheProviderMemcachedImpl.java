@@ -40,6 +40,22 @@ public class CacheProviderMemcachedImpl implements CacheProvider, DisposableBean
     }
 
     @Override
+    public Future<Boolean> replace(String key, int exp, Object o) {
+        if (isActive()) {
+            return memcached.replace(key, exp, o);
+        }
+        return ConcurrentUtils.constantFuture(false);
+    }
+
+    @Override
+    public Future<Boolean> delete(String key) {
+        if (isActive()) {
+            return memcached.delete(key);
+        }
+        return ConcurrentUtils.constantFuture(false);
+    }
+
+    @Override
     public boolean isActive() {
         return memcached != null;
     }

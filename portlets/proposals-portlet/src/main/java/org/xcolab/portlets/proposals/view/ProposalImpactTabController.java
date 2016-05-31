@@ -22,12 +22,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-
 import org.xcolab.portlets.proposals.wrappers.IntegratedProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactScenarioCombinationWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
@@ -35,7 +35,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import javax.portlet.PortletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,10 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-/**
- * Created by kmang on 12/03/15.
- */
+import javax.portlet.PortletRequest;
 
 @Controller
 @RequestMapping("view")
@@ -71,30 +67,31 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         proposalWrapper = proposalsContext.getProposalWrapped(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
         boolean userAllowedToEdit = false;
-        boolean userCanCommentAsAuthor = false;
-        boolean userCanCommentAsAIF = false;
 
         if (edit) {
             userAllowedToEdit = canEditImpactTab(request);
-            userCanCommentAsAuthor = canCommentAsAuthor(request);
+            boolean userCanCommentAsAuthor = canCommentAsAuthor(request);
             model.addAttribute("canCommentAsAuthor", userCanCommentAsAuthor);
-            userCanCommentAsAIF = canCommentAsAIF(request);
+            boolean userCanCommentAsAIF = canCommentAsAIF(request);
             model.addAttribute("canCommentAsAIF", userCanCommentAsAIF);
         }
 
-
-
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
                 getAttributes(proposalWrapper.getProposalId());
-        if ( unversionedAttributes != null && ! unversionedAttributes.isEmpty())
-        for(ProposalUnversionedAttribute pua : unversionedAttributes) {
-            if(pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString())) {
-                if (!Validator.isBlank(pua.getStringValue()))
-                model.addAttribute("authorComment", pua);
-            }
-            if(pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString())) {
-                if ( ! Validator.isBlank(pua.getStringValue()))
-                    model.addAttribute("iafComment", pua);
+        if ( unversionedAttributes != null && ! unversionedAttributes.isEmpty()) {
+            for (ProposalUnversionedAttribute pua : unversionedAttributes) {
+                if (pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT
+                        .toString())) {
+                    if (!Validator.isBlank(pua.getStringValue())) {
+                        model.addAttribute("authorComment", pua);
+                    }
+                }
+                if (pua.getName()
+                        .equals(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString())) {
+                    if (!Validator.isBlank(pua.getStringValue())) {
+                        model.addAttribute("iafComment", pua);
+                    }
+                }
             }
         }
 
@@ -110,11 +107,20 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
         }
 
-        boolean showSubProposalListing = (isRegionalSectorContest(contest));
-        if (showSubProposalListing) {
+        boolean showSubProposalListing = (isRegionalContest(contest));
+        boolean showDataTable = (isRegionalContest(contest));
+        if (showDataTable) {
+            IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest);
+            model.addAttribute("impactSeries", integratedProposalImpactSeries);
+            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+            model.addAttribute("impactIterations", impactIterations);
+        }
+
+        if(showSubProposalListing){
             model.addAttribute("impactSerieses", getImpactTabBasicProposal(proposalWrapper.getWrapped()));
         }
         model.addAttribute("showSubProposalListing", showSubProposalListing);
+        model.addAttribute("showDataTable", showDataTable);
 
         final ContestTier contestTier = ContestTier.getContestTierByTierType(contest.getContestTier());
         if (contestTier != null) {
@@ -195,8 +201,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     isProposalUsingCombinedScenario = true;
                     proposalImpactScenarioCombinationWrapper.calculateCombinedInputParameters();
 
-                    if (!isScenarioUsingSameModelId ||
-                            proposalImpactScenarioCombinationWrapper.scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
+                    if (!isScenarioUsingSameModelId || proposalImpactScenarioCombinationWrapper.
+                            scenarioInputParameterAreDifferentThanAggregated(proposalScenarioId)) {
                         proposalImpactScenarioCombinationWrapper.runCombinedScenarioSimulation();
                         model.addAttribute("consolidatedScenarioId",
                                 proposalImpactScenarioCombinationWrapper.getOutputScenarioId());

@@ -78,7 +78,14 @@ jQuery(function() {
         //submit button functionality for adding new comments
         $("#addCommentButton").click(function() {
             //save the comment in a cookie, in case the user is not logged in
-            $.cookie("proposal-comment-body", $("#messageContent").val(), {path: "/"});
+
+            if($("#cke_messageContent iframe") == null || $("#cke_messageContent iframe").contents().find("body").text() == "") {
+                $.removeCookie("proposal-comment-body", {path: "/"});
+                $.cookie("proposal-comment-body", $("#messageContent").val(), {path: "/"});
+            } else {
+                $.removeCookie("proposal-comment-body", {path: "/"});
+                $.cookie("proposal-comment-body", $("#cke_messageContent iframe").contents().find("body").text(), {path: "/"});
+            }
 
             if ($(this).attr("data-is-deferred") == "true") {
                 deferUntilLogin();
@@ -86,6 +93,7 @@ jQuery(function() {
                 if (! window.isAddCommentFormValid()) {
                     return false;
                 }
+                disableDirtyCheck();
                 window.disableAddComment();
                 $('#addCommentForm').submit();
             }

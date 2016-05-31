@@ -37,6 +37,7 @@ public class MemberDaoImpl implements MemberDao {
                 .from(MEMBER)
                 .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
+                .where(MEMBER.STATUS.eq(0))
                 .getQuery();
 
         if (partialName != null) {
@@ -107,7 +108,6 @@ public class MemberDaoImpl implements MemberDao {
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
         return query.fetchInto(Member.class);
     }
-
 
     @Override
     public Member getMember(long memberId) throws NotFoundException {
@@ -208,6 +208,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.COUNTRY, member.getCountry())
+                .set(MEMBER.STATUS, member.getStatus())
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
                 .where(MEMBER.ID_.equal(member.getId_()))

@@ -49,20 +49,24 @@
 	<script type="text/javascript">
 
 		function submitSaveAsExistingForm() {
+			disableDirtyCheck();
 			document.getElementById('createNew').value = false;
 			document.getElementById('editForm').submit();
 		}
 
 		function submitSaveAsNewForm() {
+			disableDirtyCheck();
 			document.getElementById('createNew').value = true;
 			document.getElementById('editForm').submit();
 		}
 
 		function submitCreateNewForm() {
+			disableDirtyCheck();
 			document.getElementById('createNewElementForm').submit();
 		}
 
 		function submitDeleteForm() {
+			disableDirtyCheck();
 			if(confirm("Do you want to remove this ${currentTabWrapped.elementType}?")) {
 				document.getElementById('deleteElementForm').submit();
 			}

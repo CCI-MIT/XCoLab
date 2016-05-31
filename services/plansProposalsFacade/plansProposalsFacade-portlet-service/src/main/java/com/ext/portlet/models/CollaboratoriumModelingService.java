@@ -16,10 +16,10 @@ import edu.mit.cci.roma.client.comm.ClientRepository;
 
 public class CollaboratoriumModelingService {
 
-	static ClientRepository instance;
-	static Object mutex = new Object();
+	private static ClientRepository instance;
+	private static final Object mutex = new Object();
 
-	private static Log _log = LogFactoryUtil
+	private static final Log _log = LogFactoryUtil
 			.getLog(CollaboratoriumModelingService.class);
 
 	public static ClientRepository repository() throws SystemException {
@@ -35,7 +35,6 @@ public class CollaboratoriumModelingService {
 
 						@Override
 						public void run() {
-							// TODO Auto-generated method stub
 							// try to read configuration from default location
 							// (portal-ext.properties)
 							String host = PropsUtil.get("edu.mit.roma.address");
@@ -43,8 +42,7 @@ public class CollaboratoriumModelingService {
 								_log.error("Can't find edu.mit.roma.address property, it has to be set in portal-ext.properties");
 							}
 
-							_log.info("Starting up modeling client (" + host
-									+ ")");
+							_log.info("Starting up modeling client (" + host + ")");
 							try {
 								instance = ClientRepository.instance(host);
 
