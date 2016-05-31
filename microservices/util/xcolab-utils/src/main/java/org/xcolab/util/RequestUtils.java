@@ -202,7 +202,7 @@ public final class RequestUtils {
                 .exchange(uriBuilder.build().toString(), HttpMethod.PUT, httpEntity, Boolean.class)
                 .getBody();
     }
-    
+
 
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.build().toString(), entity, returnType);

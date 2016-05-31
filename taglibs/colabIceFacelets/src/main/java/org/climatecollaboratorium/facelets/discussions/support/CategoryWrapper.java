@@ -22,8 +22,6 @@ import org.climatecollaboratorium.utils.Helper;
 import org.climatecollaboratorium.utils.HumanTime;
 import org.climatecollaboratorium.validation.CategoryNameValidator;
 import org.climatecollaboratorium.validation.ValueRequiredValidator;
-import org.xcolab.activityEntry.discussion.DiscussionCategoryAddedActivityEntry;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -140,8 +138,7 @@ public class CategoryWrapper implements Serializable {
                     DiscussionActivityKeys.ADD_CATEGORY.id(),
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryId()), 0);
 
-            ActivityEntryHelper.createActivityEntry(td.getUserId(), discussionBean.getDiscussionId(),null,
-                    new DiscussionCategoryAddedActivityEntry());
+            
         }
     }
 
