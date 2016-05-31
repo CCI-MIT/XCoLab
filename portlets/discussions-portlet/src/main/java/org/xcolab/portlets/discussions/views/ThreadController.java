@@ -90,13 +90,14 @@ public class ThreadController extends BaseDiscussionController {
             thread.setCategoryId(categoryId);
             thread.setTitle(HtmlUtil.cleanAll(title));
             thread.setAuthorId(userId);
+            thread.setIsQuiet(false);
             thread = CommentClient.createThread(thread);
 
             Comment comment = new Comment();
             comment.setThreadId(thread.getThreadId());
             comment.setContent(HtmlUtil.cleanSome(body, ""));
             comment.setAuthorId(userId);
-            CommentClient.createComment(comment);
+            comment = CommentClient.createComment(comment);
 
             if( !thread.getIsQuiet()) {
                 ActivityEntryHelper.createActivityEntry(userId, comment.getCommentId(), null,

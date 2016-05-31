@@ -1,7 +1,6 @@
 package org.xcolab.portlets.feeds.search;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -23,9 +22,9 @@ import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
-import javax.portlet.PortletURL;
-import java.util.List;
 import java.util.Locale;
+
+import javax.portlet.PortletURL;
 
 /**
  * This class indexes all User activities that are already clustered together (like seen in the Feeds portlet)
@@ -157,7 +156,9 @@ public class ActivityIndexer extends BaseIndexer {
     }
 
     private void reindexActivities() throws SystemException {
-        List<SocialActivity> allActivities = SocialActivityLocalServiceUtil.getSocialActivities(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+        //TODO: see this again when doing search functionality
+        /*List<Activity> allActivities = SocialActivityLocalServiceUtil.getSocialActivities(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
         List<SocialActivity> aggregatedActivities = ActivityUtil.groupActivities(allActivities);
 
         for (SocialActivity sa : aggregatedActivities) {
@@ -166,6 +167,6 @@ public class ActivityIndexer extends BaseIndexer {
             } catch (SearchException |SystemException e) {
                 _log.error("Could not reindex SocialActivity with primary key " + sa.getActivityId(), e);
             }
-        }
+        }*/
     }
 }

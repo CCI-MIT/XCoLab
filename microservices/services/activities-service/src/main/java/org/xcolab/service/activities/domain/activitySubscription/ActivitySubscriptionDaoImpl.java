@@ -1,7 +1,8 @@
-package org.xcolab.service.activities.domain.activitySubscription;
+package org.xcolab.service.activities.domain.activitysubscription;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -54,7 +55,7 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
 
     public boolean isSubscribed(Long receiverId, Long classNameId, Long classPK, Integer type, String extraInfo) {
 
-        final SelectQuery<Record> query = dslContext.select()
+        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(ACTIVITY_SUBSCRIPTION)
                 .getQuery();
 

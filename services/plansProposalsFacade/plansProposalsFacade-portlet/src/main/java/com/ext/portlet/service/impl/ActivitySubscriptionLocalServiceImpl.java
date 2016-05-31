@@ -38,11 +38,11 @@ import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceU
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.mail.MailEngine;
 import com.liferay.util.mail.MailEngineException;
+
 import org.apache.commons.collections.comparators.ComparatorChain;
 import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
-import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
@@ -56,6 +56,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.mail.internet.InternetAddress;
 
 /**
  * The implementation of the activity subscription local service.

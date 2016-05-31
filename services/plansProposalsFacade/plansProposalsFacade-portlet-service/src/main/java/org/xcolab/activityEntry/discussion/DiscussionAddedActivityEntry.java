@@ -19,7 +19,7 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
     @Override
     public String getTitle() {
-        return getTitle() + " started a new discussion";
+        return  " started a new discussion";
     }
 
     @Override

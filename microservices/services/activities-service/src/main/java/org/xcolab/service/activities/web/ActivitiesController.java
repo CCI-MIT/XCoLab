@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
-import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
+
+
 import org.xcolab.service.activities.domain.activityentry.ActivityEntryDao;
+import org.xcolab.service.activities.domain.activitysubscription.ActivitySubscriptionDao;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 

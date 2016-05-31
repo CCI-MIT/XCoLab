@@ -1,5 +1,6 @@
 package org.xcolab.activityEntry.proposal;
 
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.community.CommunityUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
@@ -15,6 +16,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.helpers.ProposalAttributeHelper;
 
 public abstract class ProposalBaseActivityEntry implements ActivityEntryContentProvider {
 
@@ -29,6 +31,8 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
     private ContestType contestType;
 
     private Contest contest;
+
+    private String proposalName;
     @Override
     public void setActivityEntry(ActivityEntry activityEntry) {
         this.activityEntry = activityEntry;
@@ -38,6 +42,13 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
             contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(rawProposal.getProposalId());
 
             contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(rawProposal.getProposalId());
+
+            ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(rawProposal);
+
+            proposalName = proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
+
+
+
 
         } catch (PortalException e){
             _log.error("Portal exception  " + e.getMessage());
@@ -88,7 +99,8 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         return "<user removed>";
     }
     private String getProposalLink(){
-        return ProposalLocalServiceUtil.getProposalLinkUrl(contest, rawProposal);
+        String url = "<a href='" + ProposalLocalServiceUtil.getProposalLinkUrl(contest, rawProposal)+ "'>" + proposalName + "</a>";
+        return url;
     }
 
     public enum ProposalActivitySubType{
