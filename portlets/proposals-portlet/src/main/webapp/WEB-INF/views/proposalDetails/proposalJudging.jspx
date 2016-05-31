@@ -34,7 +34,7 @@
             </select>
         </c:if>
         <i style="font-size:10pt;">Please <br />
-            1) Rate this proposal; <br />
+            1) Rate this ${contestType.proposalName}; <br />
             2) Provide written feedback in the text box below; and <br />
             3) Click save. <br />
             Both ratings and feedback must be completed for the evaluation to save.
