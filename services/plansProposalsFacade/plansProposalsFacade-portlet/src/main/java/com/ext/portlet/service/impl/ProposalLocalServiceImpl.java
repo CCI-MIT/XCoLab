@@ -70,7 +70,7 @@ import com.liferay.util.mail.MailEngineException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.xcolab.activityEntry.proposal.ProposalCreatedActivityEntry;
+import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.activityEntry.proposal.ProposalMemberAddedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
@@ -78,8 +78,8 @@ import org.xcolab.activityEntry.proposal.ProposalSupporterRemovedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalVoteActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalVoteRetractActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
-
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
@@ -268,8 +268,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                 eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal,
                         contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
 
-                ActivityEntryHelper.createActivityEntry(authorId,proposalId,null,
-                        new ProposalCreatedActivityEntry());
+
             }
         }
 
@@ -1012,11 +1011,13 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
-        activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
+       // activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
+
 
         Proposal proposal = getProposal(proposalId);
         DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
         activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
+        ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION,proposal.getDiscussionId(), )
     }
 
     /**

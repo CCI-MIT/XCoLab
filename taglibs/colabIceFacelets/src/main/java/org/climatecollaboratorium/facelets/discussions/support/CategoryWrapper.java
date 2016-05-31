@@ -138,7 +138,7 @@ public class CategoryWrapper implements Serializable {
                     DiscussionActivityKeys.ADD_CATEGORY.id(),
                     ActivityUtil.getExtraDataForIds(wrapped.getCategoryId()), 0);
 
-            
+
         }
     }
 
