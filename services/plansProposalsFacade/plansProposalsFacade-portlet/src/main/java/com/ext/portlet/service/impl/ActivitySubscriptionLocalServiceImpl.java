@@ -317,7 +317,8 @@ public class ActivitySubscriptionLocalServiceImpl
 
     @Override
     public SubscriptionType getSubscriptionType(ActivitySubscription activitySubscription) {
-        return SubscriptionType.getSubscriptionType(activitySubscription);
+        //return SubscriptionType.getSubscriptionType(activitySubscription);
+        return null;
     }
 
 
@@ -497,9 +498,10 @@ public class ActivitySubscriptionLocalServiceImpl
 			if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
 					!MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
 
-                String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(serviceContext.getPortalURL(),
-                        NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId()), serviceContext));
-				sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, serviceContext.getPortalURL());
+                //TODO: fix this because this was only done so the code would compile
+                //String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(serviceContext.getPortalURL(),
+                        //NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId()), serviceContext));
+				//sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, serviceContext.getPortalURL());
 			}
 
 		}
