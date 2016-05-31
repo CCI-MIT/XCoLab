@@ -1012,12 +1012,15 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
        // activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
-
+        ActivitiesClient.addSubscription(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(),proposalId,0, null, userId);
 
         Proposal proposal = getProposal(proposalId);
+
+        /*
         DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
         activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
-        ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION,proposal.getDiscussionId(), )
+        */
+        ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(),proposal.getDiscussionId(),0, null, userId);
     }
 
     /**
@@ -1048,10 +1051,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public void unsubscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.deleteSubscription(userId, Proposal.class, proposalId, 0, "", automatic);
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(), proposalId,0 , null );
 
         Proposal proposal = getProposal(proposalId);
-        DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-        activitySubscriptionLocalService.deleteSubscription(userId, DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", automatic);
+
+        /*DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
+        activitySubscriptionLocalService.deleteSubscription(userId, DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", automatic);*/
+
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), proposal.getDiscussionId(),0 , null );
     }
 
     /**
