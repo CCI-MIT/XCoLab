@@ -69,7 +69,7 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}/roles", method = RequestMethod.GET)
-    public List<Role_> getMemberRoles(@PathVariable("memberId") Long memberId) {
+    public List<Role_> getMemberRoles(@PathVariable Long memberId) {
         if (memberId == null) {
             return new ArrayList<>();
         } else {
@@ -106,7 +106,7 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}/activityCount", method = RequestMethod.GET)
-    public Integer getMemberActivityCount(@PathVariable("memberId") Long memberId) {
+    public int getMemberActivityCount(@PathVariable Long memberId) {
         if (memberId == null) {
             return 0;
         } else {
@@ -116,7 +116,7 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}/materializedPoints", method = RequestMethod.GET)
-    public Integer getMemberMaterializedPoints(@PathVariable("memberId") Long memberId) {
+    public int getMemberMaterializedPoints(@PathVariable Long memberId) {
         if (memberId == null) {
             return 0;
         } else {
@@ -231,8 +231,8 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}/roles/contests/{contestId}", method = RequestMethod.GET)
-    public List<Role_> getMemberRoles(@PathVariable("memberId") Long memberId,
-                                      @PathVariable("contestId") Long contestId) {
+    public List<Role_> getMemberRoles(@PathVariable Long memberId,
+                                      @PathVariable Long contestId) {
         if (memberId == null || contestId == null) {
             return new ArrayList<>();
         } else {
