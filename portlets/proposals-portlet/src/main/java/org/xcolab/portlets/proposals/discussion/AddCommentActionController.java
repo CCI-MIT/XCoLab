@@ -44,7 +44,7 @@ public class AddCommentActionController extends AddDiscussionMessageActionContro
                             thread.getThreadId(),
                             comment.getCommentId()), 0);
 
-            ActivityEntryHelper.createActivityEntry(userId, comment.getCommentId(),null,
+            ActivityEntryHelper.createActivityEntry(userId,thread.getThreadId() ,comment.getCommentId() + "",
                     new DiscussionAddProposalCommentActivityEntry());
         }
     }

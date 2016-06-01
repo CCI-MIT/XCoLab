@@ -11,10 +11,12 @@ import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
+import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 
@@ -30,16 +32,23 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
 
     protected Category category;
 
+    protected CategoryGroup categoryGroup;
+
     public static final String HYPERLINK_FORMAT = "<a href=\"%s\">%s</a>";
 
     @Override
     public void setActivityEntry(ActivityEntry activityEntry) {
         this.activityEntry = activityEntry;
         try {
-            comment = CommentClient.getComment(activityEntry.getClassPrimaryKey());
-            thread = CommentClient.getThread(comment.getThreadId());
-            category = CommentClient.getCategory(thread.getCategoryId());
-        }catch(CommentNotFoundException | ThreadNotFoundException | CategoryNotFoundException ignored){
+            if(!this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())) {
+                categoryGroup = CommentClient.getCategoryGroup(activityEntry.getClassPrimaryKey());
+                comment = CommentClient.getComment(Long.parseLong(activityEntry.getExtraData()));
+                thread = CommentClient.getThread(comment.getThreadId());
+                category = CommentClient.getCategory(thread.getCategoryId());
+            }else{
+                thread = CommentClient.getThread(activityEntry.getClassPrimaryKey());
+            }
+        }catch(CategoryGroupNotFoundException | CommentNotFoundException | ThreadNotFoundException | CategoryNotFoundException ignored){
         }
     }
 

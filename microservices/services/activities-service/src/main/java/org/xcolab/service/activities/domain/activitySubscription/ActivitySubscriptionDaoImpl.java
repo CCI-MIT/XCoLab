@@ -82,7 +82,7 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
 
         query.addConditions((ACTIVITY_SUBSCRIPTION.TYPE_.eq(type)));
 
-        if(extraInfo != null && !extraInfo.isEmpty()){
+        if(extraInfo != null){
             query.addConditions((ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo)));
         }
 

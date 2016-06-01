@@ -100,7 +100,7 @@ public class ThreadController extends BaseDiscussionController {
             comment = CommentClient.createComment(comment);
 
             if( !thread.getIsQuiet()) {
-                ActivityEntryHelper.createActivityEntry(userId, comment.getCommentId(), null,
+                ActivityEntryHelper.createActivityEntry(userId, categoryId, (comment.getCommentId()+""),
                         new DiscussionAddedActivityEntry());
             }
 

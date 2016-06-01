@@ -168,7 +168,7 @@ public class CategoryController extends BaseDiscussionController {
 
         if (!themeDisplay.getUser().isDefaultUser()) {
             if (categoryId > 0) {
-                ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 , Long.toString(categoryId),themeDisplay.getUserId() );
+                ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryId,0 , Long.toString(categoryId),themeDisplay.getUserId() );
             } else {
                 ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 ,
                         "",themeDisplay.getUserId() );
