@@ -23,9 +23,9 @@ import java.io.IOException;
 @Service
 public class ConnectorEmmaAPI {
 
-    private final static String EMMA_MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
-    private final String charset = java.nio.charset.StandardCharsets.UTF_8.name();
-    private final String contentType = "application/json";
+    private static final String EMMA_MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
+    private static final String CONTENT_TYPE = "application/json";
+    private static final String CHARSET = java.nio.charset.StandardCharsets.UTF_8.name();
     private String myEmmaApiBaseUrl;
 
     private final AccountDetailsEmmaAPI accountDetailsEmmaAPI;
@@ -53,7 +53,7 @@ public class ConnectorEmmaAPI {
         if (accountDetailsEmmaAPI.isEnabled()) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
                 HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(getMyEmmaApiBaseUrl() + "/members/" + emmaMemberId,
-                        contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
+                        CONTENT_TYPE, CHARSET, accountDetailsEmmaAPI.getEncodedAuthorization());
 
                 try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
                     if (newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -80,7 +80,7 @@ public class ConnectorEmmaAPI {
 
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
                 HttpUriRequest newsletterSubscribeRequest = createPostWithAuthorizationForJSONObject(getMyEmmaApiBaseUrl() + "/members/add",
-                        contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization(), jsonSubscribeInformation);
+                        CONTENT_TYPE, CHARSET, accountDetailsEmmaAPI.getEncodedAuthorization(), jsonSubscribeInformation);
 
                 try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
                     if (newsletterSubscribeResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -99,7 +99,7 @@ public class ConnectorEmmaAPI {
         if (accountDetailsEmmaAPI.isEnabled()) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
                 HttpGet getMemberDetails = createGetWithAuthorization(getMyEmmaApiBaseUrl() + "/members/email/" + email,
-                        contentType, charset, accountDetailsEmmaAPI.getEncodedAuthorization());
+                        CONTENT_TYPE, CHARSET, accountDetailsEmmaAPI.getEncodedAuthorization());
 
                 try (CloseableHttpResponse getMemberDetailsResponse = httpclient.execute(getMemberDetails)) {
                     if (getMemberDetailsResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
