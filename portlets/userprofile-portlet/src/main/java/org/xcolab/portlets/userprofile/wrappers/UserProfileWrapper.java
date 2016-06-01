@@ -304,7 +304,7 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
             for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient.getActivityEntries(0,100, this.user.getId_(), null))) {
-                
+
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
         }

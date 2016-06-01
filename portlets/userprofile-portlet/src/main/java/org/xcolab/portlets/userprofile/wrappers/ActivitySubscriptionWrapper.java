@@ -2,8 +2,7 @@ package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.SubscriptionType;
 
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-
+import org.xcolab.activityEntry.ActivitySubscriptionNameGenerator;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 
 import java.io.Serializable;
@@ -25,7 +24,7 @@ public class ActivitySubscriptionWrapper implements Serializable {
     }
 
     public String getName() {
-        return ActivitySubscriptionLocalServiceUtil.getName(subscription);
+        return ActivitySubscriptionNameGenerator.getName(subscription);
     }
 
     public Date getUpdated() {
