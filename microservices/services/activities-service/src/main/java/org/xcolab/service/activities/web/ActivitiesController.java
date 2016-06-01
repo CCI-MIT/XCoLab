@@ -99,6 +99,15 @@ public class ActivitiesController {
         }
     }
 
+    @RequestMapping(value = "/activitySubscriptions/deleteIfSubscribed", method = RequestMethod.GET)
+    public boolean deleteIfSubscribed(@RequestParam(required = false) Long receiverId,
+                                @RequestParam(required = false) Long classNameId,
+                                @RequestParam(required = false) Long classPK,
+                                @RequestParam(required = false) Integer type,
+                                @RequestParam(required = false) String extraInfo) {
+        return this.activitySubscriptionDao.deleteSubcription(receiverId, classNameId, classPK, type, extraInfo);
+    }
+
     @RequestMapping(value = "/activitySubscriptions/isSubscribed", method = RequestMethod.GET)
     public boolean isSubscribed(@RequestParam(required = false) Long receiverId,
                                 @RequestParam(required = false) Long classNameId,

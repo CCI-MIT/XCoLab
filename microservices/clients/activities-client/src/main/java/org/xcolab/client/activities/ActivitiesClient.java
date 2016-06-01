@@ -109,7 +109,21 @@ public final class ActivitiesClient {
     }
 
     public static void deleteSubscription(Long receiverId, Long classNameId, Long classPK, Integer type, String extraInfo) {
-        //TODO
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/activitySubscriptions/deleteIfSubscribed")
+                .queryParam("receiverId", receiverId)
+                .queryParam("classNameId", classNameId)
+                .queryParam("classPK", classPK)
+                .queryParam("extraInfo", extraInfo)
+                .queryParam("type", type);
+         RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+    }
+    public static void deleteSubscriptionById(Long subscriptionId){
+
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                    EUREKA_APPLICATION_ID + "/activitySubscriptions/" + subscriptionId + "");
+                 RequestUtils.delete(uriBuilder);
+
     }
 
     public static boolean isSubscribedToActivity(Long receiverId, Long classNameId, Long classPK, Integer type, String extraInfo) {

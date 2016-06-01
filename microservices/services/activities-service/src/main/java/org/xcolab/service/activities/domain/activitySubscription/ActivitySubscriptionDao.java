@@ -16,4 +16,6 @@ public interface ActivitySubscriptionDao {
     boolean isSubscribed(Long receiverId, Long classNameId, Long classPK, Integer type , String extraInfo);
 
     List<ActivitySubscription> getActivitySubscribers(Long classNameId, Long classPK, Long receiverId);
+
+    boolean deleteSubcription(Long receiverId, Long classNameId, Long classPK, Integer type, String extraInfo);
 }

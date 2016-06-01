@@ -84,7 +84,7 @@ public class NotificationUnregisterController {
 	    // unregister user
 	    if (subscription != null) {
 	        //ActivitySubscriptionLocalServiceUtil.delete(subscription);
-            ActivitiesClient.deleteActivitySubscription(subscription.getPk());
+            ActivitiesClient.deleteSubscriptionById(subscription.getPk());
             responseText = UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT;
 	    }
 

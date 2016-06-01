@@ -7,6 +7,7 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
+import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 
 import java.util.List;
@@ -20,8 +21,7 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
 
     public ActivitySubscription create(ActivitySubscription activitySubscription) {
 
-        this.dslContext.insertInto(ACTIVITY_SUBSCRIPTION)
-                .set(ACTIVITY_SUBSCRIPTION.PK, activitySubscription.getPk())
+        ActivitySubscriptionRecord ret =  this.dslContext.insertInto(ACTIVITY_SUBSCRIPTION)
                 .set(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID, activitySubscription.getClassNameId())
                 .set(ACTIVITY_SUBSCRIPTION.CLASS_PK, activitySubscription.getClassPK())
                 .set(ACTIVITY_SUBSCRIPTION.TYPE_, activitySubscription.getType_())
@@ -30,8 +30,14 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
                 .set(ACTIVITY_SUBSCRIPTION.RECEIVER_ID, activitySubscription.getReceiverId())
                 .set(ACTIVITY_SUBSCRIPTION.CREATE_DATE, activitySubscription.getCreateDate())
                 .set(ACTIVITY_SUBSCRIPTION.MODIFIED_DATE, activitySubscription.getModifiedDate())
-                .execute();
-        return activitySubscription;
+                .returning(ACTIVITY_SUBSCRIPTION.PK)
+                .fetchOne();
+        if (ret != null) {
+            activitySubscription.setPk(ret.getValue(ACTIVITY_SUBSCRIPTION.PK));
+            return activitySubscription;
+        } else {
+            return null;
+        }
 
     }
     public ActivitySubscription get(Long activitySubscriptionId) throws NotFoundException{
@@ -51,6 +57,17 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
         return this.dslContext.delete(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.PK.eq(pk))
                 .execute() > 0;
+    }
+
+    public boolean deleteSubcription(Long receiverId, Long classNameId, Long classPK, Integer type, String extraInfo) {
+
+        return this.dslContext.delete(ACTIVITY_SUBSCRIPTION)
+                .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId))
+                .and(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
+                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
+                .and(ACTIVITY_SUBSCRIPTION.TYPE_.eq(type))
+                .and(ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo)).execute() > 0;
+
     }
 
     public boolean isSubscribed(Long receiverId, Long classNameId, Long classPK, Integer type, String extraInfo) {
