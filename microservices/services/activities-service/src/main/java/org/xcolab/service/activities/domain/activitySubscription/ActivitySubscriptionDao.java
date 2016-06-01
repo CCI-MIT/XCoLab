@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.domain.activitysubscription;
+package org.xcolab.service.activities.domain.activitySubscription;
 
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.exceptions.NotFoundException;

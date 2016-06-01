@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.domain.activitysubscription;
+package org.xcolab.service.activities.domain.activitySubscription;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;

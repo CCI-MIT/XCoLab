@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.domain.activityentry;
+package org.xcolab.service.activities.domain.activityEntry;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
