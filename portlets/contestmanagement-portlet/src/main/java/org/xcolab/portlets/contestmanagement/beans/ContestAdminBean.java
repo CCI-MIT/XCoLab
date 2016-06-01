@@ -1,10 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -15,9 +11,6 @@ import java.io.UnsupportedEncodingException;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by steve on 12/02/16.
- */
 public class ContestAdminBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -56,12 +49,6 @@ public class ContestAdminBean implements Serializable {
 
         updateContest(contest);
         WikiPageWrapper.updateContestWiki(contest);
-
-        DiscussionCategoryGroup dcg =
-                DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
-        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
-        dcg.setDescription(String.format("%s %s", contestType.getContestName(), contest.getContestShortName()));
-        dcg.persist();
     }
 
     public String getEmailTemplateUrl() {
