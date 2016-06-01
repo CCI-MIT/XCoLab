@@ -134,8 +134,7 @@ public class UserProfileWrapper implements Serializable {
             supportedProposals.add(new SupportedProposalWrapper(ps));
         }
 
-        for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
-                .getUserActivities(user.getId_(), 0, MAX_ACTIVITIES_COUNT))) {
+        for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient.getActivityEntries(0, MAX_ACTIVITIES_COUNT, user.getId_(), null))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
             if (a.getBody() != null && !a.getBody().equals("")) {
