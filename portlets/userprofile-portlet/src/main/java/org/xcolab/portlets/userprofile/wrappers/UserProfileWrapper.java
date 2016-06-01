@@ -20,8 +20,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.portlet.social.model.SocialActivity;
-import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
 
@@ -305,8 +303,8 @@ public class UserProfileWrapper implements Serializable {
     public List<UserActivityWrapper> getSubscribedActivities() throws SystemException, PortalException {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
-            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient.getActivityEntries(0,100, this.user.getId_(), null)) {
-                ;
+            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient.getActivityEntries(0,100, this.user.getId_(), null))) {
+                
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
         }
