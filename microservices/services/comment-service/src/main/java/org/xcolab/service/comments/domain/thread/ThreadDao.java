@@ -18,4 +18,6 @@ public interface ThreadDao {
 
     Timestamp lastActivityDate(long threadId) throws NotFoundException;
     long lastActivityAuthor(long threadId) throws NotFoundException;
+
+    Long getProposalIdForThread(long threadId);
 }

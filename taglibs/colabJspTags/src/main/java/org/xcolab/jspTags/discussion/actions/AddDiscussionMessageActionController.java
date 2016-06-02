@@ -13,7 +13,10 @@ import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.activityEntry.discussion.DiscussionAddCommentActivityEntry;
+import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
@@ -60,8 +63,20 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             comment.setAuthorId(userId);
             comment.setThreadId(threadId);
             comment = CommentClient.createComment(comment);
+            CommentThread commentThread = CommentClient.getThread(threadId);
 
-            updateAnalyticsAndActivities(CommentClient.getThread(threadId), comment, userId, request);
+            updateAnalyticsAndActivities(commentThread, comment, userId, request);
+
+            if(!commentThread.getIsQuiet()){
+
+                if(commentThread.getCategory() == null) {
+                    ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(), comment.getCommentId() + "",
+                            new DiscussionAddProposalCommentActivityEntry());
+                }else{
+                    ActivityEntryHelper.createActivityEntry(userId, commentThread.getCategory().getCategoryGroup().getGroupId(), comment.getCommentId() + "",
+                            new DiscussionAddCommentActivityEntry());
+                }
+            }
 
             //delete the cached comment cookie, if it exists
             Cookie[] cookies = request.getCookies();

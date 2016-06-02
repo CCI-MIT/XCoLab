@@ -21,6 +21,7 @@ import java.util.List;
 import static org.xcolab.model.Tables.CATEGORY;
 import static org.xcolab.model.Tables.COMMENT;
 import static org.xcolab.model.Tables.THREAD;
+import static org.xcolab.model.Tables.PROPOSAL;
 
 @Repository
 public class ThreadDaoImpl implements ThreadDao {
@@ -179,5 +180,10 @@ public class ThreadDaoImpl implements ThreadDao {
             throw new NotFoundException();
         }
         return timestamps.get(0);
+    }
+
+    public Long getProposalIdForThread(long threadId){
+        return dslContext.select(PROPOSAL.PROPOSAL_ID).from(THREAD).innerJoin(PROPOSAL).on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
+                .where(THREAD.THREAD_ID.eq(threadId)).fetchOne().into(Long.class);
     }
 }

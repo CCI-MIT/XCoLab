@@ -11,10 +11,10 @@ public class DiscussionAddProposalCommentActivityEntry extends DiscussionBaseAct
 
     @Override
     public String getBody() {
-        String template = "%s added a comment to %s";
+        String template = "%s added a comment to Proposal %s";
 
         return String.format(template, getUserLink(),
-                getThreadLink());
+                getProposalLink());
 
     }
 

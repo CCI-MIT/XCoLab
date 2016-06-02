@@ -169,6 +169,17 @@ public class CommentController {
         }
     }
 
+    @RequestMapping(value = "/threads/{threadId}/getProposalIdForThread", method = RequestMethod.GET)
+    public Long getProposalIdForThread(@PathVariable Long threadId) throws NotFoundException {
+        if (threadId == 0) {
+            throw new NotFoundException("No thread found for id given");
+        } else {
+            return threadDao.getProposalIdForThread(threadId);
+        }
+    }
+
+
+
     @RequestMapping(value = "/threads", method = RequestMethod.POST)
     public Thread createThread(@RequestBody Thread thread) {
         thread.setCreateDate(new Timestamp(new Date().getTime()));

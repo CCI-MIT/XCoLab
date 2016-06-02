@@ -1,6 +1,6 @@
 //PORTLET PREFERENCES: move proposals
 
-$(function() {
+function setupProposalMove(){
     if ($("#portlet-preferences").length == 0) {
         return;
     }
@@ -78,4 +78,4 @@ $(function() {
         }
 
     });
-});
+};

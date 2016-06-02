@@ -159,9 +159,12 @@ public class CommentThread implements Serializable {
 
     @JsonIgnore
     public String getLinkUrl() {
-        final CategoryGroup categoryGroup = getCategory().getCategoryGroup();
-        if (categoryGroup != null) {
-            return categoryGroup.getLinkUrl() + "/-/discussion/thread/" + threadid;
+        final Category category = getCategory();
+        if(category!=null) {
+            final CategoryGroup categoryGroup = category.getCategoryGroup();
+            if (categoryGroup != null) {
+                return categoryGroup.getLinkUrl() + "/-/discussion/thread/" + threadid;
+            }
         }
         //TODO: handle proposal comments
         return "";

@@ -1,6 +1,11 @@
 package org.xcolab.activityEntry.discussion;
 
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.community.CommunityUtil;
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -19,6 +24,7 @@ import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.helpers.ProposalAttributeHelper;
 
 public abstract class DiscussionBaseActivityEntry implements ActivityEntryContentProvider {
 
@@ -34,6 +40,12 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
 
     protected CategoryGroup categoryGroup;
 
+    protected Proposal proposal;
+
+    protected Contest contest;
+
+    protected String proposalName;
+
     public static final String HYPERLINK_FORMAT = "<a href=\"%s\">%s</a>";
 
     @Override
@@ -47,9 +59,33 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
                 category = CommentClient.getCategory(thread.getCategoryId());
             }else{
                 thread = CommentClient.getThread(activityEntry.getClassPrimaryKey());
+                final Long proposalId = CommentClient.getProposalIdForThread(thread.getThreadId());
+                if(proposalId != null) {
+                    try {
+                        proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+
+
+                        contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
+
+                        ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal);
+
+                        proposalName = proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
+
+                    } catch (PortalException | SystemException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }catch(CategoryGroupNotFoundException | CommentNotFoundException | ThreadNotFoundException | CategoryNotFoundException ignored){
         }
+    }
+
+    protected String getProposalLink(){
+        String url = "";
+        if( proposal!= null) {
+            url = "<a href='" + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal)+ "/tab/COMMENTS" + "'>" + proposalName + "</a>";
+        }
+        return url;
     }
 
     protected String getThreadLink(){

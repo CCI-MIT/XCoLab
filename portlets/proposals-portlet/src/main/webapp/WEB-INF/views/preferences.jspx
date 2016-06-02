@@ -178,6 +178,11 @@ var proposals = {
         },
     </c:forEach>
 };
+
+$(function() {
+    setupProposalMove();
+});
+
 </script>
 
 </jsp:root>

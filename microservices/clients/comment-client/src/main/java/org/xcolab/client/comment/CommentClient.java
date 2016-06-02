@@ -109,6 +109,17 @@ public final class CommentClient {
         }
     }
 
+
+    public static Long getProposalIdForThread(long threadId) throws ThreadNotFoundException {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/threads/" + threadId+ "/getProposalIdForThread" );
+        try {
+            return RequestUtils.get(uriBuilder, Long.class);
+        } catch (EntityNotFoundException e) {
+        }
+        return null;
+    }
+
     public static void updateThread(CommentThread thread) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/threads/" + thread.getThreadId());
