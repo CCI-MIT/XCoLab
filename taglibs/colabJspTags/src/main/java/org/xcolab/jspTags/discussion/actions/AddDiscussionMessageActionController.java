@@ -73,7 +73,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(), comment.getCommentId() + "",
                             new DiscussionAddProposalCommentActivityEntry());
                 }else{
-                    ActivityEntryHelper.createActivityEntry(userId, commentThread.getCategory().getCategoryGroup().getGroupId(), comment.getCommentId() + "",
+                    ActivityEntryHelper.createActivityEntry(userId, commentThread.getCategory().getCategoryId(), comment.getCommentId() + "",
                             new DiscussionAddCommentActivityEntry());
                 }
             }

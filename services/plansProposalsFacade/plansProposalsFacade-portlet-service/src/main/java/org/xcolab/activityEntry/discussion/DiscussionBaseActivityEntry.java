@@ -16,7 +16,6 @@ import org.xcolab.activityEntry.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
@@ -53,7 +52,8 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
         this.activityEntry = activityEntry;
         try {
             if(!this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())) {
-                categoryGroup = CommentClient.getCategoryGroup(activityEntry.getClassPrimaryKey());
+
+                category = CommentClient.getCategory(activityEntry.getClassPrimaryKey());
                 comment = CommentClient.getComment(Long.parseLong(activityEntry.getExtraData()));
                 thread = CommentClient.getThread(comment.getThreadId());
                 category = CommentClient.getCategory(thread.getCategoryId());
@@ -76,7 +76,7 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
                     }
                 }
             }
-        }catch(CategoryGroupNotFoundException | CommentNotFoundException | ThreadNotFoundException | CategoryNotFoundException ignored){
+        }catch( CommentNotFoundException | ThreadNotFoundException | CategoryNotFoundException ignored){
         }
     }
 
