@@ -76,6 +76,10 @@ public class FeedsDumpGeneratingController {
 					if (body != null && body.trim().length() > 0) {
 						body = body.replace("/web/guest",
 								"http://climatecolab.org/web/guest");
+						/*csvWriter.writeNext(new String[] {
+								body,
+								df.format(new Date(activity.getCreateDate())),
+								activity.getActivityId() + ""});*/
 						csvWriter.writeNext(new String[] {
 								body,
 								df.format(new Date(activity.getCreateDate())),
