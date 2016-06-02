@@ -69,7 +69,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
             query.addConditions(ACTIVITY_ENTRY.MEMBER_ID.notIn(memberIdsToExclude));
         }
 
-        query.addOrderBy(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID.desc());
+        query.addOrderBy(ACTIVITY_ENTRY.CREATE_DATE.desc());
 
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());

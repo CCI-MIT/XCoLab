@@ -2,7 +2,6 @@ package org.xcolab.portlets.feeds.wrappers;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.ocpsoft.pretty.time.PrettyTime;
 
@@ -127,7 +126,7 @@ public class SocialActivityWrapper implements Serializable {
     public static Boolean isEmpty(ActivityEntry activity, PortletRequest request) {
         try {
 
-            UserLocalServiceUtil.getUser(activity.getMemberId());
+            //UserLocalServiceUtil.getUser(activity.getMemberId());
             //SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY));
             return isEmpty(activity);
         } catch (Throwable e) {
