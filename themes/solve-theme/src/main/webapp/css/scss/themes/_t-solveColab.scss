@@ -260,15 +260,11 @@ $p-ContestProposals__list__element--contributor__width: 146px;
 $p-ContestProposals__list__element--proposalname__judgeActions__width: 449px;
 $p-ContestProposals__header__title__fontWeight: $b-Typography__fontWeight--bold;
 $p-ContestProposals__header__ontology__term__useIcons: false;
-$p-ContestProposals__header__ontology__display: block;
-$p-ContestProposals__header__ontology__link__display: block;
-$p-ContestProposals__header__team__display: block;
 $p-ContestProposals__header__detailButton__fontWeight: $b-Typography__fontWeight--regular;
 $p-ContestProposals__header__detailButton__borderRadius: 0;
 $p-ContestProposals__header__detailButton__padding: 5px 10px 5px 10px;
 $p-ContestProposals__header__detailButton__border: none;
 $p-ContestProposals__header__detailButton__backgroundColor: transparent;
-$p-ContestProposals__header__detailButton__display: block;
 
 $p-Members__list__element__fontWeight: $b-Typography__fontWeight--regular;
 
@@ -355,11 +351,7 @@ $c-Header__menu__right__li__a--hover__textColor: $t-Color__primary;
 $c-ContestBox__text__title__textColor--hover: $t-Color__primary;
 $c-Header__menu__li__a__search__textColor--hover: $t-Color__primary;
 $p-ContestProposals__header__paddingTop: 30px;
-$p-ContestProposals__header__rightColumn__borderTop: 1px solid $t-Color__grey--medium;
 $c-Headline__h2__span__fontSize: 27px;
-$p-ContestProposals__header__team__member__display: block;
-$p-ContestProposals__header__ontology__term__marginTop: 10px;
-$p-ContestProposals__header__team__roleName__paddingTop: 0;
 $c-Headline__days-left__span__padding: 7px 12px;
 $c-Headline__days-left__span__background: $t-Color__grey--medium;
 $c-Headline__days-left__span__fontSize: 15px;
