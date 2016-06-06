@@ -12,6 +12,7 @@ $c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
 $c-Header__menu__li__a__search__backgroundUrl: url(../images/icon-menu-search.png) !default;
 $c-Header__menu__li__a__search__textColor: $t-Color__grey--dark !default;
 $c-Header__menu__li__a__search__fontFamily: Arial, Helvetica, sans-serif !default;
+$c-Header__menu__li__a__search__textColor--hover: black !default;
 $c-Header__menu__li__isCurrent__boxShadow: none !default;
 $c-Header__menu__li__isCurrent__a__textColor: $t-Color__primary !default;
 
@@ -135,6 +136,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 #c-Header__menu li a:hover, #c-Header__menu li.isCurrent a {
   color: $c-Header__menu__highlightedTextColor;
+  text-decoration: none;
   height: 42px;
 }
 
@@ -144,7 +146,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 #c-Header__menu li a.search:hover, #c-Header__menu li.isCurrent a.search {
   height: 22px;
-  color: black;
+  color: $c-Header__menu__li__a__search__textColor--hover;
 }
 
 #c-Header__menu__right { //#menu-right
@@ -223,6 +225,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
       &:hover {
         color: $c-Header__menu__right__li__a--hover__textColor;
+        text-decoration: none;
       }
     }
   }
@@ -449,6 +452,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
     &:hover {
       border-bottom: $c-Header__user__box__a--hover__border--bottom;
+      text-decoration: none;
     }
   }
 

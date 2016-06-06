@@ -8,6 +8,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -68,6 +70,14 @@ interface ProposalTabCanAccessAlgorithm {
 			}
 
 			return false;
+		}
+	};
+
+	ProposalTabCanAccessAlgorithm evaluationResultsAccess = new ProposalTabCanAccessAlgorithm() {
+
+		@Override
+		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
+			return ConfigurationAttributeKey.PUBLISH_JUDGING_RESULTS.getBooleanValue();
 		}
 	};
 
