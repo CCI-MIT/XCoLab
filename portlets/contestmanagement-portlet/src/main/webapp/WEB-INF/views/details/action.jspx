@@ -17,11 +17,12 @@
 	(function() {
 		jQuery('document').ready(function(){
 			jQuery("#saveChangesButton").click(function () {
+				disableDirtyCheck();
 				jQuery("#editForm").submit();
 			});
 
 			jQuery("#submitContestButton").click(function () {
-
+				disableDirtyCheck();
 				jQuery.ajax({
 					type: 'POST',
 					dataType: 'text',

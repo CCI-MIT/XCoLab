@@ -23,7 +23,6 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -68,8 +67,20 @@ import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.activityEntry.proposal.ProposalMemberAddedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalSupporterRemovedActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalVoteActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalVoteRetractActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
@@ -84,8 +95,6 @@ import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.UrlBuilder;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
-import javax.mail.internet.AddressException;
-import javax.portlet.PortletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,6 +104,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.PortletRequest;
 
 /**
  * The implementation of the proposal local service.
@@ -255,6 +267,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             if (publishActivity) {
                 eventBus.post(new ProposalAssociatedWithContestPhaseEvent(proposal,
                         contestPhaseLocalService.getContestPhase(contestPhaseId), UserLocalServiceUtil.getUser(authorId)));
+
+
             }
         }
 
@@ -554,6 +568,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         if (publishActivity) {
             eventBus.post(new ProposalSupporterAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+
+            ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                    new ProposalSupporterAddedActivityEntry());
         }
     }
 
@@ -573,6 +590,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         proposalSupporterLocalService.deleteProposalSupporter(supporter);
         eventBus.post(new ProposalSupporterRemovedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+
+        ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                new ProposalSupporterRemovedActivityEntry());
     }
 
     /**
@@ -655,6 +675,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposalVoteLocalService.addProposalVote(vote);
         if (publishActivity) {
             eventBus.post(new ProposalVotedOnEvent(getProposal(proposalId), userLocalService.getUser(userId), voted));
+
+            if(!voted) {
+                ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+                        new ProposalVoteActivityEntry());
+            }else{
+                ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+                        new ProposalVoteSwitchActivityEntry());
+            }
         }
     }
 
@@ -674,6 +702,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             proposalVoteLocalService.deleteProposalVote(proposalVote);
             eventBus.post(new ProposalRemovedVoteEvent(getProposal(proposalVote.getProposalId()), userLocalService.getUser(userId)));
 
+            ActivityEntryHelper.createActivityEntry(userId,proposalVote.getProposalId(),null,
+                    new ProposalVoteRetractActivityEntry());
+
         } catch (NoSuchProposalVoteException ignored) { }
     }
 
@@ -688,7 +719,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public long getCommentsCount(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
-        return discussionCategoryGroupLocalService.getCommentsCount(proposal.getDiscussionId());
+        final long discussionId = proposal.getDiscussionId();
+        if (discussionId > 0) {
+            return CommentClient.countComments(discussionId);
+        }
+        return 0;
     }
 
     /**
@@ -703,10 +738,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     public long getFellowReviewCommentsCount(long proposalId) throws SystemException, PortalException {
         Proposal proposal = getProposal(proposalId);
         final long fellowDiscussionId = proposal.getFellowDiscussionId();
-        if (fellowDiscussionId == 0) {
-            return 0;
+        if (fellowDiscussionId > 0) {
+            return CommentClient.countComments(fellowDiscussionId);
         }
-        return discussionCategoryGroupLocalService.getCommentsCount(fellowDiscussionId);
+        return 0;
     }
 
     /**
@@ -852,6 +887,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         GroupLocalServiceUtil.unsetUserGroups(userId, new long[]{proposal.getGroupId()});
 
         eventBus.post(new ProposalMemberRemovedEvent(proposal, userLocalService.getUser(userId)));
+
+        ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                new ProposalMemberRemovedActivityEntry());
     }
 
     /**
@@ -887,6 +925,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             MembershipRequestLocalServiceUtil.updateStatus(userId, request.getMembershipRequestId(), reply,
                     MembershipRequestConstants.STATUS_APPROVED, true, null);
             eventBus.post(new ProposalMemberAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
+
+            ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                    new ProposalMemberAddedActivityEntry());
 
             if (!isSubscribed(proposalId, userId)) {
                 subscribe(proposalId, userId);
@@ -970,11 +1011,16 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
-        activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
+       // activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
+        ActivitiesClient.addSubscription(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(),proposalId,0, null, userId);
 
         Proposal proposal = getProposal(proposalId);
+
+        /*
         DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
         activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
+        */
+        ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(),proposal.getDiscussionId(),0, null, userId);
     }
 
     /**
@@ -1005,10 +1051,14 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     @Override
     public void unsubscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
         activitySubscriptionLocalService.deleteSubscription(userId, Proposal.class, proposalId, 0, "", automatic);
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(), proposalId,0 , null );
 
         Proposal proposal = getProposal(proposalId);
-        DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-        activitySubscriptionLocalService.deleteSubscription(userId, DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", automatic);
+
+        /*DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
+        activitySubscriptionLocalService.deleteSubscription(userId, DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", automatic);*/
+
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), proposal.getDiscussionId(),0 , null );
     }
 
     /**
@@ -1073,46 +1123,6 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         if (Validator.isNotNull(messageBody)) {
             MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
         }
-    }
-
-    /**
-     * Posts the judges' review about the proposal's advance decision on the proposal's comment thread
-     * @param proposal  The proposal for which the notification should be sent
-     */
-    @Override
-    public void contestPhasePromotionCommentNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) throws PortalException, SystemException {
-        ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-        String commentBody = reviewContentHelper.getPromotionComment(false);
-        //only post comment if it is not empty.
-        if (commentBody != null && !commentBody.trim().equals("")) {
-
-            Long discussionId = getDiscussionIdAndGenerateIfNull(proposal);
-            DiscussionCategoryGroup discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(discussionId);
-            DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
-
-            // uncomment these lines to post promotion comment to standard comment thread
-            // discussionGroup = DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            // DiscussionCategoryGroupLocalServiceUtil.addComment(discussionGroup, "", commentBody, UserLocalServiceUtil.getUser(ADMINISTRATOR_USER_ID));
-        }
-    }
-
-    @Override
-    public Long getDiscussionIdAndGenerateIfNull(Proposal proposal) throws SystemException{
-
-        Long discussionId = proposal.getResultsDiscussionId();
-
-        if(discussionId == 0) {
-
-            DiscussionCategoryGroup resultsDiscussion = DiscussionCategoryGroupLocalServiceUtil.
-                    createDiscussionCategoryGroup("Proposal " + proposal.getProposalId() + " results discussion");
-            resultsDiscussion.setIsQuiet(true);
-            DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(resultsDiscussion);
-            proposal.setResultsDiscussionId(resultsDiscussion.getId());
-            proposal.persist();
-            discussionId = proposal.getResultsDiscussionId();
-        }
-
-        return discussionId;
     }
 
     private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {

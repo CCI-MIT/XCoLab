@@ -1022,28 +1022,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     }
 
     /**
-    * Posts the judges' review about the proposal's advance decision on the proposal's comment thread
-    *
-    * @param proposal  The proposal for which the notification should be sent
-    */
-    @Override
-    public void contestPhasePromotionCommentNotifyProposalContributors(
-        com.ext.portlet.model.Proposal proposal,
-        com.ext.portlet.model.ContestPhase contestPhase)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(proposal,
-            contestPhase);
-    }
-
-    @Override
-    public java.lang.Long getDiscussionIdAndGenerateIfNull(
-        com.ext.portlet.model.Proposal proposal)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalLocalService.getDiscussionIdAndGenerateIfNull(proposal);
-    }
-
-    /**
     * Returns the URL link address for the passed proposal in the latest contest
     *
     * @param proposalId The proposal id

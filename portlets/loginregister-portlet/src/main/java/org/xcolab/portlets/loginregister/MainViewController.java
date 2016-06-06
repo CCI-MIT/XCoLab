@@ -43,13 +43,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.xcolab.activityEntry.member.MemberJoinedActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.UserCreationUtil;
@@ -325,9 +327,13 @@ public class MainViewController {
             httpReq.getSession().setAttribute("collab_user_has_registered", true);
 
 
+
             SocialActivityLocalServiceUtil
                     .addActivity(user.getId_(), themeDisplay.getScopeGroupId(), User.class.getName(),
                             user.getId_(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
+
+            ActivityEntryHelper.createActivityEntry(user.getUserId(), user.getUserId(),null, new MemberJoinedActivityEntry());
+
 
             request.getPortletSession().setAttribute("collab_user_has_registered", true);
             PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);

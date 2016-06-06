@@ -547,20 +547,6 @@ public interface ContestModel extends BaseModel<Contest> {
     public void setDiscussionGroupId(long discussionGroupId);
 
     /**
-     * Returns the fellow discussion group ID of this contest.
-     *
-     * @return the fellow discussion group ID of this contest
-     */
-    public long getFellowDiscussionGroupId();
-
-    /**
-     * Sets the fellow discussion group ID of this contest.
-     *
-     * @param fellowDiscussionGroupId the fellow discussion group ID of this contest
-     */
-    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId);
-
-    /**
      * Returns the weight of this contest.
      *
      * @return the weight of this contest

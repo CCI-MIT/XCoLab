@@ -15,13 +15,15 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
 
-import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.validation.Valid;
 
 public final class ProposalCreationUtil {
 

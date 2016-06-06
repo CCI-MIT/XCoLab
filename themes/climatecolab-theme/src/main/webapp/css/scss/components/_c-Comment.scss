@@ -65,8 +65,8 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
 
   .c-Comment__add__info { //#add
     float: left;
-    width: 188px;
-    padding: 10px 6px 0 0;
+    width: 178px;
+    padding: 10px 6px 10px 6px;
   }
 
   strong {
@@ -116,7 +116,6 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   }
 }
 
-.c-Comment__commentor.expertReview, .comments tr.odd td.c-Comment__commentor.expertReview,
 .c-Comment.spam, .comments tr.odd td.c-Comment.spam{
   background-color: $c-Comment__special__highlight;
 }

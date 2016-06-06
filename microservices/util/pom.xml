@@ -16,7 +16,6 @@
     </parent>
 
     <modules>
-        <module>jooq-config</module>
         <module>service-utils</module>
         <module>xcolab-utils</module>
     </modules>

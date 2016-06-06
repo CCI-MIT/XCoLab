@@ -307,14 +307,14 @@
 		type="text/x-handlebars-template">
 		<tr data-contestPK="{{contest.contestPK}}">
 			<td class="column contestName">
-				<div class="contestFlag">
+				<div class="contestFlag {{#if contest.wasFiltered}} greyed_out {{/if}}">
 					{{#if contest.flagText}}
 						<span class="{{#if contest.flagTooltip}} fieldWithTooltip {{/if}}">{{contest.flagText}}:&#160;</span>
                     		<c:if test="${not empty contest.flagTooltip}">
                         		<div class="c-Tooltip">{{contest.flagTooltip}}<div class="c-Tooltip__arrow"><!--  --></div></div>
                         	</c:if>
                 	{{/if}}
-                		<a href="javascript:;">{{contest.contestShortName}}</a>
+                		<a href="javascript:;" class="{{#if contest.wasFiltered}} box_tooltip greyed_out {{/if}}" title="{{#if contest.filterReasonFocusArea}} This contest does not fit this section's focus area. {{/if}} {{#if contest.filterReasonTier}} This contest does not fit this section's tier.{{/if}}">{{contest.contestShortName}}</a>
                 			{{contest.contestName}}
             		</div>
             	</td>

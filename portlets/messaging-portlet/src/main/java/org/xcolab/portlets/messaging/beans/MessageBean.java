@@ -10,7 +10,7 @@ import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.HumanTime;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

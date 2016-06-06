@@ -59,8 +59,6 @@ public class ProposalImpactSeriesList {
         ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR = Collections.unmodifiableMap(ontologyRegionTermToYearToValueFactor);
     }
 
-
-
     public ProposalImpactSeriesList(Proposal proposal) throws SystemException, PortalException {
         this (ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId()), proposal);
     }

@@ -1,10 +1,10 @@
 package com.ext.utils;
 
-import com.ext.portlet.model.ActivitySubscription;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.xcolab.client.activities.pojo.ActivitySubscription;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +50,7 @@ public class NotificationUnregisterUtils {
         params.put(USER_ID, "0");
         params.put(SUBSCRIPTION_ID, "0");
         if (subscription != null) {
-            params.put(SUBSCRIPTION_ID, String.valueOf(subscription.getPrimaryKey()));
+            params.put(SUBSCRIPTION_ID, String.valueOf(subscription.getPk()));
             params.put(TOKEN_PARAM, getToken(subscription));
             params.put(TYPE_ID, String.valueOf(type));
         }

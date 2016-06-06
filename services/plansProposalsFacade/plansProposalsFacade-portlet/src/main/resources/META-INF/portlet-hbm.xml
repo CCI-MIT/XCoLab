@@ -220,7 +220,6 @@
 		<property name="flagTooltip" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="discussionGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="fellowDiscussionGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="resourcesUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="contestPrivate" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />

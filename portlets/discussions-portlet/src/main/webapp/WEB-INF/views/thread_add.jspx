@@ -3,7 +3,7 @@
           xmlns:portlet="http://java.sun.com/portlet_2_0"
           version="2.0">
 
-    <!--@elvariable id="categories" type="java.util.List<org.xcolab.jspTags.discussion.wrappers.CategoryWrapper>"-->
+    <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
 
     <div class="content">
 
@@ -26,7 +26,7 @@
                         <label class="portlet-form-label">Category: <br />
                             <select class="portlet-form-field" name="categoryId">
                                 <c:forEach var="category" items="${categories}">
-                                    <option value="${category.id}">${category.title}</option>
+                                    <option value="${category.categoryId}">${category.name}</option>
                                 </c:forEach>
                             </select>
                         </label>
@@ -42,12 +42,30 @@
                         </label>
                     </div>
                     <div>
-                        <input type="submit" class="c-Button__primary" value="Add" />
-                        <a class="c-Button__secondary" href="/web/guest/discussion">Cancel</a>
+                        <a class="c-Button__primary" id="addThreadButton" href="#">Add</a>
+                        <a class="c-Button__secondary" id="canelAddThreadButton" href="/web/guest/discussion">Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        jQuery(function() {
+            initializeTextEditors();
+            initializeDropDowns();
+            enableDirtyCheck();
+
+            jQuery("#addThreadButton").click(function () {
+                disableDirtyCheck();
+                jQuery("#addThreadForm").submit();
+            });
+
+            jQuery("#canelAddThreadButton").click(function () {
+                disableDirtyCheck();
+                window.location.replace("/web/guest/discussion");
+            });
+        });
+    </script>
 
 </jsp:root>

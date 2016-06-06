@@ -113,6 +113,7 @@ public class MessageDaoImpl implements MessageDao {
                             ? MESSAGE.CREATE_DATE.asc()
                             : MESSAGE.CREATE_DATE.desc());
                     break;
+                default:
 
             }
         }

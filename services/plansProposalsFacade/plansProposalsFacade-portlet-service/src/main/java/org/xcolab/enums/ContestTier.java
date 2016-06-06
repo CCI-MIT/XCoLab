@@ -1,5 +1,7 @@
 package org.xcolab.enums;
 
+import com.liferay.portal.kernel.exception.PortalException;
+
 /**
  * Created by kmang on 17/02/15.
  */
@@ -27,13 +29,13 @@ public enum ContestTier {
         this.tierName = tierName;
     }
 
-    public static ContestTier getContestTierByTierType(Long tierType) {
+    public static ContestTier getContestTierByTierType(Long tierType) throws PortalException {
         for (ContestTier contestTier : ContestTier.values()) {
             if (contestTier.getTierType() == tierType) {
                 return contestTier;
             }
         }
 
-        return null;
+        throw new PortalException("No contestTier exists with tierType "+tierType);
     }
 }

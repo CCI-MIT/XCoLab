@@ -32,9 +32,6 @@ import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
-/**
- * Created by johannes on 11/19/15.
- */
 @Controller
 @RequestMapping("view")
 public class SpamReportController {
@@ -44,13 +41,13 @@ public class SpamReportController {
 
     @RenderMapping(params = "page=spamReport")
     public String showSpamReport(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam String userId)
+            @RequestParam long userId)
             throws SystemException, PortalException, UserProfileAuthorizationException, MemberNotFoundException {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         permissions.checkCanAdminSpamReports();
 
         userProfileController.populateUserWrapper(new UserProfileWrapper(userId, request), model);
-        model.addAttribute("spamReportsWrapper", new SpamReportsWrapper(Long.parseLong(userId)));
+        model.addAttribute("spamReportsWrapper", new SpamReportsWrapper(userId));
 
         return "showUserProfile";
     }

@@ -1,19 +1,21 @@
 package org.xcolab.portlets.userprofile.view;
 
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.portlets.userprofile.wrappers.ActivitySubscriptionWrapper;
 import org.xcolab.portlets.userprofile.wrappers.UserSubscriptionsWrapper;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -26,8 +28,9 @@ public class SubscriptionsActionController {
 
         for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
             if (subscription.getSelected()) {
-                ActivitySubscriptionLocalServiceUtil.delete(ActivitySubscriptionLocalServiceUtil
-                        .getActivitySubscription(subscription.getSubscriptionPk()));
+
+                ActivitiesClient.deleteSubscription(subscription.getSubscriptionPk());
+
             }
         }
         response.sendRedirect("/web/guest/member/-/member/userId/" + userId.toString() + "/page/subscriptionsManage");

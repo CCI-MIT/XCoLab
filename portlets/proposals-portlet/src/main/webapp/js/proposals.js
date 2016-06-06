@@ -100,7 +100,7 @@ function markEditorDirty(editor) {
 
 function initializeTextEditors() {
 	jQuery("input[type='text'], textarea").each(function() {
-		if (jQuery(this).hasClass('rteInitialized')) {
+		if (jQuery(this).hasClass('rteInitialized') || jQuery(this).parent().parent().attr('class') == "login_popup_box") {
 			return;
 		}
 		
@@ -131,7 +131,7 @@ function initializeTextEditors() {
 				try{
 					if (editor == null) return;
             	
-					if (editor &&  editor.document && editor.document['$'] && (editor.checkDirty() || !editor.updatedCharCount)) {
+					if (editor &&  editor.document && editor.document['$'] && (editor.checkDirty() || editor.updatedCharCount)) {
 						markEditorDirty(thiz);
 						updateCharacterCounter(thiz, editor);
 						editor.updatedCharCount = true;
@@ -216,7 +216,11 @@ function enableDirtyCheck() {
 	window.oldOnBeforeUnload = window.onbeforeunload;
 
 	window.onbeforeunload = function() {
-		if (jQuery(".editorDirty").length > 0) {
+        var dirtyEditors = $(".editorDirty").filter(function(index){
+            return !($(this).attr("name") === "login");
+        });
+        console.log(dirtyEditors);
+		if (dirtyEditors.length > 0) {
 			return 'You have modified this page but have not saved your changes.';
 		}
 		return null;
@@ -254,8 +258,8 @@ function requestMembership() {
     $('#requestComment').slideDown('slow');
     $('.prop-butt-popover:first').css('background', 'url(/climatecolab-theme/images/search-bg.png)');
     $('#requestButtons').empty();
-    $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton left" onclick="hideRequestForm(true);">Cancel</a></div>');
-    $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a></div>');
+    $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__left" onclick="hideRequestForm(true);">Cancel</a></div>');
+    $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a></div>');
 }
 function hideRequestForm(animate) {
     var speed = animate ? 600 : 1;
@@ -273,8 +277,8 @@ function inviteMember() {
     $('#invite-recipient').slideDown('slow');
     $('.prop-butt-popover:first').css('background', 'url(/climatecolab-theme/images/search-bg.png)');
     $('#requestButtons').empty();
-    $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton left" onclick="hideInviteForm(true);">Cancel</a></div>');
-    $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a></div>');
+    $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__left" onclick="hideInviteForm(true);">Cancel</a></div>');
+    $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a></div>');
 }
 
 function hideInviteForm(animate) {

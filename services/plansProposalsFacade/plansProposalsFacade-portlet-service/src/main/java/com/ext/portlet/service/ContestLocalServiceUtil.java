@@ -409,13 +409,6 @@ public class ContestLocalServiceUtil {
         return getService().getProposalsCount(contest);
     }
 
-    public static com.ext.portlet.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getDiscussionCategoryGroup(contest);
-    }
-
     public static long getTotalCommentsCount(
         com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
@@ -440,12 +433,6 @@ public class ContestLocalServiceUtil {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return getService().getVotesCount(contest);
-    }
-
-    public static long getTotalComments(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getTotalComments(contest);
     }
 
     public static java.util.List<com.ext.portlet.model.ContestTeamMember> getTeamMembers(

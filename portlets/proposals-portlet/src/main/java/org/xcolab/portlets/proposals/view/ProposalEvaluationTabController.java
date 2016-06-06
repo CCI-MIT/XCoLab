@@ -10,7 +10,6 @@ import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
@@ -21,11 +20,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.enums.MemberRole;
@@ -82,10 +81,17 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             if (showEvaluationRatings) {
                 Proposal proposal = proposalsContext.getProposal(request);
                 Contest contest = proposalsContext.getContest(request);
-                Long evaluationDiscussionCategoryGroupId = ProposalLocalServiceUtil.getDiscussionIdAndGenerateIfNull(proposal);
-                request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, new ProposalDiscussionPermissions(request,
-                        DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(evaluationDiscussionCategoryGroupId)));
-                model.addAttribute("evaluationDiscussionId", evaluationDiscussionCategoryGroupId);
+
+                long discussionId = proposal.getResultsDiscussionId();
+                if (discussionId == 0) {
+                    discussionId = createEvaluationThread(request);
+                }
+
+                request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME,
+                        new ProposalDiscussionPermissions(request));
+
+
+                model.addAttribute("evaluationDiscussionId", discussionId);
                 model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(contest.getContestPK(), proposal));
                 model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(contest));
                 model.addAttribute("showEvaluation", true);
@@ -99,6 +105,15 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.EVALUATION);
         return EVALUATION_TAB_VIEW_NAME;
+    }
+
+    private long createEvaluationThread(PortletRequest request)
+            throws SystemException, PortalException {
+        Proposal proposal = proposalsContext.getProposal(request);
+        final long discussionThreadId = createDiscussionThread(request, " results discussion", true);
+        proposal.setResultsDiscussionId(discussionThreadId);
+        proposal.persist();
+        return discussionThreadId;
     }
 
     private JudgeProposalFeedbackBean getProposalRatingBean(PortletRequest request) throws SystemException, PortalException {

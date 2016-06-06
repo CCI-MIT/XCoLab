@@ -1,12 +1,16 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import org.hibernate.validator.constraints.Length;
 
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
@@ -67,6 +71,17 @@ public class ContestDescriptionBean implements Serializable {
         String oldContestName = contest.getContestShortName();
         updateContestDescription(contest);
         updateContestSchedule(contest, scheduleTemplateId);
+
+        try {
+            final CommentThread thread = CommentClient.getThread(contest.getDiscussionGroupId());
+            ContestType contestType =
+                    ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
+            thread.setTitle(String.format("%s %s",
+                    contestType.getContestName(), contest.getContestShortName()));
+            CommentClient.updateThread(thread);
+        } catch (ThreadNotFoundException ignored) {
+            //ignored - no thread exists yet
+        }
 
         if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {
             contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
@@ -157,7 +172,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.persist();
     }
 
-    public static void updateContestSchedule(Contest contest, Long contestScheduleId)
+    private static void updateContestSchedule(Contest contest, Long contestScheduleId)
             throws SystemException, PortalException {
         Long oldScheduleTemplateId = contest.getContestScheduleId();
         boolean noScheduleSelected = contestScheduleId.equals(0L);
@@ -175,5 +190,4 @@ public class ContestDescriptionBean implements Serializable {
             contest.persist();
         }
     }
-
 }

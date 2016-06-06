@@ -47,7 +47,6 @@ public class ContestSoap implements Serializable {
     private String _flagTooltip;
     private long _groupId;
     private long _discussionGroupId;
-    private long _fellowDiscussionGroupId;
     private int _weight;
     private String _resourcesUrl;
     private boolean _contestPrivate;
@@ -105,7 +104,6 @@ public class ContestSoap implements Serializable {
         soapModel.setFlagTooltip(model.getFlagTooltip());
         soapModel.setGroupId(model.getGroupId());
         soapModel.setDiscussionGroupId(model.getDiscussionGroupId());
-        soapModel.setFellowDiscussionGroupId(model.getFellowDiscussionGroupId());
         soapModel.setWeight(model.getWeight());
         soapModel.setResourcesUrl(model.getResourcesUrl());
         soapModel.setContestPrivate(model.getContestPrivate());
@@ -448,14 +446,6 @@ public class ContestSoap implements Serializable {
 
     public void setDiscussionGroupId(long discussionGroupId) {
         _discussionGroupId = discussionGroupId;
-    }
-
-    public long getFellowDiscussionGroupId() {
-        return _fellowDiscussionGroupId;
-    }
-
-    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
-        _fellowDiscussionGroupId = fellowDiscussionGroupId;
     }
 
     public int getWeight() {

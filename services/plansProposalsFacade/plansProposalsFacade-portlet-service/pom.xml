@@ -131,5 +131,15 @@
 			<artifactId>contents-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>activities-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>comment-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
     </dependencies>
 </project>

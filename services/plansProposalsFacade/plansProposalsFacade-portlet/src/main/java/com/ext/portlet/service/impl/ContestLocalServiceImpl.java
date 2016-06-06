@@ -1,5 +1,7 @@
 package com.ext.portlet.service.impl;
 
+import com.google.common.collect.ImmutableSet;
+
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
@@ -27,12 +29,10 @@ import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
-import com.google.common.collect.ImmutableSet;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -66,9 +66,12 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import edu.mit.cci.roma.client.Simulation;
-import org.apache.commons.lang3.StringUtils;
 
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
@@ -94,6 +97,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
+
+import edu.mit.cci.roma.client.Simulation;
 
 
 /**
@@ -168,12 +173,10 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
 
-        DiscussionCategoryGroup categoryGroup = DiscussionCategoryGroupLocalServiceUtil
-                .createDiscussionCategoryGroup(c.getContestName() + " discussion");
-
-        categoryGroup.setUrl(getContestLinkUrl(c) + "/discussion");
-
-        DiscussionCategoryGroupLocalServiceUtil.store(categoryGroup);
+        CommentThread thread = new CommentThread();
+        thread.setTitle(c.getContestName() + " discussion");
+        thread.setAuthorId(c.getAuthorId());
+        long discussionId = CommentClient.createThread(thread).getThreadId();
 
         // set up permissions
 
@@ -224,7 +227,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         }
 
         c.setGroupId(group.getGroupId());
-        c.setDiscussionGroupId(categoryGroup.getPrimaryKey());
+        c.setDiscussionGroupId(discussionId);
         store(c);
     }
 
@@ -238,6 +241,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         return contestPersistence.findByContestYear(contestYear);
     }
 
+    @Override
     public Contest getByContestUrlNameContestYear(String contestUrlName, long year)
             throws SystemException, NoSuchContestException {
         return contestPersistence.findByContestUrlNameContestYear(contestUrlName, year);
@@ -412,18 +416,13 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     @Override
-    public DiscussionCategoryGroup getDiscussionCategoryGroup(Contest contest) throws PortalException, SystemException {
-        return DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(contest.getDiscussionGroupId());
-    }
-
-    @Override
     public long getTotalCommentsCount(Contest contest) throws PortalException, SystemException {
-        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest)) + getProposalsCommentsCount(contest);
+        return getCommentsCount(contest) + getProposalsCommentsCount(contest);
     }
 
     @Override
     public long getCommentsCount(Contest contest) throws PortalException, SystemException {
-        return DiscussionCategoryGroupLocalServiceUtil.getCommentsCount(getDiscussionCategoryGroup(contest));
+        return CommentClient.countComments(contest.getDiscussionGroupId());
     }
 
     @Override
@@ -460,11 +459,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     @Override
-    public long getTotalComments(Contest contest) throws PortalException, SystemException {
-        return getCommentsCount(contest) + getProposalsCommentsCount(contest);
-    }
-
-    @Override
     public List<ContestTeamMember> getTeamMembers(Contest contest) throws SystemException {
         return contestTeamMemberLocalService.findForContest(contest.getContestPK());
     }
@@ -485,7 +479,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      */
     @Override
     public boolean isSubscribed(long contestPK, long userId) throws PortalException, SystemException {
-        return activitySubscriptionLocalService.isSubscribed(userId, Contest.class, contestPK, 0, "");
+        //return activitySubscriptionLocalService.isSubscribed(userId, Contest.class, contestPK, 0, "");
+        return ActivitiesClient.isSubscribedToActivity(userId,ActivityEntryType.CONTEST.getPrimaryTypeId(),contestPK,0,"");
     }
 
     /**
@@ -499,13 +494,15 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     @Transactional
     public void subscribe(long contestPK, long userId) throws PortalException, SystemException {
-        activitySubscriptionLocalService.addSubscription(Contest.class, contestPK, 0, "", userId);
+//        activitySubscriptionLocalService.addSubscription(Contest.class, contestPK, 0, "", userId);
+        ActivitiesClient.addSubscription(ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK,0,"", userId);
         Set<Long> proposalsProcessed = new HashSet<>();
         // automatically subscribe user to all proposals in the phase but
         for (ContestPhase contestPhase : contestPhaseLocalService.getPhasesForContest(contestPK)) {
             for (Proposal proposal : proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
                 if (!proposalsProcessed.contains(proposal.getProposalId())) {
                     proposalLocalService.subscribe(proposal.getProposalId(), userId, true);
+
                 }
                 proposalsProcessed.add(proposal.getProposalId());
             }
@@ -523,7 +520,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     @Transactional
     public void unsubscribe(long contestPK, long userId) throws PortalException, SystemException {
-        activitySubscriptionLocalService.deleteSubscription(userId, Contest.class, contestPK, 0, "");
+        //activitySubscriptionLocalService.deleteSubscription(userId, Contest.class, contestPK, 0, "");
+        ActivitiesClient.deleteSubscription(userId,ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK,0,"");
+
 
         Set<Long> proposalsProcessed = new HashSet<>();
         // unsubscribe user from all proposals in the phase to which he was automatically registered  
@@ -532,6 +531,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 // remove automatic subscription from proposal
                 if (!proposalsProcessed.contains(proposal.getProposalId())) {
                     proposalLocalService.unsubscribe(proposal.getProposalId(), userId, true);
+
                 }
                 proposalsProcessed.add(proposal.getProposalId());
             }

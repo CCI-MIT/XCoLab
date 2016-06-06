@@ -270,6 +270,7 @@
 		<![CDATA[
 
 		jQuery('document').ready(function(){
+			enableDirtyCheck();
 			bindDeleteClicks();
 			bindAddSectionClick();
 			bindMassActionSelectChange();

@@ -17,6 +17,16 @@ public class CacheProviderNoOpImpl implements CacheProvider {
     }
 
     @Override
+    public Future<Boolean> replace(String key, int exp, Object o) {
+        return ConcurrentUtils.constantFuture(false);
+    }
+
+    @Override
+    public Future<Boolean> delete(String key) {
+        return ConcurrentUtils.constantFuture(false);
+    }
+
+    @Override
     public boolean isActive() {
         return false;
     }

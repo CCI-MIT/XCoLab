@@ -54,7 +54,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
     public String flagTooltip;
     public long groupId;
     public long discussionGroupId;
-    public long fellowDiscussionGroupId;
     public int weight;
     public String resourcesUrl;
     public boolean contestPrivate;
@@ -75,7 +74,7 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(103);
+        StringBundler sb = new StringBundler(101);
 
         sb.append("{ContestPK=");
         sb.append(ContestPK);
@@ -143,8 +142,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         sb.append(groupId);
         sb.append(", discussionGroupId=");
         sb.append(discussionGroupId);
-        sb.append(", fellowDiscussionGroupId=");
-        sb.append(fellowDiscussionGroupId);
         sb.append(", weight=");
         sb.append(weight);
         sb.append(", resourcesUrl=");
@@ -311,7 +308,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
         contestImpl.setGroupId(groupId);
         contestImpl.setDiscussionGroupId(discussionGroupId);
-        contestImpl.setFellowDiscussionGroupId(fellowDiscussionGroupId);
         contestImpl.setWeight(weight);
 
         if (resourcesUrl == null) {
@@ -404,7 +400,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
         flagTooltip = objectInput.readUTF();
         groupId = objectInput.readLong();
         discussionGroupId = objectInput.readLong();
-        fellowDiscussionGroupId = objectInput.readLong();
         weight = objectInput.readInt();
         resourcesUrl = objectInput.readUTF();
         contestPrivate = objectInput.readBoolean();
@@ -540,7 +535,6 @@ public class ContestCacheModel implements CacheModel<Contest>, Externalizable {
 
         objectOutput.writeLong(groupId);
         objectOutput.writeLong(discussionGroupId);
-        objectOutput.writeLong(fellowDiscussionGroupId);
         objectOutput.writeInt(weight);
 
         if (resourcesUrl == null) {

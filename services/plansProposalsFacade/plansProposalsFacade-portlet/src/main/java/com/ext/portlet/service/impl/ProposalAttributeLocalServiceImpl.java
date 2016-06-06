@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Transactional;
+
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
 import org.xcolab.services.EventBusService;
@@ -305,6 +306,9 @@ public class ProposalAttributeLocalServiceImpl
         if (publishActivity) {
             eventBus.post(new ProposalAttributeRemovedEvent(proposal, userLocalService.getUser(authorId),
                     attributeToDelete.getName(), attributeToDelete));
+            /*
+            ActivityEntryHelper.createActivityEntry(authorId,proposal.getProposalId(),attributeToDelete.getName(),
+                    new ProposalAttributeRemoveActivityEntry());*/
         }
     }
 

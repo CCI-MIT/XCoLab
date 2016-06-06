@@ -201,7 +201,15 @@ public final class MembersClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + member.getId_() + "");
 
-        RequestUtils.put(uriBuilder, member);
+        final String cacheKey = "_" + Member.class.getSimpleName() + "_memberId_" + member.getId_();
+        RequestUtils.put(uriBuilder, member, cacheKey);
+    }
+
+    public static void deleteMember(long memberId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/" + memberId);
+
+        RequestUtils.delete(uriBuilder);
     }
 
     public static Contact_ getContact(Long contactId) {

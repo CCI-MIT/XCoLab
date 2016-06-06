@@ -155,14 +155,6 @@ public class ContestWrapper extends BaseContestWrapper {
     	return 0;
     }
 
-    public long getFellowDiscussionGroupId() {
-        return contest.getFellowDiscussionGroupId();
-    }
-
-    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
-        contest.setFellowDiscussionGroupId(fellowDiscussionGroupId);
-    }
-
     public long getTotalCommentsCount() throws PortalException, SystemException {
         if (getContestType().getHasDiscussion()) {
             return ContestLocalServiceUtil.getTotalCommentsCount(contest);

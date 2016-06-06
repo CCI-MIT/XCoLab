@@ -65,7 +65,7 @@ public class PBKDF2PasswordEncryptor {
                 DatatypeConverter.printBase64Binary(secretKeyBytes);
     }
 
-    private class PBKDF2EncryptionConfiguration {
+    private static class PBKDF2EncryptionConfiguration {
 
         private int _keySize = _KEY_SIZE;
         private int _rounds = _ROUNDS;

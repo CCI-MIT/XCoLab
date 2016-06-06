@@ -1,12 +1,13 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
+import com.ext.portlet.model.Proposal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -27,11 +28,14 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
 
         final ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
-        final long fellowDiscussionCategoryGroupId = proposal.getFellowDiscussionId();
-        request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, new ProposalDiscussionPermissions(request,
-                DiscussionCategoryGroupLocalServiceUtil.getDiscussionCategoryGroup(fellowDiscussionCategoryGroupId)));
+        long fellowDiscussionId = proposal.getFellowDiscussionId();
+        if (fellowDiscussionId == 0) {
+            fellowDiscussionId = createFellowThread(request);
+        }
+        request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME,
+                new ProposalDiscussionPermissions(request));
 
-        model.addAttribute("discussionId", fellowDiscussionCategoryGroupId);
+        model.addAttribute("discussionId", fellowDiscussionId);
         model.addAttribute("authorId", proposal.getAuthorId());
         model.addAttribute("proposalId", proposal.getProposalId());
 
@@ -39,5 +43,13 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
 
         return "proposalComments";
     }
-    
+
+    private long createFellowThread(PortletRequest request)
+            throws SystemException, PortalException {
+        Proposal proposal = proposalsContext.getProposal(request);
+        final long discussionThreadId = createDiscussionThread(request, " fellow review", true);
+        proposal.setFellowDiscussionId(discussionThreadId);
+        proposal.persist();
+        return discussionThreadId;
+    }
 }

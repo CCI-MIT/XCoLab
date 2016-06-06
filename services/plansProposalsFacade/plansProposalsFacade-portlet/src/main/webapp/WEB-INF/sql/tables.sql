@@ -120,7 +120,6 @@ create table xcolab_Contest (
 	flagTooltip VARCHAR(512) null,
 	groupId LONG,
 	discussionGroupId LONG,
-	fellowDiscussionGroupId LONG,
 	weight INTEGER,
 	resourcesUrl VARCHAR(1024) null,
 	contestPrivate BOOLEAN,

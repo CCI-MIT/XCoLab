@@ -26,13 +26,6 @@
         <portlet:param name="proposalId" value="${proposal.proposalId }"/>
         <portlet:param name="action" value="saveAdvanceDetails"/>
     </portlet:actionURL>
-    <portlet:actionURL var="sendEmailURL">
-        <portlet:param name="forwardToTab" value="ADVANCING"/>
-        <portlet:param name="contestId" value="${contest.contestPK }"/>
-        <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-        <portlet:param name="proposalId" value="${proposal.proposalId }"/>
-        <portlet:param name="action" value="sendComment"/>
-    </portlet:actionURL>
     <portlet:resourceURL id="getJudgingCsv" var="getJudgingCsvURL">
     </portlet:resourceURL>
 
@@ -74,9 +67,6 @@
                                             </div>
                                         </c:forEach>
                                     </div>
-                                    <c:if test="proposalsPermissions.canAdminAll">
-                                        <a style="display:block; float:left;" class="c-Button__primary" href="${sendEmailURL}">Send e-Mails</a>
-                                    </c:if>
                                 </div>
                                 <a href="${contest.emailTemplateUrl}" target="_blank">Go to Email Template</a>
                                 <div id="advance-save-buttons">
@@ -86,22 +76,22 @@
                                                 <strong>The advancement is finalized and may not be changed anymore.</strong>
                                             </p>
                                             <c:if test="${proposalsPermissions.canAdminAll}">
-                                                <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                                                <a id="submit-advancing-1" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
                                                     Save
                                                 </a>
                                                 <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
-                                                <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="$('#submit-unfreeze').click();">
+                                                <a id="submit-unfreeze-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
                                                     Unfreeze
                                                 </a>
                                             </c:if>
                                         </c:when>
                                         <c:when test="${proposalsPermissions.canFellowActions}">
-                                            <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                                            <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
                                                 Save
                                             </a>
                                             <div id="advancement-freeze-button">
                                                 <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
-                                                <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="$('#submit-freeze').click();">
+                                                <a id="submit-freeze-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
                                                     Freeze
                                                 </a>
                                             </div>
@@ -115,7 +105,7 @@
                                     <div id="advancement-force-button">
                                         <c:if test="${proposalsPermissions.canAdminAll and not hasAlreadyBeenPromoted}">
                                                 <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
-                                                <a style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="javascript:;" onclick="$('#submit-forcePromotion').click();">
+                                                <a id="submit-forcePromotion-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
                                                     Execute judging decision
                                                 </a>
                                         </c:if>
@@ -169,6 +159,31 @@
 
     <script>
         jQuery( document ).ready(function() {
+            jQuery("#submit-forcePromotion-link").click(function () {
+                disableDirtyCheck();
+                $('#submit-forcePromotion').click();
+            });
+
+            jQuery("#submit-unfreeze-link").click(function () {
+                disableDirtyCheck();
+                $('#submit-unfreeze').click();
+            });
+
+            jQuery("#submit-freeze-link").click(function () {
+                disableDirtyCheck();
+                $('#submit-freeze').click();
+            });
+
+            jQuery("#submit-advancing-1").click(function () {
+                disableDirtyCheck();
+                jQuery(this).parents('form').submit();
+            });
+
+            jQuery("#submit-advancing-2").click(function () {
+                disableDirtyCheck();
+                jQuery(this).parents('form').submit();
+            });
+
             jQuery('#advanceDecision').change(function() {
                 refreshCommentHeader();
                 refreshEmailTemplates();
@@ -225,5 +240,9 @@
             $(".judging_comments .c-Button__primary").hide();
         </script>
     </c:if>
-
+    <script type="text/javascript">
+        jQuery(function() {
+            enableDirtyCheck();
+        });
+    </script>
 </jsp:root>
