@@ -56,6 +56,12 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
   font-size: 22px;
   font-weight: $p-ContestProposals__header__title__fontWeight;
   vertical-align: middle;
+
+  p {
+    float: left;
+    margin-bottom: 0px;
+  }
+
 }
 
 .p-ContestProposals__header__description { //.contest-detail .description {
@@ -72,13 +78,12 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
   max-width: 320px;
   min-width: 0;
   display: inline-block;
-  margin-top: 20px;
   font-size: 14px;
 
   //.heading-sponsor-logo
   min-height: 30px;
   float: right;
-  padding: 3px;
+  padding: 3px 3px 3px 20px;
 
   img { //.heading-sponsor-logo img
     max-width: 100%;
