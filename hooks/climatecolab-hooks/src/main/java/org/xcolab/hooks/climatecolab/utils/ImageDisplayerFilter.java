@@ -3,6 +3,9 @@ package org.xcolab.hooks.climatecolab.utils;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +35,16 @@ public class ImageDisplayerFilter implements Filter {
 
         // image/user_male_portrait?screenName=carlosbpf&companyId=10112&portraitId=2390159
         if (request.getParameter("portraitId") != null) {
-            imageId = request.getParameter("portraitId");
+            if(request.getParameter("userId") != null){
+                try {
+                    Member member = MembersClient.getMember(Long.parseLong(request.getParameter("userId")));
+                    imageId = member.getPortraitFileEntryId() + "";
+                } catch (MemberNotFoundException e) {
+                    imageId = request.getParameter("portraitId");
+                }
+            }else {
+                imageId = request.getParameter("portraitId");
+            }
         }
 
         String path = request.getSession().getServletContext().getRealPath("/");
