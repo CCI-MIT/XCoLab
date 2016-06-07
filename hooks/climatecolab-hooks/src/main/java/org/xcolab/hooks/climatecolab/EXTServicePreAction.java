@@ -38,7 +38,7 @@ public class EXTServicePreAction extends Action {
     @Override
     public void run(HttpServletRequest req, HttpServletResponse res) throws ActionException {
 
-        
+
         ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
         Map<String, Object> vmVariables = (Map) req.getAttribute(WebKeys.VM_VARIABLES);
         if (vmVariables == null) {
@@ -66,9 +66,12 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
         vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
 
+        vmVariables.put("betaRibbonShow",
+                ConfigurationAttributeKey.BETA_RIBBON_SHOW.getBooleanValue());
+
         final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW
                 .getBooleanValue();
-        vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);
+        vmVariables.put("mitHeaderBarShow", ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW);
         if (mitHeaderBarShow) {
             vmVariables.put("mitHeaderBarLinkText", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.getStringValue());
             vmVariables.put("mitHeaderBarLinkUrl", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.getStringValue());

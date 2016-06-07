@@ -26,13 +26,6 @@
         <portlet:param name="proposalId" value="${proposal.proposalId }"/>
         <portlet:param name="action" value="saveAdvanceDetails"/>
     </portlet:actionURL>
-    <portlet:actionURL var="sendEmailURL">
-        <portlet:param name="forwardToTab" value="ADVANCING"/>
-        <portlet:param name="contestId" value="${contest.contestPK }"/>
-        <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-        <portlet:param name="proposalId" value="${proposal.proposalId }"/>
-        <portlet:param name="action" value="sendComment"/>
-    </portlet:actionURL>
     <portlet:resourceURL id="getJudgingCsv" var="getJudgingCsvURL">
     </portlet:resourceURL>
 
@@ -74,9 +67,6 @@
                                             </div>
                                         </c:forEach>
                                     </div>
-                                    <c:if test="proposalsPermissions.canAdminAll">
-                                        <a style="display:block; float:left;" class="c-Button__primary" href="${sendEmailURL}">Send e-Mails</a>
-                                    </c:if>
                                 </div>
                                 <a href="${contest.emailTemplateUrl}" target="_blank">Go to Email Template</a>
                                 <div id="advance-save-buttons">

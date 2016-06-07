@@ -1,10 +1,10 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.SubscriptionType;
-import com.ext.portlet.model.ActivitySubscription;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.pojo.Member;
 
 import java.io.Serializable;
@@ -30,19 +30,16 @@ public class UserSubscriptionsWrapper implements Serializable {
 
     public List<ActivitySubscriptionWrapper> getSubscriptions() {
         if (subscriptions == null) {
-            try {
+
                 subscriptions = new ArrayList<>();
 
-                for (ActivitySubscription subscription : ActivitySubscriptionLocalServiceUtil
-                        .findByUser(user.getId_())) {
+                for (ActivitySubscription subscription : ActivitiesClient.getActivitySubscription(null, null , user.getId_())) {
 
                     if (typeFilter == null || typeFilter == SubscriptionType.getSubscriptionType(subscription)) {
                         subscriptions.add(new ActivitySubscriptionWrapper(subscription));
                     }
                 }
-            } catch (SystemException e) {
-                System.out.println("Could not get activity subscriptions");
-            }
+
         }
         return subscriptions;
     }

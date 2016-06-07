@@ -1,22 +1,10 @@
 package org.xcolab.portlets.notificationunregister;
 
-import java.util.Date;
-
-import javax.management.Notification;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.MessagingUserPreferences;
-import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.ext.portlet.model.ActivitySubscription;
 import com.ext.portlet.model.MessagingIgnoredRecipients;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
+import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.ext.utils.NotificationUnregisterUtils;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -25,6 +13,17 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.pojo.ActivitySubscription;
+
+import java.util.Date;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 //import javax.validation.Validator;
 
@@ -65,7 +64,8 @@ public class NotificationUnregisterController {
 	    }
 	    if (subscriptionId > 0) {
 	        try {
-	            subscription = ActivitySubscriptionLocalServiceUtil.getActivitySubscription(subscriptionId);
+	            subscription = ActivitiesClient.getActivitySubscription(subscriptionId);
+                //ActivitySubscriptionLocalServiceUtil.getActivitySubscription(subscriptionId);
                 error = ! NotificationUnregisterUtils.isTokenValid(token, subscription);
                 unregisteringSubscription = true;
 	        }
@@ -83,7 +83,8 @@ public class NotificationUnregisterController {
         String responseText = null;
 	    // unregister user
 	    if (subscription != null) {
-	        ActivitySubscriptionLocalServiceUtil.delete(subscription);
+	        //ActivitySubscriptionLocalServiceUtil.delete(subscription);
+            ActivitiesClient.deleteSubscriptionById(subscription.getPk());
             responseText = UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT;
 	    }
 

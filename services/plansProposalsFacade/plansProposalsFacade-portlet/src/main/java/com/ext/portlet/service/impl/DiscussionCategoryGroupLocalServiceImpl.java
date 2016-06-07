@@ -24,6 +24,9 @@ import com.liferay.portal.service.CompanyLocalService;
 import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
+import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
+
 import java.util.List;
 
 /**
@@ -145,6 +148,9 @@ public class DiscussionCategoryGroupLocalServiceImpl
                     ActivityUtil.getExtraDataForIds(comment.getCategoryId(), 
                     comment.getThreadId() > 0 ? comment.getThreadId() : comment.getMessageId(),
                     comment.getMessageId()), 0);
+
+            ActivityEntryHelper.createActivityEntry(author.getUserId(), comment.getPrimaryKey(),null,
+                    new DiscussionAddProposalCommentActivityEntry());
         }
         
         return comment;

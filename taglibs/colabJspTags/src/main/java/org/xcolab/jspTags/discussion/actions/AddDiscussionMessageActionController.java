@@ -1,9 +1,6 @@
 package org.xcolab.jspTags.discussion.actions;
 
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -15,17 +12,26 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.xcolab.activityEntry.discussion.DiscussionAddCommentActivityEntry;
+import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
-import org.xcolab.utils.HtmlUtil;
+import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
+
+import java.io.IOException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.Cookie;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -46,32 +52,31 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
         try {
             long threadId = Long.parseLong(newMessage.getThreadId());
-            long discussionCategoryGroupId = Long.parseLong(newMessage.getDiscussionId());
 
-            DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil.fetchDiscussionCategoryGroup(discussionCategoryGroupId);
-
-            checkPermissions(request, "User isn't allowed to add comment", discussionCategoryGroupId, 0L);
+            checkPermissions(request, "User isn't allowed to add comment", 0L);
             long userId = themeDisplay.getUser().getUserId();
-            if (threadId == 0) {
-                threadId = dcg.getCommentsThread();
-            }
 
-            final String title = HtmlUtil.cleanAll(newMessage.getTitle());
             final String body = HtmlUtil.cleanSome(newMessage.getDescription(), LinkUtils.getBaseUri(request));
 
-            final DiscussionMessage comment;
-            if (threadId == 0) {
-                //create new thread
-                comment = DiscussionMessageLocalServiceUtil.addThread(dcg.getId(), 0L, title, body, themeDisplay.getUser());
-                dcg.setCommentsThread(comment.getMessageId());
-                dcg.persist();
+            Comment comment = new Comment();
+            comment.setContent(body);
+            comment.setAuthorId(userId);
+            comment.setThreadId(threadId);
+            comment = CommentClient.createComment(comment);
+            CommentThread commentThread = CommentClient.getThread(threadId);
 
-            } else {
-                final DiscussionMessage thread = DiscussionMessageLocalServiceUtil.getThreadByThreadId(threadId);
-                comment = DiscussionMessageLocalServiceUtil.addThreadMessage(thread, title, body, themeDisplay.getUser());
+            updateAnalyticsAndActivities(commentThread, comment, userId, request);
+
+            if(!commentThread.getIsQuiet()){
+
+                if(commentThread.getCategory() == null) {
+                    ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(), comment.getCommentId() + "",
+                            new DiscussionAddProposalCommentActivityEntry());
+                }else{
+                    ActivityEntryHelper.createActivityEntry(userId, commentThread.getCategory().getCategoryId(), comment.getCommentId() + "",
+                            new DiscussionAddCommentActivityEntry());
+                }
             }
-
-            updateAnalyticsAndActivities(dcg, comment, userId, request);
 
             //delete the cached comment cookie, if it exists
             Cookie[] cookies = request.getCookies();
@@ -88,13 +93,14 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         } catch (NumberFormatException e) {
             _log.warn(String.format("Could not convert discussionId %s and threadId %s to longs (userId = %d)",
                     newMessage.getDiscussionId(), newMessage.getThreadId(), themeDisplay.getUserId()));
+        } catch (ThreadNotFoundException ignored) {
         }
 
         redirectToReferrer(request, response);
     }
 
     @SuppressWarnings("OverlyBroadThrowsClause")
-    public void updateAnalyticsAndActivities(DiscussionCategoryGroup dcg, DiscussionMessage comment, long userId, ActionRequest request)
+    public void updateAnalyticsAndActivities(CommentThread thread, Comment comment, long userId, ActionRequest request)
             throws SystemException, PortalException {
         // Update activity counter for user
         Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);

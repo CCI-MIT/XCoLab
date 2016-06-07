@@ -54,7 +54,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     private String _flagTooltip;
     private long _groupId;
     private long _discussionGroupId;
-    private long _fellowDiscussionGroupId;
     private int _weight;
     private String _resourcesUrl;
     private boolean _contestPrivate;
@@ -150,7 +149,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         attributes.put("flagTooltip", getFlagTooltip());
         attributes.put("groupId", getGroupId());
         attributes.put("discussionGroupId", getDiscussionGroupId());
-        attributes.put("fellowDiscussionGroupId", getFellowDiscussionGroupId());
         attributes.put("weight", getWeight());
         attributes.put("resourcesUrl", getResourcesUrl());
         attributes.put("contestPrivate", getContestPrivate());
@@ -380,13 +378,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
         if (discussionGroupId != null) {
             setDiscussionGroupId(discussionGroupId);
-        }
-
-        Long fellowDiscussionGroupId = (Long) attributes.get(
-                "fellowDiscussionGroupId");
-
-        if (fellowDiscussionGroupId != null) {
-            setFellowDiscussionGroupId(fellowDiscussionGroupId);
         }
 
         Integer weight = (Integer) attributes.get("weight");
@@ -1260,29 +1251,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
     }
 
     @Override
-    public long getFellowDiscussionGroupId() {
-        return _fellowDiscussionGroupId;
-    }
-
-    @Override
-    public void setFellowDiscussionGroupId(long fellowDiscussionGroupId) {
-        _fellowDiscussionGroupId = fellowDiscussionGroupId;
-
-        if (_contestRemoteModel != null) {
-            try {
-                Class<?> clazz = _contestRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setFellowDiscussionGroupId",
-                        long.class);
-
-                method.invoke(_contestRemoteModel, fellowDiscussionGroupId);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
     public int getWeight() {
         return _weight;
     }
@@ -1797,7 +1765,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         clone.setFlagTooltip(getFlagTooltip());
         clone.setGroupId(getGroupId());
         clone.setDiscussionGroupId(getDiscussionGroupId());
-        clone.setFellowDiscussionGroupId(getFellowDiscussionGroupId());
         clone.setWeight(getWeight());
         clone.setResourcesUrl(getResourcesUrl());
         clone.setContestPrivate(getContestPrivate());
@@ -1876,7 +1843,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(103);
+        StringBundler sb = new StringBundler(101);
 
         sb.append("{ContestPK=");
         sb.append(getContestPK());
@@ -1944,8 +1911,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(getGroupId());
         sb.append(", discussionGroupId=");
         sb.append(getDiscussionGroupId());
-        sb.append(", fellowDiscussionGroupId=");
-        sb.append(getFellowDiscussionGroupId());
         sb.append(", weight=");
         sb.append(getWeight());
         sb.append(", resourcesUrl=");
@@ -1987,7 +1952,7 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(157);
+        StringBundler sb = new StringBundler(154);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.Contest");
@@ -2124,10 +2089,6 @@ public class ContestClp extends BaseModelImpl<Contest> implements Contest {
         sb.append(
             "<column><column-name>discussionGroupId</column-name><column-value><![CDATA[");
         sb.append(getDiscussionGroupId());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>fellowDiscussionGroupId</column-name><column-value><![CDATA[");
-        sb.append(getFellowDiscussionGroupId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>weight</column-name><column-value><![CDATA[");

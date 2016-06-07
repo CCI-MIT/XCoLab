@@ -38,7 +38,7 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
     }
 
     public long getTotalComments() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getTotalComments(contest);
+        return ContestLocalServiceUtil.getTotalCommentsCount(contest);
     }
     
     public boolean getContestInVotingPhase() throws SystemException, PortalException {

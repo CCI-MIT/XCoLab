@@ -9,12 +9,16 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.activityEntry.proposal.ProposalAttributeUpdateActivityEntry;
+import org.xcolab.activityEntry.proposal.ProposalCreatedActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
@@ -24,11 +28,12 @@ import org.xcolab.portlets.proposals.utils.edit.ProposalMoveUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 
 
 @Controller
@@ -87,6 +92,12 @@ public class AddUpdateProposalDetailsActionController {
 
         if (createNew) {
             ProposalCreationUtil.sendAuthorNotification(themeDisplay, proposalWrapper, contestPhase);
+
+            ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
+                    new ProposalCreatedActivityEntry());
+        }else{
+            ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
+                    new ProposalAttributeUpdateActivityEntry());
         }
 
         proposalsContext.invalidateContext(request);

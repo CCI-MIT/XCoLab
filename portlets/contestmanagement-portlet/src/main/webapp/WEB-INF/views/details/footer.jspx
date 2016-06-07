@@ -13,6 +13,6 @@
 
 	<div class="cmsDetailsBox">
 		<h1>Ask your questions here: </h1>
-		<collab:discussionComments categoryGroupId="${currentTabWrapped.discussionId }" />
+		<collab:discussionComments threadId="${currentTabWrapped.discussionId}" />
 	</div>
 </jsp:root>

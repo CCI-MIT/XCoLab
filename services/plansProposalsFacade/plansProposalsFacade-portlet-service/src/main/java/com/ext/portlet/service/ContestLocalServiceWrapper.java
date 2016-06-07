@@ -442,14 +442,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public com.ext.portlet.model.DiscussionCategoryGroup getDiscussionCategoryGroup(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getDiscussionCategoryGroup(contest);
-    }
-
-    @Override
     public long getTotalCommentsCount(com.ext.portlet.model.Contest contest)
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
@@ -475,13 +467,6 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         return _contestLocalService.getVotesCount(contest);
-    }
-
-    @Override
-    public long getTotalComments(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestLocalService.getTotalComments(contest);
     }
 
     @Override

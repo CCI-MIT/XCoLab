@@ -1,7 +1,5 @@
 package org.climatecollaboratorium.utils;
 
-import org.xcolab.utils.HtmlUtil;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,7 +86,7 @@ public class ContentFilterHelper {
             tmp = filterLineBreaks(tmp);
         }
         tmp = filterUrlEmbeddedLinks(tmp);
-        tmp = HtmlUtil.linkifyUrls(tmp);
+        //tmp = HtmlUtil.linkifyUrls(tmp);
         
         return tmp;
     }

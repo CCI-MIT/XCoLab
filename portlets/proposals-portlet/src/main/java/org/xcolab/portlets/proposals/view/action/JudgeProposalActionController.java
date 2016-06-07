@@ -33,8 +33,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
@@ -46,12 +46,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
-import javax.mail.internet.AddressException;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -62,29 +56,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.AddressException;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("view")
 public class JudgeProposalActionController {
 
     @Autowired
     private ProposalsContext proposalsContext;
-
-    @RequestMapping(params = {"action=sendComment"})
-    public void sendComment(ActionRequest request, Model model, ActionResponse response,
-            @RequestParam String forwardToTab)
-            throws SystemException, PortalException, AddressException, MailEngineException, IOException {
-        // Security handling
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        if (!permissions.getCanAdminAll()) {
-            return;
-        }
-
-        ProposalWrapper proposal = new ProposalWrapper(proposalsContext.getProposal(request), proposalsContext.getContestPhase(request));
-        ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(proposal.getWrapped(), proposalsContext.getContestPhase(request), request);
-        ProposalLocalServiceUtil.contestPhasePromotionCommentNotifyProposalContributors(proposal.getWrapped(), proposalsContext.getContestPhase(request));
-
-        response.sendRedirect(proposal.getProposalUrl() + "/tab/"+forwardToTab);
-    }
 
     @RequestMapping(params = {"action=saveAdvanceDetails"})
     public void saveAdvanceDetails(ActionRequest request, Model model,

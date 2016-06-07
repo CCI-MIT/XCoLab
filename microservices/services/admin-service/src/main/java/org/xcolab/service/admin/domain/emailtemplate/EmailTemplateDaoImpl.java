@@ -1,8 +1,10 @@
 package org.xcolab.service.admin.domain.emailtemplate;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ContestEmailTemplate;
 
 import java.util.List;
@@ -23,10 +25,14 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
 
     @Override
     public ContestEmailTemplate getEmailTemplate(String emailTemplateId) {
-        return this.dslContext.select()
+        final Record record = this.dslContext.select()
                 .from(CONTEST_EMAIL_TEMPLATE)
                 .where(CONTEST_EMAIL_TEMPLATE.TYPE_.equal(emailTemplateId))
-                .fetchOneInto(ContestEmailTemplate.class);
+                .fetchOne();
+        if (record == null) {
+            return null;
+        }
+        return record.into(ContestEmailTemplate.class);
     }
     @Override
     public boolean updateEmailTemplate(ContestEmailTemplate contestEmailTemplate) {

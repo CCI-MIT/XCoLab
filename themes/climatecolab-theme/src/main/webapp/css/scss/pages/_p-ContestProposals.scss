@@ -6,14 +6,19 @@ $p-ContestProposals__list__element--judgeFellow__width: 159px !default;
 $p-ContestProposals__list__element--judgeFellow__border--left: none !default;
 $p-ContestProposals__list__element--contributor__width: 106px !default;
 $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !default;
+$p-ContestProposals__header__paddingTop: 0 !default;
 $p-ContestProposals__header__title__fontWeight: $b-Typography__fontWeight !default;
 $p-ContestProposals__header__isTwoColumns: false !default;
-$p-ContestProposals__header__leftColumn__width: 750px !default;
-$p-ContestProposals__header__rightColumn__width: 150px !default;
+$p-ContestProposals__header__leftColumn__width: 630px !default;
+$p-ContestProposals__header__rightColumn__width: 300px !default;
+$p-ContestProposals__header__rightColumn__borderTop: none !default;
+$p-ContestProposals__header__ontology__term__marginTop: 0 !default;
 $p-ContestProposals__header__ontology__term__useIcons: true !default;
 $p-ContestProposals__header__ontology__display: inline-block !default;
 $p-ContestProposals__header__ontology__link__display: inline-block !default;
 $p-ContestProposals__header__team__display: inline-block !default;
+$p-ContestProposals__header__team__member__display: inline-block !default;
+$p-ContestProposals__header__team__roleName__paddingTop: 15px !default;
 
 $p-ContestProposals__header__detailButton__fontWeight: $b-Typography__fontWeight--bold !default;
 $p-ContestProposals__header__detailButton__borderRadius: 5px !default;
@@ -27,6 +32,7 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
 
 .p-ContestProposals__header { //.contest-detail
   background-color: $p-Contests__contestDetail__backgroundColor;
+  padding-top: $p-ContestProposals__header__paddingTop;
   padding-bottom: 20px;
   border-bottom: 1px solid $t-Color__grey--light;
   margin-top: -4px;
@@ -44,6 +50,9 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
 @if $p-ContestProposals__header__isTwoColumns {
   .p-ContestProposals__header__metaSection {
     display: inline-block;
+    margin-top: 20px;
+    margin-left: 20px;
+    border-top: $p-ContestProposals__header__rightColumn__borderTop;
     width: $p-ContestProposals__header__rightColumn__width;
     vertical-align: top;
   }
@@ -56,6 +65,12 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
   font-size: 22px;
   font-weight: $p-ContestProposals__header__title__fontWeight;
   vertical-align: middle;
+
+  p {
+    float: left;
+    margin-bottom: 0px;
+  }
+
 }
 
 .p-ContestProposals__header__description { //.contest-detail .description {
@@ -72,13 +87,12 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
   max-width: 320px;
   min-width: 0;
   display: inline-block;
-  margin-top: 20px;
   font-size: 14px;
 
   //.heading-sponsor-logo
   min-height: 30px;
   float: right;
-  padding: 3px;
+  padding: 3px 3px 3px 20px;
 
   img { //.heading-sponsor-logo img
     max-width: 100%;
@@ -91,19 +105,19 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
 .p-ContestProposals__header__team { //.contest-detail .moreinfo
   display: $p-ContestProposals__header__team__display;
   max-width: 640px;
-  padding: 20px 16px;
+  padding: 10px 16px;
   position: relative;
   min-height: 37px;
 }
 
 .p-ContestProposals__header__team__roleName { //.contestTeamRole .contestTeamRoleName
   display: inline-block;
-  padding-top: 15px;
+  padding-top: $p-ContestProposals__header__team__roleName__paddingTop;
   width: 65px;
 }
 
 .p-ContestProposals__header__team__member { //.contestTeamRole .contestTeamMember
-  display: inline-block;
+  display: $p-ContestProposals__header__team__member__display;
   white-space: nowrap;
   padding-right: 10px;
 
@@ -162,6 +176,8 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
 
 .p-ContestProposals__header__ontology__term {
   display: $p-ContestProposals__header__ontology__display;
+  vertical-align: top;
+  margin-top: $p-ContestProposals__header__ontology__term__marginTop;
   margin-right: 15px;
   width: 220px;
 }

@@ -1,16 +1,14 @@
 package org.xcolab.jspTags.discussion.wrappers;
 
-import com.ext.portlet.discussions.DiscussionMessageFlagType;
 import com.ext.portlet.model.DiscussionMessage;
-import com.ext.portlet.model.DiscussionMessageFlag;
 import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.utils.HtmlUtil;
+
+import org.xcolab.util.HtmlUtil;
 
 import java.util.Date;
 
@@ -77,28 +75,8 @@ public class DiscussionMessageWrapper implements Comparable<DiscussionMessageWra
         return wrapped.getLastActivityAuthorId();
     }
 
-    public boolean isExpertReview() throws SystemException {
-        return hasFlag(DiscussionMessageFlagType.EXPERT_REVIEW);
-    }
-
     public int getSpamReportCount() throws SystemException {
         return SpamReportLocalServiceUtil.getByDiscussionMessageId(getMessageId()).size();
-    }
-
-
-    public boolean hasFlag(DiscussionMessageFlagType flagType) throws SystemException {
-        return hasFlag(flagType.name());
-    }
-    
-    public boolean hasFlag(String flagType) throws SystemException {
-        if (wrapped != null && wrapped.getMessageId() > 0) {
-            for (DiscussionMessageFlag flag: DiscussionMessageLocalServiceUtil.getFlags(wrapped)) {
-                if (flag.getFlagType().equals(flagType)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
     
     public User getAuthor() throws PortalException, SystemException {

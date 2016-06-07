@@ -1,26 +1,24 @@
 package com.ext.portlet.Activity;
 
-import com.ext.portlet.model.ActivitySubscription;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.Proposal;
+import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.client.activities.pojo.ActivitySubscription;
 
 public enum SubscriptionType {
-    DISCUSSION(DiscussionCategoryGroup.class.getName(), "Discussion"),
-    PROPOSAL(Proposal.class.getName(), "Proposal"),
-    CONTEST(Contest.class.getName(), "Contest");
+    DISCUSSION(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), "Discussion"),
+    PROPOSAL(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(), "Proposal"),
+    CONTEST(ActivityEntryType.CONTEST.getPrimaryTypeId(), "Contest");
 
-    private String className;
+    private Long className;
     private String printName;
 
-    SubscriptionType(String className, String printName) {
+    SubscriptionType(Long className, String printName) {
         this.className = className;
         this.printName = printName;
     }
 
     public static SubscriptionType getSubscriptionType(ActivitySubscription subscription) {
         for (SubscriptionType type : SubscriptionType.values()) {
-            if (type.className.equals(subscription.getClassName())) {
+            if (type.className.equals(subscription.getClassNameId())) {
                 return type;
             }
         }

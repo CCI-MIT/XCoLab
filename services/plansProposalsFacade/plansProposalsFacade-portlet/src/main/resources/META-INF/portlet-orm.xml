@@ -191,7 +191,6 @@
 			<basic name="flagTooltip" />
 			<basic name="groupId" />
 			<basic name="discussionGroupId" />
-			<basic name="fellowDiscussionGroupId" />
 			<basic name="weight" />
 			<basic name="resourcesUrl" />
 			<basic name="contestPrivate" />

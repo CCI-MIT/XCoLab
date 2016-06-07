@@ -32,7 +32,6 @@
     <mvc:annotation-driven/>
 
     <bean class="org.xcolab.jspTags.discussion.actions.AddDiscussionMessageActionController" />
-    <bean class="org.xcolab.jspTags.discussion.actions.ToggleDiscussionMessageFlagActionController" />
     <bean class="org.xcolab.jspTags.discussion.actions.DeleteDiscussionMessageFlagActionController" />
     <bean class="org.xcolab.jspTags.discussion.actions.EditDiscussionMessageActionController" />
     <bean class="org.xcolab.jspTags.discussion.actions.SpamReportDiscussionMessageActionController" />

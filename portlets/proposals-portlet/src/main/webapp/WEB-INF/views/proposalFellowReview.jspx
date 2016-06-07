@@ -9,7 +9,7 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 
 	<div id="content">
-		<discussionsTagFiles:evaluationComments evaluationDiscussionId="${discussionId }" />
+		<discussionsTagFiles:evaluationComments threadId="${discussionId}" />
 	</div>
 
 </jsp:root>

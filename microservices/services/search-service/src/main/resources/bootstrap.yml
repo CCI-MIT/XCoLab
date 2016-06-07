@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: search-service
+  jmx:
+    default-domain: ${spring.application.name}

@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.search.BooleanClauseOccurImpl;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.BooleanQueryFactoryUtil;
 import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -29,8 +28,11 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
+
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
+import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.enums.ColabConstants;
 
 import java.util.ArrayList;
@@ -50,15 +52,16 @@ public class ActivityUtil {
 
     private static final String ADMINISTRATOR_ROLE_NAME = "Administrator";
 
-    public static List<SocialActivity> retrieveAllActivities(int pagestart, int next) throws SystemException {
-        return SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
+    public static List<ActivityEntry> retrieveAllActivities(int pagestart, int next) throws SystemException {
+       return  ActivitiesClient.getActivityEntries(pagestart, next, null, null);
+        //return SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
     }
 
-    public static List<SocialActivity> retrieveWindowedActivities(int start, int end) throws SystemException, PortalException {
+    public static List<ActivityEntry> retrieveWindowedActivities(int start, int end) throws SystemException, PortalException {
         return retrieveWindowedActivities(start, end, false);
     }
 
-    public static List<SocialActivity> retrieveWindowedActivities(int start, int end, boolean showAdmin) throws SystemException, PortalException {
+    public static List<ActivityEntry> retrieveWindowedActivities(int start, int end, boolean showAdmin) throws SystemException, PortalException {
         Hits hits;
         if (showAdmin) {
             hits = getAllAggregatedActivitySearchResults(start, end);
@@ -70,38 +73,41 @@ public class ActivityUtil {
         return retrieveAggregatedSocialActivities(hits);
     }
 
-    public static List<SocialActivity> retrieveWindowedActivities(long userId, int start, int end) throws SystemException, SearchException {
+    public static List<ActivityEntry> retrieveWindowedActivities(long userId, int start, int end) throws SystemException, SearchException {
         Hits hits = getAggregatedActivitySearchResults(userId, start, end);
         return retrieveAggregatedSocialActivities(hits);
     }
 
-    private static List<SocialActivity> retrieveAggregatedSocialActivities(Hits hits) {
-        List<SocialActivity> aggregatedSocialActivities = new ArrayList<>(hits.getLength());
+    private static List<ActivityEntry> retrieveAggregatedSocialActivities(Hits hits) {
+        List<ActivityEntry> aggregatedSocialActivities = new ArrayList<>(hits.getLength());
 
         for (Document activityDoc : hits.getDocs()) {
             try {
-                SocialActivity sa = SocialActivityLocalServiceUtil.getSocialActivity(GetterUtil.getLong(activityDoc.getField("activityId").getValue()));
+                ActivityEntry sa = ActivitiesClient.getActivityEntry(GetterUtil.getLong(activityDoc.getField("activityId").getValue()));
                 aggregatedSocialActivities.add(sa);
-            } catch (SystemException | PortalException ignored) {
+            } catch (ActivityEntryNotFoundException ignored) {
             }
         }
         return aggregatedSocialActivities;
     }
 
+    /*
     public static List<SocialActivity> groupAllActivities() throws SystemException {
         return groupActivities(SocialActivityLocalServiceUtil.getOrganizationActivities(ColabConstants.COLAB_COMPANY_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+    }*/
+
+    public static List<ActivityEntry> groupUserActivities(long userId) throws SystemException {
+        return groupActivities(
+                ActivitiesClient.getActivityEntries(0,1000,userId, null)
+        );
     }
 
-    public static List<SocialActivity> groupUserActivities(long userId) throws SystemException {
-        return groupActivities(SocialActivityLocalServiceUtil.getUserActivities(userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS));
-    }
-
-    public static List<SocialActivity> groupActivities(List<SocialActivity> activities) {
+    public static List<ActivityEntry> groupActivities(List<ActivityEntry> activities) {
         //find all activities of same type
-        Map<String, List<SocialActivity>> activitiesMap = new HashMap<>(10000);
-        for (SocialActivity a : activities) {
+        Map<String, List<ActivityEntry>> activitiesMap = new HashMap<>(10000);
+        for (ActivityEntry a : activities) {
             if (!activitiesMap.containsKey(getSocialActivityKey(a))) {
-                activitiesMap.put(getSocialActivityKey(a), new LinkedList<SocialActivity>());
+                activitiesMap.put(getSocialActivityKey(a), new LinkedList<ActivityEntry>());
             }
             activitiesMap.get(getSocialActivityKey(a)).add(a);
         }
@@ -110,12 +116,9 @@ public class ActivityUtil {
 
 
     public static int getAllActivitiesCount() throws SystemException, SearchException {
-        int searchResultCount = getAllAggregatedActivitySearchResults(QueryUtil.ALL_POS, QueryUtil.ALL_POS).getLength();
-        if (searchResultCount == 0) {
-            return groupAllActivities().size();
-        }
 
-        return searchResultCount;
+        return ActivitiesClient.countActivities(null, null);
+
     }
 
     public static int getActivitiesCount(long userId) throws SystemException, SearchException {
@@ -139,22 +142,22 @@ public class ActivityUtil {
         return sb.toString();
     }
 
-    private static List<SocialActivity> clusterActivities(Map<String, List<SocialActivity>> activitiesMap) {
+    private static List<ActivityEntry> clusterActivities(Map<String, List<ActivityEntry>> activitiesMap) {
         //cluster
-        List<SocialActivity> aggregatedActivities = new LinkedList<>();
-        Comparator<SocialActivity> sorter = new Comparator<SocialActivity>() {
+        List<ActivityEntry> aggregatedActivities = new LinkedList<>();
+        Comparator<ActivityEntry> sorter = new Comparator<ActivityEntry>() {
             @Override
-            public int compare(SocialActivity o1, SocialActivity o2) {
-                return new Long(o1.getCreateDate()).compareTo(o2.getCreateDate());
+            public int compare(ActivityEntry o1, ActivityEntry o2) {
+                return new Long(o1.getCreateDate().getTime()).compareTo(o2.getCreateDate().getTime());
             }
         };
-        for (Collection<SocialActivity> activitiesMapValue : activitiesMap.values()) {
-            List<SocialActivity> socialActivities = new ArrayList<>(activitiesMapValue); //convert to array for sorting
+        for (Collection<ActivityEntry> activitiesMapValue : activitiesMap.values()) {
+            List<ActivityEntry> socialActivities = new ArrayList<>(activitiesMapValue); //convert to array for sorting
             Collections.sort(socialActivities, sorter);
 
-            SocialActivity curMin = null;
-            for (SocialActivity socialActivity : socialActivities) {
-                if (curMin == null || socialActivity.getCreateDate() - curMin.getCreateDate() < AGGREGATION_TIME_WINDOW) {
+            ActivityEntry curMin = null;
+            for (ActivityEntry socialActivity : socialActivities) {
+                if (curMin == null || socialActivity.getCreateDate().getTime() - curMin.getCreateDate().getTime() < AGGREGATION_TIME_WINDOW) {
                     curMin = socialActivity;
                 } else {
                     aggregatedActivities.add(curMin);
@@ -170,15 +173,15 @@ public class ActivityUtil {
         return aggregatedActivities;
     }
 
-    private static String getSocialActivityKey(SocialActivity sa) {
-        return sa.getClassNameId() + "_" + sa.getClassPK() + "_" + sa.getType() + "_" + sa.getUserId();
+    private static String getSocialActivityKey(ActivityEntry sa) {
+        return sa.getPrimaryType() + "_" + sa.getClassPrimaryKey() + "_" + sa.getSecondaryType() + "_" + sa.getMemberId();
     }
 
     private static Hits getAggregatedActivitySearchResults(long userId, int start, int end) throws SearchException {
         SearchContext context = new SearchContext();
         context.setCompanyId(ColabConstants.COLAB_COMPANY_ID);
         BooleanQuery query = BooleanQueryFactoryUtil.create(context);
-        query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
+        //query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
 
         BooleanQuery subQuery = BooleanQueryFactoryUtil.create(context);
         subQuery.addExactTerm("userId", userId);
@@ -201,7 +204,7 @@ public class ActivityUtil {
         SearchContext context = new SearchContext();
         context.setCompanyId(ColabConstants.COLAB_COMPANY_ID);
         BooleanQuery query = BooleanQueryFactoryUtil.create(context);
-        query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
+        //query.addRequiredTerm(Field.ENTRY_CLASS_NAME, SocialActivity.class.getName());
 
         BooleanQuery excludeQuery = BooleanQueryFactoryUtil.create(context);
         for (Long excludedUserId : excludedUserIds) {

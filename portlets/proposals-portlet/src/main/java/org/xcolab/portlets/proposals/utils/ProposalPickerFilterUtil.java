@@ -1,11 +1,10 @@
 package org.xcolab.portlets.proposals.utils;
 
-import com.ext.portlet.model.ActivitySubscription;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -16,8 +15,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import org.apache.commons.lang3.tuple.Pair;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.ArrayList;
@@ -134,14 +135,15 @@ public class ProposalPickerFilterUtil {
             long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        List<ActivitySubscription> activitySubscriptions = ActivitySubscriptionLocalServiceUtil
-                .findByUser(userId);
+        List<ActivitySubscription> activitySubscriptions = ActivitiesClient.getActivitySubscription(null, null, userId);
+
         for (ActivitySubscription as : activitySubscriptions) {
             if (as.getClassNameId() == ClassNameLocalServiceUtil
                     .getClassNameId(Proposal.class)) {
                 proposals.add(Pair.of(
                         ProposalLocalServiceUtil.getProposal(as.getClassPK()),
-                        as.getCreateDate()));
+                       new Date(as.getCreateDate().getTime())
+                ));
             }
         }
 

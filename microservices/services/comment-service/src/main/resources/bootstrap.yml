@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: comment-service
+  jmx:
+    default-domain: ${spring.application.name}

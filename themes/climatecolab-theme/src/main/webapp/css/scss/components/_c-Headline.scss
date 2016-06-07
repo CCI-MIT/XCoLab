@@ -4,6 +4,10 @@ $c-Headline__h2__span__fontWeight: 700 !default;
 $c-Headline__h2__span__textColor: $t-Color__secondary !default;
 $c-Headline__fold__message_backgroundColor: $t-Color__primary__grey--light !default;
 $c-Headline__days-left__span__textColor: $t-Color__accent !default;
+$c-Headline__h2__span__fontSize: 33px !default;
+$c-Headline__days-left__span__padding: 0 !default;
+$c-Headline__days-left__span__background: none !default;
+$c-Headline__days-left__span__fontSize: 24px !default;
 
 $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
 
@@ -69,8 +73,7 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
     color: $c-Headline__h2__textColor;
 
     span { //.headline h2 span
-      vertical-align: middle;
-      font-size: 33px;
+      font-size: $c-Headline__h2__span__fontSize;
       font-weight: $c-Headline__h2__span__fontWeight;
       color: $c-Headline__h2__span__textColor;
     }
@@ -91,10 +94,14 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
     line-height: normal;
 
     span { //.headline .days-left span
-      font-size: 24px;
+      display: inline-block;
+      margin-right: 5px;
+      padding: $c-Headline__days-left__span__padding;
+      background: $c-Headline__days-left__span__background;
+
+      font-size: $c-Headline__days-left__span__fontSize;
       font-weight: $b-Typography__fontWeight--bold;
       color: $c-Headline__days-left__span__textColor;
-      padding-right: 5px;
       vertical-align: middle;
     }
   }

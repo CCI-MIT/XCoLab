@@ -1,4 +1,4 @@
-package org.xcolab.utils;
+package org.xcolab.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 
 /**
  * Utility class to sanitize and format HTML inputs.
- *
- * Created by johannes on 8/10/15.
  */
 public final class HtmlUtil {
 

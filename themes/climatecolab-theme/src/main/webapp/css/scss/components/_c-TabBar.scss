@@ -68,6 +68,7 @@ $c-TabBar__tab--first__margin--left: 0px !default;
 
   a:hover { //.prop-tabs li a:hover
     background: hover-color($c-TabBar__tab__background);
+    text-decoration: none;
   }
 
   &.active {

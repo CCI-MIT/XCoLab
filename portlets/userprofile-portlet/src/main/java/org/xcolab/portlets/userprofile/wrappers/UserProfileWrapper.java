@@ -7,7 +7,6 @@ import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -21,11 +20,11 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.portlet.social.model.SocialActivity;
-import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
 
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MemberRole;
@@ -133,8 +132,7 @@ public class UserProfileWrapper implements Serializable {
             supportedProposals.add(new SupportedProposalWrapper(ps));
         }
 
-        for (SocialActivity activity : ActivityUtil.groupActivities(SocialActivityLocalServiceUtil
-                .getUserActivities(user.getId_(), 0, MAX_ACTIVITIES_COUNT))) {
+        for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient.getActivityEntries(0, MAX_ACTIVITIES_COUNT, user.getId_(), null))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
             if (a.getBody() != null && !a.getBody().equals("")) {
@@ -305,8 +303,8 @@ public class UserProfileWrapper implements Serializable {
     public List<UserActivityWrapper> getSubscribedActivities() throws SystemException, PortalException {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
-            for (SocialActivity activity : ActivityUtil.groupActivities(
-                    ActivitySubscriptionLocalServiceUtil.getActivities(this.user.getId_(), 0, 1000))) {
+            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient.getActivityEntries(0,100, this.user.getId_(), null))) {
+
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
         }
