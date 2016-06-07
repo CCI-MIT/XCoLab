@@ -151,7 +151,7 @@
   
   <!-- USER POPUP -->
   <div class="c-Header__user__pop" id="userPopupContainer">
-   <div class="c-Header__user__top"><img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></div>
+   <div class="c-Header__user__top"><img src="/image/user_male_portrait?userId=$user.userId&screenName=$user.screenName&companyId=$user.companyId&portraitId=$member.portraitFileEntryId" width="24" height="25" alt="$user.screenName" /></div>
    <div class="c-Header__user__box">
     <ul>
      <li><a href="/web/guest/member/-/member/userId/$user.userId">My profile</a></li>
