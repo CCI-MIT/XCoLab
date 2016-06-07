@@ -10,13 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.xcolab.service.utils.db.DataSourceUtil;
 import org.xcolab.service.utils.db.jooq.config.JooqConfiguration;
 
 @Configuration
-
-@EnableTransactionManagement
+//@EnableTransactionManagement
 @PropertySource({"classpath:application.properties", "file:${user.home}/.xcolab.application.properties"})
 public class PersistenceContext {
 
