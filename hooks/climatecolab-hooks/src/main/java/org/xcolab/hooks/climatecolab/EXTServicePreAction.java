@@ -67,7 +67,7 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
 
         vmVariables.put("betaRibbonShow",
-                ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.getBooleanValue());
+                ConfigurationAttributeKey.BETA_RIBBON_SHOW.getBooleanValue());
 
         final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW
                 .getBooleanValue();
