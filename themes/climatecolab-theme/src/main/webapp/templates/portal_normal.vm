@@ -141,7 +141,7 @@
 #if ($themeDisplay.signedIn)
     <ul id="c-Header__menu__right">
         <li class="user #if($user.screenName.length() > 22)small#end">
-           <a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a>
+           <a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?userId=$user.userId&screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a>
             #if ($unreadMessages > 0)
                <div class="c-Header__user__notification c-Header__user__notification__top">$unreadMessages</div>
             #end
