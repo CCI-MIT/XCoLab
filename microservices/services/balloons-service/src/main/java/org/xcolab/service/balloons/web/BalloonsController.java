@@ -66,11 +66,12 @@ public class BalloonsController {
     }
 
 
+    /*
     @RequestMapping(value = "/balloonUserTracking/", method = RequestMethod.GET)
     public List<BalloonUserTracking> getAllBalloonUserTracking() {
 
         return this.balloonUserTrackingDao.getAllBalloonUserTracking();
-    }
+    }*/
 
     @RequestMapping(value = "/balloonUserTracking/", method = RequestMethod.POST)
     public BalloonUserTracking createBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking) {
