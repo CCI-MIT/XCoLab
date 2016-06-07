@@ -49,10 +49,17 @@ public class ActivitiesController {
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) Long memberId,
             @RequestParam(required = false) List<Long> memberIdsToExclude,
-            @RequestParam(required = false) String sort) {
-        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
-                sort);
-        return activityEntryDao.findByGiven(paginationHelper, memberId, memberIdsToExclude);
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) Date activitiesAfter
+            ) {
+
+        if (activitiesAfter != null){
+            return activityEntryDao.getActivitiesAfter(activitiesAfter);
+        }else {
+            final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
+                    sort);
+            return activityEntryDao.findByGiven(paginationHelper, memberId, memberIdsToExclude);
+        }
     }
 
     @RequestMapping(value = "/activityEntries/count", method = RequestMethod.GET)
@@ -72,7 +79,6 @@ public class ActivitiesController {
     }
 
 
-
     @RequestMapping(value = "/activitySubscriptions/{activitySubscriptionId}", method = RequestMethod.GET)
     public ActivitySubscription getActivitySubscription(@PathVariable("activitySubscriptionId") Long activitySubscriptionId) throws NotFoundException {
         if (activitySubscriptionId == null || activitySubscriptionId == 0) {
@@ -81,7 +87,6 @@ public class ActivitiesController {
             return activitySubscriptionDao.get(activitySubscriptionId);
         }
     }
-
 
 
     @RequestMapping(value = "/activitySubscriptions/{pk}", method = RequestMethod.DELETE)
@@ -99,10 +104,10 @@ public class ActivitiesController {
 
     @RequestMapping(value = "/activitySubscriptions/deleteIfSubscribed", method = RequestMethod.GET)
     public boolean deleteIfSubscribed(@RequestParam(required = false) Long receiverId,
-                                @RequestParam(required = false) Long classNameId,
-                                @RequestParam(required = false) Long classPK,
-                                @RequestParam(required = false) Integer type,
-                                @RequestParam(required = false) String extraInfo) {
+                                      @RequestParam(required = false) Long classNameId,
+                                      @RequestParam(required = false) Long classPK,
+                                      @RequestParam(required = false) Integer type,
+                                      @RequestParam(required = false) String extraInfo) {
         return this.activitySubscriptionDao.deleteSubcription(receiverId, classNameId, classPK, type, extraInfo);
     }
 
@@ -117,9 +122,9 @@ public class ActivitiesController {
 
     @RequestMapping(value = "/activitySubscriptions/", method = RequestMethod.GET)
     public List<ActivitySubscription> getActivitySubscribers(
-                                @RequestParam(required = false) Long classNameId,
-                                @RequestParam(required = false) Long classPK,
-                                @RequestParam(required = false) Long receiverId) {
+            @RequestParam(required = false) Long classNameId,
+            @RequestParam(required = false) Long classPK,
+            @RequestParam(required = false) Long receiverId) {
         return this.activitySubscriptionDao.getActivitySubscribers(classNameId, classPK, receiverId);
     }
 

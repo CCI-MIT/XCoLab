@@ -1,31 +1,48 @@
 package org.xcolab.activityEntry;
 
+import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
+import com.ext.utils.NotificationUnregisterUtils;
 import com.ext.utils.subscriptions.ActivitySubscriptionConstraint;
-import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.mail.MailEngine;
+import com.liferay.util.mail.MailEngineException;
 
+import org.apache.commons.collections.comparators.ComparatorChain;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.HtmlUtil;
+import org.xcolab.utils.TemplateReplacementUtil;
 
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.mail.internet.InternetAddress;
 
 public class ActivitySubscriptionEmailHelper {
 
@@ -37,6 +54,37 @@ public class ActivitySubscriptionEmailHelper {
     private final static Log _log = LogFactoryUtil.getLog(ActivitySubscriptionEmailHelper.class);
 
     private static Date lastDailyEmailNotification = getLastDailyEmailNotificationDate();
+
+    private static final String FAQ_DIGEST_URL_PATH = "/faqs#digest";
+
+    private static final String UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to a <contest/>, <proposal/> or discussion post on the <colab-name/>.  " +
+            "To receive all notifications in a daily digest, please click <a href='FAQ_DIGEST_LINK_PLACEHOLDER'>here</a> for instructions.  " +
+            "To stop receiving notifications from this <contest/>, <proposal/> or discussion post, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
+
+    private static final String FAQ_DIGEST_LINK_PLACEHOLDER = "FAQ_DIGEST_LINK_PLACEHOLDER";
+
+    private static final String UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER = "UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER";
+
+
+    private final static String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
+            + "To configure your notification preferences, visit your <a href=\"USER_PROFILE_LINK\">profile</a> page";
+
+    private final static String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
+
+    private final static String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
+
+    private final static String USER_ID_PLACEHOLDER = "USER_ID";
+
+    private final static String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
+
+    private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE = "<colab-name/> Activities – Daily Digest DATE";
+
+    private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER = "DATE";
+
+    private static final String DAILY_DIGEST_ENTRY_TEXT = "<colab-name/> Digest for DATE";
+
+    private static final String UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to receiving a daily digest of activities on the <colab-name/>.  " +
+            "To stop receiving these notifications, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
     public static void sendEmailNotifications(ServiceContext serviceContext) throws SystemException, PortalException {
         synchronized (lastEmailNotification) {
@@ -52,7 +100,7 @@ public class ActivitySubscriptionEmailHelper {
             lastEmailNotification = new Date();
         }
 
-        /*
+
         synchronized (lastDailyEmailNotification) {
             Date now = new Date();
 
@@ -60,7 +108,7 @@ public class ActivitySubscriptionEmailHelper {
             if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
                     && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR) {
                 try {
-                    List<SocialActivity> res = getActivitiesAfter(lastDailyEmailNotification);
+                    List<ActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
                     sendDailyDigestNotifications(res, serviceContext);
                 } catch (SystemException | PortalException t) {
                     _log.error("Can't send daily email notification", t);
@@ -70,12 +118,99 @@ public class ActivitySubscriptionEmailHelper {
             }
         }
 
-        */
+
+    }
+
+    private static void sendDailyDigestNotifications(List<ActivityEntry> activities, ServiceContext serviceContext) throws SystemException, PortalException {
+        Map<Member, List<ActivityEntry>> userActivitiesDigestMap = getUserToActivityDigestMap(activities);
+
+        String subject = StringUtil.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification));
+        // Send the digest to each user which is included in the set of subscriptions
+        for (Map.Entry<Member, List<ActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
+            final Member recipient = entry.getKey();
+            final List<ActivityEntry> userDigestActivities =  entry.getValue();
+            String body = getDigestMessageBody(serviceContext, userDigestActivities);
+            String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
+
+            sendEmailMessage(recipient, subject, body, unsubscribeFooter, serviceContext.getPortalURL());
+        }
+    }
+
+    private static String getUnsubscribeDailyDigestFooter(String unsubscribeUrl) {
+        return StringUtil.replace(UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
+    }
+
+    private static String getDigestMessageBody(ServiceContext serviceContext, List<ActivityEntry> userDigestActivities) {
+        Comparator<ActivityEntry> socialActivityClassIdComparator = new Comparator<ActivityEntry>() {
+            @Override
+            public int compare(ActivityEntry o1, ActivityEntry o2) {
+                return (int)(o1.getPrimaryType() - o2.getPrimaryType());
+            }
+        };
+        Comparator<ActivityEntry> socialActivityCreateDateComparator = new Comparator<ActivityEntry>() {
+            @Override
+            public int compare(ActivityEntry o1, ActivityEntry o2) {
+                return (int)(o1.getCreateDate().getTime() - o2.getCreateDate().getTime());
+            }
+        };
+
+        ComparatorChain comparatorChain = new ComparatorChain();
+        comparatorChain.addComparator(socialActivityClassIdComparator);
+        comparatorChain.addComparator(socialActivityCreateDateComparator);
+
+        Collections.sort(userDigestActivities, comparatorChain);
+        StringBuilder body = new StringBuilder();
+        body.append(StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)));
+        body.append("<br/><br/>");
+
+        for (ActivityEntry socialActivity : userDigestActivities) {
+            //prevent null pointer exceptions which might happen at this point
+            if (socialActivity == null || serviceContext == null || serviceContext.getRequest() == null || serviceContext.getRequest().getAttribute(WebKeys.THEME_DISPLAY) == null) {
+                continue;
+            }
+
+
+            body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
+        }
+        return body.toString();
+    }
+
+    private static Map<Member, List<ActivityEntry>> getUserToActivityDigestMap(List<ActivityEntry> activities) throws SystemException, PortalException {
+        Map<Member, List<ActivityEntry>> userDigestActivitiesMap = new HashMap<>();
+
+        for (ActivityEntry activity : activities) {
+            // Aggregate all activities for all users
+            for (Object subscriptionObj : getActivitySubscribers(activity)) {
+                com.ext.portlet.model.ActivitySubscription subscription = (com.ext.portlet.model.ActivitySubscription) subscriptionObj;
+
+                Member recipient = null;
+                try {
+                    recipient = MembersClient.getMember(subscription.getReceiverId());
+                } catch (MemberNotFoundException e) {
+                    continue;
+                }
+                if (subscription.getReceiverId() == activity.getMemberId()) {
+                    continue;
+                }
+
+                if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
+                        MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
+
+                    List<ActivityEntry> userDigestActivities = userDigestActivitiesMap.get(recipient);
+                    if (Validator.isNull(userDigestActivities)) {
+                        userDigestActivities = new ArrayList<>();
+                        userDigestActivitiesMap.put(recipient, userDigestActivities);
+                    }
+                    userDigestActivities.add(activity);
+                }
+            }
+        }
+        return userDigestActivitiesMap;
     }
 
     private static List<ActivityEntry> getActivitiesAfter(Date minDate) throws SystemException {
 
-        List<ActivityEntry> activityObjects = null;// call the client to get data
+        List<ActivityEntry> activityObjects = ActivitiesClient.getActivityEntriesAfter(minDate);
 
         //clean list of activities first in order not to send out activities concerning the same proposal multiple times
         ActivityEntryMessageLimitationHelper h = new ActivityEntryMessageLimitationHelper(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId());
@@ -90,7 +225,7 @@ public class ActivitySubscriptionEmailHelper {
         String subject = "";//get old implementation for subject
         String messageTemplate = activity.getActivityEntryBody();
 
-        Set<User> recipients = new HashSet<>();
+        Set<Member> recipients = new HashSet<>();
         Map<Long, ActivitySubscription> subscriptionsPerUser = new HashMap<>();
 
         for (Object subscriptionObj : getActivitySubscribers(activity)) {
@@ -99,31 +234,65 @@ public class ActivitySubscriptionEmailHelper {
             if (subscription.getReceiverId() == activity.getMemberId()) {
                 continue;
             }
-            User user = UserLocalServiceUtil.getUser(subscription.getReceiverId());
-            recipients.add(user);
+            Member member = null;
+            try {
+                member = MembersClient.getMember(subscription.getReceiverId());
+                recipients.add(member);
+                subscriptionsPerUser.put(member.getUserId(), subscription);
+            } catch (MemberNotFoundException e) {
+            }
+
+
             // map users to subscriptions for unregistration links
-            subscriptionsPerUser.put(user.getUserId(), subscription);
+
         }
-        for (User recipient : recipients) {
+        for (Member recipient : recipients) {
             if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
                     !MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
 
                 //TODO: fix this because this was only done so the code would compile
-                //String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(serviceContext.getPortalURL(),
-                //NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId()), serviceContext));
-                //sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, serviceContext.getPortalURL());
+                String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(serviceContext.getPortalURL(),
+                        NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId()), serviceContext));
+                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, serviceContext.getPortalURL());
             }
 
         }
     }
 
+    private static void sendEmailMessage(Member recipient, String subject, String body, String unregisterFooter, String portalBaseUrl) throws SystemException, NoSuchConfigurationAttributeException {
+        try {
+            InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
+            InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
+
+            body +=  MESSAGE_FOOTER_TEMPLATE;
+
+            body  = HtmlUtil.makeRelativeLinksAbsolute(body, portalBaseUrl);
+            body = body.replaceAll("\n", "\n<br />");
+            String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, portalBaseUrl));
+
+            message = HtmlUtil.decodeHTMLEntitiesForEmail(message);
+
+            // add link to unsubscribe
+            message += "<br /><br />" + unregisterFooter;
+
+            MailEngine.send(fromEmail, toEmail,
+                    TemplateReplacementUtil.replacePlatformConstants(subject),
+                    TemplateReplacementUtil.replacePlatformConstants(message), true);
+
+            EmailClient.sendEmail(fromEmail.getAddress(),toEmail.getAddress(), TemplateReplacementUtil.replacePlatformConstants(subject),
+                    TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress());
+
+        } catch (MailEngineException | UnsupportedEncodingException e) {
+            _log.error("Can't send email notifications to users");
+            _log.debug("Can't send email message", e);
+        }
+    }
+
+
     private static List<ActivitySubscription> getActivitySubscribers(ActivityEntry activity) throws SystemException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
 
-        Criterion criterionClassNameId = RestrictionsFactoryUtil.eq("classNameId", activity.getPrimaryType());
-        Criterion criterionClassPK = RestrictionsFactoryUtil.eq("classPK", activity.getClassPrimaryKey());
-
-        Criterion combinedCriterion = RestrictionsFactoryUtil.and(criterionClassNameId, criterionClassPK);
+        List<ActivitySubscription> filteredResults = new ArrayList<>();
 
         List<ActivitySubscription> ret = ActivitiesClient.getActivitySubscription(activity.getPrimaryType(),
                 activity.getClassPrimaryKey(), null);
@@ -131,10 +300,15 @@ public class ActivitySubscriptionEmailHelper {
         // Check for constraints which users should receive notifications
         ActivitySubscriptionConstraint subscriptionConstraint = new ActivitySubscriptionConstraint(activity.getPrimaryType(), activity.getSecondaryType());
         if (subscriptionConstraint.areSubscribersConstrained()) {
-            Criterion contrainedUsers = RestrictionsFactoryUtil.in("receiverId", subscriptionConstraint.getWhitelist(activity.getClassPrimaryKey()));
-            query.add(RestrictionsFactoryUtil.and(combinedCriterion, contrainedUsers));
+            for(Long userd : subscriptionConstraint.getWhitelist(activity.getClassPrimaryKey())){
+                for(ActivitySubscription as : ret) {
+                    if( as.getReceiverId() == userd){
+                        filteredResults.add(as);
+                    }
+                }
+            }
         } else {
-            query.add(combinedCriterion);
+            filteredResults.addAll(ret);
         }
 
         return ActivitySubscriptionLocalServiceUtil.dynamicQuery(query);
@@ -147,5 +321,22 @@ public class ActivitySubscriptionEmailHelper {
         cal.set(Calendar.MILLISECOND, 0);
 
         return cal.getTime();
+    }
+    private static String dateToDateString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+        return formatter.format(date);
+    }
+
+
+    private static String getUnsubscribeIndividualSubscriptionFooter(String portalBaseUrl, String unsubscribeUrl) throws PortalException, SystemException {
+        String faqUrl = portalBaseUrl + FAQ_DIGEST_URL_PATH;
+        String footer =  TemplateReplacementUtil.replaceContestTypeStrings(
+                StringUtil.replace(UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT, FAQ_DIGEST_LINK_PLACEHOLDER, faqUrl), null);
+        //TODO: select contest type above? -> uses generic word!
+        footer = StringUtil.replace(footer, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
+        return  footer;
+    }
+    private static String getUserLink(Member user, String portalBaseUrl) {
+        return USER_PROFILE_LINK_TEMPLATE.replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getUserId())).replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);
     }
 }

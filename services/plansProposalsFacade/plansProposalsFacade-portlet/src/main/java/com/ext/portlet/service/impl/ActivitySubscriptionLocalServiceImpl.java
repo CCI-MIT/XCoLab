@@ -9,7 +9,6 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.base.ActivitySubscriptionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionUtil;
-import com.ext.utils.NotificationUnregisterUtils;
 import com.ext.utils.SocialActivityMessageLimitationHelper;
 import com.ext.utils.subscriptions.ActivitySubscriptionConstraint;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -399,7 +398,7 @@ public class ActivitySubscriptionLocalServiceImpl
             final User recipient = entry.getKey();
             final List<SocialActivity> userDigestActivities =  entry.getValue();
             String body = getDigestMessageBody(serviceContext, userDigestActivities);
-            String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
+            String unsubscribeFooter = "";//getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
 
 			sendEmailMessage(recipient, subject, body, unsubscribeFooter, serviceContext.getPortalURL());
 		}
