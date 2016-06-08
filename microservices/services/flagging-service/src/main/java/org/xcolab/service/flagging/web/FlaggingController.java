@@ -15,9 +15,8 @@ import org.xcolab.service.flagging.domain.reportTarget.ReportTargetDao;
 import org.xcolab.service.flagging.exceptions.NotFoundException;
 import org.xcolab.service.flagging.service.FlaggingService;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.enums.flagging.ManagerAction;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -58,8 +57,7 @@ public class FlaggingController {
 
     @RequestMapping(value = "/reports", method = RequestMethod.POST)
     public Report createReport(@RequestBody Report report){
-        report.setCreateDate(new Timestamp(new Date().getTime()));
-        return reportDao.create(report);
+        return flaggingService.createReport(report);
     }
 
     @RequestMapping(value = "/reports/{reportId}", method = RequestMethod.PUT)
@@ -105,5 +103,12 @@ public class FlaggingController {
         reportTarget.setType(type);
         reportTarget.setReason(reason);
         return reportTargetDao.update(reportTarget);
+    }
+
+
+    @RequestMapping(value = "/reports/{reportId}/handle", method = RequestMethod.POST)
+    public boolean handleReport(@PathVariable long reportId, @RequestParam long managerMemberId,
+            @RequestParam ManagerAction managerAction) {
+        return flaggingService.handleReport(reportId, managerMemberId, managerAction);
     }
 }

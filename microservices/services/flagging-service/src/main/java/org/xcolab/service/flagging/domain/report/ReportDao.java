@@ -12,4 +12,6 @@ public interface ReportDao {
     Report get(long reportId);
     boolean update(Report report);
     Report create(Report report);
+
+    int getTotalWeight(String targetType, long targetId, long targetAdditionalId);
 }

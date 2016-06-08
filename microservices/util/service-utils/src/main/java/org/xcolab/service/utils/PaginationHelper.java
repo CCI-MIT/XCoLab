@@ -7,7 +7,10 @@ import java.util.List;
 
 public class PaginationHelper {
 
-    public static final int DEFAULT_PAGE_SIZE = 20;
+    private static final int DEFAULT_PAGE_SIZE = 20;
+
+    public static final PaginationHelper EVERYTHING =
+            new PaginationHelper(0, Integer.MAX_VALUE, "");
 
     private final int startRecord;
     private final int limitRecord;

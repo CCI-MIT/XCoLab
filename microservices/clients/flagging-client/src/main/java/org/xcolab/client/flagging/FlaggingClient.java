@@ -3,11 +3,13 @@ package org.xcolab.client.flagging;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.client.flagging.enums.TargetType;
+import org.xcolab.util.enums.flagging.ManagerAction;
+import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.client.flagging.exceptions.ReportNotFoundException;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.Report;
 import org.xcolab.client.flagging.pojo.ReportTarget;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.RequestUtils;
 import org.xcolab.util.exceptions.EntityNotFoundException;
 
@@ -90,5 +92,32 @@ public final class FlaggingClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/reportTargets");
         return RequestUtils.post(uriBuilder, report, ReportTarget.class);
+    }
+
+    public static Report reportProposal(Member reporter, long proposalId, long proposalVersion,
+            String reason, String comment) {
+        return report(reporter, proposalId, proposalVersion, TargetType.PROPOSAL, reason, comment);
+    }
+
+    public static Report reportComment(Member reporter, long commentId,
+            String reason, String comment) {
+        return report(reporter, commentId, 0L, TargetType.COMMENT, reason, comment);
+    }
+
+    private static Report report(Member reporter, long targetId, Long targetAdditionalId,
+            TargetType targetType, String reason, String comment) {
+        Report report = new Report();
+        report.setReporterMemberId(reporter.getId_());
+        report.setTargetType(targetType.name());
+        report.setTargetId(targetId);
+        report.setTargetAdditionalId(targetAdditionalId);
+        report.setWeight(reporter.getReportKarma());
+        report.setReason(reason);
+        report.setComment(comment);
+        return createReport(report);
+    }
+
+    public static Report handleReport(long managerId, ManagerAction managerAction, long reportId) {
+        return null;
     }
 }

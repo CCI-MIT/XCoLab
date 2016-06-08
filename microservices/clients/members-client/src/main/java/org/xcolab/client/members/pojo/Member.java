@@ -33,6 +33,7 @@ public class Member implements Serializable {
     private String loginIP;
     private Timestamp loginDate;
     private Integer status;
+    private int reportKarma;
 
     public Member() {
     }
@@ -53,6 +54,7 @@ public class Member implements Serializable {
         this.loginIP = value.loginIP;
         this.loginDate = value.loginDate;
         this.status = value.status;
+        this.reportKarma = value.reportKarma;
     }
 
     public Long getId_() {
@@ -210,6 +212,14 @@ public class Member implements Serializable {
         this.hashedPassword = hashedPassword;
     }
 
+    public int getReportKarma() {
+        return reportKarma;
+    }
+
+    public void setReportKarma(int reportKarma) {
+        this.reportKarma = reportKarma;
+    }
+
     @Override
     public String toString() {
 
@@ -227,6 +237,7 @@ public class Member implements Serializable {
                 ", " + openId +
                 ", " + loginIP +
                 ", " + loginDate +
+                ", " + reportKarma +
                 ")";
     }
 }

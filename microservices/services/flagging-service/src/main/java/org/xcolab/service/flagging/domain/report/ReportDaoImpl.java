@@ -3,6 +3,7 @@ package org.xcolab.service.flagging.domain.report;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -115,5 +116,16 @@ public class ReportDaoImpl implements ReportDao {
             return report;
         }
         return null;
+    }
+
+    @Override
+    public int getTotalWeight(String targetType, long targetId, long targetAdditionalId) {
+        return dslContext
+                .select(DSL.sum(REPORT.WEIGHT))
+                .from(REPORT)
+                .where(REPORT.TARGET_TYPE.eq(targetType)
+                    .and(REPORT.TARGET_ID.eq(targetId))
+                    .and(REPORT.TARGET_ADDITIONAL_ID.eq(targetAdditionalId)))
+                .fetchOne().into(Integer.class);
     }
 }

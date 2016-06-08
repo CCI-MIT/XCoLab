@@ -11,6 +11,7 @@ public class Report implements Serializable {
     private Long reportermemberid;
     private String targettype;
     private Long targetid;
+    private Long targetAdditionalId;
     private String reason;
     private String comment;
     private Integer weight;
@@ -126,6 +127,14 @@ public class Report implements Serializable {
         this.createdate = createdate;
     }
 
+    public Long getTargetAdditionalId() {
+        return targetAdditionalId;
+    }
+
+    public void setTargetAdditionalId(Long targetAdditionalId) {
+        this.targetAdditionalId = targetAdditionalId;
+    }
+
     @Override
     public String toString() {
 
@@ -133,6 +142,7 @@ public class Report implements Serializable {
                 ", " + reportermemberid +
                 ", " + targettype +
                 ", " + targetid +
+                ", " + targetAdditionalId +
                 ", " + reason +
                 ", " + comment +
                 ", " + weight +

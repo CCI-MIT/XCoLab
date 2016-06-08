@@ -3,18 +3,112 @@ package org.xcolab.service.flagging.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.model.tables.pojos.Report;
+import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.service.flagging.domain.report.ReportDao;
 import org.xcolab.service.flagging.domain.reportTarget.ReportTargetDao;
+import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.enums.flagging.ManagerAction;
+import org.xcolab.util.enums.flagging.TargetType;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class FlaggingService {
 
-    private ReportDao reportDao;
-    private ReportTargetDao reportTargetDao;
+    private final ReportDao reportDao;
+    private final ReportTargetDao reportTargetDao;
 
     @Autowired
     public FlaggingService(ReportDao reportDao, ReportTargetDao reportTargetDao) {
         this.reportDao = reportDao;
         this.reportTargetDao = reportTargetDao;
+    }
+
+    public Report createReport(Report report) {
+        report.setCreateDate(new Timestamp(new Date().getTime()));
+        report = reportDao.create(report);
+        int totalWeight = reportDao.getTotalWeight(report.getTargetType(), report.getTargetId(),
+                report.getTargetAdditionalId());
+        ReportTarget reportTarget = reportTargetDao.get(report.getTargetType(), report.getReason());
+
+        if (reportTarget.getScreeningThreshold() != -1
+                && totalWeight >= reportTarget.getScreeningThreshold()) {
+            if (TargetType.PROPOSAL.name().equals(report.getTargetType())) {
+                removeProposal(report.getTargetId());
+            } else {
+                removeComment(report.getTargetId());
+            }
+        }
+        //TODO: implement notification
+        // else if (totalWeight >= reportTarget.getNotificationThreshold()) {
+        return report;
+    }
+
+    public boolean handleReport(long reportId, long managerMemberId, ManagerAction managerAction) {
+        Report report = reportDao.get(reportId);
+        final TargetType targetType = TargetType.valueOf(report.getTargetType());
+
+        List<Report> equivalentReports = reportDao.findByGiven(PaginationHelper.EVERYTHING, null,
+                null, targetType.name(), report.getTargetId(), ManagerAction.PENDING.name());
+
+        final Timestamp actionDate = new Timestamp(new Date().getTime());
+
+        for (Report singleReport : equivalentReports) {
+            singleReport.setManagerAction(managerAction.name());
+            singleReport.setManagerMemberId(managerMemberId);
+            singleReport.setManagerActionDate(actionDate);
+            reportDao.update(singleReport);
+
+            switch (managerAction) {
+                case APPROVE:
+                    if (targetType == TargetType.PROPOSAL) {
+                        approveProposal(report.getTargetId(), report.getTargetAdditionalId());
+                    } else {
+                        approveComment(report.getTargetId());
+                    }
+                    break;
+                case REVERT:
+                    if (targetType == TargetType.PROPOSAL) {
+                        revertProposal(report.getTargetId());
+                    } else {
+                        removeComment(report.getTargetId());
+                    }
+                    break;
+                case REMOVE:
+                    if (targetType == TargetType.PROPOSAL) {
+                        removeProposal(report.getTargetId());
+                    } else {
+                        removeComment(report.getTargetId());
+                    }
+                    break;
+                default:
+            }
+        }
+
+        return true;
+    }
+
+    private void approveProposal(long proposalId, long proposalVersion) {
+        //TODO: implement
+    }
+
+    private void revertProposal(long proposalId) {
+        //TODO: implement
+    }
+
+    private void removeProposal(long proposalId) {
+        //TODO: implement
+    }
+
+    private void approveComment(long commentId) {
+        //TODO: implement
+    }
+
+    private void removeComment(long commentId) {
+        CommentClient.deleteComment(commentId);
     }
 }

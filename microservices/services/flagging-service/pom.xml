@@ -17,7 +17,16 @@
     <name>flagging-service</name>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>xcolab-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>comment-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
