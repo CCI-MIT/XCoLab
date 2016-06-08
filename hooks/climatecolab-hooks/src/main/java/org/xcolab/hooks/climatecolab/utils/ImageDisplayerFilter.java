@@ -1,5 +1,8 @@
 package org.xcolab.hooks.climatecolab.utils;
 
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
@@ -48,7 +51,7 @@ public class ImageDisplayerFilter implements Filter {
         }
 
         String path = request.getSession().getServletContext().getRealPath("/");
-        if (imageId != null) {
+        if (imageId != null && !imageId.isEmpty()) {
             try {
                 FileEntry fileEntry = FilesClient.getFileEntry(new Long(imageId));
                 String filePath = FilesClient.getFilePathFromFinalDestination(fileEntry, path);
@@ -60,6 +63,14 @@ public class ImageDisplayerFilter implements Filter {
 
             } catch (FileEntryNotFoundException ignored) {
             }
+        }
+
+        if(request.getRequestURI().contains("user_male_portrait")){
+            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+            String pathToFailOverImage = path + "../" + themeDisplay.getPathImage() + "user_default.png";
+            sendImageToResponse(request, response, pathToFailOverImage);
+            return;
+
         }
         try {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
