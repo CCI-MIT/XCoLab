@@ -9,6 +9,7 @@ import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.util.RequestUtils;
 import org.xcolab.util.exceptions.EntityNotFoundException;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -63,7 +64,9 @@ public final class ActivitiesClient {
         if (afterDate == null) {
             return null;
         }
-        uriBuilder.queryParam("activitiesAfter", afterDate);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        uriBuilder.queryParam("activitiesAfter", sdf.format(afterDate));
 
         return RequestUtils.getList(uriBuilder,
                 new ParameterizedTypeReference<List<ActivityEntry>>() {

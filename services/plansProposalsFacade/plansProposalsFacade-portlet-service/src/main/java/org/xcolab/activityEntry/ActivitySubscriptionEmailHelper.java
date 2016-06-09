@@ -2,7 +2,6 @@ package org.xcolab.activityEntry;
 
 import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.utils.NotificationUnregisterUtils;
 import com.ext.utils.subscriptions.ActivitySubscriptionConstraint;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -15,8 +14,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.util.mail.MailEngine;
-import com.liferay.util.mail.MailEngineException;
 
 import org.apache.commons.collections.comparators.ComparatorChain;
 import org.xcolab.client.activities.ActivitiesClient;
@@ -30,6 +27,7 @@ import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,6 +85,14 @@ public class ActivitySubscriptionEmailHelper {
             "To stop receiving these notifications, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
     public static void sendEmailNotifications(ServiceContext serviceContext) throws SystemException, PortalException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            lastEmailNotification = sdf.parse("2016-06-03 00:00:00");
+        } catch (ParseException e) {
+            lastEmailNotification = new Date();
+        }
+
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
             for (ActivityEntry activity : res) {
@@ -275,14 +281,14 @@ public class ActivitySubscriptionEmailHelper {
             // add link to unsubscribe
             message += "<br /><br />" + unregisterFooter;
 
-            MailEngine.send(fromEmail, toEmail,
-                    TemplateReplacementUtil.replacePlatformConstants(subject),
-                    TemplateReplacementUtil.replacePlatformConstants(message), true);
+//            MailEngine.send(fromEmail, toEmail,
+//                    TemplateReplacementUtil.replacePlatformConstants(subject),
+//                    TemplateReplacementUtil.replacePlatformConstants(message), true);
 
             EmailClient.sendEmail(fromEmail.getAddress(),toEmail.getAddress(), TemplateReplacementUtil.replacePlatformConstants(subject),
                     TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress());
 
-        } catch (MailEngineException | UnsupportedEncodingException e) {
+        } catch ( UnsupportedEncodingException e) {
             _log.error("Can't send email notifications to users");
             _log.debug("Can't send email message", e);
         }
@@ -311,7 +317,7 @@ public class ActivitySubscriptionEmailHelper {
             filteredResults.addAll(ret);
         }
 
-        return ActivitySubscriptionLocalServiceUtil.dynamicQuery(query);
+        return filteredResults;
     }
     private static Date getLastDailyEmailNotificationDate() {
         Calendar cal = Calendar.getInstance();

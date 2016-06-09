@@ -57,6 +57,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     }
 
     public List<ActivityEntry> getActivitiesAfter(Date date) {
+        if (date == null) return null;
         final SelectQuery<Record> query = dslContext.select()
                 .from(ACTIVITY_ENTRY)
                 .getQuery();

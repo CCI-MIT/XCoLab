@@ -12,6 +12,7 @@ import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.service.activities.exceptions.NotFoundException;
+import org.xcolab.service.activities.utils.Utils;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.sql.Timestamp;
@@ -50,11 +51,12 @@ public class ActivitiesController {
             @RequestParam(required = false) Long memberId,
             @RequestParam(required = false) List<Long> memberIdsToExclude,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false) Date activitiesAfter
+            @RequestParam(required = false) String activitiesAfter
             ) {
 
         if (activitiesAfter != null){
-            return activityEntryDao.getActivitiesAfter(activitiesAfter);
+
+            return activityEntryDao.getActivitiesAfter(Utils.parseDate(activitiesAfter));
         }else {
             final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                     sort);
