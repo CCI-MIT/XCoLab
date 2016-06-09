@@ -15,6 +15,7 @@ public class MemberCategory implements Serializable {
     private Long sortorder;
     private Boolean showinlist;
     private String imagename;
+    private String description;
 
     public MemberCategory() {
     }
@@ -90,6 +91,14 @@ public class MemberCategory implements Serializable {
 
     public void setImageName(String imagename) {
         this.imagename = imagename;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

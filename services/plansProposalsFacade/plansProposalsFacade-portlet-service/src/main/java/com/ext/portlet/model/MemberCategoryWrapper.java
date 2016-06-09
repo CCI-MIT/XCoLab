@@ -43,6 +43,7 @@ public class MemberCategoryWrapper implements MemberCategory,
         attributes.put("sortOrder", getSortOrder());
         attributes.put("showInList", getShowInList());
         attributes.put("imageName", getImageName());
+        attributes.put("description", getDescription());
 
         return attributes;
     }
@@ -83,6 +84,12 @@ public class MemberCategoryWrapper implements MemberCategory,
 
         if (imageName != null) {
             setImageName(imageName);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
         }
     }
 
@@ -234,6 +241,26 @@ public class MemberCategoryWrapper implements MemberCategory,
     @Override
     public void setImageName(java.lang.String imageName) {
         _memberCategory.setImageName(imageName);
+    }
+
+    /**
+    * Returns the description of this member category.
+    *
+    * @return the description of this member category
+    */
+    @Override
+    public java.lang.String getDescription() {
+        return _memberCategory.getDescription();
+    }
+
+    /**
+    * Sets the description of this member category.
+    *
+    * @param description the description of this member category
+    */
+    @Override
+    public void setDescription(java.lang.String description) {
+        _memberCategory.setDescription(description);
     }
 
     @Override

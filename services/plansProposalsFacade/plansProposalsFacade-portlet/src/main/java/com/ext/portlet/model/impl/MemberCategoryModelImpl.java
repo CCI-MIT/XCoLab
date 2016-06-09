@@ -54,9 +54,10 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
             { "categoryName", Types.VARCHAR },
             { "sortOrder", Types.BIGINT },
             { "showInList", Types.BOOLEAN },
-            { "imageName", Types.VARCHAR }
+            { "imageName", Types.VARCHAR },
+            { "description", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MemberCategory (roleId LONG not null primary key,displayName VARCHAR(75) null,categoryName VARCHAR(75) null,sortOrder LONG,showInList BOOLEAN,imageName VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MemberCategory (roleId LONG not null primary key,displayName VARCHAR(75) null,categoryName VARCHAR(75) null,sortOrder LONG,showInList BOOLEAN,imageName VARCHAR(75) null,description VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MemberCategory";
     public static final String ORDER_BY_JPQL = " ORDER BY memberCategory.roleId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MemberCategory.roleId ASC";
@@ -90,6 +91,7 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
     private boolean _originalShowInList;
     private boolean _setOriginalShowInList;
     private String _imageName;
+    private String _description;
     private long _columnBitmask;
     private MemberCategory _escapedModel;
 
@@ -115,6 +117,7 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
         model.setSortOrder(soapModel.getSortOrder());
         model.setShowInList(soapModel.getShowInList());
         model.setImageName(soapModel.getImageName());
+        model.setDescription(soapModel.getDescription());
 
         return model;
     }
@@ -179,6 +182,7 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
         attributes.put("sortOrder", getSortOrder());
         attributes.put("showInList", getShowInList());
         attributes.put("imageName", getImageName());
+        attributes.put("description", getDescription());
 
         return attributes;
     }
@@ -219,6 +223,12 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
 
         if (imageName != null) {
             setImageName(imageName);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
         }
     }
 
@@ -327,6 +337,21 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
         _imageName = imageName;
     }
 
+    @JSON
+    @Override
+    public String getDescription() {
+        if (_description == null) {
+            return StringPool.BLANK;
+        } else {
+            return _description;
+        }
+    }
+
+    @Override
+    public void setDescription(String description) {
+        _description = description;
+    }
+
     public long getColumnBitmask() {
         return _columnBitmask;
     }
@@ -364,6 +389,7 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
         memberCategoryImpl.setSortOrder(getSortOrder());
         memberCategoryImpl.setShowInList(getShowInList());
         memberCategoryImpl.setImageName(getImageName());
+        memberCategoryImpl.setDescription(getDescription());
 
         memberCategoryImpl.resetOriginalValues();
 
@@ -456,12 +482,20 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
             memberCategoryCacheModel.imageName = null;
         }
 
+        memberCategoryCacheModel.description = getDescription();
+
+        String description = memberCategoryCacheModel.description;
+
+        if ((description != null) && (description.length() == 0)) {
+            memberCategoryCacheModel.description = null;
+        }
+
         return memberCategoryCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{roleId=");
         sb.append(getRoleId());
@@ -475,6 +509,8 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
         sb.append(getShowInList());
         sb.append(", imageName=");
         sb.append(getImageName());
+        sb.append(", description=");
+        sb.append(getDescription());
         sb.append("}");
 
         return sb.toString();
@@ -482,7 +518,7 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.MemberCategory");
@@ -511,6 +547,10 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
         sb.append(
             "<column><column-name>imageName</column-name><column-value><![CDATA[");
         sb.append(getImageName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>description</column-name><column-value><![CDATA[");
+        sb.append(getDescription());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");
