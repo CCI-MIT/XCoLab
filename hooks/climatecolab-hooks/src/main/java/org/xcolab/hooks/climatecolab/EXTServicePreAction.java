@@ -21,7 +21,10 @@ import com.liferay.portal.service.ThemeLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +89,14 @@ public class EXTServicePreAction extends Action {
                 _log.error("An exception has been thrown when trying to parse contest id " + contestIdStr);
             } catch (PortalException | SystemException e) {
                 _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
+            }
+        }
+        if(themeDisplay.getUserId()!= 0l) {
+            try {
+                Member member = MembersClient.getMember(themeDisplay.getUserId());
+                vmVariables.put("member", member);
+            }catch(MemberNotFoundException ignore){
+
             }
         }
 

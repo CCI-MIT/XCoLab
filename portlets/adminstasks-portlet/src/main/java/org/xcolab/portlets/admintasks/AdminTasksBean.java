@@ -1,13 +1,11 @@
 package org.xcolab.portlets.admintasks;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.BalloonUserTracking;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
@@ -35,8 +33,10 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-import org.apache.commons.lang3.StringUtils;
 
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.client.balloons.BalloonsClient;
+import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.utils.UrlBuilder;
 
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public class AdminTasksBean {
 	}
 
 	public String populateLocationDataIntoBalloon() throws Exception {
-		for (BalloonUserTracking but: BalloonUserTrackingLocalServiceUtil.getBalloonUserTrackings(0, Integer.MAX_VALUE)) {
+		for (BalloonUserTracking but: BalloonsClient.getAllBalloonUserTracking()) {
 			Location location = IpTranslationServiceUtil.getLocationForIp(but.getIp());
 			if (location != null) {
 				if (StringUtils.isBlank(but.getCity()) && StringUtils.isNotBlank(location.getCity())) {
@@ -174,8 +174,7 @@ public class AdminTasksBean {
 				if (but.getLongitude() == 0 && location.getLongitude() != 0) {
 					but.setLongitude(location.getLongitude());
 				}
-				
-				BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+				BalloonsClient.updateBalloonUserTracking(but);
 			}
 		}
 		

@@ -203,14 +203,18 @@ public final class RequestUtils {
                 .getBody();
     }
 
+    public static  boolean delete(UriComponentsBuilder uriBuilder) {
+
+        return restTemplate
+                .exchange(uriBuilder.build().toString(), HttpMethod.DELETE, null, Boolean.class)
+                .getBody();
+    }
 
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.build().toString(), entity, returnType);
     }
 
-    public static void delete(UriComponentsBuilder uriBuilder) {
-        restTemplate.delete(uriBuilder.build().toString());
-    }
+
 
     private static String sanitize(String identifier) {
         return identifier.replaceAll("\\s", "+");

@@ -1,6 +1,7 @@
 package org.xcolab.portlets.redballoon.web.beans;
 
-import com.ext.portlet.model.BalloonText;
+
+import org.xcolab.client.balloons.pojo.BalloonText;
 
 public class AddEditBalloonTextBean {
 	private long balloonTextId;
@@ -23,7 +24,7 @@ public class AddEditBalloonTextBean {
 	}
 	
 	public AddEditBalloonTextBean(BalloonText text) {
-		balloonTextId = text.getId();
+		balloonTextId = text.getId_();
 		name = text.getName();
 		textBeforeForm = text.getTextBeforeForm();
 		textAfterForm = text.getTextAfterForm();

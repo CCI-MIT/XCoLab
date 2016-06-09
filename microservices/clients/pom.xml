@@ -18,9 +18,11 @@
     <modules>
         <module>activities-client</module>
         <module>admin-client</module>
+        <module>ballons-client</module>
         <module>contents-client</module>
         <module>comment-client</module>
         <module>emails-client</module>
+        <module>files-client</module>
         <module>members-client</module>
     </modules>
 

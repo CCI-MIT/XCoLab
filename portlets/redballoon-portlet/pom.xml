@@ -126,13 +126,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		<!-- microservice dependencies -->
 		<dependency>
 			<groupId>org.xcolab.microservices.clients</groupId>
 			<artifactId>emails-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>ballons-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
   			<groupId>org.xcolab.taglibs</groupId>
