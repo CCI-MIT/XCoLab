@@ -131,7 +131,21 @@ public final class MembersClient {
         try {
             return RequestUtils.get(uriBuilder, MemberCategory.class, "roleId_" + roleId);
         } catch (EntityNotFoundException e) {
-            throw new MemberCategoryNotFoundException("Cateogry with role id " + roleId + " not found.");
+            throw new MemberCategoryNotFoundException("Category with role id " + roleId + " not found.");
+        }
+    }
+
+    public static MemberCategory getMemberCategory(String displayName) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/membercategories")
+                    .queryParam("displayName", displayName);
+
+        try {
+            return RequestUtils.getFirstFromList(uriBuilder,
+                    new ParameterizedTypeReference<List<MemberCategory>>() {
+                    }, "displayName_" + displayName);
+        } catch (EntityNotFoundException e) {
+            throw new MemberCategoryNotFoundException("Category with name " + displayName + " not found.");
         }
     }
 

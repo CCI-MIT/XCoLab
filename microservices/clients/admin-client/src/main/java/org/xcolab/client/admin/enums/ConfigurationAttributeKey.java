@@ -33,6 +33,7 @@ public enum ConfigurationAttributeKey {
     BETA_RIBBON_SHOW(AttributeType.BOOLEAN),
 
     PUBLISH_JUDGING_RESULTS(AttributeType.BOOLEAN),
+    IS_POINTS_ACTIVE(AttributeType.BOOLEAN),
 
     MIT_HEADER_BAR_SHOW(AttributeType.BOOLEAN),
     MIT_HEADER_BAR_LINK_TEXT(AttributeType.STRING),

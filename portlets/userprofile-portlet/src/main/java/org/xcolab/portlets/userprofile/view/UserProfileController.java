@@ -112,6 +112,8 @@ public class UserProfileController {
             model.addAttribute("permissions", permissions);
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
+            model.addAttribute("pointsActive",
+                    ConfigurationAttributeKey.IS_POINTS_ACTIVE.getBooleanValue());
             return "showUserProfile";
         } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);

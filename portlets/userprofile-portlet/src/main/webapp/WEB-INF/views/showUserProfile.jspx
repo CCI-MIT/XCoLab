@@ -104,17 +104,19 @@
 						<td width="23%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
-						<td class="b points_box left_border top_border" width="45%">
-							${colabShortName} Points (actual)
-							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" /></a>
-							<br />
-							<div style="display: none;" class="profilehelp">
-								${colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
-								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
-							</div>
-							<div class="clearfix"></div>
-						</td>
-						<td class="points_box right_border top_border align_right">${currentUserProfile.actualPointsFormatted}</td>
+						<c:if test="${pointsActive}">
+							<td class="b points_box left_border top_border" width="45%">
+								${colabShortName} Points (actual)
+								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" /></a>
+								<br />
+								<div style="display: none;" class="profilehelp">
+									${colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
+									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+								</div>
+								<div class="clearfix"></div>
+							</td>
+							<td class="points_box right_border top_border align_right">${currentUserProfile.actualPointsFormatted}</td>
+						</c:if>
 					</tr>
 
 					<tr>
@@ -124,17 +126,19 @@
 							<c:when test="${not empty userBean.countryName}">${userBean.countryName}</c:when>
 							</c:choose>
 						</td>
-						<td class="b points_box left_border bottom_border" width="43%">
-							${colabShortName} Points (max. potential)
-							<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" /></a>
-							<br />
-							<div style="display: none;" class="profilehelp">
-								The maximum number of ${colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.
-								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
-							</div>
-							<div class="clearfix"></div>
-						</td>
-						<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPointsFormatted}</td>
+						<c:if test="${pointsActive}">
+							<td class="b points_box left_border bottom_border" width="43%">
+								${colabShortName} Points (max. potential)
+								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" /></a>
+								<br />
+								<div style="display: none;" class="profilehelp">
+									The maximum number of ${colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.
+									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+								</div>
+								<div class="clearfix"></div>
+							</td>
+							<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPointsFormatted}</td>
+						</c:if>
 					</tr>
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
