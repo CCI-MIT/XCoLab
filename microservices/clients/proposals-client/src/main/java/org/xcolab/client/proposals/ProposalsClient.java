@@ -18,14 +18,11 @@ public final class ProposalsClient {
         return RequestUtils.post(uriBuilder, proposal, Proposal.class);
     }
 
-    public static Proposal getProposal(Long proposalId) throws ProposalNotFoundException {
+    public static void updateProposal(Proposal proposal) {
+
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/proposals/" + proposalId + "");
-        try {
-            return RequestUtils.get(uriBuilder, Proposal.class, "proposalId_" + proposalId);
-        } catch (EntityNotFoundException e) {
-            throw new ProposalNotFoundException("Proposal with id " + proposalId + " not found.");
-        }
+                EUREKA_APPLICATION_ID + "/proposals/" + proposal.getProposalId());
+        RequestUtils.put(uriBuilder, proposal);
     }
 
 }

@@ -32,4 +32,13 @@ public class ProposalsController {
         }
     }
 
+    @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.PUT)
+    public boolean updateProposal(@RequestBody Proposal proposal,
+                                  @PathVariable("proposalId") Long proposalId) throws NotFoundException {
+        if (proposalId == null || proposalId == 0 || proposalDao.get(proposalId) == null) {
+            throw new NotFoundException("No Proposal with id " + proposalId);
+        } else {
+            return proposalDao.update(proposal);
+        }
+    }
 }

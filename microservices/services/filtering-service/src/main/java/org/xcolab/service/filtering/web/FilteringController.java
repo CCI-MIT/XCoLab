@@ -10,7 +10,8 @@ import org.xcolab.model.tables.pojos.FilteredEntry;
 import org.xcolab.service.filtering.domain.filteredentry.FilteredEntryDao;
 import org.xcolab.service.filtering.enums.FilteringStatus;
 import org.xcolab.service.filtering.exceptions.NotFoundException;
-import org.xcolab.service.filtering.utils.EntryFilteringProcessor;
+import org.xcolab.service.filtering.utils.filteringprocessor.EntryFilteringProcessor;
+import org.xcolab.service.filtering.utils.filteringprocessor.PurgoMalumFilteringProcessor;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class FilteringController {
     @Autowired
     private FilteredEntryDao filteredEntryDao;
 
-    private EntryFilteringProcessor processor ;
+    private EntryFilteringProcessor processor = new PurgoMalumFilteringProcessor();
 
     @RequestMapping(value = "/filteredEntries", method = RequestMethod.POST)
     public FilteredEntry filterEntry(@RequestBody FilteredEntry filteredEntry) {
@@ -49,7 +50,9 @@ public class FilteringController {
         if( entriesToProcess != null ){
             for(FilteredEntry entry : entriesToProcess){
                 FilteredEntry afterProcess = processor.processEntry(entry);
-                filteredEntryDao.update(afterProcess);
+                if( afterProcess != null ) {
+                    filteredEntryDao.update(afterProcess);
+                }
             }
         }
         return;

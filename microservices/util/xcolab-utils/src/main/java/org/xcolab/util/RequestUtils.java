@@ -185,6 +185,10 @@ public final class RequestUtils {
         return e.getResponseBodyAsString().contains("NotFoundException");
     }
 
+    public static  boolean put(UriComponentsBuilder uriBuilder) {
+        return put(uriBuilder, null, null);
+    }
+
     public static <T> boolean put(UriComponentsBuilder uriBuilder, T entity) {
         return put(uriBuilder, entity, null);
     }

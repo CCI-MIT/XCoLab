@@ -7,4 +7,6 @@ public interface ProposalDao {
 
     Proposal create(Proposal proposal);
     Proposal get(Long proposalId) throws NotFoundException;
+    boolean update(Proposal proposal);
+
 }

@@ -1,4 +1,4 @@
-package org.xcolab.service.filtering.utils;
+package org.xcolab.service.filtering.utils.filteringprocessor;
 
 import org.xcolab.model.tables.pojos.FilteredEntry;
 
