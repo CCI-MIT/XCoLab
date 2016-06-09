@@ -75,9 +75,13 @@ public class MembersController {
             sortFilterPage.setSortAscending(false);
         }
 
-        List<Member> members = MembersClient.listMembers(
-                "Judge".equalsIgnoreCase(memberCategoryParam) ? "Judges" : memberCategoryParam,
-                filterParam, sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
+        String categoryFilterValue =
+                "Judge".equalsIgnoreCase(memberCategoryParam) ? "Judges" : memberCategoryParam;
+        if (StringUtils.isEmpty(categoryFilterValue)) {
+            categoryFilterValue = "Member";
+        }
+        List<Member> members = MembersClient.listMembers(categoryFilterValue, filterParam,
+                sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
                 firstUser, endUser);
 
         for (Member member : members) {
@@ -85,7 +89,7 @@ public class MembersController {
             users.add(memberItem);
         }
 
-        int usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
+        int usersCount = MembersClient.countMembers(categoryFilterValue, filterParam);
         int pagesCount = (int) Math.ceil(usersCount / (double) USERS_PER_PAGE);
         int endPage = pagesCount;
         if (startPage + 10 < pagesCount) {

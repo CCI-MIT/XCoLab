@@ -59,10 +59,8 @@ public final class MembersClient {
         if (screenNameFilterValue != null && !screenNameFilterValue.isEmpty()) {
             uriBuilder.queryParam("partialName", screenNameFilterValue);
         }
-        if (categoryFilterValue != null && !categoryFilterValue.isEmpty()) {
+        if (categoryFilterValue != null) {
             uriBuilder.queryParam("roleName", categoryFilterValue);
-        } else {
-            uriBuilder.queryParam("roleName", "Member");
         }
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Member>>() {
