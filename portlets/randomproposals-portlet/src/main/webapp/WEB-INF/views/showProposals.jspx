@@ -12,7 +12,7 @@
             <a href="${proposalsModel.preferences.allProposalsUrl}">${proposalsModel.preferences.allProposalsTitle}</a>
         </span></h2>
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
-        	<div class="${not proposalsModel.compact ? 'c-ContestBox' : ''}">
+        	<div class=" ${not proposalsModel.compact ? 'c-ContestBox' : 'c-ContestBox--compact'} backgroundLight">
                 <c:if test="${not proposalsModel.compact}">
                     <div class="c-ContestBox__image">
                         <a href="${proposal.proposalUrl}">
@@ -25,7 +25,7 @@
                         </a>
                     </div>
                 </c:if>
-                <div class="ContestBox__text">
+                <div class="${not proposalsModel.compact ? 'c-ContestBox__text' : 'c-ContestBox__text--compact'}">
                     <h3 class="c-ContestBox__text__title"><collab:proposalLink proposal="${proposal}" /></h3>
                     ${proposalsModel.compact ? proposal.author.fullName : proposal.pitch}
                 </div>

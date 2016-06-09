@@ -142,6 +142,8 @@ public class UserProfileController {
             if (permissions.getCanEditMemberProfile(currentUserProfile.getUserId())) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserId()));
+                model.addAttribute("newsletterActive",
+                        ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.getBooleanValue());
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }

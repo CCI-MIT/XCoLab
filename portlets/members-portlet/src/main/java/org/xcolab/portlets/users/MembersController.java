@@ -103,7 +103,7 @@ public class MembersController {
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("users", users);
         model.addAttribute("usersCount", usersCount);
-        if (memberCategoryParam != null) {
+        if (StringUtils.isNotEmpty(memberCategoryParam)) {
             final MemberCategory memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
             memberCategory.setDescription(TemplateReplacementUtil
                     .replacePlatformConstants(memberCategory.getDescription()));

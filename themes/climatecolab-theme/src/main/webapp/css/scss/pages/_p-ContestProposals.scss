@@ -61,14 +61,14 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
 .p-ContestProposals__header__title { //.contest-detail .heading
   background: $p-Contests__contestDetail__heading__background;
   min-height: 24px;
-  padding: 20px;
+  padding: 20px 42px 20px 20px;
   font-size: 22px;
   font-weight: $p-ContestProposals__header__title__fontWeight;
   vertical-align: middle;
 
   p {
     float: left;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
 }

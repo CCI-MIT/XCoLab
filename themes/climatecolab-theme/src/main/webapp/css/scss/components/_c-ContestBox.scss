@@ -22,9 +22,8 @@ $c-ContestBox__border__radius: 8px !default;
 $c-ContestBox__border__bottom: null !default;
 $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
 
-.c-ContestBox { //.contestbox {
+.c-ContestBox--compact {
   width: 452px;
-  height: 152px;
 
   border: $c-ContestBox__border;
   @if $c-ContestBox__border__bottom != null {
@@ -38,14 +37,19 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
     background: white;
   }
 
+  &:hover {
+    @include box-shadow($c-ContestBox--hover__boxShadow);
+  }
+
   padding: 9px 8px;
   margin-bottom: 24px;
   float: left;
   position: relative;
+}
 
-  &:hover {
-    @include box-shadow($c-ContestBox--hover__boxShadow);
-  }
+.c-ContestBox { //.contestbox {
+  @extend .c-ContestBox--compact;
+  height: 152px;
 }
 
 .c-ContestBox__image { //.contestbox .img-wrap {
@@ -53,13 +57,17 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
   width: 169px;
 }
 
-.c-ContestBox__text { // .contestbox .text-wrap {
+.c-ContestBox__text--compact {
   float: left;
   width: 283px;
   font-size: 14px;
   padding-top: 3px;
   line-height: 20px;
   color: $t-Color__grey--dark;
+}
+
+.c-ContestBox__text { // .contestbox .text-wrap {
+  @extend .c-ContestBox__text--compact;
   height: $c-ContestBox__text__height;
 }
 

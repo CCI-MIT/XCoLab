@@ -22,6 +22,7 @@ public enum ConfigurationAttributeKey {
     FACEBOOK_APPLICATION_SECRET(AttributeType.STRING),
     FACEBOOK_VERIFIED_REQUIRED(AttributeType.BOOLEAN),
 
+    IS_MY_EMMA_ACTIVE(AttributeType.BOOLEAN),
     MY_EMMA_ACCOUNT_ID(AttributeType.STRING),
     MY_EMMA_GROUP_ID(AttributeType.STRING),
     MY_EMMA_PUBLIC_API_KEY(AttributeType.STRING),

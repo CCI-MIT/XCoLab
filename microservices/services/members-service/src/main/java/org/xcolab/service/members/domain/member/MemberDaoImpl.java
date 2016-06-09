@@ -39,7 +39,6 @@ public class MemberDaoImpl implements MemberDao {
                 .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
                 .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                 .where(MEMBER.STATUS.eq(0))
-                .groupBy(MEMBER.ID_)
                 .getQuery();
 
         if (partialName != null) {
