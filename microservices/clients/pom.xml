@@ -24,6 +24,7 @@
         <module>emails-client</module>
         <module>files-client</module>
         <module>members-client</module>
+        <module>search-client</module>
     </modules>
 
     <properties>

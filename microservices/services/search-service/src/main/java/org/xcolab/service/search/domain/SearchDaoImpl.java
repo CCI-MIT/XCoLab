@@ -2,8 +2,12 @@ package org.xcolab.service.search.domain;
 
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.Record3;
+import org.jooq.SelectQuery;
 import org.jooq.impl.CustomField;
 import org.jooq.impl.DSL;
+import org.jooq.impl.TableImpl;
+import org.jooq.util.xml.jaxb.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -33,55 +37,53 @@ public class SearchDaoImpl implements SearchDao {
 
     @Override
     public List<SearchPojo> findProposalAttribute(PaginationHelper paginationHelper,
-            String query) {
-        final Field<Double> relevance = match(PROPOSAL_ATTRIBUTE.STRING_VALUE).against(query)
-                .as("relevance");
-        Field<Long> searchTypeId = DSL.val(SearchType.PROPOSOSAL.getId()).as("searchTypeId");
-        return dslContext.select(PROPOSAL_ATTRIBUTE.ID_.as("classPrimaryKey"), relevance, searchTypeId)
-                .from(PROPOSAL_ATTRIBUTE)
-                .where(match(PROPOSAL_ATTRIBUTE.STRING_VALUE).against(query))
-                .orderBy(relevance.desc())
-                .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
+                                                  String query) {
+        return getQueryForSearch(paginationHelper, query,SearchType.PROPOSAL.getId(), PROPOSAL_ATTRIBUTE, PROPOSAL_ATTRIBUTE.ID_,PROPOSAL_ATTRIBUTE.STRING_VALUE )
                 .fetchInto(SearchPojo.class);
     }
 
     public List<SearchPojo> findMember(PaginationHelper paginationHelper,
-                                                         String query) {
-        final Field<Double> relevance = match(MEMBER.SHORT_BIO).against(query)
-                .as("relevance");
-        Field<Long> searchTypeId = DSL.val(SearchType.MEMBER.getId()).as("searchTypeId");
-        return dslContext.select(MEMBER.ID_.as("classPrimaryKey"), relevance, searchTypeId)
-                .from(MEMBER)
-                .where(match(MEMBER.SHORT_BIO).against(query))
-                .orderBy(relevance.desc())
-                .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
+                                       String query) {
+
+        return getQueryForSearch(paginationHelper, query,SearchType.MEMBER.getId(), MEMBER, MEMBER.ID_,MEMBER.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME, MEMBER.SCREEN_NAME )
                 .fetchInto(SearchPojo.class);
     }
 
     public List<SearchPojo> findComment(PaginationHelper paginationHelper,
                                         String query) {
-        final Field<Double> relevance = match(COMMENT.CONTENT).against(query)
-                .as("relevance");
 
-        Field<Long> searchTypeId = DSL.val(SearchType.DISCUSSION.getId()).as("searchTypeId");
-        return dslContext.select(COMMENT.CONTENT, relevance, searchTypeId)
-                .from(COMMENT)
-                .where(match(COMMENT.CONTENT).against(query))
-                .orderBy(relevance.desc())
-                .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
+        return getQueryForSearch(paginationHelper, query,SearchType.DISCUSSION.getId(), COMMENT, COMMENT.COMMENT_ID,COMMENT.CONTENT)
                 .fetchInto(SearchPojo.class);
+
     }
 
     public List<SearchPojo> findContest(PaginationHelper paginationHelper,
-                                     String query) {
-        final Field<Double> relevance = match(CONTEST.CONTEST_DESCRIPTION).against(query)
+                                        String query) {
+
+        return getQueryForSearch(paginationHelper, query,SearchType.CONTEST.getId(), CONTEST, CONTEST.CONTEST_PK,CONTEST.CONTEST_DESCRIPTION)
+                .fetchInto(SearchPojo.class);
+
+    }
+
+    public List<SearchPojo> findAllSite(PaginationHelper paginationHelper,
+                                        String query) {
+        return getQueryForSearch(paginationHelper, query,SearchType.PROPOSAL.getId(), PROPOSAL_ATTRIBUTE, PROPOSAL_ATTRIBUTE.ID_,PROPOSAL_ATTRIBUTE.STRING_VALUE )
+                .union(getQueryForSearch(paginationHelper, query,SearchType.MEMBER.getId(), MEMBER, MEMBER.ID_,MEMBER.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME, MEMBER.SCREEN_NAME ))
+                .union(getQueryForSearch(paginationHelper, query,SearchType.DISCUSSION.getId(), COMMENT, COMMENT.COMMENT_ID,COMMENT.CONTENT))
+                .union(getQueryForSearch(paginationHelper, query,SearchType.CONTEST.getId(), CONTEST, CONTEST.CONTEST_PK,CONTEST.CONTEST_DESCRIPTION))
+                .fetchInto(SearchPojo.class);
+    }
+
+
+    private SelectQuery<Record3<Long, Double, Long>> getQueryForSearch(PaginationHelper paginationHelper, String query, Long searchType, TableImpl table, Field primaryKey, Field ... fields) {
+        final Field<Double> relevance = match(fields).against(query)
                 .as("relevance");
-        Field<Long> searchTypeId = DSL.val(SearchType.CONTEST.getId()).as("searchTypeId");
-        return dslContext.select(CONTEST.CONTEST_DESCRIPTION, relevance, searchTypeId)
-                .from(CONTEST)
-                .where(match(CONTEST.CONTEST_DESCRIPTION).against(query))
+        Field<Long> searchTypeId = DSL.val(searchType).as("searchTypeId");
+        return dslContext.select(primaryKey.as("classPrimaryKey"), relevance, searchTypeId)
+                .from(table)
+                .where(match(fields).against(query))
                 .orderBy(relevance.desc())
                 .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
-                .fetchInto(SearchPojo.class);
+                .getQuery();
     }
 }
