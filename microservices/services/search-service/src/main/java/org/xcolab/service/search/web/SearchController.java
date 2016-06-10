@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.service.search.domain.SearchDao;
+import org.xcolab.service.search.pojo.SearchPojo;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
@@ -18,13 +19,13 @@ public class SearchController {
     private SearchDao searchDao;
 
     @RequestMapping("/search")
-    public List<ProposalAttribute> findProposalAttributes(
+    public List<SearchPojo> findProposalAttributes(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam String query) {
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                 sort);
-        return searchDao.findProposalAttribute(paginationHelper, query);
+        return searchDao.findMember(paginationHelper, query);
     }
 }

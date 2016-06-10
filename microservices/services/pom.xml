@@ -26,6 +26,7 @@
         <module>emails-service</module>
         <module>files-service</module>
         <module>members-service</module>
+        <module>search-service</module>
     </modules>
 
     <dependencies>
