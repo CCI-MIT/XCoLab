@@ -9,8 +9,11 @@ import java.util.List;
 public interface ActivityEntryDao {
 
     ActivityEntry create(ActivityEntry activityEntry);
+
     List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,
-                                    Long memberId, List<Long> memberIdsToExclude);
+            Long memberId, List<Long> memberIdsToExclude);
+
     Integer findByGivenCount(Long memberId, List<Long> memberIdsToExclude);
+
     ActivityEntry get(Long activityEntryId) throws NotFoundException;
 }
