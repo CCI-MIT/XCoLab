@@ -71,7 +71,7 @@ public class ImageDisplayerFilter implements Filter {
                 String pathToFailOverImage = path + "../" + themeDisplay.getPathImage() + "user_default.png";
                 sendImageToResponse(request, response, pathToFailOverImage);
             }else{
-                String pathToFailOverImage = path + "images/user_default.png";
+                String pathToFailOverImage = path + "../climatecolab-hook/images/user_default.png";
                 sendImageToResponse(request, response, pathToFailOverImage);
             }
             return;
