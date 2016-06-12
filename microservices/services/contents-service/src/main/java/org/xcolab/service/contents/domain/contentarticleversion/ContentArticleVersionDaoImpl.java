@@ -59,7 +59,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .set(CONTENT_ARTICLE_VERSION.FOLDER_ID, contentArticleVersion.getFolderId())
                 .set(CONTENT_ARTICLE_VERSION.CONTENT, contentArticleVersion.getContent())
                 .set(CONTENT_ARTICLE_VERSION.TITLE, contentArticleVersion.getTitle())
-                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(contentArticleVersion.getContentArticleVersionId()))
+                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.eq(contentArticleVersion.getContentArticleVersionId()))
                 .execute() > 0;
     }
 

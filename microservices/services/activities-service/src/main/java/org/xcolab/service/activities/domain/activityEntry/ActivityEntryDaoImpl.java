@@ -6,6 +6,7 @@ import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.records.ActivityEntryRecord;
 import org.xcolab.service.activities.exceptions.NotFoundException;
@@ -23,6 +24,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     @Autowired
     private DSLContext dslContext;
 
+    @Override
     public ActivityEntry create(ActivityEntry activityEntry) {
         ActivityEntryRecord ret = this.dslContext.insertInto(ACTIVITY_ENTRY)
                 .set(ACTIVITY_ENTRY.MEMBER_ID, activityEntry.getMemberId())
@@ -44,13 +46,15 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
         }
     }
 
+    @Override
     public ActivityEntry get(Long activityEntryId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(ACTIVITY_ENTRY)
                 .where(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID.eq(activityEntryId)).fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ActivityEntry with id " + activityEntryId + " does not exist");
+            throw new NotFoundException(
+                    "ActivityEntry with id " + activityEntryId + " does not exist");
         }
         return record.into(ActivityEntry.class);
 
@@ -67,8 +71,9 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
     }
 
+    @Override
     public List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,
-                                           Long memberId, List<Long> memberIdsToExclude) {
+            Long memberId, List<Long> memberIdsToExclude) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ACTIVITY_ENTRY)
                 .getQuery();
@@ -83,11 +88,11 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
         query.addOrderBy(ACTIVITY_ENTRY.CREATE_DATE.desc());
 
-
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
         return query.fetchInto(ActivityEntry.class);
     }
 
+    @Override
     public Integer findByGivenCount(Long memberId, List<Long> memberIdsToExclude) {
 
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()

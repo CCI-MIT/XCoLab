@@ -1,5 +1,7 @@
 package org.xcolab.hooks.climatecolab.utils;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
@@ -26,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ImageDisplayerFilter implements Filter {
+
+    private final static Log _log = LogFactoryUtil.getLog(ImageDisplayerFilter.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
@@ -65,15 +69,17 @@ public class ImageDisplayerFilter implements Filter {
             }
         }
 
-        if(request.getRequestURI().contains("user_male_portrait")){
+        if (request.getRequestURI().contains("user_male_portrait")) {
+            String pathToFailOverImage;
             ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-            if(themeDisplay != null) {
-                String pathToFailOverImage = path + "../" + themeDisplay.getPathImage() + "user_default.png";
-                sendImageToResponse(request, response, pathToFailOverImage);
-            }else{
-                String pathToFailOverImage = path + "../climatecolab-hook/images/user_default.png";
-                sendImageToResponse(request, response, pathToFailOverImage);
+            if (themeDisplay != null) {
+                pathToFailOverImage =
+                        path + "../" + themeDisplay.getPathImage() + "user_default.png";
+            } else {
+                pathToFailOverImage = path + "../climatecolab-theme/images/user_default.png";
+                _log.warn("Theme display was null in image filter - falling back to default theme");
             }
+            sendImageToResponse(request, response, pathToFailOverImage);
             return;
 
         }
