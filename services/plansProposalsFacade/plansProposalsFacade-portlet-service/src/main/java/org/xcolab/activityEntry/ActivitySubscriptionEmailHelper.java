@@ -4,8 +4,6 @@ import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.utils.NotificationUnregisterUtils;
 import com.ext.utils.subscriptions.ActivitySubscriptionConstraint;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -27,7 +25,6 @@ import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,12 +83,15 @@ public class ActivitySubscriptionEmailHelper {
 
     public static void sendEmailNotifications(ServiceContext serviceContext) throws SystemException, PortalException {
 
+        /*
+        to ease debug please leave it here
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             lastEmailNotification = sdf.parse("2016-06-03 00:00:00");
+            lastDailyEmailNotification = sdf.parse("2016-06-03 00:00:00");
         } catch (ParseException e) {
             lastEmailNotification = new Date();
-        }
+        }*/
 
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
@@ -112,7 +112,8 @@ public class ActivitySubscriptionEmailHelper {
 
             // Send the daily digest at the predefined hour only
             if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
-                    && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR) {
+                    && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR)
+                    {
                 try {
                     List<ActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
                     sendDailyDigestNotifications(res, serviceContext);
@@ -186,16 +187,16 @@ public class ActivitySubscriptionEmailHelper {
 
         for (ActivityEntry activity : activities) {
             // Aggregate all activities for all users
-            for (Object subscriptionObj : getActivitySubscribers(activity)) {
-                com.ext.portlet.model.ActivitySubscription subscription = (com.ext.portlet.model.ActivitySubscription) subscriptionObj;
+            for (ActivitySubscription subscriptionObj : getActivitySubscribers(activity)) {
+
 
                 Member recipient = null;
                 try {
-                    recipient = MembersClient.getMember(subscription.getReceiverId());
+                    recipient = MembersClient.getMember(subscriptionObj.getReceiverId());
                 } catch (MemberNotFoundException e) {
                     continue;
                 }
-                if (subscription.getReceiverId() == activity.getMemberId()) {
+                if (subscriptionObj.getReceiverId() == activity.getMemberId()) {
                     continue;
                 }
 
@@ -228,7 +229,7 @@ public class ActivitySubscriptionEmailHelper {
 
 
 
-        String subject = "";//get old implementation for subject
+        String subject = clearLinksInSubject(activity.getActivityEntryTitle()) + " ";//get old implementation for subject
         String messageTemplate = activity.getActivityEntryBody();
 
         Set<Member> recipients = new HashSet<>();
@@ -265,6 +266,10 @@ public class ActivitySubscriptionEmailHelper {
         }
     }
 
+    private static String clearLinksInSubject(String activityEntryTitle) {
+        return activityEntryTitle.replaceAll("\\<[^>]*>","");
+    }
+
     private static void sendEmailMessage(Member recipient, String subject, String body, String unregisterFooter, String portalBaseUrl) throws SystemException, NoSuchConfigurationAttributeException {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
@@ -281,9 +286,6 @@ public class ActivitySubscriptionEmailHelper {
             // add link to unsubscribe
             message += "<br /><br />" + unregisterFooter;
 
-//            MailEngine.send(fromEmail, toEmail,
-//                    TemplateReplacementUtil.replacePlatformConstants(subject),
-//                    TemplateReplacementUtil.replacePlatformConstants(message), true);
 
             EmailClient.sendEmail(fromEmail.getAddress(),toEmail.getAddress(), TemplateReplacementUtil.replacePlatformConstants(subject),
                     TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress());
@@ -296,7 +298,6 @@ public class ActivitySubscriptionEmailHelper {
 
 
     private static List<ActivitySubscription> getActivitySubscribers(ActivityEntry activity) throws SystemException {
-        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ActivitySubscription.class);
 
         List<ActivitySubscription> filteredResults = new ArrayList<>();
 
