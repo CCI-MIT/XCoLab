@@ -66,11 +66,14 @@ public class ImageDisplayerFilter implements Filter {
         }
 
         if(request.getRequestURI().contains("user_male_portrait")){
-            System.out.println(" Theme display null before???");
             ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-            System.out.println(" Theme display null after ???" + themeDisplay);
-            String pathToFailOverImage = path + "../" + themeDisplay.getPathImage() + "user_default.png";
-            sendImageToResponse(request, response, pathToFailOverImage);
+            if(themeDisplay != null) {
+                String pathToFailOverImage = path + "../" + themeDisplay.getPathImage() + "user_default.png";
+                sendImageToResponse(request, response, pathToFailOverImage);
+            }else{
+                String pathToFailOverImage = path + "images/user_default.png";
+                sendImageToResponse(request, response, pathToFailOverImage);
+            }
             return;
 
         }
