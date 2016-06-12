@@ -11,14 +11,14 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 
 import java.util.Date;
 
@@ -48,13 +48,14 @@ public class NotificationUnregisterController {
 	    String token = ParamUtil.getString(request, "token", "");
 	    
 	    
-	    User user = null;
+	    Member user = null;
 	    ActivitySubscription subscription = null;
 	    boolean error = false;
 	    boolean unregisteringSubscription = false;
 	    if (userId > 0) {
 	        try {
-	            user = UserLocalServiceUtil.getUser(userId);
+
+                user = MembersClient.getMember(userId);
 	            error = ! NotificationUnregisterUtils.isTokenValid(token, user) ||
                         (typeId != NotificationUnregisterUtils.ACTIVITY_TYPE && typeId != NotificationUnregisterUtils.MASSMESSAGING_TYPE);
 	        }
@@ -112,7 +113,7 @@ public class NotificationUnregisterController {
 }
 
 interface NotificationUnregisterHandler {
-    public void unregister(User user) throws SystemException;
+    public void unregister(Member user) throws SystemException;
     public String getSuccessResponse();
 }
 
@@ -122,7 +123,7 @@ class MassmessagingNotificationUnregisterHandler implements NotificationUnregist
             "Your address has been excluded from our newsletter recipients.";
 
     @Override
-    public void unregister(User user) throws SystemException {
+    public void unregister(Member user) throws SystemException {
         MessagingIgnoredRecipients ignoredRecipients = null;
         try {
             ignoredRecipients = MessagingIgnoredRecipientsLocalServiceUtil.findByUserId(user.getUserId());
@@ -160,7 +161,7 @@ class ActivityDailyDigestNotificationUnregisterHandler implements NotificationUn
                     "and select the “Manage” button underneath “Subscribed Activity” on the righthand side.";
 
     @Override
-    public void unregister(User user) throws SystemException {
+    public void unregister(Member user) throws SystemException {
         MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
         prefs.setEmailActivityDailyDigest(false);
         prefs.setEmailOnActivity(false);

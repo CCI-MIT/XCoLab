@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: balloons-service
+  jmx:
+    default-domain: ${spring.application.name}

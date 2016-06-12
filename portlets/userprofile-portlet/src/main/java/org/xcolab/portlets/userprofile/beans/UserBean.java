@@ -3,7 +3,6 @@ package org.xcolab.portlets.userprofile.beans;
 import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -82,8 +81,7 @@ public class UserBean implements Serializable {
         countryCode = CountryUtil.getCodeForCounty(member.getCountry());
         shortBio = member.getShortBio();
 
-        //TODO: still relies on liferay
-        imageId = UserLocalServiceUtil.getUser(userId).getPortraitId();
+        imageId = member.getPortraitFileEntryId();
 
         sendEmailOnMessage = MessageUtil.getMessagingPreferences(member.getId_()).getEmailOnReceipt();
         sendEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId_()).getEmailOnActivity();
