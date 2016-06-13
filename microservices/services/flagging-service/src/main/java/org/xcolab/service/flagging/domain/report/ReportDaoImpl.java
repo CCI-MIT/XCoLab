@@ -2,6 +2,7 @@ package org.xcolab.service.flagging.domain.report;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,33 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
+    public int countByGiven(Long reporterMemberId, Long managerMemberId, String targetType,
+            Long targetId, String managerAction) {
+        final SelectQuery<Record1<Integer>> query = dslContext.select(DSL.countDistinct(
+                        REPORT.TARGET_TYPE, REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID))
+                .from(REPORT)
+                .getQuery();
+
+        if (reporterMemberId != null) {
+            query.addConditions(REPORT.REPORTER_MEMBER_ID.eq(reporterMemberId));
+        }
+        if (managerMemberId != null) {
+            query.addConditions(REPORT.MANAGER_MEMBER_ID.eq(managerMemberId));
+        }
+        if (targetType != null) {
+            query.addConditions(REPORT.TARGET_TYPE.eq(targetType));
+        }
+        if (targetId != null) {
+            query.addConditions(REPORT.TARGET_ID.eq(targetId));
+        }
+        if (managerAction != null) {
+            query.addConditions(REPORT.MANAGER_ACTION.eq(managerAction));
+        }
+
+        return query.fetchOne().into(Integer.class);
+    }
+
+    @Override
     public Report get(long reportId) {
         final Record record = dslContext.select()
                 .from(REPORT)
@@ -94,6 +122,7 @@ public class ReportDaoImpl implements ReportDao {
                 .set(REPORT.MANAGER_MEMBER_ID, report.getManagerMemberId())
                 .set(REPORT.MANAGER_ACTION_DATE, report.getManagerActionDate())
                 .set(REPORT.CREATE_DATE, report.getCreateDate())
+                .where(REPORT.REPORT_ID.eq(report.getReportId()))
                 .execute() > 0;
     }
 

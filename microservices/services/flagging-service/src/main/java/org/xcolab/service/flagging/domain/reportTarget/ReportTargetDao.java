@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface ReportTargetDao {
     List<ReportTarget> findByGiven(PaginationHelper paginationHelper);
+    ReportTarget get(long reportTargetId);
     ReportTarget get(String type, String reason);
+
     boolean update(ReportTarget reportTarget);
     ReportTarget create(ReportTarget reportTarget);
+    boolean delete(long reportTargetId);
 }

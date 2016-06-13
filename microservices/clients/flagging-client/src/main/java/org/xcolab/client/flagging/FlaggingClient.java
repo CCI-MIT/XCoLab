@@ -35,6 +35,14 @@ public final class FlaggingClient {
         });
     }
 
+    public static int countReports() {
+
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/reports");
+
+        return RequestUtils.getCount(uriBuilder);
+    }
+
     public static Report getReport(long reportId) throws ReportNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/reports/" + reportId);
@@ -69,12 +77,26 @@ public final class FlaggingClient {
         });
     }
 
-    public static ReportTarget getReportTarget(TargetType type, String reason) throws ReportTargetNotFoundException {
+    public static ReportTarget getReportTarget(long reportTargetId) throws ReportTargetNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reportTargets/" + type.name() + "/" + reason);
+                EUREKA_APPLICATION_ID + "/reportTargets/" + reportTargetId);
         try {
             return RequestUtils.get(uriBuilder, ReportTarget.class,
-                    "type_" + type.name() + "reason_" + reason);
+                    "id_" + reportTargetId);
+        } catch (EntityNotFoundException e) {
+            throw new ReportTargetNotFoundException(reportTargetId);
+        }
+    }
+
+    public static ReportTarget getReportTarget(TargetType type, String reason) throws ReportTargetNotFoundException {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/reportTargets")
+                    .queryParam("type", type.name())
+                    .queryParam("reason", reason);
+        try {
+            return RequestUtils.getFirstFromList(uriBuilder,
+                    new ParameterizedTypeReference<List<ReportTarget>>() {
+                    }, "type_" + type.name() + "reason_" + reason);
         } catch (EntityNotFoundException e) {
             throw new ReportTargetNotFoundException(type, reason);
         }
@@ -82,10 +104,16 @@ public final class FlaggingClient {
 
     public static void updateReportTarget(ReportTarget reportTarget) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reportTargets/"
-                + reportTarget.getType() + "/" + reportTarget.getReason());
+                EUREKA_APPLICATION_ID + "/reportTargets/" + reportTarget.getReportTargetId());
 
         RequestUtils.put(uriBuilder, reportTarget);
+    }
+
+    public static boolean deleteReportTarget(long reportTargetId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/reportTargets/" + reportTargetId);
+
+        return RequestUtils.delete(uriBuilder);
     }
 
     public static ReportTarget createReportTarget(ReportTarget report) {

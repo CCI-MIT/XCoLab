@@ -6,6 +6,7 @@ public class ReportTarget implements Serializable {
 
     private static final long serialVersionUID = 1382979461;
 
+    private long reportTargetId;
     private String type;
     private String reason;
     private Integer notificationthreshold;
@@ -20,6 +21,14 @@ public class ReportTarget implements Serializable {
         this.reason = reason;
         this.notificationthreshold = notificationthreshold;
         this.screeningthreshold = screeningthreshold;
+    }
+
+    public long getReportTargetId() {
+        return reportTargetId;
+    }
+
+    public void setReportTargetId(long reportTargetId) {
+        this.reportTargetId = reportTargetId;
     }
 
     public String getType() {
@@ -57,7 +66,8 @@ public class ReportTarget implements Serializable {
     @Override
     public String toString() {
 
-        return "ReportTarget (" + type +
+        return "ReportTarget (" + reportTargetId +
+                ", " + type +
                 ", " + reason +
                 ", " + notificationthreshold +
                 ", " + screeningthreshold +

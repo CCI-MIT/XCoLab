@@ -14,10 +14,13 @@ import org.xcolab.service.flagging.domain.report.ReportDao;
 import org.xcolab.service.flagging.domain.reportTarget.ReportTargetDao;
 import org.xcolab.service.flagging.exceptions.NotFoundException;
 import org.xcolab.service.flagging.service.FlaggingService;
+import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.flagging.ManagerAction;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class FlaggingController {
@@ -31,8 +34,8 @@ public class FlaggingController {
     @Autowired
     private FlaggingService flaggingService;
 
-    @RequestMapping(value = "/reports", method = RequestMethod.GET)
-    public List<Report> getReports(
+    @RequestMapping(value = "/reports", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Report> getReports(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
@@ -42,6 +45,9 @@ public class FlaggingController {
             @RequestParam(required = false) Long targetId,
             @RequestParam(required = false) String managerAction) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+                Integer.toString(reportDao.countByGiven(reporterMemberId, managerMemberId,
+                        targetType, targetId, managerAction)));
         return reportDao.findByGiven(paginationHelper, reporterMemberId,
                 managerMemberId, targetType, targetId, managerAction);
     }
@@ -70,7 +76,7 @@ public class FlaggingController {
         return reportDao.update(report);
     }
 
-    @RequestMapping(value = "/reportTargets", method = RequestMethod.GET)
+    @RequestMapping(value = "/reportTargets", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ReportTarget> getReportTargets(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
@@ -79,10 +85,10 @@ public class FlaggingController {
         return reportTargetDao.findByGiven(paginationHelper);
     }
 
-    @RequestMapping(value = "/reportTargets/{type}/{reason}", method = RequestMethod.GET)
-    public ReportTarget getReportTarget(@PathVariable String type, @PathVariable String reason)
+    @RequestMapping(value = "/reportTargets/{reportTargetId}", method = RequestMethod.GET)
+    public ReportTarget getReportTarget(@PathVariable long reportTargetId)
             throws NotFoundException {
-        final ReportTarget reportTarget = reportTargetDao.get(type, reason);
+        final ReportTarget reportTarget = reportTargetDao.get(reportTargetId);
         if (reportTarget == null) {
             throw new NotFoundException();
         }
@@ -94,14 +100,13 @@ public class FlaggingController {
         return reportTargetDao.create(reportTarget);
     }
 
-    @RequestMapping(value = "/reportTargets/{type}/{reason}", method = RequestMethod.PUT)
-    public boolean updateReportTarget(@PathVariable String type, @PathVariable String reason,
-            @RequestBody ReportTarget reportTarget) throws NotFoundException  {
-        if (reportTargetDao.get(type, reason) == null) {
+    @RequestMapping(value = "/reportTargets/{reportTargetId}", method = RequestMethod.PUT)
+    public boolean updateReportTarget(@PathVariable long reportTargetId,
+            @RequestBody ReportTarget reportTarget) throws NotFoundException {
+        if (reportTargetDao.get(reportTargetId) == null) {
             throw new NotFoundException();
         }
-        reportTarget.setType(type);
-        reportTarget.setReason(reason);
+        reportTarget.setReportTargetId(reportTargetId);
         return reportTargetDao.update(reportTarget);
     }
 
@@ -110,5 +115,10 @@ public class FlaggingController {
     public boolean handleReport(@PathVariable long reportId, @RequestParam long managerMemberId,
             @RequestParam ManagerAction managerAction) {
         return flaggingService.handleReport(reportId, managerMemberId, managerAction);
+    }
+
+    @RequestMapping(value = "/reportTargets/{reportTargetId}", method = RequestMethod.DELETE)
+    public boolean deleteReportTarget(@PathVariable long reportTargetId) {
+        return reportTargetDao.delete(reportTargetId);
     }
 }

@@ -14,4 +14,7 @@ public interface ReportDao {
     Report create(Report report);
 
     int getTotalWeight(String targetType, long targetId, long targetAdditionalId);
+
+    int countByGiven(Long reporterMemberId, Long managerMemberId, String targetType, Long targetId,
+            String managerAction);
 }
