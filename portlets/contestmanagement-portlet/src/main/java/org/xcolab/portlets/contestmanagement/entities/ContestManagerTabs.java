@@ -9,15 +9,16 @@ import org.xcolab.interfaces.TabPermissions;
 import javax.portlet.PortletRequest;
 
 public enum ContestManagerTabs implements TabEnum {
-    OVERVIEW("Contests overview", "Contests", TabPermissionAlgorithm.contestCreationViewAndEdit,
+    OVERVIEW("Contests", "Contests", TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
-    //PHASES("Phase types", "", TabPermissionAlgorithm.contestCreationViewAndEdit, TabActivityCountAlgorithm.alwaysZero),
     SCHEDULES("Schedules", "schedule", TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     PROPOSALTEMPLATES("Proposal Templates", "template", TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
-    EMAIL_TEMPLATES("Email Templates", "emailTemplate", TabPermissionAlgorithm.adminOnlyViewAndEdit,
-            TabActivityCountAlgorithm.alwaysZero);
+    EMAIL_TEMPLATES("Emails", "emailTemplate", TabPermissionAlgorithm.adminOnlyViewAndEdit,
+            TabActivityCountAlgorithm.alwaysZero),
+    FLAGGING("Flagging", "flagging", TabPermissionAlgorithm.adminOnlyViewAndEdit,
+            TabActivityCountAlgorithm.flagCount);
 
     private final String displayName;
     private final String elementType;
