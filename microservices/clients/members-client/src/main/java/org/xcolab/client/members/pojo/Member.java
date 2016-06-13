@@ -34,6 +34,7 @@ public class Member implements Serializable {
     private Timestamp loginDate;
     private Integer status;
     private int reportKarma;
+    private Long      portraitfileentryid;
 
     public Member() {
     }
@@ -55,6 +56,7 @@ public class Member implements Serializable {
         this.loginDate = value.loginDate;
         this.status = value.status;
         this.reportKarma = value.reportKarma;
+        this.portraitfileentryid = value.portraitfileentryid;
     }
 
     public Long getId_() {
@@ -181,6 +183,14 @@ public class Member implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Long getPortraitFileEntryId() {
+        return this.portraitfileentryid;
+    }
+
+    public void setPortraitFileEntryId(Long portraitfileentryid) {
+        this.portraitfileentryid = portraitfileentryid;
     }
 
     @JsonIgnore

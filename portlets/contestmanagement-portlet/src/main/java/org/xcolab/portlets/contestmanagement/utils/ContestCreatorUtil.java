@@ -13,23 +13,20 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 
-/**
- * Helper class used to automatically create sets of new contests. Uses JSON data to create these contests.
- * <p/>
- * Created by Mente on 27/02/15.
- */
 public final class ContestCreatorUtil {
     private static final Log _log = LogFactoryUtil.getLog(ContestCreatorUtil.class);
 
     public static final String SEED_CONTEST_SCHEDULE_NAME = "Seed Contest Schedule";
     //TODO: remove hard coded defaults
-    public final static Long DEFAULT_CONTEST_SCHEDULE_ID = 601L;
-    public final static Long DEFAULT_CONTEST_TEMPLATE_ID = 102L;
+    public final static long DEFAULT_CONTEST_SCHEDULE_ID = 601L;
+    public final static long DEFAULT_CONTEST_TEMPLATE_ID = 102L;
 
     private ContestCreatorUtil() { }
 
@@ -42,6 +39,7 @@ public final class ContestCreatorUtil {
         contest.setShow_in_outline_view(true);
         contest.setPlanTemplateId(DEFAULT_CONTEST_TEMPLATE_ID);
         contest.setContestScheduleId(DEFAULT_CONTEST_SCHEDULE_ID);
+        contest.setContestTypeId(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
         contest.persist();
         ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
                 DEFAULT_CONTEST_SCHEDULE_ID);

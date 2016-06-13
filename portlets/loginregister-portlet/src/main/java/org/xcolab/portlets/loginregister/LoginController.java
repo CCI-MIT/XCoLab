@@ -1,7 +1,6 @@
 package org.xcolab.portlets.loginregister;
 
-import com.ext.portlet.model.BalloonUserTracking;
-import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
+
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.PasswordExpiredException;
@@ -10,8 +9,6 @@ import com.liferay.portal.UserIdException;
 import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -22,11 +19,14 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+
+import org.xcolab.client.balloons.BalloonsClient;
+import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.liferay.LoginRegisterUtil;
 
 import java.io.IOException;
@@ -50,22 +50,19 @@ public class LoginController {
 
         HttpServletRequest httpRequest = PortletUtils.getOryginalRequest(request);
 
+        String refererHeader = httpRequest.getHeader("referer");
+        String refererRequest =  PortalUtil.getHttpServletRequest(request).getHeader("referer");
+
         String redirect = httpRequest.getParameter("redirect");
-        String referer = httpRequest.getHeader("referer");
-        redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
-
+        redirect = !StringUtils.isBlank(redirect) ? redirect : refererHeader;
+        redirect = !StringUtils.isBlank(redirect) ? redirect : refererRequest;
         redirect = !StringUtils.isBlank(redirect) ? redirect : themeDisplay.getURLHome();
-
 
         redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
         redirect = Helper.removeParamFromRequestStr(redirect, "isSigningInPopup");
         redirect = Helper.removeParamFromRequestStr(redirect, "isSigningIn");
         redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
-
-        //if (redirect == null || redirect.trim().length() == 0) {
-        redirect = PortalUtil.getHttpServletRequest(request).getHeader("referer");
-        //}
 
         User user = null;
         try {
@@ -118,10 +115,10 @@ public class LoginController {
         if (StringUtils.isNotBlank(bc.getUuid()) && Validator.isNotNull(user)) {
             // cookie is present, get BalloonUserTracking if it exists and update association to the current user
             try {
-                BalloonUserTracking but = BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(bc.getUuid());
+                BalloonUserTracking but = BalloonsClient.getBalloonUserTracking(bc.getUuid());
                 if (but == null) {
                     List<BalloonUserTracking> buts =
-                            BalloonUserTrackingLocalServiceUtil.findByEmail(user.getEmailAddress());
+                            BalloonsClient.getBalloonUserTrackingByEmail(user.getEmailAddress());
                     if (!buts.isEmpty()) {
                         but = buts.get(0);
                     }
@@ -129,9 +126,10 @@ public class LoginController {
 
                 if (but != null && but.getUserId() != user.getUserId()) {
                     but.setUserId(user.getUserId());
-                    BalloonUserTrackingLocalServiceUtil.updateBalloonUserTracking(but);
+                    BalloonsClient.updateBalloonUserTracking(but);
+
                 }
-            } catch (SystemException | PortalException ignored) {
+            } catch (BalloonUserTrackingNotFound ignored) {
             }
         }
 

@@ -12,16 +12,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.security.permission.PermissionThreadLocal;
-import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +36,8 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.files.FilesClient;
+import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -112,6 +110,8 @@ public class UserProfileController {
             model.addAttribute("permissions", permissions);
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
+            model.addAttribute("pointsActive",
+                    ConfigurationAttributeKey.IS_POINTS_ACTIVE.getBooleanValue());
             return "showUserProfile";
         } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
@@ -140,6 +140,8 @@ public class UserProfileController {
             if (permissions.getCanEditMemberProfile(currentUserProfile.getUserId())) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserId()));
+                model.addAttribute("newsletterActive",
+                        ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.getBooleanValue());
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -374,7 +376,7 @@ public class UserProfileController {
             response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
             response.setRenderParameter("updateSuccess", "true");
 
-            updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
+            updatedUserBean.setImageId(currentUserProfile.getUser().getPortraitFileEntryId());
 
             MembersClient.updateMember(currentUserProfile.getUser());
 
@@ -441,18 +443,10 @@ public class UserProfileController {
         //}
 
         if (updatedUserBean.getImageId() != currentUserProfile.getUserBean().getImageId()) {
-            Image img = ImageLocalServiceUtil.getImage(updatedUserBean.getImageId());
-            //TODO: we need to set permission checker for liferay, NO IDEIA WHAT THIS DOES remove after liferay transition
-            PermissionChecker permissionChecker = PermissionCheckerFactoryUtil
-                    .create(UserLocalServiceUtil.getUser(currentUserProfile.getUser().getId_()), true);
-            PermissionThreadLocal
-                    .setPermissionChecker(permissionChecker);
-            if (img != null) {
-                byte[] bytes = img.getTextObj();
-                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getId_(), bytes);
-//                currentUserProfile.getUser().setPortraitId(0L);
 
-                UserServiceUtil.updatePortrait(currentUserProfile.getUser().getId_(), bytes);
+            FileEntry fe = FilesClient.getFileEntry(updatedUserBean.getImageId());
+            if( fe!= null){
+                currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
                 changedDetails = true;
             }
         }
