@@ -12,6 +12,8 @@ import org.xcolab.model.tables.records.ActivityEntryRecord;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
@@ -58,6 +60,16 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
     }
 
+    public List<ActivityEntry> getActivitiesAfter(Date date) {
+        if (date == null) return null;
+        final SelectQuery<Record> query = dslContext.select()
+                .from(ACTIVITY_ENTRY)
+                .getQuery();
+        query.addConditions(ACTIVITY_ENTRY.CREATE_DATE.gt(new Timestamp(date.getTime())));
+        query.addOrderBy(ACTIVITY_ENTRY.CREATE_DATE.desc());
+        return query.fetchInto(ActivityEntry.class);
+
+    }
 
     @Override
     public List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,

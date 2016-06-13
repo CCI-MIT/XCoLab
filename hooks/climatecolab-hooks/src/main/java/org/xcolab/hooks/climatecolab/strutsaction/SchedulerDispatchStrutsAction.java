@@ -1,6 +1,5 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -11,6 +10,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
+
+import org.xcolab.activityEntry.ActivitySubscriptionEmailHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,8 +57,10 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 		serviceContext.setPortalURL(((ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY)).getPortalURL());
 		try {
-			ActivitySubscriptionLocalServiceUtil
-					.sendEmailNotifications(serviceContext);
+			//ActivitySubscriptionLocalServiceUtil
+			//		.sendEmailNotifications(serviceContext);
+
+			ActivitySubscriptionEmailHelper.sendEmailNotifications(serviceContext);
 		} catch (SystemException | PortalException e) {
 			_log.error( "Could not process email notification of proposal subscription feature", e);
 		}

@@ -10,6 +10,8 @@ import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.util.RequestUtils;
 import org.xcolab.util.exceptions.EntityNotFoundException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public final class ActivitiesClient {
@@ -54,6 +56,22 @@ public final class ActivitiesClient {
         if (memberIdsToExclude != null) {
             uriBuilder.queryParam("folderId", memberIdsToExclude);
         }
+
+        return RequestUtils.getList(uriBuilder,
+                new ParameterizedTypeReference<List<ActivityEntry>>() {
+                });
+    }
+
+    public static List<ActivityEntry> getActivityEntriesAfter(Date afterDate) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/activityEntries");
+
+        if (afterDate == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        uriBuilder.queryParam("activitiesAfter", sdf.format(afterDate));
 
         return RequestUtils.getList(uriBuilder,
                 new ParameterizedTypeReference<List<ActivityEntry>>() {
@@ -128,7 +146,7 @@ public final class ActivitiesClient {
                 .queryParam("classPK", classPK)
                 .queryParam("extraInfo", extraInfo)
                 .queryParam("type", type);
-        RequestUtils.delete(uriBuilder);
+        RequestUtils.getUnchecked(uriBuilder, Boolean.class);
     }
 
     public static void deleteSubscriptionById(Long subscriptionId) {
