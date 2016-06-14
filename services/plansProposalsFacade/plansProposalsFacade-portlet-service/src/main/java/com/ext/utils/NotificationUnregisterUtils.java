@@ -1,10 +1,11 @@
 package com.ext.utils;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.members.pojo.Member;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +30,11 @@ public class NotificationUnregisterUtils {
         return getUnregisterLink(subscription, null, ACTIVITY_TYPE, serviceContext);
     }
     
-    public static String getMassmessagingUnregisterLink(User user, ServiceContext serviceContext) {
+    public static String getMassmessagingUnregisterLink(Member user, ServiceContext serviceContext) {
         return getUnregisterLink(null, user, MASSMESSAGING_TYPE, serviceContext);
     }
 
-    public static String getActivityUnregisterLink(User user, ServiceContext serviceContext) {
+    public static String getActivityUnregisterLink(Member user, ServiceContext serviceContext) {
         return getUnregisterLink(null, user, ACTIVITY_TYPE, serviceContext);
     }
 
@@ -41,11 +42,11 @@ public class NotificationUnregisterUtils {
         return getToken(subscription).equals(token);
     }
     
-    public static boolean isTokenValid(String token, User user) {
+    public static boolean isTokenValid(String token, Member user) {
         return getToken(user).equals(token);
     }
     
-    private static String getUnregisterLink(ActivitySubscription subscription, User user, int type, ServiceContext serviceContext) {
+    private static String getUnregisterLink(ActivitySubscription subscription, Member user, int type, ServiceContext serviceContext) {
         Map<String, String> params = new HashMap<>();
         params.put(USER_ID, "0");
         params.put(SUBSCRIPTION_ID, "0");
@@ -78,7 +79,7 @@ public class NotificationUnregisterUtils {
         return getToken(Math.floor(1.0 * subscription.getCreateDate().getTime() / 1000.f) + "" + subscription.getPk());
     }
     
-    public static String getToken(User user) {
+    public static String getToken(Member user) {
         return getToken(Math.floor(1.0 * user.getCreateDate().getTime() / 1000.f) + "" + user.getUserId());
     }
     

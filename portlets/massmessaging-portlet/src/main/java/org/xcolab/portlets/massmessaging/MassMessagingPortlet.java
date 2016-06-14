@@ -1,25 +1,5 @@
 package org.xcolab.portlets.massmessaging;
 
-import java.io.*;
-import java.net.URL;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.mail.Address;
-import javax.mail.Message.RecipientType;
-import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.portlet.*;
-
-import com.liferay.portal.kernel.dao.orm.*;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.service.ServiceContext;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.portlets.massmessaging.action.EditMessagingMessageAction;
-
 import com.ext.portlet.NoSuchMessagingIgnoredRecipientsException;
 import com.ext.portlet.model.MessagingIgnoredRecipients;
 import com.ext.portlet.model.MessagingMessage;
@@ -32,19 +12,65 @@ import com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil;
 import com.ext.utils.NotificationUnregisterUtils;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.liferay.util.mail.MailEngine;
 import com.sun.mail.smtp.SMTPTransport;
+
+import org.apache.commons.lang3.StringUtils;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.portlets.massmessaging.action.EditMessagingMessageAction;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.mail.Address;
+import javax.mail.Message.RecipientType;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 
 public class MassMessagingPortlet extends MVCPortlet {
@@ -375,7 +401,8 @@ public class MassMessagingPortlet extends MVCPortlet {
             InternetAddress to = new InternetAddress(rec.getEmailAddress());
             String messageBodyText = body.replaceAll(MessagingConstants.RECIPIENT_ID_PLACEHOLDER, String.valueOf(rec.getRecipientId()));
             if (rec.getUserId() > 0) {
-                User user = UserLocalServiceUtil.getUser(rec.getUserId());
+                //User user = UserLocalServiceUtil.getUser(rec.getUserId());
+                Member user = MembersClient.getMember(rec.getUserId());
                 messageBodyText +=
                     "<br /><br /><a href='" +
                     NotificationUnregisterUtils.getMassmessagingUnregisterLink(user, serviceContext) +

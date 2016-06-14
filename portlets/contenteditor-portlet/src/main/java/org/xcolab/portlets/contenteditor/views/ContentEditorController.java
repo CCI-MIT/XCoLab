@@ -17,6 +17,7 @@ import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.client.members.PermissionsClient;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +34,13 @@ public class ContentEditorController {
 
     @RequestMapping
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
-        return "editor";
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+        if(PermissionsClient.canAdminAll(themeDisplay.getUserId())) {
+            return "editor";
+        }else{
+            return "notAllowed";
+        }
     }
 
 
