@@ -33,7 +33,7 @@ public class Member implements Serializable {
     private String loginIP;
     private Timestamp loginDate;
     private Integer status;
-    private Long      portraitfileentryid;
+    private Long portraitfileentryid;
 
 
     public Member() {
@@ -249,7 +249,7 @@ public class Member implements Serializable {
         }
         if (((Member) obj).getId_() == this.getId_()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
