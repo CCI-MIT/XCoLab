@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
+import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -70,6 +71,11 @@ public class ContestManagerFlaggingTabController extends ContestManagerBaseTabCo
                         reportTarget.getType() + " - " + reportTarget.getReason()));
             }
             model.addAttribute("selectionItems", selectionItems);
+
+            final List<AggregatedReport> reports =
+                    FlaggingClient.listAggregatedReports(0, Integer.MAX_VALUE);
+            model.addAttribute("reports", reports);
+
             setPageAttributes(request, model, tab);
             return TAB_VIEW;
         } catch (SystemException | PortalException | ReportTargetNotFoundException e) {

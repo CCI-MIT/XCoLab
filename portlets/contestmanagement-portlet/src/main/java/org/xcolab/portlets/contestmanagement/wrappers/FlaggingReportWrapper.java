@@ -3,44 +3,22 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportNotFoundException;
-import org.xcolab.client.flagging.pojo.Report;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.client.flagging.pojo.AggregatedReport;
 
 import java.util.Date;
 
 public class FlaggingReportWrapper {
-    private final static Log _log = LogFactoryUtil.getLog(EmailTemplateWrapper.class);
+    private final static Log _log = LogFactoryUtil.getLog(FlaggingReportWrapper.class);
 
-    private Report report;
+    private AggregatedReport report;
 
     public FlaggingReportWrapper() {
-        report = new Report();
+        report = new AggregatedReport();
     }
 
     public FlaggingReportWrapper(long reportId) throws ReportNotFoundException {
-        initReportTarget(reportId);
-    }
-
-    private void initReportTarget(long reportId) throws ReportNotFoundException {
-        report = FlaggingClient.getReport(reportId);
-    }
-
-    public void persist() {
-        persistUpdatedReport();
-    }
-
-    private void persistUpdatedReport() {
-        FlaggingClient.updateReport(report);
-    }
-
-    public Long getReportId() {
-        return report.getReportId();
-    }
-
-    public void setReportId(Long reportId) {
-        report.setReportId(reportId);
+        //TODO:
     }
 
     public Long getReporterMemberId() {
@@ -83,36 +61,20 @@ public class FlaggingReportWrapper {
         report.setComment(comment);
     }
 
-    public Integer getWeight() {
-        return report.getWeight();
+    public Integer getAggregatedWeight() {
+        return report.getAggregatedWeight();
     }
 
-    public void setWeight(Integer weight) {
-        report.setWeight(weight);
+    public Integer getCount() {
+        return report.getCount();
     }
 
-    public String getManagerAction() {
-        return report.getManagerAction();
+    public Date getFirstReportDate() {
+        return new Date(report.getFirstReportDate().getTime());
     }
 
-    public void setManagerAction(String managerAction) {
-        report.setManagerAction(managerAction);
-    }
-
-    public Long getManagerMemberId() {
-        return report.getManagerMemberId();
-    }
-
-    public void setManagerMemberId(Long managerMemberId) {
-        report.setManagerMemberId(managerMemberId);
-    }
-
-    public Date getManagerActionDate() {
-        return new Date(report.getManagerActionDate().getTime());
-    }
-
-    public Date getCreateDate() {
-        return new Date(report.getCreateDate().getTime());
+    public Date getLastReportDate() {
+        return new Date(report.getLastReportDate().getTime());
     }
 
     public Long getTargetAdditionalId() {
@@ -121,9 +83,5 @@ public class FlaggingReportWrapper {
 
     public void setTargetAdditionalId(Long targetAdditionalId) {
         report.setTargetAdditionalId(targetAdditionalId);
-    }
-
-    private static void removeReportTarget(TargetType targetType, String reason) {
-        //TODO
     }
 }

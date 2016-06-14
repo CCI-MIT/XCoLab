@@ -7,68 +7,68 @@ public class Report implements Serializable {
 
     private static final long serialVersionUID = -2000370137;
 
-    private Long reportid;
-    private Long reportermemberid;
-    private String targettype;
-    private Long targetid;
+    private Long reportId;
+    private Long reporterMemberId;
+    private String targetType;
+    private Long targetId;
     private Long targetAdditionalId;
     private String reason;
     private String comment;
     private Integer weight;
-    private String manageraction;
-    private Long managermemberid;
-    private Timestamp manageractiondate;
-    private Timestamp createdate;
+    private String managerAction;
+    private Long managerMemberId;
+    private Timestamp managerActionDate;
+    private Timestamp createDate;
 
     public Report() {
     }
 
-    public Report(Long reportid, Long reportermemberid, String targettype, Long targetid,
-            String reason, String comment, Integer weight, String manageraction,
-            Long managermemberid, Timestamp manageractiondate, Timestamp createdate) {
-        this.reportid = reportid;
-        this.reportermemberid = reportermemberid;
-        this.targettype = targettype;
-        this.targetid = targetid;
+    public Report(Long reportId, Long reporterMemberId, String targetType, Long targetId,
+            String reason, String comment, Integer weight, String managerAction,
+            Long managerMemberId, Timestamp managerActionDate, Timestamp createDate) {
+        this.reportId = reportId;
+        this.reporterMemberId = reporterMemberId;
+        this.targetType = targetType;
+        this.targetId = targetId;
         this.reason = reason;
         this.comment = comment;
         this.weight = weight;
-        this.manageraction = manageraction;
-        this.managermemberid = managermemberid;
-        this.manageractiondate = manageractiondate;
-        this.createdate = createdate;
+        this.managerAction = managerAction;
+        this.managerMemberId = managerMemberId;
+        this.managerActionDate = managerActionDate;
+        this.createDate = createDate;
     }
 
     public Long getReportId() {
-        return this.reportid;
+        return this.reportId;
     }
 
     public void setReportId(Long reportid) {
-        this.reportid = reportid;
+        this.reportId = reportid;
     }
 
     public Long getReporterMemberId() {
-        return this.reportermemberid;
+        return this.reporterMemberId;
     }
 
     public void setReporterMemberId(Long reportermemberid) {
-        this.reportermemberid = reportermemberid;
+        this.reporterMemberId = reportermemberid;
     }
 
     public String getTargetType() {
-        return this.targettype;
+        return this.targetType;
     }
 
     public void setTargetType(String targettype) {
-        this.targettype = targettype;
+        this.targetType = targettype;
     }
 
     public Long getTargetId() {
-        return this.targetid;
+        return this.targetId;
     }
 
     public void setTargetId(Long targetid) {
-        this.targetid = targetid;
+        this.targetId = targetid;
     }
 
     public String getReason() {
@@ -96,35 +96,35 @@ public class Report implements Serializable {
     }
 
     public String getManagerAction() {
-        return this.manageraction;
+        return this.managerAction;
     }
 
     public void setManagerAction(String manageraction) {
-        this.manageraction = manageraction;
+        this.managerAction = manageraction;
     }
 
     public Long getManagerMemberId() {
-        return this.managermemberid;
+        return this.managerMemberId;
     }
 
     public void setManagerMemberId(Long managermemberid) {
-        this.managermemberid = managermemberid;
+        this.managerMemberId = managermemberid;
     }
 
     public Timestamp getManagerActionDate() {
-        return this.manageractiondate;
+        return this.managerActionDate;
     }
 
     public void setManagerActionDate(Timestamp manageractiondate) {
-        this.manageractiondate = manageractiondate;
+        this.managerActionDate = manageractiondate;
     }
 
     public Timestamp getCreateDate() {
-        return this.createdate;
+        return this.createDate;
     }
 
     public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+        this.createDate = createdate;
     }
 
     public Long getTargetAdditionalId() {
@@ -138,18 +138,18 @@ public class Report implements Serializable {
     @Override
     public String toString() {
 
-        return "Report (" + reportid +
-                ", " + reportermemberid +
-                ", " + targettype +
-                ", " + targetid +
+        return "Report (" + reportId +
+                ", " + reporterMemberId +
+                ", " + targetType +
+                ", " + targetId +
                 ", " + targetAdditionalId +
                 ", " + reason +
                 ", " + comment +
                 ", " + weight +
-                ", " + manageraction +
-                ", " + managermemberid +
-                ", " + manageractiondate +
-                ", " + createdate +
+                ", " + managerAction +
+                ", " + managerMemberId +
+                ", " + managerActionDate +
+                ", " + createDate +
                 ")";
     }
 }

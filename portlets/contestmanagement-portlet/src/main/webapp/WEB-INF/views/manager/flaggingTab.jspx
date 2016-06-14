@@ -1,11 +1,15 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 
     <!--@elvariable id="reportTargetId" type="java.lang.Long"-->
     <!--@elvariable id="reportTargetWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportTargetWrapper"-->
     <!--@elvariable id="selectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+
+    <!--@elvariable id="reports" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportWrapper>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -117,6 +121,45 @@
             </div>
 
         </form:form>
+    </div>
+
+    <div class="cmsDetailsBox">
+        <h2>Reports</h2>
+
+        <table class="c-Table">
+            <tr class="c-Table__row--title">
+                <th class="c-Table__cell--title">Type</th>
+                <th class="c-Table__cell--title">Reason</th>
+                <th class="c-Table__cell--title">Target</th>
+                <th class="c-Table__cell--title">No. Reports</th>
+                <th class="c-Table__cell--title">Weight</th>
+                <th class="c-Table__cell--title">First report</th>
+                <th class="c-Table__cell--title">Last report</th>
+                <th class="c-Table__cell--title">Actions</th>
+            </tr>
+            <c:forEach items="${reports}" var="report">
+                <tr class="c-Table__row">
+                    <td class="c-Table__cell">${report.targetType}</td>
+                    <td class="c-Table__cell">${report.reason}</td>
+                    <td class="c-Table__cell">${report.targetId}</td>
+                    <td class="c-Table__cell">${report.count}</td>
+                    <td class="c-Table__cell">${report.aggregatedWeight}</td>
+                    <th class="c-Table__cell">
+                        <fmt:formatDate value="${report.firstReportDate}" pattern="MM/dd/yyyy HH:mm"
+                                        type="date" dateStyle="short" timeZone="America/New_York"/>
+                    </th>
+                    <th class="c-Table__cell">
+                        <fmt:formatDate value="${report.lastReportDate}" pattern="MM/dd/yyyy HH:mm"
+                                        type="date" dateStyle="short" timeZone="America/New_York"/>
+                    </th>
+                    <td class="c-Table__cell">
+                        <a class="c-Button__primary--small" href="">Approve content</a> <br />
+                        <a class="c-Button__primary--small" href="">Revert content</a> <br />
+                        <a class="c-Button__primary--small" href="">Remove content</a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
     </div>
 
     <script type="text/javascript">

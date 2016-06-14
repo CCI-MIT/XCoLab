@@ -8,7 +8,7 @@ import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 
 public class FlaggingReportTargetWrapper {
-    private final static Log _log = LogFactoryUtil.getLog(EmailTemplateWrapper.class);
+    private final static Log _log = LogFactoryUtil.getLog(FlaggingReportTargetWrapper.class);
 
     private ReportTarget reportTarget;
     private Boolean createNew = false;

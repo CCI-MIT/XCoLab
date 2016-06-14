@@ -14,6 +14,7 @@ import org.xcolab.service.flagging.domain.report.ReportDao;
 import org.xcolab.service.flagging.domain.reportTarget.ReportTargetDao;
 import org.xcolab.service.flagging.exceptions.NotFoundException;
 import org.xcolab.service.flagging.service.FlaggingService;
+import org.xcolab.service.flagging.wrappers.AggregatedReport;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.flagging.ManagerAction;
@@ -49,6 +50,24 @@ public class FlaggingController {
                 Integer.toString(reportDao.countByGiven(reporterMemberId, managerMemberId,
                         targetType, targetId, managerAction)));
         return reportDao.findByGiven(paginationHelper, reporterMemberId,
+                managerMemberId, targetType, targetId, managerAction);
+    }
+
+    @RequestMapping(value = "/aggregatedReports", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<AggregatedReport> getAggregatedReports(HttpServletResponse response,
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) Long reporterMemberId,
+            @RequestParam(required = false) Long managerMemberId,
+            @RequestParam(required = false) String targetType,
+            @RequestParam(required = false) Long targetId,
+            @RequestParam(required = false) String managerAction) {
+        PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+                Integer.toString(reportDao.countByGiven(reporterMemberId, managerMemberId,
+                        targetType, targetId, managerAction)));
+        return reportDao.findAggregatedByGiven(paginationHelper, reporterMemberId,
                 managerMemberId, targetType, targetId, managerAction);
     }
 

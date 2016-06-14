@@ -3,6 +3,7 @@ package org.xcolab.client.flagging;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.client.flagging.exceptions.ReportNotFoundException;
@@ -32,6 +33,20 @@ public final class FlaggingClient {
                         .queryParam("sort", "createDate");
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Report>>() {
+        });
+    }
+
+    public static List<AggregatedReport> listAggregatedReports(int start, int last) {
+
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID
+                        + "/aggregatedReports")
+                        .queryParam("startRecord", start)
+                        .queryParam("limitRecord", last)
+                        .queryParam("sort", "firstReportDate");
+
+        return RequestUtils.getList(uriBuilder,
+                new ParameterizedTypeReference<List<AggregatedReport>>() {
         });
     }
 
