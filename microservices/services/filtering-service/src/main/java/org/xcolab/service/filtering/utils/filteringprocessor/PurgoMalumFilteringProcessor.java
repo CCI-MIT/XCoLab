@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 
-public class PurgoMalumFilteringProcessor implements EntryFilteringProcessor {
+public class PurgoMalumFilteringProcessor extends EntryFilteringProcessor {
 
     private final static String PURGOMALUMDEFAULTURL = "http://www.purgomalum.com/service/";
     private final static String PROFANITYCHECKSERVICE = "containsprofanity";
@@ -25,17 +25,13 @@ public class PurgoMalumFilteringProcessor implements EntryFilteringProcessor {
             String checkReturn = HttpClientUtils.getUrlContents(PURGOMALUMDEFAULTURL + PROFANITYCHECKSERVICE +
                     TEXTVARIABLE + URLEncoder.encode(memberContentEntry.getFullText(), "UTF-8"));
             if (checkReturn.equals("false")) {
-                memberContentEntry.setAnsweredAt(new Timestamp(new Date().getTime()));
-                memberContentEntry.setResponseFullText(null);
-                memberContentEntry.setStatus(FilteringStatus.APPROVED.getId());
-                return memberContentEntry;
+                return setSuccessFiltering(memberContentEntry);
+
             } else {
                 String filteredText = HttpClientUtils.getUrlContents(PURGOMALUMDEFAULTURL + PROFANITYJSONREPLACEMENT +
                         TEXTVARIABLE + URLEncoder.encode(memberContentEntry.getFullText(),"UTF-8"));
-                memberContentEntry.setAnsweredAt(new Timestamp(new Date().getTime()));
-                memberContentEntry.setResponseFullText(filteredText);
-                memberContentEntry.setStatus(FilteringStatus.REJECTED.getId());
-                return memberContentEntry;
+
+                return setFailedFiltering(memberContentEntry, filteredText);
             }
         }catch (UnsupportedEncodingException ignored){
 
