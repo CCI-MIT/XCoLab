@@ -31,7 +31,7 @@ public class FilteredEntryDaoImpl implements FilteredEntryDao {
                 .set(FILTERED_ENTRY.STATUS, filteredEntry.getStatus())
                 .set(FILTERED_ENTRY.CREATED_AT, filteredEntry.getCreatedAt())
                 .set(FILTERED_ENTRY.ANSWERED_AT, filteredEntry.getAnsweredAt())
-
+                .set(FILTERED_ENTRY.UUID, filteredEntry.getUuid())
                 .set(FILTERED_ENTRY.RESPONSE_FULL_TEXT, filteredEntry.getResponseFullText())
                 .returning(FILTERED_ENTRY.FILTERED_ENTRY_ID)
                 .fetchOne();
@@ -58,13 +58,25 @@ public class FilteredEntryDaoImpl implements FilteredEntryDao {
                 .execute() > 0;
     }
 
-    public FilteredEntry get(Long FilteredEntryId) throws NotFoundException {
+    public FilteredEntry get(Long filteredEntryId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(FILTERED_ENTRY)
-                .where(FILTERED_ENTRY.FILTERED_ENTRY_ID.eq(FilteredEntryId)).fetchOne();
+                .where(FILTERED_ENTRY.FILTERED_ENTRY_ID.eq(filteredEntryId)).fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("FilteredEntry with id " + FilteredEntryId + " does not exist");
+            throw new NotFoundException("FilteredEntry with id " + filteredEntryId + " does not exist");
+        }
+        return record.into(FilteredEntry.class);
+
+    }
+
+    public FilteredEntry getByUuid(String uuid) throws NotFoundException {
+
+        final Record record = this.dslContext.selectFrom(FILTERED_ENTRY)
+                .where(FILTERED_ENTRY.UUID.eq(uuid)).fetchOne();
+
+        if (record == null) {
+            throw new NotFoundException("FilteredEntry with uuid " + uuid + " does not exist");
         }
         return record.into(FilteredEntry.class);
 

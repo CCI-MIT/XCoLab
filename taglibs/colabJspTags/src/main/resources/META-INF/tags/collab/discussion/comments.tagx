@@ -24,7 +24,25 @@
         <!--@elvariable id="shareUrl" type="java.lang.String"-->
 
         <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
-        <script type="text/javascript" src="/discussions-portlet/js/discussionComments.js" ><!-- --></script>
+
+		<c:if test="${discussionPermissions.mustFilterContent}">
+		<script>
+			function getMustFilterContent(){
+				return true;
+
+			}
+		</script>
+		</c:if>
+		<c:if test="not ${discussionPermissions.mustFilterContent}">
+		<script>
+			function getMustFilterContent(){
+				return false;
+
+			}
+		</script>
+		</c:if>
+
+		<script type="text/javascript" src="/discussions-portlet/js/discussionComments.js" ><!-- --></script>
 
 		<div class="c-Headline prophead">
 			<h2>

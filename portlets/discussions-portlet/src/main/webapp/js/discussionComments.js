@@ -95,8 +95,38 @@ jQuery(function() {
                 }
                 disableDirtyCheck();
                 window.disableAddComment();
-                $('#addCommentForm').submit();
+
+                if(getMustFilterContent()) {
+                    var $thecomment = jQuery(".c-Comment__new");
+                    var text = $thecomment.find(".commentContent").val();
+                    handleFilteredContent(text,"DISCUSSION", "#nofieldYet",function () { $('#addCommentForm').submit() });return
+                } else {
+                    $('#addCommentForm').submit();
+                }
+
             }
         });
     }
 });
+function handleFilteredContent(textInput, source, uuidField, callback){
+    console.log("should show modal window");
+
+    var parameters ={
+        fullText: textInput,
+        source : source
+    };
+    //open modal window
+    $.post("/profanityfiltering/" ,parameters , function (response) {
+        responseData = JSON.parse(response);
+        if (responseData.valid === false) {
+            //alert("Could not process request. Please contact the Administrator");
+        } else {
+            //
+            var uuid = responseData.uuid;
+            $(uuidField).val(uuid);
+
+            callback.call(null);
+        }
+
+    });
+}

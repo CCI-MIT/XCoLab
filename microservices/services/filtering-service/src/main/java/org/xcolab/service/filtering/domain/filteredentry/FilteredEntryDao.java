@@ -17,4 +17,6 @@ public interface FilteredEntryDao {
 
     FilteredEntry getByAuthorAndSourceAndSourceId(Long authorId, Long sourceId, Long source);
 
+    FilteredEntry getByUuid(String uuid) throws NotFoundException;
+
 }

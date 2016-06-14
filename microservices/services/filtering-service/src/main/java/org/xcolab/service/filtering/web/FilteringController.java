@@ -16,6 +16,7 @@ import org.xcolab.service.filtering.utils.filteringprocessor.XColabFilteringProc
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class FilteringController {
@@ -27,35 +28,36 @@ public class FilteringController {
 
     @RequestMapping(value = "/filteredEntries", method = RequestMethod.POST)
     public FilteredEntry filterEntry(@RequestBody FilteredEntry filteredEntry) {
-        FilteredEntry aux = filteredEntryDao.getByAuthorAndSourceAndSourceId(filteredEntry.getAuthorId(),
-                filteredEntry.getSource(), filteredEntry.getSourceId());
-        if( aux == null ){
-            filteredEntry.setStatus(FilteringStatus.CREATED.getId());
-            filteredEntry.setCreatedAt(new Timestamp(new Date().getTime()));
-            aux =  filteredEntryDao.create(filteredEntry);
-            FilteredEntry afterProcess = processor.processEntry(aux);
-            if( afterProcess != null ) {
-                filteredEntryDao.update(afterProcess);
-            }
-            return aux;
-        }else{
-            return aux;
+
+        filteredEntry.setStatus(FilteringStatus.CREATED.getId());
+        filteredEntry.setCreatedAt(new Timestamp(new Date().getTime()));
+        filteredEntry.setUuid(UUID.randomUUID().toString());
+        FilteredEntry aux = filteredEntryDao.create(filteredEntry);
+        FilteredEntry afterProcess = processor.processEntry(aux);
+        if (afterProcess != null) {
+            filteredEntryDao.update(afterProcess);
         }
+        return aux;
 
     }
 
+    @RequestMapping(value = "/filteredEntries/{uuid}", method = RequestMethod.GET)
+    public FilteredEntry getByUUID(@PathVariable String uuid) throws NotFoundException {
+        return filteredEntryDao.getByUuid(uuid);
+    }
+
     @RequestMapping(value = "/filteredEntries/{filterId}", method = RequestMethod.GET)
-    public FilteredEntry checkStatus(@PathVariable Long filterId) throws NotFoundException{
+    public FilteredEntry checkStatus(@PathVariable Long filterId) throws NotFoundException {
         return filteredEntryDao.get(filterId);
     }
 
     @RequestMapping(value = "/filteredEntries/processCreatedEntries", method = RequestMethod.GET)
     public void processCreatedEntries() {
         List<FilteredEntry> entriesToProcess = filteredEntryDao.getByStatus(FilteringStatus.CREATED.getId());
-        if( entriesToProcess != null ){
-            for(FilteredEntry entry : entriesToProcess){
+        if (entriesToProcess != null) {
+            for (FilteredEntry entry : entriesToProcess) {
                 FilteredEntry afterProcess = processor.processEntry(entry);
-                if( afterProcess != null ) {
+                if (afterProcess != null) {
                     filteredEntryDao.update(afterProcess);
                 }
             }

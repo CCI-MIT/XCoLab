@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.members.PermissionsClient;
 
@@ -66,5 +67,9 @@ public class DiscussionPermissions {
 
     public boolean getCanAdminAll() {
         return PermissionsClient.canAdminAll(currentUser.getUserId());
+    }
+
+    public boolean getMustFilterContent(){
+        return ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue();
     }
 }

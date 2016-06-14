@@ -79,8 +79,20 @@ jQuery(function() {
                     return false;
                 }
                 window.disableAddComment();
-                $('#addCommentForm').submit();
+
+
+                if(getMustFilterContent()) {
+                    handleFilteredContent(function () { $('#addCommentForm').submit() });
+                    return;
+                } else {
+                    $('#addCommentForm').submit();
+                }
+
             }
         });
     }
 });
+
+function handleFilteredContent(callback){
+    console.log("should show modal window");
+}

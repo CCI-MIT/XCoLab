@@ -27,4 +27,12 @@ public final class FilteringClient {
         return RequestUtils.post(uriBuilder, filteredEntry, FilteredEntry.class);
     }
 
+    public static void updateFilteredEntry(FilteredEntry filteredEntry) {
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/filteredEntries/" + filteredEntry.getFilteredEntryId());
+
+        RequestUtils.put(uriBuilder, filteredEntry);
+    }
+
 }

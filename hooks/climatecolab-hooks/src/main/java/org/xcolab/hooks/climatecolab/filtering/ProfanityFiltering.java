@@ -4,6 +4,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.filtering.FilteringClient;
+import org.xcolab.client.filtering.enums.FilteringSource;
+import org.xcolab.client.filtering.enums.FilteringStatus;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
 
 import java.io.IOException;
@@ -41,16 +43,22 @@ public class ProfanityFiltering implements Filter {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         Long memberId = themeDisplay.getUserId();
         String fullText = request.getParameter("fullText");
+        String source = request.getParameter("source");
+
 
         FilteredEntry filteredEntry = new FilteredEntry();
         filteredEntry.setAuthorId(memberId);
         filteredEntry.setFullText(fullText);
-        filteredEntry.setSource(1l);
+        if (source.equals(FilteringSource.DISCUSSION.getSource())){
+            filteredEntry.setSource(FilteringSource.DISCUSSION.getId());
+        }else{
+            filteredEntry.setSource(FilteringSource.PROPOSAL.getId());
+        }
 
-        boolean result = FilteringClient.createFilteredEntry(filteredEntry).equals("");
+        filteredEntry = FilteringClient.createFilteredEntry(filteredEntry);
 
         try {
-            response.getWriter().append(String.format("{\"valid\": \""+result+"\""));
+            response.getWriter().append(String.format("{\"valid\": \""+filteredEntry.getStatus().equals(FilteringStatus.APPROVED.getId())+"\",\"uuid\":\""+filteredEntry+"\""));
             response.getWriter().close();
         } catch (IOException e) {
             e.printStackTrace();

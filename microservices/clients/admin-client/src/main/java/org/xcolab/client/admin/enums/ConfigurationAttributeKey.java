@@ -8,7 +8,6 @@ public enum ConfigurationAttributeKey {
     COLAB_NAME(AttributeType.STRING),
     COLAB_SHORT_NAME(AttributeType.STRING),
     COLAB_URL(AttributeType.STRING),
-
     IS_PRODUCTION_ENVIRONMENT(AttributeType.BOOLEAN),
 
     DEFAULT_CONTEST_TYPE_ID(AttributeType.NUMERIC),
@@ -32,7 +31,9 @@ public enum ConfigurationAttributeKey {
 
     MIT_HEADER_BAR_SHOW(AttributeType.BOOLEAN),
     MIT_HEADER_BAR_LINK_TEXT(AttributeType.STRING),
-    MIT_HEADER_BAR_LINK_URL(AttributeType.STRING);
+    MIT_HEADER_BAR_LINK_URL(AttributeType.STRING),
+
+    FILTER_PROFANITY(AttributeType.BOOLEAN);
 
     private final AttributeType type;
 
