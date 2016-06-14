@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -24,11 +25,10 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.xcolab.enums.MemberRole;
-import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -342,7 +342,8 @@ public class ProposalsContextImpl implements ProposalsContext {
                 "<p>Referral URL: <b>" + referralUrl + "</b></p>" +
                 "<p>User agent: <b>" + userAgent + "</b></p>";
 
-        new EmailToAdminDispatcher("User accessed invalid URL " + currentUrl, emailMessage).sendMessage();
+        //new EmailToAdminDispatcher("User accessed invalid URL " + currentUrl, emailMessage).sendMessage();
+        //TO REANABLE 404 email 
     }
 
     private void handleAccessedInvalidUrlIdInUrl(User currentUser, String currentUrl, String referralUrl, String userAgent) throws ProposalIdOrContestIdInvalidException {
