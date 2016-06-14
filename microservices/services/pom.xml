@@ -170,6 +170,7 @@
                         </database>
                         <generate>
                             <pojos>true</pojos>
+                            <pojosEqualsAndHashCode>true</pojosEqualsAndHashCode>
                         </generate>
                         <target>
                             <packageName>org.xcolab.model</packageName>
