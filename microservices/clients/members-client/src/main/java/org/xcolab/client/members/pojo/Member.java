@@ -241,4 +241,22 @@ public class Member implements Serializable {
                 ", " + loginDate +
                 ")";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Member)) {
+            return false;
+        }
+        if (((Member) obj).getId_() == this.getId_()) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    @Override
+    public int hashCode() {
+        return this.getId_().intValue();
+    }
 }
