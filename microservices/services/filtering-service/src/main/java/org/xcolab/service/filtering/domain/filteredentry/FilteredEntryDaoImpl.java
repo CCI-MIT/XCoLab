@@ -31,6 +31,7 @@ public class FilteredEntryDaoImpl implements FilteredEntryDao {
                 .set(FILTERED_ENTRY.STATUS, filteredEntry.getStatus())
                 .set(FILTERED_ENTRY.CREATED_AT, filteredEntry.getCreatedAt())
                 .set(FILTERED_ENTRY.ANSWERED_AT, filteredEntry.getAnsweredAt())
+
                 .set(FILTERED_ENTRY.RESPONSE_FULL_TEXT, filteredEntry.getResponseFullText())
                 .returning(FILTERED_ENTRY.FILTERED_ENTRY_ID)
                 .fetchOne();
