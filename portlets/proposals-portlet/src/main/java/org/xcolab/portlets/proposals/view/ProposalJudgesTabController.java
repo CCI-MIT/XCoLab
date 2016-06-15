@@ -45,9 +45,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
 
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()
-                || permissions.getCanContestManagerActions()) ) {
-
+        if (!permissions.getCanSeeAdvancingTab()) {
             throw new ProposalsAuthorizationException(ACCESS_TAB_DENIED_MESSAGE);
         }
 

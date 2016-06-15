@@ -3,7 +3,6 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalAttribute;
@@ -16,6 +15,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Transactional;
 
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
 import org.xcolab.services.EventBusService;
@@ -149,10 +151,13 @@ public class ProposalAttributeLocalServiceImpl
 
         // Update the proposal name in the discussion category
         if (attributeName.equals(ProposalAttributeKeys.NAME)) {
-            DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-            ContestType contestType = contestTypeLocalService.getContestTypeFromProposalId(proposalId);
-            dcg.setDescription(String.format("%s %s", contestType.getProposalName(), stringValue));
-            discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(dcg);
+            try {
+                CommentThread thread = CommentClient.getThread(proposal.getDiscussionId());
+                ContestType contestType = contestTypeLocalService.getContestTypeFromProposalId(proposalId);
+                thread.setTitle(String.format("%s %s", contestType.getProposalName(), stringValue));
+                CommentClient.updateThread(thread);
+            } catch (ThreadNotFoundException ignored) {
+            }
         }
 
         if (publishActivity) {
