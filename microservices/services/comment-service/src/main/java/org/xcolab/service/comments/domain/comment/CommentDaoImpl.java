@@ -34,6 +34,7 @@ public class CommentDaoImpl implements CommentDao {
         if (threadId != null) {
             query.addConditions(COMMENT.THREAD_ID.eq(threadId));
         }
+        query.addConditions(COMMENT.DELETED_DATE.isNull());
         return query.fetchOne().into(Integer.class);
     }
 
