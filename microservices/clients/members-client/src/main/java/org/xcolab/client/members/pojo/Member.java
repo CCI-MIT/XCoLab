@@ -34,7 +34,7 @@ public class Member implements Serializable {
     private Timestamp loginDate;
     private Integer status;
     private int reportKarma;
-    private Long      portraitfileentryid;
+    private Long portraitfileentryid;
 
     public Member() {
     }
@@ -249,5 +249,23 @@ public class Member implements Serializable {
                 ", " + loginDate +
                 ", " + reportKarma +
                 ")";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Member)) {
+            return false;
+        }
+        if (((Member) obj).getId_() == this.getId_()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    @Override
+    public int hashCode() {
+        return this.getId_().intValue();
     }
 }

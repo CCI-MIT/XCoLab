@@ -199,6 +199,11 @@ public class ProposalsPermissions {
         return canIAFAction;
     }
 
+    public boolean getCanSeeAdvancingTab() {
+        return getCanFellowActions() || getCanJudgeActions() || getCanAdminAll()
+                || getCanContestManagerActions();
+    }
+
     public boolean getCanPromoteProposalToNextPhase() throws PortalException, SystemException {
         return contestPhase != null && getCanPromoteProposalToNextPhase(contestPhase);
     }
