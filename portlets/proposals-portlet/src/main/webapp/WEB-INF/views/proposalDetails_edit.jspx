@@ -452,7 +452,7 @@
             }
         </script>
     </c:if>
-    <c:if test="not ${mustFilterContent}">
+    <c:if test="${not mustFilterContent}">
         <script>
             function getMustFilterContent(){
                 return false;

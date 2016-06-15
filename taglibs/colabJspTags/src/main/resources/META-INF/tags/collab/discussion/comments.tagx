@@ -35,7 +35,7 @@
 			}
 		</script>
 		</c:if>
-		<c:if test="not ${discussionPermissions.mustFilterContent}">
+		<c:if test="${ not discussionPermissions.mustFilterContent}">
 		<script>
 			function getMustFilterContent(){
 				return false;
