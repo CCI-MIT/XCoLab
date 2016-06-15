@@ -21,17 +21,18 @@ public class XColabFilteringProcessor extends EntryFilteringProcessor{
         profanitiesPhraseMap = new HashMap<>();
         try {
             InputStream in = XColabFilteringProcessor.class.getClassLoader()
-                    .getResourceAsStream("/resources/profanities.txt");
+                    .getResourceAsStream("/profanities.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
             while ((line = reader.readLine()) != null) {
-                if( line.contains(" ")) {
+                if( !line.contains(" ")) {
                     profanitiesWordMap.put(line, line);
                 }else{
                     profanitiesPhraseMap.put(line, line);
                 }
             }
         }catch (IOException ignored){
+            ignored.printStackTrace();
 
         }
 

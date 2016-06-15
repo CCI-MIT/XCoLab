@@ -26,7 +26,7 @@ import javax.annotation.Generated;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FilteredEntry implements Serializable {
 
-    private static final long serialVersionUID = -1591061457;
+    private static final long serialVersionUID = -1261366948;
 
     private Long      filteredentryid;
     private Long      source;
@@ -37,6 +37,7 @@ public class FilteredEntry implements Serializable {
     private Timestamp createdat;
     private Timestamp answeredat;
     private String    responsefulltext;
+    private String    uuid;
 
     public FilteredEntry() {}
 
@@ -50,6 +51,7 @@ public class FilteredEntry implements Serializable {
         this.createdat = value.createdat;
         this.answeredat = value.answeredat;
         this.responsefulltext = value.responsefulltext;
+        this.uuid = value.uuid;
     }
 
     public FilteredEntry(
@@ -61,7 +63,8 @@ public class FilteredEntry implements Serializable {
         Integer   status,
         Timestamp createdat,
         Timestamp answeredat,
-        String    responsefulltext
+        String    responsefulltext,
+        String    uuid
     ) {
         this.filteredentryid = filteredentryid;
         this.source = source;
@@ -72,6 +75,7 @@ public class FilteredEntry implements Serializable {
         this.createdat = createdat;
         this.answeredat = answeredat;
         this.responsefulltext = responsefulltext;
+        this.uuid = uuid;
     }
 
     public Long getFilteredEntryId() {
@@ -146,6 +150,14 @@ public class FilteredEntry implements Serializable {
         this.responsefulltext = responsefulltext;
     }
 
+    public String getUuid() {
+        return this.uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("FilteredEntry (");
@@ -159,6 +171,7 @@ public class FilteredEntry implements Serializable {
         sb.append(", ").append(createdat);
         sb.append(", ").append(answeredat);
         sb.append(", ").append(responsefulltext);
+        sb.append(", ").append(uuid);
 
         sb.append(")");
         return sb.toString();

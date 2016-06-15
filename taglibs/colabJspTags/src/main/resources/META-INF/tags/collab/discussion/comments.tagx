@@ -23,7 +23,9 @@
         <!--@elvariable id="shareTitle" type="java.lang.String"-->
         <!--@elvariable id="shareUrl" type="java.lang.String"-->
 
+		<link href="/climatecolab-hook/css/jquery.modal.min.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
+		<script src="/climatecolab-hook/js/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
 
 		<c:if test="${discussionPermissions.mustFilterContent}">
 		<script>
@@ -43,6 +45,14 @@
 		</c:if>
 
 		<script type="text/javascript" src="/discussions-portlet/js/discussionComments.js" ><!-- --></script>
+
+		<c:if test="${discussionPermissions.mustFilterContent}">
+			<div id="modal_filtering_prof" style="display:none;">
+				<p>Please wait while we submit your data</p>
+				<div id="loading_filtering_image" style="text-align: center"><img border="0" src="/climatecolab-hook/images/loader.gif"/></div>
+				<div id="processedFailed" style="display:none;"> Your content included words that are not allowed. Please check them before we proceed!<a href="#" rel="modal:close">Close</a></div>
+			</div>
+		</c:if>
 
 		<div class="c-Headline prophead">
 			<h2>

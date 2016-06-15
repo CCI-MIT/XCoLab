@@ -111,21 +111,30 @@ jQuery(function() {
 function handleFilteredContent(textInput, source, uuidField, callback){
     console.log("should show modal window");
 
+    $("#modal_filtering_prof").modal({
+                           escapeClose: true,
+                           clickClose: false,
+                           showClose: true
+    });
+
     var parameters ={
         fullText: textInput,
         source : source
     };
     //open modal window
     $.post("/profanityfiltering/" ,parameters , function (response) {
-        responseData = JSON.parse(response);
-        if (responseData.valid === false) {
+        var responseData = JSON.parse(response);
+        console.log("response is : " + responseData.valid)
+        if (responseData.valid = "false") {
             //alert("Could not process request. Please contact the Administrator");
+            $("#processedFailed").show();
         } else {
-            //
+
             var uuid = responseData.uuid;
             $(uuidField).val(uuid);
 
             callback.call(null);
+
         }
 
     });

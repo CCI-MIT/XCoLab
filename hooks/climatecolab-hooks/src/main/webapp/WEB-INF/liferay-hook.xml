@@ -59,6 +59,10 @@
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.captcha.CaptchaFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
+		<servlet-filter-name>ProfanityFiltering</servlet-filter-name>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.filtering.ProfanityFiltering</servlet-filter-impl>
+	</servlet-filter>
+	<servlet-filter>
 		<servlet-filter-name>GetWikiImageFixFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.wiki.GetWikiImageFixFilter</servlet-filter-impl>
 	</servlet-filter>
@@ -108,6 +112,11 @@
 		<servlet-filter-name>ImageDisplayerFilter</servlet-filter-name>
 		<url-pattern>/image/*</url-pattern>
 	</servlet-filter-mapping>
+	<servlet-filter-mapping>
+		<servlet-filter-name>ProfanityFiltering</servlet-filter-name>
+		<url-pattern>/profanityfiltering/*</url-pattern>
+	</servlet-filter-mapping>
+
 	<servlet-filter-mapping>
 		<servlet-filter-name>ErrorReporting</servlet-filter-name>
 		<url-pattern>/c/reportError</url-pattern>
