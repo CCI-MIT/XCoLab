@@ -28,7 +28,6 @@ public class Comment implements Serializable {
     private Timestamp createdate;
     private Timestamp modifieddate;
     private Timestamp deleteddate;
-    private String title;
     private String content;
 
     public Comment() {
@@ -42,7 +41,6 @@ public class Comment implements Serializable {
         this.createdate = createdate;
         this.modifieddate = modifieddate;
         this.deleteddate = deleteddate;
-        this.title = title;
         this.content = content;
     }
 
@@ -94,14 +92,6 @@ public class Comment implements Serializable {
         this.deleteddate = deleteddate;
     }
 
-    public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return this.content;
     }
@@ -142,6 +132,11 @@ public class Comment implements Serializable {
         return null;
     }
 
+    @JsonIgnore
+    public String getLinkUrl() {
+        return getThread().getLinkUrl() + "#message_" + getCommentId();
+    }
+
     @Override
     public String toString() {
 
@@ -151,7 +146,6 @@ public class Comment implements Serializable {
                 ", " + createdate +
                 ", " + modifieddate +
                 ", " + deleteddate +
-                ", " + title +
                 ", " + content +
                 ")";
     }

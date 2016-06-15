@@ -4,6 +4,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,8 @@ import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportTargetWrapper;
+import org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportWrapper;
+import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -74,7 +78,11 @@ public class ContestManagerFlaggingTabController extends ContestManagerBaseTabCo
 
             final List<AggregatedReport> reports =
                     FlaggingClient.listAggregatedReports(0, Integer.MAX_VALUE);
-            model.addAttribute("reports", reports);
+            final List<FlaggingReportWrapper> reportWrappers = new ArrayList<>();
+            for (AggregatedReport report : reports) {
+                reportWrappers.add(new FlaggingReportWrapper(report));
+            }
+            model.addAttribute("reports", reportWrappers);
 
             setPageAttributes(request, model, tab);
             return TAB_VIEW;
@@ -83,6 +91,20 @@ public class ContestManagerFlaggingTabController extends ContestManagerBaseTabCo
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }
         return NOT_FOUND_TAB_VIEW;
+    }
+
+    @RequestMapping(params = "action=handleReport")
+    public void approveContent(ActionRequest request, ActionResponse response, Model model,
+            @RequestParam long reportId, @RequestParam ManagerAction managerAction)
+            throws IOException {
+        if (!tabWrapper.getCanEdit()) {
+            return;
+        }
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        final long memberId = themeDisplay.getUserId();
+        FlaggingClient.handleReport(memberId, managerAction, reportId);
+        SetRenderParameterUtil.addActionSuccessMessageToSession(request, "Report " + managerAction.name() + "D");
+        response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName());
     }
 
     @RequestMapping(params = "action=updateReportTarget")

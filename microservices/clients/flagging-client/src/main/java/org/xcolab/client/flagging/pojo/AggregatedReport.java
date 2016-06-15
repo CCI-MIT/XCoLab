@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class AggregatedReport {
 
+    private Long firstReportId;
     private Long reporterMemberId;
     private String targetType;
     private Long targetId;
@@ -18,8 +19,9 @@ public class AggregatedReport {
     public AggregatedReport() {
     }
 
-    public AggregatedReport(Long reporterMemberId, String targetType, Long targetId,
+    public AggregatedReport(Long firstReportId, Long reporterMemberId, String targetType, Long targetId,
             String reason, String comment, Integer aggregatedWeight) {
+        this.firstReportId = firstReportId;
         this.reporterMemberId = reporterMemberId;
         this.targetType = targetType;
         this.targetId = targetId;
@@ -106,5 +108,13 @@ public class AggregatedReport {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public Long getFirstReportId() {
+        return firstReportId;
+    }
+
+    public void setFirstReportId(Long firstReportId) {
+        this.firstReportId = firstReportId;
     }
 }

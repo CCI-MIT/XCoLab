@@ -4,7 +4,7 @@ import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record8;
+import org.jooq.Record9;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,16 +67,17 @@ public class ReportDaoImpl implements ReportDao {
             Long reporterMemberId, Long managerMemberId, String targetType, Long targetId,
             String managerAction) {
 
+        final Field<Long> firstReportId = DSL.min(REPORT.REPORT_ID).as("firstReportId");
         final Field<BigDecimal> aggregatedWeight = DSL.sum(REPORT.WEIGHT).as("aggregatedWeight");
         final Field<Timestamp> firstReportDate = DSL.min(REPORT.CREATE_DATE).as("firstReportDate");
         final Field<Timestamp> lastReportDate = DSL.max(REPORT.CREATE_DATE).as("lastReportDate");
         final Field<Integer> count = DSL.count().as("count");
 
-        final SelectQuery<
-                Record8<String, String, Long, Long, BigDecimal, Timestamp, Timestamp, Integer>>
+        final SelectQuery<Record9<
+                String, String, Long, Long, Long, BigDecimal, Timestamp, Timestamp, Integer>>
                 query = dslContext
                 .select(REPORT.TARGET_TYPE, REPORT.REASON, REPORT.TARGET_ID,
-                        REPORT.TARGET_ADDITIONAL_ID, aggregatedWeight,
+                        REPORT.TARGET_ADDITIONAL_ID, firstReportId, aggregatedWeight,
                         firstReportDate, lastReportDate, count)
                 .from(REPORT)
                 .groupBy(REPORT.TARGET_TYPE, REPORT.REASON,

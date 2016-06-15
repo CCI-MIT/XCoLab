@@ -138,24 +138,46 @@
                 <th class="c-Table__cell--title">Actions</th>
             </tr>
             <c:forEach items="${reports}" var="report">
+                <portlet:actionURL var="approveContentUrl">
+                    <portlet:param name="tab" value="FLAGGING"/>
+                    <portlet:param name="reportTargetId" value="${reportTargetWrapper.reportTargetId}"/>
+                    <portlet:param name="manager" value="true"/>
+                    <portlet:param name="action" value="handleReport"/>
+                    <portlet:param name="managerAction" value="APPROVE"/>
+                    <portlet:param name="reportId" value="${report.firstReportId}"/>
+                </portlet:actionURL>
+                <portlet:actionURL var="removeContentUrl">
+                    <portlet:param name="tab" value="FLAGGING"/>
+                    <portlet:param name="reportTargetId" value="${reportTargetWrapper.reportTargetId}"/>
+                    <portlet:param name="manager" value="true"/>
+                    <portlet:param name="action" value="handleReport"/>
+                    <portlet:param name="managerAction" value="REMOVE"/>
+                    <portlet:param name="reportId" value="${report.firstReportId}"/>
+                </portlet:actionURL>
                 <tr class="c-Table__row">
                     <td class="c-Table__cell">${report.targetType}</td>
                     <td class="c-Table__cell">${report.reason}</td>
-                    <td class="c-Table__cell">${report.targetId}</td>
+                    <td class="c-Table__cell">
+                        <a href="${report.targetLink}">${report.targetName}</a>
+                    </td>
                     <td class="c-Table__cell">${report.count}</td>
                     <td class="c-Table__cell">${report.aggregatedWeight}</td>
-                    <th class="c-Table__cell">
+                    <td class="c-Table__cell">
                         <fmt:formatDate value="${report.firstReportDate}" pattern="MM/dd/yyyy HH:mm"
                                         type="date" dateStyle="short" timeZone="America/New_York"/>
-                    </th>
-                    <th class="c-Table__cell">
+                    </td>
+                    <td class="c-Table__cell">
                         <fmt:formatDate value="${report.lastReportDate}" pattern="MM/dd/yyyy HH:mm"
                                         type="date" dateStyle="short" timeZone="America/New_York"/>
-                    </th>
+                    </td>
                     <td class="c-Table__cell">
-                        <a class="c-Button__primary--small" href="">Approve content</a> <br />
-                        <a class="c-Button__primary--small" href="">Revert content</a> <br />
-                        <a class="c-Button__primary--small" href="">Remove content</a>
+                        <a class="c-Button__primary small margins" href="${approveContentUrl}">
+                            Approve
+                        </a>
+                        <br />
+                        <a class="c-Button__primary small margins" href="${removeContentUrl}">
+                            Remove
+                        </a>
                     </td>
                 </tr>
             </c:forEach>

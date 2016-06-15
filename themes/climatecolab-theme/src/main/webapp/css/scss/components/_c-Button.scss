@@ -35,6 +35,9 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
     font-size: 16px;
     padding: $c-Button__padding--large;
   }
+  &.margins {
+    margin: 5px;
+  }
 }
 
 @function hover-color($color, $hover-color: null) {

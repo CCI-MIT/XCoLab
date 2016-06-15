@@ -43,6 +43,7 @@ public final class FlaggingClient {
                         + "/aggregatedReports")
                         .queryParam("startRecord", start)
                         .queryParam("limitRecord", last)
+                        .queryParam("managerAction", ManagerAction.PENDING)
                         .queryParam("sort", "firstReportDate");
 
         return RequestUtils.getList(uriBuilder,
@@ -160,7 +161,11 @@ public final class FlaggingClient {
         return createReport(report);
     }
 
-    public static Report handleReport(long managerId, ManagerAction managerAction, long reportId) {
-        return null;
+    public static boolean handleReport(long managerId, ManagerAction managerAction, long reportId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/reports/" + reportId + "/handle")
+                    .queryParam("managerMemberId", managerId)
+                    .queryParam("managerAction", managerAction);
+        return RequestUtils.post(uriBuilder, null, Boolean.class);
     }
 }
