@@ -98,9 +98,10 @@ jQuery(function() {
                 window.disableAddComment();
 
                 if(getMustFilterContent()) {
-                    var $thecomment = jQuery(".c-Comment__new");
-                    var text = $thecomment.find(".commentContent").val();
-                    if(text == "") {
+                    if(CKEDITOR.instances.messageContent === undefined) {
+                        var $thecomment = jQuery(".c-Comment__new");
+                        var text = $thecomment.find(".commentContent").val();
+                    }else{
                         text = CKEDITOR.instances.messageContent.getData();
                     }
                     handleFilteredContent(text,"DISCUSSION", "#filtering_uuid",function () { $('#addCommentForm').submit() });
