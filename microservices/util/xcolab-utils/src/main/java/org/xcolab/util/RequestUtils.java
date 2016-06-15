@@ -204,16 +204,16 @@ public final class RequestUtils {
 
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);
 
-        return restTemplate
-                .exchange(uriBuilder.build().toString(), HttpMethod.PUT, httpEntity, Boolean.class)
-                .getBody();
+        restTemplate
+                .exchange(uriBuilder.build().toString(), HttpMethod.PUT, httpEntity, Void.class);
+        return true;
     }
 
     public static  boolean delete(UriComponentsBuilder uriBuilder) {
 
-        return restTemplate
-                .exchange(uriBuilder.build().toString(), HttpMethod.DELETE, null, Boolean.class)
-                .getBody();
+        restTemplate
+                .exchange(uriBuilder.build().toString(), HttpMethod.DELETE, null, Void.class);
+        return true;
     }
 
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {
