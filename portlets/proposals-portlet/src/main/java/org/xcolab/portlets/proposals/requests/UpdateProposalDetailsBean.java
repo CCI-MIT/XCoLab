@@ -28,8 +28,11 @@ public class UpdateProposalDetailsBean {
     private boolean isMove;
     private MoveType moveType;
 
+    private String uuid;
+
     // legacy
     private String description;
+
 
 
     public UpdateProposalDetailsBean(ProposalWrapper proposal) throws PortalException, SystemException {
@@ -158,5 +161,13 @@ public class UpdateProposalDetailsBean {
 
     public void setMoveType(MoveType moveType) {
         this.moveType = moveType;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

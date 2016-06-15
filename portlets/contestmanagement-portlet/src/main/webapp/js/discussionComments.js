@@ -76,14 +76,17 @@ jQuery(function() {
                 deferUntilLogin();
             } else {
                 if (! window.isAddCommentFormValid()) {
+                    event.preventDefault();
                     return false;
                 }
                 window.disableAddComment();
 
 
                 if(getMustFilterContent()) {
-                    handleFilteredContent(function () { $('#addCommentForm').submit() });
-                    return;
+                    var text = jQuery(".c-Comment__new .commentContent").val();
+
+
+                    return false;;
                 } else {
                     $('#addCommentForm').submit();
                 }
@@ -93,6 +96,23 @@ jQuery(function() {
     }
 });
 
-function handleFilteredContent(callback){
-    console.log("should show modal window");
+function handleFilteredContent(textInput, source, uuidField, callback){
+
+    $("#processedFailed").hide();
+    $("#modal_filtering_prof").modal({escapeClose: true, clickClose: false, showClose: true});
+    var parameters ={
+        fullText: textInput,
+        source : source
+    };
+    $.post("/profanityfiltering/" ,parameters , function (response) {
+        var responseData = JSON.parse(response);
+
+        if (responseData.valid == "false") {
+            $("#processedFailed").show();
+        } else {
+            var uuid = responseData.uuid;
+            $(uuidField).val(uuid);
+            callback.call(null);
+        }
+    });
 }

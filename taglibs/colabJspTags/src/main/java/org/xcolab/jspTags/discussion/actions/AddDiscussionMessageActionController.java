@@ -17,10 +17,14 @@ import org.xcolab.activityEntry.discussion.DiscussionAddCommentActivityEntry;
 import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.filtering.FilteringClient;
+import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
+import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
@@ -51,7 +55,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         try {
-            long threadId = Long.parseLong(newMessage.getThreadId());
+                long threadId = Long.parseLong(newMessage.getThreadId());
 
             checkPermissions(request, "User isn't allowed to add comment", 0L);
             long userId = themeDisplay.getUser().getUserId();
@@ -77,6 +81,16 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                             new DiscussionAddCommentActivityEntry());
                 }
             }
+            if(ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue()){
+                try {
+                    FilteredEntry filteredEntry = FilteringClient.getFilteredEntryByUuid(newMessage.getUuid());
+                    filteredEntry.setSourceId(comment.getCommentId());
+                    filteredEntry.setAuthorId(userId);
+                    FilteringClient.updateFilteredEntry(filteredEntry);
+                } catch (FilteredEntryNotFoundException ignored) {
+                }
+            }
+
 
             //delete the cached comment cookie, if it exists
             Cookie[] cookies = request.getCookies();

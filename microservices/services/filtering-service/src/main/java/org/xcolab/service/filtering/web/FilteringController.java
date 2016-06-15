@@ -46,11 +46,23 @@ public class FilteringController {
         return filteredEntryDao.getByUuid(uuid);
     }
 
+    /*
     @RequestMapping(value = "/filteredEntries/{filterId}", method = RequestMethod.GET)
     public FilteredEntry checkStatus(@PathVariable Long filterId) throws NotFoundException {
         return filteredEntryDao.get(filterId);
     }
+    */
 
+    @RequestMapping(value = "/filteredEntries/{filteredEntryId}", method = RequestMethod.PUT)
+    public boolean updateProposal(@RequestBody FilteredEntry filteredEntry,
+                                  @PathVariable("filteredEntryId") Long filteredEntryId) throws NotFoundException {
+
+        if (filteredEntryId == null || filteredEntryId == 0 || filteredEntryDao.get(filteredEntryId) == null) {
+            throw new NotFoundException("No filteredEntry with id " + filteredEntryId);
+        } else {
+            return filteredEntryDao.update(filteredEntry);
+        }
+    }
     @RequestMapping(value = "/filteredEntries/processCreatedEntries", method = RequestMethod.GET)
     public void processCreatedEntries() {
         List<FilteredEntry> entriesToProcess = filteredEntryDao.getByStatus(FilteringStatus.CREATED.getId());

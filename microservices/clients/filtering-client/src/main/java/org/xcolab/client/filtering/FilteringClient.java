@@ -11,13 +11,13 @@ public final class FilteringClient {
     private static final String EUREKA_APPLICATION_ID = "localhost:" + RequestUtils.getServicesPort() + "/filtering-service";
 
 
-    public static FilteredEntry getStatus(Long filterId) throws FilteredEntryNotFoundException {
+    public static FilteredEntry getFilteredEntryByUuid(String uuid) throws FilteredEntryNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/filteredEntries/" + filterId + "");
+                EUREKA_APPLICATION_ID + "/filteredEntries/" + uuid + "");
         try {
-            return RequestUtils.get(uriBuilder, FilteredEntry.class, "filteredEntryId_ " + filterId);
+            return RequestUtils.get(uriBuilder, FilteredEntry.class, "filteredEntryId_ " + uuid);
         } catch (EntityNotFoundException e) {
-            throw new FilteredEntryNotFoundException("Proposal with id " + filterId + " not found.");
+            throw new FilteredEntryNotFoundException("Proposal with id " + uuid + " not found.");
         }
     }
     public static FilteredEntry createFilteredEntry(FilteredEntry filteredEntry) {

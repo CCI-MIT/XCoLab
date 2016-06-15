@@ -20,6 +20,9 @@ import org.xcolab.activityEntry.proposal.ProposalAttributeUpdateActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalCreatedActivityEntry;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.filtering.FilteringClient;
+import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
+import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -99,6 +102,15 @@ public class AddUpdateProposalDetailsActionController {
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
                     new ProposalAttributeUpdateActivityEntry());
         }
+        if(ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue()){
+            try {
+                FilteredEntry filteredEntry = FilteringClient.getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
+                filteredEntry.setSourceId(proposalWrapper.getProposalId());
+                filteredEntry.setAuthorId(userId);
+                FilteringClient.updateFilteredEntry(filteredEntry);
+            } catch (FilteredEntryNotFoundException ignored) {
+            }
+        }
 
         proposalsContext.invalidateContext(request);
 
@@ -120,7 +132,7 @@ public class AddUpdateProposalDetailsActionController {
                     proposalsContext.getContestPhase(request), null);
             model.addAttribute("proposal", proposalWrapped);
         }
-
+        model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue());
         model.addAttribute("updateProposalSectionsBean",updateProposalSectionsBean);
 
         request.setAttribute("imageUploadServiceUrl",

@@ -76,7 +76,7 @@ jQuery(function() {
         }
 
         //submit button functionality for adding new comments
-        $("#addCommentButton").click(function() {
+        $("#addCommentButton").click(function(event) {
             //save the comment in a cookie, in case the user is not logged in
 
             if($("#cke_messageContent iframe") == null || $("#cke_messageContent iframe").contents().find("body").text() == "") {
@@ -91,6 +91,7 @@ jQuery(function() {
                 deferUntilLogin();
             } else {
                 if (! window.isAddCommentFormValid()) {
+                    event.preventDefault();
                     return false;
                 }
                 disableDirtyCheck();
@@ -99,7 +100,12 @@ jQuery(function() {
                 if(getMustFilterContent()) {
                     var $thecomment = jQuery(".c-Comment__new");
                     var text = $thecomment.find(".commentContent").val();
-                    handleFilteredContent(text,"DISCUSSION", "#nofieldYet",function () { $('#addCommentForm').submit() });return
+                    if(text == "") {
+                        text = CKEDITOR.instances.messageContent.getData();
+                    }
+                    handleFilteredContent(text,"DISCUSSION", "#filtering_uuid",function () { $('#addCommentForm').submit() });
+                    event.preventDefault();
+                    return false;
                 } else {
                     $('#addCommentForm').submit();
                 }
@@ -109,33 +115,22 @@ jQuery(function() {
     }
 });
 function handleFilteredContent(textInput, source, uuidField, callback){
-    console.log("should show modal window");
 
-    $("#modal_filtering_prof").modal({
-                           escapeClose: true,
-                           clickClose: false,
-                           showClose: true
-    });
-
+    $("#processedFailed").hide();
+    $("#modal_filtering_prof").modal({escapeClose: true, clickClose: false, showClose: true});
     var parameters ={
         fullText: textInput,
         source : source
     };
-    //open modal window
     $.post("/profanityfiltering/" ,parameters , function (response) {
         var responseData = JSON.parse(response);
-        console.log("response is : " + responseData.valid)
-        if (responseData.valid = "false") {
-            //alert("Could not process request. Please contact the Administrator");
+
+        if (responseData.valid == "false") {
             $("#processedFailed").show();
         } else {
-
             var uuid = responseData.uuid;
             $(uuidField).val(uuid);
-
             callback.call(null);
-
         }
-
     });
 }
