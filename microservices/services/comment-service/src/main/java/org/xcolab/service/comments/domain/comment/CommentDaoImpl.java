@@ -39,7 +39,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public List<Comment> findByGiven(PaginationHelper paginationHelper,
-            Long authorId, Long threadId) {
+            Long authorId, Long threadId, boolean includeDeleted) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(COMMENT)
                 .getQuery();
@@ -59,7 +59,9 @@ public class CommentDaoImpl implements CommentDao {
                     break;
             }
         }
-        query.addConditions(COMMENT.DELETED_DATE.isNull());
+        if (!includeDeleted) {
+            query.addConditions(COMMENT.DELETED_DATE.isNull());
+        }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
         return query.fetchInto(Comment.class);
     }

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.CommentNotFoundException;
+import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.model.tables.pojos.Report;
 import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.service.flagging.domain.report.ReportDao;
@@ -57,12 +59,7 @@ public class FlaggingService {
 
         final Timestamp actionDate = new Timestamp(new Date().getTime());
 
-        for (Report singleReport : equivalentReports) {
-            singleReport.setManagerAction(managerAction.name());
-            singleReport.setManagerMemberId(managerMemberId);
-            singleReport.setManagerActionDate(actionDate);
-            reportDao.update(singleReport);
-
+        try {
             switch (managerAction) {
                 case APPROVE:
                     if (targetType == TargetType.PROPOSAL) {
@@ -87,6 +84,15 @@ public class FlaggingService {
                     break;
                 default:
             }
+        } catch (CommentNotFoundException e) {
+            return false;
+        }
+
+        for (Report singleReport : equivalentReports) {
+            singleReport.setManagerAction(managerAction.name());
+            singleReport.setManagerMemberId(managerMemberId);
+            singleReport.setManagerActionDate(actionDate);
+            reportDao.update(singleReport);
         }
 
         return true;
@@ -104,8 +110,12 @@ public class FlaggingService {
         //TODO: implement
     }
 
-    private void approveComment(long commentId) {
-        //TODO: implement
+    private void approveComment(long commentId) throws CommentNotFoundException {
+        final Comment comment = CommentClient.getComment(commentId, true);
+        if (comment.getDeletedDate() != null) {
+            comment.setDeletedDate(null);
+            CommentClient.updateComment(comment);
+        }
     }
 
     private void removeComment(long commentId) {
