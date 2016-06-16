@@ -6,7 +6,6 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalMoveHistory;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
@@ -21,7 +20,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
@@ -34,11 +35,11 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.utils.EntityGroupingUtil;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
-import javax.portlet.PortletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +50,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import javax.portlet.PortletRequest;
 
 @Controller
 @RequestMapping("view")
@@ -78,6 +81,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
+        model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
 
         final Proposal proposal =  proposalsContext.getProposal(request);
         final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);

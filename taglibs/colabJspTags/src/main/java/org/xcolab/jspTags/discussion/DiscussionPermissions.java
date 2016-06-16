@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -27,7 +28,8 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanReport() {
-        return getCanAdminMessages();
+        return ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.getBooleanValue()
+                || getCanAdminMessages();
     }
 
     public boolean getCanAdminSpamReports() {

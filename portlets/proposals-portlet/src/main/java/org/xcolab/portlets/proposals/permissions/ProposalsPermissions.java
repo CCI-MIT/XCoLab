@@ -15,6 +15,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.enums.MemberRoleChoiceAlgorithm;
@@ -67,6 +68,15 @@ public class ProposalsPermissions {
         user = themeDisplay.getUser();
         this.contestPhase = contestPhase;
         this.proposal = proposal;
+    }
+
+    public boolean getCanReport() {
+        return ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.getBooleanValue()
+                || getCanAdminAll();
+    }
+
+    public boolean getCanReportProposal() throws SystemException {
+        return getCanReport() && !isProposalMember();
     }
 
     /**
