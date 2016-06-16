@@ -1,5 +1,6 @@
 package org.xcolab.client.filtering;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
@@ -10,15 +11,18 @@ public final class FilteringClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:" + RequestUtils.getServicesPort() + "/filtering-service";
 
-
-    public static FilteredEntry getFilteredEntryByUuid(String uuid) throws FilteredEntryNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/filteredEntries/" + uuid + "");
+    public static FilteredEntry getFilteredEntryByUuid(String uuid)
+            throws FilteredEntryNotFoundException {
         try {
-            return RequestUtils.get(uriBuilder, FilteredEntry.class, "filteredEntryId_ " + uuid);
-        } catch (EntityNotFoundException e) {
-            throw new FilteredEntryNotFoundException("Proposal with id " + uuid + " not found.");
+            if (StringUtils.isNotBlank(uuid)) {
+                UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                        EUREKA_APPLICATION_ID + "/filteredEntries/" + uuid + "");
+                return RequestUtils
+                        .get(uriBuilder, FilteredEntry.class, "filteredEntryId_ " + uuid);
+            }
+        } catch (EntityNotFoundException ignored) {
         }
+        throw new FilteredEntryNotFoundException("FilteredEntry with uuid " + uuid + " not found.");
     }
     public static FilteredEntry createFilteredEntry(FilteredEntry filteredEntry) {
 
@@ -34,5 +38,4 @@ public final class FilteringClient {
 
         RequestUtils.put(uriBuilder, filteredEntry);
     }
-
 }

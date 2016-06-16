@@ -42,7 +42,7 @@ import javax.servlet.http.Cookie;
 public class AddDiscussionMessageActionController extends BaseDiscussionsActionController {
 
     private final static Log _log = LogFactoryUtil.getLog(AddDiscussionMessageActionController.class);
-    
+
     private final static String COMMENT_ANALYTICS_KEY = "COMMENT_CONTEST_ENTRIES";
     private final static String COMMENT_ANALYTICS_CATEGORY = "User";
     private final static String COMMENT_ANALYTICS_ACTION = "Comment on contest entry";

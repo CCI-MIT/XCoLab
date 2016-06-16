@@ -49,7 +49,7 @@ public interface TabActivityCountAlgorithm {
     TabActivityCountAlgorithm flagCount = new TabActivityCountAlgorithm() {
         @Override
         public int getActivityCount(TabContext context, PortletRequest request) {
-            return FlaggingClient.countReports();
+            return FlaggingClient.countReports(null, null, null, null, null);
         }
         private final Log _log = LogFactoryUtil.getLog(TabActivityCountAlgorithm.class);
     };
