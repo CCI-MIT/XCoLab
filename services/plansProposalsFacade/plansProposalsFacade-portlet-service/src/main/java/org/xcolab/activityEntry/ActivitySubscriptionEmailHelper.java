@@ -25,17 +25,9 @@ import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.mail.internet.InternetAddress;
 
@@ -83,15 +75,15 @@ public class ActivitySubscriptionEmailHelper {
 
     public static void sendEmailNotifications(ServiceContext serviceContext) throws SystemException, PortalException {
 
-        /*
-        to ease debug please leave it here
+
+        //to ease debug please leave it here
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             lastEmailNotification = sdf.parse("2016-06-03 00:00:00");
             lastDailyEmailNotification = sdf.parse("2016-06-03 00:00:00");
         } catch (ParseException e) {
             lastEmailNotification = new Date();
-        }*/
+        }
 
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
@@ -111,9 +103,10 @@ public class ActivitySubscriptionEmailHelper {
             Date now = new Date();
 
             // Send the daily digest at the predefined hour only
-            if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
+            if /*(now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
                     && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR)
-                    {
+                    {*/
+                    (true){
                 try {
                     List<ActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
                     sendDailyDigestNotifications(res, serviceContext);
@@ -183,36 +176,44 @@ public class ActivitySubscriptionEmailHelper {
     }
 
     private static Map<Member, List<ActivityEntry>> getUserToActivityDigestMap(List<ActivityEntry> activities) throws SystemException, PortalException {
-        Map<Member, List<ActivityEntry>> userDigestActivitiesMap = new HashMap<>();
+        Map<Long, List<ActivityEntry>> userDigestActivitiesMap = new HashMap<>();
+        Map<Member, List<ActivityEntry>> userDigestActivitiesMapForReturn = new HashMap<>();
 
         for (ActivityEntry activity : activities) {
             // Aggregate all activities for all users
             for (ActivitySubscription subscriptionObj : getActivitySubscribers(activity)) {
 
 
-                Member recipient = null;
-                try {
-                    recipient = MembersClient.getMember(subscriptionObj.getReceiverId());
-                } catch (MemberNotFoundException e) {
-                    continue;
-                }
+                Long recipientId = null;
+                recipientId = subscriptionObj.getReceiverId();
+
                 if (subscriptionObj.getReceiverId() == activity.getMemberId()) {
                     continue;
                 }
 
-                if (MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailOnActivity() &&
-                        MessageUtil.getMessagingPreferences(recipient.getUserId()).getEmailActivityDailyDigest()) {
+                if (MessageUtil.getMessagingPreferences(recipientId).getEmailOnActivity() &&
+                        MessageUtil.getMessagingPreferences(recipientId).getEmailActivityDailyDigest()) {
 
-                    List<ActivityEntry> userDigestActivities = userDigestActivitiesMap.get(recipient);
+                    List<ActivityEntry> userDigestActivities = userDigestActivitiesMap.get(recipientId);
                     if (Validator.isNull(userDigestActivities)) {
                         userDigestActivities = new ArrayList<>();
-                        userDigestActivitiesMap.put(recipient, userDigestActivities);
+                        userDigestActivitiesMap.put(recipientId, userDigestActivities);
                     }
                     userDigestActivities.add(activity);
                 }
             }
         }
-        return userDigestActivitiesMap;
+
+        Iterator<Long> it = userDigestActivitiesMap.keySet().iterator();
+        while(it.hasNext()) {
+            try {
+                Long memberId = it.next();
+                Member recipient = MembersClient.getMember(memberId);
+                userDigestActivitiesMapForReturn.put(recipient, userDigestActivitiesMap.get(memberId));
+            } catch (MemberNotFoundException e) {
+            }
+        }
+        return userDigestActivitiesMapForReturn;
     }
 
     private static List<ActivityEntry> getActivitiesAfter(Date minDate) throws SystemException {

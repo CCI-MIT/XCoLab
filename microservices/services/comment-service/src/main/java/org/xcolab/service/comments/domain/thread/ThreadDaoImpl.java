@@ -183,7 +183,13 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     public Long getProposalIdForThread(long threadId){
-        return dslContext.select(PROPOSAL.PROPOSAL_ID).from(THREAD).innerJoin(PROPOSAL).on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                .where(THREAD.THREAD_ID.eq(threadId)).fetchOne().into(Long.class);
+        Record record = dslContext.select(PROPOSAL.PROPOSAL_ID).from(THREAD).innerJoin(PROPOSAL).on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
+                .where(THREAD.THREAD_ID.eq(threadId)).fetchOne();
+        if ( record == null ){
+            return 0l;
+        }else{
+            return  record.into(Long.class);
+        }
+
     }
 }
