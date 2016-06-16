@@ -77,7 +77,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             if (!commentThread.getIsQuiet()) {
 
                 if (commentThread.getCategory() == null) {
-                    if (CommentClient.getProposalIdForThread(commentThread.getThreadId()) != 0L) {
+                    final Long proposalIdForThread = CommentClient
+                            .getProposalIdForThread(commentThread.getThreadId());
+                    if (proposalIdForThread != null && proposalIdForThread != 0L) {
                         ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(),
                                 comment.getCommentId() + "",
                                 new DiscussionAddProposalCommentActivityEntry());
