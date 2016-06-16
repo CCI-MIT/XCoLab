@@ -18,11 +18,11 @@
 
   <div id="bread" class="pro">
     <a href="/web/guest/community">Community</a> <img
-          src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
+          src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/members">Members</a> <img
-          src="/climatecolab-theme/images/arrow.gif" width="8" height="8" /> <a
+          src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
-    <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />Manage Subscriptions
+    <img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />Manage Subscriptions
   </div>
 
   <div id="content">

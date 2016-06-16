@@ -1,13 +1,14 @@
-<jsp:root
-        xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:portlet="http://java.sun.com/portlet_2_0"
         version="2.0">
 
+    <jsp:directive.include file="init.jspx"/>
+
     <div id="bread" class="pro">
         <a href="/web/guest/members">Community</a>&#160;
-        <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;
+        <img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />&#160;
         <a href="/web/guest/discussion">Discussion</a>&#160;
-        <img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;
+        <img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />&#160;
         <a href="/web/guest/discussion/-/discussion/categories/create">Create Category</a>&#160;
     </div>
 

@@ -29,9 +29,9 @@
 
 	<div id="bread" class="pro">
 		<a href="/web/guest/community">Community</a>
-		<img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />
+		<img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />
 		<a href="/web/guest/members">Members</a>
-		<img src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />
+		<img src="${themeDisplay.pathThemeImages}/images/arrow.gif" width="8" height="8" />
 		<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
 	</div>
 	<c:choose>
@@ -42,7 +42,7 @@
 		<div class="comm_member" style="margin-top: 0;">
 
             <!-- <c:if test="${currentUserProfile.attendsConference}">
-				<a href="/web/guest/conference2014" class="attendingConference"><img src="/climatecolab-theme/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
+				<a href="/web/guest/conference2014" class="attendingConference"><img src="${themeDisplay.pathThemeImages}/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
 			</c:if> -->
 
 			<div class="comm_member-photo">
@@ -58,7 +58,7 @@
 								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
-										<img src="/climatecolab-theme/images/${currentUserProfile.role.imageUrl}.png" width="16" height="16" />
+										<img src="${themeDisplay.pathThemeImages}/${currentUserProfile.role.imageUrl}.png" width="16" height="16" />
 									</div>
 									${currentUserProfile.role.printName}
 								</div>

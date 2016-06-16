@@ -12,7 +12,7 @@
 
 	<div id="bread" class="pro">
 		<a href="/web/guest/community">Community</a>&#160; <img
-			src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;
+			src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />&#160;
 		<a href="/web/guest/members">Members</a>
 	</div>
 

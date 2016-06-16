@@ -12,7 +12,7 @@
 							<img src="/image/proposal?img_id=${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestName }" />
 						</c:when>
 						<c:otherwise>
-							<img src="/climatecolab-theme/images/proposal_default.png" width="52" height="52" alt="${contestWrapper.contestName}" />
+							<img src="${themeDisplay.pathThemeImages}/proposal_default.png" width="52" height="52" alt="${contestWrapper.contestName}" />
 						</c:otherwise>
 					</c:choose>
 				</div>

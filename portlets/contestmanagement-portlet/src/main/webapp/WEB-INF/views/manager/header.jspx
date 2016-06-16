@@ -12,7 +12,7 @@
 		<div class="inner">
 			<div class="c-Headline">
 				<div class="proposal-image">
-					<img src="/climatecolab-theme/images/proposal_default.png" width="52" height="52" alt="Some fancy header image" />
+					<img src="${themeDisplay.pathThemeImages}/proposal_default.png" width="52" height="52" alt="Some fancy header image" />
 				</div>
 				<div class="proposal-title">
 					<h1>Contest management tool - Contest manager</h1>
