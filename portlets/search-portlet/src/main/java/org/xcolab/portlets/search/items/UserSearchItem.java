@@ -14,6 +14,11 @@ public class UserSearchItem extends AbstractSearchItem {
     private final static String[] CONTENT_FIELDS = {"firstName", "lastName"};
 
     @Override
+    public String getPrintName() {
+        return "Members";
+    }
+
+    @Override
     public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
         return concatFields(TITLE_FIELDS, doc, highlighter);
     }

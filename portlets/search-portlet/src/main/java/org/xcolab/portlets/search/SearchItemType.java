@@ -12,31 +12,30 @@ import org.xcolab.portlets.search.paging.PageLinkWrapper;
 
 public enum SearchItemType {
 
-    PLAN("Proposals", new String[]{"entryClassName", "com.ext.portlet.model.Proposal"},
+    PLAN(new String[]{"entryClassName", "com.ext.portlet.model.Proposal"},
             new String[]{"content", "title", "pitch", "sections"}, ProposalSearchItem.class),
 
-    CONTEST("Contests", new String[]{"entryClassName", "com.ext.portlet.model.Contest"},
+    CONTEST(new String[]{"entryClassName", "com.ext.portlet.model.Contest"},
             new String[]{"content", "title"}, ContestSearchItem.class),
 
-    USER("Users", new String[]{"entryClassName", "com.liferay.portal.model.User"},
+    USER(new String[]{"entryClassName", "com.liferay.portal.model.User"},
             new String[]{"screenName", "firstName", "lastName"}, UserSearchItem.class),
 
-    CONTENT("Content", new String[]{"entryClassName",
+    CONTENT(new String[]{"entryClassName",
             "com.liferay.portlet.wiki.model.* OR com.liferay.portlet.journal.model.JournalArticle"},
             new String[]{"title"}, ContentSearchItem.class),
 
-    BLOG("News", new String[]{"entryClassName", "com.liferay.portlet.blogs.model.*"},
+    BLOG(new String[]{"entryClassName", "com.liferay.portlet.blogs.model.*"},
             new String[]{"title", "content"}, BlogSearchItem.class),
 
-    DISCUSSION("Discussions", new String[]{"entryClassName", "com.ext.portlet.model.DiscussionMessage"},
+    DISCUSSION(new String[]{"entryClassName", "com.ext.portlet.model.DiscussionMessage"},
             new String[]{"title", "content"}, DiscussionSearchItem.class);
 
     private final String[] determinatorFieldValue;
     private final String[] searchFields;
-    private final String searchInDescription;
     private final Class<? extends AbstractSearchItem> searchItemClass;
 
-    SearchItemType(String searchInDescription, String[] determinatorInfo, String[] searchFields,
+    SearchItemType(String[] determinatorInfo, String[] searchFields,
             Class<? extends AbstractSearchItem> searchItemClass) {
         this.searchItemClass = searchItemClass;
         if (determinatorInfo.length != 2) {
@@ -44,7 +43,6 @@ public enum SearchItemType {
         }
         this.determinatorFieldValue = determinatorInfo;
         this.searchFields = searchFields;
-        this.searchInDescription = searchInDescription;
     }
 
     public String getQuery(String userQuery) {
@@ -90,10 +88,6 @@ public enum SearchItemType {
         return false;
     }
 
-    public String getSearchInDescription() {
-        return searchInDescription;
-    }
-
     public String getName() {
         return name();
     }
@@ -103,7 +97,7 @@ public enum SearchItemType {
     }
 
     public String getPrintName() {
-        return searchInDescription;
+        return getSearchItem().getPrintName();
     }
 
     public AbstractSearchItem getSearchItem() {
