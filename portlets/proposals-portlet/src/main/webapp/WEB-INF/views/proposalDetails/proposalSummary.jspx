@@ -135,7 +135,7 @@
         </div>
 
         <div class="prop-avatar">
-        	<proposalsPortlet:userPortrait height="42" screenName="${empty proposal.authorName }" portraitId="${proposal.author.portraitId }" width="42" />
+        	<proposalsPortlet:userPortrait height="42" screenName="${empty proposal.authorName }" portraitId="${proposal.author.portraitId }" userId="${proposal.author.userId}" width="42" />
             By:&#160;
             	<c:choose>
             		<c:when test="${empty proposal.team }">

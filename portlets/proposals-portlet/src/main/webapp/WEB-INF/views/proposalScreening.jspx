@@ -47,7 +47,8 @@
                                     <td>
                                         <div class="review-status-container">
                                             <proposalsPortlet:userPortrait screenName="${judge.screenName}"
-                                                                           portraitId="${judge.portraitId}" width="30"
+                                                                           portraitId="${judge.portraitId}"
+                                                                           userId="${judge.userId}" width="30"
                                                                            height="30"/>
                                             <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
                                                                        proposalId="${proposal.proposalId}">

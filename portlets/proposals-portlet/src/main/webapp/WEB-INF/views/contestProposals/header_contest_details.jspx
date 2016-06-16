@@ -144,6 +144,7 @@
                                             <proposalsPortlet:userPortrait
                                                     screenName="${teamRoleUser.screenName }"
                                                     portraitId="${teamRoleUser.portraitId}" width="30"
+                                                    userId="${teamRoleUser.userId}"
                                                     height="30"/>
                                             <proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}"
                                                                              text="${teamRoleUser.fullName}"/>
