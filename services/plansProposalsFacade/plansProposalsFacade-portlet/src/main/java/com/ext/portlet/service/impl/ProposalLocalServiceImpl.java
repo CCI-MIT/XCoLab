@@ -81,6 +81,7 @@ import org.xcolab.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
@@ -216,40 +217,41 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
         final Contest contest = contestLocalService.fetchContest(contestPhase.getContestPK());
         ContestType contestType = contestTypeLocalService.getContestType(contest);
+
         // create discussions
         final String proposalEntityName = contestType.getProposalName()+" ";
-        DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " main discussion");
 
-        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contest, proposal));
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
-        proposal.setDiscussionId(proposalDiscussion.getId());
 
-        DiscussionCategoryGroup resultsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " results discussion");
-        resultsDiscussion.setIsQuiet(true);
+        final CommentThread mainCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " main discussion",
+                authorId, false);
 
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(resultsDiscussion);
-        proposal.setResultsDiscussionId(resultsDiscussion.getId());
+        proposal.setDiscussionId(mainCommentThread.getThreadId());
 
-        DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " judges discussion");
-        judgesDiscussion.setIsQuiet(true);
 
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(judgesDiscussion);
-        proposal.setJudgeDiscussionId(judgesDiscussion.getId());
+        final CommentThread resultsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId +" results discussion",
+                authorId, true);
 
-        DiscussionCategoryGroup advisorsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " advisors discussion");
-        advisorsDiscussion.setIsQuiet(true);
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(advisorsDiscussion);
-        proposal.setAdvisorDiscussionId(advisorsDiscussion.getId());
+        proposal.setResultsDiscussionId(resultsCommentThread.getThreadId());
 
-        DiscussionCategoryGroup fellowsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " fellows discussion");
-        fellowsDiscussion.setIsQuiet(true);
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(fellowsDiscussion);
-        proposal.setFellowDiscussionId(fellowsDiscussion.getId());
+
+
+        final CommentThread judgeCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId +" judges discussion",
+                authorId, true);
+
+        proposal.setJudgeDiscussionId(judgeCommentThread.getThreadId());
+
+
+
+        final CommentThread advisorsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " advisors discussion",
+                authorId, true);
+
+        proposal.setAdvisorDiscussionId(advisorsCommentThread.getThreadId());
+
+
+        final CommentThread fellowsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " fellows discussion",
+                authorId, true);
+
+        proposal.setFellowDiscussionId(fellowsCommentThread.getThreadId());
 
         // create group
         Group group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
@@ -276,6 +278,16 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         subscribe(proposalId, authorId);
 
         return proposal;
+    }
+
+    private CommentThread createCommentThreadForProposal(String title, Long authorId, boolean isQuiet){
+        CommentThread commentThread = new CommentThread();
+        commentThread.setAuthorId(authorId);
+        commentThread.setCategoryId(null);
+        commentThread.setTitle(title);
+        commentThread.setIsQuiet(isQuiet);
+        commentThread = CommentClient.createThread(commentThread);
+        return commentThread;
     }
 
     @Override

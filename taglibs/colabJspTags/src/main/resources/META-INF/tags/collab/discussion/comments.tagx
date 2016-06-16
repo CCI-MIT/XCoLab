@@ -103,6 +103,7 @@
 									<a id="_message_${message.commentId}"></a>
 									<collab:userPortrait screenName="${message.author.screenName}"
 														 portraitId="${message.author.portraitId}"
+														 userId="${message.author.userId}"
 														 width="59" height="59" />
 									<br />
 									<collab:userLinkSimple text="${message.author.screenName}" userId="${message.author.userId}" /> <br />

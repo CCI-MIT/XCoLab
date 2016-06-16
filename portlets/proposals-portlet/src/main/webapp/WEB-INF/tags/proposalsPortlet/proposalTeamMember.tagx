@@ -3,6 +3,6 @@
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	version="2.0">
 	<jsp:directive.attribute name="member" type="org.xcolab.wrappers.BaseProposalTeamMemberWrapper" required="true" rtexprvalue="true" description="Member to be shown" />
-	<proposalsPortlet:userPortrait height="42" screenName="${member.screenName }" portraitId="${member.userId }" width="42" />
+	<proposalsPortlet:userPortrait height="42" screenName="${member.screenName }" portraitId="${member.userId }" userId="${member.userId}" width="42" />
 	<proposalsPortlet:userLinkSimple userId="${member.userId }" text="${member.screenName }" />
 </jsp:root>
