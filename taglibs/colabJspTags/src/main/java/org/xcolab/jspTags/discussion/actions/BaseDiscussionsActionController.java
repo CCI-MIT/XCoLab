@@ -26,7 +26,8 @@ public abstract class BaseDiscussionsActionController {
 
     private static final Log _log = LogFactoryUtil.getLog(BaseDiscussionsActionController.class);
 
-    public void checkPermissions(ActionRequest request, String accessDeniedMessage, long additionalId)
+    public void checkPermissions(ActionRequest request, String accessDeniedMessage,
+            long additionalId)
             throws DiscussionAuthorizationException {
 
         DiscussionPermissions permissions = new DiscussionPermissions(request);
@@ -40,11 +41,13 @@ public abstract class BaseDiscussionsActionController {
         }
     }
 
-    public void redirectToReferrer(ActionRequest request, ActionResponse response) throws IOException {
+    public void redirectToReferrer(ActionRequest request, ActionResponse response)
+            throws IOException {
         redirectToReferrer(request, response, null);
     }
 
-    public void redirectToReferrer(ActionRequest request, ActionResponse response, Map<String, String> urlParametersToInclude) throws IOException {
+    public void redirectToReferrer(ActionRequest request, ActionResponse response,
+            Map<String, String> urlParametersToInclude) throws IOException {
 
         request.setAttribute("ACTION_REDIRECTING", true);
 
@@ -73,7 +76,8 @@ public abstract class BaseDiscussionsActionController {
                 if (splitIndex < 0) {
                     splitIndex = referrer.length();
                 }
-                referrer = referrer.substring(0, splitIndex) + "?" + URLEncodedUtils.format(targetPairs, "UTF-8");
+                referrer = referrer.substring(0, splitIndex) + "?" + URLEncodedUtils
+                        .format(targetPairs, "UTF-8");
             } catch (URISyntaxException e) {
                 _log.warn("couldn't parse referrer URL: " + referrer, e);
             }
@@ -86,6 +90,7 @@ public abstract class BaseDiscussionsActionController {
             throws CommentNotFoundException;
 
     private static class SimpleNameValuePair implements NameValuePair {
+
         String name, value;
 
         private SimpleNameValuePair(String name, String value) {

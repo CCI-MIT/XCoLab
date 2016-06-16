@@ -63,7 +63,8 @@ public class LoadThreadStartTag extends BodyTagSupport {
             if (discussionPermissions == null) {
                 discussionPermissions = new DiscussionPermissions(portletRequest);
             } else {
-                _log.info("Found custom DiscussionPermissions of type " + discussionPermissions.getClass().getName());
+                _log.info("Found custom DiscussionPermissions of type " + discussionPermissions
+                        .getClass().getName());
             }
 
             pageContext.setAttribute("thread", thread);
@@ -81,8 +82,9 @@ public class LoadThreadStartTag extends BodyTagSupport {
         return EVAL_BODY_INCLUDE;
     }
 
-    private PortletRequest getPortletRequest(PageContext pageContext) throws JspException{
-        PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
+    private PortletRequest getPortletRequest(PageContext pageContext) throws JspException {
+        PortletRequest portletRequest = (PortletRequest) pageContext
+                .getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
         if (portletRequest == null) {
             throw new JspException("Can't find portlet request");
         }

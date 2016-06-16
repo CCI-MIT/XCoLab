@@ -1,6 +1,5 @@
 package org.xcolab.jspTags.discussion;
 
-import com.ext.portlet.service.SpamReportLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -13,7 +12,6 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.util.enums.flagging.TargetType;
 
 import javax.portlet.PortletRequest;
-
 
 public class DiscussionPermissions {
 
@@ -39,16 +37,10 @@ public class DiscussionPermissions {
     public boolean getCanReportMessage(Comment comment) throws SystemException {
         return getCanReport() && comment.getAuthorId() != currentUser.getUserId()
                 && FlaggingClient.countReports(currentUser.getUserId(), TargetType.COMMENT,
-                    comment.getCommentId(), null, null) == 0;
+                comment.getCommentId(), null, null) == 0;
     }
 
-    public boolean getCanRemoveSpamReport(Comment comment) throws SystemException {
-        return getCanAdminSpamReports()
-                && comment.getAuthorId() != currentUser.getUserId()
-                && SpamReportLocalServiceUtil.hasReporterUserIdDiscussionMessageId(currentUser.getUserId(), comment.getCommentId());
-    }
-
-    public boolean getCanSeeAddCommentButton(){
+    public boolean getCanSeeAddCommentButton() {
         return true;
     }
 
@@ -72,7 +64,7 @@ public class DiscussionPermissions {
         return PermissionsClient.canAdminAll(currentUser.getUserId());
     }
 
-    public boolean getMustFilterContent(){
+    public boolean getMustFilterContent() {
         return ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue();
     }
 }
