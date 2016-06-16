@@ -21,6 +21,7 @@ public enum ConfigurationAttributeKey {
     FACEBOOK_APPLICATION_SECRET(AttributeType.STRING),
     FACEBOOK_VERIFIED_REQUIRED(AttributeType.BOOLEAN),
 
+    IS_MY_EMMA_ACTIVE(AttributeType.BOOLEAN),
     MY_EMMA_ACCOUNT_ID(AttributeType.STRING),
     MY_EMMA_GROUP_ID(AttributeType.STRING),
     MY_EMMA_PUBLIC_API_KEY(AttributeType.STRING),
@@ -28,6 +29,13 @@ public enum ConfigurationAttributeKey {
 
     IMAGE_UPLOAD_EXTERNAL_SERVICE_URL(AttributeType.STRING),
     IMAGE_UPLOAD_HELP_TEXT(AttributeType.STRING),
+
+    BETA_RIBBON_SHOW(AttributeType.BOOLEAN),
+
+    PUBLISH_JUDGING_RESULTS(AttributeType.BOOLEAN),
+    IS_POINTS_ACTIVE(AttributeType.BOOLEAN),
+
+    FLAGGING_ALLOW_MEMBERS(AttributeType.BOOLEAN),
 
     MIT_HEADER_BAR_SHOW(AttributeType.BOOLEAN),
     MIT_HEADER_BAR_LINK_TEXT(AttributeType.STRING),

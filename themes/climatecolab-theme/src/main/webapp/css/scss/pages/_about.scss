@@ -58,6 +58,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 
 .about-left li a:hover {
   color: $t-Color__grey--medium;
+  text-decoration: none;
 }
 
 .about-left ul li a:hover, .about-left ul li.c > a {
@@ -65,6 +66,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
   border-left: $p-About__left__li__a__current__border--left;
   padding-left: $p-About__left__li__a__current__padding--left;
   color: $p-About__left__li__a__current__textColor;
+  text-decoration: none;
 }
 
 .about-left li ul {
@@ -87,6 +89,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 
 .about-left li ul li a:hover, .about-left li ul li.c > a {
   background: $t-Color__grey--lightest;
+  text-decoration: none;
   padding-left: 28px;
 }
 

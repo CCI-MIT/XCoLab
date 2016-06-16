@@ -20,6 +20,7 @@
         <column name="sortOrder" type="long"/>
         <column name="showInList" type="boolean"/>
         <column name="imageName" type="String"/>
+        <column name="description" type="String" />
         
         <finder name="displayName" return-type="MemberCategory">
             <finder-column name="displayName"/>

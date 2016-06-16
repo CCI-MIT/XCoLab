@@ -45,10 +45,17 @@ public final class CommentClient {
     }
 
     public static Comment getComment(long commentId) throws CommentNotFoundException {
+        return getComment(commentId, false);
+    }
+
+    public static Comment getComment(long commentId, boolean includeDeleted)
+            throws CommentNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/comments/" + commentId);
+                EUREKA_APPLICATION_ID + "/comments/" + commentId)
+                    .queryParam("includeDeleted", includeDeleted);
         try {
-            return RequestUtils.get(uriBuilder, Comment.class, "commentId_" + commentId);
+            return RequestUtils.get(uriBuilder, Comment.class,
+                    "commentId_" + commentId + "_includeDeleted_" + includeDeleted);
         } catch (EntityNotFoundException e) {
             throw new CommentNotFoundException("Comment with id " + commentId + " not found.");
         }
@@ -67,10 +74,10 @@ public final class CommentClient {
         return RequestUtils.post(uriBuilder, comment, Comment.class);
     }
 
-    public static void deleteComment(long commentId) {
+    public static boolean deleteComment(long commentId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/comments/" + commentId);
-        RequestUtils.delete(uriBuilder);
+        return RequestUtils.delete(uriBuilder);
     }
 
 //    Threads
@@ -116,8 +123,8 @@ public final class CommentClient {
         try {
             return RequestUtils.get(uriBuilder, Long.class);
         } catch (EntityNotFoundException e) {
+            return null;
         }
-        return null;
     }
 
     public static void updateThread(CommentThread thread) {

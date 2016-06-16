@@ -1123,6 +1123,7 @@ public class MemberCategoryPersistenceImpl extends BasePersistenceImpl<MemberCat
         memberCategoryImpl.setSortOrder(memberCategory.getSortOrder());
         memberCategoryImpl.setShowInList(memberCategory.isShowInList());
         memberCategoryImpl.setImageName(memberCategory.getImageName());
+        memberCategoryImpl.setDescription(memberCategory.getDescription());
 
         return memberCategoryImpl;
     }

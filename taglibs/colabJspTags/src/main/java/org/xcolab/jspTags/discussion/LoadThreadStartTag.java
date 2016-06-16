@@ -10,7 +10,12 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
+import org.xcolab.util.enums.flagging.TargetType;
+
+import java.util.List;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
@@ -66,6 +71,9 @@ public class LoadThreadStartTag extends BodyTagSupport {
             pageContext.setAttribute("shareUrl", shareUrl);
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
             pageContext.setAttribute("discussionPermissions", discussionPermissions);
+            final List<ReportTarget> reportTargets =
+                    FlaggingClient.listReportTargets(TargetType.COMMENT);
+            pageContext.setAttribute("reportTargets", reportTargets);
         } catch (JspException | CategoryGroupNotFoundException
                 | ThreadNotFoundException | CategoryNotFoundException e) {
             e.printStackTrace();

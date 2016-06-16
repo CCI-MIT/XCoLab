@@ -2,14 +2,12 @@ package org.xcolab.portlets.contestmanagement.utils;
 
 import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
 
+import java.io.IOException;
+
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
-import java.io.IOException;
 
-/**
- * Created by Thomas on 4/27/2015.
- */
 public final class SetRenderParameterUtil {
 
     private static final String DEFAULT_SUCCESS_MESSAGE = "Changes saved!";

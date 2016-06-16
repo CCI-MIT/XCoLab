@@ -38,7 +38,7 @@ public enum ProposalTab {
     COMMENTS("Comments", Type.NORMAL, ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.commentsCount),
     SCREENING("Screening", Type.HIGHLIGHT, ProposalTabCanAccessAlgorithm.screeningAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     ADVANCING("Advancing", Type.HIGHLIGHT, ProposalTabCanAccessAlgorithm.advancingAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
-    EVALUATION("Evaluation Results", Type.NORMAL, ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.evaluationCommentsCount),
+    EVALUATION("Evaluation Results", Type.NORMAL, ProposalTabCanAccessAlgorithm.evaluationResultsAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.evaluationCommentsCount),
     FELLOW_REVIEW("Fellow Review", Type.NORMAL, ProposalTabCanAccessAlgorithm.fellowReviewAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.fellowReviewCommentsCount),
     ADMIN("Admin", Type.NORMAL, ProposalTabCanAccessAlgorithm.adminOnlyAccess, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.alwaysZero),
     POINTS("Points", Type.NORMAL, ProposalTabCanAccessAlgorithm.pointsViewAccess, ProposalTabCanAccessAlgorithm.pointsEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero);

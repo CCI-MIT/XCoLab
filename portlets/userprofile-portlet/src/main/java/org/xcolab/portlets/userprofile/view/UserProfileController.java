@@ -110,6 +110,8 @@ public class UserProfileController {
             model.addAttribute("permissions", permissions);
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
+            model.addAttribute("pointsActive",
+                    ConfigurationAttributeKey.IS_POINTS_ACTIVE.getBooleanValue());
             return "showUserProfile";
         } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
@@ -138,6 +140,8 @@ public class UserProfileController {
             if (permissions.getCanEditMemberProfile(currentUserProfile.getUserId())) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserId()));
+                model.addAttribute("newsletterActive",
+                        ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.getBooleanValue());
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }

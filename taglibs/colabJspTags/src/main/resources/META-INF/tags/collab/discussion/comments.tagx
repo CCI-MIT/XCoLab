@@ -22,6 +22,7 @@
         <!--@elvariable id="discussionPermissions" type="org.xcolab.jspTags.discussion.DiscussionPermissions"-->
         <!--@elvariable id="shareTitle" type="java.lang.String"-->
         <!--@elvariable id="shareUrl" type="java.lang.String"-->
+        <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.flagging.pojo.ReportTarget>"-->
 
 		<link href="/climatecolab-hook/css/jquery.modal.min.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
@@ -144,23 +145,7 @@
 									</div>
 									<div class="c-Comment__actions">
 										<c:if test="${discussionPermissions.getCanReportMessage(message) }">
-											<portlet:actionURL var="reportSpamURL">
-												<portlet:param name="action" value="reportSpam" />
-												<portlet:param name="commentId" value="${message.commentId }" />
-												<portlet:param name="proposalId" value="${proposalId}" />
-											</portlet:actionURL>
-											<a style="margin-left: 10px;" href="javascript:;" data-url="${reportSpamURL }" onclick="if (confirm('Are you sure you want to report this message as spam?')) window.location = $(this).attr('data-url');">Mark as spam</a>
-										</c:if>
-										<c:if test="${discussionPermissions.canAdminSpamReports }">
-											<a style="margin-left: 10px;" href="/web/guest/member/-/member/spamReport/${message.authorId}">View spam report</a>
-										</c:if>
-										<c:if test="${discussionPermissions.getCanRemoveSpamReport(message) }">
-											<portlet:actionURL var="removeSpamReportURL">
-												<portlet:param name="action" value="removeSpamReport" />
-												<portlet:param name="commentId" value="${message.commentId }" />
-												<portlet:param name="proposalId" value="${proposalId}" />
-											</portlet:actionURL>
-											<a style="margin-left: 10px;" href="javascript:;" data-url="${removeSpamReportURL }" onclick="if (confirm('Are you sure you want to remove all spam reports for this message?')) window.location = $(this).attr('data-url');">Not spam</a>
+											<a style="margin-left: 10px;" href="javascript:;" onclick="reportComment(${message.commentId})">Report</a>
 										</c:if>
 										<c:if test="${discussionPermissions.getCanAdminMessage(message) }">
 											<portlet:actionURL var="editCommentURL">
@@ -234,6 +219,25 @@
 				</div>
 			</div>
 		</c:if>
+
+		<script type="text/javascript">
+			jQuery(document).ready(function() {
+                jQuery('#popup_flagging_form_targetType').attr('value', 'COMMENT');
+                <c:forEach items="${reportTargets}" var="reportTarget">
+                    <![CDATA[
+                    jQuery('#popup_flagging_reasons').append(jQuery('<option>', {
+                        value: '${reportTarget.reason}',
+                        text: '${reportTarget.reason}'
+                    }));
+                ]]>
+                </c:forEach>
+			});
+
+            function reportComment(commentId) {
+                jQuery('#popup_flagging_form_targetId').attr('value', commentId);
+                jQuery('#popup_flagging').show();
+            }
+		</script>
 
 		</discussions:loadThread>
 

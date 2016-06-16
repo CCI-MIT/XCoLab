@@ -19,6 +19,7 @@ public class MemberCategorySoap implements Serializable {
     private long _sortOrder;
     private boolean _showInList;
     private String _imageName;
+    private String _description;
 
     public MemberCategorySoap() {
     }
@@ -32,6 +33,7 @@ public class MemberCategorySoap implements Serializable {
         soapModel.setSortOrder(model.getSortOrder());
         soapModel.setShowInList(model.getShowInList());
         soapModel.setImageName(model.getImageName());
+        soapModel.setDescription(model.getDescription());
 
         return soapModel;
     }
@@ -130,5 +132,13 @@ public class MemberCategorySoap implements Serializable {
 
     public void setImageName(String imageName) {
         _imageName = imageName;
+    }
+
+    public String getDescription() {
+        return _description;
+    }
+
+    public void setDescription(String description) {
+        _description = description;
     }
 }

@@ -21,7 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
@@ -34,6 +36,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.utils.EntityGroupingUtil;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
@@ -79,6 +82,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
+        model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
 
         final Proposal proposal =  proposalsContext.getProposal(request);
         final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);

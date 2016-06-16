@@ -8,7 +8,12 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import org.parboiled.common.StringUtils;
+
 import org.xcolab.mail.EmailToAdminDispatcher;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,14 +23,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
-
-/**
- * Created by patrickhiesel on 08/11/14.
- */
 public class ErrorReporting implements Filter {
 
     private static final String MESSAGE_BODY_HEADER_FORMAT_STRING =

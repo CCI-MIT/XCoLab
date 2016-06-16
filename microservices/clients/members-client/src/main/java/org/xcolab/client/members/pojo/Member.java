@@ -33,8 +33,8 @@ public class Member implements Serializable {
     private String loginIP;
     private Timestamp loginDate;
     private Integer status;
+    private int reportKarma;
     private Long portraitfileentryid;
-
 
     public Member() {
     }
@@ -55,6 +55,7 @@ public class Member implements Serializable {
         this.loginIP = value.loginIP;
         this.loginDate = value.loginDate;
         this.status = value.status;
+        this.reportKarma = value.reportKarma;
         this.portraitfileentryid = value.portraitfileentryid;
     }
 
@@ -192,7 +193,6 @@ public class Member implements Serializable {
         this.portraitfileentryid = portraitfileentryid;
     }
 
-
     @JsonIgnore
     public long getPortraitId() {
         //TODO: add image id from fileupload service
@@ -222,6 +222,14 @@ public class Member implements Serializable {
         this.hashedPassword = hashedPassword;
     }
 
+    public int getReportKarma() {
+        return reportKarma;
+    }
+
+    public void setReportKarma(int reportKarma) {
+        this.reportKarma = reportKarma;
+    }
+
     @Override
     public String toString() {
 
@@ -239,6 +247,7 @@ public class Member implements Serializable {
                 ", " + openId +
                 ", " + loginIP +
                 ", " + loginDate +
+                ", " + reportKarma +
                 ")";
     }
 

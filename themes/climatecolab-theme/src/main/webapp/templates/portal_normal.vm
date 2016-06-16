@@ -112,6 +112,11 @@
 #if ($permissionChecker.isOmniadmin())
 	#dockbar()
 #end
+#if ($betaRibbonShow)
+    <div class="c-Ribbon">
+        Beta
+    </div>
+#end
 #if ($mitHeaderBarShow)
     <div class="c-TitleBar light">
         <div class="c-TitleBar__pageMargins">
@@ -317,6 +322,7 @@ $theme.include($top_messages_include)
 #end
 
     #parse ("$full_templates_path/sign_in_popup.vm")
+    #parse ("$full_templates_path/report_popup.vm")
     #parse ("$full_templates_path/jsadditions.vm")
     #parse ("$full_templates_path/post_registration_popup.vm")
     
