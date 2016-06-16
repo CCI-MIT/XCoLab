@@ -18,6 +18,7 @@ import org.xcolab.service.flagging.wrappers.AggregatedReport;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.flagging.ManagerAction;
+import org.xcolab.util.enums.flagging.TargetType;
 
 import java.util.List;
 
@@ -42,15 +43,16 @@ public class FlaggingController {
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Long reporterMemberId,
             @RequestParam(required = false) Long managerMemberId,
-            @RequestParam(required = false) String targetType,
+            @RequestParam(required = false) TargetType targetType,
             @RequestParam(required = false) Long targetId,
+            @RequestParam(required = false) Long targetAdditionalId,
             @RequestParam(required = false) String managerAction) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                 Integer.toString(reportDao.countByGiven(reporterMemberId, managerMemberId,
-                        targetType, targetId, managerAction)));
+                        targetType.name(), targetId, targetAdditionalId, managerAction)));
         return reportDao.findByGiven(paginationHelper, reporterMemberId,
-                managerMemberId, targetType, targetId, managerAction);
+                managerMemberId, targetType.name(), targetId, targetAdditionalId, managerAction);
     }
 
     @RequestMapping(value = "/aggregatedReports", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -62,13 +64,14 @@ public class FlaggingController {
             @RequestParam(required = false) Long managerMemberId,
             @RequestParam(required = false) String targetType,
             @RequestParam(required = false) Long targetId,
+            @RequestParam(required = false) Long targetAdditionalId,
             @RequestParam(required = false) String managerAction) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                 Integer.toString(reportDao.countByGiven(reporterMemberId, managerMemberId,
-                        targetType, targetId, managerAction)));
+                        targetType, targetId, targetAdditionalId, managerAction)));
         return reportDao.findAggregatedByGiven(paginationHelper, reporterMemberId,
-                managerMemberId, targetType, targetId, managerAction);
+                managerMemberId, targetType, targetId, targetAdditionalId, managerAction);
     }
 
     @RequestMapping(value = "/reports/{reportId}", method = RequestMethod.GET)
@@ -99,9 +102,10 @@ public class FlaggingController {
     public List<ReportTarget> getReportTargets(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) TargetType type,
             @RequestParam(required = false) String sort) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
-        return reportTargetDao.findByGiven(paginationHelper);
+        return reportTargetDao.findByGiven(paginationHelper, type);
     }
 
     @RequestMapping(value = "/reportTargets/{reportTargetId}", method = RequestMethod.GET)

@@ -30,13 +30,14 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public List<Report> findByGiven(PaginationHelper paginationHelper, Long reporterMemberId,
-            Long managerMemberId, String targetType, Long targetId, String managerAction) {
+            Long managerMemberId, String targetType, Long targetId, Long targetAdditionalId,
+            String managerAction) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(REPORT)
                 .getQuery();
 
-        filterConditions(reporterMemberId, managerMemberId, targetType, targetId, managerAction,
-                query);
+        filterConditions(reporterMemberId, managerMemberId, targetType, targetId,
+                targetAdditionalId, managerAction, query);
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
@@ -65,7 +66,7 @@ public class ReportDaoImpl implements ReportDao {
     @Override
     public List<AggregatedReport> findAggregatedByGiven(PaginationHelper paginationHelper,
             Long reporterMemberId, Long managerMemberId, String targetType, Long targetId,
-            String managerAction) {
+            Long targetAdditionalId, String managerAction) {
 
         final Field<Long> firstReportId = DSL.min(REPORT.REPORT_ID).as("firstReportId");
         final Field<BigDecimal> aggregatedWeight = DSL.sum(REPORT.WEIGHT).as("aggregatedWeight");
@@ -84,8 +85,8 @@ public class ReportDaoImpl implements ReportDao {
                         REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID)
                 .getQuery();
 
-        filterConditions(reporterMemberId, managerMemberId, targetType, targetId, managerAction,
-                query);
+        filterConditions(reporterMemberId, managerMemberId, targetType, targetId,
+                targetAdditionalId, managerAction, query);
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
@@ -125,21 +126,21 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public int countByGiven(Long reporterMemberId, Long managerMemberId, String targetType,
-            Long targetId, String managerAction) {
+            Long targetId, Long targetAdditionalId, String managerAction) {
         final SelectQuery<Record1<Integer>> query = dslContext.select(DSL.countDistinct(
                         REPORT.TARGET_TYPE, REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID))
                 .from(REPORT)
                 .getQuery();
 
-        filterConditions(reporterMemberId, managerMemberId, targetType, targetId, managerAction,
-                query);
+        filterConditions(reporterMemberId, managerMemberId, targetType, targetId,
+                targetAdditionalId, managerAction, query);
 
         return query.fetchOne().into(Integer.class);
     }
 
     @Override
     public int countAggregatedByGiven(Long reporterMemberId, Long managerMemberId,
-            String targetType, Long targetId, String managerAction) {
+            String targetType, Long targetId, Long targetAdditionalId, String managerAction) {
         final SelectQuery<Record1<Integer>> query = dslContext.select(DSL.countDistinct(
                 REPORT.TARGET_TYPE, REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID))
                 .from(REPORT)
@@ -147,14 +148,15 @@ public class ReportDaoImpl implements ReportDao {
                         REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID)
                 .getQuery();
 
-        filterConditions(reporterMemberId, managerMemberId, targetType, targetId, managerAction,
-                query);
+        filterConditions(reporterMemberId, managerMemberId, targetType, targetId,
+                targetAdditionalId, managerAction, query);
 
         return query.fetchOne().into(Integer.class);
     }
 
     private void filterConditions(Long reporterMemberId, Long managerMemberId, String targetType,
-            Long targetId, String managerAction, SelectQuery<? extends Record> query) {
+            Long targetId, Long targetAdditionalId, String managerAction,
+            SelectQuery<? extends Record> query) {
         if (reporterMemberId != null) {
             query.addConditions(REPORT.REPORTER_MEMBER_ID.eq(reporterMemberId));
         }
@@ -166,6 +168,9 @@ public class ReportDaoImpl implements ReportDao {
         }
         if (targetId != null) {
             query.addConditions(REPORT.TARGET_ID.eq(targetId));
+        }
+        if (targetAdditionalId != null) {
+            query.addConditions(REPORT.TARGET_ADDITIONAL_ID.eq(targetAdditionalId));
         }
         if (managerAction != null) {
             query.addConditions(REPORT.MANAGER_ACTION.eq(managerAction));
@@ -191,6 +196,7 @@ public class ReportDaoImpl implements ReportDao {
                 .set(REPORT.REPORTER_MEMBER_ID, report.getReporterMemberId())
                 .set(REPORT.TARGET_TYPE, report.getTargetType())
                 .set(REPORT.TARGET_ID, report.getTargetId())
+                .set(REPORT.TARGET_ADDITIONAL_ID, report.getTargetAdditionalId())
                 .set(REPORT.REASON, report.getReason())
                 .set(REPORT.WEIGHT, report.getWeight())
                 .set(REPORT.MANAGER_ACTION, report.getManagerAction())
@@ -207,8 +213,10 @@ public class ReportDaoImpl implements ReportDao {
                 .set(REPORT.REPORTER_MEMBER_ID, report.getReporterMemberId())
                 .set(REPORT.TARGET_TYPE, report.getTargetType())
                 .set(REPORT.TARGET_ID, report.getTargetId())
+                .set(REPORT.TARGET_ADDITIONAL_ID, report.getTargetAdditionalId())
                 .set(REPORT.REASON, report.getReason())
                 .set(REPORT.WEIGHT, report.getWeight())
+                .set(REPORT.COMMENT, report.getComment())
                 .set(REPORT.MANAGER_ACTION, report.getManagerAction())
                 .set(REPORT.MANAGER_MEMBER_ID, report.getManagerMemberId())
                 .set(REPORT.MANAGER_ACTION_DATE, report.getManagerActionDate())
@@ -224,12 +232,16 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public int getTotalWeight(String targetType, long targetId, long targetAdditionalId) {
-        return dslContext
+        final Record1<BigDecimal> record = dslContext
                 .select(DSL.sum(REPORT.WEIGHT))
                 .from(REPORT)
                 .where(REPORT.TARGET_TYPE.eq(targetType)
-                    .and(REPORT.TARGET_ID.eq(targetId))
-                    .and(REPORT.TARGET_ADDITIONAL_ID.eq(targetAdditionalId)))
-                .fetchOne().into(Integer.class);
+                        .and(REPORT.TARGET_ID.eq(targetId))
+                        .and(REPORT.TARGET_ADDITIONAL_ID.eq(targetAdditionalId)))
+                .fetchOne();
+        if (record == null) {
+            return 0;
+        }
+        return record.into(Integer.class);
     }
 }

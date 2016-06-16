@@ -25,6 +25,11 @@ public final class FlaggingClient {
     }
 
     public static List<Report> listReports(int start, int last) {
+        return listReports(start, last, null, null, null, null, null);
+    }
+
+    public static List<Report> listReports(int start, int last, Long reporterMemberId,
+            TargetType targetType, Long targetId, Long targetAdditionalId, Long managerMemberId) {
 
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/reports")
@@ -32,8 +37,41 @@ public final class FlaggingClient {
                         .queryParam("limitRecord", last)
                         .queryParam("sort", "createDate");
 
+        addConditions(uriBuilder, reporterMemberId, targetType, targetId, targetAdditionalId,
+                managerMemberId);
+
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Report>>() {
         });
+    }
+
+    public static int countReports(Long reporterMemberId, TargetType targetType, Long targetId,
+            Long targetAdditionalId, Long managerMemberId) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/reports");
+
+        addConditions(uriBuilder, reporterMemberId, targetType, targetId, targetAdditionalId,
+                managerMemberId);
+
+        return RequestUtils.getCount(uriBuilder);
+    }
+
+    private static void addConditions(UriComponentsBuilder uriBuilder, Long reporterMemberId,
+            TargetType targetType, Long targetId, Long targetAdditionalId, Long managerMemberId) {
+        if (reporterMemberId != null) {
+            uriBuilder.queryParam("reporterMemberId", reporterMemberId);
+        }
+        if (targetType != null) {
+            uriBuilder.queryParam("targetType", targetType);
+        }
+        if (targetId != null) {
+            uriBuilder.queryParam("targetId", targetId);
+        }
+        if (targetAdditionalId != null) {
+            uriBuilder.queryParam("targetAdditionalId", targetAdditionalId);
+        }
+        if (managerMemberId != null) {
+            uriBuilder.queryParam("managerMemberId", managerMemberId);
+        }
     }
 
     public static List<AggregatedReport> listAggregatedReports(int start, int last) {
@@ -49,14 +87,6 @@ public final class FlaggingClient {
         return RequestUtils.getList(uriBuilder,
                 new ParameterizedTypeReference<List<AggregatedReport>>() {
         });
-    }
-
-    public static int countReports() {
-
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/reports");
-
-        return RequestUtils.getCount(uriBuilder);
     }
 
     public static Report getReport(long reportId) throws ReportNotFoundException {
@@ -83,11 +113,23 @@ public final class FlaggingClient {
     }
 
     public static List<ReportTarget> listReportTargets(int start, int last) {
+        return listReportTargets(start, last, null);
+    }
+
+    public static List<ReportTarget> listReportTargets(TargetType targetType) {
+        return listReportTargets(0, Integer.MAX_VALUE, targetType);
+    }
+
+    public static List<ReportTarget> listReportTargets(int start, int last, TargetType targetType) {
 
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/reportTargets")
                         .queryParam("startRecord", start)
                         .queryParam("limitRecord", last);
+
+        if (targetType != null) {
+            uriBuilder = uriBuilder.queryParam("type", targetType);
+        }
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<ReportTarget>>() {
         });
@@ -148,7 +190,7 @@ public final class FlaggingClient {
         return report(reporter, commentId, 0L, TargetType.COMMENT, reason, comment);
     }
 
-    private static Report report(Member reporter, long targetId, Long targetAdditionalId,
+    public static Report report(Member reporter, long targetId, Long targetAdditionalId,
             TargetType targetType, String reason, String comment) {
         Report report = new Report();
         report.setReporterMemberId(reporter.getId_());
@@ -158,6 +200,7 @@ public final class FlaggingClient {
         report.setWeight(reporter.getReportKarma());
         report.setReason(reason);
         report.setComment(comment);
+        report.setManagerAction(ManagerAction.PENDING.name());
         return createReport(report);
     }
 

@@ -123,8 +123,8 @@ public final class CommentClient {
         try {
             return RequestUtils.get(uriBuilder, Long.class);
         } catch (EntityNotFoundException e) {
+            return null;
         }
-        return null;
     }
 
     public static void updateThread(CommentThread thread) {

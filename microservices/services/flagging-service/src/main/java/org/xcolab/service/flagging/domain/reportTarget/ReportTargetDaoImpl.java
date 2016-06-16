@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.model.tables.records.ReportTargetRecord;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.enums.flagging.TargetType;
 
 import java.util.List;
 
@@ -21,10 +22,14 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
     private DSLContext dslContext;
 
     @Override
-    public List<ReportTarget> findByGiven(PaginationHelper paginationHelper) {
+    public List<ReportTarget> findByGiven(PaginationHelper paginationHelper, TargetType type) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(REPORT_TARGET)
                 .getQuery();
+
+        if (type != null) {
+            query.addConditions(REPORT_TARGET.TYPE.eq(type.name()));
+        }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
         return query.fetchInto(ReportTarget.class);
     }

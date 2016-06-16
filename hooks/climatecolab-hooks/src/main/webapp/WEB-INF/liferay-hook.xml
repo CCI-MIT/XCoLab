@@ -46,6 +46,10 @@
 		<servlet-filter-name>FileUploadFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.FileUploadFilter</servlet-filter-impl>
 	</servlet-filter>
+    <servlet-filter>
+        <servlet-filter-name>FlaggingReportFilter</servlet-filter-name>
+        <servlet-filter-impl>org.xcolab.hooks.climatecolab.flagging.FlaggingReportFilter</servlet-filter-impl>
+    </servlet-filter>
 	<servlet-filter>
 		<servlet-filter-name>ImageDisplayerFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.ImageDisplayerFilter</servlet-filter-impl>
@@ -104,6 +108,10 @@
     	<servlet-filter-name>FileUploadFilter</servlet-filter-name>
     	<url-pattern>/fileUpload</url-pattern>
     </servlet-filter-mapping>
+	<servlet-filter-mapping>
+		<servlet-filter-name>FlaggingReportFilter</servlet-filter-name>
+		<url-pattern>/flagging/report</url-pattern>
+	</servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>ImageDisplayerFilter</servlet-filter-name>
 		<url-pattern>/image/*</url-pattern>

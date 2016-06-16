@@ -10,7 +10,7 @@
         #set($loginMessageClass='')
     #end
         <div class="c-Alert__info__message $loginMessageClass ">
-            <p>Welcome!  To access the link you clicked, please login or register as a free member using Facebook, Google, or your username &amp; password.</p>
+            Welcome!  To access the link you clicked, please login or register as a free member using Facebook, Google, or your username &amp; password.
         </div>
         <div class="c-Header__login__with">
             <a href="/web/guest/loginregister/-/login/SSO/facebookRegister" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 70px;"><span>Facebook</span></a>

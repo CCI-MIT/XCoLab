@@ -322,6 +322,7 @@ $theme.include($top_messages_include)
 #end
 
     #parse ("$full_templates_path/sign_in_popup.vm")
+    #parse ("$full_templates_path/report_popup.vm")
     #parse ("$full_templates_path/jsadditions.vm")
     #parse ("$full_templates_path/post_registration_popup.vm")
     

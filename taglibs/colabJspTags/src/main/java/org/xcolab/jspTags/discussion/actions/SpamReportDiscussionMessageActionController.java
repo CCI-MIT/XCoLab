@@ -69,7 +69,7 @@ public class SpamReportDiscussionMessageActionController extends BaseDiscussions
     @Override
     public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId) {
         if (additionalId == 0L) {
-            return permissions.getCanReportSpam();
+            return permissions.getCanReport();
         }
         return permissions.getCanAdminSpamReports();
     }
