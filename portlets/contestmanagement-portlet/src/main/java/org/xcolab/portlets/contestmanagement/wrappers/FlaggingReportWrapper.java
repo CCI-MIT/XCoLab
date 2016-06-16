@@ -88,7 +88,7 @@ public class FlaggingReportWrapper {
 
     private Comment getTargetComment() {
         try {
-            return CommentClient.getComment(report.getTargetId());
+            return CommentClient.getComment(report.getTargetId(), true);
         } catch (CommentNotFoundException e) {
             return null;
         }
