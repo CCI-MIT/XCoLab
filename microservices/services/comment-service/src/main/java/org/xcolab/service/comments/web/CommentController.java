@@ -72,12 +72,13 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.DELETE)
-    public void deleteComment(@PathVariable Long commentId) {
+    public boolean deleteComment(@PathVariable Long commentId) {
         try {
             Comment comment = commentDao.get(commentId);
             comment.setDeletedDate(new Timestamp(new Date().getTime()));
-            commentDao.update(comment);
+            return commentDao.update(comment);
         } catch (NotFoundException ignored) {
+            return false;
         }
     }
 
