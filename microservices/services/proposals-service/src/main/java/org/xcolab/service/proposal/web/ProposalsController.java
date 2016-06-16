@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.Proposal;
 
@@ -24,21 +25,28 @@ public class ProposalsController {
     }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.GET)
-    public Proposal getProposal(@PathVariable("proposalId") Long proposalId) throws NotFoundException {
-        if (proposalId == null || proposalId == 0) {
-            throw new NotFoundException("No proposalId given");
-        } else {
-            return proposalDao.get(proposalId);
+    public Proposal getProposal(@PathVariable long proposalId,
+            @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
+            throws NotFoundException {
+        final Proposal proposal = proposalDao.get(proposalId);
+        if (proposal.getVisible() || includeDeleted) {
+            return proposal;
         }
+        throw new NotFoundException();
     }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.PUT)
-    public boolean updateProposal(@RequestBody Proposal proposal,
-                                  @PathVariable("proposalId") Long proposalId) throws NotFoundException {
-        if (proposalId == null || proposalId == 0 || proposalDao.get(proposalId) == null) {
-            throw new NotFoundException("No Proposal with id " + proposalId);
-        } else {
-            return proposalDao.update(proposal);
-        }
+    public boolean updateProposal(@RequestBody Proposal proposal, @PathVariable long proposalId)
+            throws NotFoundException {
+        proposalDao.get(proposalId);
+        return proposalDao.update(proposal);
+    }
+
+    @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.DELETE)
+    public boolean deleteProposal(@PathVariable long proposalId)
+            throws NotFoundException {
+        final Proposal proposal = proposalDao.get(proposalId);
+        proposal.setVisible(false);
+        return proposalDao.update(proposal);
     }
 }

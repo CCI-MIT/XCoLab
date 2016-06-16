@@ -85,6 +85,7 @@ public class CommentController {
     @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.PUT)
     public boolean updateComment(@RequestBody Comment comment, @PathVariable Long commentId)
             throws NotFoundException {
+        commentDao.get(commentId);
         comment.setModifiedDate(new Timestamp(new Date().getTime()));
         return commentDao.update(comment);
     }

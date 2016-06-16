@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.Report;
 import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.service.flagging.domain.report.ReportDao;
@@ -55,7 +58,8 @@ public class FlaggingService {
         final TargetType targetType = TargetType.valueOf(report.getTargetType());
 
         List<Report> equivalentReports = reportDao.findByGiven(PaginationHelper.EVERYTHING, null,
-                null, targetType.name(), report.getTargetId(), ManagerAction.PENDING.name());
+                null, targetType.name(), report.getTargetId(), report.getTargetAdditionalId(),
+                ManagerAction.PENDING.name());
 
         final Timestamp actionDate = new Timestamp(new Date().getTime());
 
@@ -63,7 +67,7 @@ public class FlaggingService {
             switch (managerAction) {
                 case APPROVE:
                     if (targetType == TargetType.PROPOSAL) {
-                        approveProposal(report.getTargetId(), report.getTargetAdditionalId());
+                        approveProposal(report.getTargetId());
                     } else {
                         approveComment(report.getTargetId());
                     }
@@ -84,7 +88,7 @@ public class FlaggingService {
                     break;
                 default:
             }
-        } catch (CommentNotFoundException e) {
+        } catch (CommentNotFoundException | ProposalNotFoundException e) {
             return false;
         }
 
@@ -98,16 +102,21 @@ public class FlaggingService {
         return true;
     }
 
-    private void approveProposal(long proposalId, long proposalVersion) {
-        //TODO: implement
+    private void approveProposal(long proposalId) throws ProposalNotFoundException {
+        final Proposal proposal = ProposalsClient.getProposal(proposalId, true);
+        if (!proposal.getVisible()) {
+            proposal.setVisible(true);
+            ProposalsClient.updateProposal(proposal);
+        }
     }
 
     private void revertProposal(long proposalId) {
         //TODO: implement
+        removeProposal(proposalId);
     }
 
     private void removeProposal(long proposalId) {
-        //TODO: implement
+        ProposalsClient.deleteProposal(proposalId);
     }
 
     private void approveComment(long commentId) throws CommentNotFoundException {
