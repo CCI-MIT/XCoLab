@@ -75,6 +75,9 @@ public final class LoginRegisterUtil {
 
             member.setPortraitFileEntryId(Long.parseLong(imageId));
             MembersClient.updateMember(member);
+        } else {
+            member.setPortraitFileEntryId(0l);
+            MembersClient.updateMember(member);
         }
         sendEmailNotificationToRegisteredUser(liferayServiceContext, liferayUser);
 

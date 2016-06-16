@@ -36,16 +36,23 @@ public class ImageDisplayerFilter implements Filter {
         String imageId = null;
 
         // image/contest?img_id=1272201
+        // image/proposal?img_id=1266433
+        // image/contest?img_id=1267815
         if (request.getParameter("img_id") != null) {
             imageId = request.getParameter("img_id");
         }
 
+        // /image/user_male_portrait?screenName=slocum&companyId=10112&portraitId=2051002&userId=40218
         // image/user_male_portrait?screenName=carlosbpf&companyId=10112&portraitId=2390159
         if (request.getParameter("portraitId") != null) {
             if(request.getParameter("userId") != null){
                 try {
                     Member member = MembersClient.getMember(Long.parseLong(request.getParameter("userId")));
-                    imageId = member.getPortraitFileEntryId() + "";
+                    if ( member.getPortraitFileEntryId() != null ) {
+                        imageId = member.getPortraitFileEntryId() + "";
+                    } else {
+                        imageId = null;
+                    }
                 } catch (MemberNotFoundException e) {
                     imageId = request.getParameter("portraitId");
                 }
