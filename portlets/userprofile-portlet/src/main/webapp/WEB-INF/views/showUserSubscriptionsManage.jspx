@@ -9,6 +9,8 @@
 
   <jsp:directive.include file="./init.jspx" />
 
+  <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+  <!--@elvariable id="userSubscriptions" type="org.xcolab.portlets.userprofile.wrappers.UserSubscriptionsWrapper"-->
 
   <portlet:actionURL var="removeSubscriptionURL">
     <portlet:param name="action" value="removeSubscription" />
@@ -43,7 +45,6 @@
               <th style="width: 160px;" class="Hdr">Updated</th>
             </tr>
 
-
               <c:forEach var="subscription" items="${userSubscriptions.subscriptions}" varStatus="x" >
                 <tr class="colabRow">
                   <td class="subscriptionSelect"><form:checkbox path="subscriptions[${x.index}].selected" class="subscriptionSelect"/>
@@ -75,7 +76,7 @@
               <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="DISCUSSION" text="Discussions"/>
             </li>
             <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'PROPOSAL' ? 'c' : ''}">
-              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="PROPOSAL" text="Proposals"/>
+              <subscriptions:subscriptionsPaginationFilterLink userId="${currentUserProfile.userId}" typeFilter="PROPOSAL" text="${contestType.proposalNamePlural}"/>
             </li>
           </ul>
           <h3>Settings</h3>

@@ -2,7 +2,9 @@ package org.xcolab.portlets.userprofile.view;
 
 import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.messaging.MessageUtil;
+import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.MessagingUserPreferences;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.portal.UserPortraitSizeException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -16,8 +18,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.service.UserServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
@@ -47,8 +47,8 @@ import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
-import org.xcolab.utils.CountryUtil;
 import org.xcolab.util.HtmlUtil;
+import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
@@ -180,6 +180,13 @@ public class UserProfileController {
                 currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
             }
             model.addAttribute("userSubscriptions", currentUserProfile.getUserSubscriptions());
+
+            final long contestTypeId = ConfigurationAttributeKey
+                    .DEFAULT_CONTEST_TYPE_ID.getLongValue();
+            final ContestType contestType = ContestTypeLocalServiceUtil
+                    .getContestType(contestTypeId);
+            model.addAttribute("contestType", contestType);
+
             if (currentUserProfile.isViewingOwnProfile()) {
                 return "showUserSubscriptionsManage";
             }

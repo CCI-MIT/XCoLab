@@ -12,10 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserSubscriptionsWrapper implements Serializable {
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
+
     private Member user;
     private List<ActivitySubscriptionWrapper> subscriptions;
     private SubscriptionType typeFilter;
