@@ -146,7 +146,7 @@ public final class ActivitiesClient {
                 .queryParam("classPK", classPK)
                 .queryParam("extraInfo", extraInfo)
                 .queryParam("type", type);
-        RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+        RequestUtils.delete(uriBuilder);
     }
 
     public static void deleteSubscriptionById(Long subscriptionId) {
@@ -179,5 +179,4 @@ public final class ActivitiesClient {
                 new ParameterizedTypeReference<List<ActivitySubscription>>() {
                 });
     }
-
 }
