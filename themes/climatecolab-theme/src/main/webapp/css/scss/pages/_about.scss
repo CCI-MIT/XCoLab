@@ -1,5 +1,6 @@
 $p-About__left__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
 $p-About__left__li__a__padding--left: 4px !default;
+$p-About__left__li__a__current__background: $t-Color__grey--lightest !default;
 $p-About__left__li__a__current__border--left: none !default;
 $p-About__left__li__a__current__padding--left: 4px !default;
 $p-About__left__li__ul__li__a__padding--left: 28px !default;
@@ -62,7 +63,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 }
 
 .about-left ul li a:hover, .about-left ul li.c > a {
-  background: #F2F1E9;
+  background: $p-About__left__li__a__current__background;
   border-left: $p-About__left__li__a__current__border--left;
   padding-left: $p-About__left__li__a__current__padding--left;
   color: $p-About__left__li__a__current__textColor;
