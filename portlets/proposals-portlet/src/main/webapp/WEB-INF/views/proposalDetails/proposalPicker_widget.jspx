@@ -220,8 +220,8 @@
 
 	<script id="proposalPickerProposalEntryTemplate"
 		type="text/x-handlebars-template">
-		<tr class="c-Table__row--multiRow {{#if data.featured }}featured{{/if}}">
-			<td class="c-Table__cell">
+		<tr class="c-Table__row {{#if data.featured }}featured{{/if}}">
+			<td class="c-Table__cell no-border">
 				{{#if data.ribbon}}
 				<div class="ribbonPlaceholder" style="float: left;">
                 <span class="fieldWithTooltip">
@@ -247,28 +247,19 @@
                     <div class="clear" ><!--  --></div>
                 </div>
 			</td>
-            <td class="c-Table__cell supporters">
+            <td class="c-Table__cell no-border supporters">
                 {{data.supportersCount}}
             </td>
-            <td class="c-Table__cell comments">
+            <td class="c-Table__cell no-border comments">
                 {{data.commentsCount}}
             </td>
-            <td class="c-Table__cell">
+            <td class="c-Table__cell no-border">
                 {{#each data.contests}}
                 <div class="b-Spacing__inline">
                     <img alt="{{this.name}}" class='fieldWithTooltip tooltipAbove' height="25" width="25" src="/image/contest?img_id={{this.contestLogoId}}" />
                     <div class="c-Tooltip">Contest: {{this.name}}<div class="c-Tooltip__arrow"><!--  --></div></div>
                 </div>
                 {{/each}}
-            </td>
-            <td class="c-Table__cell">
-
-            </td>
-            <td class="c-Table__cell">
-
-            </td>
-            <td class="c-Table__cell">
-
             </td>
 		</tr>
         <tr class="c-Table__row">
