@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
@@ -36,7 +37,8 @@ public class ActivitiesController {
     }
 
     @RequestMapping(value = "/activityEntries/{activityEntryId}", method = RequestMethod.GET)
-    public ActivityEntry getActivityEntry(@PathVariable("activityEntryId") Long activityEntryId) throws NotFoundException {
+    public ActivityEntry getActivityEntry(@PathVariable("activityEntryId") Long activityEntryId)
+            throws NotFoundException {
         if (activityEntryId == null || activityEntryId == 0) {
             throw new NotFoundException("No activityEntryId given");
         } else {
@@ -52,12 +54,12 @@ public class ActivitiesController {
             @RequestParam(required = false) List<Long> memberIdsToExclude,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String activitiesAfter
-            ) {
+    ) {
 
-        if (activitiesAfter != null){
+        if (activitiesAfter != null) {
 
             return activityEntryDao.getActivitiesAfter(Utils.parseDate(activitiesAfter));
-        }else {
+        } else {
             final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                     sort);
             return activityEntryDao.findByGiven(paginationHelper, memberId, memberIdsToExclude);
@@ -72,7 +74,8 @@ public class ActivitiesController {
     }
 
     @RequestMapping(value = "/activitySubscriptions", method = RequestMethod.POST)
-    public ActivitySubscription createActivitySubscription(@RequestBody ActivitySubscription activitySubscription) {
+    public ActivitySubscription createActivitySubscription(
+            @RequestBody ActivitySubscription activitySubscription) {
         activitySubscription.setCreateDate(new Timestamp(new Date().getTime()));
         activitySubscription.setModifiedDate(new Timestamp(new Date().getTime()));
 
@@ -80,7 +83,9 @@ public class ActivitiesController {
     }
 
     @RequestMapping(value = "/activitySubscriptions/{activitySubscriptionId}", method = RequestMethod.GET)
-    public ActivitySubscription getActivitySubscription(@PathVariable("activitySubscriptionId") Long activitySubscriptionId) throws NotFoundException {
+    public ActivitySubscription getActivitySubscription(
+            @PathVariable("activitySubscriptionId") Long activitySubscriptionId)
+            throws NotFoundException {
         if (activitySubscriptionId == null || activitySubscriptionId == 0) {
             throw new NotFoundException("No activitySubscriptionId given");
         } else {
@@ -89,34 +94,32 @@ public class ActivitiesController {
     }
 
     @RequestMapping(value = "/activitySubscriptions/{pk}", method = RequestMethod.DELETE)
-    public boolean deleteActivitySubscription(@PathVariable Long pk)
+    public boolean deleteActivitySubscription(@PathVariable long pk)
             throws NotFoundException {
-
-        if (pk == null || pk == 0) {
-            throw new NotFoundException("No activitySubscriptions with id given");
-        } else {
-            this.activitySubscriptionDao.delete(pk);
-            return true;
-
-        }
+        this.activitySubscriptionDao.delete(pk);
+        return true;
     }
 
     @RequestMapping(value = "/activitySubscriptions/deleteIfSubscribed", method = RequestMethod.DELETE)
-    public boolean deleteIfSubscribed(@RequestParam(required = false) Long receiverId,
-                                      @RequestParam(required = false) Long classNameId,
-                                      @RequestParam(required = false) Long classPK,
-                                      @RequestParam(required = false) Integer type,
-                                      @RequestParam(required = false) String extraInfo) {
-        return this.activitySubscriptionDao.deleteSubscription(receiverId, classNameId, classPK, type, extraInfo);
+    public boolean deleteIfSubscribed(
+            @RequestParam(required = false) Long receiverId,
+            @RequestParam(required = false) Long classNameId,
+            @RequestParam(required = false) Long classPK,
+            @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) String extraInfo) {
+        return this.activitySubscriptionDao
+                .deleteSubscription(receiverId, classNameId, classPK, type, extraInfo);
     }
 
     @RequestMapping(value = "/activitySubscriptions/isSubscribed", method = RequestMethod.GET)
-    public boolean isSubscribed(@RequestParam(required = false) Long receiverId,
-                                @RequestParam(required = false) Long classNameId,
-                                @RequestParam(required = false) Long classPK,
-                                @RequestParam(required = false) Integer type,
-                                @RequestParam(required = false) String extraInfo) {
-        return this.activitySubscriptionDao.isSubscribed(receiverId, classNameId, classPK, type, extraInfo);
+    public boolean isSubscribed(
+            @RequestParam(required = false) Long receiverId,
+            @RequestParam(required = false) Long classNameId,
+            @RequestParam(required = false) Long classPK,
+            @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) String extraInfo) {
+        return this.activitySubscriptionDao
+                .isSubscribed(receiverId, classNameId, classPK, type, extraInfo);
     }
 
     @RequestMapping(value = "/activitySubscriptions", method = RequestMethod.GET)
@@ -124,7 +127,8 @@ public class ActivitiesController {
             @RequestParam(required = false) Long classNameId,
             @RequestParam(required = false) Long classPK,
             @RequestParam(required = false) Long receiverId) {
-        return this.activitySubscriptionDao.getActivitySubscribers(classNameId, classPK, receiverId);
+        return this.activitySubscriptionDao
+                .getActivitySubscribers(classNameId, classPK, receiverId);
     }
 
 }
