@@ -176,7 +176,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         CommentThread thread = new CommentThread();
         thread.setTitle(c.getContestName() + " discussion");
         thread.setAuthorId(c.getAuthorId());
-        thread.setIsQuiet(false);
+        thread.setIsQuiet(true);
         long discussionId = CommentClient.createThread(thread).getThreadId();
 
         // set up permissions
