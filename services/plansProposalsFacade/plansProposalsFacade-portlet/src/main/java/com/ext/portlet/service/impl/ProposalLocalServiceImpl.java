@@ -70,7 +70,7 @@ import com.liferay.util.mail.MailEngineException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.util.enums.activities.ActivityEntryType;
 import org.xcolab.activityEntry.proposal.ProposalMemberAddedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
@@ -93,7 +93,6 @@ import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
 import org.xcolab.utils.TemplateReplacementUtil;
-import org.xcolab.utils.UrlBuilder;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.io.UnsupportedEncodingException;
@@ -1018,21 +1017,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId proposal id
      * @param userId     user id
      * @param automatic  if this is an automatic subscription
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
-       // activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
-        ActivitiesClient.addSubscription(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(),proposalId,0, null, userId);
-
-        Proposal proposal = getProposal(proposalId);
-
-        /*
-        DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-        activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
-        */
-        ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(),proposal.getDiscussionId(),0, null, userId);
+    public void subscribe(long proposalId, long userId, boolean automatic) {
+        ActivitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     /**
@@ -1040,11 +1028,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @param proposalId proposal id
      * @param userId     user id
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public void unsubscribe(long proposalId, long userId) throws PortalException, SystemException {
+    public void unsubscribe(long proposalId, long userId) {
         unsubscribe(proposalId, userId, false);
     }
 
@@ -1057,20 +1043,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId proposal id
      * @param userId     user id
      * @param automatic  if this is an automatic subscription
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public void unsubscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
-        activitySubscriptionLocalService.deleteSubscription(userId, Proposal.class, proposalId, 0, "", automatic);
-        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(), proposalId,0 , null );
-
-        Proposal proposal = getProposal(proposalId);
-
-        /*DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-        activitySubscriptionLocalService.deleteSubscription(userId, DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", automatic);*/
-
-        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), proposal.getDiscussionId(),0 , null );
+    public void unsubscribe(long proposalId, long userId, boolean automatic) {
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     /**

@@ -22,10 +22,10 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.enums.activities.ActivityEntryType;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -221,7 +221,9 @@ public class ActivitySubscriptionEmailHelper {
         List<ActivityEntry> activityObjects = ActivitiesClient.getActivityEntriesAfter(minDate);
 
         //clean list of activities first in order not to send out activities concerning the same proposal multiple times
-        ActivityEntryMessageLimitationHelper h = new ActivityEntryMessageLimitationHelper(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId());
+        ActivityEntryMessageLimitationHelper h = new ActivityEntryMessageLimitationHelper(
+                ActivityEntryType.PROPOSAL
+                .getPrimaryTypeId());
 
         return h.process(activityObjects);
     }

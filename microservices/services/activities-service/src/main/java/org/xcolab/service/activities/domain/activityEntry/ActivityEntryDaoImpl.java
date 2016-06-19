@@ -93,7 +93,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     }
 
     @Override
-    public Integer findByGivenCount(Long memberId, List<Long> memberIdsToExclude) {
+    public Integer countByGiven(Long memberId, List<Long> memberIdsToExclude) {
 
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(ACTIVITY_ENTRY)

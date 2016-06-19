@@ -8,6 +8,7 @@ import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundExcep
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.util.RequestUtils;
+import org.xcolab.util.enums.activities.ActivityEntryType;
 import org.xcolab.util.exceptions.EntityNotFoundException;
 
 import java.text.SimpleDateFormat;
@@ -123,29 +124,28 @@ public final class ActivitiesClient {
         RequestUtils.delete(uriBuilder);
     }
 
-    public static ActivitySubscription addSubscription(Long classNameId, Long classPK, Integer type,
-            String extraInfo, Long receiverId) {
+    public static ActivitySubscription addSubscription(long memberId,
+            ActivityEntryType activityEntryType, long classPK,
+            String extraInfo) {
 
-        ActivitySubscription activitySubscription = new ActivitySubscription();
-        activitySubscription.setClassNameId(classNameId);
-        activitySubscription.setClassPK(classPK);
-        activitySubscription.setType_(type);
-        activitySubscription.setExtraData(extraInfo);
-        activitySubscription.setReceiverId(receiverId);
-
-        return createActivitySubscription(activitySubscription);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/activitySubscriptions/subscribe")
+                .queryParam("receiverId", memberId)
+                .queryParam("activityEntryType", activityEntryType)
+                .queryParam("classPK", classPK)
+                .queryParam("extraInfo", extraInfo);
+        return RequestUtils.post(uriBuilder, null, ActivitySubscription.class);
 
     }
 
-    public static void deleteSubscription(Long receiverId, Long classNameId, Long classPK,
-            Integer type, String extraInfo) {
+    public static void deleteSubscription(Long receiverId, ActivityEntryType activityEntryType,
+            Long classPK, String extraInfo) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/activitySubscriptions/deleteIfSubscribed")
                 .queryParam("receiverId", receiverId)
-                .queryParam("classNameId", classNameId)
+                .queryParam("activityEntryType", activityEntryType)
                 .queryParam("classPK", classPK)
-                .queryParam("extraInfo", extraInfo)
-                .queryParam("type", type);
+                .queryParam("extraInfo", extraInfo);
         RequestUtils.delete(uriBuilder);
     }
 

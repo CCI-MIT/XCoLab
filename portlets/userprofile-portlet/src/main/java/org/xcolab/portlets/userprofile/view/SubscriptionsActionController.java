@@ -24,16 +24,13 @@ public class SubscriptionsActionController {
     @RequestMapping(params = {"action=removeSubscription"})
     public void handleRemoveSubscriptionAction(ActionRequest request, Model model, ActionResponse response,
             @ModelAttribute("userSubscriptions") UserSubscriptionsWrapper userSubscriptions,
-            @RequestParam(required = true) Long userId) throws PortalException, SystemException, IOException {
+            @RequestParam Long userId) throws PortalException, SystemException, IOException {
 
         for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
             if (subscription.getSelected()) {
-
                 ActivitiesClient.deleteSubscription(subscription.getSubscriptionPk());
-
             }
         }
         response.sendRedirect("/web/guest/member/-/member/userId/" + userId.toString() + "/page/subscriptionsManage");
-
     }
 }
