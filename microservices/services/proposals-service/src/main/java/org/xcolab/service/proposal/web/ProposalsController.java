@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.Proposal;
 
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
@@ -32,10 +33,14 @@ public class ProposalsController {
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) Boolean visible,
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Integer ribbon,
             @RequestParam(required = false) String sort) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        return proposalDao.findByGiven(paginationHelper, contestId);
+        return proposalDao
+                .findByGiven(paginationHelper, contestId, visible, contestPhaseId, ribbon);
     }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.GET)

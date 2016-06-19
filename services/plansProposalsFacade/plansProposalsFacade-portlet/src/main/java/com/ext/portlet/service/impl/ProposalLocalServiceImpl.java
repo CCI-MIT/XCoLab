@@ -5,7 +5,6 @@ import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
@@ -67,10 +66,9 @@ import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.xcolab.util.enums.activities.ActivityEntryType;
+
 import org.xcolab.activityEntry.proposal.ProposalMemberAddedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
@@ -92,6 +90,8 @@ import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
+import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 

@@ -2,7 +2,6 @@ package org.xcolab.wrappers;
 
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.DiscussionCategoryGroup;
@@ -24,17 +23,18 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
+
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.helpers.ProposalContestPhaseAttributeHelper;
 import org.xcolab.mail.EmailToAdminDispatcher;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by johannes on 10/27/15.
  * A wrapper class for proposals to be shared across portlets.
  * More specific wrappers should inherit from this one.
  */

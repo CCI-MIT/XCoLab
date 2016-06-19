@@ -1,22 +1,26 @@
 package org.xcolab.service.proposal.domain.proposal;
 
 import org.jooq.DSLContext;
+import org.jooq.JoinType;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.xcolab.model.tables.ProposalContestPhaseAttributeTable;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.records.ProposalRecord;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 
 import java.util.List;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE;
+import static org.xcolab.model.Tables.CONTEST_PHASE_RIBBON_TYPE;
 import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
-
+import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
 
 @Repository
 public class ProposalDaoImpl implements ProposalDao {
@@ -25,15 +29,54 @@ public class ProposalDaoImpl implements ProposalDao {
     private DSLContext dslContext;
 
     @Override
-    public List<Proposal> findByGiven(PaginationHelper paginationHelper, Long contestId) {
-        final SelectQuery<Record> query = dslContext.select()
+    public List<Proposal> findByGiven(PaginationHelper paginationHelper, Long contestId,
+            Boolean visible, Long contestPhaseId, Integer ribbon) {
+        final SelectQuery<Record> query = dslContext.select(PROPOSAL.fields())
                 .from(PROPOSAL)
                 .getQuery();
 
-        if (contestId != null) {
+        if (contestId != null || contestPhaseId != null || ribbon != null) {
             query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
             query.addJoin(CONTEST_PHASE,
                     CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
+        }
+
+
+        if (ribbon != null) {
+            final ProposalContestPhaseAttributeTable ribbonAttribute =
+                    PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("ribbonAttribute");
+            query.addJoin(ribbonAttribute,
+                    ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
+                            .and(ribbonAttribute.CONTEST_PHASE_ID
+                                    .eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
+            query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
+                    ribbonAttribute.NAME.eq(
+                            ProposalContestPhaseAttributeKeys.RIBBON)
+                    .and(CONTEST_PHASE_RIBBON_TYPE.ID_
+                            .eq(ribbonAttribute.NUMERIC_VALUE)));
+        }
+
+        if (contestPhaseId != null) {
+            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhaseId));
+        }
+
+        if (visible != null) {
+            query.addConditions(PROPOSAL.VISIBLE.eq(visible));
+            if (visible) {
+                final ProposalContestPhaseAttributeTable visibleAttribute =
+                        PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("visibleAttribute");
+                query.addJoin(visibleAttribute, JoinType.LEFT_OUTER_JOIN,
+                        visibleAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
+                                .and(visibleAttribute.CONTEST_PHASE_ID
+                                        .eq(CONTEST_PHASE.CONTEST_PHASE_PK))
+                                .and(visibleAttribute.NAME
+                                        .eq(ProposalContestPhaseAttributeKeys.VISIBLE))
+                                .and(visibleAttribute.NUMERIC_VALUE.eq(0L)));
+                query.addConditions(visibleAttribute.ID_.isNull());
+            }
+        }
+
+        if (contestId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
