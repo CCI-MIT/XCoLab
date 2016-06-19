@@ -1,11 +1,14 @@
 package org.xcolab.client.proposals;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.RequestUtils;
 import org.xcolab.util.exceptions.EntityNotFoundException;
+
+import java.util.List;
 
 public final class ProposalsClient {
 
@@ -16,6 +19,22 @@ public final class ProposalsClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/proposals");
         return RequestUtils.post(uriBuilder, proposal, Proposal.class);
+    }
+
+    public static List<Proposal> listProposals(int start, int limit, Long contestId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/proposals")
+                .queryParam("startRecord", start)
+                .queryParam("limitRecord", limit);
+        if (contestId != null) {
+            uriBuilder.queryParam("contestId", contestId);
+        }
+        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Proposal>>() {
+        });
+    }
+
+    public static Proposal getProposal(long proposalId) throws ProposalNotFoundException {
+        return getProposal(proposalId, false);
     }
 
     public static Proposal getProposal(long proposalId, boolean includeDeleted) throws ProposalNotFoundException {

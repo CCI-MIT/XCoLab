@@ -2,16 +2,20 @@ package org.xcolab.service.proposal.domain.proposal;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.records.ProposalRecord;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.List;
 
+import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL;
+import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 
 
 @Repository
@@ -20,6 +24,23 @@ public class ProposalDaoImpl implements ProposalDao {
     @Autowired
     private DSLContext dslContext;
 
+    @Override
+    public List<Proposal> findByGiven(PaginationHelper paginationHelper, Long contestId) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(PROPOSAL)
+                .getQuery();
+
+        if (contestId != null) {
+            query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
+            query.addJoin(CONTEST_PHASE,
+                    CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
+            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
+        }
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        return query.fetchInto(Proposal.class);
+    }
+
+    @Override
     public Proposal create(Proposal proposal) {
 
         ProposalRecord ret = this.dslContext.insertInto(PROPOSAL)
@@ -45,6 +66,7 @@ public class ProposalDaoImpl implements ProposalDao {
 
     }
 
+    @Override
     public boolean update(Proposal proposal) {
 
         return dslContext.update(PROPOSAL)
@@ -64,6 +86,7 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
 
+    @Override
     public Proposal get(Long proposalId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL)

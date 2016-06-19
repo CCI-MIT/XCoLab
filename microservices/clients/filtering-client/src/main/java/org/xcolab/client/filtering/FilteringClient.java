@@ -16,7 +16,7 @@ public final class FilteringClient {
         try {
             if (StringUtils.isNotBlank(uuid)) {
                 UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                        EUREKA_APPLICATION_ID + "/filteredEntries/" + uuid + "");
+                        EUREKA_APPLICATION_ID + "/filteredEntries/" + uuid);
                 return RequestUtils
                         .get(uriBuilder, FilteredEntry.class, "filteredEntryId_ " + uuid);
             }

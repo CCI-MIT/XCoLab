@@ -10,7 +10,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.xcolab.microservices.services</groupId>
     <artifactId>proposals-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -52,7 +51,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory</includes>
+                            <includes>xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_ContestPhase</includes>
                         </database>
                     </generator>
                 </configuration>

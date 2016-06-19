@@ -11,6 +11,9 @@ import org.xcolab.model.tables.pojos.Proposal;
 
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
+
+import java.util.List;
 
 @RestController
 public class ProposalsController {
@@ -22,6 +25,17 @@ public class ProposalsController {
     @RequestMapping(value = "/proposals", method = RequestMethod.POST)
     public Proposal createProposal(@RequestBody Proposal proposal) {
         return this.proposalDao.create(proposal);
+    }
+
+    @RequestMapping(value = "/proposals", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Proposal> listProposals(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) String sort) {
+        PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+
+        return proposalDao.findByGiven(paginationHelper, contestId);
     }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.GET)

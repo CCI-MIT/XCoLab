@@ -14,7 +14,17 @@ public class ContestClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/contest-service";
 
-    public static Contest getContest(String contestUrlName, Long contestYear)
+    public static Contest getContest(long contestId) throws ContestNotFoundException {
+        try {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"
+                    + EUREKA_APPLICATION_ID + "/contests/" + contestId);
+            return RequestUtils.get(uriBuilder, Contest.class, "contestId_" + contestId);
+        } catch (EntityNotFoundException e) {
+            throw new ContestNotFoundException(contestId);
+        }
+    }
+
+    public static Contest getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/contests")
@@ -25,8 +35,7 @@ public class ContestClient {
                     new ParameterizedTypeReference<List<Contest>>() {
                     });
         } catch (EntityNotFoundException e) {
-            throw new ContestNotFoundException("Contest " + contestUrlName
-                    + " not found in year " + contestYear);
+            throw new ContestNotFoundException(contestUrlName, contestYear);
         }
     }
 }
