@@ -21,7 +21,12 @@ public final class ProposalsClient {
         return RequestUtils.post(uriBuilder, proposal, Proposal.class);
     }
 
-    public static List<Proposal> listProposals(int start, int limit, Long contestId) {
+    public static List<Proposal> listProposals(long contestId) {
+        return listProposals(0, Integer.MAX_VALUE, contestId, null, null, null);
+    }
+
+    public static List<Proposal> listProposals(int start, int limit, Long contestId,
+            Boolean visible, Long contestPhaseId, Integer ribbon) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/proposals")
                 .queryParam("startRecord", start)
@@ -29,6 +34,16 @@ public final class ProposalsClient {
         if (contestId != null) {
             uriBuilder.queryParam("contestId", contestId);
         }
+        if (visible != null) {
+            uriBuilder.queryParam("visible", visible);
+        }
+        if (contestPhaseId != null) {
+            uriBuilder.queryParam("contestPhaseId", contestPhaseId);
+        }
+        if (ribbon != null) {
+            uriBuilder.queryParam("ribbon", ribbon);
+        }
+
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Proposal>>() {
         });
     }

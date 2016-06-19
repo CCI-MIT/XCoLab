@@ -72,7 +72,7 @@ public class ActivitiesService {
 
         ContestClient.getContest(contestId);
         final List<Proposal> proposals = ProposalsClient
-                .listProposals(0, Integer.MAX_VALUE, contestId);
+                .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
             try {
@@ -168,7 +168,7 @@ public class ActivitiesService {
 
         ContestClient.getContest(contestId);
         final List<Proposal> proposals = ProposalsClient
-                .listProposals(0, Integer.MAX_VALUE, contestId);
+                .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
             try {

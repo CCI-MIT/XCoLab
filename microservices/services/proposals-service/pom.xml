@@ -3,6 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <dependencies>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>xcolab-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
     <parent>
         <groupId>org.xcolab.microservices.services</groupId>
@@ -51,7 +58,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_ContestPhase</includes>
+                            <includes>xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_ContestPhase|xcolab_ContestPhaseRibbonType</includes>
                         </database>
                     </generator>
                 </configuration>

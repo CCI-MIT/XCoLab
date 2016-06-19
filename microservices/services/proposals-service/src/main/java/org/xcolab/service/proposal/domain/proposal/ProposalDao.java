@@ -8,10 +8,13 @@ import java.util.List;
 
 public interface ProposalDao {
 
-    List<Proposal> findByGiven(PaginationHelper paginationHelper, Long contestId);
+    List<Proposal> findByGiven(PaginationHelper paginationHelper, Long contestId, Boolean visible,
+            Long contestPhaseId, Integer ribbon);
 
     Proposal create(Proposal proposal);
+
     Proposal get(Long proposalId) throws NotFoundException;
+
     boolean update(Proposal proposal);
 
 }
