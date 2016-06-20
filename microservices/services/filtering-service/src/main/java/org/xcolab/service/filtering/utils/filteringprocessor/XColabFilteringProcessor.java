@@ -26,9 +26,9 @@ public class XColabFilteringProcessor extends EntryFilteringProcessor{
             String line;
             while ((line = reader.readLine()) != null) {
                 if( !line.contains(" ")) {
-                    profanitiesWordMap.put(line, line);
+                    profanitiesWordMap.put(line.toLowerCase(), line.toLowerCase());
                 }else{
-                    profanitiesPhraseMap.put(line, line);
+                    profanitiesPhraseMap.put(line.toLowerCase(), line.toLowerCase());
                 }
             }
         }catch (IOException ignored){
@@ -40,7 +40,7 @@ public class XColabFilteringProcessor extends EntryFilteringProcessor{
 
     @Override
     public FilteredEntry processEntry(FilteredEntry memberContentEntry) {
-        String memberInput = memberContentEntry.getFullText();
+        String memberInput = memberContentEntry.getFullText().toLowerCase();
         String[] tokensInUserContent = memberInput.split("[\\p{Punct}\\s]+");
         for(String token : tokensInUserContent){
             if( profanitiesWordMap.containsKey(token)){

@@ -104,8 +104,8 @@ function handleFilteredContent(textInput, source, uuidField, callback){
         fullText: textInput,
         source : source
     };
-    $.post("/profanityfiltering/" ,parameters , function (response) {
-        var responseData = JSON.parse(response);
+    $.post("/profanityfiltering/" ,parameters , function ( doc, suc, response) {
+        var responseData = JSON.parse(response.responseText);
 
         if (responseData.valid == "false") {
             $("#processedFailed").show();

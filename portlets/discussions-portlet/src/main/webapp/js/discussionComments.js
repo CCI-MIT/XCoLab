@@ -98,9 +98,10 @@ jQuery(function() {
                 window.disableAddComment();
 
                 if(getMustFilterContent()) {
+                    var text = "";
                     if(CKEDITOR.instances.messageContent === undefined) {
                         var $thecomment = jQuery(".c-Comment__new");
-                        var text = $thecomment.find(".commentContent").val();
+                        text = $thecomment.find(".commentContent").val();
                     }else{
                         text = CKEDITOR.instances.messageContent.getData();
                     }
@@ -123,11 +124,12 @@ function handleFilteredContent(textInput, source, uuidField, callback){
         fullText: textInput,
         source : source
     };
-    $.post("/profanityfiltering/" ,parameters , function (response) {
-        var responseData = JSON.parse(response);
+    $.post("/profanityfiltering/" ,parameters , function (doc, suc, response) {
+        var responseData = JSON.parse(response.responseText);
 
         if (responseData.valid == "false") {
             $("#processedFailed").show();
+            $("#loading_filtering_image").hide();
         } else {
             var uuid = responseData.uuid;
             $(uuidField).val(uuid);
