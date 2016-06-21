@@ -1,25 +1,32 @@
 package org.xcolab.client.flagging;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.client.flagging.pojo.AggregatedReport;
-import org.xcolab.util.enums.flagging.ManagerAction;
-import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.client.flagging.exceptions.ReportNotFoundException;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
+import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.Report;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.enums.flagging.ManagerAction;
+import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class FlaggingClient {
 
-    private static final String EUREKA_APPLICATION_ID =
-            "localhost:" + RequestUtils.getServicesPort() + "/flagging-service";
+    private static final RestService flaggingService = new RestService("flagging-service");
+    private static final RestResource reportResource = new RestResource(flaggingService,
+            "reports");
+    private static final RestResource aggregatedReportResource = new RestResource(flaggingService,
+            "aggregatedReports");
+    private static final RestResource reportTargetResource = new RestResource(flaggingService,
+            "reportTarget");
 
     private FlaggingClient() {
     }
@@ -31,14 +38,14 @@ public final class FlaggingClient {
     public static List<Report> listReports(int start, int last, Long reporterMemberId,
             TargetType targetType, Long targetId, Long targetAdditionalId, Long managerMemberId) {
 
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/reports")
-                        .queryParam("startRecord", start)
-                        .queryParam("limitRecord", last)
-                        .queryParam("sort", "createDate");
-
-        addConditions(uriBuilder, reporterMemberId, targetType, targetId, targetAdditionalId,
-                managerMemberId);
+        final UriBuilder uriBuilder = reportResource.getResourceUrl()
+                .addRange(start, last)
+                .queryParam("sort", "createDate")
+                .optionalQueryParam("reporterMemberId", reporterMemberId)
+                .optionalQueryParam("targetType", targetType)
+                .optionalQueryParam("targetId", targetId)
+                .optionalQueryParam("targetAdditionalId", targetAdditionalId)
+                .optionalQueryParam("managerMemberId", managerMemberId);
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Report>>() {
         });
@@ -46,43 +53,21 @@ public final class FlaggingClient {
 
     public static int countReports(Long reporterMemberId, TargetType targetType, Long targetId,
             Long targetAdditionalId, Long managerMemberId) {
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/reports");
-
-        addConditions(uriBuilder, reporterMemberId, targetType, targetId, targetAdditionalId,
-                managerMemberId);
+        final UriBuilder uriBuilder = reportResource.getResourceUrl()
+                .optionalQueryParam("reporterMemberId", reporterMemberId)
+                .optionalQueryParam("targetType", targetType)
+                .optionalQueryParam("targetId", targetId)
+                .optionalQueryParam("targetAdditionalId", targetAdditionalId)
+                .optionalQueryParam("managerMemberId", managerMemberId);
 
         return RequestUtils.getCount(uriBuilder);
     }
 
-    private static void addConditions(UriComponentsBuilder uriBuilder, Long reporterMemberId,
-            TargetType targetType, Long targetId, Long targetAdditionalId, Long managerMemberId) {
-        if (reporterMemberId != null) {
-            uriBuilder.queryParam("reporterMemberId", reporterMemberId);
-        }
-        if (targetType != null) {
-            uriBuilder.queryParam("targetType", targetType);
-        }
-        if (targetId != null) {
-            uriBuilder.queryParam("targetId", targetId);
-        }
-        if (targetAdditionalId != null) {
-            uriBuilder.queryParam("targetAdditionalId", targetAdditionalId);
-        }
-        if (managerMemberId != null) {
-            uriBuilder.queryParam("managerMemberId", managerMemberId);
-        }
-    }
-
     public static List<AggregatedReport> listAggregatedReports(int start, int last) {
-
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID
-                        + "/aggregatedReports")
-                        .queryParam("startRecord", start)
-                        .queryParam("limitRecord", last)
-                        .queryParam("managerAction", ManagerAction.PENDING)
-                        .queryParam("sort", "firstReportDate");
+        final UriBuilder uriBuilder = aggregatedReportResource.getResourceUrl()
+                .addRange(start, last)
+                .queryParam("managerAction", ManagerAction.PENDING)
+                .queryParam("sort", "firstReportDate");
 
         return RequestUtils.getList(uriBuilder,
                 new ParameterizedTypeReference<List<AggregatedReport>>() {
@@ -90,8 +75,7 @@ public final class FlaggingClient {
     }
 
     public static Report getReport(long reportId) throws ReportNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reports/" + reportId);
+        final UriBuilder uriBuilder = reportResource.getResourceUrl(reportId);
         try {
             return RequestUtils.get(uriBuilder, Report.class, "reportId_" + reportId);
         } catch (EntityNotFoundException e) {
@@ -100,15 +84,12 @@ public final class FlaggingClient {
     }
 
     public static void updateReport(Report report) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reports/" + report.getReportId());
-
+        final UriBuilder uriBuilder = reportResource.getResourceUrl(report.getReportId());
         RequestUtils.put(uriBuilder, report);
     }
 
     public static Report createReport(Report report) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reports");
+        final UriBuilder uriBuilder = reportResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, report, Report.class);
     }
 
@@ -121,23 +102,17 @@ public final class FlaggingClient {
     }
 
     public static List<ReportTarget> listReportTargets(int start, int last, TargetType targetType) {
-
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/reportTargets")
-                        .queryParam("startRecord", start)
-                        .queryParam("limitRecord", last);
-
-        if (targetType != null) {
-            uriBuilder = uriBuilder.queryParam("type", targetType);
-        }
+        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl()
+                .addRange(start, last)
+                .optionalQueryParam("type", targetType);
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<ReportTarget>>() {
         });
     }
 
-    public static ReportTarget getReportTarget(long reportTargetId) throws ReportTargetNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reportTargets/" + reportTargetId);
+    public static ReportTarget getReportTarget(long reportTargetId)
+            throws ReportTargetNotFoundException {
+        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl(reportTargetId);
         try {
             return RequestUtils.get(uriBuilder, ReportTarget.class,
                     "id_" + reportTargetId);
@@ -146,9 +121,9 @@ public final class FlaggingClient {
         }
     }
 
-    public static ReportTarget getReportTarget(TargetType type, String reason) throws ReportTargetNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reportTargets")
+    public static ReportTarget getReportTarget(TargetType type, String reason)
+            throws ReportTargetNotFoundException {
+        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl()
                     .queryParam("type", type.name())
                     .queryParam("reason", reason);
         try {
@@ -161,22 +136,18 @@ public final class FlaggingClient {
     }
 
     public static void updateReportTarget(ReportTarget reportTarget) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reportTargets/" + reportTarget.getReportTargetId());
-
+        final UriBuilder uriBuilder = reportTargetResource
+                .getResourceUrl(reportTarget.getReportTargetId());
         RequestUtils.put(uriBuilder, reportTarget);
     }
 
     public static boolean deleteReportTarget(long reportTargetId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reportTargets/" + reportTargetId);
-
+        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl(reportTargetId);
         return RequestUtils.delete(uriBuilder);
     }
 
     public static ReportTarget createReportTarget(ReportTarget report) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reportTargets");
+        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, report, ReportTarget.class);
     }
 
@@ -205,10 +176,10 @@ public final class FlaggingClient {
     }
 
     public static boolean handleReport(long managerId, ManagerAction managerAction, long reportId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/reports/" + reportId + "/handle")
-                    .queryParam("managerMemberId", managerId)
-                    .queryParam("managerAction", managerAction);
+        final UriBuilder uriBuilder = reportResource.getResourceUrl(reportId)
+                .path("/handle")
+                .queryParam("managerMemberId", managerId)
+                .queryParam("managerAction", managerAction);
         return RequestUtils.post(uriBuilder, null, Boolean.class);
     }
 }

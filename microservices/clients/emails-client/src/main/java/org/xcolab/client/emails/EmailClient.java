@@ -1,16 +1,16 @@
 package org.xcolab.client.emails;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.client.emails.pojo.Email;
 import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class EmailClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/emails-service";
+    private static final RestService emailService = new RestService("emails-service");
 
     private EmailClient() {
     }
@@ -24,8 +24,7 @@ public final class EmailClient {
 
     public static void sendEmail(String from, List<String> to, String subject, String emailBody, Boolean isHtml, String replyTo) {
 
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/sendEmail");
+        final UriBuilder uriBuilder = emailService.getBaseUrl().path("/sendEmail");
 
         Email email = new Email();
         email.setFrom(from);

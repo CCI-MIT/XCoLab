@@ -1,7 +1,7 @@
 package org.xcolab.client.members;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
+
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
@@ -9,24 +9,31 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class MembersClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/members-service";
+    private static final RestService memberService = new RestService("members-service");
+    private static final RestResource memberResource =
+            new RestResource(memberService, "members");
+    private static final RestResource memberCategoryResource =
+            new RestResource(memberService, "membercategories");
+    private static final RestResource contactResource =
+            new RestResource(memberService, "contacts");
 
     private MembersClient() {
     }
 
     public static List<Member> findMembersMatching(String partialName, int maxMembers) {
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members")
-                        .queryParam("startRecord", 0)
-                        .queryParam("limitRecord", maxMembers)
-                        .queryParam("partialName", partialName)
-                        .queryParam("sort", "screenName");
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+                .addRange(0, maxMembers)
+                .queryParam("partialName", partialName)
+                .queryParam("sort", "screenName");
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Member>>() {
         });
     }
@@ -34,10 +41,10 @@ public final class MembersClient {
     public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstMember, int lastMember) {
 
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members")
-                        .queryParam("startRecord", firstMember)
-                        .queryParam("limitRecord", lastMember);
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+                .addRange(firstMember, lastMember)
+                .optionalQueryParam("partialName", screenNameFilterValue)
+                .optionalQueryParam("roleName", categoryFilterValue);
 
         if (sortField != null && !sortField.isEmpty()) {
             final String prefix = (ascOrder) ? ("") : ("-");
@@ -54,13 +61,6 @@ public final class MembersClient {
                     break;
                 default:
             }
-
-        }
-        if (screenNameFilterValue != null && !screenNameFilterValue.isEmpty()) {
-            uriBuilder.queryParam("partialName", screenNameFilterValue);
-        }
-        if (categoryFilterValue != null) {
-            uriBuilder.queryParam("roleName", categoryFilterValue);
         }
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Member>>() {
@@ -68,14 +68,9 @@ public final class MembersClient {
     }
 
     public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue) {
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/count");
-        if (screenNameFilterValue != null) {
-            uriBuilder.queryParam("screenName", screenNameFilterValue);
-        }
-        if (categoryFilterValue != null) {
-            uriBuilder.queryParam("category", categoryFilterValue);
-        }
+        final UriBuilder uriBuilder = memberResource.getResourceUrl().path("/count")
+                .optionalQueryParam("screenName", screenNameFilterValue)
+                .optionalQueryParam("category", categoryFilterValue);
         try {
             return RequestUtils.get(uriBuilder, Integer.class,
                     "members_count_category_" + categoryFilterValue
@@ -85,9 +80,9 @@ public final class MembersClient {
         }
     }
 
-    public static Integer getMemberActivityCount(Long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/activityCount");
+    public static Integer getMemberActivityCount(long memberId) {
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
+                .path("/activityCount");
         try {
             return RequestUtils.get(uriBuilder, Integer.class);
         } catch (EntityNotFoundException e) {
@@ -95,9 +90,9 @@ public final class MembersClient {
         }
     }
 
-    public static Integer getMemberMaterializedPoints(Long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/materializedPoints");
+    public static Integer getMemberMaterializedPoints(long memberId) {
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
+                .path("/materializedPoints");
         try {
             return RequestUtils.get(uriBuilder, Integer.class);
         } catch (EntityNotFoundException e) {
@@ -105,26 +100,25 @@ public final class MembersClient {
         }
     }
 
-    public static List<Role_> getMemberRoles(Long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/roles");
+    public static List<Role_> getMemberRoles(long memberId) {
+        final UriBuilder uriBuilder =
+                memberResource.getSubResource(memberId, "roles").getResourceUrl();
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
         }, "memberId_" + memberId);
     }
 
-    public static List<Role_> getMemberRolesInContest(Long memberId, Long contestId) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/roles/contests/" + contestId);
+    public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
+        //TODO: make uri nicer
+        final UriBuilder uriBuilder =
+                memberResource.getSubResource(memberId, "roles").getResourceUrl()
+                .path("/contests/" + contestId);
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
         }, "memberId_" + memberId + "_contestId_" + contestId);
     }
 
-
-    public static MemberCategory getMemberCategory(Long roleId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/membercategories/" + roleId + "");
+    public static MemberCategory getMemberCategory(long roleId) {
+        final UriBuilder uriBuilder = memberCategoryResource.getResourceUrl(roleId);
 
         try {
             return RequestUtils.get(uriBuilder, MemberCategory.class, "roleId_" + roleId);
@@ -134,9 +128,8 @@ public final class MembersClient {
     }
 
     public static MemberCategory getMemberCategory(String displayName) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/membercategories")
-                    .queryParam("displayName", displayName);
+        final UriBuilder uriBuilder = memberCategoryResource.getResourceUrl()
+                .queryParam("displayName", displayName);
 
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
@@ -147,9 +140,8 @@ public final class MembersClient {
         }
     }
 
-    public static Member getMember(Long memberId) throws MemberNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "");
+    public static Member getMember(long memberId) throws MemberNotFoundException {
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId);
         try {
             return RequestUtils.get(uriBuilder, Member.class, "memberId_" + memberId);
         } catch (EntityNotFoundException e) {
@@ -158,8 +150,7 @@ public final class MembersClient {
     }
 
     public static Member findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("email", emailAddress);
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
@@ -171,8 +162,7 @@ public final class MembersClient {
     }
 
     public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("screenName", screenName);
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
@@ -184,8 +174,7 @@ public final class MembersClient {
     }
 
     public static Member findMemberByFacebookId(long facebookId) throws MemberNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("facebookId", facebookId);
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
@@ -197,8 +186,7 @@ public final class MembersClient {
     }
 
     public static Member findMemberByOpenId(String openId) throws MemberNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("openId", openId);
         try {
             return RequestUtils.getFirstFromList(uriBuilder,
@@ -210,65 +198,61 @@ public final class MembersClient {
     }
 
     public static void updateMember(Member member) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + member.getId_() + "");
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(member.getId_());
 
         final String cacheKey = "_" + Member.class.getSimpleName() + "_memberId_" + member.getId_();
         RequestUtils.put(uriBuilder, member, cacheKey);
     }
 
     public static void deleteMember(long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId);
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId);
 
         RequestUtils.delete(uriBuilder);
     }
 
     public static Contact_ getContact(Long contactId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contact/" + contactId + "");
+        final UriBuilder uriBuilder = contactResource.getResourceUrl(contactId);
         return RequestUtils.getUnchecked(uriBuilder, Contact_.class);
     }
 
     public static boolean isScreenNameUsed(String screenName) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/isUsed")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl().path("/isUsed")
                     .queryParam("screenName", screenName);
         return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
     }
 
     public static boolean isEmailUsed(String email) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/isUsed")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl().path("/isUsed")
                     .queryParam("email", email);
         return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
     }
 
     public static Long updateUserPassword(String forgotPasswordToken, String password) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/updateForgottenPassword")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+                .path("/updateForgottenPassword")
                 .queryParam("forgotPasswordToken", forgotPasswordToken)
                 .queryParam("password", password);
         return RequestUtils.post(uriBuilder, null, Long.class);
     }
 
     public static boolean isForgotPasswordTokenValid(String passwordToken) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/validateForgotPasswordToken")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+                .path("/validateForgotPasswordToken")
                 .queryParam("passwordToken", passwordToken);
         return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
     }
 
     public static String createForgotPasswordToken(Long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/createForgotPasswordToken")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+                .path("/createForgotPasswordToken")
                 .queryParam("memberId", memberId );
+        //TODO: this should be posted!
         return RequestUtils.getUnchecked(uriBuilder, String.class);
     }
 
     public static String generateScreenName(String lastName, String firstName) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/generateScreenName")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+                .path("/generateScreenName")
                     .queryParam("values", firstName, lastName);
         return RequestUtils.getUnchecked(uriBuilder, String.class);
     }
@@ -278,8 +262,8 @@ public final class MembersClient {
     }
 
     public static String hashPassword(String password, boolean liferayCompatible) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/hashPassword")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+                .path("/hashPassword")
                 .queryParam("password", password)
                 .queryParam("liferayCompatible", liferayCompatible);
         return RequestUtils.getUnchecked(uriBuilder, String.class);
@@ -288,40 +272,39 @@ public final class MembersClient {
     // /members/createForgotPasswordToken
 
     public static boolean validatePassword(String password, long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/validatePassword")
+        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+                .path("/validatePassword")
                 .queryParam("password", password)
                 .queryParam("memberId", memberId);
         return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
     }
 
     public static Member register(Member member) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members");
+        final UriBuilder uriBuilder = memberResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, member, Member.class);
     }
 
     public static boolean login(long memberId, String password) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/login");
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
+                .path("/login");
         return RequestUtils.post(uriBuilder, password, Boolean.class);
     }
 
     public static boolean subscribeToNewsletter(long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/subscribe");
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
+                .path("/subscribe");
         return RequestUtils.put(uriBuilder, null);
     }
 
     public static boolean unsubscribeFromNewsletter(long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/unsubscribe");
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
+                .path("/unsubscribe");
         return RequestUtils.put(uriBuilder, null);
     }
 
     public static boolean isSubscribedToNewsletter(long memberId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/" + memberId + "/isSubscribed");
+        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
+                .path("/isSubscribed");
         return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
     }
 }

@@ -1,14 +1,16 @@
 package org.xcolab.client.activities;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.text.SimpleDateFormat;
@@ -17,20 +19,20 @@ import java.util.List;
 
 public final class ActivitiesClient {
 
-    private static final String EUREKA_APPLICATION_ID =
-            "localhost:" + RequestUtils.getServicesPort() + "/activities-service";
+    private static final RestService activitiesService = new RestService("activities-service");
+    private static final RestResource activityEntryResource =
+            new RestResource(activitiesService, "activityEntries");
+    private static final RestResource activitySubscriptionResource =
+            new RestResource(activitiesService, "activitySubscriptions");
 
     public static ActivityEntry createActivityEntry(ActivityEntry activityEntry) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activityEntries");
+        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, activityEntry, ActivityEntry.class);
     }
 
     public static ActivityEntry getActivityEntry(Long activityEntryId)
             throws ActivityEntryNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activityEntries/" + activityEntryId + "");
+        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl(activityEntryId);
         try {
             return RequestUtils
                     .get(uriBuilder, ActivityEntry.class, "activityEntryId_" + activityEntryId);
@@ -42,21 +44,11 @@ public final class ActivitiesClient {
 
     public static List<ActivityEntry> getActivityEntries(Integer startRecord,
             Integer limitRecord, Long memberId, List<Long> memberIdsToExclude) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activityEntries");
-
-        if (startRecord != null) {
-            uriBuilder.queryParam("startRecord", startRecord);
-        }
-        if (limitRecord != null) {
-            uriBuilder.queryParam("limitRecord", limitRecord);
-        }
-        if (memberId != null) {
-            uriBuilder.queryParam("memberId", memberId);
-        }
-        if (memberIdsToExclude != null) {
-            uriBuilder.queryParam("folderId", memberIdsToExclude);
-        }
+        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl()
+                .optionalQueryParam("startRecord", startRecord)
+                .optionalQueryParam("limitRecord", limitRecord)
+                .optionalQueryParam("memberId", memberId)
+                .optionalQueryParam("folderId", memberIdsToExclude);
 
         return RequestUtils.getList(uriBuilder,
                 new ParameterizedTypeReference<List<ActivityEntry>>() {
@@ -64,8 +56,7 @@ public final class ActivitiesClient {
     }
 
     public static List<ActivityEntry> getActivityEntriesAfter(Date afterDate) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activityEntries");
+        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl();
 
         if (afterDate == null) {
             return null;
@@ -80,15 +71,9 @@ public final class ActivitiesClient {
     }
 
     public static Integer countActivities(Long memberId, List<Long> memberIdsToExclude) {
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder
-                        .fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/activityEntries/count");
-        if (memberId != null) {
-            uriBuilder.queryParam("memberId", memberId);
-        }
-        if (memberIdsToExclude != null) {
-            uriBuilder.queryParam("folderId", memberIdsToExclude);
-        }
+        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl().path("/count")
+                .optionalQueryParam("memberId", memberId)
+                .optionalQueryParam("folderId", memberIdsToExclude);
         try {
             return RequestUtils.get(uriBuilder, Integer.class, "activities_count_");
         } catch (EntityNotFoundException e) {
@@ -96,10 +81,10 @@ public final class ActivitiesClient {
         }
     }
 
-    public static ActivitySubscription getActivitySubscription(Long activitySubscriptionId)
+    public static ActivitySubscription getActivitySubscription(long activitySubscriptionId)
             throws ActivitySubscriptionNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activitySubscriptions/" + activitySubscriptionId + "");
+        final UriBuilder uriBuilder = activitySubscriptionResource
+                .getResourceUrl(activitySubscriptionId);
         try {
             return RequestUtils.get(uriBuilder, ActivitySubscription.class,
                     "activitySubscriptionId_" + activitySubscriptionId);
@@ -111,37 +96,31 @@ public final class ActivitiesClient {
 
     private static ActivitySubscription createActivitySubscription(
             ActivitySubscription activitySubscription) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activitySubscriptions/");
+        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, activitySubscription, ActivitySubscription.class);
     }
 
     public static void deleteSubscription(Long pk) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activitySubscriptions/" + pk);
+        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl(pk);
         RequestUtils.delete(uriBuilder);
     }
 
     public static ActivitySubscription addSubscription(long memberId,
             ActivityEntryType activityEntryType, long classPK,
             String extraInfo) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activitySubscriptions/subscribe")
+        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl()
+                .path("/subscribe")
                 .queryParam("receiverId", memberId)
                 .queryParam("activityEntryType", activityEntryType)
                 .queryParam("classPK", classPK)
                 .queryParam("extraInfo", extraInfo);
         return RequestUtils.post(uriBuilder, null, ActivitySubscription.class);
-
     }
 
     public static void deleteSubscription(Long receiverId, ActivityEntryType activityEntryType,
             Long classPK, String extraInfo) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activitySubscriptions/deleteIfSubscribed")
+        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl()
+                .path("deleteIfSubscribed")
                 .queryParam("receiverId", receiverId)
                 .queryParam("activityEntryType", activityEntryType)
                 .queryParam("classPK", classPK)
@@ -150,15 +129,14 @@ public final class ActivitiesClient {
     }
 
     public static void deleteSubscriptionById(Long subscriptionId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activitySubscriptions/" + subscriptionId + "");
+        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl(subscriptionId);
         RequestUtils.delete(uriBuilder);
     }
 
     public static boolean isSubscribedToActivity(Long receiverId, Long classNameId, Long classPK,
             Integer type, String extraInfo) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activitySubscriptions/isSubscribed")
+        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl()
+                .path("/isSubscribed")
                 .queryParam("receiverId", receiverId)
                 .queryParam("classNameId", classNameId)
                 .queryParam("classPK", classPK)
@@ -169,11 +147,10 @@ public final class ActivitiesClient {
 
     public static List<ActivitySubscription> getActivitySubscription(Long classNameId, Long classPK,
             Long receiverId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/activitySubscriptions/");
-        uriBuilder.queryParam("classNameId", classNameId);
-        uriBuilder.queryParam("classPK", classPK);
-        uriBuilder.queryParam("receiverId", receiverId);
+        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl()
+                .queryParam("classNameId", classNameId)
+                .queryParam("classPK", classPK)
+                .queryParam("receiverId", receiverId);
 
         return RequestUtils.getList(uriBuilder,
                 new ParameterizedTypeReference<List<ActivitySubscription>>() {

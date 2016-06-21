@@ -1,23 +1,26 @@
 package org.xcolab.client.contest;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public class ContestClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/contest-service";
+    private static final RestService contestService = new RestService("contest-service");
+    private static final RestResource contestResource = new RestResource(contestService,
+            "contests");
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
-            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://"
-                    + EUREKA_APPLICATION_ID + "/contests/" + contestId);
+            final UriBuilder uriBuilder = contestResource.getResourceUrl(contestId);
             return RequestUtils.get(uriBuilder, Contest.class, "contestId_" + contestId);
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
@@ -26,8 +29,7 @@ public class ContestClient {
 
     public static Contest getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contests")
+        final UriBuilder uriBuilder = contestResource.getResourceUrl()
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear);
         try {

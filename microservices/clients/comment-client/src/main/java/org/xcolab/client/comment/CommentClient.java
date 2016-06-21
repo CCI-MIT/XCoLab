@@ -1,7 +1,6 @@
 package org.xcolab.client.comment;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -12,6 +11,9 @@ import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Date;
@@ -19,28 +21,32 @@ import java.util.List;
 
 public final class CommentClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/comment-service";
+    private static final RestService commentService = new RestService("comment-service");
+    private static final RestResource commentResource = new RestResource(commentService,
+            "comments");
+    private static final RestResource threadResource = new RestResource(commentService,
+            "threads");
+    private static final RestResource categoryResource = new RestResource(commentService,
+            "categories");
+    private static final RestResource categoryGroupResource = new RestResource(commentService,
+            "categoryGroups");
 
     private CommentClient() {
     }
 
     public static List<Comment> listComments(int start, int last, long threadId) {
-
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/comments")
-                        .queryParam("startRecord", start)
-                        .queryParam("limitRecord", last)
-                        .queryParam("threadId", threadId)
-                        .queryParam("sort", "createDate");
+        final UriBuilder uriBuilder = commentResource.getResourceUrl()
+                .addRange(start, last)
+                .queryParam("threadId", threadId)
+                .queryParam("sort", "createDate");
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Comment>>() {
         });
     }
 
     public static int countComments(long threadId) {
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/comments")
-                        .queryParam("threadId", threadId);
+        final UriBuilder uriBuilder = commentResource.getResourceUrl()
+                .queryParam("threadId", threadId);
         return RequestUtils.getCount(uriBuilder, Comment.class, "threadId_" + threadId);
     }
 
@@ -50,9 +56,8 @@ public final class CommentClient {
 
     public static Comment getComment(long commentId, boolean includeDeleted)
             throws CommentNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/comments/" + commentId)
-                    .queryParam("includeDeleted", includeDeleted);
+        final UriBuilder uriBuilder = commentResource.getResourceUrl(commentId)
+                .queryParam("includeDeleted", includeDeleted);
         try {
             return RequestUtils.get(uriBuilder, Comment.class,
                     "commentId_" + commentId + "_includeDeleted_" + includeDeleted);
@@ -62,21 +67,17 @@ public final class CommentClient {
     }
 
     public static void updateComment(Comment comment) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/comments/" + comment.getCommentId());
-
+        final UriBuilder uriBuilder = commentResource.getResourceUrl(comment.getCommentId());
         RequestUtils.put(uriBuilder, comment);
     }
 
     public static Comment createComment(Comment comment) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/comments");
+        final UriBuilder uriBuilder = commentResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, comment, Comment.class);
     }
 
     public static boolean deleteComment(long commentId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/comments/" + commentId);
+        final UriBuilder uriBuilder = commentResource.getResourceUrl(commentId);
         return RequestUtils.delete(uriBuilder);
     }
 
@@ -84,31 +85,19 @@ public final class CommentClient {
 
     public static List<CommentThread> listThreads(int start, int last, Long categoryId,
             Long groupId, ThreadSortColumn sortColumn, boolean ascending) {
-
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/threads")
-                        .queryParam("startRecord", start)
-                        .queryParam("limitRecord", last);
-        if (categoryId != null) {
-            uriBuilder.queryParam("categoryId", categoryId);
-        }
-        if (groupId != null) {
-            uriBuilder.queryParam("groupId", groupId);
-        }
-
-        if (sortColumn == null) {
-            uriBuilder.queryParam("sort", "createDate");
-        } else {
-            uriBuilder.queryParam("sort", sortColumn.getIdentifier(ascending));
-        }
+        final UriBuilder uriBuilder = threadResource.getResourceUrl()
+                .addRange(start, last)
+                .optionalQueryParam("categoryId", categoryId)
+                .optionalQueryParam("groupId", groupId)
+                .optionalQueryParam("sort", "createDate")
+                .optionalQueryParam("sort", sortColumn.getIdentifier(ascending));
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<CommentThread>>() {
         });
     }
 
     public static CommentThread getThread(long threadId) throws ThreadNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/threads/" + threadId);
+        final UriBuilder uriBuilder = threadResource.getResourceUrl(threadId);
         try {
             return RequestUtils.get(uriBuilder, CommentThread.class, "threadId_" + threadId);
         } catch (EntityNotFoundException e) {
@@ -116,10 +105,9 @@ public final class CommentClient {
         }
     }
 
-
     public static Long getProposalIdForThread(long threadId) throws ThreadNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/threads/" + threadId+ "/getProposalIdForThread" );
+        final UriBuilder uriBuilder = threadResource.getResourceUrl(threadId)
+                .path("/getProposalIdForThread");
         try {
             return RequestUtils.get(uriBuilder, Long.class);
         } catch (EntityNotFoundException e) {
@@ -128,33 +116,25 @@ public final class CommentClient {
     }
 
     public static void updateThread(CommentThread thread) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/threads/" + thread.getThreadId());
-
+        final UriBuilder uriBuilder = threadResource.getResourceUrl(thread.getThreadId());
         RequestUtils.put(uriBuilder, thread);
     }
 
     public static CommentThread createThread(CommentThread thread) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/threads");
+        final UriBuilder uriBuilder = threadResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, thread, CommentThread.class);
     }
 
     public static Date getLastActivityDate(long threadId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/threads/" + threadId + "/lastActivityDate");
+        final UriBuilder uriBuilder = threadResource.getResourceUrl(threadId)
+                .path("/lastActivityDate");
         return RequestUtils.getUnchecked(uriBuilder, Date.class,
                 "lastActivityDate_threadId_" + threadId);
-//        try {
-//            return new DateFormatter("yyyy-MM-dd HH:mm:ss").parse(dateFormat, Locale.US);
-//        } catch (ParseException e) {
-//            return new Date(0);
-//        }
     }
 
     public static long getLastActivityAuthorId(long threadId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/threads/" + threadId + "/lastActivityAuthorId");
+        final UriBuilder uriBuilder = threadResource.getResourceUrl(threadId)
+                .path("/lastActivityAuthorId");
         return RequestUtils.getUnchecked(uriBuilder, Long.class,
                 "lastActivityAuthorId_threadId_" + threadId);
     }
@@ -162,21 +142,17 @@ public final class CommentClient {
     //    Category methods
 
     public static List<Category> listCategories(int start, int last, long groupId) {
-
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/categories")
-                        .queryParam("startRecord", start)
-                        .queryParam("limitRecord", last)
-                        .queryParam("groupId", groupId)
-                        .queryParam("sort", "sort");
+        final UriBuilder uriBuilder = categoryResource.getResourceUrl()
+                .addRange(start, last)
+                .queryParam("groupId", groupId)
+                .queryParam("sort", "sort");
 
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Category>>() {
         });
     }
 
     public static Category getCategory(long categoryId) throws CategoryNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/categories/" + categoryId);
+        final UriBuilder uriBuilder = categoryResource.getResourceUrl(categoryId);
         try {
             return RequestUtils.get(uriBuilder, Category.class, "categoryId_" + categoryId);
         } catch (EntityNotFoundException e) {
@@ -185,23 +161,20 @@ public final class CommentClient {
     }
 
     public static void updateCategory(Category category) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/categories/" + category.getCategoryId());
-
+        final UriBuilder uriBuilder = categoryResource.getResourceUrl(category.getCategoryId());
         RequestUtils.put(uriBuilder, category);
     }
 
     public static Category createCategory(Category category) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/categories");
+        final UriBuilder uriBuilder = categoryResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, category, Category.class);
     }
 
 //    Category Group
 
-    public static CategoryGroup getCategoryGroup(long groupId) throws CategoryGroupNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/groups/" + groupId);
+    public static CategoryGroup getCategoryGroup(long groupId)
+            throws CategoryGroupNotFoundException {
+        final UriBuilder uriBuilder = categoryGroupResource.getResourceUrl(groupId);
         try {
             return RequestUtils.get(uriBuilder, CategoryGroup.class, "groupId" + groupId);
         } catch (EntityNotFoundException e) {
