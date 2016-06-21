@@ -47,7 +47,7 @@ import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.TemplateReplacementUtil;

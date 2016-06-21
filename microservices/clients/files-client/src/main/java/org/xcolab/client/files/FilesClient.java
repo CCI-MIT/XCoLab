@@ -5,8 +5,8 @@ import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.files.providers.FileSystemPersistenceProvider;
 import org.xcolab.client.files.providers.PersistenceProvider;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public final class FilesClient {
 

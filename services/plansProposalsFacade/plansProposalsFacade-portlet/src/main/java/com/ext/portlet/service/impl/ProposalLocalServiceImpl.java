@@ -90,8 +90,8 @@ import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
-import org.xcolab.util.enums.activities.ActivityEntryType;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 

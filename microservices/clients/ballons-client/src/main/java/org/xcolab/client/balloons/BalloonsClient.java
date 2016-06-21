@@ -6,8 +6,8 @@ import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 

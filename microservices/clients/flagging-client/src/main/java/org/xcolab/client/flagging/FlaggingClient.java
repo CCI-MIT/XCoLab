@@ -11,8 +11,8 @@ import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.Report;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 

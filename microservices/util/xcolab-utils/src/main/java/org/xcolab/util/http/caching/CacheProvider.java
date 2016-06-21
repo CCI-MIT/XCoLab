@@ -1,4 +1,4 @@
-package org.xcolab.util.caching;
+package org.xcolab.util.http.caching;
 
 import java.util.concurrent.Future;
 

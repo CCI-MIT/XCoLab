@@ -41,7 +41,7 @@ import org.xcolab.portlets.reporting.beans.proposalsinyear.ProposalsInSpecificCo
 import org.xcolab.portlets.reporting.beans.proposalsinyear.proposalversiondeterminer.GetLastVersionOfPhaseType;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextEntity;
 import org.xcolab.portlets.reporting.beans.proposaltextextraction.ProposalTextExtraction;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.io.IOException;
 import java.io.Writer;

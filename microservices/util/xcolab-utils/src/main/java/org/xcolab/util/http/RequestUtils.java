@@ -1,4 +1,4 @@
-package org.xcolab.util;
+package org.xcolab.util.http;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -11,11 +11,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.util.caching.CacheProvider;
-import org.xcolab.util.caching.CacheProviderNoOpImpl;
-import org.xcolab.util.exceptions.EntityNotFoundException;
-import org.xcolab.util.exceptions.ServiceNotFoundException;
-import org.xcolab.util.exceptions.UncheckedEntityNotFoundException;
+import org.xcolab.util.http.caching.CacheProvider;
+import org.xcolab.util.http.caching.CacheProviderNoOpImpl;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.ServiceNotFoundException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.IOException;
 import java.io.InputStream;

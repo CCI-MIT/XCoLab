@@ -7,9 +7,9 @@ import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.enums.activities.ActivityEntryType;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

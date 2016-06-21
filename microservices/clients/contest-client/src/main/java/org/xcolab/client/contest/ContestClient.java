@@ -5,8 +5,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 

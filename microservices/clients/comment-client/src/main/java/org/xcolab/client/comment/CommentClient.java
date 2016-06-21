@@ -11,8 +11,8 @@ import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Date;
 import java.util.List;

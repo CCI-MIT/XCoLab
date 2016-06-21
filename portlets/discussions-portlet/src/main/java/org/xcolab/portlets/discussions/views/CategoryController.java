@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadSortColumn;

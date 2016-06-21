@@ -12,7 +12,7 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.records.ProposalRecord;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.List;
 

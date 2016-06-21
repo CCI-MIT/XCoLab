@@ -1,4 +1,4 @@
-package org.xcolab.util;
+package org.xcolab.util.time;
 
 /*
  * HumanTime.java

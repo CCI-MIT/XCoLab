@@ -2,7 +2,7 @@ package com.ext.utils.promotion;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;

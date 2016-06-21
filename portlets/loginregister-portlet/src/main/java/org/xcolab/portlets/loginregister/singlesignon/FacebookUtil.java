@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.util.RequestUtils;
+import org.xcolab.util.http.RequestUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

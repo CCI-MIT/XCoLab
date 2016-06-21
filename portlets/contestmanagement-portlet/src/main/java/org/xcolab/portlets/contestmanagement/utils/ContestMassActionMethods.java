@@ -20,7 +20,7 @@ import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.html.HtmlUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;

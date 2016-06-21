@@ -6,7 +6,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.html.HtmlUtil;
 
 import javax.mail.internet.AddressException;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package org.xcolab.util.caching;
+package org.xcolab.util.http.caching;
 
 import net.spy.memcached.MemcachedClient;
 import org.apache.commons.lang3.concurrent.ConcurrentUtils;

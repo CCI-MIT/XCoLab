@@ -33,7 +33,7 @@ import edu.mit.cci.roma.client.Simulation;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
 import java.io.IOException;

@@ -28,7 +28,7 @@ import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.helpers.ProposalContestPhaseAttributeHelper;
 import org.xcolab.mail.EmailToAdminDispatcher;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.ArrayList;
 import java.util.Date;

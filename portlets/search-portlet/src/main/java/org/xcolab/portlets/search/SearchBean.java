@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.xcolab.portlets.search.paging.PageLinkWrapper;
 import org.xcolab.portlets.search.paging.SearchDataPage;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.html.HtmlUtil;
 
 import java.io.IOException;
 import java.io.Serializable;

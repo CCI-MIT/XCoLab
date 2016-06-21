@@ -5,7 +5,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.util.RequestUtils;
+import org.xcolab.util.http.RequestUtils;
 
 import java.util.List;
 

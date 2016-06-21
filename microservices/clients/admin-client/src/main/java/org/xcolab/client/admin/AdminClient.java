@@ -5,8 +5,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public class AdminClient {
 

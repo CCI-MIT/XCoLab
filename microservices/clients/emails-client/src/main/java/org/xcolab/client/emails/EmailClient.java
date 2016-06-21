@@ -3,7 +3,7 @@ package org.xcolab.client.emails;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.emails.pojo.Email;
-import org.xcolab.util.RequestUtils;
+import org.xcolab.util.http.RequestUtils;
 
 import java.util.ArrayList;
 import java.util.List;

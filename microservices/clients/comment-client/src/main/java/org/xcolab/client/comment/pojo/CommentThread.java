@@ -11,7 +11,7 @@ import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.HumanTime;
+import org.xcolab.util.time.HumanTime;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

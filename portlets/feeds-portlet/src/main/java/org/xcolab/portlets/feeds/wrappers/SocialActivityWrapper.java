@@ -9,7 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.activityEntry.discussion.DiscussionBaseActivityEntry;
 import org.xcolab.activityEntry.member.MemberJoinedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalBaseActivityEntry;

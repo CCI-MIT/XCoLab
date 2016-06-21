@@ -2,7 +2,7 @@ package org.xcolab.wrappers;
 
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
