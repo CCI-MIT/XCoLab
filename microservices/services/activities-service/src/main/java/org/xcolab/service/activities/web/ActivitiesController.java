@@ -111,11 +111,7 @@ public class ActivitiesController {
             @RequestParam(required = false) Long classPK,
             @RequestParam(required = false) Integer type,
             @RequestParam(required = false) String extraInfo) {
-        try {
-            return activitiesService.unsubscribe(receiverId, activityEntryType, classPK, extraInfo);
-        } catch (ProposalNotFoundException | ContestNotFoundException e) {
-            return false;
-        }
+        return activitiesService.unsubscribe(receiverId, activityEntryType, classPK, extraInfo);
     }
 
     @RequestMapping(value = "/activitySubscriptions/isSubscribed", method = RequestMethod.GET)

@@ -4,7 +4,6 @@ import org.jooq.DeleteFinalStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -65,31 +64,25 @@ public class ActivitiesService {
         return activitySubscriptionDao.create(activitySubscription);
     }
 
-    private ActivitySubscription subscribeContest(long memberId, long contestId, String extraInfo)
-            throws ContestNotFoundException {
+    private ActivitySubscription subscribeContest(long memberId, long contestId, String extraInfo) {
         final ActivitySubscription contestSubscription = createSubscription(memberId,
                 ActivityEntryType.CONTEST, contestId, extraInfo, 0);
 
-        ContestClient.getContest(contestId);
         final List<Proposal> proposals = ProposalsClient
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
-            try {
-                if (!processedProposals.contains(proposal.getProposalId())) {
-                    subscribeProposal(memberId, proposal.getProposalId(), "", true);
-                    processedProposals.add(proposal.getProposalId());
-                }
-            } catch (ProposalNotFoundException ignored) {
+            if (!processedProposals.contains(proposal.getProposalId())) {
+                subscribeProposal(memberId, proposal.getProposalId(), "", true);
+                processedProposals.add(proposal.getProposalId());
             }
         }
         return contestSubscription;
     }
 
     private ActivitySubscription subscribeProposal(long memberId, long proposalId, String extraInfo,
-            boolean automatic) throws ProposalNotFoundException {
+            boolean automatic) {
         ActivitySubscription proposalSubscription;
-        Proposal proposal = ProposalsClient.getProposal(proposalId);
         if (automatic) {
             try {
                 proposalSubscription = activitySubscriptionDao.get(memberId,
@@ -107,7 +100,12 @@ public class ActivitiesService {
             proposalSubscription = createSubscription(memberId, ActivityEntryType.PROPOSAL, proposalId,
                     extraInfo, 0);
         }
-        subscribeDiscussion(memberId, proposal.getDiscussionId(), true);
+        try {
+            Proposal proposal = ProposalsClient.getProposal(proposalId);
+            subscribeDiscussion(memberId, proposal.getDiscussionId(), true);
+        } catch (ProposalNotFoundException e) {
+            //TODO: log failure
+        }
         return proposalSubscription;
     }
 
@@ -136,8 +134,7 @@ public class ActivitiesService {
     }
 
     public boolean unsubscribe(long memberId, ActivityEntryType activityEntryType, long classPK,
-            String extraInfo)
-            throws ProposalNotFoundException, ContestNotFoundException {
+            String extraInfo) {
         switch (activityEntryType) {
             case CONTEST:
                 return unsubscribeContest(memberId, classPK, extraInfo);
@@ -159,25 +156,20 @@ public class ActivitiesService {
         }
     }
 
-    private boolean unsubscribeContest(long memberId, long contestId, String extraInfo)
-            throws ContestNotFoundException {
+    private boolean unsubscribeContest(long memberId, long contestId, String extraInfo) {
         final List<DeleteFinalStep<ActivitySubscriptionRecord>> queries = new ArrayList<>();
         queries.add(activitySubscriptionDao
                 .getDeleteQuery(memberId,
                         ActivityEntryType.CONTEST.getPrimaryTypeId(), contestId, extraInfo));
 
-        ContestClient.getContest(contestId);
         final List<Proposal> proposals = ProposalsClient
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
-            try {
-                if (!processedProposals.contains(proposal.getProposalId())) {
-                    queries.addAll(
-                            getProposalDeleteQueries(memberId, proposal.getProposalId(), "", true));
-                    processedProposals.add(proposal.getProposalId());
-                }
-            } catch (ProposalNotFoundException ignored) {
+            if (!processedProposals.contains(proposal.getProposalId())) {
+                queries.addAll(
+                        getProposalDeleteQueries(memberId, proposal.getProposalId(), "", true));
+                processedProposals.add(proposal.getProposalId());
             }
         }
 
@@ -214,8 +206,7 @@ public class ActivitiesService {
     }
 
     private List<DeleteFinalStep<ActivitySubscriptionRecord>> getProposalDeleteQueries(
-            long memberId, long proposalId, String extraInfo, boolean automatic)
-            throws ProposalNotFoundException {
+            long memberId, long proposalId, String extraInfo, boolean automatic) {
         final List<DeleteFinalStep<ActivitySubscriptionRecord>> queries = new ArrayList<>();
 
         if (automatic) {
@@ -242,15 +233,18 @@ public class ActivitiesService {
     }
 
     private List<DeleteFinalStep<ActivitySubscriptionRecord>> getProposalDeleteQueries(
-            long memberId, long proposalId, String extraInfo)
-            throws ProposalNotFoundException {
+            long memberId, long proposalId, String extraInfo)  {
         final List<DeleteFinalStep<ActivitySubscriptionRecord>> queries = new ArrayList<>();
-        final Proposal proposal = ProposalsClient.getProposal(proposalId);
         queries.add(activitySubscriptionDao
                 .getDeleteQuery(memberId,
                         ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, extraInfo));
-        queries.addAll(getDiscussionDeleteQueries(memberId,
-                proposal.getDiscussionId(), true));
+        try {
+            final Proposal proposal = ProposalsClient.getProposal(proposalId);
+            queries.addAll(getDiscussionDeleteQueries(memberId,
+                    proposal.getDiscussionId(), true));
+        } catch (ProposalNotFoundException e) {
+            //TODO: log failure
+        }
         return queries;
     }
 }
