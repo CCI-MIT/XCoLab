@@ -3,7 +3,7 @@ package org.xcolab.utils.judging;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;

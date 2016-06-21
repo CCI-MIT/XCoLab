@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;

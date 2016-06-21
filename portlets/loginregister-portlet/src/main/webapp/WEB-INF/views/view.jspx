@@ -89,7 +89,7 @@
                         <div style="float: right">
                             <c:choose>
                                 <c:when test="${ createUserBean.imageId != null }">
-                                    <img src="/image/contest?img_id=${createUserBean.imageId }" id="userPortrait"
+                                    <img src="/image/user_male_portrait?img_id=${createUserBean.imageId }" id="userPortrait"
                                          width="150" height="150" />
                                 </c:when>
                                 <c:otherwise>

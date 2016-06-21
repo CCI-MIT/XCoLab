@@ -94,8 +94,39 @@ jQuery(function() {
                     return false;
                 }
                 window.disableAddComment();
-                $('#addCommentForm').submit();
+                if(getMustFilterContent()) {
+                    var $thecomment = jQuery(".c-Comment__new");
+                    var text = $thecomment.find(".commentContent").val()
+                    if(text == "") {
+                        text = CKEDITOR.instances.messageContent.getData();
+                    }
+
+                    return false;
+                } else {
+                    $('#addCommentForm').submit();
+                }
             }
         });
     }
 });
+function handleFilteredContent(textInput, source, uuidField, callback){
+
+    $("#processedFailed").hide();
+    $("#modal_filtering_prof").modal({escapeClose: true, clickClose: false, showClose: true});
+    var parameters ={
+        fullText: textInput,
+        source : source
+    };
+    $.post("/profanityfiltering/" ,parameters , function (doc, suc, response) {
+        var responseData = JSON.parse(response.responseText);
+
+        if (responseData.valid == "false") {
+            $("#processedFailed").show();
+            $("#loading_filtering_image").hide();
+        } else {
+            var uuid = responseData.uuid;
+            $(uuidField).val(uuid);
+            callback.call(null);
+        }
+    });
+}

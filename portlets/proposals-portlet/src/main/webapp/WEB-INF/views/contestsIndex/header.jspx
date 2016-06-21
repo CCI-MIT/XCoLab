@@ -109,6 +109,7 @@
   				<a href="${suggestionContestLink}">Suggest a new ${contestType.contestName}</a>
   			</div>
 		</c:if>
+		<c:if test="${showFilter}">
  			<div class="filter" style="position: relative;">
  				<portlet:renderURL var="filterURL" />
 	 			<form action="${filterURL }" id="filterContestsForm" method="get">
@@ -122,6 +123,7 @@
         			</c:if>
 	            </form>
     	    </div>
+		</c:if>
         <portlet:actionURL var="suggestContestURL">
             <portlet:param name="action" value="suggestContest" />
         </portlet:actionURL>

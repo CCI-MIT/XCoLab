@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: flagging-service
+  jmx:
+    default-domain: ${spring.application.name}

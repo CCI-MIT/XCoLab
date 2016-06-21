@@ -1,0 +1,18 @@
+
+.c-Ribbon {
+  position: fixed;
+  width: 80px;
+  height: 25px;
+  background: $t-Color__primary;
+  top: 7px;
+  left: -20px;
+  text-align: center;
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: $b-Typography__fontWeight--bold;
+  color: white;
+  line-height: 27px;
+  -ms-transform:rotate(-45deg);
+  -webkit-transform:rotate(-45deg);
+  transform:rotate(-45deg);
+}

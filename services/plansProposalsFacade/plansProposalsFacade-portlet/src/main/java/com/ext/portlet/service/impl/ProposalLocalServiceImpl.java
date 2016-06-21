@@ -5,7 +5,6 @@ import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
@@ -67,10 +66,9 @@ import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.xcolab.activityEntry.ActivityEntryType;
+
 import org.xcolab.activityEntry.proposal.ProposalMemberAddedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
@@ -81,6 +79,7 @@ import org.xcolab.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
@@ -91,8 +90,9 @@ import org.xcolab.proposals.events.ProposalSupporterAddedEvent;
 import org.xcolab.proposals.events.ProposalSupporterRemovedEvent;
 import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
+import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import org.xcolab.utils.TemplateReplacementUtil;
-import org.xcolab.utils.UrlBuilder;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.io.UnsupportedEncodingException;
@@ -216,40 +216,41 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
         final Contest contest = contestLocalService.fetchContest(contestPhase.getContestPK());
         ContestType contestType = contestTypeLocalService.getContestType(contest);
+
         // create discussions
         final String proposalEntityName = contestType.getProposalName()+" ";
-        DiscussionCategoryGroup proposalDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " main discussion");
 
-        proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contest, proposal));
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(proposalDiscussion);
-        proposal.setDiscussionId(proposalDiscussion.getId());
 
-        DiscussionCategoryGroup resultsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " results discussion");
-        resultsDiscussion.setIsQuiet(true);
+        final CommentThread mainCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " main discussion",
+                authorId, false);
 
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(resultsDiscussion);
-        proposal.setResultsDiscussionId(resultsDiscussion.getId());
+        proposal.setDiscussionId(mainCommentThread.getThreadId());
 
-        DiscussionCategoryGroup judgesDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " judges discussion");
-        judgesDiscussion.setIsQuiet(true);
 
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(judgesDiscussion);
-        proposal.setJudgeDiscussionId(judgesDiscussion.getId());
+        final CommentThread resultsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId +" results discussion",
+                authorId, true);
 
-        DiscussionCategoryGroup advisorsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " advisors discussion");
-        advisorsDiscussion.setIsQuiet(true);
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(advisorsDiscussion);
-        proposal.setAdvisorDiscussionId(advisorsDiscussion.getId());
+        proposal.setResultsDiscussionId(resultsCommentThread.getThreadId());
 
-        DiscussionCategoryGroup fellowsDiscussion = discussionCategoryGroupLocalService
-                .createDiscussionCategoryGroup(proposalEntityName + proposalId + " fellows discussion");
-        fellowsDiscussion.setIsQuiet(true);
-        discussionCategoryGroupLocalService.updateDiscussionCategoryGroup(fellowsDiscussion);
-        proposal.setFellowDiscussionId(fellowsDiscussion.getId());
+
+
+        final CommentThread judgeCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId +" judges discussion",
+                authorId, true);
+
+        proposal.setJudgeDiscussionId(judgeCommentThread.getThreadId());
+
+
+
+        final CommentThread advisorsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " advisors discussion",
+                authorId, true);
+
+        proposal.setAdvisorDiscussionId(advisorsCommentThread.getThreadId());
+
+
+        final CommentThread fellowsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " fellows discussion",
+                authorId, true);
+
+        proposal.setFellowDiscussionId(fellowsCommentThread.getThreadId());
 
         // create group
         Group group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
@@ -276,6 +277,16 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         subscribe(proposalId, authorId);
 
         return proposal;
+    }
+
+    private CommentThread createCommentThreadForProposal(String title, Long authorId, boolean isQuiet){
+        CommentThread commentThread = new CommentThread();
+        commentThread.setAuthorId(authorId);
+        commentThread.setCategoryId(null);
+        commentThread.setTitle(title);
+        commentThread.setIsQuiet(isQuiet);
+        commentThread = CommentClient.createThread(commentThread);
+        return commentThread;
     }
 
     @Override
@@ -1006,21 +1017,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId proposal id
      * @param userId     user id
      * @param automatic  if this is an automatic subscription
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public void subscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
-       // activitySubscriptionLocalService.addSubscription(Proposal.class, proposalId, 0, "", userId, automatic);
-        ActivitiesClient.addSubscription(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(),proposalId,0, null, userId);
-
-        Proposal proposal = getProposal(proposalId);
-
-        /*
-        DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-        activitySubscriptionLocalService.addSubscription(DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", userId, automatic);
-        */
-        ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(),proposal.getDiscussionId(),0, null, userId);
+    public void subscribe(long proposalId, long userId, boolean automatic) {
+        ActivitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     /**
@@ -1028,11 +1028,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @param proposalId proposal id
      * @param userId     user id
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public void unsubscribe(long proposalId, long userId) throws PortalException, SystemException {
+    public void unsubscribe(long proposalId, long userId) {
         unsubscribe(proposalId, userId, false);
     }
 
@@ -1045,20 +1043,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId proposal id
      * @param userId     user id
      * @param automatic  if this is an automatic subscription
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public void unsubscribe(long proposalId, long userId, boolean automatic) throws PortalException, SystemException {
-        activitySubscriptionLocalService.deleteSubscription(userId, Proposal.class, proposalId, 0, "", automatic);
-        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(), proposalId,0 , null );
-
-        Proposal proposal = getProposal(proposalId);
-
-        /*DiscussionCategoryGroup dcg = discussionCategoryGroupLocalService.getDiscussionCategoryGroup(proposal.getDiscussionId());
-        activitySubscriptionLocalService.deleteSubscription(userId, DiscussionCategoryGroup.class, dcg.getPrimaryKey(), 0, "", automatic);*/
-
-        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), proposal.getDiscussionId(),0 , null );
+    public void unsubscribe(long proposalId, long userId, boolean automatic) {
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     /**

@@ -57,7 +57,7 @@ public class CacheProviderMemcachedImpl implements CacheProvider, DisposableBean
 
     @Override
     public boolean isActive() {
-        return memcached != null;
+        return false;
     }
 
     @Override

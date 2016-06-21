@@ -7,18 +7,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
+import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class MembersController {
@@ -33,16 +37,20 @@ public class MembersController {
     private RoleService roleService;
 
     @RequestMapping(value = "/members", method = RequestMethod.GET)
-    public List<Member> listMembers(@RequestParam(required = false) Integer startRecord,
-                                    @RequestParam(required = false) Integer limitRecord,
-                                    @RequestParam(required = false) String sort,
-                                    @RequestParam(required = false) String partialName,
-                                    @RequestParam(required = false) String roleName,
-                                    @RequestParam(required = false) String email,
-                                    @RequestParam(required = false) String screenName,
-                                    @RequestParam(required = false) Long facebookId,
-                                    @RequestParam(required = false) String openId) {
+    public List<Member> listMembers(HttpServletResponse response,
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String partialName,
+            @RequestParam(required = false) String roleName,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String screenName,
+            @RequestParam(required = false) Long facebookId,
+            @RequestParam(required = false) String openId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+
+        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+                Integer.toString(memberDao.countByGiven(partialName, roleName)));
 
         return memberDao.findByGiven(paginationHelper, partialName, roleName,
                 email, screenName, facebookId, openId);
@@ -81,11 +89,7 @@ public class MembersController {
     public Integer countMembers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
-        if (category != null && !category.isEmpty()) {
-            return memberDao.countMembersFilteredByCategory(screenName, category);
-        } else {
-            return memberDao.countMembers(screenName);
-        }
+        return memberDao.countByGiven(screenName, category);
     }
 
     @RequestMapping(value = "/members", method = RequestMethod.POST)

@@ -1,5 +1,10 @@
 package org.xcolab.hooks.climatecolab.utils;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
@@ -24,21 +29,30 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ImageDisplayerFilter implements Filter {
 
+    private final static Log _log = LogFactoryUtil.getLog(ImageDisplayerFilter.class);
+
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
         String imageId = null;
 
         // image/contest?img_id=1272201
+        // image/proposal?img_id=1266433
+        // image/contest?img_id=1267815
         if (request.getParameter("img_id") != null) {
             imageId = request.getParameter("img_id");
         }
 
+        // /image/user_male_portrait?screenName=slocum&companyId=10112&portraitId=2051002&userId=40218
         // image/user_male_portrait?screenName=carlosbpf&companyId=10112&portraitId=2390159
         if (request.getParameter("portraitId") != null) {
             if(request.getParameter("userId") != null){
                 try {
                     Member member = MembersClient.getMember(Long.parseLong(request.getParameter("userId")));
-                    imageId = member.getPortraitFileEntryId() + "";
+                    if ( member.getPortraitFileEntryId() != null ) {
+                        imageId = member.getPortraitFileEntryId() + "";
+                    } else {
+                        imageId = null;
+                    }
                 } catch (MemberNotFoundException e) {
                     imageId = request.getParameter("portraitId");
                 }
@@ -48,7 +62,7 @@ public class ImageDisplayerFilter implements Filter {
         }
 
         String path = request.getSession().getServletContext().getRealPath("/");
-        if (imageId != null) {
+        if (imageId != null && !imageId.isEmpty()) {
             try {
                 FileEntry fileEntry = FilesClient.getFileEntry(new Long(imageId));
                 String filePath = FilesClient.getFilePathFromFinalDestination(fileEntry, path);
@@ -60,6 +74,21 @@ public class ImageDisplayerFilter implements Filter {
 
             } catch (FileEntryNotFoundException ignored) {
             }
+        }
+
+        if (request.getRequestURI().contains("user_male_portrait")) {
+            String pathToFailOverImage;
+            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+            if (themeDisplay != null) {
+                pathToFailOverImage =
+                        path + "../" + themeDisplay.getPathImage() + "user_default.png";
+            } else {
+                pathToFailOverImage = path + "../climatecolab-theme/images/user_default.png";
+                _log.warn("Theme display was null in image filter - falling back to default theme");
+            }
+            sendImageToResponse(request, response, pathToFailOverImage);
+            return;
+
         }
         try {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

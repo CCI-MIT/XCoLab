@@ -11,13 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -32,20 +34,14 @@ public class DeleteProposalActionController {
 
         if (proposalsContext.getPermissions(request).getCanDelete()) {
             //TODO: Undelete doesnt work
-/*
-
-
-            ProposalLocalServiceUtil.setVisibility(proposal.getProposalId(), !delete,
-                    proposalsContext.getUser(request).getUserId());
-                    */
             ContestPhase contestPhase = proposalsContext.getContestPhase(request);
             Proposal proposal = proposalsContext.getProposal(request);
             Contest contest = proposalsContext.getContest(request);
 
             BaseContestPhaseWrapper contestPhaseWrapper = new BaseContestPhaseWrapper(contestPhase);
 
-            //set visibility on phase
-            contestPhaseWrapper.setProposalVisibility(proposal.getProposalId(), !delete);
+            proposal.setVisible(!delete);
+            ProposalLocalServiceUtil.updateProposal(proposal);
 
             response.sendRedirect(
                     ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/ADMIN");

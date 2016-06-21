@@ -69,7 +69,6 @@ function initializeTextEditors() {
                     }
                 },
                 change: function(event) {
-                    console.log("asdfasdfasdfasdfasdfasfd");
                     markEditorDirty(thiz);
                 }
             };

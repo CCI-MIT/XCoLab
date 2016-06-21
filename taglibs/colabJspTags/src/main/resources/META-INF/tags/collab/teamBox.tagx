@@ -29,7 +29,7 @@
         <c:forEach var="member" items="${list}">
           <li id="${member.userId}">
             <span class="portrait">
-              <collab:userPortrait portraitId="${member.portraitId}" height="40" width="40" screenName="${member.screenName}"/>
+              <collab:userPortrait portraitId="${member.portraitId}" userId="${member.userId}" height="40" width="40" screenName="${member.screenName}"/>
             </span>
             <span class="name">${member.firstName} ${member.lastName}</span>
           </li>

@@ -10,10 +10,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import org.xcolab.util.caching.CacheProvider;
 import org.xcolab.util.caching.CacheProviderNoOpImpl;
 import org.xcolab.util.exceptions.EntityNotFoundException;
 import org.xcolab.util.exceptions.ServiceNotFoundException;
+import org.xcolab.util.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,8 +28,7 @@ public final class RequestUtils {
 
     private static String servicesPort = null;
 
-
-    private static final int MEMCACHED_TIMEOUT = 3;
+    private static final int CACHE_TIMEOUT = 3;
 
     private static final RestTemplate restTemplate = new RestTemplate();
 
@@ -65,7 +66,7 @@ public final class RequestUtils {
         ret = list.get(0);
 
         if (cacheActive) {
-            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
+            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
         }
 
         return ret;
@@ -94,7 +95,7 @@ public final class RequestUtils {
         ret = response.getBody();
 
         if (cacheActive) {
-            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
+            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
         }
         return ret;
     }
@@ -109,14 +110,8 @@ public final class RequestUtils {
             throws EntityNotFoundException {
         try {
             return getUnchecked(uriBuilder, entityType, cacheQueryIdentifier);
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                if (isNotFoundException(e)) {
-                    throw new EntityNotFoundException();
-                }
-                throw new ServiceNotFoundException(uriBuilder.build().toString());
-            }
-            throw e;
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new EntityNotFoundException();
         }
     }
 
@@ -126,21 +121,31 @@ public final class RequestUtils {
 
     public static <T> T getUnchecked(UriComponentsBuilder uriBuilder, Class<T> entityType,
             String cacheQueryIdentifier) {
-        T ret;
-        final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
-        final String cachePrefix = "_" + entityType.getSimpleName() + "_";
-        if (cacheActive) {
-            //noinspection unchecked
-            ret = (T) cacheProvider.get(sanitize(cachePrefix + cacheQueryIdentifier));
-            if (ret != null) {
-                return ret;
+        try {
+            T ret;
+            final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
+            final String cachePrefix = "_" + entityType.getSimpleName() + "_";
+            if (cacheActive) {
+                //noinspection unchecked
+                ret = (T) cacheProvider.get(sanitize(cachePrefix + cacheQueryIdentifier));
+                if (ret != null) {
+                    return ret;
+                }
             }
+            ret = restTemplate.getForObject(uriBuilder.build().toString(), entityType);
+            if (cacheActive) {
+                cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
+            }
+            return ret;
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                if (isNotFoundException(e)) {
+                    throw new UncheckedEntityNotFoundException();
+                }
+                throw new ServiceNotFoundException(uriBuilder.build().toString());
+            }
+            throw e;
         }
-        ret = restTemplate.getForObject(uriBuilder.build().toString(), entityType);
-        if (cacheActive) {
-            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
-        }
-        return ret;
     }
 
     public static int getCount(UriComponentsBuilder uriBuilder) {
@@ -170,7 +175,7 @@ public final class RequestUtils {
 
             ret = Integer.valueOf(countHeaders.get(0));
             if (cacheActive) {
-                cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), MEMCACHED_TIMEOUT, ret);
+                cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
             }
             return ret;
         } catch (HttpClientErrorException e) {
@@ -185,6 +190,10 @@ public final class RequestUtils {
         return e.getResponseBodyAsString().contains("NotFoundException");
     }
 
+    public static  boolean put(UriComponentsBuilder uriBuilder) {
+        return put(uriBuilder, null, null);
+    }
+
     public static <T> boolean put(UriComponentsBuilder uriBuilder, T entity) {
         return put(uriBuilder, entity, null);
     }
@@ -193,28 +202,24 @@ public final class RequestUtils {
 
         final boolean cacheActive = cacheProvider.isActive() && cacheKey != null;
         if (cacheActive) {
-            cacheProvider.replace(cacheKey, MEMCACHED_TIMEOUT, entity);
+            cacheProvider.replace(cacheKey, CACHE_TIMEOUT, entity);
         }
 
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);
 
-        return restTemplate
-                .exchange(uriBuilder.build().toString(), HttpMethod.PUT, httpEntity, Boolean.class)
-                .getBody();
+        restTemplate
+                .exchange(uriBuilder.build().toString(), HttpMethod.PUT, httpEntity, Void.class);
+        return true;
     }
 
-    public static  boolean delete(UriComponentsBuilder uriBuilder) {
-
-        return restTemplate
-                .exchange(uriBuilder.build().toString(), HttpMethod.DELETE, null, Boolean.class)
-                .getBody();
+    public static boolean delete(UriComponentsBuilder uriBuilder) {
+        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.DELETE, null, Void.class);
+        return true;
     }
 
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.build().toString(), entity, returnType);
     }
-
-
 
     private static String sanitize(String identifier) {
         return identifier.replaceAll("\\s", "+");

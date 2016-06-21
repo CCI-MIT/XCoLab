@@ -144,5 +144,31 @@ div.portlet-column {
   padding: 10px;
   background-color: rgb(255, 145, 5);
   border-radius: 10px;
-  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.popup-alert-notice {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(255, 145, 5);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.popup-alert-close {
+  display: inline-block;
+  border: none;
+  padding: $c-Button__padding--small;
+  margin-left: 5px;
+  font-size: 12px;
+  font-weight: $c-Button__fontWeight;
+  line-height: normal;
+  text-transform: $c-Button__capitalization;
+  @include border-radius($c-Button__borderRadius);
+  @include background(hover-color($t-Color__primary));
+  color: contrasting-color($t-Color__primary, white, $t-Color__grey--darkest, $t-Text__threshold);
+
+  &:hover {
+    @include background(hover-color($t-Color__primary));
+  }
 }

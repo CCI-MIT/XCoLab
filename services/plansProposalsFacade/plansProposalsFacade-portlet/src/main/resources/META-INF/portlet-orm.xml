@@ -617,6 +617,7 @@
 			<basic name="sortOrder" />
 			<basic name="showInList" />
 			<basic name="imageName" />
+			<basic name="description" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

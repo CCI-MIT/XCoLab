@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 
@@ -16,6 +17,7 @@ public class AccountDetailsEmmaAPI {
     @Autowired
     private Environment env;
 
+    private boolean enabled;
     private boolean initialized;
     private String accountId;
     private String groupId;
@@ -25,18 +27,32 @@ public class AccountDetailsEmmaAPI {
 
     private void init() {
         if (!initialized) {
-            try {
-                accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
-                groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
-                publicApiKey = ConfigurationAttributeKey.MY_EMMA_PUBLIC_API_KEY.getStringValue();
-                privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY.getStringValue();
-            } catch (ConfigurationAttributeNotFoundException e) {
-                accountId = "";
-                groupId = "";
-                publicApiKey = "";
-                privateApiKey = "";
+            enabled = ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.getBooleanValue()
+                    && "production".equalsIgnoreCase(env.getProperty("environment"));
+            if (enabled) {
+                try {
+                    accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
+                    groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
+                    publicApiKey = ConfigurationAttributeKey.MY_EMMA_PUBLIC_API_KEY
+                            .getStringValue();
+                    privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY
+                            .getStringValue();
+                } catch (ConfigurationAttributeNotFoundException e) {
+                    accountId = "";
+                    groupId = "";
+                    publicApiKey = "";
+                    privateApiKey = "";
+                }
+                if (StringUtils.isBlank(accountId) || StringUtils.isBlank(groupId)
+                        || StringUtils.isBlank(publicApiKey)
+                        || StringUtils.isNotBlank(privateApiKey)) {
+                    throw new IllegalArgumentException("Invalid MyEmma Configuration - "
+                            + "please provide all attribute or deactivate MyEmma");
+                }
+                encodedAuthorization = "Basic " + new Base64()
+                        .encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
+
             }
-            encodedAuthorization = "Basic " + new Base64().encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
             initialized = true;
         }
     }
@@ -84,10 +100,6 @@ public class AccountDetailsEmmaAPI {
 
     public boolean isEnabled() {
         init();
-        return StringUtils.isNotBlank(accountId)
-                && StringUtils.isNotBlank(groupId)
-                && StringUtils.isNotBlank(publicApiKey)
-                && StringUtils.isNotBlank(privateApiKey)
-                && "production".equalsIgnoreCase(env.getProperty("environment"));
+        return enabled;
     }
 }

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: proposals-service
+  jmx:
+    default-domain: ${spring.application.name}

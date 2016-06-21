@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.util.enums.activities.ActivityEntryType;
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.helpers.ProposalAttributeHelper;
@@ -59,7 +59,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
     }
     @Override
     public Long getPrimaryType() {
-        return ActivityEntryType.PROPOSOSAL.getPrimaryTypeId();
+        return ActivityEntryType.PROPOSAL.getPrimaryTypeId();
     }
 
 

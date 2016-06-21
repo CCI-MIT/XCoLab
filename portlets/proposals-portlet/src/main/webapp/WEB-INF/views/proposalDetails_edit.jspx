@@ -11,12 +11,18 @@
 
     <jsp:directive.include file="./init_proposal.jspx"/>
 
+
     <script type="text/javascript">
         var EXTERNAL_IMAGE_UPLOAD_URL = '${requestScope.imageUploadServiceUrl}';
         var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
     </script>
 
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
+
+    <!-- Includes for profanity filter-->
+    <script src="/climatecolab-hook/js/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
+    <link href="/climatecolab-hook/css/jquery.modal.min.css" rel="stylesheet" type="text/css" />
+
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
     <!--ProposalSectionsTabController-->
@@ -33,8 +39,16 @@
         }
     </style>
 
+    <c:if test="${mustFilterContent}">
+    <div id="modal_filtering_prof" style="display:none;">
+        <p style="font-size: large;font-weight: 600;">Preparing for submission...</p>
+        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/climatecolab-hook/images/loader.gif"/></div>
+        <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again <a href="#" rel="modal:close">Close</a></div>
+    </div>
+    </c:if>
 
-<div id="content">
+    <div id="content">
+
 <div class="prop-left">
 
     <c:choose>
@@ -98,6 +112,7 @@
         <form:hidden path="moveType" />
         <form:hidden path="moveFromContestPhaseId" />
         <form:hidden path="moveToContestId" />
+        <form:hidden path="uuid" />
 
         <div class="addpropbox q1">
             <label>
@@ -338,7 +353,21 @@
             disableButtons();
             if (validatePlanEditForm()) {
                 disableDirtyCheck();
-                jQuery("#editForm").submit();
+                if(getMustFilterContent()) {
+                    var text = "";
+                    text = text + $("#proposalName").val() + " ";
+                    text = text + $("#proposalTeam").val() + " ";
+                    text = text + $("#proposalPitchInput").val() + " ";
+                    for (var ckInstanceId in CKEDITOR.instances) {
+                        if (document.getElementById(ckInstanceId)) {
+                            var ckInstance = CKEDITOR.instances[ckInstanceId];
+                            text = text + (ckInstance.getData()) + " ";
+                        }
+                    }
+                    handleFilteredContent(text,"PROPOSAL", "#uuid",function () { jQuery("#editForm").submit() });
+                }else {
+                    jQuery("#editForm").submit();
+                }
             }
         }
 
@@ -414,7 +443,23 @@
         </c:if>
 
     </script>
-    
+
+    <c:if test="${mustFilterContent}">
+        <script>
+            function getMustFilterContent(){
+                return true;
+
+            }
+        </script>
+    </c:if>
+    <c:if test="${not mustFilterContent}">
+        <script>
+            function getMustFilterContent(){
+                return false;
+
+            }
+        </script>
+    </c:if>
 </div>
 
 

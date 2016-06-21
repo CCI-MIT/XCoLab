@@ -56,6 +56,5 @@
 
 	<bean class="org.xcolab.jspTags.discussion.actions.DeleteDiscussionMessageFlagActionController" />
 	<bean class="org.xcolab.jspTags.discussion.actions.EditDiscussionMessageActionController" />
-	<bean class="org.xcolab.jspTags.discussion.actions.SpamReportDiscussionMessageActionController" />
 
 </beans>

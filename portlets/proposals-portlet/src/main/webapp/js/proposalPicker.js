@@ -88,8 +88,8 @@ function replaceURLPlaceholders(rawUrl){
 /* Proposal picker tab selected (click) */
 function proposalPickerTabSelected(element, type){
     proposalType = type;
-    element.parent().parent().children().removeClass('c');
-    element.parent().addClass('c'); proposalPickerPage = 0;
+    element.parent().parent().children().removeClass('active');
+    element.parent().addClass('active'); proposalPickerPage = 0;
     // check if date should be displayed
     if (type == 'all'){
         $('#proposalPickerTable').find('> thead > tr > td:nth-child(3)').children().hide();
@@ -164,7 +164,7 @@ function pickProposalList(sectionId, proposalNames, proposalNamePlural, contestN
 
 function replaceContestTypeNameVariables(proposalNames, proposalNamesPlural, contestNames, contestNamesPlural) {
     if (!proposalNames) {
-        console.trace();
+        console.log("WARNING: contest types for proposal picker not defined");
     }
     $('.contestTypeProposalNames').each(function() {
         $(this).text(proposalNames);

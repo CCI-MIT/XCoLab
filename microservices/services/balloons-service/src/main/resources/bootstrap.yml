@@ -1,5 +1,5 @@
 spring:
   application:
-    name: activities-service
+    name: balloons-service
   jmx:
     default-domain: ${spring.application.name}

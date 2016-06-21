@@ -40,7 +40,7 @@
                         	</c:otherwise>
                         </c:choose>
 					</div>
-					<h1>${proposal.name}</h1>
+					<h1><a href="${proposal.proposalUrl}">${proposal.name}</a></h1>
 				</div>
 			</div>
 			<c:if test="${not proposal.visible }">
@@ -48,35 +48,37 @@
 					This ${contestType.proposalName} has been deleted!
 				</h3>
 			</c:if>
-			<ul class="c-TabBar clearfix">
-				<c:forEach var="singleTab" items="${tabs }" varStatus="loopStatus">
-					<li class="${!loopStatus.last
+			<c:if test="${tabs.size() > 0}">
+                <ul class="c-TabBar clearfix">
+                    <c:forEach var="singleTab" items="${tabs }" varStatus="loopStatus">
+                        <li class="${!loopStatus.last
 							? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first')
 							: 'c-TabBar__tab--last'}
 							${currentTab == singleTab.tab ? 'active' : singleTab.tab.tabType.cssModifier}">
-						<c:choose>
-							<c:when test="${singleTab.defaultTab and empty contestPhase }">
-								<c:set var="proposalUrl" value="${proposal.proposalUrl}" />
-							</c:when>
-							<c:when test="${singleTab.defaultTab and not empty contestPhase }">
-								<c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }" />
-							</c:when>
-							<c:when test="${not singleTab.defaultTab and empty contestPhase }">
-								<c:set var="proposalUrl" value="${proposal.proposalUrl}/tab/${singleTab.name}" />
-							</c:when>
-							<c:otherwise>
-								<c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }/tab/${singleTab.name}" />
-							</c:otherwise>
-						</c:choose>
-						<a href="${proposalUrl }">
-							${singleTab.displayName}
-							<c:if test="${singleTab.activityCount > 0}">
-								<span class="c-TabBar__tab__count">${singleTab.activityCount}</span>
-							</c:if>
-						</a>
-					</li>
-				</c:forEach>
-			</ul>
+                            <c:choose>
+                                <c:when test="${singleTab.defaultTab and empty contestPhase }">
+                                    <c:set var="proposalUrl" value="${proposal.proposalUrl}" />
+                                </c:when>
+                                <c:when test="${singleTab.defaultTab and not empty contestPhase }">
+                                    <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }" />
+                                </c:when>
+                                <c:when test="${not singleTab.defaultTab and empty contestPhase }">
+                                    <c:set var="proposalUrl" value="${proposal.proposalUrl}/tab/${singleTab.name}" />
+                                </c:when>
+                                <c:otherwise>
+                                    <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }/tab/${singleTab.name}" />
+                                </c:otherwise>
+                            </c:choose>
+                            <a href="${proposalUrl }">
+                                ${singleTab.displayName}
+                                <c:if test="${singleTab.activityCount > 0}">
+                                    <span class="c-TabBar__tab__count">${singleTab.activityCount}</span>
+                                </c:if>
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </c:if>
 		</div>
 		<!-- /inner -->
 	</div>

@@ -9,7 +9,6 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
 import com.ext.portlet.service.base.ActivitySubscriptionLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.ActivitySubscriptionUtil;
-import com.ext.utils.NotificationUnregisterUtils;
 import com.ext.utils.SocialActivityMessageLimitationHelper;
 import com.ext.utils.subscriptions.ActivitySubscriptionConstraint;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -177,7 +176,7 @@ public class ActivitySubscriptionLocalServiceImpl
                 } else if (subscription.getAutomaticSubscriptionCounter() > 1) {
                     // decrement automatic subscription counter as this subscription can be still
                     // valid (ie it has been added as a result of regional->global link and because
-                    // user is susbscribed to a contest)
+                    // user is subscribed to a contest)
                     subscription.setAutomaticSubscriptionCounter(subscription.getAutomaticSubscriptionCounter() - 1);
                     updateActivitySubscription(subscription);
                 }
@@ -399,7 +398,7 @@ public class ActivitySubscriptionLocalServiceImpl
             final User recipient = entry.getKey();
             final List<SocialActivity> userDigestActivities =  entry.getValue();
             String body = getDigestMessageBody(serviceContext, userDigestActivities);
-            String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
+            String unsubscribeFooter = "";//getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
 
 			sendEmailMessage(recipient, subject, body, unsubscribeFooter, serviceContext.getPortalURL());
 		}

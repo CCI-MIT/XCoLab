@@ -136,20 +136,6 @@
             })
         }
 
-        function reCalculateIndex() {
-            var firstElementInList = document.getElementById("contestOverviewBody");
-            var nextElementInList = firstElementInList.firstChild;
-            var index = 0;
-            do {
-                if (!isElementDummyContestPhase(nextElementInList)) {
-                    index++;
-                    var dataFormIndexLable = nextElementInList.querySelector("[data-form-attribute=indexLable]");
-                    dataFormIndexLable.innerHTML = index.toString();
-                }
-            } while (nextElementInList = nextElementInList.nextSibling)
-        }
-
-
         function saveExistingTemplate() {
             document.getElementById('createNewFlag').value = false;
 

@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
@@ -126,40 +128,36 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     }
 
     @ResourceMapping(value = "submitContest")
-    public
-    @ResponseBody
-    void handleSubmitContest(ResourceRequest request, ResourceResponse response,
-            @RequestParam("contestId") Long contestId, @RequestParam("tab") String tab)
+    public @ResponseBody void handleSubmitContest(ResourceRequest request,
+            ResourceResponse response, @RequestParam long contestId, @RequestParam String tab)
             throws IOException {
 
         boolean success = true;
         try {
-            String contestUrl = "http://www.climatecolab.org/web/guest/cms/-/contestmanagement/contestId/" + contestId;
+            String contestUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue()
+                    + "/web/guest/cms/-/contestmanagement/contestId/" + contestId;
             if (!tab.isEmpty()) {
                 contestUrl += "/tab/" + tab;
             }
             contestUrl += "<br/>";
 
             User user = UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser()));
-            String body = "The following <contest/>: <br />" +
-                    contestUrl +
+            String body = "The following <contest/>: <br />" + contestUrl +
                     "was submitted by the user: " + user.getFullName() + "<br/>";
 
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
 
-            String emailRecipients = "pdeboer@mit.edu,lfi@mit.edu";
-            String[] recipients = emailRecipients.split(",");
+            final String emailRecipient = ConfigurationAttributeKey.ADMIN_EMAIL.getStringValue();
 
             List<String> addressTo = new ArrayList<>();
-            for (int i = 0; i < recipients.length; i++) {
-                addressTo.add(recipients[i]);
-            }
+            addressTo.add(emailRecipient);
 
             String subject = "<contest/> draft was submitted from the <contest/> management tool!";
 
-            //TODO Phase 2: use configured CMS contest type?
-            subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, null);
-            body = TemplateReplacementUtil.replaceContestTypeStrings(body, null);
+            ContestType contestType = ContestTypeLocalServiceUtil.getContestType(
+                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
+            subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
+            body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);
 
             EmailClient.sendEmail(fromEmail.getAddress(), addressTo, subject, body, true, null);
 
@@ -170,7 +168,6 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         response.setContentType("application/json");
         response.getWriter().write(mapper.writeValueAsString(success));
     }
-
 
     @RequestMapping(params = {"action=updateContestAdmin", "error=true"})
     public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {

@@ -6,11 +6,13 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+    <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
+
 	<script type="text/javascript" src="/members-portlet/js/main.js"><!-- --></script>
 
 	<div id="bread" class="pro">
 		<a href="/web/guest/community">Community</a>&#160; <img
-			src="/climatecolab-theme/images/arrow.gif" width="8" height="8" />&#160;
+			src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />&#160;
 		<a href="/web/guest/members">Members</a>
 	</div>
 
@@ -34,74 +36,12 @@
 		</script>
 	</div>
 
-	<c:if test="${memberCategory == 'Staff'}">
-		<p>The ${colabName} <a href="/web/guest/project-staff1/-/wiki/Main/Project%20staff">Staff
-        </a> includes researchers affiliated with the
-            <a href="/web/guest/resources/-/wiki/Main/Project%20staff" target="_blank">MIT
-                Center for Collective Intelligence</a>. Members of the staff work together to develop a long-term vision
-            for the ${colabName} and oversee its day-to-day operations.</p>
-	</c:if>
-
-	<!-- HELP DIVS -->
-	<c:if test="${memberCategory == 'Expert'}">
-		<p>
-			A group of world renowned experts, who serve on the ${colabName}’s
-			<a href="/web/guest/resources/-/wiki/Main/Expert+Council">Expert Council</a> and
-			<a href="/web/guest/resources/-/wiki/Main/Expert%20advisory%20board">Expert Advisory Board</a>
-			are a key part of the community.
-		</p>
-	</c:if>
-
-	<!-- HELP DIVS -->
-	<c:if test="${memberCategory == 'Fellow'}">
-		<p>
-			${colabName} <a
-				href="/web/guest/resources/-/wiki/Main/Climate%20Colab%20Fellows">Fellows</a>
-			are graduate students and professionals who coordinate ${colabShortName}
-			contest activity by undertaking outreach, commenting on proposals,
-			and managing the judging process.
-		</p>
-	</c:if>
-
-    <!-- HELP DIVS -->
-    <c:if test="${memberCategory == 'Catalyst'}">
+	<!-- HELP DIV -->
+    <c:if test="${not empty memberCategory and not empty memberCategory.description}">
         <p>
-            ${colabName} <a
-                href="/resources/-/wiki/Main/Climate+CoLab+Catalysts">Catalysts</a>
-            are knowledgeable professionals who have committed to providing feedback to proposals submitted in ${colabShortName} contests. They have applied to and been selected by the ${colabName} as members with expertise and
-            qualifications that would be valuable contributions to proposal authors.
+            ${memberCategory.description}
         </p>
     </c:if>
-
-    <!-- HELP DIVS -->
-    <c:if test="${memberCategory == 'Judges'}">
-        <p>
-            ${colabName} <a
-                href="/web/guest/judges/-/wiki/Main/Climate+CoLab+Judges">Judges</a>
-            are subject matter experts who have a high level of experience in the field, and provide feedback on and
-            select the contest's most promising proposals.
-        </p>
-    </c:if>
-
-    <!-- HELP DIVS -->
-    <c:if test="${memberCategory == 'Impact Assessment Fellow'}">
-        <p>
-            ${colabName} <a
-                href="http://climatecolab.org/impact_fellows">Impact Assessment Fellows</a>
-            help proposal authors estimate the greenhouse gas emission reductions that their proposals can achieve.
-        </p>
-    </c:if>
-
-	<!-- HELP DIVS -->
-	<c:if test="${memberCategory == 'Advisor'}">
-		<p>
-			${colabName} <a
-				href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Advisors">Advisors</a>
-			are experts who provide overall guidance to ${colabShortName} contests by
-			defining topics, recruiting Judges, and communicating results to
-			key stakeholders.
-		</p>
-	</c:if>
 
 	<div class="comm_disc-head">
 		<div class="comm_info-left members">
@@ -111,9 +51,9 @@
 
 			<div class="users-filter" style="position: relative;">
 				<portlet:renderURL var="filterURL">
-				<portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
-				<portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
-					<portlet:param name="memberCategory" value="${memberCategory}" />
+				    <portlet:param name="sortColumn" value="${sortFilterPage.sortColumn}" />
+				    <portlet:param name="sortAscending" value="${sortFilterPage.sortAscending}" />
+                    <portlet:param name="memberCategory" value="${memberCategoryParam}" />
 				</portlet:renderURL>
 				<form action="${filterURL }" id="filterUsersForm" method="post">
 					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />

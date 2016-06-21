@@ -23,7 +23,9 @@
         <module>comment-client</module>
         <module>emails-client</module>
         <module>files-client</module>
+        <module>filtering-client</module>
         <module>members-client</module>
+        <module>proposals-client</module>
         <module>search-client</module>
     </modules>
 

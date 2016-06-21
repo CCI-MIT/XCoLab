@@ -11,25 +11,23 @@
             <div class="fixed-position-inner-relative">
                 <div class="p-ContestProposals__header__mainSection">
                     <div class="p-ContestProposals__header__title clearfix">
-                        <p>
-                            <c:if test="${contest.sponsorLogoId > 0}">
-                                <c:choose>
-                                    <c:when test="${contest.sponsorLinkAvailable}">
-                                        <a href="//${contest.sponsorLink}">
-                                            <img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}"
-                                                    alt="Sponsor Logo"
-                                                    class="p-ContestProposals__header__sponsorLogo"/>
-                                        </a>
-                                    </c:when>
-                                    <c:otherwise>
+                        <c:if test="${contest.sponsorLogoId > 0}">
+                            <c:choose>
+                                <c:when test="${contest.sponsorLinkAvailable}">
+                                    <a href="//${contest.sponsorLink}">
                                         <img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}"
-                                             alt="Sponsor Logo"
-                                             class="p-ContestProposals__header__sponsorLogo"/>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:if>
-                            ${contest.contestName}
-                        </p>
+                                                alt="Sponsor Logo"
+                                                class="p-ContestProposals__header__sponsorLogo"/>
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}"
+                                         alt="Sponsor Logo"
+                                         class="p-ContestProposals__header__sponsorLogo"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+                        ${contest.contestName}
                     </div>
                     <div class="p-ContestProposals__header__description">
                         <p>
@@ -144,6 +142,7 @@
                                             <proposalsPortlet:userPortrait
                                                     screenName="${teamRoleUser.screenName }"
                                                     portraitId="${teamRoleUser.portraitId}" width="30"
+                                                    userId="${teamRoleUser.userId}"
                                                     height="30"/>
                                             <proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}"
                                                                              text="${teamRoleUser.fullName}"/>

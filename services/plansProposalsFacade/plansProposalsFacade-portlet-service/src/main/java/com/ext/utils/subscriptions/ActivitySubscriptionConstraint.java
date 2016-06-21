@@ -1,8 +1,7 @@
 package com.ext.utils.subscriptions;
 
-import com.ext.portlet.Activity.ProposalActivityKeys;
-import com.ext.portlet.model.Proposal;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.activityEntry.proposal.ProposalBaseActivityEntry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,22 +20,22 @@ public class ActivitySubscriptionConstraint {
             new HashMap<>();
 
     static {
-        whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.SUPPORTER_ADD.ordinal(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalSupportHandler());
-        whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.SUPPORTER_REMOVE.ordinal(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalSupportHandler());
-        whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.VOTE.ordinal(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalSupportHandler());
-        whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.VOTE_SWITCH.ordinal(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId()+ "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalSupportHandler());
-        whitelistHandlers.put(ClassNameLocalServiceUtil.getClassNameId(Proposal.class) + "_" + ProposalActivityKeys.VOTE_RETRACT.ordinal(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalSupportHandler());
     }
 
     private long classNameId;
-    private int activityType;
+    private long activityType;
 
-    public ActivitySubscriptionConstraint(long classNameId, int activityType) {
+    public ActivitySubscriptionConstraint(long classNameId, long activityType) {
         this.classNameId = classNameId;
         this.activityType = activityType;
     }
@@ -58,7 +57,7 @@ public class ActivitySubscriptionConstraint {
         return classNameId;
     }
 
-    public int getActivityType() {
+    public long getActivityType() {
         return activityType;
     }
 

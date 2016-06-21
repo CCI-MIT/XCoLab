@@ -14,6 +14,8 @@ public abstract class AbstractSearchItem {
 
     public final static int MAX_CONTENT_LENGTH = 255;
 
+    public abstract String getPrintName();
+
     public abstract String getTitle(Document doc, Highlighter highlighter)
             throws SystemException, IOException, InvalidTokenOffsetsException;
 

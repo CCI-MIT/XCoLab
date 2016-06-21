@@ -1,5 +1,5 @@
 spring:
   application:
-    name: activities-service
+    name: files-service
   jmx:
     default-domain: ${spring.application.name}

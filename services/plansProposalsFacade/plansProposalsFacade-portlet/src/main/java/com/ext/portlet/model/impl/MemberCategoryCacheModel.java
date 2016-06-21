@@ -26,10 +26,11 @@ public class MemberCategoryCacheModel implements CacheModel<MemberCategory>,
     public long sortOrder;
     public boolean showInList;
     public String imageName;
+    public String description;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{roleId=");
         sb.append(roleId);
@@ -43,6 +44,8 @@ public class MemberCategoryCacheModel implements CacheModel<MemberCategory>,
         sb.append(showInList);
         sb.append(", imageName=");
         sb.append(imageName);
+        sb.append(", description=");
+        sb.append(description);
         sb.append("}");
 
         return sb.toString();
@@ -75,6 +78,12 @@ public class MemberCategoryCacheModel implements CacheModel<MemberCategory>,
             memberCategoryImpl.setImageName(imageName);
         }
 
+        if (description == null) {
+            memberCategoryImpl.setDescription(StringPool.BLANK);
+        } else {
+            memberCategoryImpl.setDescription(description);
+        }
+
         memberCategoryImpl.resetOriginalValues();
 
         return memberCategoryImpl;
@@ -88,6 +97,7 @@ public class MemberCategoryCacheModel implements CacheModel<MemberCategory>,
         sortOrder = objectInput.readLong();
         showInList = objectInput.readBoolean();
         imageName = objectInput.readUTF();
+        description = objectInput.readUTF();
     }
 
     @Override
@@ -114,6 +124,12 @@ public class MemberCategoryCacheModel implements CacheModel<MemberCategory>,
             objectOutput.writeUTF(StringPool.BLANK);
         } else {
             objectOutput.writeUTF(imageName);
+        }
+
+        if (description == null) {
+            objectOutput.writeUTF(StringPool.BLANK);
+        } else {
+            objectOutput.writeUTF(description);
         }
     }
 }

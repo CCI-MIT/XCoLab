@@ -137,6 +137,21 @@ public interface MemberCategoryModel extends BaseModel<MemberCategory> {
      */
     public void setImageName(String imageName);
 
+    /**
+     * Returns the description of this member category.
+     *
+     * @return the description of this member category
+     */
+    @AutoEscape
+    public String getDescription();
+
+    /**
+     * Sets the description of this member category.
+     *
+     * @param description the description of this member category
+     */
+    public void setDescription(String description);
+
     @Override
     public boolean isNew();
 

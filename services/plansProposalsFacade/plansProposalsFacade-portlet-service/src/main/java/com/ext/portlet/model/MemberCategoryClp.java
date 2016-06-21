@@ -26,6 +26,7 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
     private long _sortOrder;
     private boolean _showInList;
     private String _imageName;
+    private String _description;
     private BaseModel<?> _memberCategoryRemoteModel;
     private Class<?> _clpSerializerClass = com.ext.portlet.service.ClpSerializer.class;
 
@@ -72,6 +73,7 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
         attributes.put("sortOrder", getSortOrder());
         attributes.put("showInList", getShowInList());
         attributes.put("imageName", getImageName());
+        attributes.put("description", getDescription());
 
         return attributes;
     }
@@ -112,6 +114,12 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
 
         if (imageName != null) {
             setImageName(imageName);
+        }
+
+        String description = (String) attributes.get("description");
+
+        if (description != null) {
+            setDescription(description);
         }
     }
 
@@ -252,6 +260,28 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
         }
     }
 
+    @Override
+    public String getDescription() {
+        return _description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        _description = description;
+
+        if (_memberCategoryRemoteModel != null) {
+            try {
+                Class<?> clazz = _memberCategoryRemoteModel.getClass();
+
+                Method method = clazz.getMethod("setDescription", String.class);
+
+                method.invoke(_memberCategoryRemoteModel, description);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
+
     public BaseModel<?> getMemberCategoryRemoteModel() {
         return _memberCategoryRemoteModel;
     }
@@ -327,6 +357,7 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
         clone.setSortOrder(getSortOrder());
         clone.setShowInList(getShowInList());
         clone.setImageName(getImageName());
+        clone.setDescription(getDescription());
 
         return clone;
     }
@@ -376,7 +407,7 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{roleId=");
         sb.append(getRoleId());
@@ -390,6 +421,8 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
         sb.append(getShowInList());
         sb.append(", imageName=");
         sb.append(getImageName());
+        sb.append(", description=");
+        sb.append(getDescription());
         sb.append("}");
 
         return sb.toString();
@@ -397,7 +430,7 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.ext.portlet.model.MemberCategory");
@@ -426,6 +459,10 @@ public class MemberCategoryClp extends BaseModelImpl<MemberCategory>
         sb.append(
             "<column><column-name>imageName</column-name><column-value><![CDATA[");
         sb.append(getImageName());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>description</column-name><column-value><![CDATA[");
+        sb.append(getDescription());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

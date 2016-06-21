@@ -72,7 +72,7 @@ public class WikiController {
 
     @RequestMapping(params = "show=resource")
     public String showResourcePage(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam String contestUrlName, @RequestParam Long contestYear)
+            @RequestParam String contestUrlName, @RequestParam long contestYear)
             throws ContestNotFoundException {
 
         final Contest contest = ContestClient.getContest(contestUrlName, contestYear);

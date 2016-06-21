@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
@@ -23,12 +24,13 @@ import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import javax.portlet.PortletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.portlet.PortletRequest;
 
 @Controller
 @RequestMapping("view")
@@ -43,9 +45,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
 
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll()
-                || permissions.getCanContestManagerActions()) ) {
-
+        if (!permissions.getCanSeeAdvancingTab()) {
             throw new ProposalsAuthorizationException(ACCESS_TAB_DENIED_MESSAGE);
         }
 
@@ -59,6 +59,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("proposalAdvancingBean", bean);
         model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
+        model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
 
 
         List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(

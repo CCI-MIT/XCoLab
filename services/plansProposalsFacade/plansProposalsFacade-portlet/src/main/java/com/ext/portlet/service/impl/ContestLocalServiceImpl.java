@@ -1,11 +1,9 @@
 package com.ext.portlet.service.impl;
 
-import com.google.common.collect.ImmutableSet;
-
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
@@ -33,6 +31,7 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
+import com.google.common.collect.ImmutableSet;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -66,9 +65,10 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-
+import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.activityEntry.ActivityEntryType;
+
+import org.xcolab.util.enums.activities.ActivityEntryType;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -97,8 +97,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
-
-import edu.mit.cci.roma.client.Simulation;
 
 
 /**
@@ -176,6 +174,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         CommentThread thread = new CommentThread();
         thread.setTitle(c.getContestName() + " discussion");
         thread.setAuthorId(c.getAuthorId());
+        thread.setIsQuiet(false);
         long discussionId = CommentClient.createThread(thread).getThreadId();
 
         // set up permissions
@@ -494,23 +493,11 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     @Transactional
     public void subscribe(long contestPK, long userId) throws PortalException, SystemException {
-//        activitySubscriptionLocalService.addSubscription(Contest.class, contestPK, 0, "", userId);
-        ActivitiesClient.addSubscription(ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK,0,"", userId);
-        Set<Long> proposalsProcessed = new HashSet<>();
-        // automatically subscribe user to all proposals in the phase but
-        for (ContestPhase contestPhase : contestPhaseLocalService.getPhasesForContest(contestPK)) {
-            for (Proposal proposal : proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                if (!proposalsProcessed.contains(proposal.getProposalId())) {
-                    proposalLocalService.subscribe(proposal.getProposalId(), userId, true);
-
-                }
-                proposalsProcessed.add(proposal.getProposalId());
-            }
-        }
+        ActivitiesClient.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
 
     /**
-     * <p>Subscribes user to contest</p>
+     * <p>Unsubscribes user from contest</p>
      *
      * @param contestPK id of a contest
      * @param userId    id of a user
@@ -520,22 +507,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     @Transactional
     public void unsubscribe(long contestPK, long userId) throws PortalException, SystemException {
-        //activitySubscriptionLocalService.deleteSubscription(userId, Contest.class, contestPK, 0, "");
-        ActivitiesClient.deleteSubscription(userId,ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK,0,"");
-
-
-        Set<Long> proposalsProcessed = new HashSet<>();
-        // unsubscribe user from all proposals in the phase to which he was automatically registered  
-        for (ContestPhase contestPhase : contestPhaseLocalService.getPhasesForContest(contestPK)) {
-            for (Proposal proposal : proposalLocalService.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                // remove automatic subscription from proposal
-                if (!proposalsProcessed.contains(proposal.getProposalId())) {
-                    proposalLocalService.unsubscribe(proposal.getProposalId(), userId, true);
-
-                }
-                proposalsProcessed.add(proposal.getProposalId());
-            }
-        }
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
 
     @Override
