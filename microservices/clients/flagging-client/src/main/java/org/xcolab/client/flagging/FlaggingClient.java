@@ -21,12 +21,19 @@ import java.util.List;
 public final class FlaggingClient {
 
     private static final RestService flaggingService = new RestService("flagging-service");
-    private static final RestResource reportResource = new RestResource(flaggingService,
-            "reports");
-    private static final RestResource aggregatedReportResource = new RestResource(flaggingService,
-            "aggregatedReports");
-    private static final RestResource reportTargetResource = new RestResource(flaggingService,
-            "reportTarget");
+    private static final RestResource<Report> reportResource = new RestResource<>(flaggingService,
+            "reports", Report.class, new ParameterizedTypeReference<List<Report>>() {
+    });
+    private static final RestResource<AggregatedReport> aggregatedReportResource = new RestResource<>(
+            flaggingService,
+            "aggregatedReports", AggregatedReport.class,
+            new ParameterizedTypeReference<List<AggregatedReport>>() {
+            });
+    private static final RestResource<ReportTarget> reportTargetResource = new RestResource<>(
+            flaggingService,
+            "reportTarget", ReportTarget.class,
+            new ParameterizedTypeReference<List<ReportTarget>>() {
+            });
 
     private FlaggingClient() {
     }
@@ -38,59 +45,50 @@ public final class FlaggingClient {
     public static List<Report> listReports(int start, int last, Long reporterMemberId,
             TargetType targetType, Long targetId, Long targetAdditionalId, Long managerMemberId) {
 
-        final UriBuilder uriBuilder = reportResource.getResourceUrl()
+        return reportResource.list()
                 .addRange(start, last)
                 .queryParam("sort", "createDate")
                 .optionalQueryParam("reporterMemberId", reporterMemberId)
                 .optionalQueryParam("targetType", targetType)
                 .optionalQueryParam("targetId", targetId)
                 .optionalQueryParam("targetAdditionalId", targetAdditionalId)
-                .optionalQueryParam("managerMemberId", managerMemberId);
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Report>>() {
-        });
+                .optionalQueryParam("managerMemberId", managerMemberId)
+                .execute();
     }
 
     public static int countReports(Long reporterMemberId, TargetType targetType, Long targetId,
             Long targetAdditionalId, Long managerMemberId) {
-        final UriBuilder uriBuilder = reportResource.getResourceUrl()
+        return reportResource.count()
                 .optionalQueryParam("reporterMemberId", reporterMemberId)
                 .optionalQueryParam("targetType", targetType)
                 .optionalQueryParam("targetId", targetId)
                 .optionalQueryParam("targetAdditionalId", targetAdditionalId)
-                .optionalQueryParam("managerMemberId", managerMemberId);
-
-        return RequestUtils.getCount(uriBuilder);
+                .optionalQueryParam("managerMemberId", managerMemberId)
+                .execute();
     }
 
     public static List<AggregatedReport> listAggregatedReports(int start, int last) {
-        final UriBuilder uriBuilder = aggregatedReportResource.getResourceUrl()
+        return aggregatedReportResource.list()
                 .addRange(start, last)
                 .queryParam("managerAction", ManagerAction.PENDING)
-                .queryParam("sort", "firstReportDate");
-
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<AggregatedReport>>() {
-        });
+                .queryParam("sort", "firstReportDate")
+                .execute();
     }
 
     public static Report getReport(long reportId) throws ReportNotFoundException {
-        final UriBuilder uriBuilder = reportResource.getResourceUrl(reportId);
         try {
-            return RequestUtils.get(uriBuilder, Report.class, "reportId_" + reportId);
+            return reportResource.get(reportId).cacheIdentifier("reportId_" + reportId).execute();
         } catch (EntityNotFoundException e) {
             throw new ReportNotFoundException(reportId);
         }
     }
 
-    public static void updateReport(Report report) {
-        final UriBuilder uriBuilder = reportResource.getResourceUrl(report.getReportId());
-        RequestUtils.put(uriBuilder, report);
+    public static boolean updateReport(Report report) {
+        return reportResource.update(report, report.getReportId()).execute();
     }
 
     public static Report createReport(Report report) {
-        final UriBuilder uriBuilder = reportResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, report, Report.class);
+        return reportResource.create(report).execute();
     }
 
     public static List<ReportTarget> listReportTargets(int start, int last) {
@@ -102,20 +100,18 @@ public final class FlaggingClient {
     }
 
     public static List<ReportTarget> listReportTargets(int start, int last, TargetType targetType) {
-        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl()
+        return reportTargetResource.list()
                 .addRange(start, last)
-                .optionalQueryParam("type", targetType);
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<ReportTarget>>() {
-        });
+                .optionalQueryParam("type", targetType)
+                .execute();
     }
 
     public static ReportTarget getReportTarget(long reportTargetId)
             throws ReportTargetNotFoundException {
-        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl(reportTargetId);
         try {
-            return RequestUtils.get(uriBuilder, ReportTarget.class,
-                    "id_" + reportTargetId);
+            return reportTargetResource.get(reportTargetId)
+                    .cacheIdentifier("id_" + reportTargetId)
+                    .execute();
         } catch (EntityNotFoundException e) {
             throw new ReportTargetNotFoundException(reportTargetId);
         }
@@ -123,6 +119,7 @@ public final class FlaggingClient {
 
     public static ReportTarget getReportTarget(TargetType type, String reason)
             throws ReportTargetNotFoundException {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = reportTargetResource.getResourceUrl()
                     .queryParam("type", type.name())
                     .queryParam("reason", reason);
@@ -135,20 +132,17 @@ public final class FlaggingClient {
         }
     }
 
-    public static void updateReportTarget(ReportTarget reportTarget) {
-        final UriBuilder uriBuilder = reportTargetResource
-                .getResourceUrl(reportTarget.getReportTargetId());
-        RequestUtils.put(uriBuilder, reportTarget);
+    public static boolean updateReportTarget(ReportTarget reportTarget) {
+        return reportTargetResource.update(reportTarget, reportTarget.getReportTargetId())
+                .execute();
     }
 
     public static boolean deleteReportTarget(long reportTargetId) {
-        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl(reportTargetId);
-        return RequestUtils.delete(uriBuilder);
+        return reportTargetResource.delete(reportTargetId).execute();
     }
 
-    public static ReportTarget createReportTarget(ReportTarget report) {
-        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, report, ReportTarget.class);
+    public static ReportTarget createReportTarget(ReportTarget reportTarget) {
+        return reportTargetResource.create(reportTarget).execute();
     }
 
     public static Report reportProposal(Member reporter, long proposalId, long proposalVersion,
@@ -176,10 +170,9 @@ public final class FlaggingClient {
     }
 
     public static boolean handleReport(long managerId, ManagerAction managerAction, long reportId) {
-        final UriBuilder uriBuilder = reportResource.getResourceUrl(reportId)
-                .path("/handle")
+        return reportResource.service(reportId, "handle", Boolean.class)
                 .queryParam("managerMemberId", managerId)
-                .queryParam("managerAction", managerAction);
-        return RequestUtils.post(uriBuilder, null, Boolean.class);
+                .queryParam("managerAction", managerAction)
+                .post();
     }
 }

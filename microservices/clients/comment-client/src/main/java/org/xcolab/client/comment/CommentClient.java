@@ -10,8 +10,6 @@ import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -22,32 +20,38 @@ import java.util.List;
 public final class CommentClient {
 
     private static final RestService commentService = new RestService("comment-service");
-    private static final RestResource commentResource = new RestResource(commentService,
-            "comments");
-    private static final RestResource threadResource = new RestResource(commentService,
-            "threads");
-    private static final RestResource categoryResource = new RestResource(commentService,
-            "categories");
-    private static final RestResource categoryGroupResource = new RestResource(commentService,
-            "categoryGroups");
+    private static final RestResource<Comment> commentResource = new RestResource<>(commentService,
+            "comments", Comment.class, new ParameterizedTypeReference<List<Comment>>() {
+    });
+    private static final RestResource<CommentThread> threadResource = new RestResource<>(
+            commentService,
+            "threads", CommentThread.class, new ParameterizedTypeReference<List<CommentThread>>() {
+    });
+    private static final RestResource<Category> categoryResource = new RestResource<>(
+            commentService,
+            "categories", Category.class, new ParameterizedTypeReference<List<Category>>() {
+    });
+    private static final RestResource<CategoryGroup> categoryGroupResource = new RestResource<>(
+            commentService,
+            "categoryGroups", CategoryGroup.class,
+            new ParameterizedTypeReference<List<CategoryGroup>>() {
+            });
 
     private CommentClient() {
     }
 
     public static List<Comment> listComments(int start, int last, long threadId) {
-        final UriBuilder uriBuilder = commentResource.getResourceUrl()
+        return commentResource.list()
                 .addRange(start, last)
                 .queryParam("threadId", threadId)
-                .queryParam("sort", "createDate");
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Comment>>() {
-        });
+                .queryParam("sort", "createDate")
+                .execute();
     }
 
     public static int countComments(long threadId) {
-        final UriBuilder uriBuilder = commentResource.getResourceUrl()
-                .queryParam("threadId", threadId);
-        return RequestUtils.getCount(uriBuilder, Comment.class, "threadId_" + threadId);
+        return commentResource.count()
+                .queryParam("threadId", threadId)
+                .execute();
     }
 
     public static Comment getComment(long commentId) throws CommentNotFoundException {
@@ -56,129 +60,118 @@ public final class CommentClient {
 
     public static Comment getComment(long commentId, boolean includeDeleted)
             throws CommentNotFoundException {
-        final UriBuilder uriBuilder = commentResource.getResourceUrl(commentId)
-                .queryParam("includeDeleted", includeDeleted);
         try {
-            return RequestUtils.get(uriBuilder, Comment.class,
-                    "commentId_" + commentId + "_includeDeleted_" + includeDeleted);
+            return commentResource.get(commentId)
+                    .queryParam("includeDeleted", includeDeleted)
+                    .cacheIdentifier("commentId_" + commentId + "_includeDeleted_" + includeDeleted)
+                    .execute();
         } catch (EntityNotFoundException e) {
-            throw new CommentNotFoundException("Comment with id " + commentId + " not found.");
+            throw new CommentNotFoundException(commentId);
         }
     }
 
-    public static void updateComment(Comment comment) {
-        final UriBuilder uriBuilder = commentResource.getResourceUrl(comment.getCommentId());
-        RequestUtils.put(uriBuilder, comment);
+    public static boolean updateComment(Comment comment) {
+        return commentResource.update(comment, comment.getCommentId()).execute();
     }
 
     public static Comment createComment(Comment comment) {
-        final UriBuilder uriBuilder = commentResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, comment, Comment.class);
+        return commentResource.create(comment).execute();
     }
 
     public static boolean deleteComment(long commentId) {
-        final UriBuilder uriBuilder = commentResource.getResourceUrl(commentId);
-        return RequestUtils.delete(uriBuilder);
+        return commentResource.delete(commentId).execute();
     }
 
 //    Threads
 
     public static List<CommentThread> listThreads(int start, int last, Long categoryId,
             Long groupId, ThreadSortColumn sortColumn, boolean ascending) {
-        final UriBuilder uriBuilder = threadResource.getResourceUrl()
+        return threadResource.list()
                 .addRange(start, last)
                 .optionalQueryParam("categoryId", categoryId)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("sort", "createDate")
-                .optionalQueryParam("sort", sortColumn.getIdentifier(ascending));
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<CommentThread>>() {
-        });
+                .optionalQueryParam("sort", sortColumn.getIdentifier(ascending))
+                .execute();
     }
 
     public static CommentThread getThread(long threadId) throws ThreadNotFoundException {
-        final UriBuilder uriBuilder = threadResource.getResourceUrl(threadId);
+
         try {
-            return RequestUtils.get(uriBuilder, CommentThread.class, "threadId_" + threadId);
+            return threadResource.get(threadId)
+                    .cacheIdentifier("threadId_" + threadId)
+                    .execute();
         } catch (EntityNotFoundException e) {
-            throw new ThreadNotFoundException("Thread with id " + threadId + " not found.");
+            throw new ThreadNotFoundException(threadId);
         }
     }
 
     public static Long getProposalIdForThread(long threadId) throws ThreadNotFoundException {
-        final UriBuilder uriBuilder = threadResource.getResourceUrl(threadId)
-                .path("/getProposalIdForThread");
         try {
-            return RequestUtils.get(uriBuilder, Long.class);
+            return threadResource.service(threadId, "getProposalIdForThread", Long.class).get();
         } catch (EntityNotFoundException e) {
             return null;
         }
     }
 
-    public static void updateThread(CommentThread thread) {
-        final UriBuilder uriBuilder = threadResource.getResourceUrl(thread.getThreadId());
-        RequestUtils.put(uriBuilder, thread);
+    public static boolean updateThread(CommentThread thread) {
+        return threadResource.update(thread, thread.getThreadId()).execute();
     }
 
     public static CommentThread createThread(CommentThread thread) {
-        final UriBuilder uriBuilder = threadResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, thread, CommentThread.class);
+        return threadResource.create(thread).execute();
     }
 
     public static Date getLastActivityDate(long threadId) {
-        final UriBuilder uriBuilder = threadResource.getResourceUrl(threadId)
-                .path("/lastActivityDate");
-        return RequestUtils.getUnchecked(uriBuilder, Date.class,
-                "lastActivityDate_threadId_" + threadId);
+        return threadResource.service(threadId, "lastActivityDate", Date.class)
+                .cacheIdentifier("lastActivityDate_threadId_" + threadId)
+                .getUnchecked();
     }
 
     public static long getLastActivityAuthorId(long threadId) {
-        final UriBuilder uriBuilder = threadResource.getResourceUrl(threadId)
-                .path("/lastActivityAuthorId");
-        return RequestUtils.getUnchecked(uriBuilder, Long.class,
-                "lastActivityAuthorId_threadId_" + threadId);
+        return threadResource.service(threadId, "lastActivityAuthorId", Long.class)
+                .cacheIdentifier("lastActivityAuthorId_threadId_" + threadId)
+                .getUnchecked();
     }
 
     //    Category methods
 
     public static List<Category> listCategories(int start, int last, long groupId) {
-        final UriBuilder uriBuilder = categoryResource.getResourceUrl()
+        return categoryResource.list()
                 .addRange(start, last)
                 .queryParam("groupId", groupId)
-                .queryParam("sort", "sort");
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Category>>() {
-        });
+                .queryParam("sort", "sort")
+                .execute();
     }
 
     public static Category getCategory(long categoryId) throws CategoryNotFoundException {
-        final UriBuilder uriBuilder = categoryResource.getResourceUrl(categoryId);
         try {
-            return RequestUtils.get(uriBuilder, Category.class, "categoryId_" + categoryId);
+            return categoryResource.get(categoryId)
+                    .cacheIdentifier("categoryId_" + categoryId)
+                    .execute();
         } catch (EntityNotFoundException e) {
-            throw new CategoryNotFoundException("Category with id " + categoryId + " not found.");
+            throw new CategoryNotFoundException(categoryId);
         }
     }
 
-    public static void updateCategory(Category category) {
-        final UriBuilder uriBuilder = categoryResource.getResourceUrl(category.getCategoryId());
-        RequestUtils.put(uriBuilder, category);
+    public static boolean updateCategory(Category category) {
+        return categoryResource.update(category, category.getCategoryId()).execute();
     }
 
     public static Category createCategory(Category category) {
-        final UriBuilder uriBuilder = categoryResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, category, Category.class);
+        return categoryResource.create(category).execute();
     }
 
 //    Category Group
 
     public static CategoryGroup getCategoryGroup(long groupId)
             throws CategoryGroupNotFoundException {
-        final UriBuilder uriBuilder = categoryGroupResource.getResourceUrl(groupId);
         try {
-            return RequestUtils.get(uriBuilder, CategoryGroup.class, "groupId" + groupId);
+            return categoryGroupResource.get(groupId)
+                    .cacheIdentifier("groupId" + groupId)
+                    .execute();
         } catch (EntityNotFoundException e) {
-            throw new CategoryGroupNotFoundException("CategoryGroup with id " + groupId + " not found.");
+            throw new CategoryGroupNotFoundException(groupId);
         }
     }
 }

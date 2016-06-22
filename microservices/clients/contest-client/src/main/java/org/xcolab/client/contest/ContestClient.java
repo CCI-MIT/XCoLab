@@ -15,13 +15,15 @@ import java.util.List;
 public class ContestClient {
 
     private static final RestService contestService = new RestService("contest-service");
-    private static final RestResource contestResource = new RestResource(contestService,
-            "contests");
+    private static final RestResource<Contest> contestResource = new RestResource<>(contestService,
+            "contests", Contest.class, new ParameterizedTypeReference<List<Contest>>() {
+    });
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
-            final UriBuilder uriBuilder = contestResource.getResourceUrl(contestId);
-            return RequestUtils.get(uriBuilder, Contest.class, "contestId_" + contestId);
+            return contestResource.get(contestId)
+                    .cacheIdentifier("contestId_" + contestId)
+                    .execute();
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
         }
@@ -29,6 +31,7 @@ public class ContestClient {
 
     public static Contest getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = contestResource.getResourceUrl()
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear);

@@ -15,21 +15,18 @@ import java.util.List;
 public final class EmailTemplateClient {
 
     private static final RestService adminService = new RestService("admin-service");
-    private static final RestResource emailTemplatesResource = new RestResource(adminService,
-            "emailTemplates");
+    private static final RestResource<ContestEmailTemplate> emailTemplatesResource =
+            new RestResource<>(adminService, "emailTemplates", ContestEmailTemplate.class,
+            new ParameterizedTypeReference<List<ContestEmailTemplate>>() {
+            });
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
-        final UriBuilder uriBuilder = emailTemplatesResource.getResourceUrl();
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContestEmailTemplate>>() {
-                });
+        return emailTemplatesResource.list().execute();
     }
 
     public static ContestEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
-        final UriBuilder uriBuilder = emailTemplatesResource.getResourceUrl(emailTemplateType);
         try {
-            return RequestUtils.get(uriBuilder, ContestEmailTemplate.class,
-                    "emailTemplate_contest_" + emailTemplateType);
+            return emailTemplatesResource.get(emailTemplateType).execute();
         } catch (EntityNotFoundException e) {
             throw new EmailTemplateNotFoundException(emailTemplateType);
         }

@@ -4,8 +4,6 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 
@@ -14,8 +12,8 @@ import java.util.List;
 public final class PermissionsClient {
 
     private static final RestService membersService = new RestService("members-service");
-    private static final RestResource roleGroupResource = new RestResource(membersService,
-            "roleGroups");
+    private static final RestResource<Object> roleGroupResource = new RestResource<>(membersService,
+            "roleGroups", null, null);
 
     private PermissionsClient() {
     }
@@ -41,11 +39,12 @@ public final class PermissionsClient {
     }
 
     public static boolean hasRoleGroup(long memberId, long roleGroupId) {
-        UriBuilder uriBuilder = roleGroupResource.getSubResource(roleGroupId, "roles")
-                .getResourceUrl();
-        final List<Role_> roles = RequestUtils
-                .getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
-                }, "memberId_" + memberId + "_roleGroupId_" + roleGroupId);
+        final List<Role_> roles = roleGroupResource.getSubResource(roleGroupId, "roles", Role_.class,
+                new ParameterizedTypeReference<List<Role_>>() {
+                })
+                .list()
+                .cacheIdentifier("memberId_" + memberId + "_roleGroupId_" + roleGroupId)
+                .execute();
         for (Role_ role : roles) {
             if (memberHasRole(memberId, role.getRoleId())) {
                 return true;

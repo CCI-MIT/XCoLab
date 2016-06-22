@@ -7,8 +7,6 @@ import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundExcep
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -20,22 +18,26 @@ import java.util.List;
 public final class ActivitiesClient {
 
     private static final RestService activitiesService = new RestService("activities-service");
-    private static final RestResource activityEntryResource =
-            new RestResource(activitiesService, "activityEntries");
-    private static final RestResource activitySubscriptionResource =
-            new RestResource(activitiesService, "activitySubscriptions");
+    private static final RestResource<ActivityEntry> activityEntryResource =
+            new RestResource<>(activitiesService, "activityEntries", ActivityEntry.class,
+                    new ParameterizedTypeReference<List<ActivityEntry>>() {
+                    });
+    private static final RestResource<ActivitySubscription> activitySubscriptionResource =
+            new RestResource<>(activitiesService, "activitySubscriptions",
+                    ActivitySubscription.class,
+                    new ParameterizedTypeReference<List<ActivitySubscription>>() {
+                    });
 
     public static ActivityEntry createActivityEntry(ActivityEntry activityEntry) {
-        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, activityEntry, ActivityEntry.class);
+        return activityEntryResource.create(activityEntry).execute();
     }
 
     public static ActivityEntry getActivityEntry(Long activityEntryId)
             throws ActivityEntryNotFoundException {
-        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl(activityEntryId);
         try {
-            return RequestUtils
-                    .get(uriBuilder, ActivityEntry.class, "activityEntryId_" + activityEntryId);
+            return activityEntryResource.get(activityEntryId)
+                    .cacheIdentifier("activityEntryId_" + activityEntryId)
+                    .execute();
         } catch (EntityNotFoundException e) {
             throw new ActivityEntryNotFoundException(
                     "ActivityEntry with id " + activityEntryId + " not found.");
@@ -44,38 +46,32 @@ public final class ActivitiesClient {
 
     public static List<ActivityEntry> getActivityEntries(Integer startRecord,
             Integer limitRecord, Long memberId, List<Long> memberIdsToExclude) {
-        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl()
+        return activityEntryResource.list()
                 .optionalQueryParam("startRecord", startRecord)
                 .optionalQueryParam("limitRecord", limitRecord)
                 .optionalQueryParam("memberId", memberId)
-                .optionalQueryParam("folderId", memberIdsToExclude);
-
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ActivityEntry>>() {
-                });
+                .optionalQueryParam("folderId", memberIdsToExclude)
+                .execute();
     }
 
     public static List<ActivityEntry> getActivityEntriesAfter(Date afterDate) {
-        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl();
-
         if (afterDate == null) {
             return null;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        uriBuilder.queryParam("activitiesAfter", sdf.format(afterDate));
-
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ActivityEntry>>() {
-                });
+        return activityEntryResource.list()
+                .queryParam("activitiesAfter", sdf.format(afterDate))
+                .execute();
     }
 
     public static Integer countActivities(Long memberId, List<Long> memberIdsToExclude) {
-        final UriBuilder uriBuilder = activityEntryResource.getResourceUrl().path("/count")
-                .optionalQueryParam("memberId", memberId)
-                .optionalQueryParam("folderId", memberIdsToExclude);
         try {
-            return RequestUtils.get(uriBuilder, Integer.class, "activities_count_");
+            return activityEntryResource.service("count", Integer.class)
+                    .optionalQueryParam("memberId", memberId)
+                    .optionalQueryParam("folderId", memberIdsToExclude)
+                    .cacheIdentifier("activities_count_")
+                    .get();
         } catch (EntityNotFoundException e) {
             return 0;
         }
@@ -83,11 +79,12 @@ public final class ActivitiesClient {
 
     public static ActivitySubscription getActivitySubscription(long activitySubscriptionId)
             throws ActivitySubscriptionNotFoundException {
-        final UriBuilder uriBuilder = activitySubscriptionResource
-                .getResourceUrl(activitySubscriptionId);
+
         try {
-            return RequestUtils.get(uriBuilder, ActivitySubscription.class,
-                    "activitySubscriptionId_" + activitySubscriptionId);
+            return activitySubscriptionResource
+                    .get(activitySubscriptionId)
+                    .cacheIdentifier("activitySubscriptionId_" + activitySubscriptionId)
+                    .execute();
         } catch (EntityNotFoundException e) {
             throw new ActivitySubscriptionNotFoundException(
                     "ActivitySubscription with id " + activitySubscriptionId + " not found.");
@@ -96,64 +93,55 @@ public final class ActivitiesClient {
 
     private static ActivitySubscription createActivitySubscription(
             ActivitySubscription activitySubscription) {
-        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, activitySubscription, ActivitySubscription.class);
+        return activitySubscriptionResource.create(activitySubscription).execute();
     }
 
-    public static void deleteSubscription(Long pk) {
-        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl(pk);
-        RequestUtils.delete(uriBuilder);
+    public static boolean deleteSubscription(Long pk) {
+        return activitySubscriptionResource.delete(pk).execute();
     }
 
     public static ActivitySubscription addSubscription(long memberId,
             ActivityEntryType activityEntryType, long classPK,
             String extraInfo) {
-        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl()
-                .path("/subscribe")
+        return activitySubscriptionResource.service("subscribe", ActivitySubscription.class)
                 .queryParam("receiverId", memberId)
                 .queryParam("activityEntryType", activityEntryType)
                 .queryParam("classPK", classPK)
-                .queryParam("extraInfo", extraInfo);
-        return RequestUtils.post(uriBuilder, null, ActivitySubscription.class);
+                .queryParam("extraInfo", extraInfo)
+                .post();
     }
 
-    public static void deleteSubscription(Long receiverId, ActivityEntryType activityEntryType,
+    public static boolean deleteSubscription(Long receiverId, ActivityEntryType activityEntryType,
             Long classPK, String extraInfo) {
-        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl()
-                .path("deleteIfSubscribed")
+        return activitySubscriptionResource.service("deleteIfSubscribed", Boolean.class)
                 .queryParam("receiverId", receiverId)
                 .queryParam("activityEntryType", activityEntryType)
                 .queryParam("classPK", classPK)
-                .queryParam("extraInfo", extraInfo);
-        RequestUtils.delete(uriBuilder);
+                .queryParam("extraInfo", extraInfo)
+                .delete();
     }
 
-    public static void deleteSubscriptionById(Long subscriptionId) {
-        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl(subscriptionId);
-        RequestUtils.delete(uriBuilder);
+    public static boolean deleteSubscriptionById(Long subscriptionId) {
+        return activitySubscriptionResource.delete(subscriptionId).execute();
     }
 
     public static boolean isSubscribedToActivity(Long receiverId, Long classNameId, Long classPK,
             Integer type, String extraInfo) {
-        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl()
-                .path("/isSubscribed")
+        return activitySubscriptionResource.service("isSubscribed", Boolean.class)
                 .queryParam("receiverId", receiverId)
                 .queryParam("classNameId", classNameId)
                 .queryParam("classPK", classPK)
                 .queryParam("extraInfo", extraInfo)
-                .queryParam("type", type);
-        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+                .queryParam("type", type)
+                .getUnchecked();
     }
 
     public static List<ActivitySubscription> getActivitySubscription(Long classNameId, Long classPK,
             Long receiverId) {
-        final UriBuilder uriBuilder = activitySubscriptionResource.getResourceUrl()
+        return activitySubscriptionResource.list()
                 .queryParam("classNameId", classNameId)
                 .queryParam("classPK", classPK)
-                .queryParam("receiverId", receiverId);
-
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ActivitySubscription>>() {
-                });
+                .queryParam("receiverId", receiverId)
+                .execute();
     }
 }

@@ -12,6 +12,7 @@ import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
@@ -19,29 +20,33 @@ import java.util.List;
 public final class MembersClient {
 
     private static final RestService memberService = new RestService("members-service");
-    private static final RestResource memberResource =
-            new RestResource(memberService, "members");
-    private static final RestResource memberCategoryResource =
-            new RestResource(memberService, "membercategories");
-    private static final RestResource contactResource =
-            new RestResource(memberService, "contacts");
+
+    private static final RestResource<Member> memberResource = new RestResource<>(memberService,
+            "members", Member.class, new ParameterizedTypeReference<List<Member>>() {
+                    });
+    private static final RestResource<MemberCategory> memberCategoryResource =
+            new RestResource<>(memberService, "membercategories", MemberCategory.class,
+            new ParameterizedTypeReference<List<MemberCategory>>() {
+            });
+    private static final RestResource<Contact_> contactResource = new RestResource<>(memberService,
+            "contacts", Contact_.class, new ParameterizedTypeReference<List<Contact_>>() {
+                    });
 
     private MembersClient() {
     }
 
     public static List<Member> findMembersMatching(String partialName, int maxMembers) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+        return memberResource.list()
                 .addRange(0, maxMembers)
                 .queryParam("partialName", partialName)
-                .queryParam("sort", "screenName");
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Member>>() {
-        });
+                .queryParam("sort", "screenName")
+                .execute();
     }
 
     public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstMember, int lastMember) {
 
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
+        final ListQuery<Member> memberListQuery = memberResource.list()
                 .addRange(firstMember, lastMember)
                 .optionalQueryParam("partialName", screenNameFilterValue)
                 .optionalQueryParam("roleName", categoryFilterValue);
@@ -49,85 +54,83 @@ public final class MembersClient {
         if (sortField != null && !sortField.isEmpty()) {
             final String prefix = (ascOrder) ? ("") : ("-");
             switch (sortField) {
-                case "USER_NAME": uriBuilder.queryParam("sort", prefix + "screenName");
+                case "USER_NAME": memberListQuery.queryParam("sort", prefix + "screenName");
                     break;
-                case "MEMBER_SINCE": uriBuilder.queryParam("sort", prefix + "createDate");
+                case "MEMBER_SINCE": memberListQuery.queryParam("sort", prefix + "createDate");
                     break;
-                case "CATEGORY": uriBuilder.queryParam("sort", prefix + "roleName");
+                case "CATEGORY": memberListQuery.queryParam("sort", prefix + "roleName");
                     break;
-                case "ACTIVITY": uriBuilder.queryParam("sort", prefix + "activityCount");
+                case "ACTIVITY": memberListQuery.queryParam("sort", prefix + "activityCount");
                     break;
-                case "POINTS": uriBuilder.queryParam("sort", prefix + "points");
+                case "POINTS": memberListQuery.queryParam("sort", prefix + "points");
                     break;
                 default:
             }
         }
 
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Member>>() {
-        });
+        return memberListQuery.execute();
     }
 
     public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl().path("/count")
-                .optionalQueryParam("screenName", screenNameFilterValue)
-                .optionalQueryParam("category", categoryFilterValue);
         try {
-            return RequestUtils.get(uriBuilder, Integer.class,
-                    "members_count_category_" + categoryFilterValue
-                            + "_screenName_" + screenNameFilterValue);
+            return memberResource.service("count", Integer.class)
+                    .optionalQueryParam("screenName", screenNameFilterValue)
+                    .optionalQueryParam("category", categoryFilterValue)
+                    .cacheIdentifier("members_count_category_" + categoryFilterValue
+                            + "_screenName_" + screenNameFilterValue)
+                    .get();
         } catch (EntityNotFoundException e) {
             return 0;
         }
     }
 
     public static Integer getMemberActivityCount(long memberId) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
-                .path("/activityCount");
         try {
-            return RequestUtils.get(uriBuilder, Integer.class);
+            return memberResource.service(memberId, "activityCount", Integer.class).get();
         } catch (EntityNotFoundException e) {
             return 0;
         }
     }
 
     public static Integer getMemberMaterializedPoints(long memberId) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
-                .path("/materializedPoints");
         try {
-            return RequestUtils.get(uriBuilder, Integer.class);
+            return memberResource.service(memberId, "materializedPoints", Integer.class).get();
         } catch (EntityNotFoundException e) {
             return 0;
         }
     }
 
     public static List<Role_> getMemberRoles(long memberId) {
-        final UriBuilder uriBuilder =
-                memberResource.getSubResource(memberId, "roles").getResourceUrl();
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
-        }, "memberId_" + memberId);
+        return memberResource.getSubResource(memberId, "roles", Role_.class,
+                new ParameterizedTypeReference<List<Role_>>() {
+                })
+                .list()
+                .cacheIdentifier("memberId_" + memberId)
+                .execute();
     }
 
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
-        //TODO: make uri nicer
+        //TODO: make uri nicer - then port to new methods
         final UriBuilder uriBuilder =
-                memberResource.getSubResource(memberId, "roles").getResourceUrl()
-                .path("/contests/" + contestId);
+                memberResource.getSubResource(memberId, "roles", Role_.class,
+                        new ParameterizedTypeReference<List<Role_>>() {
+                        })
+                        .getResourceUrl()
+                        .path("/contests/" + contestId);
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
         }, "memberId_" + memberId + "_contestId_" + contestId);
     }
 
     public static MemberCategory getMemberCategory(long roleId) {
-        final UriBuilder uriBuilder = memberCategoryResource.getResourceUrl(roleId);
-
         try {
-            return RequestUtils.get(uriBuilder, MemberCategory.class, "roleId_" + roleId);
+            return memberCategoryResource.get(roleId).cacheIdentifier("roleId_" + roleId).execute();
         } catch (EntityNotFoundException e) {
             throw new MemberCategoryNotFoundException("Category with role id " + roleId + " not found.");
         }
     }
 
     public static MemberCategory getMemberCategory(String displayName) {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = memberCategoryResource.getResourceUrl()
                 .queryParam("displayName", displayName);
 
@@ -141,15 +144,15 @@ public final class MembersClient {
     }
 
     public static Member getMember(long memberId) throws MemberNotFoundException {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId);
         try {
-            return RequestUtils.get(uriBuilder, Member.class, "memberId_" + memberId);
+            return memberResource.get(memberId).cacheIdentifier("memberId_" + memberId).execute();
         } catch (EntityNotFoundException e) {
             throw new MemberNotFoundException("Member with id " + memberId + " not found.");
         }
     }
 
     public static Member findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("email", emailAddress);
         try {
@@ -162,6 +165,7 @@ public final class MembersClient {
     }
 
     public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("screenName", screenName);
         try {
@@ -174,6 +178,7 @@ public final class MembersClient {
     }
 
     public static Member findMemberByFacebookId(long facebookId) throws MemberNotFoundException {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("facebookId", facebookId);
         try {
@@ -186,6 +191,7 @@ public final class MembersClient {
     }
 
     public static Member findMemberByOpenId(String openId) throws MemberNotFoundException {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("openId", openId);
         try {
@@ -197,64 +203,56 @@ public final class MembersClient {
         }
     }
 
-    public static void updateMember(Member member) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(member.getId_());
-
+    public static boolean updateMember(Member member) {
+        //TODO: improve cache naming
         final String cacheKey = "_" + Member.class.getSimpleName() + "_memberId_" + member.getId_();
-        RequestUtils.put(uriBuilder, member, cacheKey);
+        return memberResource.update(member, member.getId_()).cacheIdentifier(cacheKey).execute();
     }
 
-    public static void deleteMember(long memberId) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId);
-
-        RequestUtils.delete(uriBuilder);
+    public static boolean deleteMember(long memberId) {
+        return memberResource.delete(memberId).execute();
     }
 
     public static Contact_ getContact(Long contactId) {
-        final UriBuilder uriBuilder = contactResource.getResourceUrl(contactId);
-        return RequestUtils.getUnchecked(uriBuilder, Contact_.class);
+        return contactResource.get(contactId).executeUnchecked();
     }
 
     public static boolean isScreenNameUsed(String screenName) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl().path("/isUsed")
-                    .queryParam("screenName", screenName);
-        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+        return memberResource.service("isUsed", Boolean.class)
+                .queryParam("screenName", screenName)
+                .getUnchecked();
     }
 
     public static boolean isEmailUsed(String email) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl().path("/isUsed")
-                    .queryParam("email", email);
-        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+        return memberResource.service("isUsed", Boolean.class)
+                .queryParam("email", email)
+                .getUnchecked();
     }
 
     public static Long updateUserPassword(String forgotPasswordToken, String password) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .path("/updateForgottenPassword")
+        return memberResource.service("updateForgottenPassword", Long.class)
                 .queryParam("forgotPasswordToken", forgotPasswordToken)
-                .queryParam("password", password);
-        return RequestUtils.post(uriBuilder, null, Long.class);
+                .queryParam("password", password)
+                .post();
     }
 
     public static boolean isForgotPasswordTokenValid(String passwordToken) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .path("/validateForgotPasswordToken")
-                .queryParam("passwordToken", passwordToken);
-        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+        return memberResource.service("validateForgotPasswordToken", Boolean.class)
+                .queryParam("passwordToken", passwordToken)
+                .getUnchecked();
     }
 
     public static String createForgotPasswordToken(Long memberId) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .path("/createForgotPasswordToken")
-                .queryParam("memberId", memberId );
-        //TODO: this should be posted!
-        return RequestUtils.getUnchecked(uriBuilder, String.class);
+        return memberResource.service("createForgotPasswordToken", String.class)
+                .queryParam("memberId", memberId)
+                //TODO: this should be posted!
+                .getUnchecked();
     }
 
     public static String generateScreenName(String lastName, String firstName) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .path("/generateScreenName")
-                    .queryParam("values", firstName, lastName);
-        return RequestUtils.getUnchecked(uriBuilder, String.class);
+        return memberResource.service("generateScreenName", String.class)
+                .queryParam("values", firstName, lastName)
+                .getUnchecked();
     }
 
     public static String hashPassword(String password) {
@@ -262,49 +260,38 @@ public final class MembersClient {
     }
 
     public static String hashPassword(String password, boolean liferayCompatible) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .path("/hashPassword")
+        return memberResource.service("hashPassword", String.class)
                 .queryParam("password", password)
-                .queryParam("liferayCompatible", liferayCompatible);
-        return RequestUtils.getUnchecked(uriBuilder, String.class);
+                .queryParam("liferayCompatible", liferayCompatible)
+                .getUnchecked();
     }
 
     // /members/createForgotPasswordToken
 
     public static boolean validatePassword(String password, long memberId) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .path("/validatePassword")
+        return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
-                .queryParam("memberId", memberId);
-        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+                .queryParam("memberId", memberId)
+                .getUnchecked();
     }
 
     public static Member register(Member member) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, member, Member.class);
+        return memberResource.create(member).execute();
     }
 
     public static boolean login(long memberId, String password) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
-                .path("/login");
-        return RequestUtils.post(uriBuilder, password, Boolean.class);
+        return memberResource.service(memberId, "login", Boolean.class).post();
     }
 
     public static boolean subscribeToNewsletter(long memberId) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
-                .path("/subscribe");
-        return RequestUtils.put(uriBuilder, null);
+        return memberResource.service(memberId, "subscribe", Boolean.class).put();
     }
 
     public static boolean unsubscribeFromNewsletter(long memberId) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
-                .path("/unsubscribe");
-        return RequestUtils.put(uriBuilder, null);
+        return memberResource.service(memberId, "unsubscribe", Boolean.class).put();
     }
 
     public static boolean isSubscribedToNewsletter(long memberId) {
-        final UriBuilder uriBuilder = memberResource.getResourceUrl(memberId)
-                .path("/isSubscribed");
-        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+        return memberResource.service(memberId, "isSubscribed", Boolean.class).getUnchecked();
     }
 }

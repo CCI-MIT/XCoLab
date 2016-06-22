@@ -17,12 +17,19 @@ import java.util.List;
 public final class ContentsClient {
 
     private static final RestService contentService = new RestService("contents-service");
-    private static final RestResource contentArticleResource = new RestResource(contentService,
-            "contentArticle");
-    private static final RestResource contentArticleVersionResource = new RestResource(contentService,
-            "contentArticleVersion");
-    private static final RestResource contentFolderResource = new RestResource(contentService,
-            "contentFolder");
+
+    private static final RestResource<ContentArticle> contentArticleResource =
+            new RestResource<>(contentService, "contentArticle", ContentArticle.class,
+            new ParameterizedTypeReference<List<ContentArticle>>() {
+            });
+    private static final RestResource<ContentArticleVersion> contentArticleVersionResource =
+            new RestResource<>(contentService, "contentArticleVersion", ContentArticleVersion.class,
+            new ParameterizedTypeReference<List<ContentArticleVersion>>() {
+            });
+    private static final RestResource<ContentFolder> contentFolderResource =
+            new RestResource<>(contentService, "contentFolder", ContentFolder.class,
+                    new ParameterizedTypeReference<List<ContentFolder>>() {
+                    });
 
     private ContentsClient() {
     }
@@ -37,6 +44,7 @@ public final class ContentsClient {
 
     public static ContentArticleVersion getLatestContentArticleVersion(long folderId, String title)
             throws ContentNotFoundException {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl()
                     .queryParam("folderId", folderId)
                     .queryParam("title", title)
@@ -69,39 +77,30 @@ public final class ContentsClient {
     public static List<ContentArticleVersion> getContentArticleVersions(Integer startRecord,
             Integer limitRecord, Long folderId, Long contentArticleId,
             Long contentArticleVersion, String title) {
-        final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl()
+        return contentArticleVersionResource.list()
                 .optionalQueryParam("startRecord", startRecord)
                 .optionalQueryParam("limitRecord", limitRecord)
                 .optionalQueryParam("contentArticleId", contentArticleId)
                 .optionalQueryParam("folderId", folderId)
                 .optionalQueryParam("contentArticleVersion", contentArticleVersion)
-                .optionalQueryParam("title", title);
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-                });
+                .optionalQueryParam("title", title)
+                .execute();
     }
 
     public static List<ContentFolder> getContentFolders() {
-        final UriBuilder uriBuilder = contentFolderResource.getResourceUrl();
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContentFolder>>() {
-                });
+        return contentFolderResource.list().execute();
     }
 
     public static List<ContentFolder> getContentFolders(Long parentFolderId) {
-        final UriBuilder uriBuilder = contentFolderResource.getResourceUrl()
-                .queryParam("parentFolderId", parentFolderId);
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContentFolder>>() {
-                });
+        return contentFolderResource.list()
+                .queryParam("parentFolderId", parentFolderId)
+                .execute();
     }
 
     public static ContentArticle getContentArticle(Long contentArticleId)
             throws ContentNotFoundException {
-        final UriBuilder uriBuilder = contentArticleResource.getResourceUrl(contentArticleId);
-
         try {
-            return RequestUtils.get(uriBuilder, ContentArticle.class);
+            return contentArticleResource.get(contentArticleId).execute();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentArticle " + contentArticleId + " does not exist");
@@ -109,23 +108,18 @@ public final class ContentsClient {
     }
 
     public static ContentArticle createContentArticle(ContentArticle contentArticle) {
-        final UriBuilder uriBuilder = contentArticleResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, contentArticle, ContentArticle.class);
+        return contentArticleResource.create(contentArticle).execute();
     }
 
-    public static void updateContentArticle(ContentArticle contentArticle) {
-        final UriBuilder uriBuilder = contentArticleResource.getResourceUrl(
-                contentArticle.getContentArticleId());
-        RequestUtils.put(uriBuilder, contentArticle);
+    public static boolean updateContentArticle(ContentArticle contentArticle) {
+        return contentArticleResource.update(contentArticle, contentArticle.getContentArticleId())
+                .execute();
     }
 
     public static ContentArticleVersion getContentArticleVersion(Long contentArticleVersionId)
             throws ContentNotFoundException {
-        final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl(
-                contentArticleVersionId);
-
         try {
-            return RequestUtils.get(uriBuilder, ContentArticleVersion.class);
+            return contentArticleVersionResource.get(contentArticleVersionId).execute();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentArticleVersion " + contentArticleVersionId + " does not exist");
@@ -134,24 +128,19 @@ public final class ContentsClient {
 
     public static ContentArticleVersion createContentArticleVersion(
             ContentArticleVersion contentArticleVersion) {
-        final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl(
-                contentArticleVersion.getContentArticleVersionId());
-        return RequestUtils.post(uriBuilder, contentArticleVersion, ContentArticleVersion.class);
+        return contentArticleVersionResource.create(contentArticleVersion).execute();
     }
 
-    public static void updateContentArticleVersion(ContentArticleVersion contentArticleVersion) {
-        final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl(
-                contentArticleVersion.getContentArticleVersionId());
-        RequestUtils.put(uriBuilder, contentArticleVersion);
+    public static boolean updateContentArticleVersion(ContentArticleVersion contentArticleVersion) {
+        return contentArticleVersionResource
+                .update(contentArticleVersion, contentArticleVersion.getContentArticleVersionId())
+                .execute();
     }
 
     public static ContentFolder getContentFolder(long contentFolderId)
             throws ContentNotFoundException {
-        final UriBuilder uriBuilder = contentFolderResource.getResourceUrl(
-                contentFolderId);
-
         try {
-            return RequestUtils.get(uriBuilder, ContentFolder.class);
+            return contentFolderResource.get(contentFolderId).execute();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentFolder " + contentFolderId + " does not exist");
@@ -159,21 +148,20 @@ public final class ContentsClient {
     }
 
     public static ContentFolder createContentFolder(ContentFolder contentFolder) {
-        final UriBuilder uriBuilder = contentFolderResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, contentFolder, ContentFolder.class);
+        return contentFolderResource.create(contentFolder).execute();
     }
 
-    public static void updateContentFolder(ContentFolder contentFolder) {
-        final UriBuilder uriBuilder = contentFolderResource.getResourceUrl(
-                contentFolder.getContentFolderId());
-        RequestUtils.put(uriBuilder, contentFolder);
+    public static boolean updateContentFolder(ContentFolder contentFolder) {
+        return contentFolderResource.update(contentFolder, contentFolder.getContentFolderId())
+                .execute();
     }
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
-        final UriBuilder uriBuilder = contentArticleVersionResource
-                .getSubResource(folderId, "contentArticlesVersions").getResourceUrl();
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-        });
+        return contentArticleVersionResource
+                .getSubResource(folderId, "contentArticlesVersions", ContentArticleVersion.class,
+                        new ParameterizedTypeReference<List<ContentArticleVersion>>() {
+                        })
+                .list()
+                .execute();
     }
 }

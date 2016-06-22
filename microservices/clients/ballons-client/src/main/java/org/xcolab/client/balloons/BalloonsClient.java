@@ -17,35 +17,38 @@ import java.util.List;
 public final class BalloonsClient {
 
     private static final RestService balloonService = new RestService("balloons-service");
-    private static final RestResource balloonLinkResource = new RestResource(balloonService,
-            "balloonLinks");
-    private static final RestResource balloonUserTrackingResource =
-            new RestResource(balloonService, "balloonUserTracking");
-    private static final RestResource balloonTextResource = new RestResource(balloonService,
-            "balloonTexts");
+    private static final RestResource<BalloonLink> balloonLinkResource = new RestResource<>(
+            balloonService, "balloonLinks", BalloonLink.class,
+            new ParameterizedTypeReference<List<BalloonLink>>() {
+    });
+    private static final RestResource<BalloonUserTracking> balloonUserTrackingResource =
+            new RestResource<>(balloonService, "balloonUserTracking", BalloonUserTracking.class,
+                    new ParameterizedTypeReference<List<BalloonUserTracking>>() {
+                    });
+    private static final RestResource<BalloonText> balloonTextResource = new RestResource<>(
+            balloonService, "balloonTexts", BalloonText.class,
+            new ParameterizedTypeReference<List<BalloonText>>() {
+    });
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {
-        final UriBuilder uriBuilder = balloonLinkResource.getResourceUrl(uuid);
-
         try {
-            return RequestUtils.get(uriBuilder, BalloonLink.class);
+            return balloonLinkResource.get(uuid).execute();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonLink " + uuid + " does not exist");
         }
     }
 
-    public static BalloonLink createBalloonLink(
-            BalloonLink balloonLink) {
-        final UriBuilder uriBuilder = balloonLinkResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, balloonLink, BalloonLink.class);
+    public static BalloonLink createBalloonLink(BalloonLink balloonLink) {
+        return balloonLinkResource.create(balloonLink).execute();
     }
-    public static void updateBalloonLink(BalloonLink balloonLink) {
-        final UriBuilder uriBuilder = balloonLinkResource.getResourceUrl(balloonLink.getUuid_());
-        RequestUtils.put(uriBuilder, balloonLink);
+    public static boolean updateBalloonLink(BalloonLink balloonLink) {
+        return balloonLinkResource.update(balloonLink, balloonLink.getUuid_()).execute();
     }
 
-    public static BalloonLink getBalloonLinkByMemberUuid(String memberUuid) throws BalloonUserTrackingNotFound {
+    public static BalloonLink getBalloonLinkByMemberUuid(String memberUuid)
+            throws BalloonUserTrackingNotFound {
+        //TODO: port to new methods
         final UriBuilder uriBuilder = balloonLinkResource.getResourceUrl()
                 .queryParam("memberUuid", memberUuid);
 
@@ -57,11 +60,10 @@ public final class BalloonsClient {
         }
     }
 
-    public static BalloonUserTracking getBalloonUserTracking(String uuid) throws BalloonUserTrackingNotFound {
-        final UriBuilder uriBuilder = balloonUserTrackingResource.getResourceUrl(uuid);
-
+    public static BalloonUserTracking getBalloonUserTracking(String uuid)
+            throws BalloonUserTrackingNotFound {
         try {
-            return RequestUtils.get(uriBuilder, BalloonUserTracking.class);
+            return balloonUserTrackingResource.get(uuid).execute();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonUserTracking " + uuid + " does not exist");
@@ -69,65 +71,46 @@ public final class BalloonsClient {
     }
 
     public static List<BalloonUserTracking> getBalloonUserTrackingByEmail(String email)  {
-        final UriBuilder uriBuilder = balloonUserTrackingResource.getResourceUrl()
-                .queryParam("email", email);
-
-            return RequestUtils.getList(uriBuilder,
-                    new ParameterizedTypeReference<List<BalloonUserTracking>>() {
-                    });
+        return balloonUserTrackingResource.list()
+                .queryParam("email", email)
+                .execute();
     }
 
     public static List<BalloonUserTracking> getAllBalloonUserTracking() {
-        final UriBuilder uriBuilder = balloonUserTrackingResource.getResourceUrl();
-
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<BalloonUserTracking>>() {
-                });
+        return balloonUserTrackingResource.list().execute();
     }
 
     public static BalloonUserTracking createBalloonUserTracking(
             BalloonUserTracking balloonUserTracking) {
-        final UriBuilder uriBuilder = balloonUserTrackingResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, balloonUserTracking, BalloonUserTracking.class);
+        return balloonUserTrackingResource.create(balloonUserTracking).execute();
     }
-    public static void updateBalloonUserTracking(BalloonUserTracking balloonUserTracking) {
-        final UriBuilder uriBuilder = balloonUserTrackingResource.getResourceUrl(
-                balloonUserTracking.getUuid_());
-        RequestUtils.put(uriBuilder, balloonUserTracking);
+    public static boolean updateBalloonUserTracking(BalloonUserTracking balloonUserTracking) {
+        return balloonUserTrackingResource.update(balloonUserTracking,
+                balloonUserTracking.getUuid_()).execute();
     }
 
     public static BalloonText getBalloonText(Long id) throws BalloonUserTrackingNotFound {
-        final UriBuilder uriBuilder = balloonTextResource.getResourceUrl(id);
-
         try {
-            return RequestUtils.get(uriBuilder, BalloonText.class);
+            return balloonTextResource.get(id).execute();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonText " + id + " does not exist");
         }
     }
 
-
-    public static BalloonText createBalloonText(
-            BalloonText balloonText) {
-        final UriBuilder uriBuilder = balloonTextResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, balloonText, BalloonText.class);
+    public static BalloonText createBalloonText(BalloonText balloonText) {
+        return balloonTextResource.create(balloonText).execute();
     }
 
     public static List<BalloonText> getAllEnabledBalloonTexts() {
-        final UriBuilder uriBuilder = balloonTextResource.getResourceUrl();
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<BalloonText>>() {
-                });
+        return balloonTextResource.list().execute();
     }
 
-    public static void updateBalloonText(BalloonText balloonText) {
-        final UriBuilder uriBuilder = balloonTextResource.getResourceUrl(balloonText.getId_());
-        RequestUtils.put(uriBuilder, balloonText);
+    public static boolean updateBalloonText(BalloonText balloonText) {
+        return balloonTextResource.update(balloonText, balloonText.getId_()).execute();
     }
 
-    public static void deleteBalloonText(Long id) {
-        final UriBuilder uriBuilder = balloonTextResource.getResourceUrl(id);
-        RequestUtils.delete(uriBuilder);
+    public static boolean deleteBalloonText(Long id) {
+        return balloonTextResource.delete(id).execute();
     }
 }
