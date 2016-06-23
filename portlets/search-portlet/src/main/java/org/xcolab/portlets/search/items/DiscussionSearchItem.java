@@ -11,6 +11,12 @@ import com.liferay.portal.kernel.search.Field;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.CommentNotFoundException;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.jspTags.discussion.wrappers.ThreadWrapper;
 
 import java.io.IOException;
@@ -23,77 +29,50 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     private DiscussionMessage discussionMessage;
     private DiscussionCategoryGroup categoryGroup;
 
+    private CommentThread thread;
+
+    private Comment comment;
+
+    private String searchQuery;
+
+    @Override
+    public void init(SearchPojo pojo, String searchQuery) {
+        try {
+            comment = CommentClient.getComment(pojo.getClassPrimaryKey());
+            thread = CommentClient.getThread(comment.getThreadId());
+            this.searchQuery = searchQuery;
+        } catch (CommentNotFoundException | ThreadNotFoundException ignored) {
+
+        }
+    }
+
     @Override
     public String getPrintName() {
         return "Discussions";
     }
 
     @Override
-    public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        String title = concatFields(TITLE_FIELDS, doc, highlighter);
+    public String getTitle() {
+        String title = thread.getTitle();
         if (StringUtils.isBlank(title)) {
-            try {
-                DiscussionCategoryGroup dcg = getCategoryGroup(doc);
-                return "Discussion for " + dcg.getDescription();
-            } catch (SystemException | PortalException e) {
                 return "Comment";
-            }
         }
-        return title;
+        return highlight(title,searchQuery);
     }
 
     @Override
-    public String getLinkUrl(Document doc) throws SystemException {
-        try {
-            DiscussionMessage msg = getMessage(doc);
-            DiscussionCategoryGroup dcg = getCategoryGroup(doc);
-
-            if (dcg.getCommentsThread() > 0 && !StringUtils.isBlank(dcg.getUrl())) {
-                return dcg.getUrl();
-            }
-
-            Long threadId = msg.getThreadId();
-            if (threadId == 0) {
-                threadId = msg.getMessageId();
-            }
-            return new ThreadWrapper(threadId).getLinkUrl();
-        } catch (SystemException | PortalException e) {
-            return "";
-        }
+    public String getLinkUrl() {
+        return thread.getLinkUrl();
     }
 
     @Override
-    public String getContent(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        String content = concatFields(CONTENT_FIELDS, doc, highlighter);
+    public String getContent() {
+        String content = highlight(this.comment.getContent(),searchQuery);
         return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
     }
 
-    public DiscussionMessage getMessage(Document doc) throws SystemException, PortalException {
-        if (discussionMessage == null) {
-            String idStr = doc.get(Field.ENTRY_CLASS_PK);
-            long messageId = Long.parseLong(idStr);
-            discussionMessage = DiscussionMessageLocalServiceUtil.getDiscussionMessage(messageId);
-        }
-        return discussionMessage;
-    }
-
-    public DiscussionCategoryGroup getCategoryGroup(Document doc) throws SystemException, PortalException {
-        if (categoryGroup == null) {
-            categoryGroup = DiscussionCategoryGroupLocalServiceUtil
-                    .getDiscussionCategoryGroup(getMessage(doc).getCategoryGroupId());
-        }
-        return categoryGroup;
-    }
-
     @Override
-    public boolean isVisible(Document doc) {
-        try {
-            DiscussionMessage message = getMessage(doc);
-            DiscussionCategoryGroup dcg = DiscussionCategoryGroupLocalServiceUtil
-                    .getDiscussionCategoryGroup(message.getCategoryGroupId());
-            return !dcg.isIsQuiet();
-        } catch (SystemException | PortalException e) {
-            return false;
-        }
+    public boolean isVisible() {
+        return !thread.getIsQuiet();
     }
 }

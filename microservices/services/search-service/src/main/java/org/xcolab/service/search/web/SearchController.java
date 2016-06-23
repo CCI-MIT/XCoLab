@@ -41,12 +41,33 @@ public class SearchController {
             if( sort.equals(SearchType.DISCUSSION.getStringType())){
                 return searchDao.findComment(paginationHelper, query);
             }
-            if( sort.equals(SearchType.CONTEST.getStringType())){
-                return searchDao.findContest(paginationHelper, query);
-            }
+
         }
 
         return searchDao.findAllSite(paginationHelper, query);
 
+    }
+
+    @RequestMapping("/search/count")
+    public Integer doSearch(
+            @RequestParam(required = false) String sort,
+            @RequestParam String query) {
+        if(sort != null){
+            if( sort.equals(SearchType.MEMBER.getStringType())){
+                return searchDao.findMemberCount(query);
+            }
+            if( sort.equals(SearchType.PROPOSAL.getStringType())){
+                return searchDao.findProposalAttributeCount(query);
+            }
+            if( sort.equals(SearchType.CONTEST.getStringType())){
+                return searchDao.findContestCount(query);
+            }
+            if( sort.equals(SearchType.DISCUSSION.getStringType())){
+                return searchDao.findCommentCount(query);
+            }
+
+        }
+
+        return searchDao.findAllSiteCount( query);
     }
 }

@@ -6,6 +6,8 @@ import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
+import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
+
 public interface SearchDao {
     List<SearchPojo> findProposalAttribute(PaginationHelper paginationHelper, String query);
 
@@ -17,4 +19,13 @@ public interface SearchDao {
 
     List<SearchPojo> findAllSite(PaginationHelper paginationHelper,
                                  String query);
+    Integer findAllSiteCount(String query);
+
+    Integer findProposalAttributeCount(String query);
+
+    Integer findMemberCount(String query);
+
+    Integer findCommentCount(String query);
+
+    Integer findContestCount(String query);
 }

@@ -12,6 +12,7 @@ import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.util.Version;
+import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.portlets.search.items.AbstractSearchItem;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchResultItem {
-    private final Map<String, Field> fields;
+
     private final boolean isVisible;
     private SearchItemType itemType;
     private String content;
@@ -28,37 +29,30 @@ public class SearchResultItem {
     private String url;
     private boolean odd;
 
-    public SearchResultItem(Document doc, Query query, org.apache.lucene.search.Query luceneQuery, boolean odd)
+    public SearchResultItem(SearchPojo searchPojo, String query, boolean odd)
             throws ParseException, IOException, com.liferay.portal.kernel.search.ParseException,
             InvalidTokenOffsetsException, SystemException {
-        fields = doc.getFields();
+
         for (SearchItemType type : SearchItemType.values()) {
-            if (type.isOfGivenType(doc)) {
+            if (type.isOfGivenType(searchPojo)) {
                 itemType = type;
                 break;
             }
         }
-        isVisible = itemType.getSearchItem().isVisible(doc);
+        isVisible = true;
 
-        QueryScorer scorer = new QueryScorer(luceneQuery);
-        Formatter formatter = new SimpleHTMLFormatter();
-
-        Highlighter highlighter = new Highlighter(formatter, scorer);
-        highlighter.getBestFragment(new StandardAnalyzer(Version.LUCENE_34), "firstName", doc.get("firstName"));
         if (itemType != null) {
             AbstractSearchItem searchItem = itemType.getSearchItem();
-            content = searchItem.getContent(doc, highlighter);
-            url = searchItem.getLinkUrl(doc);
-            title = searchItem.getTitle(doc, highlighter);
+            searchItem.init(searchPojo,query);
+            content = searchItem.getContent();
+            url = searchItem.getLinkUrl();
+            title = searchItem.getTitle();
         }
         this.odd = odd;
     }
 
     public List<Pair> getValues() {
         List<Pair> pairs = new ArrayList<>();
-        for (String fieldName : fields.keySet()) {
-            pairs.add(new Pair(fieldName, fields.get(fieldName).getValue()));
-        }
 
         return pairs;
     }

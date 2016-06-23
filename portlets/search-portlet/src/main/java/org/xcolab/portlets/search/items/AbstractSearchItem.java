@@ -6,6 +6,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.util.Version;
+import org.xcolab.client.search.pojo.SearchPojo;
 
 import java.io.IOException;
 
@@ -16,13 +17,27 @@ public abstract class AbstractSearchItem {
 
     public abstract String getPrintName();
 
-    public abstract String getTitle(Document doc, Highlighter highlighter)
-            throws SystemException, IOException, InvalidTokenOffsetsException;
+    public abstract void init(SearchPojo pojo, String searchQuery);
 
-    public abstract String getLinkUrl(Document doc) throws SystemException;
+    public abstract String getTitle();
 
-    public abstract String getContent(Document doc, Highlighter highlighter)
-            throws SystemException, IOException, InvalidTokenOffsetsException;
+    public abstract String getLinkUrl();
+
+    public abstract String getContent();
+
+    public String highlight(String content, String queryToHighlight) {
+        if (content == null) {return null;}
+        if (queryToHighlight == null) {return content;}
+        String[] tokensInUserContent = queryToHighlight.split("[\\p{Punct}\\s]+");
+        if (tokensInUserContent != null) {
+            for(String token : tokensInUserContent) {
+                content = content.replace(token, "<b>"+token+"</b>");
+            }
+        }
+        content = content.replace(queryToHighlight, "<b>"+queryToHighlight+"</b>");
+
+        return content;
+    }
 
     public static AbstractSearchItem newInstance(Class<? extends AbstractSearchItem> clazz) {
         if (BlogSearchItem.class == clazz) {
@@ -46,30 +61,7 @@ public abstract class AbstractSearchItem {
         throw new IllegalArgumentException("Invalid class name provided to factory method: " + clazz.getName());
     }
 
-    protected String concatFields(String[] fields, Document doc, Highlighter highlighter)
-            throws IOException, InvalidTokenOffsetsException {
-        StringBuilder sb = new StringBuilder();
-        boolean addSeparator = false;
-        for (String field : fields) {
-            if (addSeparator) {
-                sb.append(" ");
-            }
-            sb.append(doc.get(field));
-            addSeparator = true;
-        }
-
-        String concatenated = sb.toString().replaceAll(HTML_CLEAN_UP_REGEXP, "");
-        String highlighted =
-                highlighter.getBestFragment(new StandardAnalyzer(Version.LUCENE_34), fields[0], concatenated);
-
-        if (highlighted == null || highlighted.trim().isEmpty()) {
-            return concatenated;
-        }
-        return highlighted;
-
-    }
-
-    public boolean isVisible(Document doc) {
+    public boolean isVisible() {
         return true;
     }
 }
