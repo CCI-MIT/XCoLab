@@ -81,7 +81,7 @@ public class MemberService {
                            String shortBio, String country, Long facebookId, String openId, Long imageId, Long liferayUserId)
             throws NoSuchAlgorithmException {
         memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
-                shortBio, country, facebookId, openId, liferayUserId);
+                shortBio, country, facebookId, openId, imageId, liferayUserId);
         final Member member = memberDao.findOneByScreenName(screenName);
 
         subscribeToNewsletter(member.getEmailAddress());

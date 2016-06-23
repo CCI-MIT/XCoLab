@@ -97,7 +97,7 @@ public class MembersController {
         return memberService.register(member.getScreenName(), member.getHashedPassword(),
                 member.getEmailAddress(), member.getFirstName(), member.getLastName(),
                 member.getShortBio(), member.getCountry(), member.getFacebookId(),
-                member.getOpenId(), 0L, member.getId_());
+                member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.PUT)

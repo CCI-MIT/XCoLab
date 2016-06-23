@@ -238,8 +238,9 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public void createMember(String screenName, String hashedPassword, String email, String firstName, String lastName,
-            String shortBio, String country, Long facebookId, String openId, Long liferayUserId) {
+    public void createMember(String screenName, String hashedPassword, String email,
+            String firstName, String lastName, String shortBio, String country, Long facebookId,
+            String openId, Long imageId, Long liferayUserId) {
         this.dslContext.insertInto(MEMBER)
                 .set(MEMBER.ID_, liferayUserId)
                 .set(MEMBER.SCREEN_NAME, screenName)
@@ -251,6 +252,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.OPEN_ID, openId)
                 .set(MEMBER.SHORT_BIO, shortBio)
                 .set(MEMBER.COUNTRY, country)
+                .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, imageId)
                 .set(MEMBER.CREATE_DATE, new Timestamp(Instant.now().toEpochMilli()))
                 .set(MEMBER.MODIFIED_DATE, new Timestamp(Instant.now().toEpochMilli()))
                 .execute();
