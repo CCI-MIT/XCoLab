@@ -1,4 +1,4 @@
-package org.xcolab.service.contest.domain.contentarticle;
+package org.xcolab.service.contest.domain.contest;
 
 import static org.xcolab.model.Tables.CONTEST;
 

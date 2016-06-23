@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.service.contest.domain.contentarticle.ContestDao;
+import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.service.contest.service.contentarticle.ContestService;
+import org.xcolab.service.contest.service.contest.ContestService;
 
 import java.util.List;
 

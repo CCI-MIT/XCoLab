@@ -1,4 +1,4 @@
-package org.xcolab.service.contest.domain.contentarticle;
+package org.xcolab.service.contest.domain.contest;
 
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
