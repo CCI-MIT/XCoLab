@@ -1,7 +1,5 @@
 package org.xcolab.client.admin;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.admin.exceptions.EmailTemplateNotFoundException;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.util.http.RequestUtils;
@@ -16,9 +14,7 @@ public final class EmailTemplateClient {
 
     private static final RestService adminService = new RestService("admin-service");
     private static final RestResource<ContestEmailTemplate> emailTemplatesResource =
-            new RestResource<>(adminService, "emailTemplates", ContestEmailTemplate.class,
-            new ParameterizedTypeReference<List<ContestEmailTemplate>>() {
-            });
+            new RestResource<>(adminService, "emailTemplates", ContestEmailTemplate.TYPES);
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
         return emailTemplatesResource.list().execute();

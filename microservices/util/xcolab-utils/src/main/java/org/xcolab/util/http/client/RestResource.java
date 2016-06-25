@@ -10,6 +10,7 @@ import org.xcolab.util.http.client.queries.GetQuery;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.client.queries.ServiceQuery;
 import org.xcolab.util.http.client.queries.UpdateQuery;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
@@ -20,12 +21,12 @@ public class RestResource<T> implements UrlProvider {
     private final Class<T> entityType;
     private final ParameterizedTypeReference<List<T>> typeReference;
 
-    public RestResource(UrlProvider serviceOrParent, String resourceName, Class<T> entityType,
-            ParameterizedTypeReference<List<T>> typeReference) {
+    public RestResource(UrlProvider serviceOrParent, String resourceName,
+            TypeProvider<T> typeProvider) {
         this.urlProvider = serviceOrParent;
         this.resourceName = resourceName;
-        this.entityType = entityType;
-        this.typeReference = typeReference;
+        this.entityType = typeProvider.getEntityType();
+        this.typeReference = typeProvider.getTypeReference();
     }
 
     @Override
@@ -46,9 +47,10 @@ public class RestResource<T> implements UrlProvider {
     }
 
     public <S> RestResource<S> getSubResource(long resourceId, String subResourceName,
-            Class<S> entityType, ParameterizedTypeReference<List<S>> typeReference) {
-        return new RestResource<>(new ParentResourceClient(this, resourceId), subResourceName,
-                entityType, typeReference);
+            TypeProvider<S> typeProvider) {
+        return new RestResource<>(
+                new ParentResourceClient(this, resourceId),
+                subResourceName, typeProvider);
     }
 
     public CreateQuery<T> create(T pojo) {

@@ -1,7 +1,5 @@
 package org.xcolab.client.members;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
@@ -17,8 +15,7 @@ public final class MessagingClient {
 
     private static final RestService membersService = new RestService("members-service");
     private static final RestResource<Message> messageResource = new RestResource<>(membersService,
-            "messages", Message.class, new ParameterizedTypeReference<List<Message>>() {
-            });
+            "messages", Message.TYPES);
 
     private MessagingClient() { }
 
@@ -71,8 +68,7 @@ public final class MessagingClient {
 
     public static void createRecipient(long messageId, long recipientStatusId, long recipientId) {
         messageResource.getSubResource(messageId, "recipients",
-                Member.class, new ParameterizedTypeReference<List<Member>>() {
-                })
+                Member.TYPES)
                 .create(null)
                 .queryParam("recipientStatusId", recipientStatusId)
                 .queryParam("recipientId", recipientId)
@@ -81,8 +77,7 @@ public final class MessagingClient {
 
     public static List<Member> getMessageRecipients(long messageId) {
         return messageResource.getSubResource(messageId, "recipients",
-                Member.class, new ParameterizedTypeReference<List<Member>>() {
-                })
+                Member.TYPES)
                 .list()
                 .execute();
     }

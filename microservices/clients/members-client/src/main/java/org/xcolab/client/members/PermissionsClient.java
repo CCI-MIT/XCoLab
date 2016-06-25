@@ -1,11 +1,10 @@
 package org.xcolab.client.members;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public final class PermissionsClient {
 
     private static final RestService membersService = new RestService("members-service");
     private static final RestResource<Object> roleGroupResource = new RestResource<>(membersService,
-            "roleGroups", null, null);
+            "roleGroups", new TypeProvider<>(null, null));
 
     private PermissionsClient() {
     }
@@ -39,9 +38,8 @@ public final class PermissionsClient {
     }
 
     public static boolean hasRoleGroup(long memberId, long roleGroupId) {
-        final List<Role_> roles = roleGroupResource.getSubResource(roleGroupId, "roles", Role_.class,
-                new ParameterizedTypeReference<List<Role_>>() {
-                })
+        final List<Role_> roles = roleGroupResource
+                        .getSubResource(roleGroupId, "roles", Role_.TYPES)
                 .list()
                 .cacheIdentifier("memberId_" + memberId + "_roleGroupId_" + roleGroupId)
                 .execute();

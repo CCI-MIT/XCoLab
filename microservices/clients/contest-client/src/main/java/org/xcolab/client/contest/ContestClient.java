@@ -16,8 +16,7 @@ public class ContestClient {
 
     private static final RestService contestService = new RestService("contest-service");
     private static final RestResource<Contest> contestResource = new RestResource<>(contestService,
-            "contests", Contest.class, new ParameterizedTypeReference<List<Contest>>() {
-    });
+            "contests", Contest.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {

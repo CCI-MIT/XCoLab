@@ -1,7 +1,5 @@
 package org.xcolab.client.files;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.files.providers.FileSystemPersistenceProvider;
@@ -10,14 +8,11 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.util.List;
-
 public final class FilesClient {
 
     private static final RestService fileService = new RestService("files-service");
     private static final RestResource<FileEntry> fileEntryResource = new RestResource<>(fileService,
-            "fileEntries", FileEntry.class, new ParameterizedTypeReference<List<FileEntry>>() {
-    });
+            "fileEntries", FileEntry.TYPES);
 
     private static final PersistenceProvider persistenceProvider =
             new FileSystemPersistenceProvider();

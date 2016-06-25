@@ -1,11 +1,20 @@
 package org.xcolab.client.admin.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContestEmailTemplate implements Serializable {
+
+	public static final TypeProvider<ContestEmailTemplate> TYPES =
+			new TypeProvider<>(ContestEmailTemplate.class,
+					new ParameterizedTypeReference<List<ContestEmailTemplate>>() {
+					});
 
 	private static final long serialVersionUID = -689051730;
 

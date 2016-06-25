@@ -19,17 +19,12 @@ public final class ContentsClient {
     private static final RestService contentService = new RestService("contents-service");
 
     private static final RestResource<ContentArticle> contentArticleResource =
-            new RestResource<>(contentService, "contentArticle", ContentArticle.class,
-            new ParameterizedTypeReference<List<ContentArticle>>() {
-            });
+            new RestResource<>(contentService, "contentArticle", ContentArticle.TYPES);
     private static final RestResource<ContentArticleVersion> contentArticleVersionResource =
-            new RestResource<>(contentService, "contentArticleVersion", ContentArticleVersion.class,
-            new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-            });
+            new RestResource<>(contentService, "contentArticleVersion",
+                    ContentArticleVersion.TYPES);
     private static final RestResource<ContentFolder> contentFolderResource =
-            new RestResource<>(contentService, "contentFolder", ContentFolder.class,
-                    new ParameterizedTypeReference<List<ContentFolder>>() {
-                    });
+            new RestResource<>(contentService, "contentFolder", ContentFolder.TYPES);
 
     private ContentsClient() {
     }
@@ -158,9 +153,7 @@ public final class ContentsClient {
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
         return contentArticleVersionResource
-                .getSubResource(folderId, "contentArticlesVersions", ContentArticleVersion.class,
-                        new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-                        })
+                .getSubResource(folderId, "contentArticlesVersions", ContentArticleVersion.TYPES)
                 .list()
                 .execute();
     }

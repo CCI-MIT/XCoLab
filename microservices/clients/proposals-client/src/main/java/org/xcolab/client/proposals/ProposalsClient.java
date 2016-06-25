@@ -1,7 +1,5 @@
 package org.xcolab.client.proposals;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.http.client.RestResource;
@@ -14,9 +12,7 @@ public final class ProposalsClient {
 
     private static final RestService proposalService = new RestService("proposals-service");
     private static final RestResource<Proposal> proposalResource = new RestResource<>(
-            proposalService, "proposals", Proposal.class,
-            new ParameterizedTypeReference<List<Proposal>>() {
-            });
+            proposalService, "proposals", Proposal.TYPES);
 
     public static Proposal createProposal(Proposal proposal) {
         return proposalResource.create(proposal).execute();

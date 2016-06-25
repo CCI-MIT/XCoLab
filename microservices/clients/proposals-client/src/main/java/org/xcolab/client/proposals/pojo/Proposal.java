@@ -5,9 +5,13 @@ package org.xcolab.client.proposals.pojo;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.annotation.Generated;
 
@@ -25,6 +29,10 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Proposal implements Serializable {
+    public static final TypeProvider<Proposal> TYPES =
+            new TypeProvider<>(Proposal.class,
+                    new ParameterizedTypeReference<List<Proposal>>() {
+                    });
 
     private static final long serialVersionUID = 1313799162;
 

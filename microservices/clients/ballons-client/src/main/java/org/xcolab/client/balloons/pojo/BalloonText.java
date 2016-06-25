@@ -5,8 +5,12 @@ package org.xcolab.client.balloons.pojo;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.Generated;
 
@@ -24,6 +28,10 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BalloonText implements Serializable {
+    public static final TypeProvider<BalloonText> TYPES =
+            new TypeProvider<>(BalloonText.class,
+                    new ParameterizedTypeReference<List<BalloonText>>() {
+                    });
 
     private static final long serialVersionUID = 669206607;
 

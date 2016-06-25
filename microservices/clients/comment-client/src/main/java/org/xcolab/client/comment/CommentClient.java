@@ -1,7 +1,5 @@
 package org.xcolab.client.comment;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
@@ -21,21 +19,16 @@ public final class CommentClient {
 
     private static final RestService commentService = new RestService("comment-service");
     private static final RestResource<Comment> commentResource = new RestResource<>(commentService,
-            "comments", Comment.class, new ParameterizedTypeReference<List<Comment>>() {
-    });
+            "comments", Comment.TYPES);
     private static final RestResource<CommentThread> threadResource = new RestResource<>(
             commentService,
-            "threads", CommentThread.class, new ParameterizedTypeReference<List<CommentThread>>() {
-    });
+            "threads", CommentThread.TYPES);
     private static final RestResource<Category> categoryResource = new RestResource<>(
             commentService,
-            "categories", Category.class, new ParameterizedTypeReference<List<Category>>() {
-    });
+            "categories", Category.TYPES);
     private static final RestResource<CategoryGroup> categoryGroupResource = new RestResource<>(
             commentService,
-            "categoryGroups", CategoryGroup.class,
-            new ParameterizedTypeReference<List<CategoryGroup>>() {
-            });
+            "categoryGroups", CategoryGroup.TYPES);
 
     private CommentClient() {
     }

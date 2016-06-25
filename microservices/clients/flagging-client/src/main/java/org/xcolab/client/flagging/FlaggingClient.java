@@ -22,18 +22,11 @@ public final class FlaggingClient {
 
     private static final RestService flaggingService = new RestService("flagging-service");
     private static final RestResource<Report> reportResource = new RestResource<>(flaggingService,
-            "reports", Report.class, new ParameterizedTypeReference<List<Report>>() {
-    });
+            "reports", Report.TYPES);
     private static final RestResource<AggregatedReport> aggregatedReportResource = new RestResource<>(
-            flaggingService,
-            "aggregatedReports", AggregatedReport.class,
-            new ParameterizedTypeReference<List<AggregatedReport>>() {
-            });
+            flaggingService, "aggregatedReports", AggregatedReport.TYPES);
     private static final RestResource<ReportTarget> reportTargetResource = new RestResource<>(
-            flaggingService,
-            "reportTarget", ReportTarget.class,
-            new ParameterizedTypeReference<List<ReportTarget>>() {
-            });
+            flaggingService, "reportTarget", ReportTarget.TYPES);
 
     private FlaggingClient() {
     }

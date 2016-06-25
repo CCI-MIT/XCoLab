@@ -1,7 +1,5 @@
 package org.xcolab.client.activities;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -19,14 +17,10 @@ public final class ActivitiesClient {
 
     private static final RestService activitiesService = new RestService("activities-service");
     private static final RestResource<ActivityEntry> activityEntryResource =
-            new RestResource<>(activitiesService, "activityEntries", ActivityEntry.class,
-                    new ParameterizedTypeReference<List<ActivityEntry>>() {
-                    });
+            new RestResource<>(activitiesService, "activityEntries", ActivityEntry.TYPES);
     private static final RestResource<ActivitySubscription> activitySubscriptionResource =
             new RestResource<>(activitiesService, "activitySubscriptions",
-                    ActivitySubscription.class,
-                    new ParameterizedTypeReference<List<ActivitySubscription>>() {
-                    });
+                    ActivitySubscription.TYPES);
 
     public static ActivityEntry createActivityEntry(ActivityEntry activityEntry) {
         return activityEntryResource.create(activityEntry).execute();

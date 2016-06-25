@@ -4,8 +4,13 @@
 package org.xcolab.client.activities.pojo;
 
 
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.util.http.client.types.TypeProvider;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.annotation.Generated;
 
@@ -22,6 +27,11 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ActivitySubscription implements Serializable {
+
+    public static final TypeProvider<ActivitySubscription> TYPES =
+            new TypeProvider<>(ActivitySubscription.class,
+            new ParameterizedTypeReference<List<ActivitySubscription>>() {
+            });
 
     private static final long serialVersionUID = 1658857969;
 

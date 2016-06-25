@@ -22,15 +22,11 @@ public final class MembersClient {
     private static final RestService memberService = new RestService("members-service");
 
     private static final RestResource<Member> memberResource = new RestResource<>(memberService,
-            "members", Member.class, new ParameterizedTypeReference<List<Member>>() {
-                    });
+            "members", Member.TYPES);
     private static final RestResource<MemberCategory> memberCategoryResource =
-            new RestResource<>(memberService, "membercategories", MemberCategory.class,
-            new ParameterizedTypeReference<List<MemberCategory>>() {
-            });
+            new RestResource<>(memberService, "membercategories", MemberCategory.TYPES);
     private static final RestResource<Contact_> contactResource = new RestResource<>(memberService,
-            "contacts", Contact_.class, new ParameterizedTypeReference<List<Contact_>>() {
-                    });
+            "contacts", Contact_.TYPES);
 
     private MembersClient() {
     }
@@ -101,9 +97,7 @@ public final class MembersClient {
     }
 
     public static List<Role_> getMemberRoles(long memberId) {
-        return memberResource.getSubResource(memberId, "roles", Role_.class,
-                new ParameterizedTypeReference<List<Role_>>() {
-                })
+        return memberResource.getSubResource(memberId, "roles", Role_.TYPES)
                 .list()
                 .cacheIdentifier("memberId_" + memberId)
                 .execute();
@@ -112,9 +106,7 @@ public final class MembersClient {
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
         //TODO: make uri nicer - then port to new methods
         final UriBuilder uriBuilder =
-                memberResource.getSubResource(memberId, "roles", Role_.class,
-                        new ParameterizedTypeReference<List<Role_>>() {
-                        })
+                memberResource.getSubResource(memberId, "roles", Role_.TYPES)
                         .getResourceUrl()
                         .path("/contests/" + contestId);
         return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {

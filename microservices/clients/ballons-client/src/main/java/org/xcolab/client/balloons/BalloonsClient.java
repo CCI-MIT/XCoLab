@@ -1,7 +1,5 @@
 package org.xcolab.client.balloons;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
@@ -18,17 +16,11 @@ public final class BalloonsClient {
 
     private static final RestService balloonService = new RestService("balloons-service");
     private static final RestResource<BalloonLink> balloonLinkResource = new RestResource<>(
-            balloonService, "balloonLinks", BalloonLink.class,
-            new ParameterizedTypeReference<List<BalloonLink>>() {
-    });
+            balloonService, "balloonLinks", BalloonLink.TYPES);
     private static final RestResource<BalloonUserTracking> balloonUserTrackingResource =
-            new RestResource<>(balloonService, "balloonUserTracking", BalloonUserTracking.class,
-                    new ParameterizedTypeReference<List<BalloonUserTracking>>() {
-                    });
+            new RestResource<>(balloonService, "balloonUserTracking", BalloonUserTracking.TYPES);
     private static final RestResource<BalloonText> balloonTextResource = new RestResource<>(
-            balloonService, "balloonTexts", BalloonText.class,
-            new ParameterizedTypeReference<List<BalloonText>>() {
-    });
+            balloonService, "balloonTexts", BalloonText.TYPES);
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {
         try {
