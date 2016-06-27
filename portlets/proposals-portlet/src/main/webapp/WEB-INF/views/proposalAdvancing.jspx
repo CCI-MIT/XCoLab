@@ -60,10 +60,17 @@
                                     </div>
                                     <a name="advanceCommentAnchor" id="advanceCommentAnchor"></a>
                                     <form:textarea id="advanceComment" cssClass="c-Comment__box" path="advanceComment" style="width:100%;"/>
+                                    <div id="comment-headers">
+                                        <c:forEach var="template" items="${emailTemplates}">
+                                            <div class="${template.key}">
+                                                ${template.value.header}
+                                            </div>
+                                        </c:forEach>
+                                    </div>
                                     <div id="comment-footers">
                                         <c:forEach var="template" items="${emailTemplates}">
                                             <div class="${template.key}">
-                                                    ${template.value.footer}
+                                                ${template.value.footer}
                                             </div>
                                         </c:forEach>
                                     </div>
