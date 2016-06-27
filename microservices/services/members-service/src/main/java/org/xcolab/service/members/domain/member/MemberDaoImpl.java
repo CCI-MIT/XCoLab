@@ -3,6 +3,7 @@ package org.xcolab.service.members.domain.member;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -107,6 +108,26 @@ public class MemberDaoImpl implements MemberDao {
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
         return query.fetchInto(Member.class);
+    }
+
+    @Override
+    public int countByGiven(String partialName, String roleName) {
+        final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(MEMBER.ID_))
+                .from(MEMBER)
+                .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
+                .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
+                .where(MEMBER.STATUS.eq(0))
+                .getQuery();
+
+        if (partialName != null) {
+            query.addConditions(MEMBER.SCREEN_NAME.contains(partialName)
+                    .or(MEMBER.FIRST_NAME.contains(partialName))
+                    .or(MEMBER.LAST_NAME.contains(partialName)));
+        }
+        if (roleName != null) {
+            query.addConditions(ROLES_CATEGORY.CATEGORY_NAME.eq(roleName));
+        }
+        return query.fetchOne().into(Integer.class);
     }
 
     @Override
@@ -217,8 +238,9 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public void createMember(String screenName, String hashedPassword, String email, String firstName, String lastName,
-            String shortBio, String country, Long facebookId, String openId, Long liferayUserId) {
+    public void createMember(String screenName, String hashedPassword, String email,
+            String firstName, String lastName, String shortBio, String country, Long facebookId,
+            String openId, Long imageId, Long liferayUserId) {
         this.dslContext.insertInto(MEMBER)
                 .set(MEMBER.ID_, liferayUserId)
                 .set(MEMBER.SCREEN_NAME, screenName)
@@ -230,6 +252,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.OPEN_ID, openId)
                 .set(MEMBER.SHORT_BIO, shortBio)
                 .set(MEMBER.COUNTRY, country)
+                .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, imageId)
                 .set(MEMBER.CREATE_DATE, new Timestamp(Instant.now().toEpochMilli()))
                 .set(MEMBER.MODIFIED_DATE, new Timestamp(Instant.now().toEpochMilli()))
                 .execute();

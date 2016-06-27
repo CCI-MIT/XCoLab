@@ -3,7 +3,6 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.PlanSectionDefinition;
@@ -30,9 +29,11 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
+
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
 import java.io.IOException;

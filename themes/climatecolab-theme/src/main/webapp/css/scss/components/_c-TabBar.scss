@@ -5,6 +5,7 @@ $c-TabBar__borderBottom: none !default;
 $c-TabBar__paddingTop: 0 !default;
 
 $c-TabBar__tab__background: $t-Color__primary !default;
+$c-TabBar__tab__background--highlight: $t-Color__secondary !default;
 
 $c-TabBar__tab__paddingTop: 13px !default;
 $c-TabBar__tab__paddingBottom: 13px !default;
@@ -68,6 +69,7 @@ $c-TabBar__tab--first__margin--left: 0px !default;
 
   a:hover { //.prop-tabs li a:hover
     background: hover-color($c-TabBar__tab__background);
+    text-decoration: none;
   }
 
   &.active {
@@ -87,7 +89,7 @@ $c-TabBar__tab--first__margin--left: 0px !default;
   }
 
   &.highlight a {
-    background-color: $t-Color__secondary;
+    background: $c-TabBar__tab__background--highlight;
   }
 }
 

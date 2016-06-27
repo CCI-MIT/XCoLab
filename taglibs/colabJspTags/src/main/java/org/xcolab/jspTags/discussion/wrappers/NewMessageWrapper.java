@@ -5,6 +5,7 @@ public class NewMessageWrapper {
     private String description;
     private String discussionId;
     private String threadId;
+    private String uuid;
     
     public String getTitle() {
         return title;
@@ -30,5 +31,6 @@ public class NewMessageWrapper {
     public void setThreadId(String threadId) {
         this.threadId = threadId;
     }
-
+    public String getUuid() {return uuid;}
+    public void setUuid(String uuid) {this.uuid = uuid;}
 }

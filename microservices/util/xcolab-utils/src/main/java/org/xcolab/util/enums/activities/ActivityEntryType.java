@@ -1,12 +1,10 @@
-package org.xcolab.activityEntry;
+package org.xcolab.util.enums.activities;
 
 public enum ActivityEntryType {
-    MEMBER(10038l),
-    DISCUSSION(39202l),
-    PROPOSOSAL(1368503l),
-    CONTEST(39701l);
-
-
+    MEMBER(10038L),
+    DISCUSSION(39202L),
+    PROPOSAL(1368503L),
+    CONTEST(39701L);
 
     private final Long primaryTypeId;
     ActivityEntryType(Long type) {

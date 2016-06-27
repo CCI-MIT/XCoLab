@@ -1,19 +1,24 @@
 package com.ext.portlet.Activity;
 
-import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.util.enums.activities.ActivityEntryType;
+
+import com.ext.portlet.model.ContestType;
+import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 
 public enum SubscriptionType {
-    DISCUSSION(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), "Discussion"),
-    PROPOSAL(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId(), "Proposal"),
-    CONTEST(ActivityEntryType.CONTEST.getPrimaryTypeId(), "Contest");
+    DISCUSSION(ActivityEntryType.DISCUSSION.getPrimaryTypeId()),
+    PROPOSAL(ActivityEntryType.PROPOSAL.getPrimaryTypeId()),
+    CONTEST(ActivityEntryType.CONTEST.getPrimaryTypeId());
 
-    private Long className;
-    private String printName;
+    private final Long className;
 
-    SubscriptionType(Long className, String printName) {
+    SubscriptionType(Long className) {
         this.className = className;
-        this.printName = printName;
     }
 
     public static SubscriptionType getSubscriptionType(ActivitySubscription subscription) {
@@ -26,6 +31,26 @@ public enum SubscriptionType {
     }
 
     public String getPrintName() {
-        return printName;
+        if (this == SubscriptionType.DISCUSSION) {
+            return "Discussion";
+        } else {
+            final long contestTypeId = ConfigurationAttributeKey
+                    .DEFAULT_CONTEST_TYPE_ID.getLongValue();
+            ContestType contestType;
+            try {
+                contestType = ContestTypeLocalServiceUtil
+                        .getContestType(contestTypeId);
+            } catch (PortalException | SystemException e) {
+                contestType = null;
+            }
+
+            if (this == SubscriptionType.PROPOSAL) {
+                return contestType != null ? contestType.getProposalName() : "Proposal";
+            }
+            if (this == SubscriptionType.CONTEST) {
+                return contestType != null ? contestType.getContestName() : "Contest";
+            }
+            return "Other";
+        }
     }
 }

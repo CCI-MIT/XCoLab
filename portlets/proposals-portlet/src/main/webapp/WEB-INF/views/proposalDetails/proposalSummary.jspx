@@ -90,6 +90,11 @@
                     <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> Share via ${colabShortName} messaging
                 </a>
             </div>
+            <c:if test="${proposalsPermissions.canReportProposal}">
+                <div class="message-share-button">
+                    <a href="javascript:;" onclick="reportProposal(${proposal.proposalId})">Report</a>
+                </div>
+            </c:if>
             <script type="text/javascript">
                 if (typeof(addthis) != 'undefined') {
                     addthis.toolbox("#shareProposalToolbox");
@@ -222,5 +227,24 @@
 
         // Listen for the share event
         addthis.addEventListener('addthis.menu.share', shareEventHandler);
+    </script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery('#popup_flagging_form_targetType').attr('value', 'PROPOSAL');
+            <c:forEach items="${reportTargets}" var="reportTarget">
+                <![CDATA[
+                    jQuery('#popup_flagging_reasons').append(jQuery('<option>', {
+                        value: '${reportTarget.reason}',
+                        text: '${reportTarget.reason}'
+                    }));
+                ]]>
+            </c:forEach>
+        });
+
+        function reportProposal(proposalId) {
+            jQuery('#popup_flagging_form_targetId').attr('value', proposalId);
+            jQuery('#popup_flagging').show();
+        }
     </script>
 </jsp:root>

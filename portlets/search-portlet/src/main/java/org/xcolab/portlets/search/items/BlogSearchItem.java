@@ -17,6 +17,11 @@ public class BlogSearchItem extends AbstractSearchItem {
     private final static String[] CONTENT_FIELDS = {"content"};
 
     @Override
+    public String getPrintName() {
+        return "News";
+    }
+
+    @Override
     public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
         return concatFields(TITLE_FIELDS, doc, highlighter);
     }

@@ -76,7 +76,7 @@ jQuery(function() {
         }
 
         //submit button functionality for adding new comments
-        $("#addCommentButton").click(function() {
+        $("#addCommentButton").click(function(event) {
             //save the comment in a cookie, in case the user is not logged in
 
             if($("#cke_messageContent iframe") == null || $("#cke_messageContent iframe").contents().find("body").text() == "") {
@@ -91,12 +91,49 @@ jQuery(function() {
                 deferUntilLogin();
             } else {
                 if (! window.isAddCommentFormValid()) {
+                    event.preventDefault();
                     return false;
                 }
                 disableDirtyCheck();
                 window.disableAddComment();
-                $('#addCommentForm').submit();
+
+                if(getMustFilterContent()) {
+                    var text = "";
+                    if(CKEDITOR.instances.messageContent === undefined) {
+                        var $thecomment = jQuery(".c-Comment__new");
+                        text = $thecomment.find(".commentContent").val();
+                    }else{
+                        text = CKEDITOR.instances.messageContent.getData();
+                    }
+                    handleFilteredContent(text,"DISCUSSION", "#filtering_uuid",function () { $('#addCommentForm').submit() });
+                    event.preventDefault();
+                    return false;
+                } else {
+                    $('#addCommentForm').submit();
+                }
+
             }
         });
     }
 });
+function handleFilteredContent(textInput, source, uuidField, callback){
+
+    $("#processedFailed").hide();
+    $("#modal_filtering_prof").modal({escapeClose: true, clickClose: false, showClose: true});
+    var parameters ={
+        fullText: textInput,
+        source : source
+    };
+    $.post("/profanityfiltering/" ,parameters , function (doc, suc, response) {
+        var responseData = JSON.parse(response.responseText);
+
+        if (responseData.valid == "false") {
+            $("#processedFailed").show();
+            $("#loading_filtering_image").hide();
+        } else {
+            var uuid = responseData.uuid;
+            $(uuidField).val(uuid);
+            callback.call(null);
+        }
+    });
+}

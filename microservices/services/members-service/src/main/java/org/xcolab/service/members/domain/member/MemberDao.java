@@ -10,6 +10,7 @@ public interface MemberDao {
 
     List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String roleName, String email, String screenName, Long facebookId, String openId);
+    int countByGiven(String partialName, String roleName);
 
     Member getMember(long memberId) throws NotFoundException;
 
@@ -27,8 +28,9 @@ public interface MemberDao {
     Member findOneByForgotPasswordHash(String newPasswordToken);
 
     boolean updateMember(Member member);
-    void createMember(String screenName, String password, String email, String firstName, String lastName,
-            String shortBio, String country, Long facebookId, String openId, Long liferayUserId);
+    void createMember(String screenName, String password, String email,
+            String firstName, String lastName, String shortBio, String country,
+            Long facebookId, String openId, Long imageid, Long liferayUserId);
 
     boolean isScreenNameTaken(String screenName);
     boolean isEmailUsed(String email);

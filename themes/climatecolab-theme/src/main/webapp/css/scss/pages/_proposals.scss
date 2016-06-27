@@ -627,6 +627,7 @@ $p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor;
   padding-top: 15px;
   line-height: normal;
   font-size: 10px;
+  pointer-events: none;
 
   > div {
     background: $t-Color__primary;
@@ -728,4 +729,9 @@ $p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor;
 
 .propbox.judgement-actions .title-author {
   width: $p-proposal__propbox__judgementActions__titleAuthor__width;
+}
+
+.p-Proposals__proposalPicker__scrollContainer {
+  height: 300px;
+  overflow: auto;
 }

@@ -89,8 +89,12 @@ public class ProposalPickerFilterUtil {
         }
 
         _log.debug(String.format("%d contests before filtering", contests.size()));
-        Set<Long> focusAreaRemovedContests = ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
-                Pair.of(sectionFocusAreaId, contestFocusAreaId));
+        final SectionDefFocusAreaArgument sectionDefFocusAreaArgument =
+                new SectionDefFocusAreaArgument(sectionFocusAreaId,
+                        contestFocusAreaId, alwaysIncludedContestIds);
+        Set<Long> focusAreaRemovedContests =
+                ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
+                sectionDefFocusAreaArgument);
 
         _log.debug(String.format("%d contests left after filtering for focus areas %d and %d",
                 contests.size(), sectionFocusAreaId, contestFocusAreaId));
@@ -189,8 +193,9 @@ public class ProposalPickerFilterUtil {
         return proposals;
     }
 
-    public static void filterProposals(List<Pair<Proposal, Date>> proposals,
-                                       String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
+    private static void filterProposals(List<Pair<Proposal, Date>> proposals,
+            String filterKey, long sectionId, PortletRequest request,
+            ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         filterByParameter(filterKey, proposals);
         filterByVisibility(proposals);
@@ -214,7 +219,7 @@ public class ProposalPickerFilterUtil {
         ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
 
-    public static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
+    private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
             Proposal proposal = iterator.next().getLeft();
             if (ProposalLocalServiceUtil.isDeleted(proposal)) {

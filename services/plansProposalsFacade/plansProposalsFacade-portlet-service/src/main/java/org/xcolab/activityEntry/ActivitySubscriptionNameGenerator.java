@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import org.apache.commons.lang.StringUtils;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.util.enums.activities.ActivityEntryType;
 import org.xcolab.utils.IdListUtil;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ActivitySubscriptionNameGenerator {
 
     public static String getName(ActivitySubscription subscription) {
 
-        if (subscription.getClassNameId().equals(ActivityEntryType.PROPOSOSAL.getPrimaryTypeId())) {
+        if (subscription.getClassNameId().equals(ActivityEntryType.PROPOSAL.getPrimaryTypeId())) {
             return getNameForProposalSubscription(subscription);
         } else {
             if (subscription.getClassNameId().equals(ActivityEntryType.CONTEST.getPrimaryTypeId())) {

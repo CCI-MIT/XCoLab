@@ -69,14 +69,13 @@ public final class LoginRegisterUtil {
 
         member.setShortBio(shortBio);
         member.setCountry(country);
-        MembersClient.register(member);
+        member = MembersClient.register(member);
 
         if (imageId != null && !imageId.isEmpty()) {
-
             member.setPortraitFileEntryId(Long.parseLong(imageId));
             MembersClient.updateMember(member);
         } else {
-            member.setPortraitFileEntryId(0l);
+            member.setPortraitFileEntryId(0L);
             MembersClient.updateMember(member);
         }
         sendEmailNotificationToRegisteredUser(liferayServiceContext, liferayUser);

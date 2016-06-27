@@ -3,7 +3,7 @@ package org.xcolab.portlets.proposals.view.action;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;

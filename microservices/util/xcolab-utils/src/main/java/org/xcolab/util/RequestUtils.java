@@ -28,7 +28,6 @@ public final class RequestUtils {
 
     private static String servicesPort = null;
 
-
     private static final int CACHE_TIMEOUT = 3;
 
     private static final RestTemplate restTemplate = new RestTemplate();
@@ -191,6 +190,10 @@ public final class RequestUtils {
         return e.getResponseBodyAsString().contains("NotFoundException");
     }
 
+    public static  boolean put(UriComponentsBuilder uriBuilder) {
+        return put(uriBuilder, null, null);
+    }
+
     public static <T> boolean put(UriComponentsBuilder uriBuilder, T entity) {
         return put(uriBuilder, entity, null);
     }
@@ -209,18 +212,14 @@ public final class RequestUtils {
         return true;
     }
 
-    public static  boolean delete(UriComponentsBuilder uriBuilder) {
-
-        restTemplate
-                .exchange(uriBuilder.build().toString(), HttpMethod.DELETE, null, Void.class);
+    public static boolean delete(UriComponentsBuilder uriBuilder) {
+        restTemplate.exchange(uriBuilder.build().toString(), HttpMethod.DELETE, null, Void.class);
         return true;
     }
 
     public static <T> T post(UriComponentsBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.build().toString(), entity, returnType);
     }
-
-
 
     private static String sanitize(String identifier) {
         return identifier.replaceAll("\\s", "+");

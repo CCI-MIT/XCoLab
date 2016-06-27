@@ -20,13 +20,14 @@ $c-Table__cell__count__hideImage: false !default;
 }
 
 .c-Table__row {
-   &.featured {
-     background-color: $t-Color__grey--lightest;
-   }
+  &.featured {
+    background-color: $t-Color__grey--lightest;
+  }
 }
 
 .c-Table__row--title { //thead.blueheaderbar
   background: $c-Table__title__backgroundColor;
+  padding: 10px 0;
   border-top: $c-Table__row--title__borderTop;
   border-bottom: $c-Table__row--title__borderBottom;
   color: $c-Table__title__fontColor;

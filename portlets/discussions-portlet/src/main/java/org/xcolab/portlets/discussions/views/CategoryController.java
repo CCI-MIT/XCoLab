@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.xcolab.activityEntry.ActivityEntryType;
+import org.xcolab.util.enums.activities.ActivityEntryType;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadSortColumn;
@@ -167,11 +167,13 @@ public class CategoryController extends BaseDiscussionController {
         checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
 
         if (!themeDisplay.getUser().isDefaultUser()) {
+            final long memberId = themeDisplay.getUserId();
             if (categoryId > 0) {
-                ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryId,0 , Long.toString(categoryId),themeDisplay.getUserId() );
+                ActivitiesClient.addSubscription(memberId,
+                        ActivityEntryType.DISCUSSION, categoryId, Long.toString(categoryId));
             } else {
-                ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 ,
-                        "",themeDisplay.getUserId() );
+                ActivitiesClient.addSubscription(memberId,
+                        ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
             }
         }
     }
@@ -185,16 +187,15 @@ public class CategoryController extends BaseDiscussionController {
         checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
 
         if (!themeDisplay.getUser().isDefaultUser()) {
+            final long memberId = themeDisplay.getUserId();
             if (categoryId > 0) {
-
-                ActivitiesClient.deleteSubscription(themeDisplay.getUserId(),
-                        ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 ,
-                        Long.toString(categoryId) );
+                ActivitiesClient.deleteSubscription(memberId,
+                        ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(),
+                        Long.toString(categoryId));
 
             } else {
-                ActivitiesClient.deleteSubscription(themeDisplay.getUserId(),
-                        ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0 ,
-                        "");
+                ActivitiesClient.deleteSubscription(memberId,
+                        ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
             }
         }
     }

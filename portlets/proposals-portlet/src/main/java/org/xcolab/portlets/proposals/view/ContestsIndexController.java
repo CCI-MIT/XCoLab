@@ -56,7 +56,8 @@ public class ContestsIndexController extends BaseProposalsController {
     private final static String VIEW_TYPE_LIST = "LIST";
     private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
     private final static String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
-    
+    private static final int MIN_SIZE_CONTEST_FILTER = 9;
+
     @RequestMapping
     public String showContestsIndex(PortletRequest request, PortletResponse response, Model model,
             @RequestParam(required = false) String viewType, 
@@ -120,6 +121,7 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         model.addAttribute("contests", contests);
+        model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
         model.addAttribute("priorContestsExist", !priorContests.isEmpty());
         model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
                 showActiveContests ? null : ContestsColumn.REFERENCE_DATE));

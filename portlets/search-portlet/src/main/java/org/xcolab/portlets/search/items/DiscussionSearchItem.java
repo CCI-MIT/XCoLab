@@ -24,6 +24,11 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     private DiscussionCategoryGroup categoryGroup;
 
     @Override
+    public String getPrintName() {
+        return "Discussions";
+    }
+
+    @Override
     public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
         String title = concatFields(TITLE_FIELDS, doc, highlighter);
         if (StringUtils.isBlank(title)) {

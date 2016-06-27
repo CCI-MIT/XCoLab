@@ -108,7 +108,7 @@
                                        value="/image/contest?img_id=${contestWrapper.contestLogoId}"/>
                             </c:when>
                             <c:otherwise>
-                                <c:set var="contestImageUrl" value="/climatecolab-theme/images/proposal_default.png"/>
+                                <c:set var="contestImageUrl" value="${themeDisplay.pathThemeImages}/proposal_default.png"/>
                             </c:otherwise>
                         </c:choose>
                         <img src="${contestImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"
@@ -140,7 +140,7 @@
                                        value="/image/proposal?img_id=${contestWrapper.sponsorLogoId}"/>
                             </c:when>
                             <c:otherwise>
-                                <c:set var="logoImageUrl" value="/climatecolab-theme/images/proposal_default.png"/>
+                                <c:set var="logoImageUrl" value="${themeDisplay.pathThemeImages}/proposal_default.png"/>
                             </c:otherwise>
                         </c:choose>
                         <img src="${logoImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"

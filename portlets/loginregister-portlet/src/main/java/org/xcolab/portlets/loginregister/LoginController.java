@@ -19,11 +19,11 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
@@ -50,22 +50,19 @@ public class LoginController {
 
         HttpServletRequest httpRequest = PortletUtils.getOryginalRequest(request);
 
+        String refererHeader = httpRequest.getHeader("referer");
+        String refererRequest =  PortalUtil.getHttpServletRequest(request).getHeader("referer");
+
         String redirect = httpRequest.getParameter("redirect");
-        String referer = httpRequest.getHeader("referer");
-        redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
-
+        redirect = !StringUtils.isBlank(redirect) ? redirect : refererHeader;
+        redirect = !StringUtils.isBlank(redirect) ? redirect : refererRequest;
         redirect = !StringUtils.isBlank(redirect) ? redirect : themeDisplay.getURLHome();
-
 
         redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
         redirect = Helper.removeParamFromRequestStr(redirect, "isSigningInPopup");
         redirect = Helper.removeParamFromRequestStr(redirect, "isSigningIn");
         redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
-
-        //if (redirect == null || redirect.trim().length() == 0) {
-        redirect = PortalUtil.getHttpServletRequest(request).getHeader("referer");
-        //}
 
         User user = null;
         try {

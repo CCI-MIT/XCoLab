@@ -176,7 +176,7 @@ public class ActivitySubscriptionLocalServiceImpl
                 } else if (subscription.getAutomaticSubscriptionCounter() > 1) {
                     // decrement automatic subscription counter as this subscription can be still
                     // valid (ie it has been added as a result of regional->global link and because
-                    // user is susbscribed to a contest)
+                    // user is subscribed to a contest)
                     subscription.setAutomaticSubscriptionCounter(subscription.getAutomaticSubscriptionCounter() - 1);
                     updateActivitySubscription(subscription);
                 }

@@ -5,15 +5,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
 import org.xcolab.enums.MemberRole;
+
+import java.util.List;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import java.util.List;
 
-/**
- * Created by Klemens Mang on 05.03.14.
- */
 public class GetRoleNameStartTag extends BodyTagSupport {
 
     private long userId;

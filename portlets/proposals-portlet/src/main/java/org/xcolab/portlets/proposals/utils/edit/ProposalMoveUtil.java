@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.utils.edit;
 
 import com.ext.portlet.NoSuchProposal2PhaseException;
-import com.ext.portlet.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal2Phase;

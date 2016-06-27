@@ -47,21 +47,25 @@ public class CommentController {
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Long authorId,
-            @RequestParam(required = false) Long threadId) {
+            @RequestParam(required = false) Long threadId,
+            @RequestParam(required = false, defaultValue = "false") boolean includeDeleted) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                     Integer.toString(commentDao.countByGiven(authorId, threadId)));
 
-        return commentDao.findByGiven(paginationHelper, authorId, threadId);
+        return commentDao.findByGiven(paginationHelper, authorId, threadId, includeDeleted);
     }
 
     @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.GET)
-    public Comment getComment(@PathVariable Long commentId) throws NotFoundException {
-        if (commentId == 0) {
-            throw new NotFoundException("No comment id given");
+    public Comment getComment(@PathVariable Long commentId,
+            @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
+            throws NotFoundException {
+        final Comment comment = commentDao.get(commentId);
+        if (comment.getDeletedDate() == null || includeDeleted) {
+            return comment;
         } else {
-            return commentDao.get(commentId);
+            throw new NotFoundException();
         }
     }
 
@@ -72,25 +76,18 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.DELETE)
-    public boolean deleteComment(@PathVariable Long commentId) {
-        try {
-            Comment comment = commentDao.get(commentId);
-            comment.setDeletedDate(new Timestamp(new Date().getTime()));
-            return commentDao.update(comment);
-        } catch (NotFoundException ignored) {
-            return false;
-        }
+    public boolean deleteComment(@PathVariable Long commentId) throws NotFoundException {
+        Comment comment = commentDao.get(commentId);
+        comment.setDeletedDate(new Timestamp(new Date().getTime()));
+        return commentDao.update(comment);
     }
 
     @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.PUT)
     public boolean updateComment(@RequestBody Comment comment, @PathVariable Long commentId)
             throws NotFoundException {
-        if (commentDao.get(commentId) != null) {
-            comment.setModifiedDate(new Timestamp(new Date().getTime()));
-            return commentDao.update(comment);
-        } else {
-            throw new NotFoundException();
-        }
+        commentDao.get(commentId);
+        comment.setModifiedDate(new Timestamp(new Date().getTime()));
+        return commentDao.update(comment);
     }
 
     @RequestMapping(value = "/groups", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -178,8 +175,6 @@ public class CommentController {
             return threadDao.getProposalIdForThread(threadId);
         }
     }
-
-
 
     @RequestMapping(value = "/threads", method = RequestMethod.POST)
     public Thread createThread(@RequestBody Thread thread) {

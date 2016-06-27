@@ -21,13 +21,14 @@ import javax.portlet.ActionResponse;
 
 @Controller
 @RequestMapping("view")
-public class EditDiscussionMessageActionController extends BaseDiscussionsActionController  {
+public class EditDiscussionMessageActionController extends BaseDiscussionsActionController {
 
     @RequestMapping(params = "action=editComment")
     public void handleAction(ActionRequest request, ActionResponse response,
-                @RequestParam long commentId,
-                @RequestParam("comment") String content)
-            throws IOException, SystemException, DiscussionAuthorizationException, NoSuchDiscussionMessageException, CommentNotFoundException {
+            @RequestParam long commentId,
+            @RequestParam("comment") String content)
+            throws IOException, SystemException, DiscussionAuthorizationException,
+            NoSuchDiscussionMessageException, CommentNotFoundException {
 
         checkPermissions(request, "User isn't allowed to edit message", commentId);
         Comment comment = CommentClient.getComment(commentId);

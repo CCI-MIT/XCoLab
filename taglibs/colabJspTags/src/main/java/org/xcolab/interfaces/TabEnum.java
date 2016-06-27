@@ -12,12 +12,12 @@ public interface TabEnum {
 
     boolean getIsDefault();
 
-    public boolean getCanView(TabPermissions permissions, TabContext context, PortletRequest request);
+    boolean getCanView(TabPermissions permissions, TabContext context, PortletRequest request);
 
-    public boolean getCanEdit(TabPermissions permissions, TabContext context, PortletRequest request);
+    boolean getCanEdit(TabPermissions permissions, TabContext context, PortletRequest request);
 
-    public boolean getCanAddComment(TabPermissions permissions, TabContext context, PortletRequest request);
+    boolean getCanAddComment(TabPermissions permissions, TabContext context, PortletRequest request);
 
-    public int getActivityCount(TabContext context, PortletRequest request);
+    int getActivityCount(TabContext context, PortletRequest request);
 
 }

@@ -71,7 +71,7 @@ public class CreateProposalController extends BaseProposalsController {
         else {
         	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped));
         }
-        
+        model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue());
         model.addAttribute("proposal", proposalWrapped);
 
         model.addAttribute("isEditingProposal", true);
