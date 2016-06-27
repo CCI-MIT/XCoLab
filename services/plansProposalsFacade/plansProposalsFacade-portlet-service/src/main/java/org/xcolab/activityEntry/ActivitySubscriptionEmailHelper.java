@@ -77,14 +77,14 @@ public class ActivitySubscriptionEmailHelper {
 
 
         //to ease debug please leave it here
-       /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             lastEmailNotification = sdf.parse("2016-06-03 00:00:00");
             lastDailyEmailNotification = sdf.parse("2016-06-03 00:00:00");
         } catch (ParseException e) {
             lastEmailNotification = new Date();
-        }
-        */
+        }*/
+
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
             for (ActivityEntry activity : res) {
@@ -122,17 +122,21 @@ public class ActivitySubscriptionEmailHelper {
     }
 
     private static void sendDailyDigestNotifications(List<ActivityEntry> activities, ServiceContext serviceContext) throws SystemException, PortalException {
-        Map<Member, List<ActivityEntry>> userActivitiesDigestMap = getUserToActivityDigestMap(activities);
+        Map<Long, List<ActivityEntry>> userActivitiesDigestMap = getUserToActivityDigestMap(activities);
 
         String subject = StringUtil.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification));
         // Send the digest to each user which is included in the set of subscriptions
-        for (Map.Entry<Member, List<ActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
-            final Member recipient = entry.getKey();
-            final List<ActivityEntry> userDigestActivities =  entry.getValue();
-            String body = getDigestMessageBody(serviceContext, userDigestActivities);
-            String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
+        for (Map.Entry<Long, List<ActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
+            try {
+                final Member recipient = MembersClient.getMember(entry.getKey());
+                final List<ActivityEntry> userDigestActivities = entry.getValue();
+                String body = getDigestMessageBody(serviceContext, userDigestActivities);
+                String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient, serviceContext));
 
-            sendEmailMessage(recipient, subject, body, unsubscribeFooter, serviceContext.getPortalURL());
+                sendEmailMessage(recipient, subject, body, unsubscribeFooter, serviceContext.getPortalURL());
+            }catch (MemberNotFoundException ignored){
+                _log.error("sendDailyDigestNotifications: MemberNotFound : " + ignored.getMessage());
+            }
         }
     }
 
@@ -175,9 +179,9 @@ public class ActivitySubscriptionEmailHelper {
         return body.toString();
     }
 
-    private static Map<Member, List<ActivityEntry>> getUserToActivityDigestMap(List<ActivityEntry> activities) throws SystemException, PortalException {
+    private static Map<Long, List<ActivityEntry>> getUserToActivityDigestMap(List<ActivityEntry> activities) throws SystemException, PortalException {
         Map<Long, List<ActivityEntry>> userDigestActivitiesMap = new HashMap<>();
-        Map<Member, List<ActivityEntry>> userDigestActivitiesMapForReturn = new HashMap<>();
+
 
         for (ActivityEntry activity : activities) {
             // Aggregate all activities for all users
@@ -204,16 +208,7 @@ public class ActivitySubscriptionEmailHelper {
             }
         }
 
-        Iterator<Long> it = userDigestActivitiesMap.keySet().iterator();
-        while(it.hasNext()) {
-            try {
-                Long memberId = it.next();
-                Member recipient = MembersClient.getMember(memberId);
-                userDigestActivitiesMapForReturn.put(recipient, userDigestActivitiesMap.get(memberId));
-            } catch (MemberNotFoundException e) {
-            }
-        }
-        return userDigestActivitiesMapForReturn;
+        return userDigestActivitiesMap;
     }
 
     private static List<ActivityEntry> getActivitiesAfter(Date minDate) throws SystemException {

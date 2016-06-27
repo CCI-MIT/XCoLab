@@ -41,6 +41,8 @@ public enum ConfigurationAttributeKey {
     MIT_HEADER_BAR_LINK_TEXT(AttributeType.STRING),
     MIT_HEADER_BAR_LINK_URL(AttributeType.STRING),
 
+    SHOW_CONTEST_COUNTDOWN(AttributeType.BOOLEAN),
+
     FILTER_PROFANITY(AttributeType.BOOLEAN);
 
     private final AttributeType type;
