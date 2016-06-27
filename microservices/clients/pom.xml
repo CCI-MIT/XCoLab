@@ -20,6 +20,7 @@
         <module>admin-client</module>
         <module>ballons-client</module>
         <module>contents-client</module>
+        <module>contest-client</module>
         <module>comment-client</module>
         <module>emails-client</module>
         <module>files-client</module>
