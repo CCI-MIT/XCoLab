@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contests;
 
-
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -12,13 +11,6 @@ import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: jintrone
- * Date: Aug 6, 2010
- * Time: 2:53:38 PM
- * To change this template use File | Settings | File Templates.
- */
 public class ContestWrapper extends BaseContestWrapper implements Serializable {
     /**
 	 * 
