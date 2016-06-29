@@ -26,6 +26,7 @@
         <module>filtering-client</module>
         <module>members-client</module>
         <module>proposals-client</module>
+        <module>sharedcolab-client</module>
     </modules>
 
     <properties>

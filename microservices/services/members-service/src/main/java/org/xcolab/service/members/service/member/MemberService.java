@@ -3,8 +3,8 @@ package org.xcolab.service.members.service.member;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.model.tables.pojos.Member;
-import org.xcolab.service.members.domain.colabsso.ColabSSODao;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.util.PBKDF2PasswordEncryptor;
@@ -25,15 +25,13 @@ public class MemberService {
 
     private final MemberDao memberDao;
 
-    private final ColabSSODao colabSSODao;
 
     private final ConnectorEmmaAPI connectorEmmaAPI;
 
     @Autowired
-    public MemberService(MemberDao memberDao,ColabSSODao colabSSODao, ConnectorEmmaAPI connectorEmmaAPI) {
+    public MemberService(MemberDao memberDao, ConnectorEmmaAPI connectorEmmaAPI) {
         this.memberDao = memberDao;
         this.connectorEmmaAPI = connectorEmmaAPI;
-        this.colabSSODao = colabSSODao;
     }
 
     public Integer getMemberActivityCount(Long memberId) {
@@ -46,7 +44,7 @@ public class MemberService {
         String username;
         do {
             username = usernameGenerator.getNext();
-        } while (colabSSODao.isScreenNameTaken(username));
+        } while (SharedColabClient.isScreenNameUsed(username));
         return username;
     }
 

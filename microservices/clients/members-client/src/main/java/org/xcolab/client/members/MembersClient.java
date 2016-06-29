@@ -67,18 +67,6 @@ public final class MembersClient {
         });
     }
 
-    public static Long retrieveSSOId(String email, String screenName) {
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/retrieveSSOId");
-        if (email != null) {
-            uriBuilder.queryParam("email", email);
-        }
-        if (screenName != null) {
-            uriBuilder.queryParam("screenName", screenName);
-        }
-
-        return RequestUtils.post(uriBuilder,null, Long.class);
-    }
 
     public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue) {
         UriComponentsBuilder uriBuilder =
@@ -243,19 +231,7 @@ public final class MembersClient {
         return RequestUtils.getUnchecked(uriBuilder, Contact_.class);
     }
 
-    public static boolean isScreenNameUsed(String screenName) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/isUsed")
-                    .queryParam("screenName", screenName);
-        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
-    }
 
-    public static boolean isEmailUsed(String email) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/members/isUsed")
-                    .queryParam("email", email);
-        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
-    }
 
     public static Long updateUserPassword(String forgotPasswordToken, String password) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +

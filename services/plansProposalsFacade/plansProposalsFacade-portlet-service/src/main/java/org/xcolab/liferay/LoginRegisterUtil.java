@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.emailnotification.member.MemberRegistrationNotification;
 
@@ -84,7 +85,6 @@ public final class LoginRegisterUtil {
 
             user = UserLocalServiceUtil.createUser(userId);
             user.setCompanyId(companyId);
-            //user.setPassword(password);
             String encryptedPassword = null;
             try {
                 MessageDigest sha1Digest = MessageDigest.getInstance("SHA-1");
@@ -118,12 +118,10 @@ public final class LoginRegisterUtil {
             user.setTimeZoneId("America/New_York");
             UserLocalServiceUtil.addUser(user);
 
-
-
             ClassName clsNameUser = ClassNameLocalServiceUtil.getClassName("com.liferay.portal.model.User");
             long classNameId = clsNameUser.getClassNameId();
 
-//Insert Group for a user
+            //Insert Group for a user
             long gpId = CounterLocalServiceUtil.increment(Group.class.getName());
             Group userGrp = GroupLocalServiceUtil.createGroup(gpId);
             userGrp.setClassNameId(classNameId);
@@ -137,20 +135,12 @@ public final class LoginRegisterUtil {
 
 
             //Associate a role with user
-
             long userid[] = {user.getUserId()};
-
             long roleids[] = {role.getRoleId()};
             UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), groupId, roleids);
-
-
             UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userid);
 
-//Insert Contact for a user
-//long idContact = CounterLocalServiceUtil.increment(Contact.class.getName());
-
-
-//Create AssetEntry
+            //Create AssetEntry
             long assetEntryId = CounterLocalServiceUtil.increment(AssetEntry.class.getName());
             AssetEntry ae = AssetEntryLocalServiceUtil.createAssetEntry(assetEntryId);
             ae.setCompanyId(companyId);
@@ -159,18 +149,7 @@ public final class LoginRegisterUtil {
             ae.setClassNameId(classNameId);
             AssetEntryLocalServiceUtil.addAssetEntry(ae);
 
-//Insert ResourcePermission for a User
-            long resPermId = CounterLocalServiceUtil.increment(ResourcePermission.class.getName());
-            ResourcePermission rpEntry = ResourcePermissionLocalServiceUtil.createResourcePermission(resPermId);
-            rpEntry.setCompanyId(companyId);
-            rpEntry.setName("com.liferay.portal.model.User");
-            rpEntry.setRoleId(role.getRoleId());
-            rpEntry.setScope(4);
-            rpEntry.setActionIds(31);
-// rpEntry.setPrimaryKey(userid[0]);
-           // ResourcePermissionLocalServiceUtil.addResourcePermission(rpEntry);
-
-//Insert Layoutset for public and private
+            //Insert Layoutset for public and private
             long layoutSetIdPub = CounterLocalServiceUtil.increment(LayoutSet.class.getName());
             LayoutSet layoutSetPub = LayoutSetLocalServiceUtil.createLayoutSet(layoutSetIdPub);
             layoutSetPub.setCompanyId(companyId);
@@ -190,7 +169,6 @@ public final class LoginRegisterUtil {
             layoutSetPriv.setThemeId("classic");
             layoutSetPriv.setGroupId(userGrp.getGroupId());
 
-
             LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPriv);
         } catch (SystemException | PortalException ignored) {
 
@@ -206,15 +184,8 @@ public final class LoginRegisterUtil {
                                   Locale liferayLocale, ServiceContext liferayServiceContext)
             throws Exception {
 
-        /*
-        User liferayUser = UserServiceUtil.addUserWithWorkflow(LIFERAY_COMPANY_ID, false,
-                password, password, false, screenName, email,
-                0L, "", liferayLocale, HtmlUtil.cleanAll(firstName), "", HtmlUtil.cleanAll(lastName),
-                0, 0, true, 1, 1, 1970, "", new long[]{}, new long[]{}, new long[]{},
-                new long[]{}, true, liferayServiceContext);
-        */
 
-        Long memberId = MembersClient.retrieveSSOId(email, screenName);
+        Long memberId = SharedColabClient.retrieveSharedId(email, screenName);
         User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName);
 
         Member member = new Member();
