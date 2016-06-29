@@ -67,6 +67,19 @@ public final class MembersClient {
         });
     }
 
+    public static Long retrieveSSOId(String email, String screenName) {
+        UriComponentsBuilder uriBuilder =
+                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/retrieveSSOId");
+        if (email != null) {
+            uriBuilder.queryParam("email", email);
+        }
+        if (screenName != null) {
+            uriBuilder.queryParam("screenName", screenName);
+        }
+
+        return RequestUtils.post(uriBuilder,null, Long.class);
+    }
+
     public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue) {
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/members/count");

@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.model.tables.pojos.ColabSSO;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
+import org.xcolab.service.members.domain.colabsso.ColabSSODao;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
@@ -19,7 +21,9 @@ import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +39,9 @@ public class MembersController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private ColabSSODao colabSSODao;
 
     @RequestMapping(value = "/members", method = RequestMethod.GET)
     public List<Member> listMembers(HttpServletResponse response,
@@ -135,11 +142,18 @@ public class MembersController {
             @RequestParam(required = false) String email) {
         boolean ret = false;
         if (screenName != null) {
-            ret = memberDao.isScreenNameTaken(screenName);
+            ret = colabSSODao.isScreenNameTaken(screenName);
         }
         if (email != null) {
-            ret = ret || memberDao.isEmailUsed(email);
+            ret = ret || colabSSODao.isEmailUsed(email);
         }
+        return ret;
+    }
+    @RequestMapping(value = "/members/retrieveSSOId", method = RequestMethod.POST)
+    public Long retrieveSSOId(
+            @RequestParam(required = false) String screenName,
+            @RequestParam(required = false) String email) {
+        Long ret = colabSSODao.create(screenName,email,new Timestamp(new Date().getTime()));
         return ret;
     }
 

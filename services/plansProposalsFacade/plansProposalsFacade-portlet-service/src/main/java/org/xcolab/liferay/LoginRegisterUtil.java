@@ -2,13 +2,14 @@ package org.xcolab.liferay;
 
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.service.UserServiceUtil;
+import com.liferay.portal.model.*;
+import com.liferay.portal.service.*;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.members.MembersClient;
@@ -17,10 +18,16 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.HtmlUtil;
 import org.xcolab.utils.emailnotification.member.MemberRegistrationNotification;
 
+
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.xml.bind.DatatypeConverter;
 
 //TODO: temporary class for liferay transition
 //attributes with "liferay" prefix should be removed later
@@ -31,7 +38,7 @@ public final class LoginRegisterUtil {
     private LoginRegisterUtil() {
     }
 
-    public static void updatePassword(String forgotPasswordToken, String newPassword) throws MemberNotFoundException , PortalException, SystemException{
+    public static void updatePassword(String forgotPasswordToken, String newPassword) throws MemberNotFoundException, PortalException, SystemException {
         Long memberId = MembersClient.updateUserPassword(forgotPasswordToken, newPassword);
         if (memberId != null) {
             //TODO: remove, currently needed to update password for liferay
@@ -39,21 +46,177 @@ public final class LoginRegisterUtil {
             liferayUser.setPassword
                     (MembersClient.hashPassword(newPassword.trim(), true));
             UserLocalServiceUtil.updateUser(liferayUser);
-        }else {
+        } else {
 
             throw new MemberNotFoundException("Member with forgotPasswordToken: " + forgotPasswordToken + " was not found");
         }
+    }
+
+    private static User registerLiferayWithId(Long userId, String screenName, String password, String email, String firstName, String lastName) {
+        User user = null;
+        long companyId = LIFERAY_COMPANY_ID;
+        long groupId = 10136;
+        long facebookId = 0;
+        try {
+
+            Role role = RoleLocalServiceUtil.getRole(companyId, "User");
+
+
+            long idContact = CounterLocalServiceUtil.increment("com.liferay.portal.model.Contact");
+            Contact contact = ContactLocalServiceUtil.createContact(idContact);
+            contact.setCompanyId(companyId);
+            contact.setCreateDate(new Date());
+            contact.setUserName(screenName);
+            contact.setUserId(userId);
+            contact.setModifiedDate(new Date());
+            contact.setFirstName(firstName);
+            contact.setLastName(lastName);
+            contact.setMale(true);
+            contact.setMiddleName("");
+            contact.setPrefixId(0);
+            contact.setSuffixId(0);
+            contact.setJobTitle("");
+            contact.setParentContactId(0l);
+            contact.setBirthday(new Date());
+            ContactLocalServiceUtil.addContact(contact);
+
+            String greeting = "Welcome " + firstName + " " + lastName;
+
+            user = UserLocalServiceUtil.createUser(userId);
+            user.setCompanyId(companyId);
+            //user.setPassword(password);
+            String encryptedPassword = null;
+            try {
+                MessageDigest sha1Digest = MessageDigest.getInstance("SHA-1");
+                byte[] secretKeyBytes = sha1Digest.digest(password.getBytes());
+
+                ByteBuffer byteBuffer = ByteBuffer.allocate(secretKeyBytes.length);
+                byteBuffer.put(secretKeyBytes);
+                encryptedPassword = DatatypeConverter.printBase64Binary((byteBuffer.array()));
+            }catch(NoSuchAlgorithmException e){
+
+            }
+            user.setPassword("{SHA-1}"+ encryptedPassword);
+            user.setScreenName(screenName);
+            user.setEmailAddress(email);
+            user.setFacebookId(facebookId);
+            user.setOpenId("");
+
+            user.setGreeting(greeting);
+            user.setFirstName(HtmlUtil.cleanAll(firstName));
+            user.setLastName(HtmlUtil.cleanAll(lastName));
+
+            user.setJobTitle("");
+            user.setCreateDate(new Date());
+            user.setContactId(idContact);
+            user.setPasswordReset(false);
+            user.setPasswordEncrypted(true);
+            user.setPasswordModifiedDate(new Date());
+            user.setCreateDate(new Date());
+            user.setModifiedDate(new Date());
+            user.setLanguageId("en_US");
+            user.setTimeZoneId("America/New_York");
+            UserLocalServiceUtil.addUser(user);
+
+
+
+            ClassName clsNameUser = ClassNameLocalServiceUtil.getClassName("com.liferay.portal.model.User");
+            long classNameId = clsNameUser.getClassNameId();
+
+//Insert Group for a user
+            long gpId = CounterLocalServiceUtil.increment(Group.class.getName());
+            Group userGrp = GroupLocalServiceUtil.createGroup(gpId);
+            userGrp.setClassNameId(classNameId);
+            userGrp.setClassPK(user.getUserId());
+            userGrp.setCompanyId(companyId);
+            userGrp.setName(user.getUserId() + "");
+            userGrp.setFriendlyURL("/" + user.getScreenName());
+            userGrp.setCreatorUserId(user.getUserId());
+            userGrp.setActive(true);
+            GroupLocalServiceUtil.addGroup(userGrp);
+
+
+            //Associate a role with user
+
+            long userid[] = {user.getUserId()};
+
+            long roleids[] = {role.getRoleId()};
+            UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), groupId, roleids);
+
+
+            UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userid);
+
+//Insert Contact for a user
+//long idContact = CounterLocalServiceUtil.increment(Contact.class.getName());
+
+
+//Create AssetEntry
+            long assetEntryId = CounterLocalServiceUtil.increment(AssetEntry.class.getName());
+            AssetEntry ae = AssetEntryLocalServiceUtil.createAssetEntry(assetEntryId);
+            ae.setCompanyId(companyId);
+            ae.setClassPK(user.getUserId());
+            ae.setGroupId(userGrp.getGroupId());
+            ae.setClassNameId(classNameId);
+            AssetEntryLocalServiceUtil.addAssetEntry(ae);
+
+//Insert ResourcePermission for a User
+            long resPermId = CounterLocalServiceUtil.increment(ResourcePermission.class.getName());
+            ResourcePermission rpEntry = ResourcePermissionLocalServiceUtil.createResourcePermission(resPermId);
+            rpEntry.setCompanyId(companyId);
+            rpEntry.setName("com.liferay.portal.model.User");
+            rpEntry.setRoleId(role.getRoleId());
+            rpEntry.setScope(4);
+            rpEntry.setActionIds(31);
+// rpEntry.setPrimaryKey(userid[0]);
+           // ResourcePermissionLocalServiceUtil.addResourcePermission(rpEntry);
+
+//Insert Layoutset for public and private
+            long layoutSetIdPub = CounterLocalServiceUtil.increment(LayoutSet.class.getName());
+            LayoutSet layoutSetPub = LayoutSetLocalServiceUtil.createLayoutSet(layoutSetIdPub);
+            layoutSetPub.setCompanyId(companyId);
+            layoutSetPub.setPrivateLayout(false);
+            layoutSetPub.setGroupId(userGrp.getGroupId());
+            layoutSetPub.setThemeId("classic");
+            try {
+                LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPub);
+            } catch (SystemException se) {
+
+            }
+
+            long layoutSetIdPriv = CounterLocalServiceUtil.increment(LayoutSet.class.getName());
+            LayoutSet layoutSetPriv = LayoutSetLocalServiceUtil.createLayoutSet(layoutSetIdPriv);
+            layoutSetPriv.setCompanyId(companyId);
+            layoutSetPriv.setPrivateLayout(true);
+            layoutSetPriv.setThemeId("classic");
+            layoutSetPriv.setGroupId(userGrp.getGroupId());
+
+
+            LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPriv);
+        } catch (SystemException | PortalException ignored) {
+
+        }
+
+        return user;
+
+
     }
 
     public static Member register(String screenName, String password, String email, String firstName, String lastName,
                                   String shortBio, String country, String fbIdString, String openId, String imageId,
                                   Locale liferayLocale, ServiceContext liferayServiceContext)
             throws Exception {
+
+        /*
         User liferayUser = UserServiceUtil.addUserWithWorkflow(LIFERAY_COMPANY_ID, false,
                 password, password, false, screenName, email,
                 0L, "", liferayLocale, HtmlUtil.cleanAll(firstName), "", HtmlUtil.cleanAll(lastName),
                 0, 0, true, 1, 1, 1970, "", new long[]{}, new long[]{}, new long[]{},
                 new long[]{}, true, liferayServiceContext);
+        */
+
+        Long memberId = MembersClient.retrieveSSOId(email, screenName);
+        User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName);
+
         Member member = new Member();
         member.setId_(liferayUser.getUserId());
         member.setScreenName(screenName);
@@ -69,9 +232,11 @@ public final class LoginRegisterUtil {
 
         member.setShortBio(shortBio);
         member.setCountry(country);
-        member = MembersClient.register(member);
+        MembersClient.register(member);
+        member = MembersClient.getMember(member.getId_());
 
         if (imageId != null && !imageId.isEmpty()) {
+
             member.setPortraitFileEntryId(Long.parseLong(imageId));
             MembersClient.updateMember(member);
         } else {

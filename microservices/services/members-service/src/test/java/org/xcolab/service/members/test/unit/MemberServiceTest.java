@@ -3,6 +3,7 @@ package org.xcolab.service.members.test.unit;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xcolab.service.members.domain.colabsso.ColabSSODaoImpl;
 import org.xcolab.service.members.domain.member.MemberDaoImpl;
 import org.xcolab.service.members.service.member.MemberService;
 
@@ -14,7 +15,7 @@ public class MemberServiceTest {
 
     @Before
     public void setUp() {
-        memberService = new MemberService(new MemberDaoImpl(), null);
+        memberService = new MemberService(new MemberDaoImpl(), new ColabSSODaoImpl(), null);
     }
 
     @Test

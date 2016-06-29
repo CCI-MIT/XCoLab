@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.Member;
+
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
@@ -19,11 +20,7 @@ import java.util.List;
 
 import static org.jooq.impl.DSL.countDistinct;
 import static org.jooq.impl.DSL.sum;
-import static org.xcolab.model.Tables.MEMBER;
-import static org.xcolab.model.Tables.POINTS;
-import static org.xcolab.model.Tables.ROLES_CATEGORY;
-import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
-import static org.xcolab.model.Tables.USERS_ROLES;
+import static org.xcolab.model.Tables.*;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
@@ -258,21 +255,7 @@ public class MemberDaoImpl implements MemberDao {
                 .execute();
     }
 
-    @Override
-    public boolean isScreenNameTaken(String screenName) {
-        return dslContext.selectCount()
-                .from(MEMBER)
-                .where(MEMBER.SCREEN_NAME.eq(screenName))
-                .fetchOne(0, Integer.class) > 0;
-    }
 
-    @Override
-    public boolean isEmailUsed(String email) {
-        return dslContext.selectCount()
-                .from(MEMBER)
-                .where(MEMBER.EMAIL_ADDRESS.eq(email))
-                .fetchOne(0, Integer.class) > 0;
-    }
 
     @Override
     public Integer getMemberMaterializedPoints(Long memberId) {
