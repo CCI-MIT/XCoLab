@@ -381,7 +381,7 @@ create table xcolab_MemberCategory (
 	sortOrder LONG,
 	showInList BOOLEAN,
 	imageName VARCHAR(75) null,
-	description VARCHAR(75) null
+	description VARCHAR(2048) null
 );
 
 create table xcolab_Message (

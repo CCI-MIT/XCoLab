@@ -452,8 +452,6 @@ public class ContestLocalServiceUtil {
     * @param contestPK id of a contest
     * @param userId    id of a user
     * @return true if user is subscribed to a contest, false otherwise
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
     public static boolean isSubscribed(long contestPK, long userId) {
         return getService().isSubscribed(contestPK, userId);
@@ -474,7 +472,7 @@ public class ContestLocalServiceUtil {
     }
 
     /**
-    * <p>Subscribes user to contest</p>
+    * <p>Unsubscribes user from contest</p>
     *
     * @param contestPK id of a contest
     * @param userId    id of a user

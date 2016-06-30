@@ -661,8 +661,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     *
     * @param proposalId proposal id
     * @return number of comments
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
     */
     @Override
     public long getCommentsCount(long proposalId) {
@@ -674,8 +672,6 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     *
     * @param proposalId proposal id
     * @return number of comments
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
     */
     @Override
     public long getFellowReviewCommentsCount(long proposalId) {
@@ -906,13 +902,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param proposalId proposal id
     * @param userId     user id
     * @param automatic  if this is an automatic subscription
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
     @Override
-    public void subscribe(long proposalId, long userId, boolean automatic)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public void subscribe(long proposalId, long userId, boolean automatic) {
         _proposalLocalService.subscribe(proposalId, userId, automatic);
     }
 
@@ -921,13 +913,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     *
     * @param proposalId proposal id
     * @param userId     user id
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
     @Override
-    public void unsubscribe(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public void unsubscribe(long proposalId, long userId) {
         _proposalLocalService.unsubscribe(proposalId, userId);
     }
 
@@ -940,13 +928,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param proposalId proposal id
     * @param userId     user id
     * @param automatic  if this is an automatic subscription
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
     @Override
-    public void unsubscribe(long proposalId, long userId, boolean automatic)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public void unsubscribe(long proposalId, long userId, boolean automatic) {
         _proposalLocalService.unsubscribe(proposalId, userId, automatic);
     }
 
