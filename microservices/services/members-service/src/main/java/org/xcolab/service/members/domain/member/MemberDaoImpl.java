@@ -184,6 +184,22 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
+    public boolean isScreenNameTaken(String screenName) {
+        return dslContext.selectCount()
+                .from(MEMBER)
+                .where(MEMBER.SCREEN_NAME.eq(screenName))
+                .fetchOne(0, Integer.class) > 0;
+    }
+
+    @Override
+    public boolean isEmailUsed(String email) {
+        return dslContext.selectCount()
+                .from(MEMBER)
+                .where(MEMBER.EMAIL_ADDRESS.eq(email))
+                .fetchOne(0, Integer.class) > 0;
+    }
+
+    @Override
     public Member findOneByScreenName(String screenName) {
         return dslContext.select()
                 .from(MEMBER)

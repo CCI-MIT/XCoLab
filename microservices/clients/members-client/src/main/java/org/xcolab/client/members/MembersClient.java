@@ -308,6 +308,19 @@ public final class MembersClient {
         return RequestUtils.put(uriBuilder, null);
     }
 
+    public static boolean isScreenNameUsed(String screenName) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/isUsed")
+                .queryParam("screenName", screenName);
+        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+    }
+
+    public static boolean isEmailUsed(String email) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
+                EUREKA_APPLICATION_ID + "/members/isUsed")
+                .queryParam("email", email);
+        return RequestUtils.getUnchecked(uriBuilder, Boolean.class);
+    }
     public static boolean isSubscribedToNewsletter(long memberId) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/members/" + memberId + "/isSubscribed");

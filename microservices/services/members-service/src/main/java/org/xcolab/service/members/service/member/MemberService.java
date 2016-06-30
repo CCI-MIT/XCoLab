@@ -44,7 +44,7 @@ public class MemberService {
         String username;
         do {
             username = usernameGenerator.getNext();
-        } while (SharedColabClient.isScreenNameUsed(username));
+        } while (memberDao.isScreenNameTaken(username));
         return username;
     }
 

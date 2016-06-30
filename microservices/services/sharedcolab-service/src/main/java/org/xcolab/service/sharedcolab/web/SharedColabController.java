@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.xcolab.model.tables.pojos.SharedMember;
 import org.xcolab.service.sharedcolab.domain.sharedMember.SharedMemberDao;
 
 import java.sql.Timestamp;
@@ -37,7 +38,12 @@ public class SharedColabController {
     public Long retrieveSharedId(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String email) {
-        Long ret = sharedMemberDao.create(screenName, email, new Timestamp(new Date().getTime()));
-        return ret;
+        SharedMember member = sharedMemberDao.getByScreenNameAndEmail(screenName, email);
+        if(member != null){
+            return member.getSharedMemberId();
+        }else {
+            Long ret = sharedMemberDao.create(screenName, email, new Timestamp(new Date().getTime()));
+            return ret;
+        }
     }
 }

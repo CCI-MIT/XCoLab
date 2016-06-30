@@ -1,6 +1,7 @@
 package org.xcolab.portlets.loginregister.validation;
 
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.utils.validation.ConstraintValidatorHelper;
 
@@ -28,8 +29,8 @@ public class UniqueScreenNameEmailValidator implements ConstraintValidator<Uniqu
         if (email == null || screenName == null) {
             return true;
         }
-        boolean uniqueScreenName = !SharedColabClient.isScreenNameUsed(screenName);
-        boolean uniqueEmail = !SharedColabClient.isEmailUsed(email);
+        boolean uniqueScreenName = !MembersClient.isScreenNameUsed(screenName);
+        boolean uniqueEmail = !MembersClient.isEmailUsed(email);
         boolean isValid = uniqueEmail && uniqueScreenName;
 
         if (!isValid) {

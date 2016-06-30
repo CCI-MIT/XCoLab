@@ -100,6 +100,20 @@ public class MembersController {
                 member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
 
+    @RequestMapping(value = "/members/isUsed", method = RequestMethod.GET)
+    public boolean isUsed(
+            @RequestParam(required = false) String screenName,
+            @RequestParam(required = false) String email) {
+        boolean ret = false;
+        if (screenName != null) {
+            ret = memberDao.isScreenNameTaken(screenName);
+        }
+        if (email != null) {
+            ret = ret || memberDao.isEmailUsed(email);
+        }
+        return ret;
+    }
+
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.PUT)
     public boolean updateMember(@RequestBody Member member, @PathVariable Long memberId)
             throws NotFoundException {

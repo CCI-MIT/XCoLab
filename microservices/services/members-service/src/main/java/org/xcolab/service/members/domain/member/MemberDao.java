@@ -25,6 +25,10 @@ public interface MemberDao {
     Member findOneByScreenName(String screenName);
     Member findOneByEmail(String email);
 
+    boolean isScreenNameTaken(String screenName);
+
+    boolean isEmailUsed(String email);
+
     Member findOneByForgotPasswordHash(String newPasswordToken);
 
     boolean updateMember(Member member);

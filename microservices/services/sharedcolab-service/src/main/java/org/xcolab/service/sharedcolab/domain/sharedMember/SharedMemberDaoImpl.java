@@ -31,6 +31,18 @@ public class SharedMemberDaoImpl implements SharedMemberDao {
                 .where(SHARED_MEMBER.EMAIL_ADDRESS.eq(email))
                 .fetchOne(0, Integer.class) > 0;
     }
+
+    public SharedMember getByScreenNameAndEmail(String screenName, String email) {
+        SharedMemberRecord ret = this.dslContext.selectFrom(SHARED_MEMBER)
+                .where(SHARED_MEMBER.SCREEN_NAME.eq(screenName))
+                .and(SHARED_MEMBER.EMAIL_ADDRESS.eq(email)).fetchOne();
+        if (ret != null) {
+            return ret.into(SharedMember.class);
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public Long create(String screenName, String emailAddress, Timestamp createDate) {
 
