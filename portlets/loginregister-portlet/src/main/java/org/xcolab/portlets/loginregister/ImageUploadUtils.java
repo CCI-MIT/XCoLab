@@ -9,6 +9,9 @@ import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import org.apache.commons.io.FilenameUtils;
+import org.xcolab.client.files.FilesClient;
+import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.utils.FileUploadUtil;
 
 import javax.imageio.ImageIO;
@@ -16,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class ImageUploadUtils {
@@ -24,37 +28,40 @@ public class ImageUploadUtils {
     public static final int IMAGE_RESIZE_HEIGHT = 300;
     private static final Log _log = LogFactoryUtil.getLog(ImageUploadUtils.class);
 
-    public static long uploadImage(URL url) throws SystemException {
+    public static long uploadImage(URL url, String path) throws SystemException {
         try {
             BufferedImage image = ImageIO.read(url);
             byte[] imgBArr = FileUploadUtil.resizeAndCropImage(image, IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT);
 
-            long imageId = CounterLocalServiceUtil.increment(Image.class.getName());
-            Image img = ImageLocalServiceUtil.createImage(imageId);
-            img.setModifiedDate(new Date());
-            ImageLocalServiceUtil.addImage(img);
-            ImageLocalServiceUtil.updateImage(imageId, imgBArr);
 
-            return imageId;
-        } catch (IOException | PortalException e) {
+            FileEntry file = new FileEntry();
+            file.setCreateDate(new Timestamp(new Date().getTime()));
+            file.setFileEntryExtension("png");
+            file.setFileEntrySize(imgBArr.length);
+            file.setFileEntryName(url.toString());
+
+            file = FilesClient.createFileEntry(file, imgBArr, path);
+
+            return file.getFileEntryId();
+        } catch (IOException  e) {
             _log.error("Could not upload picture " + url.toString(), e);
         }
 
         return 0L;
     }
 
-    public static void updateProfilePicture(User user, String picURL) throws SystemException {
+    public static void updateProfilePicture(String path, User user, String picURL) throws SystemException {
         // Link picture if it is not yet set
         if (user.getPortraitId() == 0) {
-            user.setPortraitId(linkProfilePicture(picURL));
+            user.setPortraitId(linkProfilePicture(path, picURL));
             UserLocalServiceUtil.updateUser(user);
         }
     }
 
-    public static long linkProfilePicture(String picUrl) throws SystemException {
+    public static long linkProfilePicture(String path, String picUrl) throws SystemException {
         try {
             URL url = new URL(picUrl);
-            return ImageUploadUtils.uploadImage(url);
+            return ImageUploadUtils.uploadImage(url, path);
         } catch (MalformedURLException e) {
             _log.warn("Could not upload  image with url " + picUrl, e);
         }
