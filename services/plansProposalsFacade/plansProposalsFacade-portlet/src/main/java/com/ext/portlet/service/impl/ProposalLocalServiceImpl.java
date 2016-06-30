@@ -1002,7 +1002,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public boolean isSubscribed(long proposalId, long userId) throws PortalException, SystemException {
-        return activitySubscriptionLocalService.isSubscribed(userId, Proposal.class, proposalId, 0, "");
+        return ActivitiesClient.isSubscribedToActivity(userId,
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "");
     }
 
     /**

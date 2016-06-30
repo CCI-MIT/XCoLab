@@ -70,9 +70,8 @@ public final class LoginRegisterUtil {
         member.setShortBio(shortBio);
         member.setCountry(country);
         MembersClient.register(member);
-
+        member = MembersClient.getMember(liferayUser.getUserId());
         if (imageId != null && !imageId.isEmpty()) {
-
             member.setPortraitFileEntryId(Long.parseLong(imageId));
             MembersClient.updateMember(member);
         } else {

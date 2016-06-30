@@ -147,7 +147,10 @@ public class FacebookController {
 
                 String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
-                    ImageUploadUtils.updateProfilePicture(liferayUser, realPictureURLString);
+                    String path = httpReq.getSession().getServletContext().getRealPath("/");
+                    ImageUploadUtils.updateProfilePicture(path,liferayUser, realPictureURLString);
+
+
                 }
 
                 LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
@@ -169,7 +172,8 @@ public class FacebookController {
 
                 String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
-                    ImageUploadUtils.updateProfilePicture(liferayUser, realPictureURLString);
+                    String path = httpReq.getSession().getServletContext().getRealPath("/");
+                    ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
                 }
 
                 updateUserAccountInformation(liferayUser, jsonObject);
@@ -212,7 +216,8 @@ public class FacebookController {
         if (facebookId > 0) {
             String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
             if (realPictureURLString != null) {
-                long imageId = ImageUploadUtils.linkProfilePicture(
+                String path = httpReq.getSession().getServletContext().getRealPath("/");
+                long imageId = ImageUploadUtils.linkProfilePicture(path,
                         FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL));
                 portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId),
                         PortletSession.APPLICATION_SCOPE);

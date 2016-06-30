@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.beans.SortFilterPage;
@@ -76,6 +77,8 @@ public class ContestProposalsController extends BaseProposalsController {
         }
 
         model.addAttribute("sortFilterPage", sortFilterPage);
+        model.addAttribute("showCountdown",
+                ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.getBooleanValue());
         model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
         model.addAttribute("contestCompleted", proposalsContext.getContestWrapped(request).isContestCompleted(proposalsContext.getContestPhaseWrapped(request)));
 
