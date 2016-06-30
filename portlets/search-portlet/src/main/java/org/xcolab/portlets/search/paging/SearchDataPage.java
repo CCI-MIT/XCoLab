@@ -59,20 +59,7 @@ public class SearchDataPage {
             items = Collections.emptyList();
             return;
         }
-        SearchItemType[] selectedSearchItemTypes;
 
-        if (StringUtils.isEmpty(searchLocation) || "FULL_SITE".equals(searchLocation)) {
-            selectedSearchItemTypes = SearchItemType.values();
-        } else {
-            selectedSearchItemTypes = new SearchItemType[]{SearchItemType.valueOf(searchLocation)};
-        }
-        boolean separator = false;
-        for (SearchItemType type : selectedSearchItemTypes) {
-            if (separator) {
-
-            }
-            separator = true;
-        }
         String queryStr = searchPhrase.toString().trim();
         if (queryStr.isEmpty()) {
             items = Collections.emptyList();
@@ -81,8 +68,8 @@ public class SearchDataPage {
         final int endRow = page * PAGE_SIZE;
         final int startRow = endRow - PAGE_SIZE;
 
-        List<SearchPojo> searchPojoList = SearchClient.search(startRow,endRow,null,queryStr);
-        totalResults = SearchClient.searchCount(null,queryStr);
+        List<SearchPojo> searchPojoList = SearchClient.search(startRow,endRow,searchLocation,queryStr);
+        totalResults = SearchClient.searchCount(searchLocation,queryStr);
 
         items = new ArrayList<>();
         int i = 0;

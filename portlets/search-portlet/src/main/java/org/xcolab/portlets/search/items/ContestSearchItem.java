@@ -51,7 +51,7 @@ public class ContestSearchItem extends AbstractSearchItem {
 
     @Override
     public String getTitle(){
-        return highlight(contest.getContestName(),searchQuery);
+        return highlight(contest.getContestShortName(),searchQuery);
     }
 
     @Override
