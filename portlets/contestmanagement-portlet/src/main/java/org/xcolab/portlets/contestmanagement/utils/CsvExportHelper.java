@@ -20,17 +20,19 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.wrappers.BaseProposalTeamMemberWrapper;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.ResourceResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.ResourceResponse;
 
 /**
  * Created by Thomas on 3/25/2015.
@@ -65,8 +67,8 @@ public class CsvExportHelper {
         records.add(rowData);
     }
 
-    public void addProposalAndAuthorDetailsToExportData(List<Proposal> proposals, ContestPhase contestPhase)
-            throws Exception {
+    public void addProposalAndAuthorDetailsToExportData(List<Proposal> proposals,
+            ContestPhase contestPhase) {
 
         for (Proposal proposal : proposals) {
             try {
@@ -77,7 +79,6 @@ public class CsvExportHelper {
                 _log.warn("Failed to export data for csv: ", e);
             }
         }
-
     }
 
     private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase)
@@ -143,30 +144,25 @@ public class CsvExportHelper {
 
     }
 
-    public void initiateDownload(String downloadFileName, PortletRequest request, ResourceResponse response)
-            throws Exception {
+    public void initiateDownload(String downloadFileName, PortletRequest request,
+            ResourceResponse response) throws IOException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            String csvPayload = getCSVData();
-            outputStream.write(csvPayload.getBytes());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        String csvPayload = getCSVData();
+        outputStream.write(csvPayload.getBytes());
 
-            response.setContentType("application/csv");
-            response.addProperty(HttpHeaders.CACHE_CONTROL, "max-age=3600, must-revalidate");
-            response.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + downloadFileName + ".csv");
-            response.setContentLength(outputStream.size());
-            OutputStream out = response.getPortletOutputStream();
-            outputStream.writeTo(out);
-            out.flush();
-            out.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        response.setContentType("application/csv");
+        response.addProperty(HttpHeaders.CACHE_CONTROL, "max-age=3600, must-revalidate");
+        response.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + downloadFileName + ".csv");
+        response.setContentLength(outputStream.size());
+        OutputStream out = response.getPortletOutputStream();
+        outputStream.writeTo(out);
+        out.flush();
+        out.close();
     }
 
 }

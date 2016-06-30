@@ -449,9 +449,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     }
 
     @Override
-    public long getCommentsCount(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public long getCommentsCount(com.ext.portlet.model.Contest contest) {
         return _contestLocalService.getCommentsCount(contest);
     }
 
@@ -494,9 +492,7 @@ public class ContestLocalServiceWrapper implements ContestLocalService,
     * @throws SystemException in case of LR error
     */
     @Override
-    public boolean isSubscribed(long contestPK, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public boolean isSubscribed(long contestPK, long userId) {
         return _contestLocalService.isSubscribed(contestPK, userId);
     }
 

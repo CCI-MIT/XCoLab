@@ -6,10 +6,13 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
@@ -51,7 +54,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            User judge = UserLocalServiceUtil.getUser(userId);
+            Member judge = MembersClient.getMember(userId);
             Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
             ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(new ProposalWrapper(proposal, contestPhase), judge);
@@ -61,8 +64,13 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
                 throw new JspException("Can't find portlet request");
             }
             pageContext.setAttribute("judgeReviewStatus", judgeWrapper.getJudgeReviewStatus());
-        } catch (PortalException | SystemException e) {
-            e.printStackTrace();
+        } catch (PortalException e) {
+            throw new IllegalArgumentException("Could not load proposal " +proposalId
+                    + " and contest phase " + contestPhaseId);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (MemberNotFoundException e) {
+            throw new IllegalArgumentException("User does not exist: " + id);
         }
         return EVAL_BODY_INCLUDE; 
     }

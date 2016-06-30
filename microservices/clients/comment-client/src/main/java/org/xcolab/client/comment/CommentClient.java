@@ -99,7 +99,7 @@ public final class CommentClient {
         }
     }
 
-    public static Long getProposalIdForThread(long threadId) throws ThreadNotFoundException {
+    public static Long getProposalIdForThread(long threadId) {
         try {
             return threadResource.service(threadId, "getProposalIdForThread", Long.class).get();
         } catch (EntityNotFoundException e) {

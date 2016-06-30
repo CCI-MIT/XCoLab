@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -23,15 +24,17 @@ import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.TabWrapper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -96,7 +99,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
             SetRenderParameterUtil
                     .setSuccessRenderRedirectManagerTab(response, tab.getName(), newContestSchedule.getId());
 
-        } catch (SystemException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Create contest schedule failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -113,7 +116,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         try {
             ContestScheduleWrapper.deleteContestSchedule(scheduleId);
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), getFirstScheduleId());
-        } catch (SystemException | PortalException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Delete contest schedule failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -141,7 +144,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
             SetRenderParameterUtil.addActionSuccessMessageToSession(request);
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(),
                     updateContestScheduleWrapper.getScheduleId());
-        } catch (SystemException | PortalException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Update contest schedule failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -152,13 +155,17 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         return TAB_VIEW;
     }
 
-    private Long getFirstScheduleId() throws SystemException {
-        final List<ContestSchedule> contestSchedules =
-                ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE);
-        if (!contestSchedules.isEmpty()) {
-            return contestSchedules.get(0).getId();
+    private Long getFirstScheduleId() {
+        try {
+            final List<ContestSchedule> contestSchedules =
+                    ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE);
+            if (!contestSchedules.isEmpty()) {
+                return contestSchedules.get(0).getId();
+            }
+            return -1L;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-        return -1L;
     }
 
     private List<LabelValue> getContestPhaseTypesSelectionItems() {

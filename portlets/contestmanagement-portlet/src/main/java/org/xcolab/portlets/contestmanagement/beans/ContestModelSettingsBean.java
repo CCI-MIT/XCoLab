@@ -14,6 +14,7 @@ import edu.mit.cci.roma.client.comm.ClientRepository;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,9 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by Thomas on 6/16/2015.
- */
 public class ContestModelSettingsBean implements Serializable {
     private final static Log _log = LogFactoryUtil.getLog(ContestModelSettingsBean.class);
     private Long defaultModelId;
@@ -121,7 +119,7 @@ public class ContestModelSettingsBean implements Serializable {
         }
     }
 
-    public void persist(Contest contest) throws SystemException {
+    public void persist(Contest contest) {
         if (otherModels != null) {
             contest.setOtherModels(otherModels);
         }
@@ -131,7 +129,11 @@ public class ContestModelSettingsBean implements Serializable {
         if (defaultModelSettings != null) {
             contest.setDefaultModelSettings(defaultModelSettings);
         }
-        contest.persist();
+        try {
+            contest.persist();
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
     }
 
     public static List<LabelValue> getAllModelIds() {

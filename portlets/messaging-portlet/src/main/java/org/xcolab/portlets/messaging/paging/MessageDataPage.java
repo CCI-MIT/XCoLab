@@ -19,8 +19,7 @@ public class MessageDataPage {
     @SuppressWarnings("unused")
     public MessageDataPage() { }
 
-    public MessageDataPage(User user, MessageType messageType, int pageSize, int pageNumber)
-            throws PortalException, SystemException {
+    public MessageDataPage(User user, MessageType messageType, int pageSize, int pageNumber) {
         this.user = user;
 
         final int firstMessage = pageSize * (pageNumber - 1);

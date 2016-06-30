@@ -22,8 +22,7 @@ public interface MessageDao {
 
     boolean setOpened(long messageId, long memberId, boolean isOpened);
 
-    void createMessage(long messageId, long senderId, long repliesToId, String subject,
-            String content);
+    Message createMessage(Message message);
 
-    void createMessageRecipient(long messageRecipientStatusId, long messageId, long recipientId);
+    void createMessageRecipient(long messageId, long recipientId);
 }

@@ -362,9 +362,7 @@ public interface ContestLocalService extends BaseLocalService,
             com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getCommentsCount(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+    public long getCommentsCount(com.ext.portlet.model.Contest contest);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public long getProposalsCommentsCount(com.ext.portlet.model.Contest contest)
@@ -398,8 +396,7 @@ public interface ContestLocalService extends BaseLocalService,
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public boolean isSubscribed(long contestPK, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+    ;
 
     /**
     * <p>Subscribes user to contest</p>

@@ -673,8 +673,7 @@ public class ProposalRatingTypeLocalServiceClp
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges()
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges() {
         Object returnObj = null;
 
         try {
@@ -682,10 +681,6 @@ public class ProposalRatingTypeLocalServiceClp
                     _methodParameterTypes19, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
@@ -699,8 +694,7 @@ public class ProposalRatingTypeLocalServiceClp
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows()
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows() {
         Object returnObj = null;
 
         try {
@@ -708,10 +702,6 @@ public class ProposalRatingTypeLocalServiceClp
                     _methodParameterTypes20, new Object[] {  });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;

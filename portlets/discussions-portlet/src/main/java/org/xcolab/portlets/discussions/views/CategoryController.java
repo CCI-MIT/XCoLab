@@ -1,19 +1,14 @@
 package org.xcolab.portlets.discussions.views;
 
-import com.ext.portlet.model.DiscussionCategory;
-import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadSortColumn;
@@ -26,7 +21,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
-import org.xcolab.jspTags.discussion.wrappers.CategoryWrapper;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -43,15 +38,14 @@ import javax.portlet.PortletResponse;
 public class CategoryController extends BaseDiscussionController {
 
     @RenderMapping
-    public String showCategories(PortletRequest request, PortletResponse response, Model model) throws SystemException, PortalException {
+    public String showCategories(PortletRequest request, PortletResponse response, Model model) {
         return showCategories(request, response, model, ThreadSortColumn.DATE.name(), false);
     }
 
     @RenderMapping(params = "action=showCategories")
     public String showCategories(PortletRequest request, PortletResponse response, Model model,
                                  @RequestParam String sortColumn,
-                                 @RequestParam boolean sortAscending)
-            throws SystemException, PortalException {
+                                 @RequestParam boolean sortAscending) {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -82,7 +76,7 @@ public class CategoryController extends BaseDiscussionController {
     public String showCategory(PortletRequest request, PortletResponse response, Model model,
                                @RequestParam long categoryId, @RequestParam(required = false) String sortColumn,
                                @RequestParam(required = false) boolean sortAscending)
-            throws SystemException, PortalException, DiscussionAuthorizationException, CategoryNotFoundException {
+            throws DiscussionAuthorizationException, CategoryNotFoundException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -114,17 +108,18 @@ public class CategoryController extends BaseDiscussionController {
     public void sortCategory(ActionRequest request, ActionResponse response,
                              @RequestParam(required = false) Long categoryId, @RequestParam String sortColumn,
                              @RequestParam String currentSortColumn, @RequestParam boolean currentSortAscending)
-            throws SystemException, PortalException, IOException {
+            throws IOException, CategoryNotFoundException {
 
         final String baseUrl;
         if (categoryId != null && categoryId > 0) {
-            DiscussionCategory category = DiscussionCategoryLocalServiceUtil.fetchDiscussionCategory(categoryId);
-            baseUrl = new CategoryWrapper(category).getLinkUrl();
+            Category category = CommentClient.getCategory(categoryId);
+            baseUrl = category.getLinkUrl();
         } else {
             baseUrl = "/web/guest/discussion/-/discussion/categories";
         }
 
-        String sortAscendingString = !sortColumn.equalsIgnoreCase(currentSortColumn) || !currentSortAscending ? "" : "/descending";
+        String sortAscendingString = !sortColumn.equalsIgnoreCase(currentSortColumn)
+                || !currentSortAscending ? "" : "/descending";
 
         response.sendRedirect(baseUrl + "/sort/" + sortColumn + sortAscendingString);
     }
@@ -132,7 +127,7 @@ public class CategoryController extends BaseDiscussionController {
     @RenderMapping(params = "action=createCategory")
     public String createCategory(PortletRequest request, PortletResponse response, Model model,
                                @RequestParam long categoryId)
-            throws SystemException, PortalException, DiscussionAuthorizationException {
+            throws DiscussionAuthorizationException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
         checkCanEdit(request, "User does not have the necessary permissions to create a category",
@@ -144,7 +139,7 @@ public class CategoryController extends BaseDiscussionController {
     @ActionMapping(params = "action=createCategory")
     public void createCategoryAction(ActionRequest request, ActionResponse response,
                                    @RequestParam String title, @RequestParam String description)
-            throws SystemException, PortalException, IOException, DiscussionAuthorizationException, OperationNotSupportedException {
+            throws IOException, DiscussionAuthorizationException, OperationNotSupportedException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         CategoryGroup categoryGroup = getCategoryGroup(request);
@@ -160,7 +155,7 @@ public class CategoryController extends BaseDiscussionController {
 
     @ActionMapping(params = "action=subscribeCategory")
     public void subscribeCategory(ActionRequest request, ActionResponse response, @RequestParam long categoryId)
-            throws SystemException, DiscussionAuthorizationException, PortalException {
+            throws DiscussionAuthorizationException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         CategoryGroup categoryGroup = getCategoryGroup(request);
@@ -180,7 +175,7 @@ public class CategoryController extends BaseDiscussionController {
 
     @ActionMapping(params = "action=unsubscribeCategory")
     public void unsubscribeCategory(ActionRequest request, ActionResponse response, @RequestParam long categoryId)
-            throws SystemException, DiscussionAuthorizationException, PortalException {
+            throws DiscussionAuthorizationException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         CategoryGroup categoryGroup = getCategoryGroup(request);

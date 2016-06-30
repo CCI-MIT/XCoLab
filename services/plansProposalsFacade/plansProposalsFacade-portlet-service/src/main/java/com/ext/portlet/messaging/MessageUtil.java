@@ -1,6 +1,5 @@
 package com.ext.portlet.messaging;
 
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
@@ -9,17 +8,20 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.joda.time.DateTime;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageConstants;
 import org.xcolab.client.members.legacy.enums.MessageType;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.TemplateReplacementUtil;
 
@@ -93,72 +95,83 @@ public final class MessageUtil {
 
     public static void sendMessage(String subject, String content, Long fromId,
             Long replyToId, Collection<Long> recipientIds)
-            throws MailEngineException, AddressException,
-            UnsupportedEncodingException, SystemException, PortalException {
-        long nextId = CounterLocalServiceUtil.increment("com.ext.portlet.model.Message");
+            throws MailEngineException, AddressException, UnsupportedEncodingException {
         Message message = new Message();
-        message.setMessageId(nextId);
         message.setSubject(StringEscapeUtils.unescapeXml(subject));
         message.setContent(content.replaceAll("\n", ""));
         message.setFromId(fromId);
         message.setCreateDate(new Timestamp(DateTime.now().getMillis()));
         message.setRepliesTo(replyToId);
-        MessagingClient.createMessage(message);
-        for (long user : recipientIds) {
-            createRecipient(nextId, user);
-            if (getMessagingPreferences(user).getEmailOnReceipt()) {
-                copyRecipient(user, message);
+        message = MessagingClient.createMessage(message);
+        for (long memberId : recipientIds) {
+            try {
+                Member recipient = MembersClient.getMember(memberId);
+                MessagingClient.createRecipient(message.getMessageId(), memberId);
+                if (getMessagingPreferences(memberId).getEmailOnReceipt()) {
+                    copyRecipient(recipient, message);
+                }
+            } catch (MemberNotFoundException e) {
+                _log.error("Member " + memberId + ", recipient of message "
+                        + message.getMessageId() + ", does not exist");
             }
         }
     }
 
-    private static void createRecipient(long messageId, long recipientId) throws SystemException {
-        long nextId = CounterLocalServiceUtil.increment("com.ext.portlet.model.MessageRecipientStatus");
-        MessagingClient.createRecipient(messageId, nextId, recipientId);
-    }
+    public static MessagingUserPreferences getMessagingPreferences(long userId) {
+        //TODO: port to service!
+        try {
+            MessagingUserPreferences prefs = MessagingUserPreferencesLocalServiceUtil
+                    .findByUser(userId);
+            if (prefs == null) {
+                long nextId = CounterLocalServiceUtil
+                        .increment(MessagingUserPreferencesLocalServiceUtil.class.getName());
+                prefs = MessagingUserPreferencesLocalServiceUtil
+                        .createMessagingUserPreferences(nextId);
+                prefs.setEmailOnReceipt(true);
+                prefs.setEmailOnSend(false);
+                prefs.setUserId(userId);
+                prefs.setEmailOnActivity(true);
+                prefs.setEmailActivityDailyDigest(true);
+                MessagingUserPreferencesLocalServiceUtil.addMessagingUserPreferences(prefs);
+            }
 
-    public static MessagingUserPreferences getMessagingPreferences(long userId) throws SystemException {
-        MessagingUserPreferences prefs = MessagingUserPreferencesLocalServiceUtil.findByUser(userId);
-        if (prefs == null) {
-            long nextId = CounterLocalServiceUtil.increment(MessagingUserPreferencesLocalServiceUtil.class.getName());
-            prefs = MessagingUserPreferencesLocalServiceUtil.createMessagingUserPreferences(nextId);
-            prefs.setEmailOnReceipt(true);
-            prefs.setEmailOnSend(false);
-            prefs.setUserId(userId);
-            prefs.setEmailOnActivity(true);
-            prefs.setEmailActivityDailyDigest(true);
-            MessagingUserPreferencesLocalServiceUtil.addMessagingUserPreferences(prefs);
+            return prefs;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-
-        return prefs;
     }
 
-    private static void copyRecipient(Long userId, Message m)
-            throws SystemException, PortalException, AddressException, MailEngineException,
-            UnsupportedEncodingException {
-        User from = UserLocalServiceUtil.getUser(m.getFromId());
-        User to = UserLocalServiceUtil.getUser(userId);
-        String subject = m.getSubject();
-        if (subject.length() < 3) {
-            subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(
-                    MessageConstants.EMAIL_MESSAGE_VAR_USER, from.getScreenName());
-            subject = TemplateReplacementUtil.replacePlatformConstants(subject);
+    private static void copyRecipient(Member recipient, Message m)
+            throws AddressException, MailEngineException, UnsupportedEncodingException {
+        try {
+            Member from = MembersClient.getMember(m.getFromId());
+            String subject = m.getSubject();
+            if (subject.length() < 3) {
+                subject = MessageConstants.EMAIL_MESSAGE_SUBJECT.replace(
+                        MessageConstants.EMAIL_MESSAGE_VAR_USER, from.getScreenName());
+                subject = TemplateReplacementUtil.replacePlatformConstants(subject);
+            }
+            String message = TemplateReplacementUtil.replacePlatformConstants(
+                    MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(
+                            MessageConstants.EMAIL_MESSAGE_VAR_USER, from.getScreenName())
+                            .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL, createMessageURL(m))
+                            .replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT, m.getSubject())
+                            .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,
+                                    m.getContent()));
+
+            InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
+            InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress());
+            EmailClient
+                    .sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject, message, true,
+                            fromEmail.getAddress());
+        } catch (MemberNotFoundException e) {
+            //should never happen
+            throw new IllegalArgumentException("Sender " + m.getFromId()
+                    + " of message " + m.getMessageId() + " does not exist");
         }
-        String message = TemplateReplacementUtil.replacePlatformConstants(
-                MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(
-                        MessageConstants.EMAIL_MESSAGE_VAR_USER, from.getScreenName())
-                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL, createMessageURL(m))
-                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT, m.getSubject())
-                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,
-                                m.getContent()));
-
-        InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
-        InternetAddress toEmail = new InternetAddress(to.getEmailAddress());
-        EmailClient.sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject, message, true, fromEmail.getAddress());
     }
 
-    private static String createMessageURL(Message m)
-            throws SystemException, NoSuchConfigurationAttributeException {
+    private static String createMessageURL(Message m) {
         String home = ConfigurationAttributeKey.COLAB_URL.getStringValue();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
     }

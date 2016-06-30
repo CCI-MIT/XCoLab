@@ -1,10 +1,10 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import com.ext.portlet.model.Contest;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -45,7 +45,7 @@ public class ContestAdminBean implements Serializable {
         }
     }
 
-    public void persist(Contest contest) throws SystemException, UnsupportedEncodingException, PortalException {
+    public void persist(Contest contest) throws UnsupportedEncodingException {
 
         updateContest(contest);
         WikiPageWrapper.updateContestWiki(contest);
@@ -111,14 +111,18 @@ public class ContestAdminBean implements Serializable {
         this.hideRibbons = hideRibbons;
     }
 
-    private void updateContest(Contest contest) throws SystemException, PortalException {
+    private void updateContest(Contest contest) {
         contest.setContestUrlName(contestUrlName);
         contest.setContestYear(contestYear);
         contest.setEmailTemplateUrl(emailTemplateUrl);
         contest.setContestTier(contestTier);
         contest.setContestTypeId(contestType);
         contest.setHideRibbons(hideRibbons);
-        contest.persist();
+        try {
+            contest.persist();
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
         contestModelSettings.persist(contest);
     }
 

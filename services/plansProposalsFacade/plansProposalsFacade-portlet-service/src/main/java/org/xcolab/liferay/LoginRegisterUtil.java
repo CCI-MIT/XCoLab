@@ -76,15 +76,15 @@ public final class LoginRegisterUtil {
             member.setPortraitFileEntryId(Long.parseLong(imageId));
             MembersClient.updateMember(member);
         } else {
-            member.setPortraitFileEntryId(0l);
+            member.setPortraitFileEntryId(0L);
             MembersClient.updateMember(member);
         }
-        sendEmailNotificationToRegisteredUser(liferayServiceContext, liferayUser);
+        sendEmailNotificationToRegisteredUser(liferayServiceContext, member);
 
         return MembersClient.getMember(liferayUser.getUserId());
     }
 
-    private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext, User recipient)
+    private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext, Member recipient)
             throws PortalException, SystemException {
         new MemberRegistrationNotification(recipient, serviceContext).sendEmailNotification();
     }
@@ -101,6 +101,7 @@ public final class LoginRegisterUtil {
             return null;
         }
         final String screenName = getScreenNameFromLogin(login);
+        //TODO: liferay  throws a raw exception here
         AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
         User user = UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
         LoginLogLocalServiceUtil.createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);

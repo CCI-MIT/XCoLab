@@ -1,18 +1,16 @@
 package org.xcolab.portlets.contenteditor.views;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
@@ -47,7 +45,7 @@ public class ContentEditorController {
     @ResourceMapping("contentEditorListFolder")
     public void contentEditorListFolder(ResourceRequest request, ResourceResponse response,
                                         @RequestParam(required = false) String node)
-            throws IOException, SystemException, PortalException {
+            throws IOException {
 
         JSONArray responseArray = JSONFactoryUtil.createJSONArray();
         Long folderId = 1L;
@@ -75,7 +73,7 @@ public class ContentEditorController {
     @ResourceMapping("contentEditorGetLatestArticleVersion")
     public void contentEditorGetLatestArticleVersion(ResourceRequest request, ResourceResponse response,
                                                      @RequestParam(required = false) Long articleId)
-            throws IOException, SystemException, PortalException, ContentNotFoundException {
+            throws IOException, ContentNotFoundException {
         JSONObject articleVersion = JSONFactoryUtil.createJSONObject();
 
         ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
@@ -108,7 +106,7 @@ public class ContentEditorController {
     public void moveArticleVersion(ResourceRequest request, ResourceResponse response,
                                    @RequestParam(required = false) Long articleId,
                                    @RequestParam(required = false) Long folderId)
-            throws IOException, SystemException, PortalException, ContentNotFoundException {
+            throws IOException, ContentNotFoundException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         Long userId = themeDisplay.getUser().getUserId();
 
@@ -132,8 +130,7 @@ public class ContentEditorController {
                                           @RequestParam(required = false) String title,
                                           @RequestParam(required = false) Long folderId,
                                           @RequestParam(required = false) String content
-    )
-            throws IOException, SystemException, PortalException {
+    ) throws IOException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         Long userId = themeDisplay.getUser().getUserId();

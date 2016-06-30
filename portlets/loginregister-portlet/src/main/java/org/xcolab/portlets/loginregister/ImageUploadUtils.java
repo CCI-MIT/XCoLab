@@ -9,14 +9,17 @@ import com.liferay.portal.model.Image;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.FileUploadUtil;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+
+import javax.imageio.ImageIO;
 
 public class ImageUploadUtils {
 
@@ -24,7 +27,7 @@ public class ImageUploadUtils {
     public static final int IMAGE_RESIZE_HEIGHT = 300;
     private static final Log _log = LogFactoryUtil.getLog(ImageUploadUtils.class);
 
-    public static long uploadImage(URL url) throws SystemException {
+    public static long uploadImage(URL url) {
         try {
             BufferedImage image = ImageIO.read(url);
             byte[] imgBArr = FileUploadUtil.resizeAndCropImage(image, IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT);
@@ -38,20 +41,26 @@ public class ImageUploadUtils {
             return imageId;
         } catch (IOException | PortalException e) {
             _log.error("Could not upload picture " + url.toString(), e);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
 
         return 0L;
     }
 
-    public static void updateProfilePicture(User user, String picURL) throws SystemException {
-        // Link picture if it is not yet set
-        if (user.getPortraitId() == 0) {
-            user.setPortraitId(linkProfilePicture(picURL));
-            UserLocalServiceUtil.updateUser(user);
+    public static void updateProfilePicture(User user, String picURL) {
+        try {
+            // Link picture if it is not yet set
+            if (user.getPortraitId() == 0) {
+                user.setPortraitId(linkProfilePicture(picURL));
+                UserLocalServiceUtil.updateUser(user);
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 
-    public static long linkProfilePicture(String picUrl) throws SystemException {
+    public static long linkProfilePicture(String picUrl) {
         try {
             URL url = new URL(picUrl);
             return ImageUploadUtils.uploadImage(url);

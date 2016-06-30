@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
 import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -96,7 +97,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
                 return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
-            } catch (PortalException | SystemException ignored) { }
+            } catch (SystemException ignored) { }
         }
         return comment.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
     }
@@ -124,7 +125,8 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal,contestPhase);
             ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
 
-            isJudge = proposalWrapper.isUserAmongSelectedJudge(user);
+            isJudge = proposalWrapper.isUserAmongSelectedJudge(
+                    MembersClient.getMemberUnchecked(user.getUserId()));
             isFellow = proposalWrapper.isUserAmongFellows(user);
             isAdvisor = contestWrapper.isUserAmongAdvisors(user);
         } catch (SystemException | PortalException e) {

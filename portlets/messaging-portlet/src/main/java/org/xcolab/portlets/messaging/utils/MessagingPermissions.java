@@ -19,15 +19,13 @@ public class MessagingPermissions {
     private MessageBean message;
     private Boolean isRecipient;
 
-    public MessagingPermissions(PortletRequest request)
-            throws PortalException, SystemException {
+    public MessagingPermissions(PortletRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         user = themeDisplay.getUser();
     }
 
-    public MessagingPermissions(PortletRequest request, MessageBean message)
-            throws PortalException, SystemException {
+    public MessagingPermissions(PortletRequest request, MessageBean message) {
         this(request);
         this.message = message;
     }
@@ -40,7 +38,7 @@ public class MessagingPermissions {
         }
     }
 
-    public boolean getCanViewMessage() throws SystemException, PortalException {
+    public boolean getCanViewMessage() {
         return message.getFrom().getUserId() == user.getUserId()
                 || isRecipient();
     }
@@ -55,7 +53,7 @@ public class MessagingPermissions {
             }
             isRecipient = false;
         }
-        return isRecipient.booleanValue();
+        return isRecipient;
     }
 
     /**

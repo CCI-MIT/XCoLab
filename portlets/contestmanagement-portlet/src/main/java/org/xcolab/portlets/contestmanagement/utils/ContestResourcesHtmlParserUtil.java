@@ -1,13 +1,13 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import com.ext.portlet.model.ContestType;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
+
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.utils.TemplateReplacementUtil;
 
@@ -28,7 +28,7 @@ public class ContestResourcesHtmlParserUtil {
         this.contestType = contestType;
     }
 
-    public void setBaseSectionTitles(String[] baseSectionTitles) throws SystemException {
+    public void setBaseSectionTitles(String[] baseSectionTitles) {
         createSections(baseSectionTitles);
     }
 
@@ -60,12 +60,12 @@ public class ContestResourcesHtmlParserUtil {
         return additionalSections;
     }
 
-    private void createSections(String[] baseSectionTitles) throws SystemException {
+    private void createSections(String[] baseSectionTitles) {
         createBaseSections(baseSectionTitles);
         additionalSections = new LinkedHashMap<>();
     }
 
-    private void createBaseSections(String[] baseSectionTitles) throws SystemException {
+    private void createBaseSections(String[] baseSectionTitles) {
         baseSections = new LinkedHashMap<>();
         for (String baseSectionTitle : baseSectionTitles) {
             baseSections.put(TemplateReplacementUtil.replaceContestTypeStrings(baseSectionTitle, contestType), "");

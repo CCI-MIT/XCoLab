@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -13,24 +12,12 @@ import org.xcolab.interfaces.TabPermissions;
 
 import javax.portlet.PortletRequest;
 
-/**
- * Created by Thomas on 2/9/2015.
- */
 public class ContestManagementPermissions implements TabPermissions {
-
-    private final String portletId;
-    private final String primKey;
     private final User user;
-    private final long scopeGroupId;
     private final boolean isUserNotLoggedIn;
 
-    public ContestManagementPermissions(PortletRequest request) throws PortalException, SystemException {
-
+    public ContestManagementPermissions(PortletRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-        portletId = (String) request.getAttribute(WebKeys.PORTLET_ID);
-        primKey = themeDisplay.getPortletDisplay().getResourcePK();
-        scopeGroupId = themeDisplay.getScopeGroupId();
         user = themeDisplay.getUser();
         isUserNotLoggedIn = user.isDefaultUser();
     }
@@ -71,13 +58,11 @@ public class ContestManagementPermissions implements TabPermissions {
     public boolean getCanEdit() {
         // TODO check who needs this
         return !isUserNotLoggedIn && !user.isDefaultUser();
-
     }
 
     @Override
     public boolean getCanDelete() {
         return !isUserNotLoggedIn && !user.isDefaultUser();
-
     }
 
     @Override
@@ -89,5 +74,4 @@ public class ContestManagementPermissions implements TabPermissions {
     public boolean getCanAdminAll() {
         return PermissionsClient.canAdminAll(user.getUserId());
     }
-
 }

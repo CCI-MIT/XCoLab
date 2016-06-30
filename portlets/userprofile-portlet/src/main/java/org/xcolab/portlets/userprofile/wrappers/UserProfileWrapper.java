@@ -1,7 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestType;
@@ -37,6 +36,8 @@ import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.EntityGroupingUtil;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
@@ -86,11 +87,16 @@ public class UserProfileWrapper implements Serializable {
     private final ThemeDisplay themeDisplay;
 
     public UserProfileWrapper(long userId, PortletRequest request)
-            throws PortalException, SystemException, MemberNotFoundException {
+            throws MemberNotFoundException {
         themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         user = MembersClient.getMember(userId);
         if (user.isActive()) {
-            User loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
+            User loggedInUser = null;
+            try {
+                loggedInUser = com.liferay.portal.util.PortalUtil.getUser(request);
+            } catch (PortalException | SystemException e) {
+                throw new InternalException(e);
+            }
             if (loggedInUser != null) {
                 Member logUser = MembersClient.getMember(loggedInUser.getUserId());
                 messagePermissionChecker = new SendMessagePermissionChecker(logUser);
@@ -102,57 +108,65 @@ public class UserProfileWrapper implements Serializable {
         }
     }
 
-    private void init(Member user) throws PortalException, SystemException {
-        this.user = user;
-
-        userBean = new UserBean(user);
-        realName = getName(user.getFullName(), user.getScreenName());
-
-        String firstPart = realName.substring(0, realName.length() / 2).trim();
-        String secondPart = realName.substring(realName.length() / 2).trim();
-
-        if (firstPart.equals(secondPart)) {
-            realName = user.getFirstName();
-        }
-
-        attendsConference = ExpandoValueLocalServiceUtil
-                .getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO,
-                        CommunityConstants.CONFERENCE2014, user.getId_(), "").equals("1");
-        badges = new BadgeBean(user.getId_());
-
+    private void init(Member user) {
         try {
-            role = MemberRole.getHighestRole(user.getRoles());
-        } catch (MemberRole.NoSuchMemberRoleException ignored) {
-        }
+            this.user = user;
 
-        userSubscriptions = new UserSubscriptionsWrapper(user);
-        supportedProposals.clear();
-        userActivities.clear();
-        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil.getProposals(user.getId_())) {
-            supportedProposals.add(new SupportedProposalWrapper(ps));
-        }
+            userBean = new UserBean(user);
+            realName = getName(user.getFullName(), user.getScreenName());
 
-        for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient.getActivityEntries(0, MAX_ACTIVITIES_COUNT, user.getId_(), null))) {
+            String firstPart = realName.substring(0, realName.length() / 2).trim();
+            String secondPart = realName.substring(realName.length() / 2).trim();
 
-            UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
-            if (a.getBody() != null && !a.getBody().equals("")) {
-                userActivities.add(a);
+            if (firstPart.equals(secondPart)) {
+                realName = user.getFirstName();
             }
-        }
 
-        List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getId_());
-        Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil.groupByContestType(proposals);
-        for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
-            contestTypeProposalWrappersByContestTypeId
-                    .put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
-            final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
-            for (Proposal p : proposalsInContestType) {
-                try {
-                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals()
-                            .add(new BaseProposalWrapper(p));
-                } catch (NoSuchContestException ignored) {
+            attendsConference = ExpandoValueLocalServiceUtil
+                    .getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO,
+                            CommunityConstants.CONFERENCE2014, user.getId_(), "").equals("1");
+            badges = new BadgeBean(user.getId_());
+
+            try {
+                role = MemberRole.getHighestRole(user.getRoles());
+            } catch (MemberRole.NoSuchMemberRoleException ignored) {
+            }
+
+            userSubscriptions = new UserSubscriptionsWrapper(user);
+            supportedProposals.clear();
+            userActivities.clear();
+            for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil
+                    .getProposals(user.getId_())) {
+                supportedProposals.add(new SupportedProposalWrapper(ps));
+            }
+
+            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient
+                    .getActivityEntries(0, MAX_ACTIVITIES_COUNT, user.getId_(), null))) {
+
+                UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
+                if (a.getBody() != null && !a.getBody().equals("")) {
+                    userActivities.add(a);
                 }
             }
+
+            List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getId_());
+            Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil
+                    .groupByContestType(proposals);
+            for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
+                contestTypeProposalWrappersByContestTypeId
+                        .put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
+                final List<Proposal> proposalsInContestType = proposalsByContestType
+                        .get(contestType);
+                for (Proposal p : proposalsInContestType) {
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
+                            .getProposals()
+                            .add(new BaseProposalWrapper(p));
+                }
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new InternalException(e);
         }
     }
 
@@ -283,14 +297,12 @@ public class UserProfileWrapper implements Serializable {
         return themeDisplay;
     }
 
-    public boolean getCanSeeSendMessageButton() throws SystemException, MemberRole.NoSuchMemberRoleException {
-        if (messagePermissionChecker != null) {
-            return messagePermissionChecker.canSendToUser(this.user);
-        }
-        return true;
+    public boolean getCanSeeSendMessageButton() throws MemberRole.NoSuchMemberRoleException {
+        return messagePermissionChecker == null || messagePermissionChecker
+                .canSendToUser(this.user);
     }
 
-    public List<MessageBean> getMessages() throws SystemException, PortalException {
+    public List<MessageBean> getMessages() {
         if (messages == null) {
             messages = new ArrayList<>();
             for (Message msg : MessageUtil.getMessages(this.user.getId_(), 0, 2, MessageType.INBOX)) {
@@ -300,10 +312,11 @@ public class UserProfileWrapper implements Serializable {
         return messages;
     }
 
-    public List<UserActivityWrapper> getSubscribedActivities() throws SystemException, PortalException {
+    public List<UserActivityWrapper> getSubscribedActivities() {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
-            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient.getActivityEntries(0,100, this.user.getId_(), null))) {
+            for (ActivityEntry activity : ActivityUtil.groupActivities(
+                    ActivitiesClient.getActivityEntries(0, 100, this.user.getId_(), null))) {
 
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }

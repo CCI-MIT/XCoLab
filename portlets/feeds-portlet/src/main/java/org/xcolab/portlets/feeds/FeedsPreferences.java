@@ -1,13 +1,19 @@
 package org.xcolab.portlets.feeds;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.io.IOException;
+import java.io.Serializable;
+
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
-import java.io.IOException;
-import java.io.Serializable;
 
 public class FeedsPreferences implements Serializable {
+
+    private static final Log _log = LogFactoryUtil.getLog(FeedsPreferences.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,15 +59,17 @@ public class FeedsPreferences implements Serializable {
             feedSize = Integer.parseInt(prefs.getValue(FEED_SIZE_PREF, String.valueOf(defaultFeedSize)));
         }
         catch (NumberFormatException e) {
-            // ignore
+            _log.warn("Could not parse feedSize: "
+                    + prefs.getValue(FEED_SIZE_PREF, String.valueOf(defaultFeedSize)));
         }
         
         feedType = defaultFeedType;
         try {
             feedType = FeedType.valueOf(prefs.getValue(FEED_TYPE_PREF, defaultFeedType.name()));
         }
-        catch (Exception e) {
-            // ignore
+        catch (IllegalArgumentException e) {
+            _log.warn("Could not parse feedType: "
+                    + prefs.getValue(FEED_TYPE_PREF, defaultFeedType.name()));
         }
         
         feedTitle = prefs.getValue(FEED_TITLE_PREF, defaultFeedTitle);
@@ -74,12 +82,7 @@ public class FeedsPreferences implements Serializable {
             feedStyle = defaultStyle;
         }
 
-		try {
-			portletTitle = prefs.getValue(PORTLET_TITLE, defaultPortletTitle);
-		}
-		catch (Exception e) {
-			// ignore
-		}
+        portletTitle = prefs.getValue(PORTLET_TITLE, defaultPortletTitle);
 
         removeAdmin = Boolean.parseBoolean(prefs.getValue(FEED_REMOVE_ADMIN,String.valueOf(defaultRemoveAdmin)));
 		seeMoreLinkShown = Boolean.parseBoolean(prefs.getValue(FEED_SEE_MORE_LINK_SHOWN,String.valueOf(defaultSeeMoreShown)));

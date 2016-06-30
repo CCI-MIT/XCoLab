@@ -627,12 +627,8 @@ public class ProposalLocalServiceUtil {
     *
     * @param proposalId proposal id
     * @return number of comments
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
     */
-    public static long getCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public static long getCommentsCount(long proposalId) {
         return getService().getCommentsCount(proposalId);
     }
 
@@ -641,12 +637,8 @@ public class ProposalLocalServiceUtil {
     *
     * @param proposalId proposal id
     * @return number of comments
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
     */
-    public static long getFellowReviewCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public static long getFellowReviewCommentsCount(long proposalId) {
         return getService().getFellowReviewCommentsCount(proposalId);
     }
 

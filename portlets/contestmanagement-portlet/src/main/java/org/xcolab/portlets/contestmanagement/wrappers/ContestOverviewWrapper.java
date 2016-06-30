@@ -2,22 +2,24 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
+
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrappers.BaseContestWrapper;
 
-import javax.portlet.PortletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.portlet.PortletRequest;
 
 /**
  * Created by Thomas on 3/3/2015.
@@ -33,12 +35,12 @@ public class ContestOverviewWrapper {
     private ContestFlagTextToolTipBean contestFlagTextToolTipBean;
     private ContestModelSettingsBean contestModelSettingsBean;
 
-    public ContestOverviewWrapper() throws SystemException {
+    public ContestOverviewWrapper() {
         initLists();
         populateContestWrappersAndSelectedContestList();
     }
 
-    public ContestOverviewWrapper(PortletRequest request) throws SystemException, PortalException {
+    public ContestOverviewWrapper(PortletRequest request) {
         initLists();
         populateContestWrappersAndSelectedContestList();
         populateSubscribedToContestList(PortalUtil.getUserId(request));
@@ -53,7 +55,7 @@ public class ContestOverviewWrapper {
         massMessageBean = new MassMessageBean();
     }
 
-    private void populateSubscribedToContestList(Long userId) throws SystemException, PortalException {
+    private void populateSubscribedToContestList(Long userId) {
 
         for (BaseContestWrapper contestWrapper : contestWrappers) {
             Boolean isUserSubscribedToContest =
@@ -62,11 +64,15 @@ public class ContestOverviewWrapper {
         }
     }
 
-    private void populateContestWrappersAndSelectedContestList() throws SystemException {
-        List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
-        for (Contest contest : contests) {
-            contestWrappers.add(new BaseContestWrapper(contest));
-            selectedContest.add(false);
+    private void populateContestWrappersAndSelectedContestList() {
+        try {
+            List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
+            for (Contest contest : contests) {
+                contestWrappers.add(new BaseContestWrapper(contest));
+                selectedContest.add(false);
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 
@@ -134,11 +140,15 @@ public class ContestOverviewWrapper {
         return ContestModelSettingsBean.getAllModelIds();
     }
 
-    public void persistOrder() throws SystemException, PortalException {
-        for (BaseContestWrapper contestWrapper : contestWrappers) {
-            Contest contest = ContestLocalServiceUtil.getContest(contestWrapper.getContestPK());
-            contest.setWeight(contestWrapper.getWeight());
-            contest.persist();
+    public void persistOrder() {
+        try {
+            for (BaseContestWrapper contestWrapper : contestWrappers) {
+                Contest contest = contestWrapper.getWrapped();
+                contest.setWeight(contestWrapper.getWeight());
+                contest.persist();
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 
@@ -147,8 +157,7 @@ public class ContestOverviewWrapper {
     }
 
     public void executeMassAction(PortletRequest request, Object response)
-            throws PortalException, SystemException, IllegalArgumentException, InvocationTargetException,
-            IllegalAccessException {
+            throws InvocationTargetException, IllegalAccessException {
         boolean isOrderMassAction = selectedMassAction == ContestMassActions.ORDER.ordinal();
         if (isOrderMassAction) {
             persistOrder();
@@ -187,34 +196,38 @@ public class ContestOverviewWrapper {
     }
 
     private void invokeMassActionReportMethod(Method massActionMethod, PortletRequest request, Object response)
-            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+            throws InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, response, request);
     }
 
     private void invokeMassActionMessageMethod(Method massActionMethod, PortletRequest request)
-            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+            throws InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, massMessageBean, request);
     }
 
     private void invokeSetFlagTextToolTipMethod(Method massActionMethod, PortletRequest request)
-            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+            throws InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, contestFlagTextToolTipBean, request);
     }
 
     void invokeSetModelSettingsMethod(Method massActionMethod, PortletRequest request)
-            throws IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+            throws InvocationTargetException, IllegalAccessException {
         massActionMethod.invoke(null, selectedContestIds, contestModelSettingsBean, request);
     }
 
     private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request)
-            throws SystemException, IllegalArgumentException, InvocationTargetException, IllegalAccessException {
-        Boolean executeSetAction = (selectedMassAction > 0);
-        for (BaseContestWrapper contestWrapper : contestWrappers) {
-            int index = contestWrappers.indexOf(contestWrapper);
-            if (selectedContest.get(index)) {
-                massActionMethod.invoke(contestWrapper, executeSetAction);
-                contestWrapper.persist();
+            throws InvocationTargetException, IllegalAccessException {
+        try {
+            Boolean executeSetAction = (selectedMassAction > 0);
+            for (BaseContestWrapper contestWrapper : contestWrappers) {
+                int index = contestWrappers.indexOf(contestWrapper);
+                if (selectedContest.get(index)) {
+                    massActionMethod.invoke(contestWrapper, executeSetAction);
+                    contestWrapper.persist();
+                }
             }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 

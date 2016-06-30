@@ -1753,9 +1753,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
-    public long getCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public long getCommentsCount(long proposalId) {
         Object returnObj = null;
 
         try {
@@ -1763,14 +1761,6 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     _methodParameterTypes42, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
@@ -1784,9 +1774,7 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
     }
 
     @Override
-    public long getFellowReviewCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public long getFellowReviewCommentsCount(long proposalId) {
         Object returnObj = null;
 
         try {
@@ -1794,14 +1782,6 @@ public class ProposalLocalServiceClp implements ProposalLocalService {
                     _methodParameterTypes43, new Object[] { proposalId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;

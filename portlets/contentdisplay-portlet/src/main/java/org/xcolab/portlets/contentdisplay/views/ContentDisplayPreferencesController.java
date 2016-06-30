@@ -1,11 +1,10 @@
 package org.xcolab.portlets.contentdisplay.views;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.portlets.contentdisplay.util.ContentDisplayPreferences;
@@ -27,8 +26,7 @@ public class ContentDisplayPreferencesController {
     private static final long CONTENT_FOLDER_ID = 2L;
 
     @RequestMapping
-    public String showPreferences(RenderRequest request, RenderResponse response, Model model)
-            throws SystemException, PortalException {
+    public String showPreferences(RenderRequest request, RenderResponse response, Model model) {
         model.addAttribute("preferences", new ContentDisplayPreferences(request));
 
         final List<ContentArticle> contentArticles = ContentsClient

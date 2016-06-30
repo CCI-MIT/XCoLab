@@ -1,7 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.SubscriptionType;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
@@ -21,7 +20,7 @@ public class UserSubscriptionsWrapper implements Serializable {
     public UserSubscriptionsWrapper() {
     }
 
-    public UserSubscriptionsWrapper(Member user) throws SystemException {
+    public UserSubscriptionsWrapper(Member user) {
         this.user = user;
         getSubscriptions();
     }
@@ -31,13 +30,14 @@ public class UserSubscriptionsWrapper implements Serializable {
 
                 subscriptions = new ArrayList<>();
 
-                for (ActivitySubscription subscription : ActivitiesClient.getActivitySubscription(null, null , user.getId_())) {
+                for (ActivitySubscription subscription : ActivitiesClient
+                        .getActivitySubscription(null, null , user.getId_())) {
 
-                    if (typeFilter == null || typeFilter == SubscriptionType.getSubscriptionType(subscription)) {
+                    if (typeFilter == null
+                            || typeFilter == SubscriptionType.getSubscriptionType(subscription)) {
                         subscriptions.add(new ActivitySubscriptionWrapper(subscription));
                     }
                 }
-
         }
         return subscriptions;
     }

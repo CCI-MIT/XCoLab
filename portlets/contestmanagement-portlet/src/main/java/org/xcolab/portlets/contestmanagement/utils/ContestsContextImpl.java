@@ -13,6 +13,8 @@ import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Component;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabPermissions;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
@@ -32,22 +34,22 @@ public class ContestsContextImpl implements TabContext {
     }
 
     @Override
-    public Contest getContest(PortletRequest request) throws PortalException, SystemException {
+    public Contest getContest(PortletRequest request) {
         return getAttribute(request, CONTEST_ATTRIBUTE, Contest.class);
     }
 
     @Override
-    public BaseContestWrapper getContestWrapped(PortletRequest request) throws PortalException, SystemException {
+    public BaseContestWrapper getContestWrapped(PortletRequest request) {
         return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE, BaseContestWrapper.class);
     }
 
     @Override
-    public TabPermissions getPermissions(PortletRequest request) throws PortalException, SystemException {
+    public TabPermissions getPermissions(PortletRequest request) {
         return getAttribute(request, PERMISSIONS_ATTRIBUTE, TabPermissions.class);
     }
 
     @Override
-    public User getUser(PortletRequest request) throws PortalException, SystemException {
+    public User getUser(PortletRequest request) {
         return getAttribute(request, USER_ATTRIBUTE, User.class);
     }
 
@@ -56,8 +58,7 @@ public class ContestsContextImpl implements TabContext {
         request.removeAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
     }
 
-    private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz)
-            throws PortalException, SystemException {
+    private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz) {
         Object contextInitialized = request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
             init(request);
@@ -65,30 +66,31 @@ public class ContestsContextImpl implements TabContext {
         return (T) request.getAttribute(attributeName);
     }
 
-    private void init(PortletRequest request) throws PortalException, SystemException {
-
-        try {
-            final Boolean mangerView = ParamUtil.getBoolean(request, CONTEST_MANAGEMENT_PARAM);
-            if (mangerView) {
-                request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
-            } else {
-                final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
-                Contest contest = ContestLocalServiceUtil.getContest(contestId);
-
-                if (contest != null) {
-                    request.setAttribute(CONTEST_ATTRIBUTE, contest);
-                    request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new BaseContestWrapper(contest));
-                    request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestPermissions(request, contest));
-                }
+    private void init(PortletRequest request) {
+        final Boolean mangerView = ParamUtil.getBoolean(request, CONTEST_MANAGEMENT_PARAM);
+        if (mangerView) {
+            request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
+        } else {
+            final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
+            Contest contest;
+            try {
+                contest = ContestLocalServiceUtil.getContest(contestId);
+            } catch (PortalException e) {
+                throw new InternalException(e);
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
             }
 
-            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-            request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
-            request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
-
-        } catch (Exception e) {
-            request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, false);
+            if (contest != null) {
+                request.setAttribute(CONTEST_ATTRIBUTE, contest);
+                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new BaseContestWrapper(contest));
+                request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestPermissions(request, contest));
+            }
         }
+
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
+        request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
     }
 
     private final static Log _log = LogFactoryUtil.getLog(ContestsContextImpl.class);

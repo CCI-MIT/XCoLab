@@ -3,6 +3,7 @@ package org.xcolab.portlets.proposals.permissions;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
+import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
@@ -19,6 +20,8 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.enums.MemberRoleChoiceAlgorithm;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.util.Date;
 
@@ -26,9 +29,7 @@ import javax.portlet.PortletRequest;
 
 public class ProposalsPermissions {
 
-    private final String portletId;
     private final long groupId;
-    private final String primKey;
 
     private final boolean planIsEditable;
 
@@ -37,20 +38,24 @@ public class ProposalsPermissions {
     private final Proposal proposal;
     private final ContestPhase contestPhase;
     private final ContestStatus contestStatus;
-    private final long scopeGroupId;
 
-    public ProposalsPermissions(PortletRequest request, Proposal proposal, ContestPhase contestPhase)
-            throws PortalException, SystemException {
+    public ProposalsPermissions(PortletRequest request, Proposal proposal, ContestPhase contestPhase) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-        portletId = (String) request.getAttribute(WebKeys.PORTLET_ID);
-        primKey = themeDisplay.getPortletDisplay().getResourcePK();
-        scopeGroupId = themeDisplay.getScopeGroupId();
-
         if (contestPhase != null) {
-            String statusStr = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(
-                    contestPhase.getContestPhaseType()).getStatus();
-            contestStatus = ContestStatus.valueOf(statusStr);
+            final long contestPhaseTypeId = contestPhase.getContestPhaseType();
+            try {
+                final ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil
+                        .getContestPhaseType(contestPhaseTypeId);
+                String statusStr = contestPhaseType.getStatus();
+                contestStatus = ContestStatus.valueOf(statusStr);
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            } catch (PortalException e) {
+                throw ReferenceResolutionException
+                        .toObject(ContestPhaseType.class, contestPhaseTypeId)
+                        .fromObject(ContestPhase.class, contestPhase.getContestPK());
+            }
         } else {
             contestStatus = null;
         }

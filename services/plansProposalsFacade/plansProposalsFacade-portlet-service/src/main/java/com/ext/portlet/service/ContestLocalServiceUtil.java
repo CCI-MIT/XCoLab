@@ -416,9 +416,7 @@ public class ContestLocalServiceUtil {
         return getService().getTotalCommentsCount(contest);
     }
 
-    public static long getCommentsCount(com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public static long getCommentsCount(com.ext.portlet.model.Contest contest) {
         return getService().getCommentsCount(contest);
     }
 
@@ -457,9 +455,7 @@ public class ContestLocalServiceUtil {
     * @throws PortalException in case of LR error
     * @throws SystemException in case of LR error
     */
-    public static boolean isSubscribed(long contestPK, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public static boolean isSubscribed(long contestPK, long userId) {
         return getService().isSubscribed(contestPK, userId);
     }
 

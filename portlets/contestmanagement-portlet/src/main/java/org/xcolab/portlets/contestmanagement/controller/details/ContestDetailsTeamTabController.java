@@ -11,20 +11,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestTeamWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.TabWrapper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -35,17 +38,25 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
     private static final String TAB_VIEW = "details/teamTab";
 
     @ModelAttribute("usersList")
-    public List<User> populateUsers() throws SystemException {
-        return UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
+    public List<User> populateUsers() {
+        try {
+            return UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
     }
 
     @ModelAttribute("userNames")
-    public List<String> populateUserNames() throws SystemException {
-        ArrayList<String> userNamesList = new ArrayList<>();
-        for (User user : UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE)) {
-            userNamesList.add(user.getScreenName());
+    public List<String> populateUserNames() {
+        try {
+            ArrayList<String> userNamesList = new ArrayList<>();
+            for (User user : UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE)) {
+                userNamesList.add(user.getScreenName());
+            }
+            return userNamesList;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-        return userNamesList;
     }
 
     @ModelAttribute("currentTabWrapped")

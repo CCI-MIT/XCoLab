@@ -3,12 +3,9 @@ package org.xcolab.portlets.redballoon.web;
 //import com.ext.portlet.model.BalloonLink;
 
 //import com.ext.portlet.model.BalloonText;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
@@ -48,7 +46,7 @@ public class BalloonController {
                               @RequestParam(required = false) String linkuuid,
                               @RequestParam(required = false) String context,
                               @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
-            throws SystemException, PortalException, IOException, ParserConfigurationException {
+            throws IOException, ParserConfigurationException {
 
         BalloonLink link = null;
         BalloonUserTracking but = null;
@@ -59,8 +57,6 @@ public class BalloonController {
             } catch (BalloonUserTrackingNotFound balloonUserTrackingNotFound) {
                 link = null;
             }
-
-
 
             if (link != null) {
                 model.addAttribute("balloonLink", link);

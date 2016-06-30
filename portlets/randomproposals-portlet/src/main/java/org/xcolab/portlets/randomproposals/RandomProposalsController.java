@@ -22,8 +22,7 @@ import javax.portlet.PortletResponse;
 public class RandomProposalsController {
 
     @RequestMapping
-    public String showRandomProposals(PortletRequest request, PortletResponse response, Model model)
-            throws SystemException, PortalException {
+    public String showRandomProposals(PortletRequest request, PortletResponse response, Model model) {
 
         RandomProposalsPreferences preferences = new RandomProposalsPreferences(request);
 
@@ -35,17 +34,21 @@ public class RandomProposalsController {
     	return "showProposals";
     }
 
-    private List<ProposalWrapper> getProposals(RandomProposalsPreferences preferences)
-            throws SystemException, PortalException {
+    private List<ProposalWrapper> getProposals(RandomProposalsPreferences preferences) {
 
         List<ProposalWrapper> ret = new ArrayList<>();
 		List<Proposal> proposals = getAvailableProposals(preferences);
 
+        //TODO LR: remove loop and use micro service pojo
         if (proposals != null) {
             Collections.shuffle(proposals);
             for (int i = 0; i < proposals.size() && i < preferences.getFeedSize(); ++i) {
-                ret.add(new ProposalWrapper(
-                        ProposalLocalServiceUtil.getProposal(proposals.get(i).getProposalId())));
+                try {
+                    ret.add(new ProposalWrapper(
+                            ProposalLocalServiceUtil.getProposal(proposals.get(i).getProposalId())));
+                } catch (PortalException | SystemException e) {
+                    //ignored for now, will be removed after LR
+                }
             }
         }
 

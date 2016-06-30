@@ -10,7 +10,6 @@ import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
@@ -21,7 +20,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.helpers.Tuple;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -305,72 +309,94 @@ public class BaseContestWrapper {
         contest.setContestUrlName(contestUrlName);
     }
 
-    public void setHideRibbons(boolean hideRibbons) throws SystemException {
+    public void setHideRibbons(boolean hideRibbons) {
         contest.setHideRibbons(hideRibbons);
     }
 
-    public long getProposalsCount() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getProposalsCount(contest);
+    public long getProposalsCount() {
+        try {
+            return ContestLocalServiceUtil.getProposalsCount(contest);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            _log.error("Could not count proposals in contest " + contest.getContestPK());
+            return 0L;
+        }
     }
 
-    public long getTotalProposalsCount() throws PortalException, SystemException {
+    public long getTotalProposalsCount() {
         Set<Proposal> proposalList = new HashSet<>();
-        List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
-        for(ContestPhase contestPhase : contestPhases){
-            List<Proposal> proposals = ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
-            proposalList.addAll(proposals);
+        try {
+            List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil
+                    .getPhasesForContest(contest);
+            for (ContestPhase contestPhase : contestPhases) {
+                try {
+                List<Proposal> proposals = ProposalLocalServiceUtil
+                        .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+                proposalList.addAll(proposals);
+                } catch (PortalException e) {
+                    _log.error("Proposal count: failed to retrieve active proposals in contest phase " + contestPhase
+                            .getContestPhasePK());
+                }
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
         return proposalList.size();
     }
 
-    public long getCommentsCount() throws PortalException, SystemException {
+    public long getCommentsCount() {
         return ContestLocalServiceUtil.getCommentsCount(contest);
     }
 
-    public List<OntologyTerm> getWho() throws PortalException, SystemException {
+    public List<OntologyTerm> getWho() {
         return getTermFromSpace(WHO);
     }
 
-    public List<OntologyTerm> getWhat() throws PortalException, SystemException {
+    public List<OntologyTerm> getWhat() {
         return getTermFromSpace(WHAT);
     }
 
-    public List<OntologyTerm> getWhere() throws PortalException,
-            SystemException {
+    public List<OntologyTerm> getWhere() {
         return getTermFromSpace(WHERE);
     }
 
-    public List<OntologyTerm> getHow() throws PortalException,
-            SystemException {
+    public List<OntologyTerm> getHow() {
         return getTermFromSpace(HOW);
     }
 
-    protected List<OntologyTerm> getTermFromSpace(String space)
-            throws PortalException, SystemException {
-
-        if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {
-            if (!faCache.containsKey(contest.getFocusAreaId())) {
-                FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest
-                        .getFocusAreaId());
-                if (fa == null) {
-                    ontologySpaceCache.put(space, null);
-                    return null;
+    protected List<OntologyTerm> getTermFromSpace(String space) {
+        try {
+            if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {
+                if (!faCache.containsKey(contest.getFocusAreaId())) {
+                    FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest
+                            .getFocusAreaId());
+                    if (fa == null) {
+                        ontologySpaceCache.put(space, null);
+                        return null;
+                    }
+                    faCache.put(fa.getId(), fa);
                 }
-                faCache.put(fa.getId(), fa);
-            }
-            List<OntologyTerm> terms = new ArrayList<>();
-            for (OntologyTerm t : FocusAreaLocalServiceUtil.getTerms(faCache.get(contest.getFocusAreaId()))) {
-                if (OntologyTermLocalServiceUtil.getSpace(t).getName()
-                        .equalsIgnoreCase(space)) {
-                    terms.add(t);
+                List<OntologyTerm> terms = new ArrayList<>();
+                for (OntologyTerm t : FocusAreaLocalServiceUtil
+                        .getTerms(faCache.get(contest.getFocusAreaId()))) {
+                    if (OntologyTermLocalServiceUtil.getSpace(t).getName()
+                            .equalsIgnoreCase(space)) {
+                        terms.add(t);
+                    }
                 }
+                ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
             }
-            ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
+            return ontologySpaceCache.get(space);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new IllegalStateException("Dead id reference for contest "
+                    + contest.getContestPK() + " retrieving ontology term for space " + space);
         }
-        return ontologySpaceCache.get(space);
     }
 
-    public List<BaseContestPhaseWrapper> getPhases() throws SystemException, PortalException {
+    public List<BaseContestPhaseWrapper> getPhases() {
         if (phases == null) {
             phases = new ArrayList<>();
             for (ContestPhase phase : ContestLocalServiceUtil.getAllPhases(contest)) {
@@ -380,30 +406,39 @@ public class BaseContestWrapper {
         return phases;
     }
 
-    public List<BaseContestTeamRoleWrapper> getContestTeamMembersByRole() throws PortalException, SystemException {
+    public List<BaseContestTeamRoleWrapper> getContestTeamMembersByRole() {
         if (contestTeamMembersByRole == null) {
-            Map<Tuple<String, Integer>, List<User>> teamRoleUsersMap = new HashMap<>();
-            for (ContestTeamMember ctm : ContestLocalServiceUtil.getTeamMembers(contest)) {
-                ContestTeamMemberRole role;
-                try {
-                    role = ContestLocalServiceUtil.getRoleForMember(ctm);
-                    List<User> roleUsers = teamRoleUsersMap.get(new Tuple<>(role.getRole(), role.getSort()));
-                    if (roleUsers == null) {
-                        roleUsers = new ArrayList<>();
-                        teamRoleUsersMap.put(new Tuple<>(role.getRole(), role.getSort()), roleUsers);
+            try {
+                Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
+                for (ContestTeamMember teamMember : ContestLocalServiceUtil
+                        .getTeamMembers(contest)) {
+                    try {
+                        ContestTeamMemberRole role = ContestLocalServiceUtil
+                                .getRoleForMember(teamMember);
+                        List<Member> roleUsers = teamRoleUsersMap
+                                .get(new Tuple<>(role.getRole(), role.getSort()));
+                        if (roleUsers == null) {
+                            roleUsers = new ArrayList<>();
+                            teamRoleUsersMap
+                                    .put(new Tuple<>(role.getRole(), role.getSort()), roleUsers);
+                        }
+                        roleUsers.add(MembersClient.getMember(teamMember.getUserId()));
+                    } catch (MemberNotFoundException e) {
+                        _log.warn("Contest team member " + teamMember.getUserId() + " does not have an account");
+                    } catch (NoSuchModelException e) {
+                        throw new IllegalStateException("ContestTeamMemberRole "
+                                + teamMember.getRoleId() + " does not exist");
                     }
-                    roleUsers.add(ContestTeamMemberLocalServiceUtil.getUser(ctm));
-                } catch (NoSuchModelException | SystemException e) {
-                    e.printStackTrace();
                 }
+                contestTeamMembersByRole = new ArrayList<>(teamRoleUsersMap.size());
+                for (Map.Entry<Tuple<String, Integer>, List<Member>> entry : teamRoleUsersMap.entrySet()) {
+                    final Tuple<String, Integer> role = entry.getKey();
+                    contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role.getLeft(), entry.getValue(), role.getRight()));
+                }
+                Collections.sort(contestTeamMembersByRole);
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
             }
-
-            contestTeamMembersByRole = new ArrayList<>(teamRoleUsersMap.size());
-            for (Map.Entry<Tuple<String, Integer>, List<User>> entry : teamRoleUsersMap.entrySet()) {
-                final Tuple<String, Integer> role = entry.getKey();
-                contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role.getLeft(), entry.getValue(), role.getRight()));
-            }
-            Collections.sort(contestTeamMembersByRole);
         }
         return contestTeamMembersByRole;
     }
@@ -412,8 +447,8 @@ public class BaseContestWrapper {
 
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase(role)) {
-                for(User user : c.getUsers()){
-                    if(user.equals(userInQuestion)) {
+                for (Member user : c.getUsers()) {
+                    if (user.equals(userInQuestion)) {
                         return true;
                     }
                 }
@@ -434,8 +469,8 @@ public class BaseContestWrapper {
         return activePhase;
     }
 
-    public List<User> getContestJudges() throws PortalException, SystemException {
-        List<User> judges = null;
+    public List<Member> getContestJudges() throws PortalException, SystemException {
+        List<Member> judges = null;
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase("Judge")) {
                 judges = c.getUsers();
@@ -447,8 +482,8 @@ public class BaseContestWrapper {
         return judges;
     }
 
-    public List<User> getContestFellows() throws PortalException, SystemException {
-        List<User> fellows = null;
+    public List<Member> getContestFellows() throws PortalException, SystemException {
+        List<Member> fellows = null;
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase("Fellow")) {
                 fellows = c.getUsers();
@@ -457,8 +492,8 @@ public class BaseContestWrapper {
         return fellows;
     }
 
-    public List<User> getContestAdvisors() throws PortalException, SystemException {
-        List<User> advisors = null;
+    public List<Member> getContestAdvisors() throws PortalException, SystemException {
+        List<Member> advisors = null;
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase("Advisor")) {
                 advisors = c.getUsers();

@@ -1,6 +1,5 @@
 package org.xcolab.jspTags.discussion;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -34,7 +33,7 @@ public class DiscussionPermissions {
         return getCanAdminMessages();
     }
 
-    public boolean getCanReportMessage(Comment comment) throws SystemException {
+    public boolean getCanReportMessage(Comment comment) {
         return getCanReport() && comment.getAuthorId() != currentUser.getUserId()
                 && FlaggingClient.countReports(currentUser.getUserId(), TargetType.COMMENT,
                 comment.getCommentId(), null, null) == 0;

@@ -1,7 +1,6 @@
 package org.xcolab.portlets.loginregister;
 
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.community.CommunityConstants;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
@@ -26,7 +25,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.activityEntry.member.MemberJoinedActivityEntry;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -96,8 +95,7 @@ public class MainViewController {
      * Main view displayed for contact form
      */
     @RequestMapping
-    public String register(PortletRequest request, PortletResponse response, Model model)
-            throws SystemException, NoSuchConfigurationAttributeException {
+    public String register(PortletRequest request, PortletResponse response, Model model) {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request
                 .getAttribute(WebKeys.THEME_DISPLAY);
@@ -212,7 +210,7 @@ public class MainViewController {
     @RequestMapping(params = "error=true")
     public String registerError(PortletRequest request, Model model,
             @Valid CreateUserBean newAccountBean, BindingResult result,
-            @RequestParam(required = false) String redirect) throws SystemException {
+            @RequestParam(required = false) String redirect) {
         if (request.getParameter("recaptchaError") != null) {
             result.addError(new ObjectError("createUserBean",
                     "Invalid words in captcha field"));

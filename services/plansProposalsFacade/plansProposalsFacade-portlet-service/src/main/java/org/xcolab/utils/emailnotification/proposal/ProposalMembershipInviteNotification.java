@@ -1,14 +1,10 @@
 package org.xcolab.utils.emailnotification.proposal;
 
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.model.MembershipRequest;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -16,6 +12,7 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.members.pojo.Member;
 
 public class ProposalMembershipInviteNotification extends ProposalUserActionNotification {
 
@@ -30,7 +27,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     private final String message;
     private ProposalMembershipRequestTemplate templateWrapper;
 
-    public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, User sender, User invitee,
+    public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, Member sender, Member invitee,
             MembershipRequest membershipRequest, String message, ServiceContext serviceContext) {
         super(proposal, contest, sender, invitee, null, serviceContext);
         this.membershipRequest = membershipRequest;
@@ -38,7 +35,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     }
 
     @Override
-    protected ProposalMembershipRequestTemplate getTemplateWrapper() throws SystemException, PortalException {
+    protected ProposalMembershipRequestTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;
         }
@@ -48,22 +45,19 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
         final ContestEmailTemplate emailTemplate =
                 EmailTemplateClient.getContestEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
-        if (emailTemplate == null) {
-            throw new SystemException(
-                    "Could not load template \"" + DEFAULT_TEMPLATE_NAME + "\" for " + this.getClass().getName());
-        }
+
         templateWrapper = new ProposalMembershipRequestTemplate(emailTemplate,
                 proposalName, contest.getContestShortName());
 
         return templateWrapper;
     }
 
-    private String getAcceptLink(String text) throws SystemException, NoSuchConfigurationAttributeException {
+    private String getAcceptLink(String text) {
         final String acceptUrl = HttpUtil.addParameter(getMembershipResponseUrl(), "do", "accept");
         return String.format(LINK_FORMAT_STRING, acceptUrl, text);
     }
 
-    private String getMembershipResponseUrl() throws SystemException, NoSuchConfigurationAttributeException {
+    private String getMembershipResponseUrl() {
         String baseUrl = serviceContext.getPortalURL() + MEMBERSHIP_INVITE_STRUTS_ACTION_URL;
         baseUrl = HttpUtil.addParameter(baseUrl, "contestId", contest.getContestPK());
         baseUrl = HttpUtil.addParameter(baseUrl, "requestId", membershipRequest.getMembershipRequestId());
@@ -71,7 +65,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
         return baseUrl;
     }
 
-    private String getDeclineLink(String text) throws NoSuchConfigurationAttributeException, SystemException {
+    private String getDeclineLink(String text) {
         final String declineUrl = HttpUtil.addParameter(getMembershipResponseUrl(), "do", "decline");
         return String.format(LINK_FORMAT_STRING, declineUrl, text);
     }
@@ -84,7 +78,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
         }
 
         @Override
-        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        protected Node resolvePlaceholderTag(Element tag) {
             Node node = super.resolvePlaceholderTag(tag);
             if (node != null) {
                 return node;

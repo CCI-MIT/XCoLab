@@ -197,7 +197,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     private void setJudgeProposalBean(Model model, PortletRequest request) throws PortalException, SystemException {
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(
-                proposalWrapper, proposalsContext.getUser(request));
+                proposalWrapper, proposalsContext.getMember(request));
         JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);
         long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
         judgeProposalBean.setContestPhaseId(contestPhaseId);

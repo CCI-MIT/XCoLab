@@ -665,9 +665,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     */
     @Override
-    public long getCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public long getCommentsCount(long proposalId) {
         return _proposalLocalService.getCommentsCount(proposalId);
     }
 
@@ -680,9 +678,7 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @throws SystemException in case of an LR error
     */
     @Override
-    public long getFellowReviewCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public long getFellowReviewCommentsCount(long proposalId) {
         return _proposalLocalService.getFellowReviewCommentsCount(proposalId);
     }
 

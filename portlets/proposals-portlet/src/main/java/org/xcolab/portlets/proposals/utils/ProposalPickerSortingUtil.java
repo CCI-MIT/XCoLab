@@ -153,12 +153,8 @@ public class ProposalPickerSortingUtil {
                             if (contest1wasRemoved != contest2wasRemoved) {
                                 return contest1wasRemoved ? 1 : -1;
                             }
-                            try {
-                                return sortOrderModifier * (int) (o1.getLeft().getProposalsCount() - o2
-                                        .getLeft().getProposalsCount());
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+                            return sortOrderModifier * (int) (o1.getLeft().getProposalsCount() - o2
+                                    .getLeft().getProposalsCount());
                         }
                     });
             }
@@ -280,14 +276,10 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
-                            try {
-                                return sortOrderModifier * (int) (ProposalLocalServiceUtil
-                                        .getCommentsCount(o1.getLeft().getProposalId())
-                                        - ProposalLocalServiceUtil
-                                        .getCommentsCount(o2.getLeft().getProposalId()));
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+                            return sortOrderModifier * (int) (ProposalLocalServiceUtil
+                                    .getCommentsCount(o1.getLeft().getProposalId())
+                                    - ProposalLocalServiceUtil
+                                    .getCommentsCount(o2.getLeft().getProposalId()));
                         }
                     });
                     break;
