@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# stop script if any build fails
+set -e
+
 cd microservices/util/xcolab-utils
 mvn clean compile package install clean
 cd ../../..
