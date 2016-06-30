@@ -23,22 +23,22 @@ public class SearchController {
     public List<SearchPojo> doSearch(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
-            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String filter,
             @RequestParam String query) {
 
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
-                sort);
-        if(sort != null){
-            if( sort.equals(SearchType.MEMBER.getStringType())){
+                filter);
+        if(filter != null){
+            if( filter.equals(SearchType.MEMBER.getStringType())){
                 return searchDao.findMember(paginationHelper, query);
             }
-            if( sort.equals(SearchType.PROPOSAL.getStringType())){
+            if( filter.equals(SearchType.PROPOSAL.getStringType())){
                 return searchDao.findProposalAttribute(paginationHelper, query);
             }
-            if( sort.equals(SearchType.CONTEST.getStringType())){
+            if( filter.equals(SearchType.CONTEST.getStringType())){
                 return searchDao.findContest(paginationHelper, query);
             }
-            if( sort.equals(SearchType.DISCUSSION.getStringType())){
+            if( filter.equals(SearchType.DISCUSSION.getStringType())){
                 return searchDao.findComment(paginationHelper, query);
             }
 

@@ -14,7 +14,7 @@ public final class SearchClient {
 
     private static final String EUREKA_APPLICATION_ID = "localhost:" + RequestUtils.getServicesPort() + "/search-service";
 
-    public static List<SearchPojo> search(Integer startRecord, Integer limitRecord, String sort, String query) {
+    public static List<SearchPojo> search(Integer startRecord, Integer limitRecord, String filter, String query) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
                 EUREKA_APPLICATION_ID + "/search");
         if (startRecord != null) {
@@ -23,8 +23,8 @@ public final class SearchClient {
         if (limitRecord != null) {
             uriBuilder.queryParam("limitRecord", limitRecord);
         }
-        if (sort != null) {
-            uriBuilder.queryParam("sort", sort);
+        if (filter != null) {
+            uriBuilder.queryParam("filter", filter);
         }
         if (query != null) {
             uriBuilder.queryParam("query", query);
