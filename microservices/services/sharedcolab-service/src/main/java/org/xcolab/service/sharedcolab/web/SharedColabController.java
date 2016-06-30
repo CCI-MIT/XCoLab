@@ -39,9 +39,9 @@ public class SharedColabController {
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String email) {
         SharedMember member = sharedMemberDao.getByScreenNameAndEmail(screenName, email);
-        if(member != null){
+        if (member != null) {
             return member.getSharedMemberId();
-        }else {
+        } else {
             Long ret = sharedMemberDao.create(screenName, email, new Timestamp(new Date().getTime()));
             return ret;
         }
