@@ -1,12 +1,20 @@
 package org.xcolab.client.members.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Contact_ implements Serializable {
+    public static final TypeProvider<Contact_> TYPES =
+            new TypeProvider<>(Contact_.class,
+                    new ParameterizedTypeReference<List<Contact_>>() {
+                    });
 
     private static final long serialVersionUID = -48266924;
 

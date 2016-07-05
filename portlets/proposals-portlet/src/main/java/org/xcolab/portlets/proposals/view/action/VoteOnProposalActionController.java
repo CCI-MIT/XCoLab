@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
@@ -25,20 +24,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.emailnotification.proposal.ProposalVoteNotification;
 import org.xcolab.utils.emailnotification.proposal.ProposalVoteValidityConfirmation;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -62,6 +65,7 @@ public class VoteOnProposalActionController {
         final Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         final User user = proposalsContext.getUser(request);
+        final Member member = proposalsContext.getMember(request);
         if (proposalsContext.getPermissions(request).getCanVote()) {
             long proposalId = proposal.getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
@@ -80,9 +84,9 @@ public class VoteOnProposalActionController {
 
                 ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
 
-                final boolean voteIsValid = validateVote(user, proposal, contest, serviceContext);
+                final boolean voteIsValid = validateVote(user, member, proposal, contest, serviceContext);
                 if (voteIsValid) {
-                    new ProposalVoteNotification(proposal, contest, user, serviceContext).sendMessage();
+                    new ProposalVoteNotification(proposal, contest, member, serviceContext).sendMessage();
                     hasVoted = true;
                 }
 
@@ -107,7 +111,7 @@ public class VoteOnProposalActionController {
         response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + arguments);
     }
 
-    private boolean validateVote(User user, Proposal proposal, Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
+    private boolean validateVote(User user, Member member, Proposal proposal, Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
         List<User> usersWithSharedIP = Xcolab_UserLocalServiceUtil.findUsersByLoginIP(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
         if (!usersWithSharedIP.isEmpty()) {
@@ -131,7 +135,7 @@ public class VoteOnProposalActionController {
             }
             if (vote.isIsValid() && recentVotesFromSharedIP > 7) {
                 vote.setIsValid(false);
-                sendConfirmationMail(vote, proposal, contest, user, serviceContext);
+                sendConfirmationMail(vote, proposal, contest, member, serviceContext);
             }
             vote.persist();
             return vote.isIsValid();
@@ -139,11 +143,11 @@ public class VoteOnProposalActionController {
         return true;
     }
 
-    private void sendConfirmationMail(ProposalVote vote, Proposal proposal, Contest contest, User user, ServiceContext serviceContext) throws PortalException, SystemException {
+    private void sendConfirmationMail(ProposalVote vote, Proposal proposal, Contest contest, Member member, ServiceContext serviceContext) throws PortalException, SystemException {
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Date());
-        new ProposalVoteValidityConfirmation(proposal, contest, user, serviceContext,
+        new ProposalVoteValidityConfirmation(proposal, contest, member, serviceContext,
                 confirmationToken).sendEmailNotification();
     }
 
@@ -169,9 +173,8 @@ public class VoteOnProposalActionController {
             }
         } catch (NoSuchProposalVoteException e) {
             model.addAttribute("error", "NoSuchProposalVote");
-        } catch (SystemException | NoSuchContestException e) {
-            _log.error(String.format("Exception occurred while confirmingvote for proposal %d, user %d, with token %s",
-                    proposalId, userId, confirmationToken), e);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
         model.addAttribute("success", success);
         return "confirmVote";

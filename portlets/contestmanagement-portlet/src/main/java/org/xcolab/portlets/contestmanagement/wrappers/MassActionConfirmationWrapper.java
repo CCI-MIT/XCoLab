@@ -10,6 +10,7 @@ import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
 import org.xcolab.wrappers.BaseContestWrapper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,11 +93,12 @@ public class MassActionConfirmationWrapper {
         }
     }
 
-    public String getSelectedMassActionTitle() throws Exception {
+    public String getSelectedMassActionTitle() {
         return MassActionUtil.getSelectedMassActionTitle(massActionId.longValue());
     }
 
-    public void invokeMassActionForSelectedContests() throws Exception {
+    public void invokeMassActionForSelectedContests()
+            throws InvocationTargetException, IllegalAccessException {
         List<Long> contestToBeDeleted = new ArrayList<>();
         for (Integer contestId : contestIds) {
             int index = contestIds.indexOf(contestId);
@@ -109,7 +111,8 @@ public class MassActionConfirmationWrapper {
             final boolean deletePhases = true;
             ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, deletePhases, null);
         } else {
-            throw new Exception("No action defined for mass action id: " + massActionId);
+            throw new IllegalArgumentException(
+                    "No action defined for mass action id: " + massActionId);
         }
     }
 

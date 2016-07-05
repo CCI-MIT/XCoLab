@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
+
+import java.io.IOException;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
-import java.io.IOException;
 
 /**
  * Created by Thomas on 1/12/2015.
@@ -51,11 +53,10 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private void updateUserSendEmailOnMessagePreferences(User user, boolean setting) throws SystemException {
-
+        //TODO: port to messaging service
         MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
         prefs.setEmailOnReceipt(setting);
         MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-
     }
 
     @ResourceMapping("updateUserSendEmailOnActivitySettings")
@@ -87,6 +88,7 @@ public class MessageSettingsJSONController extends JSONHelper {
 
     private void updateUserSendEmailOnActivityPreferences(User user, boolean setting) throws SystemException {
 
+        //TODO: port to messaging service
         MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
         prefs.setEmailOnActivity(setting);
         MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
@@ -95,6 +97,7 @@ public class MessageSettingsJSONController extends JSONHelper {
 
     private void updateUserSendDailyEmailOnActivityPreferences(User user, boolean setting) throws SystemException {
 
+        //TODO: port to messaging service
         MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
         prefs.setEmailActivityDailyDigest(setting);
         MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);

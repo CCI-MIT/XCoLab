@@ -16,19 +16,19 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
+
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.TemplateReplacementUtil;
 
-import javax.mail.internet.AddressException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Mente on 30/04/14.
- */
+import javax.mail.internet.AddressException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class ProposalMembershipInvitationResponseStrutsAction extends BaseStrutsAction {
 
 	private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT = "Response to your membership invite";
@@ -82,12 +82,11 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		return StringPool.BLANK;
 	}
 
-	public void sendMessage(long sender, List<Long> recipients, String subject, String content) {
+	private void sendMessage(long sender, List<Long> recipients, String subject, String content) {
 		try{
 			MessageUtil.sendMessage(subject, content, sender, sender, recipients);
-		} catch (AddressException | SystemException | PortalException | MailEngineException | UnsupportedEncodingException e) {
-			e.printStackTrace();
+		} catch (AddressException | MailEngineException | UnsupportedEncodingException e) {
+			throw new InternalException("Could not send message " + subject, e);
 		}
 	}
-
 }

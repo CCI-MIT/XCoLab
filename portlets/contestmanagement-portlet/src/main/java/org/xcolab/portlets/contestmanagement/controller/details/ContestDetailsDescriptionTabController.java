@@ -20,25 +20,30 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.emailnotification.contest.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Thomas on 2/6/2015.
@@ -112,12 +117,20 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             // TODO check Input
             updatedContestDescriptionBean.persist(getContest());
             if (createNew) {
-                ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-                Contest contest = ContestLocalServiceUtil.getContest(updatedContestDescriptionBean.getContestPK());
-                sendEmailNotificationToAuthor(themeDisplay, contest);
+                try {
+                    ThemeDisplay themeDisplay = (ThemeDisplay) request
+                            .getAttribute(WebKeys.THEME_DISPLAY);
+                    Contest contest = ContestLocalServiceUtil
+                            .getContest(updatedContestDescriptionBean.getContestPK());
+                    sendEmailNotificationToAuthor(themeDisplay, contest);
+                } catch (SystemException e) {
+                    throw new DatabaseAccessException(e);
+                } catch (MemberNotFoundException | PortalException e) {
+                    throw new InternalException(e);
+                }
             }
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (SystemException | PortalException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Update contest description failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -130,7 +143,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     }
 
     private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest)
-            throws PortalException, SystemException {
+            throws MemberNotFoundException {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
         new ContestCreationNotification(contest, serviceContext).sendMessage();
@@ -155,17 +168,13 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
         List<LabelValue> scheduleTemplateSelectionItems = new ArrayList<>();
-        try {
-            Contest contest = getContest(request);
-            BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
-            Long existingContestScheduleId = contest.getContestScheduleId();
-            Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
-            scheduleTemplateSelectionItems =
-                    ContestScheduleWrapper
-                            .getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
-        } catch (SystemException | PortalException e) {
-            _log.warn("Could not get contest schedule selection items: " + e);
-        }
+        Contest contest = getContest(request);
+        BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
+        Long existingContestScheduleId = contest.getContestScheduleId();
+        Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
+        scheduleTemplateSelectionItems =
+                ContestScheduleWrapper
+                        .getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
         return scheduleTemplateSelectionItems;
     }
 }

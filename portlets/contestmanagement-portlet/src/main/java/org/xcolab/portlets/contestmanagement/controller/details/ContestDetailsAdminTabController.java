@@ -121,7 +121,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             Contest c = getContest();
             updateContestAdminBean.persist(c);
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (SystemException | PortalException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Update contest admin failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

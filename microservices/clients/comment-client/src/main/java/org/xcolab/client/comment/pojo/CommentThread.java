@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -11,7 +12,8 @@ import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.HumanTime;
+import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.util.time.HumanTime;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -21,6 +23,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class CommentThread implements Serializable {
+    public static final TypeProvider<CommentThread> TYPES =
+            new TypeProvider<>(CommentThread.class,
+                    new ParameterizedTypeReference<List<CommentThread>>() {
+                    });
 
     private static final long serialVersionUID = 1553344927;
 

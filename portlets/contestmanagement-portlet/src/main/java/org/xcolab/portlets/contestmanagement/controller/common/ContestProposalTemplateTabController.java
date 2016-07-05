@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.OntologySpaceEnum;
@@ -28,16 +29,18 @@ import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.ResourceResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.ResourceResponse;
 
 /**
  * Created by Thomas on 2/13/2015.
@@ -113,25 +116,37 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return selectItems;
     }
 
-    private List<LabelValue> getContestTypeSelectionItems() throws SystemException {
-        List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
-            selectItems.add(new LabelValue(contestType.getId(), ContestTypeLocalServiceUtil.getLabelName(contestType)));
+    private List<LabelValue> getContestTypeSelectionItems() {
+        try {
+            List<LabelValue> selectItems = new ArrayList<>();
+            for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
+                selectItems.add(new LabelValue(contestType.getId(),
+                        ContestTypeLocalServiceUtil.getLabelName(contestType)));
+            }
+            return selectItems;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-        return selectItems;
     }
 
-    private List<LabelValue> getPointTypeSelectionItems() throws SystemException {
-        List<LabelValue> selectItems = new ArrayList<>();
-        selectItems.add(new LabelValue(0L, "Default"));
-        for (PointType pointType : PointTypeLocalServiceUtil.getPointTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-            if (pointType.getDistributionStrategy().equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
-                selectItems.add(new LabelValue(pointType.getId(),
-                        String.format("%d - %s : %s", pointType.getId(),
-                                pointType.getDistributionStrategy(), pointType.getReceiverLimitationStrategy())));
+    private List<LabelValue> getPointTypeSelectionItems() {
+        try {
+            List<LabelValue> selectItems = new ArrayList<>();
+            selectItems.add(new LabelValue(0L, "Default"));
+            for (PointType pointType : PointTypeLocalServiceUtil
+                    .getPointTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+                if (pointType.getDistributionStrategy()
+                        .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
+                    selectItems.add(new LabelValue(pointType.getId(),
+                            String.format("%d - %s : %s", pointType.getId(),
+                                    pointType.getDistributionStrategy(),
+                                    pointType.getReceiverLimitationStrategy())));
+                }
             }
+            return selectItems;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-        return selectItems;
     }
 
     private List<LabelStringValue> getSectionTypesSelectionItems() {
@@ -142,45 +157,48 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return selectItems;
     }
 
-    private List<LabelValue> getWhatTerms() throws SystemException, PortalException {
+    private List<LabelValue> getWhatTerms() {
         return getTermsFromOntologySpace(OntologySpaceEnum.WHAT);
     }
 
-    private List<LabelValue> getWhereTerms() throws SystemException, PortalException {
+    private List<LabelValue> getWhereTerms() {
         return getTermsFromOntologySpace(OntologySpaceEnum.WHERE);
     }
 
-    private List<LabelValue> getWhoTerms() throws SystemException, PortalException {
+    private List<LabelValue> getWhoTerms() {
         return getTermsFromOntologySpace(OntologySpaceEnum.WHO);
     }
 
-    private List<LabelValue> getHowTerms() throws SystemException, PortalException {
+    private List<LabelValue> getHowTerms() {
         return getTermsFromOntologySpace(OntologySpaceEnum.HOW);
     }
 
-    private List<LabelValue> getTermsFromOntologySpace(OntologySpaceEnum ontologySpace)
-            throws SystemException, PortalException {
+    private List<LabelValue> getTermsFromOntologySpace(OntologySpaceEnum ontologySpace) {
         List<Stack<OntologyTerm>> allParentsPaths = getAllOntologyTermParentPathStacks(ontologySpace);
         sortOntologyTermParentPathsAlphabetically(allParentsPaths);
 
         return buildOntologyTermParentPathSelectItemList(allParentsPaths);
     }
 
-    private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(OntologySpaceEnum ontologySpace)
-            throws SystemException, PortalException {
-        List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
-        for (OntologyTerm term : OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE)) {
-            // Just consider terms in the passed ontologySpace
-            if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
-                continue;
+    private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(
+            OntologySpaceEnum ontologySpace) {
+        try {
+            List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
+            for (OntologyTerm term : OntologyTermLocalServiceUtil
+                    .getOntologyTerms(0, Integer.MAX_VALUE)) {
+                // Just consider terms in the passed ontologySpace
+                if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
+                    continue;
+                }
+
+                Stack<OntologyTerm> parentsPath = getOntologyTermParentPath(term);
+                allParentsPaths.add(parentsPath);
             }
 
-
-            Stack<OntologyTerm> parentsPath = getOntologyTermParentPath(term);
-            allParentsPaths.add(parentsPath);
+            return allParentsPaths;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-
-        return allParentsPaths;
     }
 
     private void sortOntologyTermParentPathsAlphabetically(List<Stack<OntologyTerm>> allParentsPaths) {
@@ -215,8 +233,8 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return stack1FirstItemName.compareTo(stack2FirstItemName);
     }
 
-    private List<LabelValue> buildOntologyTermParentPathSelectItemList(List<Stack<OntologyTerm>> allParentsPaths)
-            throws PortalException, SystemException {
+    private List<LabelValue> buildOntologyTermParentPathSelectItemList(
+            List<Stack<OntologyTerm>> allParentsPaths) {
         List<LabelValue> termSelectItems = new ArrayList<>();
 
         for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
@@ -229,19 +247,26 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
 
-    private Stack<OntologyTerm> getOntologyTermParentPath(OntologyTerm term) throws SystemException, PortalException {
-        Stack<OntologyTerm> parentsPath = new Stack<>();
-        OntologyTerm current = term;
-        while (current != null) {
-            parentsPath.push(current);
-            current = OntologyTermLocalServiceUtil.getParent(current);
+    private Stack<OntologyTerm> getOntologyTermParentPath(OntologyTerm term) {
+        try {
+            Stack<OntologyTerm> parentsPath = new Stack<>();
+            OntologyTerm current = term;
+            while (current != null) {
+                parentsPath.push(current);
+                try {
+                    current = OntologyTermLocalServiceUtil.getParent(current);
+                } catch (PortalException e) {
+                    _log.warn("Could not find parent for ontology term " + current.getId());
+                    break;
+                }
+            }
+            return parentsPath;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-
-        return parentsPath;
     }
 
-    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath)
-            throws SystemException, PortalException {
+    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath) {
         if (parentsPath.size() == 1) {
             return parentsPath.pop().getName();
         }

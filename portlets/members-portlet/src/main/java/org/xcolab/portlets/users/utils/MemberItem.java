@@ -1,12 +1,9 @@
 package org.xcolab.portlets.users.utils;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import org.xcolab.client.members.legacy.enums.MemberRole;
-import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.Role_;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -21,7 +18,7 @@ public class MemberItem implements Serializable {
     private String screenName;
     private int points;
 
-    public MemberItem(Member user, String memberCategoryParam) throws PortalException, SystemException {
+    public MemberItem(Member user, String memberCategoryParam) {
 
         userId = user.getId_();
         activityCount = MembersClient.getMemberActivityCount(userId);
@@ -68,11 +65,11 @@ public class MemberItem implements Serializable {
         }
     }
 
-    public long getActivityCount() throws SystemException {
+    public long getActivityCount() {
         return activityCount;
     }
 
-    public String getActivityCountFormatted() throws SystemException {
+    public String getActivityCountFormatted() {
         return String.format("%,d", activityCount);
     }
 
@@ -80,7 +77,7 @@ public class MemberItem implements Serializable {
         return points;
     }
 
-    public String getPointsFormatted() throws SystemException {
+    public String getPointsFormatted() {
         return String.format("%,d", points);
     }
     

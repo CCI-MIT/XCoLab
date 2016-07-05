@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# stop script if any build fails
+set -e
+
 cd themes/climatecolab-theme
   mvn clean compile package install
 cd ../..

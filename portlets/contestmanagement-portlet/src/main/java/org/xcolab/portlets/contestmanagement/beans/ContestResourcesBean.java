@@ -8,7 +8,6 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -18,10 +17,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -93,7 +92,7 @@ public class ContestResourcesBean implements Serializable {
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue()));
     }
 
-    public ContestResourcesBean(ContestType contestType) throws SystemException {
+    public ContestResourcesBean(ContestType contestType) {
         this.contestType = contestType;
         sections = new ArrayList<>();
         baseSections = new ArrayList<>();
@@ -244,46 +243,60 @@ public class ContestResourcesBean implements Serializable {
         }
     }
 
-    public void fillOverviewSectionContent(Contest contest)
-            throws SystemException, ParseException {
-        List<ContestPhase> contestPhaseList = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
-        String proposalSubmissionEndDate = "";
-        for (ContestPhase contestPhase : contestPhaseList) {
-            Long contestPhaseType = contestPhase.getContestPhaseType();
-            if (contestPhaseType == 1L) {
-                final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMAT.withZone(
-                        DateTimeZone.forID(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.getStringValue()));
-                boolean phaseHasNoEnd = (contestPhase.getPhaseEndDate() == null);
-                if (phaseHasNoEnd) {
-                    proposalSubmissionEndDate = "This contest has no deadline.";
-                } else {
-                    proposalSubmissionEndDate = new DateTime(contestPhase.getPhaseEndDate())
-                            .toString(dateTimeFormatterWithTimeZone);
+    public void fillOverviewSectionContent(Contest contest) {
+        try {
+            List<ContestPhase> contestPhaseList = ContestPhaseLocalServiceUtil
+                    .getPhasesForContest(contest);
+            String proposalSubmissionEndDate = "";
+            for (ContestPhase contestPhase : contestPhaseList) {
+                Long contestPhaseType = contestPhase.getContestPhaseType();
+                if (contestPhaseType == 1L) {
+                    final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMAT
+                            .withZone(
+                                    DateTimeZone
+                                            .forID(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID
+                                                    .getStringValue()));
+                    boolean phaseHasNoEnd = (contestPhase.getPhaseEndDate() == null);
+                    if (phaseHasNoEnd) {
+                        proposalSubmissionEndDate = "This contest has no deadline.";
+                    } else {
+                        proposalSubmissionEndDate = new DateTime(contestPhase.getPhaseEndDate())
+                                .toString(dateTimeFormatterWithTimeZone);
+                    }
+                    break;
                 }
-                break;
             }
-        }
-        overviewSectionValues = new LinkedHashMap<>();
-        overviewSectionValues.put("Question:", contest.getContestName());
+            overviewSectionValues = new LinkedHashMap<>();
+            overviewSectionValues.put("Question:", contest.getContestName());
 
-        final String contestLinkUrl = ContestLocalServiceUtil.getContestLinkUrl(contest);
-        final String overviewSubmitProposalsContent = TemplateReplacementUtil.replaceContestTypeStrings(
-                TemplateReplacementUtil.replacePlatformConstants(OVERVIEW_SUBMIT_PROPOSALS_CONTENT), contestType);
-        overviewSectionValues.put(
-                TemplateReplacementUtil.replaceContestTypeStrings(OVERVIEW_SUBMIT_PROPOSALS_TITLE, contestType),
-                overviewSubmitProposalsContent.replace("<contest-link-url/>", contestLinkUrl));
+            final String contestLinkUrl = ContestLocalServiceUtil.getContestLinkUrl(contest);
+            final String overviewSubmitProposalsContent = TemplateReplacementUtil
+                    .replaceContestTypeStrings(
+                            TemplateReplacementUtil
+                                    .replacePlatformConstants(OVERVIEW_SUBMIT_PROPOSALS_CONTENT),
+                            contestType);
+            overviewSectionValues.put(
+                    TemplateReplacementUtil
+                            .replaceContestTypeStrings(OVERVIEW_SUBMIT_PROPOSALS_TITLE,
+                                    contestType),
+                    overviewSubmitProposalsContent.replace("<contest-link-url/>", contestLinkUrl));
 
-        final String rulesLink = "<a href=\"" + contestType.getRulesPageUrl()
-                + "\" target=\"_blank\">" + contestType.getRulesPageName() + "</a>";
-        final String overviewRulesContent = OVERVIEW_RULES_CONTENT.replace("<rules-link/>", rulesLink);
-        overviewSectionValues.put(OVERVIEW_RULES_TITLE, overviewRulesContent);
+            final String rulesLink = "<a href=\"" + contestType.getRulesPageUrl()
+                    + "\" target=\"_blank\">" + contestType.getRulesPageName() + "</a>";
+            final String overviewRulesContent = OVERVIEW_RULES_CONTENT
+                    .replace("<rules-link/>", rulesLink);
+            overviewSectionValues.put(OVERVIEW_RULES_TITLE, overviewRulesContent);
 
-        overviewSectionValues.put(OVERVIEW_DEADLINE_TITLE, proposalSubmissionEndDate);
+            overviewSectionValues.put(OVERVIEW_DEADLINE_TITLE, proposalSubmissionEndDate);
 
-        for (SectionDefinitionWrapper section : sections) {
-            if (section.getTitle().equals("Judging Criteria") && StringUtils.isNotBlank(section.getContent()))  {
-                overviewSectionValues.put(OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE, "See below.");
+            for (SectionDefinitionWrapper section : sections) {
+                if (section.getTitle().equals("Judging Criteria") && StringUtils
+                        .isNotBlank(section.getContent())) {
+                    overviewSectionValues.put(OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE, "See below.");
+                }
             }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 }

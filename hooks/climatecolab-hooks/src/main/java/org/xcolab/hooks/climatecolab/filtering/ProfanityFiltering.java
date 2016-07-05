@@ -1,5 +1,8 @@
 package org.xcolab.hooks.climatecolab.filtering;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.enums.FilteringSource;
 import org.xcolab.client.filtering.enums.FilteringStatus;
@@ -17,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ProfanityFiltering implements Filter {
+
+    private static final Log _log = LogFactoryUtil.getLog(ProfanityFiltering.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -55,12 +60,13 @@ public class ProfanityFiltering implements Filter {
         filteredEntry = FilteringClient.createFilteredEntry(filteredEntry);
 
         try {
-            response.getWriter().append(String.format("{\"valid\": \""+filteredEntry.getStatus().equals(FilteringStatus.APPROVED.getId())+"\",\"uuid\":\""+filteredEntry.getUuid()+"\"}"));
+            response.getWriter().append("{\"valid\": \"")
+                    .append(Boolean.toString(
+                            filteredEntry.getStatus().equals(FilteringStatus.APPROVED.getId())))
+                    .append("\",\"uuid\":\"").append(filteredEntry.getUuid()).append("\"}");
             response.getWriter().close();
         } catch (IOException e) {
-            e.printStackTrace();
+            _log.error("Could not write to response in profanity filter", e);
         }
-
-
     }
 }

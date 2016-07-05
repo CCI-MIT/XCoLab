@@ -57,7 +57,7 @@ public class MemberCategoryModelImpl extends BaseModelImpl<MemberCategory>
             { "imageName", Types.VARCHAR },
             { "description", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MemberCategory (roleId LONG not null primary key,displayName VARCHAR(75) null,categoryName VARCHAR(75) null,sortOrder LONG,showInList BOOLEAN,imageName VARCHAR(75) null,description VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MemberCategory (roleId LONG not null primary key,displayName VARCHAR(75) null,categoryName VARCHAR(75) null,sortOrder LONG,showInList BOOLEAN,imageName VARCHAR(75) null,description VARCHAR(2048) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MemberCategory";
     public static final String ORDER_BY_JPQL = " ORDER BY memberCategory.roleId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MemberCategory.roleId ASC";

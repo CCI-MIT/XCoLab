@@ -4,22 +4,23 @@ import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-import org.xcolab.util.HtmlUtil;
 
-import javax.mail.internet.AddressException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.html.HtmlUtil;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.mail.internet.AddressException;
+
 public class SendMessageBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final List<User> allUsers;
-    private final List<User> recipientList;
+    private final List<Member> recipientList;
     private final int messageHoneypotPosition;
     private String userIdsRecipients;
     private String subject;
@@ -29,7 +30,7 @@ public class SendMessageBean implements Serializable {
     //honeypot is a field supposed to be left blank by humans, and to be filled in by bots, in order to protect from spam.
     private String messageHoneypot;
 
-    public SendMessageBean(MessageBean replyMessage) throws SystemException, PortalException {
+    public SendMessageBean(MessageBean replyMessage) {
         this();
         this.userIdsRecipients = String.valueOf(replyMessage.getFrom().getUserId());
         this.recipientList.add(replyMessage.getFrom());
@@ -40,15 +41,9 @@ public class SendMessageBean implements Serializable {
         this.replyMessage = replyMessage;
     }
 
-    public SendMessageBean() throws SystemException {
+    public SendMessageBean() {
         this.messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
-
-        this.allUsers = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
         this.recipientList = new ArrayList<>();
-    }
-
-    public List<User> getUsersList() {
-        return allUsers;
     }
 
     public boolean send(User sender, String baseUri)
@@ -128,7 +123,7 @@ public class SendMessageBean implements Serializable {
         return messageHoneypotPosition;
     }
 
-    public List<User> getRecipientList() {
+    public List<Member> getRecipientList() {
         return recipientList;
     }
 }

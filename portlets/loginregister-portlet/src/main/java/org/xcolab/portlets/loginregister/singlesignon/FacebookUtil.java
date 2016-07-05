@@ -10,7 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.util.RequestUtils;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +57,7 @@ public final class FacebookUtil {
     }
 
     public static String getAccessToken(PortletRequest request, String code) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(TOKEN_URL)
+        UriBuilder uriBuilder = new UriBuilder(UriComponentsBuilder.fromHttpUrl(TOKEN_URL))
                 .queryParam("client_id", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.getStringValue())
                 .queryParam("redirect_uri", getAuthRedirectURL(request))
                 .queryParam("client_secret", ConfigurationAttributeKey.FACEBOOK_APPLICATION_SECRET.getStringValue())
@@ -79,7 +80,7 @@ public final class FacebookUtil {
     }
 
     public static JSONObject getGraphResources(String path, String accessToken, String fields) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(GRAPH_URL + path)
+        UriBuilder uriBuilder = new UriBuilder(UriComponentsBuilder.fromHttpUrl(GRAPH_URL + path))
                 .queryParam("access_token", accessToken)
                 .queryParam("fields", fields);
         final String json = RequestUtils.getUnchecked(uriBuilder, String.class);

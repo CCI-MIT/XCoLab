@@ -8,6 +8,9 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,8 +62,10 @@ public class Badge implements Serializable {
             cal.setTime(referenceDate);
 
             year = cal.get(Calendar.YEAR);
-        } catch (PortalException | SystemException e) {
-            e.printStackTrace();
+        } catch (PortalException e) {
+            throw new InternalException(e);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 

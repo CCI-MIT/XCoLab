@@ -8,14 +8,18 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.wrapper.TabWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
 
-import javax.portlet.PortletRequest;
 import java.util.List;
+
+import javax.portlet.PortletRequest;
 
 
 public abstract class ContestDetailsBaseTabController extends BaseTabController {
@@ -41,19 +45,20 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
 
     @ModelAttribute("contestWrapper")
     public BaseContestWrapper populateContestWrapper(Model model, PortletRequest request) {
-        try {
-            initContest(request);
-            return contestWrapper;
-        } catch (SystemException | PortalException e) {
-            _log.warn("Could not get contest: ", e);
-        }
-        return null;
+        initContest(request);
+        return contestWrapper;
     }
 
-    private void initContest(PortletRequest request) throws SystemException, PortalException {
+    private void initContest(PortletRequest request) {
         Long contestId = getContestIdFromRequest(request);
-        contest = ContestLocalServiceUtil.getContest(contestId);
-        contestWrapper = new BaseContestWrapper(contest);
+        try {
+            contest = ContestLocalServiceUtil.getContest(contestId);
+            contestWrapper = new BaseContestWrapper(contest);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw ReferenceResolutionException.toObject(Contest.class, contestId).build();
+        }
     }
 
     @Override
@@ -83,11 +88,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         if (contest != null) {
             return contest;
         }
-        try {
-            initContest(request);
-        } catch (SystemException | PortalException e) {
-            _log.warn("Could not get contest: ", e);
-        }
+        initContest(request);
         return contest;
     }
 

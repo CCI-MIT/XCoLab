@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.client.comment.ThreadSortColumn;
-import org.xcolab.util.HumanTime;
+import org.xcolab.util.time.HumanTime;
 
 import java.util.ArrayList;
 import java.util.Collections;

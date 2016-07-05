@@ -2,16 +2,15 @@ package org.xcolab.utils.emailnotification.contest;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.utils.emailnotification.basic.ContestNotification;
 
 import java.util.List;
@@ -25,14 +24,14 @@ public class ContestVoteQuestionNotification extends ContestNotification {
     private final List<Proposal> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
-    public ContestVoteQuestionNotification(User recipient, Contest contest, List<Proposal> supportedProposals,
+    public ContestVoteQuestionNotification(Member recipient, Contest contest, List<Proposal> supportedProposals,
             ServiceContext serviceContext) {
         super(contest, recipient, null, serviceContext);
         this.supportedProposals = supportedProposals;
     }
 
     @Override
-    protected ContestVoteQuestionTemplate getTemplateWrapper() throws PortalException, SystemException {
+    protected ContestVoteQuestionTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;
         }
@@ -43,10 +42,6 @@ public class ContestVoteQuestionNotification extends ContestNotification {
         }
         final ContestEmailTemplate emailTemplate =
                 EmailTemplateClient.getContestEmailTemplateByType(voteQuestionTemplateString);
-        if (emailTemplate == null) {
-            throw new SystemException(String.format("Could not load template \"%s\" for %s",
-                    voteQuestionTemplateString, this.getClass().getName()));
-        }
         templateWrapper = new ContestVoteQuestionTemplate(emailTemplate, contest.getContestShortName());
 
         return templateWrapper;
@@ -59,7 +54,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
         }
 
         @Override
-        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        protected Node resolvePlaceholderTag(Element tag) {
             Node node = super.resolvePlaceholderTag(tag);
             if (node != null) {
                 return node;
@@ -70,7 +65,16 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                     StringBuilder supportedProposalsLinks = new StringBuilder();
                     supportedProposalsLinks.append("<span>");
                     for (Proposal proposal : supportedProposals) {
-                        supportedProposalsLinks.append(getProposalLinkForDirectVoting(contest, proposal)).append(" by ").append(UserLocalServiceUtil.getUser(proposal.getAuthorId()).getFullName()).append("<br />");
+                        Member member;
+                        try {
+                            member = MembersClient.getMember(proposal.getAuthorId());
+                        } catch (MemberNotFoundException e) {
+                            _log.error("Author " + proposal.getAuthorId() + " of proposal "
+                                    + proposal.getProposalId() + " does not exist");
+                            member = null;
+                        }
+                        supportedProposalsLinks.append(getProposalLinkForDirectVoting(contest, proposal)).append(" by ").append(
+                                member != null ? member.getFullName() : "Unknown author").append("<br />");
                     }
                     supportedProposalsLinks.append("</span>");
                     return parseXmlNode(supportedProposalsLinks.toString());

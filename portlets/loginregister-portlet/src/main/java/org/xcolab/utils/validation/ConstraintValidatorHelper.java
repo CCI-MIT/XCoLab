@@ -1,5 +1,8 @@
 package org.xcolab.utils.validation;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -10,6 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class ConstraintValidatorHelper {
+
+    private static final Log _log = LogFactoryUtil.getLog(ConstraintValidatorHelper.class);
 
     public static <T> T getPropertyValue(Class<T> requiredType, String propertyName, Object instance) {
         if (requiredType == null) {
@@ -34,7 +39,7 @@ public abstract class ConstraintValidatorHelper {
                     Object propertyValue = readMethod.invoke(instance);
                     returnValue = requiredType.cast(propertyValue);
                 } catch (Exception e) {
-                    e.printStackTrace(); // unable to invoke readMethod
+                    _log.error("Error invoking readMethod in constraint validator", e);
                 }
             }
         } catch (IntrospectionException e) {
@@ -52,7 +57,7 @@ public abstract class ConstraintValidatorHelper {
                 ignoreCase = true;
         }
 
-        List<String> values = new ArrayList<String>(propertyValues.size());
+        List<String> values = new ArrayList<>(propertyValues.size());
         for (String propertyValue : propertyValues) {
             if (ignoreCase) {
                 values.add(propertyValue.toLowerCase());

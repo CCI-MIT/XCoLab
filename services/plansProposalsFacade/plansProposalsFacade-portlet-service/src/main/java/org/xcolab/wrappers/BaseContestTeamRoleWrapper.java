@@ -1,6 +1,6 @@
 package org.xcolab.wrappers;
 
-import com.liferay.portal.model.User;
+import org.xcolab.client.members.pojo.Member;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,10 +9,10 @@ public class BaseContestTeamRoleWrapper implements Serializable, Comparable<Base
 
     private static final long serialVersionUID = 1L;
     private String roleName;
-    private List<User> users;
+    private List<Member> users;
     private int sort;
 
-    public BaseContestTeamRoleWrapper(String roleName, List<User> users, int sort) {
+    public BaseContestTeamRoleWrapper(String roleName, List<Member> users, int sort) {
         super();
         this.roleName = roleName;
         this.users = users;
@@ -27,11 +27,11 @@ public class BaseContestTeamRoleWrapper implements Serializable, Comparable<Base
         this.roleName = roleName;
     }
 
-    public List<User> getUsers() {
+    public List<Member> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<Member> users) {
         this.users = users;
     }
 

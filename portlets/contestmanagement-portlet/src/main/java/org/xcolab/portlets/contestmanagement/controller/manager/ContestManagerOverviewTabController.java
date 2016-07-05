@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
@@ -18,16 +19,17 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -101,7 +103,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
                     throw e;
                 }
             }
-        } catch (SystemException | PortalException | InvocationTargetException | IllegalAccessException | IOException e) {
+        } catch (InvocationTargetException | IllegalAccessException | IOException e) {
             _log.warn("Update contest overview failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -116,7 +118,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         }
         try {
             updateContestOverviewWrapper.executeMassAction(request, response);
-        } catch (SystemException | PortalException | InvocationTargetException | IllegalAccessException e) {
+        } catch (InvocationTargetException | IllegalAccessException e) {
             _log.warn("Export failed with: ", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }

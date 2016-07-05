@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.emailnotification.member.MemberRegistrationNotification;
 
 import java.util.Locale;
@@ -69,8 +69,8 @@ public final class LoginRegisterUtil {
 
         member.setShortBio(shortBio);
         member.setCountry(country);
-        member = MembersClient.register(member);
-
+        MembersClient.register(member);
+        member = MembersClient.getMember(liferayUser.getUserId());
         if (imageId != null && !imageId.isEmpty()) {
             member.setPortraitFileEntryId(Long.parseLong(imageId));
             MembersClient.updateMember(member);
@@ -78,13 +78,13 @@ public final class LoginRegisterUtil {
             member.setPortraitFileEntryId(0L);
             MembersClient.updateMember(member);
         }
-        sendEmailNotificationToRegisteredUser(liferayServiceContext, liferayUser);
+        sendEmailNotificationToRegisteredUser(liferayServiceContext, member);
 
         return MembersClient.getMember(liferayUser.getUserId());
     }
 
-    private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext, User recipient)
-            throws PortalException, SystemException {
+    private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext,
+            Member recipient) {
         new MemberRegistrationNotification(recipient, serviceContext).sendEmailNotification();
     }
 
@@ -100,6 +100,7 @@ public final class LoginRegisterUtil {
             return null;
         }
         final String screenName = getScreenNameFromLogin(login);
+        //TODO: liferay  throws a raw exception here
         AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
         User user = UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
         LoginLogLocalServiceUtil.createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
@@ -107,10 +108,10 @@ public final class LoginRegisterUtil {
         return user;
     }
 
-    private static String getScreenNameFromLogin(String login) throws SystemException, PortalException {
+    private static String getScreenNameFromLogin(String login) throws MemberNotFoundException {
         if (login.contains("@")) {
-            User user = UserLocalServiceUtil.getUserByEmailAddress(LIFERAY_COMPANY_ID, login);
-            return user.getScreenName();
+            Member member = MembersClient.findMemberByEmailAddress(login);
+            return member.getScreenName();
         }
         return login;
     }

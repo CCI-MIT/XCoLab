@@ -8,16 +8,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.MassActionConfirmationWrapper;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -46,7 +50,7 @@ public class ContestManagerConfirmMassActionController {
             SetRenderParameterUtil.addActionSuccessMessageToSession(request,
                     massActionConfirmationWrapper.getSelectedMassActionTitle());
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, ContestManagerTabs.OVERVIEW.getName());
-        } catch (Exception e) {
+        } catch (InvocationTargetException | IllegalAccessException | IOException e) {
             _log.warn("Update contest overview failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

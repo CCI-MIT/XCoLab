@@ -3,6 +3,7 @@ package org.xcolab.portlets.contestmanagement.beans;
 import com.ext.portlet.model.Contest;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -46,11 +47,15 @@ public class ContestFlagTextToolTipBean implements Serializable {
         this.flagText = contest.getFlagText();
     }
 
-    public void persist(Contest contest) throws SystemException {
+    public void persist(Contest contest) {
         contest.setFlag(flagNumber);
         contest.setFlagText(flagText);
         contest.setFlagTooltip(flagTooltip);
-        contest.persist();
+        try {
+            contest.persist();
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
     }
 
     public static List<LabelValue> getFlagOptions() {

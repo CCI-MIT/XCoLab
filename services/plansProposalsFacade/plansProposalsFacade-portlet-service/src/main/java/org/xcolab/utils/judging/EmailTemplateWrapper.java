@@ -1,7 +1,5 @@
 package org.xcolab.utils.judging;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,19 +23,19 @@ public class EmailTemplateWrapper {
         this.contestName = contestName;
     }
 
-    public String getHeader() throws SystemException, PortalException {
+    public String getHeader() {
         return this.replaceVariables(this.template.getHeader());
     }
 
-    public String getFooter() throws SystemException, PortalException {
+    public String getFooter() {
         return this.replaceVariables(this.template.getFooter());
     }
 
-    public String getSubject() throws SystemException, PortalException {
+    public String getSubject() {
         return this.replaceVariables(this.template.getSubject());
     }
 
-    protected String replaceVariables(String inputString) throws SystemException, PortalException {
+    protected String replaceVariables(String inputString) {
         Document doc = Jsoup.parse(inputString, "", Parser.xmlParser());
         for (Element tag : doc.select("*")) {
             Node resolvedNode = resolvePlaceholderTag(tag);
@@ -50,7 +48,7 @@ public class EmailTemplateWrapper {
         return doc.html();
     }
 
-    protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+    protected Node resolvePlaceholderTag(Element tag) {
         switch (tag.nodeName()) {
             case PROPOSAL_TITLE_PLACEHOLDER:
                 return new TextNode(this.proposalName, "");
@@ -60,7 +58,7 @@ public class EmailTemplateWrapper {
         return null;
     }
 
-    public String getCompleteMessage(String body) throws SystemException, PortalException {
+    public String getCompleteMessage(String body) {
         return this.getHeader() + "\n" + body + "\n\n" + this.getFooter();
     }
 

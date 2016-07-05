@@ -1,8 +1,7 @@
 package org.xcolab.portlets.proposals.requests;
 
 import com.ext.portlet.model.ProposalRatingType;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -12,12 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Manuel Thurner
- */
 public class RatingBean {
-    protected List<ProposalRatingTypeWrapper> ratingTypes;
-    protected Map<Long, String> ratingValues;
+    private List<ProposalRatingTypeWrapper> ratingTypes;
+    private Map<Long, String> ratingValues;
 
     private Long contestPhaseId;
 
@@ -25,7 +21,7 @@ public class RatingBean {
 
     private Long screeningUserId;
 
-    public RatingBean(ProposalWrapper wrapper, List<ProposalRatingType> presetRatingTypes) throws PortalException, SystemException {
+    public RatingBean(ProposalWrapper wrapper, List<ProposalRatingType> presetRatingTypes) {
         this.ratingValues = new HashMap<>();
         this.ratingTypes = new ArrayList<>();
 

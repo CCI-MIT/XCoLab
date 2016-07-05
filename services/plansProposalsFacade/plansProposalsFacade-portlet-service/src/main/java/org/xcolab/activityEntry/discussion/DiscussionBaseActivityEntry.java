@@ -10,9 +10,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.xcolab.util.enums.activities.ActivityEntryType;
+
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.comment.CommentClient;
@@ -24,12 +23,14 @@ import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.helpers.ProposalAttributeHelper;
+import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 public abstract class DiscussionBaseActivityEntry implements ActivityEntryContentProvider {
 
-    protected ActivityEntry activityEntry;
+    private static final Log _log = LogFactoryUtil.getLog(DiscussionBaseActivityEntry.class);
 
-    private static final Log _log = LogFactoryUtil.getLog(DiscussionAddProposalCommentActivityEntry.class);
+    protected ActivityEntry activityEntry;
 
     protected Comment comment;
 
@@ -50,55 +51,58 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     @Override
     public void setActivityEntry(ActivityEntry activityEntry) {
         this.activityEntry = activityEntry;
-        try {
-            if(!this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())) {
+        if (!this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())) {
 
+            try {
                 category = CommentClient.getCategory(activityEntry.getClassPrimaryKey());
-                comment = CommentClient.getComment(Long.parseLong(activityEntry.getExtraData()));
+                comment = CommentClient
+                        .getComment(Long.parseLong(activityEntry.getExtraData()));
                 thread = CommentClient.getThread(comment.getThreadId());
                 category = CommentClient.getCategory(thread.getCategoryId());
-            }else{
+            } catch (CategoryNotFoundException | ThreadNotFoundException | CommentNotFoundException e) {
+                _log.warn("Could not initialize discussion from " + activityEntry);
+            }
+        } else {
+            try {
                 thread = CommentClient.getThread(activityEntry.getClassPrimaryKey());
                 final Long proposalId = CommentClient.getProposalIdForThread(thread.getThreadId());
-                if(proposalId != null) {
-                    try {
-                        proposal = ProposalLocalServiceUtil.getProposal(proposalId);
 
+                if (proposalId != null) {
 
-                        contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
+                    proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+                    contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
 
-                        ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal);
-
-                        proposalName = proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
-
-                    } catch (PortalException | SystemException e) {
-                        e.printStackTrace();
-                    }
+                    ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal);
+                    proposalName = proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
                 }
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            } catch (PortalException | ThreadNotFoundException e) {
+                _log.warn("Could not initialize proposal comment from " + activityEntry);
             }
-        }catch( CommentNotFoundException | ThreadNotFoundException | CategoryNotFoundException ignored){
         }
     }
 
-    protected String getProposalLink(){
+    protected String getProposalLink() {
         String url = "";
-        if( proposal!= null) {
+        if (proposal!= null) {
             url = "<a href='" + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal)+ "/tab/COMMENTS" + "'>" + proposalName + "</a>";
         }
         return url;
     }
 
-    protected String getThreadLink(){
+    protected String getThreadLink() {
         return String.format(
                 HYPERLINK_FORMAT,
                 StringEscapeUtils.escapeHtml4(thread.getLinkUrl()), thread.getTitle());
     }
 
-    protected String getCategoryLink(){
+    protected String getCategoryLink() {
         return String.format(
                 HYPERLINK_FORMAT,
                 StringEscapeUtils.escapeHtml4(category.getLinkUrl()), category.getName());
     }
+
     protected String getUserLink() {
         try {
             return CommunityUtil.generateUserURL(this.activityEntry.getMemberId());
@@ -114,12 +118,12 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     }
 
 
-    public enum DiscussionActivitySubType{
-        DISCUSSION_PROPOSAL_COMMENT(1l),
-        DISCUSSION_CATEGORY_ADDED(2l),
-        DISCUSSION_ADDED(3l),
-        DISCUSSION_FORUM_COMMENT(4l),
-        DISCUSSION_ADDED_COMMENT(5l);
+    public enum DiscussionActivitySubType {
+        DISCUSSION_PROPOSAL_COMMENT(1L),
+        DISCUSSION_CATEGORY_ADDED(2L),
+        DISCUSSION_ADDED(3L),
+        DISCUSSION_FORUM_COMMENT(4L),
+        DISCUSSION_ADDED_COMMENT(5L);
 
         private final Long secondaryTypeId;
         DiscussionActivitySubType(Long type) {

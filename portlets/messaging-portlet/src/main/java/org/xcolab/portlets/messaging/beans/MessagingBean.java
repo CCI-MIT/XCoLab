@@ -29,7 +29,7 @@ public class MessagingBean implements Serializable {
     @SuppressWarnings("unused")
     public MessagingBean() { }
 
-    public MessagingBean(User user, int pageNumber, MessageType messageType) throws SystemException, PortalException {
+    public MessagingBean(User user, int pageNumber, MessageType messageType) {
         this.user = user;
         this.pageNumber = pageNumber;
         this.messageType = messageType;

@@ -1,23 +1,25 @@
 package org.xcolab.client.admin;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public class AdminClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/admin-service";
+    private static final RestService adminService = new RestService("admin-service");
+    private static final RestResource<ConfigurationAttribute> configurationAttributeResource =
+            new RestResource<>(adminService, "attributes", ConfigurationAttribute.TYPES);
 
-    public static ConfigurationAttribute getConfigurationAttribute(ConfigurationAttributeKey attributeKey) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/attributes/" + attributeKey.name());
+    public static ConfigurationAttribute getConfigurationAttribute(
+            ConfigurationAttributeKey attributeKey) {
 
         try {
-            return RequestUtils.get(uriBuilder, ConfigurationAttribute.class, "_configurationAttribute_" + attributeKey.name());
+            return configurationAttributeResource.get(attributeKey.name())
+                    .cacheIdentifier("configurationAttribute_" + attributeKey.name())
+                    .execute();
         } catch (EntityNotFoundException e) {
             throw new ConfigurationAttributeNotFoundException(attributeKey);
         }

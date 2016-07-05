@@ -22,7 +22,7 @@ public final class SetRenderParameterUtil {
         setErrorRenderParameter(response, "showNotFound");
     }
 
-    public static void setExceptionRenderParameter(ActionResponse response, Exception exception) {
+    public static void setExceptionRenderParameter(ActionResponse response, Throwable exception) {
         setErrorRenderParameter(response, "showException");
         response.setRenderParameter("exceptionMessage", exception.getMessage());
         response.setRenderParameter("exceptionStacktrace", getFullStackTraceInHtmlFormat(exception));
@@ -48,7 +48,7 @@ public final class SetRenderParameterUtil {
         return htmlStacktrace;
     }
 
-    public static void addActionExceptionMessageToSession(PortletRequest request, Exception exception) {
+    public static void addActionExceptionMessageToSession(PortletRequest request, Throwable exception) {
         addMessageToSession(request, "exceptionMessage", exception.getMessage());
         addMessageToSession(request, "exceptionStacktrace", getFullStackTraceInHtmlFormat(exception));
     }

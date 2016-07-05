@@ -3,9 +3,6 @@ package org.xcolab.utils.emailnotification.proposal;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -13,16 +10,17 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 
 public class ProposalUserActionNotification extends ProposalNotification {
 
     private static final String SENDER_NAME_PLACEHOLDER = "sender-name";
-    private final User sender;
+    private final Member sender;
     private final String templateName;
     private ProposalUserActionNotificationTemplate templateWrapper;
 
-    public ProposalUserActionNotification(Proposal proposal, Contest contest, User sender, User recipient,
+    public ProposalUserActionNotification(Proposal proposal, Contest contest, Member sender, Member recipient,
             String templateName, ServiceContext serviceContext) {
         super(proposal, contest, recipient, null, serviceContext);
         this.sender = sender;
@@ -30,7 +28,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
     }
 
     @Override
-    protected ProposalUserActionNotificationTemplate getTemplateWrapper() throws SystemException, PortalException {
+    protected ProposalUserActionNotificationTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;
         }
@@ -40,10 +38,6 @@ public class ProposalUserActionNotification extends ProposalNotification {
 
         final ContestEmailTemplate emailTemplate =
                 EmailTemplateClient.getContestEmailTemplateByType(templateName);
-        if (emailTemplate == null) {
-            throw new SystemException(
-                    "Could not load template \"" + templateName + "\" for " + this.getClass().getName());
-        }
         templateWrapper = new ProposalUserActionNotificationTemplate(emailTemplate,
                 proposalName, contest.getContestShortName());
 
@@ -58,7 +52,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
         }
 
         @Override
-        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        protected Node resolvePlaceholderTag(Element tag) {
             Node node = super.resolvePlaceholderTag(tag);
             if (node != null) {
                 return node;

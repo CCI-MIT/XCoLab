@@ -18,7 +18,7 @@ import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.activities.service.ActivitiesService;
 import org.xcolab.service.activities.utils.Utils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.sql.Timestamp;
 import java.util.List;

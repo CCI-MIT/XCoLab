@@ -7,41 +7,41 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringEscapeUtils;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by Manuel Thurner
- */
 public class ProposalRatingsWrapper {
     private final static Log _log = LogFactoryUtil.getLog(ProposalRatingsWrapper.class);
     private final List<ProposalRatingWrapper> proposalRatings;
-    private final User author;
+    private final Member author;
     private String comment;
     private ContestPhase contestPhase;
 
-    public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings, Long roundFactor) throws SystemException, PortalException {
-        this(UserLocalServiceUtil.getUser(authorId), proposalRatings, roundFactor);
+    public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings,
+            Long roundFactor) throws MemberNotFoundException {
+        this(MembersClient.getMember(authorId), proposalRatings, roundFactor);
     }
 
-    public ProposalRatingsWrapper(long authorId) throws SystemException, PortalException {
-        this(UserLocalServiceUtil.getUser(authorId), Collections.<ProposalRating>emptyList());
+    public ProposalRatingsWrapper(long authorId) throws MemberNotFoundException {
+        this(MembersClient.getMember(authorId), Collections.<ProposalRating>emptyList());
     }
-    public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings) throws SystemException, PortalException {
-        this(UserLocalServiceUtil.getUser(authorId), proposalRatings);
+    public ProposalRatingsWrapper(long authorId, List<ProposalRating> proposalRatings) {
+        this(MembersClient.getMemberUnchecked(authorId), proposalRatings);
     }
 
-    public ProposalRatingsWrapper(User author, List<ProposalRating> proposalRatings) throws SystemException, PortalException {
+    public ProposalRatingsWrapper(Member author, List<ProposalRating> proposalRatings) {
         this(author, proposalRatings, 1L);
     }
 
-    public ProposalRatingsWrapper(User author, List<ProposalRating> proposalRatings, Long roundFactor) throws SystemException, PortalException {
+    public ProposalRatingsWrapper(Member author, List<ProposalRating> proposalRatings, Long roundFactor) {
         List<ProposalRatingWrapper> wrapped = new ArrayList<>();
         for (ProposalRating r : proposalRatings) {
             wrapped.add(new ProposalRatingWrapper(r, roundFactor));
@@ -126,7 +126,7 @@ public class ProposalRatingsWrapper {
         }
     }
 
-    public User getAuthor() {
+    public Member getAuthor() {
         return author;
     }
 }

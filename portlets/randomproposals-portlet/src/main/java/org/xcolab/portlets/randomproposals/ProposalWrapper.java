@@ -3,9 +3,7 @@ package org.xcolab.portlets.randomproposals;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Proposal;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.wrappers.BaseProposalWrapper;
 
 public class ProposalWrapper extends BaseProposalWrapper {
@@ -14,7 +12,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 		super(proposal);
 	}
 
-	public Long getImage() throws SystemException, PortalException {
+	public Long getImage() {
 		return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0);
 	}
 }

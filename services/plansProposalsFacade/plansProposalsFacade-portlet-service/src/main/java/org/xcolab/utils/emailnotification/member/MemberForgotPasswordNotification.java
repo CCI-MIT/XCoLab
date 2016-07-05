@@ -1,8 +1,5 @@
 package org.xcolab.utils.emailnotification.member;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -11,6 +8,7 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.utils.emailnotification.basic.MemberNotification;
 
 public class MemberForgotPasswordNotification extends MemberNotification {
@@ -27,25 +25,21 @@ public class MemberForgotPasswordNotification extends MemberNotification {
 
     private final String passwordResetLink;
 
-    public MemberForgotPasswordNotification(String memberIp, String passwordResetLink, User recipient, ServiceContext serviceContext)
-            throws SystemException, PortalException {
+    public MemberForgotPasswordNotification(String memberIp, String passwordResetLink,
+            Member recipient, ServiceContext serviceContext) {
         super(recipient, TEMPLATE_NAME, serviceContext);
         this.memberIp = memberIp;
         this.passwordResetLink = passwordResetLink;
     }
 
     @Override
-    protected EmailNotificationTemplate getTemplateWrapper() throws PortalException, SystemException {
+    protected EmailNotificationTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;
         }
 
         final ContestEmailTemplate emailTemplate =
                 EmailTemplateClient.getContestEmailTemplateByType(templateName);
-        if (emailTemplate == null) {
-            throw new SystemException(
-                    "Could not load template \"" + templateName + "\" for " + this.getClass().getName());
-        }
         templateWrapper = new MemberForgotPasswordTemplate(emailTemplate, "", "");
 
         return templateWrapper;
@@ -63,7 +57,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
         }
 
         @Override
-        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        protected Node resolvePlaceholderTag(Element tag) {
             Node node = super.resolvePlaceholderTag(tag);
             if (node != null) {
                 return node;

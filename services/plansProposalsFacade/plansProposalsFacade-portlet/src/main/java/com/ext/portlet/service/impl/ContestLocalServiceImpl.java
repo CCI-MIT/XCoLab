@@ -3,7 +3,6 @@ package com.ext.portlet.service.impl;
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
@@ -26,7 +25,6 @@ import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
@@ -68,13 +66,18 @@ import com.liferay.portal.service.ServiceContext;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.util.enums.activities.ActivityEntryType;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.emailnotification.contest.ContestVoteQuestionNotification;
 import org.xcolab.utils.emailnotification.proposal.ContestVoteNotification;
@@ -86,6 +89,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -420,7 +424,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     }
 
     @Override
-    public long getCommentsCount(Contest contest) throws PortalException, SystemException {
+    public long getCommentsCount(Contest contest) {
         return CommentClient.countComments(contest.getDiscussionGroupId());
     }
 
@@ -473,11 +477,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      * @param contestPK id of a contest
      * @param userId    id of a user
      * @return true if user is subscribed to a contest, false otherwise
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public boolean isSubscribed(long contestPK, long userId) throws PortalException, SystemException {
+    public boolean isSubscribed(long contestPK, long userId) {
         //return activitySubscriptionLocalService.isSubscribed(userId, Contest.class, contestPK, 0, "");
         return ActivitiesClient.isSubscribedToActivity(userId,ActivityEntryType.CONTEST.getPrimaryTypeId(),contestPK,0,"");
     }
@@ -717,14 +719,20 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             }
 
             // Directly transfer the support to a vote
-            if (proposals.size() == 1) {
-                voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
-                new ContestVoteNotification(user, contest, proposals.get(0), serviceContext).sendMessage();
+            try {
+                Member member = MembersClient.getMember(user.getUserId());
+                if (proposals.size() == 1) {
+                    voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
+                    new ContestVoteNotification(member, contest, proposals.get(0), serviceContext).sendMessage();
+                }
+                // Send a notification to the user
+                else {
+                    new ContestVoteQuestionNotification(member, contest, proposals, serviceContext).sendMessage();
+                }
+            } catch (MemberNotFoundException e) {
+                //ignore, we know it exists
             }
-            // Send a notification to the user
-            else {
-                new ContestVoteQuestionNotification(user, contest, proposals, serviceContext).sendMessage();
-            }
+
         }
     }
 
@@ -859,7 +867,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.ADVISOR))) {
             return roleToUserMap.get(MemberRole.ADVISOR);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override
@@ -868,7 +876,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.JUDGE))) {
             return roleToUserMap.get(MemberRole.JUDGE);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override
@@ -877,7 +885,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.FELLOW))) {
             return roleToUserMap.get(MemberRole.FELLOW);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override
@@ -886,7 +894,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         if (Validator.isNotNull(roleToUserMap) && Validator.isNotNull(roleToUserMap.get(MemberRole.CONTEST_MANAGER))) {
             return roleToUserMap.get(MemberRole.CONTEST_MANAGER);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     /**
@@ -900,9 +908,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private Map<MemberRole, List<User>> getContestTeamMembersByRole(Contest contest) throws PortalException, SystemException {
         Map<MemberRole, List<User>> teamRoleToUsersMap = new TreeMap<>();
         for (ContestTeamMember ctm : getTeamMembers(contest)) {
-            ContestTeamMemberRole role;
             try {
-                role = ContestLocalServiceUtil.getRoleForMember(ctm);
+                ContestTeamMemberRole role = getRoleForMember(ctm);
                 MemberRole memberRole = MemberRole.fromRoleId(role.getPrimaryKey());
                 List<User> roleUsers = teamRoleToUsersMap.get(memberRole);
 
@@ -913,7 +920,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
                 roleUsers.add(contestTeamMemberLocalService.getUser(ctm));
             } catch (NoSuchModelException e) {
-                e.printStackTrace();
+                throw ReferenceResolutionException
+                        .toObject(ContestTeamMemberRole.class, ctm.getRoleId())
+                        .fromObject(ContestTeamMember.class, ctm.getId());
             }
         }
         return teamRoleToUsersMap;

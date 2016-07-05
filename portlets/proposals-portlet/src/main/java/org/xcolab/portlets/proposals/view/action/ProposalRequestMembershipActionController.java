@@ -13,6 +13,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
@@ -31,12 +33,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.emailnotification.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.utils.emailnotification.proposal.ProposalUserActionNotification;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
@@ -44,14 +56,13 @@ import javax.portlet.ActionResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
 public class ProposalRequestMembershipActionController {
+
+    private static Log _log = LogFactoryUtil.getLog(ProposalRequestMembershipActionController.class);
+
     private static final String MEMBERSHIP_REQUEST_TEMPLATE = "PROPOSAL_MEMBERSHIP_REQUEST_DEFAULT";
 
     private static final String MSG_MEMBERSHIP_RESPONSE_SUBJECT = "Response to your membership request";
@@ -73,17 +84,18 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        final User sender = proposalsContext.getUser(request);
-        if (sender.getDefaultUser()) {
+        final User liferaySender = proposalsContext.getUser(request);
+        final Member sender = proposalsContext.getMember(request);
+        if (liferaySender.getDefaultUser()) {
     		return;
     	}
 
         final Proposal proposal = proposalsContext.getProposal(request);
         final long proposalId = proposal.getProposalId();
-        final User proposalAuthor = UserLocalServiceUtil.getUser(proposal.getAuthorId());
+        final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorId());
         final Contest contest = proposalsContext.getContest(request);
 
-        ProposalLocalServiceUtil.addRequestedMembershipRequest(proposalId, sender.getUserId(), comment);
+        ProposalLocalServiceUtil.addRequestedMembershipRequest(proposalId, liferaySender.getUserId(), comment);
 
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
@@ -113,30 +125,37 @@ public class ProposalRequestMembershipActionController {
 		try {
 			if (inputParts.length > 0) {
 				String screenName = inputParts[0];
-				User recipient = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
+                try {
+                    Member recipient = MembersClient.findMemberByScreenName(screenName);
 
-				if (recipient != null) {
-                    final Proposal proposal = proposalsContext.getProposal(request);
-                    final long proposalId = proposal.getProposalId();
-                    final Contest contest = proposalsContext.getContest(request);
+                    if (recipient != null) {
+                        final Proposal proposal = proposalsContext.getProposal(request);
+                        final long proposalId = proposal.getProposalId();
+                        final Contest contest = proposalsContext.getContest(request);
 
-					String comment = HtmlUtil.cleanAll(requestMembershipInviteBean.getInviteComment());
+                        String comment = HtmlUtil
+                                .cleanAll(requestMembershipInviteBean.getInviteComment());
 
-					if (Validator.isNull(comment)) {
-						comment = "No message specified";
-					}
-					MembershipRequest memberRequest = ProposalLocalServiceUtil
-                            .addInvitedMembershipRequest(proposalId,recipient.getUserId(),comment);
+                        if (Validator.isNull(comment)) {
+                            comment = "No message specified";
+                        }
+                        MembershipRequest memberRequest = ProposalLocalServiceUtil
+                                .addInvitedMembershipRequest(proposalId, recipient.getUserId(),
+                                        comment);
 
-                    ServiceContext serviceContext = new ServiceContext();
-                    serviceContext.setPortalURL(themeDisplay.getPortalURL());
-                    final User sender = proposalsContext.getUser(request);
-                    new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
-                            memberRequest, comment, serviceContext).sendMessage();
+                        ServiceContext serviceContext = new ServiceContext();
+                        serviceContext.setPortalURL(themeDisplay.getPortalURL());
+                        final Member sender = proposalsContext.getMember(request);
+                        new ProposalMembershipInviteNotification(proposal, contest, sender,
+                                recipient,
+                                memberRequest, comment, serviceContext).sendMessage();
 
-					SessionMessages.add(request, "memberInviteSent");
-				}
-			} else {
+                        SessionMessages.add(request, "memberInviteSent");
+                    }
+                } catch (MemberNotFoundException e) {
+                    throw new IllegalArgumentException("Member with screen name not found: " + screenName);
+                }
+            } else {
 				SessionErrors.add(request, "memberInviteRecipientError");
 			}
 
@@ -159,7 +178,7 @@ public class ProposalRequestMembershipActionController {
         try {
             response.getPortletOutputStream().write(responseJson.toString().getBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InternalException(e);
         }
     }
 
@@ -206,9 +225,8 @@ public class ProposalRequestMembershipActionController {
 
         try{
             MessageUtil.sendMessage(subject, content, sender, sender,recipients);
-        } catch (PortalException | SystemException | AddressException
-                | MailEngineException | UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (AddressException | MailEngineException | UnsupportedEncodingException e) {
+            _log.error("Failed to send message", e);
         }
     }
 

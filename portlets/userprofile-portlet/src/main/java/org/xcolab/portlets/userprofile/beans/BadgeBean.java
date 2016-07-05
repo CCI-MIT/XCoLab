@@ -2,7 +2,6 @@ package org.xcolab.portlets.userprofile.beans;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
-import org.xcolab.util.enums.contestPhase.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
@@ -18,7 +17,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import org.xcolab.portlets.userprofile.entity.Badge;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,32 +36,38 @@ public class BadgeBean implements Serializable {
     public BadgeBean(long userID) {
         this.userID = userID;
         badges = new ArrayList<>();
-        try {
-            fetchBadges();
-        } catch (SystemException | PortalException e) {
-            e.printStackTrace();
-        }
+        fetchBadges();
     }
 
-    private void fetchBadges() throws SystemException, PortalException {
-        for (Proposal p : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-            if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(), userID)) {
-                continue;
-            }
-            try {
-                ContestPhaseRibbonType ribbon = getRibbonType(p);
-                int proposalRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
-                if (proposalRibbon > 0) {
-                    String badgeText = ribbon.getHoverText();
-                    Contest contest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId());
-                    String proposalTitle = ProposalAttributeLocalServiceUtil
-                            .getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-                    badges.add(new Badge(proposalRibbon, badgeText, p, proposalTitle, contest));
+    private void fetchBadges() {
+        try {
+            for (Proposal p : ProposalLocalServiceUtil
+                    .getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+                if (!ProposalLocalServiceUtil.isUserAMember(p.getProposalId(), userID)) {
+                    continue;
                 }
-            } catch (SystemException | PortalException e) {
-                _log.warn("Could nod add badge to user profile view for userId: " + userID + " and proposalId: " + p
-                        .getProposalId(), e);
+                try {
+                    ContestPhaseRibbonType ribbon = getRibbonType(p);
+                    int proposalRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
+                    if (proposalRibbon > 0) {
+                        String badgeText = ribbon.getHoverText();
+                        Contest contest = Proposal2PhaseLocalServiceUtil
+                                .getCurrentContestForProposal(p.getProposalId());
+                        String proposalTitle = ProposalAttributeLocalServiceUtil
+                                .getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0)
+                                .getStringValue();
+                        badges.add(new Badge(proposalRibbon, badgeText, p, proposalTitle, contest));
+                    }
+                } catch (SystemException | PortalException e) {
+                    _log.warn("Could nod add badge to user profile view for userId: " + userID
+                            + " and proposalId: " + p
+                            .getProposalId(), e);
+                }
             }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            //can't happen, we know the proposal exists
         }
     }
 

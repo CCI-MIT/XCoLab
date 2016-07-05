@@ -8,11 +8,9 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +20,10 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.helpers.ProposalAttributeHelper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
@@ -35,7 +36,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 public abstract class EmailNotification {
-    protected static final long ADMINISTRATOR_USER_ID = 10144L;
+    private static final long ADMINISTRATOR_USER_ID = 10144L;
 
     private static final String FIRSTNAME_PLACEHOLDER = "firstname";
     private static final String FULL_NAME_PLACEHOLDER = "fullname";
@@ -53,18 +54,18 @@ public abstract class EmailNotification {
     private static final String PINTEREST_PLACEHOLDER = "pinterest";
     private static final String LINKEDIN_PLACEHOLDER = "linkedin";
 
-    protected static final String FACEBOOK_PROPOSAL_SHARE_LINK
+    private static final String FACEBOOK_PROPOSAL_SHARE_LINK
             = "https://www.facebook.com/sharer/sharer.php?u=%s&display=popup";
-    protected static final String TWITTER_PROPOSAL_SHARE_LINK
+    private static final String TWITTER_PROPOSAL_SHARE_LINK
             = "https://twitter.com/share?url=%s&text=%s";
-    protected static final String LINKEDIN_PROPOSAL_SHARE_LINK
+    private static final String LINKEDIN_PROPOSAL_SHARE_LINK
             = "https://www.linkedin.com/shareArticle?mini=true&url=%s&title=%s&summary=%s&source=";
-    protected static final String PINTEREST_PROPOSAL_SHARE_LINK
+    private static final String PINTEREST_PROPOSAL_SHARE_LINK
             = "https://pinterest.com/pin/create/button/?url=g%s&media=http://climatecolab.org/climatecolab-theme/images/logo-climate-colab.png&description=%s";
 
-    protected static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
+    private ProposalAttributeHelper proposalAttributeHelper;
 
-    protected ProposalAttributeHelper proposalAttributeHelper;
+    protected static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
 
     protected ServiceContext serviceContext;
 
@@ -75,8 +76,8 @@ public abstract class EmailNotification {
         _log = LogFactoryUtil.getLog(this.getClass());
     }
 
-    protected String getProposalLinkWithLinkText(Contest contest, Proposal proposal, String linkText, String tab)
-            throws SystemException {
+    private String getProposalLinkWithLinkText(Contest contest,
+            Proposal proposal, String linkText, String tab) {
         String proposalLinkUrl = serviceContext.getPortalURL()
                 + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
         if (tab != null) {
@@ -92,7 +93,7 @@ public abstract class EmailNotification {
      * @param proposal The proposal object (must not be null)
      * @return Proposal URL as String
      */
-    protected String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) throws SystemException {
+    protected String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) {
         final String proposalName = new ProposalAttributeHelper(proposal)
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
         final String proposalLinkUrl = serviceContext.getPortalURL()
@@ -106,7 +107,7 @@ public abstract class EmailNotification {
      * @param contest The contest object
      * @return Contest URL as String
      */
-    protected String getContestLink(Contest contest) {
+    private String getContestLink(Contest contest) {
         final String contestLinkUrl =
                 serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
         return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getContestShortName());
@@ -132,11 +133,8 @@ public abstract class EmailNotification {
      *
      * @param contest         Contest in which the proposal is in
      * @param proposalToShare The Proposal that should be shared
-     * @throws SystemException
-     * @throws PortalException
      */
-    protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare)
-            throws SystemException, PortalException {
+    protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare) {
         return serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
     }
 
@@ -154,7 +152,7 @@ public abstract class EmailNotification {
      *
      * @param urlToShare The url to be shared
      */
-    protected String getFacebookShareLink(String urlToShare) {
+    private String getFacebookShareLink(String urlToShare) {
         String url = String.format(FACEBOOK_PROPOSAL_SHARE_LINK, urlToShare);
         return String.format(LINK_FORMAT_STRING, url, "Facebook");
     }
@@ -164,21 +162,20 @@ public abstract class EmailNotification {
      *
      * @param urlToShare   The url to be shared
      * @param shareMessage The message that should be included for sharing
-     * @throws SystemException
      */
-    protected String getTwitterShareLink(String urlToShare, String shareMessage) throws SystemException {
+    private String getTwitterShareLink(String urlToShare, String shareMessage) {
         try {
             String url = String.format(TWITTER_PROPOSAL_SHARE_LINK, urlToShare,
                     URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "Twitter");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
-            throw new SystemException(e);
+            throw new InternalException(e);
         }
     }
 
-    protected String getLinkedInShareLink(String urlToShare, String shareTitle, String shareMessage)
-            throws SystemException {
+    private String getLinkedInShareLink(String urlToShare,
+            String shareTitle, String shareMessage) {
         try {
             String url = String.format(LINKEDIN_PROPOSAL_SHARE_LINK, urlToShare,
                     URLEncoder.encode(shareTitle, "UTF-8"),
@@ -186,31 +183,31 @@ public abstract class EmailNotification {
             return String.format(LINK_FORMAT_STRING, url, "LinkedIn");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
-            throw new SystemException(e);
+            throw new InternalException(e);
         }
     }
 
-    protected String getPinterestShareLink(String urlToShare, String shareMessage) throws SystemException {
+    private String getPinterestShareLink(String urlToShare, String shareMessage) {
         try {
             String url = String.format(PINTEREST_PROPOSAL_SHARE_LINK, urlToShare,
                     URLEncoder.encode(shareMessage, "UTF-8"));
             return String.format(LINK_FORMAT_STRING, url, "Pinterest");
         } catch (UnsupportedEncodingException e) {
             // Should never happen
-            throw new SystemException(e);
+            throw new InternalException(e);
         }
     }
 
-    public void sendEmailNotification() throws SystemException, PortalException {
+    public void sendEmailNotification() {
         EmailTemplateWrapper template = getTemplateWrapper();
         String subject = template.getSubject();
         String body = template.getHeader() + "\n" + template.getFooter();
         sendMessage(subject, body, getRecipient());
     }
 
-    protected abstract EmailTemplateWrapper getTemplateWrapper() throws SystemException, PortalException;
+    protected abstract EmailTemplateWrapper getTemplateWrapper();
 
-    protected void sendMessage(String subject, String body, User recipient) throws SystemException {
+    protected void sendMessage(String subject, String body, Member recipient) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
@@ -221,9 +218,9 @@ public abstract class EmailNotification {
         }
     }
 
-    protected abstract User getRecipient() throws SystemException, PortalException;
+    protected abstract Member getRecipient();
 
-    public void sendMessage() throws SystemException, PortalException {
+    public void sendMessage() {
         List<Long> recipients = new ArrayList<>();
         recipients.add(getRecipient().getUserId());
         EmailTemplateWrapper template = getTemplateWrapper();
@@ -233,7 +230,7 @@ public abstract class EmailNotification {
             MessageUtil.sendMessage(template.getSubject(), content,
                     ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients);
         } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
-            throw new SystemException(e);
+            throw new InternalException(e);
         }
     }
 
@@ -243,7 +240,7 @@ public abstract class EmailNotification {
         }
 
         @Override
-        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        protected Node resolvePlaceholderTag(Element tag) {
             final Node node = super.resolvePlaceholderTag(tag);
             if (node != null) {
                 return node;
@@ -251,8 +248,13 @@ public abstract class EmailNotification {
             Contest contest = getContest();
             Proposal proposal = getProposal();
             final boolean hasProposal = contest != null && proposal != null;
-            final ContestType contestType = contest != null
-                    ? ContestTypeLocalServiceUtil.getContestType(contest) : null;
+            final ContestType contestType;
+            try {
+                contestType = contest != null
+                        ? ContestTypeLocalServiceUtil.getContestType(contest) : null;
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            }
 
             switch (tag.nodeName()) {
                 case FIRSTNAME_PLACEHOLDER:
@@ -279,22 +281,22 @@ public abstract class EmailNotification {
                     }
                     break;
                 case PROPOSAL_STRING_PLACEHOLDER:
-                    if (contest != null) {
+                    if (contest != null && contestType != null) {
                         return new TextNode(contestType.getProposalName(), "");
                     }
                     break;
                 case PROPOSALS_STRING_PLACEHOLDER:
-                    if (contest != null) {
+                    if (contest != null && contestType != null) {
                         return new TextNode(contestType.getProposalNamePlural(), "");
                     }
                     break;
                 case CONTEST_STRING_PLACEHOLDER:
-                    if (contest != null) {
+                    if (contest != null && contestType != null) {
                         return new TextNode(contestType.getContestName(), "");
                     }
                     break;
                 case CONTESTS_STRING_PLACEHOLDER:
-                    if (contest != null) {
+                    if (contest != null && contestType != null) {
                         return new TextNode(contestType.getContestNamePlural(), "");
                     }
                     break;

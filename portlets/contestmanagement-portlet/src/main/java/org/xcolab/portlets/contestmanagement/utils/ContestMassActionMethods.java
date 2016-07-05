@@ -20,8 +20,11 @@ import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.util.html.HtmlUtil;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,9 +36,6 @@ import javax.mail.internet.InternetAddress;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
 
-/**
- * Created by Thomas on 3/5/2015.
- */
 public class ContestMassActionMethods {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestMassActionMethods.class);
@@ -45,7 +45,7 @@ public class ContestMassActionMethods {
                     "Last Name", "Email Address", "Role", "Last phase");
 
     public static void reportOfPeopleInCurrentPhase(List<Long> contestList, Object ResourceResponseObject,
-                                                    PortletRequest request) throws Exception {
+                                                    PortletRequest request) throws IOException {
 
         ResourceResponse response = (ResourceResponse) ResourceResponseObject;
         CsvExportHelper csvExportHelper = new CsvExportHelper();
@@ -58,14 +58,15 @@ public class ContestMassActionMethods {
                         ContestLocalServiceUtil.getActivePhase(ContestLocalServiceUtil.getContest(contestId));
                 csvExportHelper
                         .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
-            } catch (Exception e) {
-                _log.warn("Failed to export data for csv: ", e);
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            } catch (PortalException e) {
+                throw new InternalException("Failed to export data to csv: ", e);
             }
         }
 
         String exportFileName = "reportOfPeopleInCurrentPhase";
         csvExportHelper.initiateDownload(exportFileName, request, response);
-
     }
 
     public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request)

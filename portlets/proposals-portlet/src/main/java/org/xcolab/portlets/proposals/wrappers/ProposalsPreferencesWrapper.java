@@ -2,11 +2,11 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import java.io.IOException;
@@ -40,12 +40,17 @@ public class ProposalsPreferencesWrapper {
     public ProposalsPreferencesWrapper() {
     }
 
-    public ProposalsPreferencesWrapper(PortletRequest request) throws SystemException, PortalException {
+    public ProposalsPreferencesWrapper(PortletRequest request) {
         PortletPreferences preferences = request.getPreferences();
         termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
         callToAction = preferences.getValue(CALL_TO_ACTION, CALL_TO_ACTION_DEFAULT);
         contestTypeId = preferences.getValue(CONTEST_TYPE_ID, "0");
-        contestType = ContestTypeLocalServiceUtil.fetchContestType(Long.parseLong(contestTypeId));
+        try {
+            contestType = ContestTypeLocalServiceUtil
+                    .fetchContestType(Long.parseLong(contestTypeId));
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
         moveToContestId = -1;
@@ -128,7 +133,7 @@ public class ProposalsPreferencesWrapper {
         this.contestTypeId = contestTypeId;
     }
 
-    public ContestType getContestType() throws SystemException {
+    public ContestType getContestType() {
         return contestType;
     }
 }

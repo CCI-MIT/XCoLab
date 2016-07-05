@@ -1,6 +1,6 @@
 package com.ext.utils.subscriptions;
 
-import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.activityEntry.proposal.ProposalBaseActivityEntry;
 
 import java.util.ArrayList;
@@ -11,8 +11,6 @@ import java.util.Map;
 /**
  * Util class defining rules for certain types of SocialActivities where notifications to subscribed users should be restricted
  * (i.e. ProposalSupports are only shared with Proposal contributors)
- *
- * Created by kmang on 08/05/14.
  */
 public class ActivitySubscriptionConstraint {
 
@@ -21,19 +19,19 @@ public class ActivitySubscriptionConstraint {
 
     static {
         whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
-                new ActivitySubscriptionWhitelistProposalSupportHandler());
+                new ActivitySubscriptionWhitelistProposalContributorHandler());
         whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId(),
-                new ActivitySubscriptionWhitelistProposalSupportHandler());
+                new ActivitySubscriptionWhitelistProposalContributorHandler());
         whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
-                new ActivitySubscriptionWhitelistProposalSupportHandler());
+                new ActivitySubscriptionWhitelistProposalContributorHandler());
         whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId()+ "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
-                new ActivitySubscriptionWhitelistProposalSupportHandler());
+                new ActivitySubscriptionWhitelistProposalContributorHandler());
         whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
-                new ActivitySubscriptionWhitelistProposalSupportHandler());
+                new ActivitySubscriptionWhitelistProposalContributorHandler());
     }
 
-    private long classNameId;
-    private long activityType;
+    private final long classNameId;
+    private final long activityType;
 
     public ActivitySubscriptionConstraint(long classNameId, long activityType) {
         this.classNameId = classNameId;

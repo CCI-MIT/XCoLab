@@ -1,13 +1,10 @@
 package org.xcolab.portlets.redballoon.web;
 
-import com.ext.portlet.service.BalloonTextLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.portlets.redballoon.web.beans.AddEditBalloonTextBean;
@@ -17,24 +14,23 @@ import org.xcolab.portlets.redballoon.web.beans.AddEditBalloonTextBean;
 public class BalloonPreferencesController {
 	
 	@RequestMapping
-	public String showBalloon(Model model) throws SystemException {
+	public String showBalloon(Model model) {
 		
-		model.addAttribute("balloonTexts", BalloonTextLocalServiceUtil.getBalloonTexts(0, Integer.MAX_VALUE));
+		model.addAttribute("balloonTexts", BalloonsClient.getAllEnabledBalloonTexts());
 		
 		return "edit/editBalloonConfiguration";
 	}
 
 	@RequestMapping(params="balloonTextId")
-	public String editBalloonText(Model model, @RequestParam long balloonTextId) throws PortalException, SystemException {
+	public String editBalloonText(Model model, @RequestParam long balloonTextId) {
 		try {
-
-
 			if (balloonTextId > 0) {
-				model.addAttribute("addEditBalloonText", new AddEditBalloonTextBean(BalloonsClient.getBalloonText(balloonTextId)));
+				model.addAttribute("addEditBalloonText",
+						new AddEditBalloonTextBean(BalloonsClient.getBalloonText(balloonTextId)));
 			} else {
 				model.addAttribute("addEditBalloonText", new AddEditBalloonTextBean());
 			}
-		}catch(BalloonUserTrackingNotFound ignored){
+		} catch(BalloonUserTrackingNotFound ignored) {
 
 		}
 		

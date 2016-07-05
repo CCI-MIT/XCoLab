@@ -18,6 +18,7 @@ import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.portlets.redballoon.BalloonCookie;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -29,28 +30,30 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-//import com.ext.portlet.model.BalloonUserTracking;
-
 public class BalloonUtils {
 	
-	private static Random rand = new Random();
+	private static final Random rand = new Random();
 	private final static String SHARE_LINK_PATTERN = "%s/socialnetworkprize2016/-/link/%s";
 	private final static Log _log = LogFactoryUtil.getLog(BalloonUtils.class);
 	
-	public static BalloonUserTracking getBalloonUserTracking(PortletRequest request, PortletResponse response, 
-			String parent, String linkuuid, String context) throws PortalException, SystemException {
+	public static BalloonUserTracking getBalloonUserTracking(PortletRequest request,
+			PortletResponse response, String parent, String linkuuid, String context) {
 		BalloonCookie cookie = BalloonCookie.fromCookieArray(request.getCookies());
 		
 		ThemeDisplay td = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		User user = td.getUser();
 		if (cookie.getUuid() == null) {
-			if (td.getUserId() > 0 && td.getUserId() != td.getDefaultUserId()) {
-				cookie.setUuid(user.getUuid());
-			}
-			else {
-				cookie.setUuid(UUID.randomUUID().toString());
-			}
-			response.addProperty(cookie.getHttpCookie());
+            try {
+                if (td.getUserId() > 0 && td.getUserId() != td.getDefaultUserId()) {
+                    cookie.setUuid(user.getUuid());
+                }
+                else {
+                    cookie.setUuid(UUID.randomUUID().toString());
+                }
+            } catch (PortalException | SystemException e) {
+                throw new InternalException(e);
+            }
+            response.addProperty(cookie.getHttpCookie());
 		}
 		
 		BalloonUserTracking but = null;
@@ -101,7 +104,7 @@ public class BalloonUtils {
 			}
 			
 			// pick randomly balloon text to be displayed
-			List<BalloonText> texts = BalloonsClient.getAllEnabledBallonTexts();
+			List<BalloonText> texts = BalloonsClient.getAllEnabledBalloonTexts();
 			if (! texts.isEmpty()) {
 				but.setBalloonTextId(texts.get(rand.nextInt(texts.size())).getId_());
 			}

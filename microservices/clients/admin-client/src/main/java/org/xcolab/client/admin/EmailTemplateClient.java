@@ -1,49 +1,41 @@
 package org.xcolab.client.admin;
 
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.client.admin.exceptions.EmailTemplateNotFoundException;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class EmailTemplateClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/admin-service";
+    private static final RestService adminService = new RestService("admin-service");
+    private static final RestResource<ContestEmailTemplate> emailTemplatesResource =
+            new RestResource<>(adminService, "emailTemplates", ContestEmailTemplate.TYPES);
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
-
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/emailTemplates");
-
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContestEmailTemplate>>() {
-                });
+        return emailTemplatesResource.list().execute();
     }
 
     public static ContestEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/emailTemplates/" + emailTemplateType + "");
         try {
-            return RequestUtils.get(uriBuilder, ContestEmailTemplate.class, "_emailTemplate_contest_" + emailTemplateType);
+            return emailTemplatesResource.get(emailTemplateType).execute();
         } catch (EntityNotFoundException e) {
             throw new EmailTemplateNotFoundException(emailTemplateType);
         }
     }
 
     public static void updateContestEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/emailTemplates/" + contestEmailTemplate.getType_() + "");
+        final UriBuilder uriBuilder = emailTemplatesResource.getResourceUrl(
+                contestEmailTemplate.getType_());
         RequestUtils.put(uriBuilder, contestEmailTemplate);
     }
 
     public static ContestEmailTemplate createEmailTemplate(ContestEmailTemplate template) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/emailTemplates");
+        final UriBuilder uriBuilder = emailTemplatesResource.getResourceUrl();
         return RequestUtils.post(uriBuilder, template, ContestEmailTemplate.class);
     }
 }

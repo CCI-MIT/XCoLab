@@ -3,15 +3,13 @@ package org.xcolab.utils.emailnotification.proposal;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 
 public class ProposalVoteValidityConfirmation extends ProposalNotification {
@@ -21,10 +19,10 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
 
     private final Proposal votedProposal;
     private final String confirmationToken;
-    private final User recipient;
+    private final Member recipient;
     private ProposalVoteConfirmationTemplate templateWrapper;
 
-    public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest, User recipient,
+    public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest, Member recipient,
             ServiceContext serviceContext, String confirmationToken) {
         super(votedProposal, contest, recipient, null, serviceContext);
         this.confirmationToken = confirmationToken;
@@ -33,7 +31,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
     }
 
     @Override
-    protected ProposalVoteConfirmationTemplate getTemplateWrapper() throws SystemException, PortalException {
+    protected ProposalVoteConfirmationTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;
         }
@@ -47,11 +45,6 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
         }
         final ContestEmailTemplate emailTemplate =
                 EmailTemplateClient.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
-        if (emailTemplate == null) {
-            throw new SystemException(
-                    "Could not load template \"" + proposalVoteConfirmationTemplateString + "\" for " + this.getClass()
-                            .getName());
-        }
         templateWrapper =
                 new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getContestShortName());
 
@@ -72,7 +65,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
         }
 
         @Override
-        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        protected Node resolvePlaceholderTag(Element tag) {
             Node node = super.resolvePlaceholderTag(tag);
             if (node != null) {
                 return node;

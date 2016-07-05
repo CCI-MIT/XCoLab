@@ -13,24 +13,26 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
-import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.portlets.messaging.beans.MessagingBean;
 import org.xcolab.portlets.messaging.beans.SendMessageBean;
 import org.xcolab.portlets.messaging.utils.MessagingPermissions;
-import org.xcolab.client.members.MessagingClient;
 import org.xcolab.utils.LinkUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 @Controller
 @RequestMapping("view")
@@ -39,8 +41,7 @@ public class MessagingController {
     @RenderMapping
     public String showMessages(RenderRequest request, RenderResponse response, Model model,
             @RequestParam(required = false) String mailboxType,
-            @RequestParam(required = false) Integer pageNumber)
-            throws SystemException, PortalException {
+            @RequestParam(required = false) Integer pageNumber) {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         User user = themeDisplay.getUser();
@@ -55,9 +56,7 @@ public class MessagingController {
 
     @RenderMapping(params = {"page=composeMessage"})
     public String composeMessage(RenderRequest request, RenderResponse response, Model model,
-            @RequestParam(required = false) Integer messageId)
-            throws SystemException, PortalException {
-
+            @RequestParam(required = false) Integer messageId) {
         model.addAttribute("sendMessageBean", new SendMessageBean());
         return "composeMessage";
     }
@@ -65,7 +64,7 @@ public class MessagingController {
     @RenderMapping(params = {"page=viewMessage"})
     public String showMessage(RenderRequest request, RenderResponse response, Model model,
             @RequestParam(required = false) Integer messageId)
-            throws SystemException, PortalException, MessageNotFoundException, DiscussionAuthorizationException {
+            throws MessageNotFoundException, DiscussionAuthorizationException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 

@@ -1,8 +1,17 @@
 package org.xcolab.client.flagging.pojo;
 
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.util.http.client.types.TypeProvider;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class ReportTarget implements Serializable {
+    public static final TypeProvider<ReportTarget> TYPES =
+            new TypeProvider<>(ReportTarget.class,
+                    new ParameterizedTypeReference<List<ReportTarget>>() {
+                    });
 
     private static final long serialVersionUID = 1382979461;
 

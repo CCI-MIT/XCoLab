@@ -5,9 +5,13 @@ package org.xcolab.client.filtering.pojo;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.annotation.Generated;
 
@@ -25,6 +29,11 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FilteredEntry implements Serializable {
+
+    public static final TypeProvider<FilteredEntry> TYPES =
+            new TypeProvider<>(FilteredEntry.class,
+                    new ParameterizedTypeReference<List<FilteredEntry>>() {
+                    });
 
     private static final long serialVersionUID = -1261366948;
 

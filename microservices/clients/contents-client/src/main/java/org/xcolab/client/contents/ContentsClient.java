@@ -1,30 +1,37 @@
 package org.xcolab.client.contents;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class ContentsClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/contents-service";
+    private static final RestService contentService = new RestService("contents-service");
+
+    private static final RestResource<ContentArticle> contentArticleResource =
+            new RestResource<>(contentService, "contentArticle", ContentArticle.TYPES);
+    private static final RestResource<ContentArticleVersion> contentArticleVersionResource =
+            new RestResource<>(contentService, "contentArticleVersion",
+                    ContentArticleVersion.TYPES);
+    private static final RestResource<ContentFolder> contentFolderResource =
+            new RestResource<>(contentService, "contentFolder", ContentFolder.TYPES);
 
     private ContentsClient() {
     }
 
     public static List<ContentArticle> getContentArticles(Long folderId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticles");
-        if (folderId != null) {
-            uriBuilder.queryParam("folderId", folderId);
-        }
+        final UriBuilder uriBuilder = contentArticleResource.getResourceUrl()
+                .optionalQueryParam("folderId", folderId);
         return RequestUtils.getList(uriBuilder,
                 new ParameterizedTypeReference<List<ContentArticle>>() {
                 });
@@ -32,8 +39,8 @@ public final class ContentsClient {
 
     public static ContentArticleVersion getLatestContentArticleVersion(long folderId, String title)
             throws ContentNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions")
+        //TODO: port to new methods
+        final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl()
                     .queryParam("folderId", folderId)
                     .queryParam("title", title)
                     .queryParam("sort", "-contentArticleVersion");
@@ -49,8 +56,7 @@ public final class ContentsClient {
 
     public static ContentArticleVersion getLatestContentArticleVersion(long articleId)
             throws ContentNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions")
+        final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl()
                     .queryParam("contentArticleId", articleId)
                     .queryParam("sort", "-contentArticleVersion");
         try {
@@ -66,56 +72,30 @@ public final class ContentsClient {
     public static List<ContentArticleVersion> getContentArticleVersions(Integer startRecord,
             Integer limitRecord, Long folderId, Long contentArticleId,
             Long contentArticleVersion, String title) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions");
-
-        if (startRecord != null) {
-            uriBuilder.queryParam("startRecord", startRecord);
-        }
-        if (limitRecord != null) {
-            uriBuilder.queryParam("limitRecord", limitRecord);
-        }
-        if (contentArticleId != null) {
-            uriBuilder.queryParam("contentArticleId", contentArticleId);
-        }
-        if (folderId != null) {
-            uriBuilder.queryParam("folderId", folderId);
-        }
-        if (contentArticleVersion != null) {
-            uriBuilder.queryParam("contentArticleVersion", contentArticleVersion);
-        }
-        if (title != null) {
-            uriBuilder.queryParam("title", title);
-        }
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-                });
+        return contentArticleVersionResource.list()
+                .optionalQueryParam("startRecord", startRecord)
+                .optionalQueryParam("limitRecord", limitRecord)
+                .optionalQueryParam("contentArticleId", contentArticleId)
+                .optionalQueryParam("folderId", folderId)
+                .optionalQueryParam("contentArticleVersion", contentArticleVersion)
+                .optionalQueryParam("title", title)
+                .execute();
     }
 
     public static List<ContentFolder> getContentFolders() {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentFolders");
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContentFolder>>() {
-                });
+        return contentFolderResource.list().execute();
     }
 
     public static List<ContentFolder> getContentFolders(Long parentFolderId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentFolders")
-                .queryParam("parentFolderId", parentFolderId);
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContentFolder>>() {
-                });
+        return contentFolderResource.list()
+                .queryParam("parentFolderId", parentFolderId)
+                .execute();
     }
 
     public static ContentArticle getContentArticle(Long contentArticleId)
             throws ContentNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticles/" + contentArticleId + "");
-
         try {
-            return RequestUtils.get(uriBuilder, ContentArticle.class);
+            return contentArticleResource.get(contentArticleId).execute();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentArticle " + contentArticleId + " does not exist");
@@ -123,27 +103,18 @@ public final class ContentsClient {
     }
 
     public static ContentArticle createContentArticle(ContentArticle contentArticle) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticles/");
-        return RequestUtils.post(uriBuilder, contentArticle, ContentArticle.class);
+        return contentArticleResource.create(contentArticle).execute();
     }
 
-    public static void updateContentArticle(ContentArticle contentArticle) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticles/" + contentArticle.getContentArticleId());
-
-        RequestUtils.put(uriBuilder, contentArticle);
+    public static boolean updateContentArticle(ContentArticle contentArticle) {
+        return contentArticleResource.update(contentArticle, contentArticle.getContentArticleId())
+                .execute();
     }
 
     public static ContentArticleVersion getContentArticleVersion(Long contentArticleVersionId)
             throws ContentNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions/" + contentArticleVersionId + "");
-
         try {
-            return RequestUtils.get(uriBuilder, ContentArticleVersion.class);
+            return contentArticleVersionResource.get(contentArticleVersionId).execute();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentArticleVersion " + contentArticleVersionId + " does not exist");
@@ -152,25 +123,19 @@ public final class ContentsClient {
 
     public static ContentArticleVersion createContentArticleVersion(
             ContentArticleVersion contentArticleVersion) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions/");
-        return RequestUtils.post(uriBuilder, contentArticleVersion, ContentArticleVersion.class);
+        return contentArticleVersionResource.create(contentArticleVersion).execute();
     }
 
-    public static void updateContentArticleVersion(ContentArticleVersion contentArticleVersion) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentArticleVersions/" + contentArticleVersion
-                .getContentArticleVersionId());
-        RequestUtils.put(uriBuilder, contentArticleVersion);
+    public static boolean updateContentArticleVersion(ContentArticleVersion contentArticleVersion) {
+        return contentArticleVersionResource
+                .update(contentArticleVersion, contentArticleVersion.getContentArticleVersionId())
+                .execute();
     }
 
-    public static ContentFolder getContentFolder(Long contentFolderId)
+    public static ContentFolder getContentFolder(long contentFolderId)
             throws ContentNotFoundException {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentFolders/" + contentFolderId + "");
-
         try {
-            return RequestUtils.get(uriBuilder, ContentFolder.class);
+            return contentFolderResource.get(contentFolderId).execute();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentFolder " + contentFolderId + " does not exist");
@@ -178,24 +143,18 @@ public final class ContentsClient {
     }
 
     public static ContentFolder createContentFolder(ContentFolder contentFolder) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentFolders/");
-        return RequestUtils.post(uriBuilder, contentFolder, ContentFolder.class);
+        return contentFolderResource.create(contentFolder).execute();
     }
 
-    public static void updateContentFolder(ContentFolder contentFolder) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentFolders/" + contentFolder.getContentFolderId());
-        RequestUtils.put(uriBuilder, contentFolder);
+    public static boolean updateContentFolder(ContentFolder contentFolder) {
+        return contentFolderResource.update(contentFolder, contentFolder.getContentFolderId())
+                .execute();
     }
 
-    public static List<ContentArticleVersion> getChildArticleVersions(Long folderId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/contentFolders/" + folderId
-                + "/contentArticlesVersions/");
-
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-        });
+    public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
+        return contentArticleVersionResource
+                .getSubResource(folderId, "contentArticlesVersions", ContentArticleVersion.TYPES)
+                .list()
+                .execute();
     }
 }

@@ -241,10 +241,8 @@ public interface ProposalRatingTypeLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges()
-        throws com.liferay.portal.kernel.exception.SystemException;
+    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges();
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows()
-        throws com.liferay.portal.kernel.exception.SystemException;
+    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows();
 }

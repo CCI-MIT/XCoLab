@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -37,12 +36,8 @@ public class FlaggingReportWrapper {
     public String getTargetName() {
         switch (TargetType.valueOf(report.getTargetType())) {
             case PROPOSAL:
-                try {
-                    final Proposal proposal = getTargetProposal();
-                    return new BaseProposalWrapper(proposal).getName();
-                } catch (PortalException | SystemException e) {
-                    return "unknown proposal";
-                }
+                final Proposal proposal = getTargetProposal();
+                return new BaseProposalWrapper(proposal).getName();
             case COMMENT:
                 final Comment commentTarget = getTargetComment();
                 if (commentTarget != null) {
@@ -59,12 +54,9 @@ public class FlaggingReportWrapper {
     public String getTargetLink() {
         switch (TargetType.valueOf(report.getTargetType())) {
             case PROPOSAL:
-                try {
-                    final Proposal proposal = getTargetProposal();
-                    if (proposal != null) {
-                        return new BaseProposalWrapper(proposal).getProposalUrl();
-                    }
-                } catch (NoSuchContestException ignored) {
+                final Proposal proposal = getTargetProposal();
+                if (proposal != null) {
+                    return new BaseProposalWrapper(proposal).getProposalUrl();
                 }
                 break;
             case COMMENT:

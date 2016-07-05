@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
@@ -272,7 +273,7 @@ public class ContestWrapper extends BaseContestWrapper {
     }
 
     public boolean isUserAmongAdvisors(User userInQuestion) throws SystemException, PortalException {
-        for (User judge : getContestAdvisors()) {
+        for (Member judge : getContestAdvisors()) {
             if (judge.getUserId() == userInQuestion.getUserId()) {
                 return true;
             }
