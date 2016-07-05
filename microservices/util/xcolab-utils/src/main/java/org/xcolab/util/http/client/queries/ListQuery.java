@@ -11,7 +11,7 @@ import java.util.List;
 public class ListQuery<T> {
     private final UriBuilder uriBuilder;
     private final ParameterizedTypeReference<List<T>> typeReference;
-    private String cacheIdentifier;
+    private String cacheIdentifierValue;
 
     public ListQuery(RestResource<T> restResource,
             ParameterizedTypeReference<List<T>> typeReference) {
@@ -20,10 +20,10 @@ public class ListQuery<T> {
     }
 
     public List<T> execute() {
-        if (cacheIdentifier == null) {
+        if (cacheIdentifierValue == null) {
             return RequestUtils.getList(uriBuilder, typeReference);
         } else {
-            return RequestUtils.getList(uriBuilder, typeReference, cacheIdentifier);
+            return RequestUtils.getList(uriBuilder, typeReference, cacheIdentifierValue);
         }
     }
 
@@ -34,7 +34,7 @@ public class ListQuery<T> {
     }
 
     public ListQuery<T> cacheIdentifier(String cacheIdentifier) {
-        this.cacheIdentifier = cacheIdentifier;
+        this.cacheIdentifierValue = cacheIdentifier;
         return this;
     }
 

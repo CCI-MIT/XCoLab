@@ -8,7 +8,7 @@ public class UpdateQuery<T> {
 
     private final UriBuilder uriBuilder;
     private final T pojo;
-    private String cacheIdentifier;
+    private String cacheIdentifierValue;
 
     public UpdateQuery(RestResource<T> restResource, long id, T pojo) {
         this.pojo = pojo;
@@ -21,15 +21,15 @@ public class UpdateQuery<T> {
     }
 
     public boolean execute() {
-        if (cacheIdentifier == null) {
+        if (cacheIdentifierValue == null) {
             return RequestUtils.put(uriBuilder, pojo);
         } else {
-            return RequestUtils.put(uriBuilder, pojo, cacheIdentifier);
+            return RequestUtils.put(uriBuilder, pojo, cacheIdentifierValue);
         }
     }
 
     public UpdateQuery<T> cacheIdentifier(String cacheIdentifier) {
-        this.cacheIdentifier = cacheIdentifier;
+        this.cacheIdentifierValue = cacheIdentifier;
         return this;
     }
 

@@ -8,7 +8,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 public class GetQuery<T> {
     private final UriBuilder uriBuilder;
     private final Class<T> entityType;
-    private String cacheIdentifier;
+    private String cacheIdentifierValue;
 
     public GetQuery(RestResource<T> restResource, long id, Class<T> entityType) {
         this.entityType = entityType;
@@ -21,23 +21,23 @@ public class GetQuery<T> {
     }
 
     public T executeUnchecked() {
-        if (cacheIdentifier == null) {
+        if (cacheIdentifierValue == null) {
             return RequestUtils.getUnchecked(uriBuilder, entityType);
         } else {
-            return RequestUtils.getUnchecked(uriBuilder, entityType, cacheIdentifier);
+            return RequestUtils.getUnchecked(uriBuilder, entityType, cacheIdentifierValue);
         }
     }
 
     public T execute() throws EntityNotFoundException {
-        if (cacheIdentifier == null) {
+        if (cacheIdentifierValue == null) {
             return RequestUtils.get(uriBuilder, entityType);
         } else {
-            return RequestUtils.get(uriBuilder, entityType, cacheIdentifier);
+            return RequestUtils.get(uriBuilder, entityType, cacheIdentifierValue);
         }
     }
 
     public GetQuery<T> cacheIdentifier(String cacheIdentifier) {
-        this.cacheIdentifier = cacheIdentifier;
+        this.cacheIdentifierValue = cacheIdentifier;
         return this;
     }
 

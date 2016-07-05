@@ -3,12 +3,11 @@ package org.xcolab.util.http.client.queries;
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public class CountQuery<T> {
     private final UriBuilder uriBuilder;
     private final Class<T> entityType;
-    private String cacheIdentifier;
+    private String cacheIdentifierValue;
 
     public CountQuery(RestResource<T> restResource, Class<T> entityType) {
         this.entityType = entityType;
@@ -16,15 +15,15 @@ public class CountQuery<T> {
     }
 
     public int execute() {
-        if (cacheIdentifier == null) {
+        if (cacheIdentifierValue == null) {
             return RequestUtils.getCount(uriBuilder);
         } else {
-            return RequestUtils.getCount(uriBuilder, entityType, cacheIdentifier);
+            return RequestUtils.getCount(uriBuilder, entityType, cacheIdentifierValue);
         }
     }
 
     public CountQuery<T> cacheIdentifier(String cacheIdentifier) {
-        this.cacheIdentifier = cacheIdentifier;
+        this.cacheIdentifierValue = cacheIdentifier;
         return this;
     }
 

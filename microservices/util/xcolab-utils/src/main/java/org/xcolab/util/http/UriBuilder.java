@@ -34,13 +34,15 @@ public class UriBuilder {
     }
 
     public UriBuilder optionalQueryParam(String parameterName, Object optionalParameter) {
-        if (optionalParameter != null) {
-            if (!(optionalParameter instanceof String
-                    && StringUtils.isBlank((String) optionalParameter))) {
-                uriComponentsBuilder.queryParam(parameterName, optionalParameter);
-            }
+        if (optionalParameter != null && isNotBlankString(optionalParameter)) {
+            uriComponentsBuilder.queryParam(parameterName, optionalParameter);
         }
         return this;
+    }
+
+    private boolean isNotBlankString(Object potentialString) {
+        return !(potentialString instanceof String
+                && StringUtils.isBlank((String) potentialString));
     }
 
     public String buildString() {
