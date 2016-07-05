@@ -26,7 +26,7 @@ public final class FlaggingClient {
     private static final RestResource<AggregatedReport> aggregatedReportResource = new RestResource<>(
             flaggingService, "aggregatedReports", AggregatedReport.TYPES);
     private static final RestResource<ReportTarget> reportTargetResource = new RestResource<>(
-            flaggingService, "reportTarget", ReportTarget.TYPES);
+            flaggingService, "reportTargets", ReportTarget.TYPES);
 
     private FlaggingClient() {
     }

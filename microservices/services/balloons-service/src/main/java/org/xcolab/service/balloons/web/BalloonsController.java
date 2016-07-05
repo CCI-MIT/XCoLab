@@ -48,7 +48,7 @@ public class BalloonsController {
     }
 
     @RequestMapping(value = "/balloonLinks/{uuid}", method = RequestMethod.GET)
-    public BalloonLink getBallonLink(@PathVariable("uuid") String uuid) throws NotFoundException {
+    public BalloonLink getBalloonLink(@PathVariable("uuid") String uuid) throws NotFoundException {
         if (uuid == null) {
             throw new NotFoundException();
         } else {
@@ -57,7 +57,7 @@ public class BalloonsController {
     }
 
     @RequestMapping(value = "/balloonLinks/", method = RequestMethod.GET)
-    public BalloonLink getBallonLinkByMemberUuid(@RequestParam(required = false) String memberUuid) throws NotFoundException {
+    public BalloonLink getBalloonLinkByMemberUuid(@RequestParam(required = false) String memberUuid) throws NotFoundException {
         if (memberUuid == null) {
             throw new NotFoundException();
         } else {
@@ -73,14 +73,14 @@ public class BalloonsController {
         return this.balloonUserTrackingDao.getAllBalloonUserTracking();
     }*/
 
-    @RequestMapping(value = "/balloonUserTracking/", method = RequestMethod.POST)
+    @RequestMapping(value = "/balloonUserTrackings/", method = RequestMethod.POST)
     public BalloonUserTracking createBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking) {
 
         return this.balloonUserTrackingDao.create(balloonUserTracking);
     }
 
-    @RequestMapping(value = "/balloonUserTracking/{uuid}", method = RequestMethod.GET)
-    public BalloonUserTracking getBallonUserTracking(@PathVariable("uuid") String uuid) throws NotFoundException {
+    @RequestMapping(value = "/balloonUserTrackings/{uuid}", method = RequestMethod.GET)
+    public BalloonUserTracking getBalloonUserTracking(@PathVariable("uuid") String uuid) throws NotFoundException {
         if (uuid == null) {
             throw new NotFoundException();
         } else {
@@ -88,8 +88,8 @@ public class BalloonsController {
         }
     }
 
-    @RequestMapping(value = "/balloonUserTracking/", method = RequestMethod.GET)
-    public List<BalloonUserTracking> getBallonUserTrackingByEmail(@RequestParam(required = false) String email) throws NotFoundException {
+    @RequestMapping(value = "/balloonUserTrackings/", method = RequestMethod.GET)
+    public List<BalloonUserTracking> getBalloonUserTrackingByEmail(@RequestParam(required = false) String email) throws NotFoundException {
         if (email == null) {
             throw new NotFoundException();
         } else {
@@ -97,14 +97,14 @@ public class BalloonsController {
         }
     }
 
-    @RequestMapping(value = "/balloonUserTracking/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/balloonUserTrackings/{uuid}", method = RequestMethod.PUT)
     public boolean updateBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking,
                                              @PathVariable("uuid") String uuid) throws NotFoundException {
 
         if (balloonUserTrackingDao.getBallonUserTrackingByUuid(uuid) == null) {
             List<BalloonUserTracking> searchByEmail = balloonUserTrackingDao
                     .getBallonUserTrackingByEmail(balloonUserTracking.getEmail());
-            if (searchByEmail == null || searchByEmail.size() == 0) {
+            if (searchByEmail == null || searchByEmail.isEmpty()) {
                 throw new NotFoundException();
             }else{
                 balloonUserTracking.setUuid_(searchByEmail.get(0).getUuid_());

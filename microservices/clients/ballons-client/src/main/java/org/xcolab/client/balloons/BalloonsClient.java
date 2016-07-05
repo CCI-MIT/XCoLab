@@ -18,7 +18,7 @@ public final class BalloonsClient {
     private static final RestResource<BalloonLink> balloonLinkResource = new RestResource<>(
             balloonService, "balloonLinks", BalloonLink.TYPES);
     private static final RestResource<BalloonUserTracking> balloonUserTrackingResource =
-            new RestResource<>(balloonService, "balloonUserTracking", BalloonUserTracking.TYPES);
+            new RestResource<>(balloonService, "balloonUserTrackings", BalloonUserTracking.TYPES);
     private static final RestResource<BalloonText> balloonTextResource = new RestResource<>(
             balloonService, "balloonTexts", BalloonText.TYPES);
 
