@@ -153,7 +153,6 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public Message createMessage(Message message) {
         final MessageRecord record = dslContext.insertInto(MESSAGE)
-                .set(MESSAGE.MESSAGE_ID, message.getMessageId())
                 .set(MESSAGE.FROM_ID, message.getFromId())
                 .set(MESSAGE.REPLIES_TO, message.getRepliesTo())
                 .set(MESSAGE.SUBJECT, message.getSubject())
