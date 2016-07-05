@@ -29,6 +29,13 @@ public class RestResource<T> implements UrlProvider {
         this.typeReference = typeProvider.getTypeReference();
     }
 
+    public RestResource(UrlProvider serviceOrParent, String resourceName) {
+        this.urlProvider = serviceOrParent;
+        this.resourceName = resourceName;
+        this.entityType = null;
+        this.typeReference = null;
+    }
+
     @Override
     public UriBuilder getBaseUrl() {
         return urlProvider.getBaseUrl();
@@ -53,7 +60,16 @@ public class RestResource<T> implements UrlProvider {
                 subResourceName, typeProvider);
     }
 
+    public <S> RestResource<S> getTypelessSubResource(long resourceId, String subResourceName) {
+        return new RestResource<>(
+                new ParentResourceClient(this, resourceId),
+                subResourceName);
+    }
+
     public CreateQuery<T> create(T pojo) {
+        if (entityType == null) {
+            throw new UnsupportedOperationException("This resource was initialized without type");
+        }
         return new CreateQuery<>(this, pojo, entityType);
     }
 
@@ -70,18 +86,30 @@ public class RestResource<T> implements UrlProvider {
     }
 
     public GetQuery<T> get(long id) {
+        if (entityType == null) {
+            throw new UnsupportedOperationException("This resource was initialized without type");
+        }
         return new GetQuery<>(this, id, entityType);
     }
 
     public GetQuery<T> get(String id) {
+        if (entityType == null) {
+            throw new UnsupportedOperationException("This resource was initialized without type");
+        }
         return new GetQuery<>(this, id, entityType);
     }
 
     public ListQuery<T> list() {
+        if (typeReference == null) {
+            throw new UnsupportedOperationException("This resource was initialized without type");
+        }
         return new ListQuery<>(this, typeReference);
     }
 
     public CountQuery<T> count() {
+        if (entityType == null) {
+            throw new UnsupportedOperationException("This resource was initialized without type");
+        }
         return new CountQuery<>(this, entityType);
     }
 

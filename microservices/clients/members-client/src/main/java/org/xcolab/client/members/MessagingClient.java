@@ -67,8 +67,7 @@ public final class MessagingClient {
     }
 
     public static void createRecipient(long messageId, long recipientId) {
-        //TODO: placeholder types argument
-        messageResource.getSubResource(messageId, "recipients", Message.TYPES)
+        messageResource.getTypelessSubResource(messageId, "recipients")
                 .create(null)
                 .queryParam("recipientId", recipientId)
                 .execute();
