@@ -43,11 +43,12 @@ public class AccountDetailsEmmaAPI {
                     publicApiKey = "";
                     privateApiKey = "";
                 }
-                if (StringUtils.isBlank(accountId) || StringUtils.isBlank(groupId)
+                if (StringUtils.isBlank(accountId)
+                        || StringUtils.isBlank(groupId)
                         || StringUtils.isBlank(publicApiKey)
-                        || StringUtils.isNotBlank(privateApiKey)) {
+                        || StringUtils.isBlank(privateApiKey)) {
                     throw new IllegalArgumentException("Invalid MyEmma Configuration - "
-                            + "please provide all attribute or deactivate MyEmma");
+                            + "please provide all attributes or deactivate MyEmma");
                 }
                 encodedAuthorization = "Basic " + new Base64()
                         .encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
