@@ -578,26 +578,18 @@ public interface ProposalLocalService extends BaseLocalService,
     *
     * @param proposalId proposal id
     * @return number of comments
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+    public long getCommentsCount(long proposalId);
 
     /**
     * <p>Returns number of fellow review comments in discussion associated with this proposal</p>
     *
     * @param proposalId proposal id
     * @return number of comments
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
     */
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public long getFellowReviewCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+    public long getFellowReviewCommentsCount(long proposalId);
 
     /**
     * <p>Tells if user is a member of a proposal team</p>
@@ -782,24 +774,16 @@ public interface ProposalLocalService extends BaseLocalService,
     * @param proposalId proposal id
     * @param userId     user id
     * @param automatic  if this is an automatic subscription
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
-    public void subscribe(long proposalId, long userId, boolean automatic)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+    public void subscribe(long proposalId, long userId, boolean automatic);
 
     /**
     * <p>Unsubscribes user from given proposal</p>
     *
     * @param proposalId proposal id
     * @param userId     user id
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
-    public void unsubscribe(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+    public void unsubscribe(long proposalId, long userId);
 
     /**
     * <p>Unsubscribes user from given proposal (supports removal of automatic subscriptions).
@@ -810,12 +794,8 @@ public interface ProposalLocalService extends BaseLocalService,
     * @param proposalId proposal id
     * @param userId     user id
     * @param automatic  if this is an automatic subscription
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
-    public void unsubscribe(long proposalId, long userId, boolean automatic)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
+    public void unsubscribe(long proposalId, long userId, boolean automatic);
 
     /**
     * <p>Returns true if user has voted for given proposal in context of a contest phase</p>

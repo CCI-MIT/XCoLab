@@ -1,16 +1,14 @@
 package org.xcolab.portlets.discussions.views;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
 import org.xcolab.activityEntry.discussion.DiscussionAddedActivityEntry;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
@@ -40,7 +38,7 @@ public class ThreadController extends BaseDiscussionController {
     @RenderMapping(params = "action=showThread")
     public String showThread(PortletRequest request, PortletResponse response, Model model,
                              @RequestParam long threadId)
-            throws SystemException, PortalException, DiscussionAuthorizationException, ThreadNotFoundException {
+            throws DiscussionAuthorizationException, ThreadNotFoundException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
         CommentThread thread = CommentClient.getThread(threadId);
@@ -58,7 +56,7 @@ public class ThreadController extends BaseDiscussionController {
 
     @RenderMapping(params = "action=createThread")
     public String createThread(PortletRequest request, PortletResponse response, Model model)
-            throws SystemException, PortalException, DiscussionAuthorizationException {
+            throws DiscussionAuthorizationException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
@@ -75,7 +73,7 @@ public class ThreadController extends BaseDiscussionController {
     public void createThreadAction(ActionRequest request, ActionResponse response,
                                      @RequestParam long categoryId, @RequestParam String title,
                                      @RequestParam String body)
-            throws SystemException, PortalException, IOException, DiscussionAuthorizationException {
+            throws IOException, DiscussionAuthorizationException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         CategoryGroup categoryGroup = getCategoryGroup(request);
@@ -151,7 +149,7 @@ public class ThreadController extends BaseDiscussionController {
 //    }
 
     @Override
-    public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) throws SystemException {
+    public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         try {
             CommentThread thread = CommentClient.getThread(additionalId);
             return thread.getCategory().getCategoryGroup().getGroupId()
@@ -162,7 +160,7 @@ public class ThreadController extends BaseDiscussionController {
     }
 
     @Override
-    public boolean getCanEdit(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) throws SystemException {
+    public boolean getCanEdit(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         return permissions.getCanAddComment();
     }
 }

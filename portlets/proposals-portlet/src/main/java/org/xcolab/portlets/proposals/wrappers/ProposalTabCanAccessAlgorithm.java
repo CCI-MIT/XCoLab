@@ -49,26 +49,19 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			try {
-				if (!permissions.getCanSeeAdvancingTab()) {
-					return false;
-				}
-
-				ContestPhase contestPhase = context.getContestPhase(request);
-				ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
-				if (phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED && !contestPhase.isFellowScreeningActive()) {
-					return true;
-				}
-
-				ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
-				ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(proposalWrapper, context.getUser(request));
-				return wrapper.shouldShowJudgingTab();
-
-			} catch (PortalException | SystemException e) {
-				e.printStackTrace();
+			if (!permissions.getCanSeeAdvancingTab()) {
+				return false;
 			}
 
-			return false;
+			ContestPhase contestPhase = context.getContestPhase(request);
+			ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
+			if (phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED && !contestPhase.isFellowScreeningActive()) {
+				return true;
+			}
+
+			ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+			ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(proposalWrapper, context.getMember(request));
+			return wrapper.shouldShowJudgingTab();
 		}
 	};
 
@@ -84,13 +77,9 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			try {
-				ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
-				if (proposalWrapper.getContest().getContestTier() < 1) {
-					return false;
-				}
-			} catch (PortalException | SystemException e) {
-				e.printStackTrace();
+			ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+			if (proposalWrapper.getContest().getContestTier() < 1) {
+				return false;
 			}
             //TODO: [COLAB-1161] temporarily hid fellow review tab -> decide what to do with it
 			return false;
@@ -103,21 +92,15 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			try {
-				ContestPhase contestPhase = context.getContestPhase(request);
-				if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll() || permissions.getCanContestManagerActions()) ||
-						!contestPhase.isFellowScreeningActive()) {
-					return false;
-				}
-
-				ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
-				return permissions.getCanFellowActions() && phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED ||
-						permissions.getCanAdminAll();
-			} catch (PortalException | SystemException e) {
-				e.printStackTrace();
+			ContestPhase contestPhase = context.getContestPhase(request);
+			if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll() || permissions.getCanContestManagerActions()) ||
+					!contestPhase.isFellowScreeningActive()) {
+				return false;
 			}
 
-			return false;
+			ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
+			return permissions.getCanFellowActions() && phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED ||
+					permissions.getCanAdminAll();
 		}
 	};
 

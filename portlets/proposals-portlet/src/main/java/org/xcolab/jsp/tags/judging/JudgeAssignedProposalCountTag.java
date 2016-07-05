@@ -7,6 +7,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
+
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -47,12 +50,10 @@ public class JudgeAssignedProposalCountTag extends BodyTagSupport {
             }
             pageContext.setAttribute("proposalCount", judgeAssignedProposalCount);
         } catch (PortalException e) {
-            e.printStackTrace();
+            throw new InternalException(e);
         } catch (SystemException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException(e);
         }
         return EVAL_BODY_INCLUDE; 
     }
-    
-    
 }

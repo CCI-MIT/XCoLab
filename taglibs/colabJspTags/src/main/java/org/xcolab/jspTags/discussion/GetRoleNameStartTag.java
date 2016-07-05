@@ -4,9 +4,14 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.util.List;
 
@@ -38,8 +43,8 @@ public class GetRoleNameStartTag extends BodyTagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            User user = UserLocalServiceUtil.getUser(userId);
-            MemberRole role = MemberRole.getHighestRole(user.getRoles());
+            Member member = MembersClient.getMember(userId);
+            MemberRole role = MemberRole.getHighestRole(member.getRoles());
 
             pageContext.setAttribute("role", role);
 
@@ -56,8 +61,14 @@ public class GetRoleNameStartTag extends BodyTagSupport {
             }
             pageContext.setAttribute("isContributing", isContributing);
 
-        } catch (PortalException | SystemException e) {
-            e.printStackTrace();
+        } catch (PortalException e) {
+            throw new InternalException(e);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (MemberNotFoundException e) {
+            throw ReferenceResolutionException.toObject(Member.class, userId)
+                    .fromObject(GetRoleNameStartTag.class,
+                            "user id " + userId + " proposalId " + proposalId);
         }
         return EVAL_BODY_INCLUDE;
     }

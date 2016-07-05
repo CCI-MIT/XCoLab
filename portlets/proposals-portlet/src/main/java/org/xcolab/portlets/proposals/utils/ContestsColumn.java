@@ -22,24 +22,14 @@ public enum ContestsColumn {
 
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-            try {
-                return (int) (o1.getProposalsCount() - o2.getProposalsCount());
-            } catch (PortalException | SystemException e) {
-                _log.error("Can't get proposals count", e);
-            }
-            return 0;
+            return (int) (o1.getProposalsCount() - o2.getProposalsCount());
         }
     }),
     COMMENTS_COUNT(new Comparator<ContestWrapper>() {
 
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-            try {
-                return (int) (o1.getCommentsCount() - o2.getCommentsCount());
-            } catch (PortalException | SystemException e) {
-                _log.error("Can't get comments count", e);
-            }
-            return 0;
+            return (int) (o1.getCommentsCount() - o2.getCommentsCount());
         }
     }),
     VOTES_COUNT(new Comparator<ContestWrapper>() {

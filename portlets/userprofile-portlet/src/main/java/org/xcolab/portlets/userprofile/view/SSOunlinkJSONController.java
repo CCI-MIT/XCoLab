@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
@@ -41,9 +42,13 @@ public class SSOunlinkJSONController extends JSONHelper {
         this.writeSuccessResultResponseJSON(successStatus, response);
     }
 
-    private void unlinkFacebookSSOuser(User user) throws SystemException {
+    private void unlinkFacebookSSOuser(User user)  {
         user.setFacebookId(0);
-        UserLocalServiceUtil.updateUser(user);
+        try {
+            UserLocalServiceUtil.updateUser(user);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
     }
 
     @ResourceMapping("unlinkGoogleSSO")
@@ -64,9 +69,13 @@ public class SSOunlinkJSONController extends JSONHelper {
         this.writeSuccessResultResponseJSON(successStatus, response);
     }
 
-    private void unlinkGoogleSSOuser(User user) throws SystemException {
+    private void unlinkGoogleSSOuser(User user) {
         user.setOpenId("");
-        UserLocalServiceUtil.updateUser(user);
+        try {
+            UserLocalServiceUtil.updateUser(user);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
     }
 
 }

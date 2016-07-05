@@ -18,7 +18,8 @@ import javax.portlet.PortletResponse;
 public class FeedsController {
 	
     @RequestMapping
-    public String showFeed(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage, Model model) throws SystemException, PortalException {
+    public String showFeed(PortletRequest request, PortletResponse response,
+			SortFilterPage sortFilterPage, Model model) {
 
     	FeedsPreferences preferences = new FeedsPreferences(request);
     	ThemeDisplay themeDisplay= (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);

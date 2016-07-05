@@ -92,6 +92,7 @@ import org.xcolab.proposals.events.ProposalVotedOnEvent;
 import org.xcolab.services.EventBusService;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
@@ -724,15 +725,19 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @param proposalId proposal id
      * @return number of comments
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
      */
     @Override
-    public long getCommentsCount(long proposalId) throws SystemException, PortalException {
-        Proposal proposal = getProposal(proposalId);
-        final long discussionId = proposal.getDiscussionId();
-        if (discussionId > 0) {
-            return CommentClient.countComments(discussionId);
+    public long getCommentsCount(long proposalId) {
+        try {
+            Proposal proposal = getProposal(proposalId);
+            final long discussionId = proposal.getDiscussionId();
+            if (discussionId > 0) {
+                return CommentClient.countComments(discussionId);
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new IllegalArgumentException("Proposal " + proposalId + " does not exist");
         }
         return 0;
     }
@@ -742,15 +747,19 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @param proposalId proposal id
      * @return number of comments
-     * @throws PortalException in case of an LR error
-     * @throws SystemException in case of an LR error
      */
     @Override
-    public long getFellowReviewCommentsCount(long proposalId) throws SystemException, PortalException {
-        Proposal proposal = getProposal(proposalId);
-        final long fellowDiscussionId = proposal.getFellowDiscussionId();
-        if (fellowDiscussionId > 0) {
-            return CommentClient.countComments(fellowDiscussionId);
+    public long getFellowReviewCommentsCount(long proposalId) {
+        try {
+            Proposal proposal = getProposal(proposalId);
+            final long fellowDiscussionId = proposal.getFellowDiscussionId();
+            if (fellowDiscussionId > 0) {
+                return CommentClient.countComments(fellowDiscussionId);
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new IllegalArgumentException("Proposal " + proposalId + " does not exist");
         }
         return 0;
     }

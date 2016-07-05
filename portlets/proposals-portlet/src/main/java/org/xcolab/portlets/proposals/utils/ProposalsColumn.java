@@ -9,12 +9,7 @@ public enum ProposalsColumn {
 
         @Override
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-            try {
-                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
-            }
-            catch (Exception e) {
-                return (int) (o1.getProposalId() - o2.getProposalId());
-            }
+            return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
         }
         
     }), 
@@ -22,12 +17,7 @@ public enum ProposalsColumn {
 
         @Override
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-            try {
-                return o1.getAuthorName().toLowerCase().compareTo(o2.getAuthorName().toLowerCase());
-            }
-            catch (Exception e) {
-                return (int) (o1.getProposalId() - o2.getProposalId());
-            }
+            return o1.getAuthorName().toLowerCase().compareTo(o2.getAuthorName().toLowerCase());
         }
         
     }),
@@ -35,12 +25,7 @@ public enum ProposalsColumn {
 
         @Override
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-            try {
-                return (int) (o1.getSupportersCount() - o2.getSupportersCount());
-            }
-            catch (Exception e) {
-                return (int) (o1.getProposalId() - o2.getProposalId());
-            }
+            return (int) (o1.getSupportersCount() - o2.getSupportersCount());
         }
         
     }),
@@ -61,12 +46,7 @@ public enum ProposalsColumn {
 
         @Override
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-            try {
-                return (int) (o1.getCommentsCount() - o2.getCommentsCount());
-            }
-            catch (Exception e) {
-                return (int) (o1.getProposalId() - o2.getProposalId());
-            }
+            return (int) (o1.getCommentsCount() - o2.getCommentsCount());
         }
     }),
     JUDGESTATUS(new Comparator<ProposalWrapper>() {
@@ -101,21 +81,18 @@ public enum ProposalsColumn {
 
         @Override
         public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-            try {
-                if (o1.isOpen()) return o2.isOpen() ? 0 : -1;
-                else return o2.isOpen() ? 1 : 0;
-            }
-            catch (Exception e) {
-                return (int) (o1.getProposalId() - o2.getProposalId());
+            if (o1.isOpen()) {
+                return o2.isOpen() ? 0 : -1;
+            } else {
+                return o2.isOpen() ? 1 : 0;
             }
         }
     });
     
     private final Comparator<ProposalWrapper> proposalsComparator;
     
-    private ProposalsColumn(Comparator<ProposalWrapper> comparator) {
+    ProposalsColumn(Comparator<ProposalWrapper> comparator) {
         proposalsComparator = comparator;
-        
     }
 
     public Comparator<ProposalWrapper> getComparator() {

@@ -14,12 +14,12 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.loginregister.CreateUserBean;
@@ -81,8 +81,8 @@ public class OpenIdController {
     }
 
     @RequestMapping(params = "action=readOpenIdResponse")
-    public void readOpenIdResponse(ActionRequest actionRequest, Model model, ActionResponse actionResponse)
-            throws Exception {
+    public void readOpenIdResponse(ActionRequest actionRequest, Model model,
+            ActionResponse actionResponse) throws Exception {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -117,6 +117,9 @@ public class OpenIdController {
                 country = getCountry(json.getString("locale"));
             } catch (UserLocationNotResolvableException ignored) { }
 
+            HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(actionRequest);
+            String path = httpReq.getSession().getServletContext().getRealPath("/");
+
             User user;
             try {
                 user = UserLocalServiceUtil.getUserByOpenId(
@@ -124,7 +127,8 @@ public class OpenIdController {
                 portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, user.getUserId(), PortletSession.APPLICATION_SCOPE);
 
                 actionResponse.sendRedirect(redirectUrl);
-                ImageUploadUtils.updateProfilePicture(user, profilePicURL);
+
+                ImageUploadUtils.updateProfilePicture(path, user, profilePicURL);
                 LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
             } catch (NoSuchUserException nsue) {
                 // try to get user by email
@@ -147,7 +151,7 @@ public class OpenIdController {
                     actionResponse.sendRedirect(redirectUrl);
                     LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
 
-                    ImageUploadUtils.updateProfilePicture(user, profilePicURL);
+                    ImageUploadUtils.updateProfilePicture(path, user, profilePicURL);
                     user.getPortraitURL(themeDisplay);
                 } catch (NoSuchUserException nsue2) {
                     // forward to login or register
@@ -173,7 +177,7 @@ public class OpenIdController {
 
                     long imageId = 0;
                     if (Validator.isNotNull(profilePicURL)) {
-                        imageId = ImageUploadUtils.linkProfilePicture(profilePicURL);
+                        imageId = ImageUploadUtils.linkProfilePicture(path, profilePicURL);
                         portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
                     }
 

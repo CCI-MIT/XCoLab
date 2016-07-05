@@ -1,6 +1,5 @@
 package org.xcolab.mail;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -50,7 +49,7 @@ public class EmailToAdminDispatcher {
             InternetAddress fromAddress = TemplateReplacementUtil.getAdminFromEmailAddress();
             //MailEngine.send(fromAddress, getRecipientAddresses(), subject, body, true);
             EmailClient.sendEmail(fromAddress.getAddress(), getRecipientAddresses(), subject, body, true, fromAddress.getAddress());
-        } catch (AddressException | UnsupportedEncodingException | SystemException e) {
+        } catch (AddressException | UnsupportedEncodingException e) {
             _log.error("Could not send error message", e);
         }
     }

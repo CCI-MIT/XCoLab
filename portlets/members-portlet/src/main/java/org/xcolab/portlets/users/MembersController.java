@@ -1,7 +1,7 @@
 package org.xcolab.portlets.users;
 
+import com.ext.portlet.NoSuchMemberCategoryException;
 import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -42,8 +42,7 @@ public class MembersController {
     public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage,
                             @RequestParam(value = "page", required = false) Long pageParam,
                             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam,
-                            Model model)
-            throws SystemException, PortalException {
+                            Model model) throws NoSuchMemberCategoryException, SystemException {
         int page = 1;
         if (pageParam != null) {
             page = pageParam.intValue();

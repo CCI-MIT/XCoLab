@@ -1,7 +1,5 @@
 package org.xcolab.portlets.discussions.views;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,6 +9,7 @@ import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.portlets.discussions.DiscussionPreferences;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import javax.portlet.PortletRequest;
 
@@ -24,20 +23,27 @@ public abstract class BaseDiscussionController {
         try {
             return CommentClient.getCategoryGroup(preferences.getCategoryGroupId());
         } catch (CategoryGroupNotFoundException e) {
-            throw new IllegalStateException("Category group does not exist: " + preferences.getCategoryGroupId());
+            throw ReferenceResolutionException
+                    .toObject(CategoryGroup.class, preferences.getCategoryGroupId()).build();
         }
     }
 
-    protected void checkCanView(PortletRequest request, String accessDeniedMessage, CategoryGroup categoryGroup, long additionalId) throws DiscussionAuthorizationException, PortalException, SystemException {
+    protected void checkCanView(PortletRequest request, String accessDeniedMessage,
+            CategoryGroup categoryGroup, long additionalId)
+            throws DiscussionAuthorizationException {
         checkPermissions(request, accessDeniedMessage, categoryGroup, additionalId, false);
     }
 
-    protected void checkCanEdit(PortletRequest request, String accessDeniedMessage, CategoryGroup categoryGroup, long additionalId) throws DiscussionAuthorizationException, PortalException, SystemException {
+    protected void checkCanEdit(PortletRequest request, String accessDeniedMessage,
+            CategoryGroup categoryGroup, long additionalId)
+            throws DiscussionAuthorizationException {
         checkPermissions(request, accessDeniedMessage, categoryGroup, additionalId, true);
     }
 
-    private void checkPermissions(PortletRequest request, String accessDeniedMessage, CategoryGroup categoryGroup,
-                                    long additionalId, boolean checkEditPermissions) throws DiscussionAuthorizationException, SystemException, PortalException {
+    private void checkPermissions(PortletRequest request, String accessDeniedMessage,
+            CategoryGroup categoryGroup,
+            long additionalId, boolean checkEditPermissions)
+            throws DiscussionAuthorizationException {
         DiscussionPermissions permissions = new DiscussionPermissions(request);
 
         if (additionalId > 0 && !getCanView(permissions, categoryGroup, additionalId)) {
@@ -48,6 +54,9 @@ public abstract class BaseDiscussionController {
         }
     }
 
-    public abstract boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) throws SystemException;
-    public abstract boolean getCanEdit(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) throws SystemException;
+    public abstract boolean getCanView(DiscussionPermissions permissions,
+            CategoryGroup categoryGroup, long additionalId);
+
+    public abstract boolean getCanEdit(DiscussionPermissions permissions,
+            CategoryGroup categoryGroup, long additionalId);
 }

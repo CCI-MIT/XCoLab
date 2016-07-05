@@ -1,12 +1,10 @@
 package org.xcolab.portlets.userprofile.beans;
 
 import com.ext.portlet.messaging.MessageUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.userprofile.validators.UniqueEmail;
 import org.xcolab.utils.CountryUtil;
@@ -72,7 +70,7 @@ public class UserBean implements Serializable {
 
     public UserBean() { }
 
-    public UserBean(Member member) throws PortalException, SystemException {
+    public UserBean(Member member) {
         userId = member.getId_();
         screenName = member.getScreenName();
         firstName = member.getFirstName();

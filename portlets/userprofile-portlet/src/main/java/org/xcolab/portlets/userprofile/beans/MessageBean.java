@@ -32,7 +32,7 @@ public class MessageBean implements Serializable {
         messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
     }
 
-    public MessageBean(Message message) throws PortalException, SystemException {
+    public MessageBean(Message message) {
         this.message = message;
         this.recipients = MessagingClient.getMessageRecipients(message.getMessageId());
     }

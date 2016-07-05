@@ -627,12 +627,8 @@ public class ProposalLocalServiceUtil {
     *
     * @param proposalId proposal id
     * @return number of comments
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
     */
-    public static long getCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public static long getCommentsCount(long proposalId) {
         return getService().getCommentsCount(proposalId);
     }
 
@@ -641,12 +637,8 @@ public class ProposalLocalServiceUtil {
     *
     * @param proposalId proposal id
     * @return number of comments
-    * @throws PortalException in case of an LR error
-    * @throws SystemException in case of an LR error
     */
-    public static long getFellowReviewCommentsCount(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public static long getFellowReviewCommentsCount(long proposalId) {
         return getService().getFellowReviewCommentsCount(proposalId);
     }
 
@@ -862,12 +854,8 @@ public class ProposalLocalServiceUtil {
     * @param proposalId proposal id
     * @param userId     user id
     * @param automatic  if this is an automatic subscription
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
-    public static void subscribe(long proposalId, long userId, boolean automatic)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public static void subscribe(long proposalId, long userId, boolean automatic) {
         getService().subscribe(proposalId, userId, automatic);
     }
 
@@ -876,12 +864,8 @@ public class ProposalLocalServiceUtil {
     *
     * @param proposalId proposal id
     * @param userId     user id
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
-    public static void unsubscribe(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public static void unsubscribe(long proposalId, long userId) {
         getService().unsubscribe(proposalId, userId);
     }
 
@@ -894,13 +878,9 @@ public class ProposalLocalServiceUtil {
     * @param proposalId proposal id
     * @param userId     user id
     * @param automatic  if this is an automatic subscription
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
     public static void unsubscribe(long proposalId, long userId,
-        boolean automatic)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+        boolean automatic) {
         getService().unsubscribe(proposalId, userId, automatic);
     }
 

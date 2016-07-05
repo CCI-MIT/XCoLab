@@ -1,8 +1,6 @@
 package org.xcolab.portlets.feeds;
 
 import au.com.bytecode.opencsv.CSVWriter;
-
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -12,9 +10,10 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,7 +38,7 @@ public class FeedsDumpGeneratingController {
 
 	@RequestMapping(params = "action=generateDump")
 	public void showFeed(ResourceRequest request, ResourceResponse response)
-			throws SystemException, PortalException, IOException {
+			throws IOException {
 		generateActivitiesDump(request);
 		response.setContentType("application/zip");
 		response.getPortletOutputStream().write(generatedActivities);
@@ -50,52 +49,56 @@ public class FeedsDumpGeneratingController {
 	}
 
 	private synchronized void generateActivitiesDump(ResourceRequest request)
-			throws IOException, SystemException {
-		int currentCount = SocialActivityLocalServiceUtil
-				.getSocialActivitiesCount();
-		if (currentCount > activitiesInGeneratedDump) {
-			// regenerate
+			throws IOException {
+		try {
+			int currentCount = SocialActivityLocalServiceUtil
+					.getSocialActivitiesCount();
+			if (currentCount > activitiesInGeneratedDump) {
+				// regenerate
 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ZipOutputStream zos = new ZipOutputStream(bos);
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ZipOutputStream zos = new ZipOutputStream(bos);
 
-			zos.putNextEntry(new ZipEntry("activities.csv"));
+				zos.putNextEntry(new ZipEntry("activities.csv"));
 
-			Writer fw = new OutputStreamWriter(zos);
-			CSVWriter csvWriter = new CSVWriter(fw);
+				Writer fw = new OutputStreamWriter(zos);
+				CSVWriter csvWriter = new CSVWriter(fw);
 
-			for (SocialActivity activity : SocialActivityLocalServiceUtil
-					.getSocialActivities(0, Integer.MAX_VALUE)) {
-				try {
-					User user = UserLocalServiceUtil.getUser(activity
-							.getUserId());
-					SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil
-							.interpret(activity, (ThemeDisplay) request
-									.getAttribute(WebKeys.THEME_DISPLAY));
-					String body = entry.getBody();
-					if (body != null && body.trim().length() > 0) {
-						body = body.replace("/web/guest",
-								"http://climatecolab.org/web/guest");
+				for (SocialActivity activity : SocialActivityLocalServiceUtil
+						.getSocialActivities(0, Integer.MAX_VALUE)) {
+					try {
+						User user = UserLocalServiceUtil.getUser(activity
+								.getUserId());
+						SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil
+								.interpret(activity, (ThemeDisplay) request
+										.getAttribute(WebKeys.THEME_DISPLAY));
+						String body = entry.getBody();
+						if (body != null && body.trim().length() > 0) {
+							body = body.replace("/web/guest",
+									"http://climatecolab.org/web/guest");
 						/*csvWriter.writeNext(new String[] {
 								body,
 								df.format(new Date(activity.getCreateDate())),
 								activity.getActivityId() + ""});*/
-						csvWriter.writeNext(new String[] {
-								body,
-								df.format(new Date(activity.getCreateDate())),
-								activity.getActivityId() + ""});
+							csvWriter.writeNext(new String[]{
+									body,
+									df.format(new Date(activity.getCreateDate())),
+									activity.getActivityId() + ""});
+						}
+					} catch (Throwable t) {
+						// ignore
 					}
-				} catch (Throwable t) {
-					// ignore
 				}
-			}
-			fw.flush();
-			zos.closeEntry();
-			csvWriter.close();
-			fw.close();
+				fw.flush();
+				zos.closeEntry();
+				csvWriter.close();
+				fw.close();
 
-			generatedActivities = bos.toByteArray();
-			activitiesInGeneratedDump = currentCount;
+				generatedActivities = bos.toByteArray();
+				activitiesInGeneratedDump = currentCount;
+			}
+		} catch (SystemException e) {
+			throw new DatabaseAccessException(e);
 		}
 	}
 

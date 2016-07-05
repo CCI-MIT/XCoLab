@@ -20,6 +20,7 @@ import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -90,7 +91,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
         try {
             PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), newTemplate.getId());
-        } catch (SystemException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Create proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -109,7 +110,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
             ProposalTemplateLifecycleUtil.delete(elementId);
             SetRenderParameterUtil
                     .setSuccessRenderRedirectManagerTab(response, tab.getName(), getFirstPlanTemplateId());
-        } catch (PortalException | SystemException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Delete proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -137,7 +138,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
             updatedProposalTemplateWrapper.persist();
             SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(),
                     updatedProposalTemplateWrapper.getPlanTemplateId());
-        } catch (SystemException | PortalException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Update proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
@@ -149,11 +150,16 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
     }
 
 
-    private Long getFirstPlanTemplateId() throws SystemException {
-        final List<PlanTemplate> planTemplates = PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE);
-        if (!planTemplates.isEmpty()) {
-            return planTemplates.get(0).getId();
+    private Long getFirstPlanTemplateId() {
+        try {
+            final List<PlanTemplate> planTemplates = PlanTemplateLocalServiceUtil
+                    .getPlanTemplates(0, Integer.MAX_VALUE);
+            if (!planTemplates.isEmpty()) {
+                return planTemplates.get(0).getId();
+            }
+            return -1L;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-        return -1L;
     }
 }

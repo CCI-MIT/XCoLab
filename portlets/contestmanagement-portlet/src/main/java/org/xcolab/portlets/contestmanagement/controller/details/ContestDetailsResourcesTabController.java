@@ -68,7 +68,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
             setPageAttributes(request, model, tab);
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
             return TAB_VIEW;
-        } catch (Exception e) {
+        } catch (PortalException | SystemException e) {
             _log.warn("Could not show resources tab:", e);
             SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
         }

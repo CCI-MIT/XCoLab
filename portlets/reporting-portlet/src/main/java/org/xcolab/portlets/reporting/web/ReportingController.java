@@ -27,6 +27,8 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.reporting.beans.AuthorAttractionBean;
 import org.xcolab.portlets.reporting.beans.UserActivityReportBean;
@@ -473,8 +475,9 @@ public class ReportingController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
 		for (UserActivityReportBean uarb : userActivities.values()) {
 			User user = uarb.getUser();
+			Member member = MembersClient.getMemberUnchecked(user.getUserId());
 			//get highest role of user
-			MemberRole role = MemberRole.getHighestRole(user.getRoles());
+			MemberRole role = MemberRole.getHighestRole(member.getRoles());
 
 			csvWriter.writeNext(new String[]{
 					String.valueOf(user.getUserId()), user.getScreenName(), user.getEmailAddress(),

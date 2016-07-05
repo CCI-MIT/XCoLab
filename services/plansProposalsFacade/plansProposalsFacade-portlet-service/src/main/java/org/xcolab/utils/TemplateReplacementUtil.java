@@ -4,29 +4,36 @@ import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+
+import java.io.UnsupportedEncodingException;
 
 import javax.mail.internet.InternetAddress;
-import java.io.UnsupportedEncodingException;
 
 public final class TemplateReplacementUtil {
 
-    public final static String COLAB_NAME_PLACEHOLDER = "<colab-name/>";
-    public final static String COLAB_SHORT_NAME_PLACEHOLDER = "<colab-short-name/>";
-    public final static String COLAB_URL = "<colab-url/>";
+    private static final Log _log = LogFactoryUtil.getLog(TemplateReplacementUtil.class);
 
-    public final static String ADMIN_EMAIL_PLACEHOLDER = "<admin-email/>";
-    public final static String ADMIN_FROM_EMAIL_PLACEHOLDER = "<admin-from-email/>";
+    private final static String COLAB_NAME_PLACEHOLDER = "<colab-name/>";
+    private final static String COLAB_SHORT_NAME_PLACEHOLDER = "<colab-short-name/>";
+    private final static String COLAB_URL = "<colab-url/>";
 
-    public final static String PROPOSAL_PLACEHOLDER = "<proposal/>";
-    public final static String CONTEST_PLACEHOLDER = "<contest/>";
-    public final static String PROPOSALS_PLACEHOLDER = "<proposals/>";
-    public final static String CONTESTS_PLACEHOLDER = "<contests/>";
+    private final static String ADMIN_EMAIL_PLACEHOLDER = "<admin-email/>";
+    private final static String ADMIN_FROM_EMAIL_PLACEHOLDER = "<admin-from-email/>";
+
+    private final static String PROPOSAL_PLACEHOLDER = "<proposal/>";
+    private final static String CONTEST_PLACEHOLDER = "<contest/>";
+    private final static String PROPOSALS_PLACEHOLDER = "<proposals/>";
+    private final static String CONTESTS_PLACEHOLDER = "<contests/>";
 
     private TemplateReplacementUtil() {
     }
 
-    public static String replacePlatformConstants(String text) throws SystemException {
+    public static String replacePlatformConstants(String text) {
         final String colabName = ConfigurationAttributeKey.COLAB_NAME.getStringValue();
         final String colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue();
         final String colabUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue();
@@ -40,25 +47,28 @@ public final class TemplateReplacementUtil {
                 .replaceAll(ADMIN_FROM_EMAIL_PLACEHOLDER, adminFromEmail);
     }
 
-    public static String replaceContestTypeStrings(String text, ContestType contestType) throws SystemException {
+    public static String replaceContestTypeStrings(String text, ContestType contestType) {
         try {
             if (contestType == null) {
                 contestType = ContestTypeLocalServiceUtil.getContestType(
                         ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
-
             }
             return text.replaceAll(PROPOSAL_PLACEHOLDER, contestType.getProposalName())
                     .replaceAll(PROPOSALS_PLACEHOLDER, contestType.getProposalNamePlural())
                     .replaceAll(CONTEST_PLACEHOLDER, contestType.getContestName())
                     .replaceAll(CONTESTS_PLACEHOLDER, contestType.getContestNamePlural());
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         } catch (PortalException e) {
-            throw new SystemException("Contest type invalid", e);
+            throw new IllegalStateException("Default contest type does not exist: "
+                    + ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
         }
     }
 
-    public static InternetAddress getAdminFromEmailAddress() throws SystemException, UnsupportedEncodingException {
-        final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
-        return new InternetAddress(adminFromEmail,
-                TemplateReplacementUtil.replacePlatformConstants("The <colab-name/> Team"));
+    public static InternetAddress getAdminFromEmailAddress() throws UnsupportedEncodingException {
+            final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL
+                    .getStringValue();
+            return new InternetAddress(adminFromEmail,
+                    TemplateReplacementUtil.replacePlatformConstants("The <colab-name/> Team"));
     }
 }

@@ -11,11 +11,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
+import org.xcolab.client.members.MembersClient;
+
 import java.util.List;
 
-/**
- * Created by Manuel Thurner
- */
 public class ProposalFellowWrapper extends ProposalWrapper {
 
     public ProposalFellowWrapper(ProposalWrapper proposal, User currentUser) throws NoSuchContestException {
@@ -29,7 +28,8 @@ public class ProposalFellowWrapper extends ProposalWrapper {
                     currentUser.getUserId(),
                     proposal.getProposalId(),
                     contestPhase.getContestPhasePK());
-            this.proposalRatings = new ProposalRatingsWrapper(currentUser, list);
+            this.proposalRatings = new ProposalRatingsWrapper(
+                    MembersClient.getMemberUnchecked(currentUser.getUserId()), list);
         } catch (PortalException | SystemException e) {
             this.proposalRatings = null;
         }

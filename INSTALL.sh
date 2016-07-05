@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# stop script if any build fails
+set -e
+
 echo "Running Climate CoLab Development Environment Installer"
 
 # Check Java Version and check if Java is in Path

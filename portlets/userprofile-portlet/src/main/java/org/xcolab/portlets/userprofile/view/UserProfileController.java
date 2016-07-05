@@ -1,6 +1,5 @@
 package org.xcolab.portlets.userprofile.view;
 
-import com.ext.portlet.NoSuchConfigurationAttributeException;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.MessagingUserPreferences;
@@ -47,6 +46,7 @@ import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.ModelAttributeUtil;
@@ -98,13 +98,11 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=view")
     public String showUserProfileView(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam Long userId)
-            throws SystemException, PortalException {
+                                      @RequestParam Long userId) {
         return showUserProfileOrNotInitialized(request, model, userId);
     }
 
-    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, Long userId)
-            throws SystemException {
+    private String showUserProfileOrNotInitialized(PortletRequest request, Model model, Long userId) {
         try {
             UserProfilePermissions permissions = new UserProfilePermissions(request);
             model.addAttribute("permissions", permissions);
@@ -113,7 +111,7 @@ public class UserProfileController {
             model.addAttribute("pointsActive",
                     ConfigurationAttributeKey.IS_POINTS_ACTIVE.getBooleanValue());
             return "showUserProfile";
-        } catch (PortalException | MemberNotFoundException e) {
+        } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
         }
         return "showProfileNotInitialized";
@@ -128,8 +126,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "page=edit")
     public String showUserProfileEdit(PortletRequest request, PortletResponse response, Model model,
-                                      @RequestParam long userId)
-            throws SystemException {
+                                      @RequestParam long userId) {
 
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         model.addAttribute("permissions", permissions);
@@ -145,7 +142,7 @@ public class UserProfileController {
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-        } catch (PortalException | MemberNotFoundException e) {
+        } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -162,7 +159,7 @@ public class UserProfileController {
             populateUserWrapper(currentUserProfile, model);
             currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
             return "showUserSubscriptions";
-        } catch (SystemException | PortalException | MemberNotFoundException e) {
+        } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -171,8 +168,7 @@ public class UserProfileController {
     @RequestMapping(params = "page=subscriptionsManage")
     public String showUserSubscriptionsManage(PortletRequest request, PortletResponse response, Model model,
                                               @RequestParam long userId,
-                                              @RequestParam(required = false) String typeFilter)
-            throws SystemException {
+                                              @RequestParam(required = false) String typeFilter) {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
             populateUserWrapper(currentUserProfile, model);
@@ -193,6 +189,8 @@ public class UserProfileController {
         } catch (PortalException | MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
         return "showUserProfile";
@@ -201,7 +199,7 @@ public class UserProfileController {
     @RequestMapping(params = "action=navigateSubscriptions")
     public void navigateSubscriptions(ActionRequest request, Model model, ActionResponse response,
                                       @RequestParam String paginationAction)
-            throws SystemException, PortalException, IOException, MemberNotFoundException {
+            throws IOException, MemberNotFoundException {
 
         Integer paginationPageId = 1;
         UserProfileWrapper currentUserProfile =
@@ -228,8 +226,7 @@ public class UserProfileController {
     public String updateProfileError(PortletRequest request, Model model,
                                      @RequestParam(required = false) boolean emailError,
                                      @RequestParam(required = false) boolean passwordError,
-                                     @RequestParam Long userId)
-            throws SystemException {
+                                     @RequestParam Long userId) {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         model.addAttribute("permissions", permissions);
         model.addAttribute("updateError", true);
@@ -249,7 +246,7 @@ public class UserProfileController {
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
-        } catch (PortalException | MemberNotFoundException e) {
+        } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -259,7 +256,7 @@ public class UserProfileController {
 
     @RequestMapping(params = "updateSuccess=true")
     public String updateProfileSuccess(PortletRequest request, Model model,
-                                       @RequestParam Long userId) throws SystemException {
+                                       @RequestParam Long userId) {
 
         model.addAttribute("updateSuccess", true);
         UserProfilePermissions permissions = new UserProfilePermissions(request);
@@ -267,7 +264,7 @@ public class UserProfileController {
         try {
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
-        } catch (PortalException | MemberNotFoundException e) {
+        } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
@@ -369,7 +366,6 @@ public class UserProfileController {
             _log.warn(e);
             if (e instanceof UserPortraitSizeException) {
                 model.addAttribute("imageSizeError", true);
-
             }
             validationError = true;
         }
@@ -391,7 +387,7 @@ public class UserProfileController {
                 updatedUserBean.setEmailStored(updatedUserBean.getEmail());
                 try {
                     sendUpdatedEmail(currentUserProfile.getUser());
-                } catch (MailEngineException | AddressException | NoSuchConfigurationAttributeException e) {
+                } catch (MailEngineException | AddressException e) {
                     _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile
                             .getUser().getId_());
                     _log.warn(e);
@@ -410,6 +406,7 @@ public class UserProfileController {
         return MembersClient.validatePassword(password, currentUserProfile.getUser().getUserId());
     }
 
+    //TODO: remove reliance on all exceptions being thrown
     private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean)
             throws Exception {
 
@@ -463,7 +460,11 @@ public class UserProfileController {
             MessagingUserPreferences prefs =
                     MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
             prefs.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
-            MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+            try {
+                MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            }
             changedDetails = true;
         }
 
@@ -472,7 +473,11 @@ public class UserProfileController {
             MessagingUserPreferences prefs =
                     MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
             prefs.setEmailOnActivity(updatedUserBean.getSendEmailOnActivity());
-            MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+            try {
+                MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            }
             changedDetails = true;
         }
 
@@ -481,7 +486,11 @@ public class UserProfileController {
             MessagingUserPreferences prefs =
                     MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
             prefs.setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
-            MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+            try {
+                MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            }
             changedDetails = true;
         }
 
@@ -492,8 +501,8 @@ public class UserProfileController {
         return changedDetails;
     }
 
-    private void sendUpdatedEmail(Member user) throws MailEngineException, AddressException, UnsupportedEncodingException,
-            SystemException, NoSuchConfigurationAttributeException {
+    private void sendUpdatedEmail(Member user)
+            throws MailEngineException, AddressException, UnsupportedEncodingException {
         String messageSubject = TemplateReplacementUtil
                 .replacePlatformConstants("Your email address on the <colab-name/> has been updated");
         String messageBody = TemplateReplacementUtil.replacePlatformConstants("Dear " + user.getFirstName() + ",\n" +

@@ -2,6 +2,7 @@ package org.xcolab.client.files.providers;
 
 import org.apache.commons.io.FileUtils;
 import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,9 +26,8 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
             FileUtils.writeByteArrayToFile(new File(finalPath + fileEntry.getFileEntryId() + "." + fileEntry.getFileEntryExtension()), imgBArr);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InternalException(e);
         }
-        return false;
     }
 
     @Override

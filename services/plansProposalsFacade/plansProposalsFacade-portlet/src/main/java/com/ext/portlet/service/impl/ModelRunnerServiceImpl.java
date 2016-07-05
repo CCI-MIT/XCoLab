@@ -26,6 +26,8 @@ import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.jsoup.Jsoup;
 
+import org.xcolab.util.exceptions.DatabaseAccessException;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -74,8 +76,10 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
             Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
             return convertScenario(scenario);
 
-        } catch (SystemException | IOException | IllegalUIConfigurationException e) {
-            e.printStackTrace();
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (IOException | IllegalUIConfigurationException e) {
+            _log.error(e);
         }
         return JSONFactoryUtil.createJSONObject();
     }

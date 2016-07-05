@@ -143,6 +143,14 @@ public final class MembersClient {
         }
     }
 
+    public static Member getMemberUnchecked(long memberId) {
+        try {
+            return memberResource.get(memberId).cacheIdentifier("memberId_" + memberId).execute();
+        } catch (EntityNotFoundException e) {
+            throw new IllegalStateException("Member not found: " + memberId, e);
+        }
+    }
+
     public static Member findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
         //TODO: port to new methods
         final UriBuilder uriBuilder = memberResource.getResourceUrl()

@@ -13,13 +13,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,9 +24,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.utils.GlobalMessagesUtil;
 import org.xcolab.utils.ModelAttributeUtil;
@@ -79,20 +78,22 @@ public class ForgotPasswordController {
             PortletPreferences preferences = request.getPreferences();
             String userNameEmail = request.getParameter("screenName");
 
-            User user;
+            Member member;
             if (userNameEmail.contains("@")) {
-                user = UserLocalServiceUtil.getUserByEmailAddress(DEFAULT_COMPANY_ID, userNameEmail);
+                member = MembersClient.findMemberByEmailAddress(userNameEmail);
             } else {
-                user = UserLocalServiceUtil.getUserByScreenName(DEFAULT_COMPANY_ID, userNameEmail);
+                member = MembersClient.findMemberByScreenName(userNameEmail);
             }
 
-
-            String token = MembersClient.createForgotPasswordToken(user.getUserId());
+            String token = MembersClient.createForgotPasswordToken(member.getUserId());
             String colabUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue();
             String passwordLink = colabUrl + FORGOTPASSWORDURL + "" + token;
 
-            sendEmailNotificationToForPasswordReset(PortalUtil.getHttpServletRequest(request).getRemoteAddr(), passwordLink, themeDisplay, user);
+            sendEmailNotificationToForPasswordReset(
+                    PortalUtil.getHttpServletRequest(request).getRemoteAddr(),
+                    passwordLink, themeDisplay, member);
 
+            //TODO: exception handling
         } catch (Exception e) {
             if (e instanceof AuthException) {
                 Throwable cause = e.getCause();
@@ -140,23 +141,22 @@ public class ForgotPasswordController {
         response.sendRedirect(redirect);
     }
 
-    private static void sendEmailNotificationToForPasswordReset(String memberIp, String link, ThemeDisplay themeDisplay, User recipient)
-            throws PortalException, SystemException {
+    private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
+            ThemeDisplay themeDisplay, Member recipient) {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
-        new MemberForgotPasswordNotification(memberIp, link, recipient, serviceContext).sendEmailNotification();
+        new MemberForgotPasswordNotification(memberIp, link, recipient, serviceContext)
+                .sendEmailNotification();
     }
 
     @RequestMapping(params = "isError=true")
     public String register(PortletRequest request, PortletResponse response,
-                           Model model) throws SystemException {
-
+                           Model model) {
         return redirectToErrorPageOnPasswordReset(model, request);
     }
 
-    public String redirectToErrorPageOnPasswordReset(Model model, PortletRequest request)
-            throws SystemException {
+    public String redirectToErrorPageOnPasswordReset(Model model, PortletRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         model.addAttribute("message",
                 "Your password reset ticket has expired. Please try to reset your password again.");
@@ -171,7 +171,7 @@ public class ForgotPasswordController {
     public String openResetPassword(PortletRequest request,
                                     PortletResponse response,
                                     Model model,
-                                    @RequestParam String resetTicket) throws SystemException {
+                                    @RequestParam String resetTicket) {
 
         if (!MembersClient.isForgotPasswordTokenValid(resetTicket)) {
             return redirectToErrorPageOnPasswordReset(model, request);

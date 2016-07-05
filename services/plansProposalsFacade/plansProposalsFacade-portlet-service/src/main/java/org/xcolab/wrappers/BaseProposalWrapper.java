@@ -1,17 +1,15 @@
 package org.xcolab.wrappers;
 
-import com.ext.portlet.NoSuchContestException;
+import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
@@ -24,13 +22,21 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
 
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.helpers.ProposalContestPhaseAttributeHelper;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -53,36 +59,41 @@ public class BaseProposalWrapper {
 
     protected List<BaseProposalTeamMemberWrapper> members;
 
-    public BaseProposalWrapper(Proposal proposal) throws NoSuchContestException {
+    public BaseProposalWrapper(Proposal proposal) {
         this(proposal, proposal.getCurrentVersion(), null, null, null);
     }
 
-    public BaseProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
+    public BaseProposalWrapper(Proposal proposal, int version, Contest contest,
+            ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         this.proposal = proposal;
         this.version = version;
         this.contest = contest == null ? fetchContest(contestPhase) : contest;
         this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
 
-        proposalContestPhaseAttributeHelper = new ProposalContestPhaseAttributeHelper(proposal, contestPhase);
+        proposalContestPhaseAttributeHelper =
+                new ProposalContestPhaseAttributeHelper(proposal, contestPhase);
         proposalAttributeHelper = new ProposalAttributeHelper(proposal, version);
     }
 
-    public BaseProposalWrapper(Proposal proposal, ContestPhase contestPhase) throws NoSuchContestException {
+    public BaseProposalWrapper(Proposal proposal, ContestPhase contestPhase) {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, null);
     }
-    public BaseProposalWrapper(Proposal proposal, int version) throws NoSuchContestException {
+    public BaseProposalWrapper(Proposal proposal, int version) {
         this(proposal, version, null, null, null);
     }
 
-    private Contest fetchContest(ContestPhase contestPhase) throws NoSuchContestException {
+    private Contest fetchContest(ContestPhase contestPhase) {
         try {
             if (contestPhase != null) {
                 return ContestLocalServiceUtil.fetchContest(contestPhase.getContestPK());
             }
             return Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
-        } catch (PortalException | SystemException e) {
-            throw new NoSuchContestException("Could not find a contest for proposal "+proposal.getProposalId(), e);
+        } catch (PortalException e) {
+            throw new IllegalStateException("Could not find a contest for proposal "
+                    + proposal.getProposalId(), e);
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 
@@ -94,7 +105,9 @@ public class BaseProposalWrapper {
             if (contest != null) {
                 return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
             }
-        } catch (SystemException | PortalException e) {
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
             _log.error(String.format("Could not fetch active contest phase for contest %d", contest.getContestPK()), e);
         }
         _log.error(String.format("Could not get contest phase for proposal %d", proposal.getProposalId()));
@@ -107,9 +120,11 @@ public class BaseProposalWrapper {
         }
         try {
             return Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-        } catch (PortalException | SystemException e) {
+        } catch (PortalException e) {
             _log.warn(String.format("Could not fetch p2p for proposal %d, contest phase %d",
                     proposal.getProposalId(), contestPhase.getContestPhasePK()));
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
         return null;
     }
@@ -146,7 +161,7 @@ public class BaseProposalWrapper {
         return proposal.getVisible();
     }
 
-    public boolean isVisibleInPhase() throws PortalException, SystemException {
+    public boolean isVisibleInPhase() {
         ProposalContestPhaseAttribute visibleInPhase = proposalContestPhaseAttributeHelper.getAttributeOrNull(ProposalContestPhaseAttributeKeys.VISIBLE, 0);
         return proposal.isVisible() && (visibleInPhase == null || visibleInPhase.getNumericValue() > 0);
     }
@@ -175,11 +190,21 @@ public class BaseProposalWrapper {
         proposal.setResultsDiscussionId(resultsDiscussionId);
     }
 
-    public long getFellowDiscussionId() throws PortalException, SystemException {
-        final long fellowDiscussionId = proposal.getFellowDiscussionId();
+    public long getFellowDiscussionId() {
+        long fellowDiscussionId = proposal.getFellowDiscussionId();
         if (fellowDiscussionId == 0) {
-            DiscussionCategoryGroup discussionCategoryGroup = DiscussionCategoryGroupLocalServiceUtil.createDiscussionCategoryGroup(proposal.getProposalId() + "_fellowReview");
-            return discussionCategoryGroup.getId();
+            CommentThread commentThread =  new CommentThread();
+            commentThread.setAuthorId(proposal.getAuthorId());
+            commentThread.setIsQuiet(true);
+            commentThread.setTitle(proposal.getProposalId() + "_fellowReview");
+            commentThread = CommentClient.createThread(commentThread);
+            fellowDiscussionId =  commentThread.getThreadId();
+            proposal.setFellowDiscussionId(fellowDiscussionId);
+            try {
+                ProposalLocalServiceUtil.updateProposal(proposal);
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            }
         }
         return fellowDiscussionId;
     }
@@ -192,67 +217,95 @@ public class BaseProposalWrapper {
         proposal.setAdvisorDiscussionId(advisorDiscussionId);
     }
 
-    public String getPitch() throws PortalException, SystemException {
+    public String getPitch() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.PITCH, "");
     }
 
-    public String getName() throws PortalException, SystemException {
+    public String getName() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
     }
 
-    public String getDescription() throws SystemException, PortalException {
+    public String getDescription() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     }
 
-    public boolean isUserAmongFellows(User userInQuestion) throws SystemException, PortalException {
-        for (User fellow : ContestLocalServiceUtil.getFellowsForContest(contest)) {
-            if (fellow.getUserId() == userInQuestion.getUserId()) {
-                return true;
+    public boolean isUserAmongFellows(User userInQuestion) {
+        try {
+            for (User fellow : ContestLocalServiceUtil.getFellowsForContest(contest)) {
+                if (fellow.getUserId() == userInQuestion.getUserId()) {
+                    return true;
+                }
             }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new InternalException("Could not get contest team members for contest "
+                    + contest.getContestPK(), e);
         }
         return false;
     }
 
-    public boolean isUserAmongJudges(User userInQuestion) throws SystemException, PortalException {
-        for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
-            if (judge.getUserId() == userInQuestion.getUserId()) {
-                return true;
+    public boolean isUserAmongJudges(Member userInQuestion) {
+        try {
+            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
+                if (judge.getUserId() == userInQuestion.getUserId()) {
+                    return true;
+                }
             }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new InternalException("Could not get contest team members for contest "
+                    + contest.getContestPK(), e);
         }
         return false;
     }
 
     public boolean isJudgingContestPhase() {
-        return ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote()) == ContestPhasePromoteType.PROMOTE_JUDGED;
+        return ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote())
+                == ContestPhasePromoteType.PROMOTE_JUDGED;
     }
 
-    public String getTeam() throws PortalException, SystemException {
+    public String getTeam() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.TEAM, "");
     }
 
-    public User getAuthor() throws PortalException, SystemException {
-        return UserLocalServiceUtil.getUser(proposal.getAuthorId());
+    public Member getAuthor() {
+        try {
+            return MembersClient.getMember(proposal.getAuthorId());
+        } catch (MemberNotFoundException e) {
+            throw new IllegalStateException("Author " + proposal.getAuthorId()
+                    + " of proposal " + proposal.getProposalId() + " does not exist");
+        }
     }
 
-    public long getSupportersCount() throws PortalException, SystemException {
-        return ProposalLocalServiceUtil.getSupportersCount(proposal.getProposalId());
+    public long getSupportersCount() {
+        try {
+            return ProposalLocalServiceUtil.getSupportersCount(proposal.getProposalId());
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            //should never happen
+            throw new IllegalArgumentException("Proposal " + proposal.getProposalId()
+                    + " does not exist");
+        }
     }
 
-    public long getCommentsCount() throws PortalException, SystemException {
+    public long getCommentsCount() {
         if (proposal.getProposalId() > 0) {
             return ProposalLocalServiceUtil.getCommentsCount(proposal.getProposalId());
         }
         return 0;
     }
 
-    public long getFellowReviewCommentsCount() throws PortalException, SystemException {
+    public long getFellowReviewCommentsCount() {
         if (proposal.getProposalId() > 0) {
             return ProposalLocalServiceUtil.getFellowReviewCommentsCount(proposal.getProposalId());
         }
         return 0;
     }
 
-    public long getEvaluationCommentsCount() throws PortalException, SystemException {
+    public long getEvaluationCommentsCount() {
         return 0;
     }
 
@@ -260,18 +313,33 @@ public class BaseProposalWrapper {
         return proposal.getUpdatedDate();
     }
 
-    public Date getLastModifiedDateForContestPhase() throws PortalException, SystemException {
+    public Date getLastModifiedDateForContestPhase() {
         if (proposal2Phase.getVersionTo() == -1) {
             return getLastModifiedDate();
         }
-        return ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposal.getProposalId(), version).getCreateDate();
+        try {
+            return ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposal.getProposalId(), version).getCreateDate();
+        } catch (NoSuchProposalVersionException e) {
+            throw new IllegalStateException("No version " + version
+                    + " for proposal " + proposal.getProposalId());
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
     }
 
-    public boolean isOpen() throws PortalException, SystemException {
-        return proposal.getProposalId() > 0 && ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
+    public boolean isOpen() {
+        try {
+            return proposal.getProposalId() > 0 && ProposalLocalServiceUtil
+                    .isOpen(proposal.getProposalId());
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            _log.error("Failed to check if proposal is open: " + proposal.getProposalId());
+            return false;
+        }
     }
 
-    public long getImageId() throws PortalException, SystemException {
+    public long getImageId() {
         return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
 
@@ -283,11 +351,19 @@ public class BaseProposalWrapper {
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, inPhase);
     }
 
-    public List<User> getSupporters() throws PortalException, SystemException {
-        return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
+    public List<User> getSupporters() {
+        try {
+            return ProposalLocalServiceUtil.getSupporters(proposal.getProposalId());
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            //shouldn't happen
+            _log.error("Failed to get supports for proposal " + proposal.getProposalId());
+            return Collections.emptyList();
+        }
     }
 
-    public String getAuthorName() throws PortalException, SystemException {
+    public String getAuthorName() {
         String authorName = getTeam();
         if (StringUtils.isBlank(authorName)) {
             authorName = getAuthor().getScreenName();
@@ -310,8 +386,11 @@ public class BaseProposalWrapper {
                 return new BaseContestWrapper(c);
             }
             return null;
-        } catch (PortalException e) { return null; }
-        catch (SystemException e) { return null; }
+        } catch (PortalException e) {
+            return null;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
     }
 
     public ProposalVersion getSelectedVersion() {
@@ -322,7 +401,7 @@ public class BaseProposalWrapper {
                 }
             }
         } catch (SystemException e) {
-            return null;
+            throw new DatabaseAccessException(e);
         }
         return null;
     }
@@ -346,41 +425,58 @@ public class BaseProposalWrapper {
     public boolean isVisible() {
         try {
             return !ProposalLocalServiceUtil.isDeleted(proposal);
-        } catch (PortalException | SystemException ignored) { }
-        return true;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            return true;
+        }
     }
 
     public boolean isVisibleInContest(long contestId) {
         try {
             return !ProposalLocalServiceUtil.isVisibleInContest(proposal, contestId);
-        } catch (PortalException | SystemException ignored) { }
-        return true;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException ignored) {
+            return true;
+        }
     }
 
     public ContestPhase getContestPhase() {
         return contestPhase;
     }
 
-    public List<BaseProposalTeamMemberWrapper> getMembers() throws PortalException, SystemException {
+    public List<BaseProposalTeamMemberWrapper> getMembers() {
         if (members == null) {
-            members = new ArrayList<>();
-            boolean hasOwner = false;
-            for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
-                final BaseProposalTeamMemberWrapper teamMemberWrapper = new BaseProposalTeamMemberWrapper(proposal, user);
-                members.add(teamMemberWrapper);
-                if (teamMemberWrapper.getMemberType().equalsIgnoreCase("owner")) {
-                    hasOwner = true;
+            try {
+                members = new ArrayList<>();
+                boolean hasOwner = false;
+                for (User user : ProposalLocalServiceUtil.getMembers(proposal.getProposalId())) {
+                    final BaseProposalTeamMemberWrapper teamMemberWrapper = new BaseProposalTeamMemberWrapper(
+                            proposal, user);
+                    members.add(teamMemberWrapper);
+                    if (teamMemberWrapper.getMemberType().equalsIgnoreCase("owner")) {
+                        hasOwner = true;
+                    }
                 }
-            }
-            if (!hasOwner) {
-                //TODO: remove debug email
-                GroupLocalServiceUtil.addUserGroups(proposal.getAuthorId(), new long[]{proposal.getGroupId()});
-                final User owner = UserLocalServiceUtil.fetchUser(proposal.getAuthorId());
-                members.add(new BaseProposalTeamMemberWrapper(proposal, owner));
-                new EmailToAdminDispatcher(String.format("Owner %s not in proposal %d's group", owner.getScreenName(), proposal.getProposalId()),
-                        String.format("The owner %s (%d) of proposal %d is not in its group %d and was just re-added.",
-                                owner.getScreenName(), owner.getUserId(), proposal.getProposalId(), proposal.getGroupId())
-                ).sendMessage();
+                if (!hasOwner) {
+                    //TODO: remove debug email
+                    GroupLocalServiceUtil.addUserGroups(proposal.getAuthorId(),
+                            new long[]{proposal.getGroupId()});
+                    final User owner = UserLocalServiceUtil.fetchUser(proposal.getAuthorId());
+                    members.add(new BaseProposalTeamMemberWrapper(proposal, owner));
+                    new EmailToAdminDispatcher(String.format("Owner %s not in proposal %d's group",
+                            owner.getScreenName(), proposal.getProposalId()),
+                            String.format(
+                                    "The owner %s (%d) of proposal %d is not in its group %d and was just re-added.",
+                                    owner.getScreenName(), owner.getUserId(),
+                                    proposal.getProposalId(), proposal.getGroupId())
+                    ).sendMessage();
+                }
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            } catch (PortalException ignored) {
+               //can't happen, we know the proposal exists
             }
         }
 

@@ -277,14 +277,12 @@ public class ProposalRatingTypeLocalServiceWrapper
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges()
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges() {
         return _proposalRatingTypeLocalService.getRatingTypesForJudges();
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows()
-        throws com.liferay.portal.kernel.exception.SystemException {
+    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows() {
         return _proposalRatingTypeLocalService.getRatingTypesForFellows();
     }
 

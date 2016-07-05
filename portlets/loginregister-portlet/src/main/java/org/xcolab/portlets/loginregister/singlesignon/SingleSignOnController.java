@@ -19,14 +19,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
 
 @Controller
 @RequestMapping(value = "view", params = "SSO=general")
@@ -99,7 +99,7 @@ public class SingleSignOnController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            _log.error("Linking user " + login + " failed:", e);
         }
 
         // passwords don't match
@@ -117,5 +117,4 @@ public class SingleSignOnController {
     public String registerOrLogin(PortletRequest request) {
         return "SSO/registerOrLogin";
     }
-
 }

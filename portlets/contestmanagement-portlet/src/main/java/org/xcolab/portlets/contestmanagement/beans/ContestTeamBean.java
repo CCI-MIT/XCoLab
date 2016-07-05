@@ -5,16 +5,16 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.IdListUtil;
 
-import javax.portlet.PortletRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Thomas on 2/10/2015.
- */
+import javax.portlet.PortletRequest;
+
 public class ContestTeamBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -34,16 +34,11 @@ public class ContestTeamBean implements Serializable {
     }
 
     public ContestTeamBean(Contest contest) {
-
         if (contest != null) {
-            try {
-                this.contest = contest;
-                populateJudges();
-                populateFellows();
-                populateAdvisors();
-                //populateContestManagers();
-            } catch (SystemException | PortalException ignored) {
-            }
+            this.contest = contest;
+            populateJudges();
+            populateFellows();
+            populateAdvisors();
         }
     }
 
@@ -54,27 +49,52 @@ public class ContestTeamBean implements Serializable {
         //userIdsContestManagers = IdListUtil.getIdsFromString(request.getParameter("userIdsManagers"));
     }
 
-    private void populateJudges() throws SystemException, PortalException {
-        for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
-            userIdsJudges.add(judge.getUserId());
+    private void populateJudges() {
+        try {
+            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
+                userIdsJudges.add(judge.getUserId());
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new IllegalStateException("Error while populating judges", e);
         }
     }
 
-    private void populateFellows() throws SystemException, PortalException {
-        for (User fellow : ContestLocalServiceUtil.getFellowsForContest(contest)) {
-            userIdsFellows.add(fellow.getUserId());
+    private void populateFellows() {
+        try {
+            for (User fellow : ContestLocalServiceUtil.getFellowsForContest(contest)) {
+                userIdsFellows.add(fellow.getUserId());
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new IllegalStateException("Error while populating fellows", e);
         }
     }
 
-    private void populateAdvisors() throws SystemException, PortalException {
-        for (User advisor : ContestLocalServiceUtil.getAdvisorsForContest(contest)) {
-            userIdsAdvisors.add(advisor.getUserId());
+    private void populateAdvisors() {
+        try {
+            for (User advisor : ContestLocalServiceUtil.getAdvisorsForContest(contest)) {
+                userIdsAdvisors.add(advisor.getUserId());
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new IllegalStateException("Error while populating advisors", e);
         }
     }
 
-    private void populateContestManagers() throws SystemException, PortalException {
-        for (User contestManager : ContestLocalServiceUtil.getContestManagersForContest(contest)) {
-            userIdsContestManagers.add(contestManager.getUserId());
+    private void populateContestManagers() {
+        try {
+            for (User contestManager : ContestLocalServiceUtil
+                    .getContestManagersForContest(contest)) {
+                userIdsContestManagers.add(contestManager.getUserId());
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new IllegalStateException("Error while populating managers", e);
         }
     }
 

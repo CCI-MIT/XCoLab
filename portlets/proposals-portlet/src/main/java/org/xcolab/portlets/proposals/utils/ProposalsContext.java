@@ -5,9 +5,9 @@ import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -19,32 +19,34 @@ import javax.portlet.PortletRequest;
 
 public interface ProposalsContext {
 
-    Contest getContest(PortletRequest request) throws PortalException, SystemException;
+    Contest getContest(PortletRequest request);
 
-    ContestPhase getContestPhase(PortletRequest request) throws PortalException, SystemException;
+    ContestPhase getContestPhase(PortletRequest request);
 
-    Proposal getProposal(PortletRequest request) throws PortalException, SystemException;
+    Proposal getProposal(PortletRequest request);
 
-    ProposalsPermissions getPermissions(PortletRequest request) throws PortalException, SystemException;
+    ProposalsPermissions getPermissions(PortletRequest request);
 
-    ProposalsDisplayPermissions getDisplayPermissions(PortletRequest request) throws PortalException, SystemException;
+    ProposalsDisplayPermissions getDisplayPermissions(PortletRequest request);
 
-    Proposal2Phase getProposal2Phase(PortletRequest request) throws PortalException, SystemException;
+    Proposal2Phase getProposal2Phase(PortletRequest request);
 
-    Long getViewContestPhaseId(PortletRequest request) throws PortalException, SystemException;
+    Long getViewContestPhaseId(PortletRequest request);
 
-    ProposalWrapper getProposalWrapped(PortletRequest request) throws PortalException, SystemException;
+    ProposalWrapper getProposalWrapped(PortletRequest request);
 
-    ContestWrapper getContestWrapped(PortletRequest request) throws PortalException, SystemException;
+    ContestWrapper getContestWrapped(PortletRequest request);
 
-    BaseContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) throws PortalException, SystemException;
+    BaseContestPhaseWrapper getContestPhaseWrapped(PortletRequest request);
 
-    ContestType getContestType(PortletRequest request) throws PortalException, SystemException;
-    
-    User getUser(PortletRequest request) throws PortalException, SystemException;
+    ContestType getContestType(PortletRequest request);
+
+    User getUser(PortletRequest request);
+
+    Member getMember(PortletRequest request);
 
     void invalidateContext(PortletRequest request);
 
-    ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request) throws PortalException, SystemException;
+    ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request);
 
 }

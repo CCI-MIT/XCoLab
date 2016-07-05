@@ -1,8 +1,5 @@
 package org.xcolab.utils.emailnotification.basic;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -10,40 +7,37 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.members.pojo.Member;
 
 public class MemberNotification extends EmailNotification {
 
     protected final String templateName;
-    protected final User recipient;
+    protected final Member recipient;
     protected EmailNotificationTemplate templateWrapper;
 
     private static final String SENDER_NAME_PLACEHOLDER = "sender-name";
     private static final String SENDER_LASTNAME_PLACEHOLDER = "sender-lastname";
     private static final String SENDER_SCREENNAME_PLACEHOLDER = "sender-screenname";
 
-    public MemberNotification(User recipient, String templateName, ServiceContext serviceContext) {
+    public MemberNotification(Member recipient, String templateName, ServiceContext serviceContext) {
         super(serviceContext);
         this.recipient = recipient;
         this.templateName = templateName;
     }
 
     @Override
-    protected User getRecipient() throws SystemException, PortalException {
+    protected Member getRecipient() {
         return recipient;
     }
 
     @Override
-    protected EmailNotificationTemplate getTemplateWrapper() throws PortalException, SystemException {
+    protected EmailNotificationTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;
         }
 
         final ContestEmailTemplate emailTemplate =
                 EmailTemplateClient.getContestEmailTemplateByType(templateName);
-        if (emailTemplate == null) {
-            throw new SystemException(
-                    "Could not load template \"" + templateName + "\" for " + this.getClass().getName());
-        }
         templateWrapper = new MemberNotificationTemplate(emailTemplate, "", "");
 
         return templateWrapper;
@@ -56,7 +50,7 @@ public class MemberNotification extends EmailNotification {
         }
 
         @Override
-        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        protected Node resolvePlaceholderTag(Element tag) {
             Node node = super.resolvePlaceholderTag(tag);
             if (node != null) {
                 return node;

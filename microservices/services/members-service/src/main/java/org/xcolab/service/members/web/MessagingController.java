@@ -70,16 +70,13 @@ public class MessagingController {
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody Message message) {
-        messagingService.createMessage(message.getMessageId(), message.getFromId(), message.getRepliesTo(),
-                message.getSubject(), message.getContent());
-        return message;
+        return messagingService.createMessage(message);
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.POST)
     public void createMessageRecipient(@PathVariable("messageId") long messageId,
-            @RequestParam long recipientStatusId, //TODO: liferay generated id
             @RequestParam long recipientId) {
-        messagingService.createRecipient(recipientStatusId, messageId, recipientId);
+        messagingService.createRecipient(messageId, recipientId);
     }
 
     //TODO: patch doesn't work

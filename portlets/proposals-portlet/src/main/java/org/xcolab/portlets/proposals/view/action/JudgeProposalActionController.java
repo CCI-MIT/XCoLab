@@ -3,7 +3,6 @@ package org.xcolab.portlets.proposals.view.action;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.JudgingSystemActions;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -35,6 +34,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
@@ -44,6 +45,8 @@ import org.xcolab.portlets.proposals.requests.RatingBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.io.ByteArrayOutputStream;
@@ -179,7 +182,7 @@ public class JudgeProposalActionController {
             out.flush();
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InternalException(e);
         }
     }
 
@@ -196,30 +199,32 @@ public class JudgeProposalActionController {
         final Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
         ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
-        User currentUser = proposalsContext.getUser(request);
+        User liferayUser = proposalsContext.getUser(request);
+        Member member = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         Boolean isPublicRating = permissions.getCanPublicRating();
 
-        if(judgeProposalFeedbackBean.getScreeningUserId() != null) {
-            currentUser = UserLocalServiceUtil.getUser(judgeProposalFeedbackBean.getScreeningUserId());
+        if (judgeProposalFeedbackBean.getScreeningUserId() != null) {
+            liferayUser = UserLocalServiceUtil.getUser(judgeProposalFeedbackBean.getScreeningUserId());
+            member = MembersClient.getMemberUnchecked(liferayUser.getUserId());
         }
 
         // Security handling
-        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser) || isPublicRating)) {
+        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(member) || isPublicRating)) {
             return;
         }
 
-        if(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(currentUser)){
+        if(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(member)){
             isPublicRating = false;
         }
 
         //find existing ratings
         List<ProposalRating> existingRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
-                currentUser.getUserId(),
+                liferayUser.getUserId(),
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK());
 
-        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), currentUser.getUserId(), isPublicRating);
+        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), liferayUser.getUserId(), isPublicRating);
 
 
         response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest,
@@ -301,6 +306,7 @@ public class JudgeProposalActionController {
             response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
                     proposalsContext.getProposal(request), proposalsContext.getContestPhase(request)) + "/tab/SCREENING");
         } catch (Exception e) {
+            //TODO: do we still want this?
             List<Long> recipientIds = new ArrayList<>();
             recipientIds.add(1451771L); //Manuel
             recipientIds.add(1011659L); //Patrick

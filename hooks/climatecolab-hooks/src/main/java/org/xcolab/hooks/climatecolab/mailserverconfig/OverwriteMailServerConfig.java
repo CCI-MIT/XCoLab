@@ -1,6 +1,8 @@
 package org.xcolab.hooks.climatecolab.mailserverconfig;
 
 
+import com.liferay.portal.kernel.cache.CacheRegistryUtil;
+import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
@@ -9,14 +11,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.model.PortalPreferences;
 import com.liferay.portal.service.PortalPreferencesLocalServiceUtil;
-import com.liferay.portal.service.impl.PortalPreferencesLocalServiceImpl;
-import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
-import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -15,6 +15,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
@@ -140,7 +142,7 @@ public class ProposalTemplateWrapper {
         this.templateName = templateName;
     }
 
-    public void persist() throws SystemException, PortalException {
+    public void persist() {
         removeDeletedSections();
         removeTemplateSection();
 
@@ -157,7 +159,7 @@ public class ProposalTemplateWrapper {
         updatePlanTemplateTitle();
     }
 
-    public void removeDeletedSections() throws PortalException, SystemException {
+    public void removeDeletedSections() {
         Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
         List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
         for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
@@ -169,20 +171,30 @@ public class ProposalTemplateWrapper {
             }
         }
 
-        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil.getSections(planTemplate);
-        for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())) {
-                if (!ProposalTemplateLifecycleUtil
-                        .isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(),
-                                planTemplate.getId())) {
-                    PlanSectionDefinitionLocalServiceUtil.deletePlanSectionDefinition(planSectionDefinition);
+        try {
+            List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateLocalServiceUtil
+                    .getSections(planTemplate);
+            for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
+                if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())) {
+                    if (!ProposalTemplateLifecycleUtil
+                            .isPlanSectionDefinitionUsedInOtherTemplate(
+                                    planSectionDefinition.getId(),
+                                    planTemplate.getId())) {
+                        PlanSectionDefinitionLocalServiceUtil
+                                .deletePlanSectionDefinition(planSectionDefinition);
+                    }
+                    PlanTemplateLocalServiceUtil.removeSection(planTemplate, planSectionDefinition);
                 }
-                PlanTemplateLocalServiceUtil.removeSection(planTemplate, planSectionDefinition);
             }
-        }
 
-        for (SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
-            sections.remove(removedSectionDefinition);
+            for (SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
+                sections.remove(removedSectionDefinition);
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw ReferenceResolutionException.toObject(PlanSectionDefinition.class, "list")
+                    .fromObject(PlanTemplate.class, planTemplate.getId());
         }
     }
 
@@ -197,53 +209,69 @@ public class ProposalTemplateWrapper {
         sections.remove(templateSectionDefinitionWrapper);
     }
 
-    private void duplicateExistingPlanTemplate() throws SystemException, PortalException {
-        Long newPlanTemplateId = CounterLocalServiceUtil.increment(PlanSectionDefinition.class.getName());
-        planTemplate.setId(newPlanTemplateId);
-        PlanTemplate newPlanTemplate = PlanTemplateLocalServiceUtil.addPlanTemplate(planTemplate);
-        planTemplateId = newPlanTemplate.getId();
+    private void duplicateExistingPlanTemplate() {
+        try {
+            Long newPlanTemplateId = CounterLocalServiceUtil
+                    .increment(PlanSectionDefinition.class.getName());
+            planTemplate.setId(newPlanTemplateId);
+            PlanTemplate newPlanTemplate = PlanTemplateLocalServiceUtil
+                    .addPlanTemplate(planTemplate);
+            planTemplateId = newPlanTemplate.getId();
 
-        for (SectionDefinitionWrapper section : sections) {
-            section.setId(null);
+            for (SectionDefinitionWrapper section : sections) {
+                section.setId(null);
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 
-    private void addSectionsToProposalTemplate() throws PortalException, SystemException {
+    private void addSectionsToProposalTemplate() {
         for (SectionDefinitionWrapper sectionDefinitionWrapper : sections) {
             createOrUpdateIfExistsPlanTemplateSection(sectionDefinitionWrapper);
         }
     }
 
-    private void updatePlanTemplateTitle() throws SystemException {
+    private void updatePlanTemplateTitle() {
         if (planTemplate != null && templateName != null) {
             planTemplate.setName(templateName);
-            planTemplate.persist();
+            try {
+                planTemplate.persist();
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            }
         }
     }
 
-    private void createOrUpdateIfExistsPlanTemplateSection(SectionDefinitionWrapper sectionDefinitionWrapper)
-            throws SystemException {
+    private void createOrUpdateIfExistsPlanTemplateSection(
+            SectionDefinitionWrapper sectionDefinitionWrapper) {
+        try {
+            boolean wasUpdated = false;
+            Long planTemplateId = planTemplate.getId();
+            Long sectionDefinitionId = sectionDefinitionWrapper.getId();
+            Integer weight = sectionDefinitionWrapper.getWeight();
 
-        boolean wasUpdated = false;
-        Long planTemplateId = planTemplate.getId();
-        Long sectionDefinitionId = sectionDefinitionWrapper.getId();
-        Integer weight = sectionDefinitionWrapper.getWeight();
+            List<PlanTemplateSection> planTemplateSectionsWithSectionDefinition =
+                    PlanTemplateSectionLocalServiceUtil
+                            .findByPlanSectionDefinitionId(sectionDefinitionWrapper.getId());
 
-        List<PlanTemplateSection> planTemplateSectionsWithSectionDefinition =
-                PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId(sectionDefinitionWrapper.getId());
-
-        for (PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
-            if (planTemplateSection.getPlanTemplateId() == planTemplateId) {
-                planTemplateSection.setWeight(weight);
-                planTemplateSection.persist();
-                PlanTemplateSectionLocalServiceUtil.updatePlanTemplateSection(planTemplateSection);
-                wasUpdated = true;
-                break;
+            for (PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
+                if (planTemplateSection.getPlanTemplateId() == planTemplateId) {
+                    planTemplateSection.setWeight(weight);
+                    planTemplateSection.persist();
+                    PlanTemplateSectionLocalServiceUtil
+                            .updatePlanTemplateSection(planTemplateSection);
+                    wasUpdated = true;
+                    break;
+                }
             }
-        }
 
-        if (!wasUpdated) {
-            PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(planTemplateId, sectionDefinitionId, weight);
+            if (!wasUpdated) {
+                PlanTemplateSectionLocalServiceUtil
+                        .addPlanTemplateSection(planTemplateId, sectionDefinitionId, weight);
+            }
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
     }
 

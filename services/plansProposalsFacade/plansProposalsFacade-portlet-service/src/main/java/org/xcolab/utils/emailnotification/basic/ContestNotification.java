@@ -5,7 +5,6 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -18,6 +17,7 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.members.pojo.Member;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,10 +34,10 @@ public class ContestNotification extends EmailNotification {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("MMMM dd, HH:mm:ss a z");
     protected final Contest contest;
     protected final String templateName;
-    private final User recipient;
+    private final Member recipient;
     private ContestNotificationTemplate templateWrapper;
 
-    public ContestNotification(Contest contest, User recipient, String templateName,
+    public ContestNotification(Contest contest, Member recipient, String templateName,
             ServiceContext serviceContext) {
         super(serviceContext);
         this.contest = contest;
@@ -46,7 +46,7 @@ public class ContestNotification extends EmailNotification {
     }
 
     @Override
-    protected User getRecipient() throws SystemException, PortalException {
+    protected Member getRecipient() {
         return recipient;
     }
 
@@ -56,26 +56,22 @@ public class ContestNotification extends EmailNotification {
     }
 
     @Override
-    protected ContestNotificationTemplate getTemplateWrapper() throws PortalException, SystemException {
+    protected ContestNotificationTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;
         }
 
         final ContestEmailTemplate emailTemplate =
                 EmailTemplateClient.getContestEmailTemplateByType(templateName);
-        if (emailTemplate == null) {
-            throw new SystemException(
-                    "Could not load template \"" + templateName + "\" for " + this.getClass().getName());
-        }
         templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getContestShortName());
 
         return templateWrapper;
     }
 
-    private Date getActivePhaseDeadline() throws SystemException, PortalException {
+    private Date getActivePhaseDeadline() {
         try {
             return ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest).getPhaseEndDate();
-        } catch (SystemException e) {
+        } catch (SystemException | PortalException e) {
             return null;
         }
     }
@@ -92,7 +88,7 @@ public class ContestNotification extends EmailNotification {
         }
 
         @Override
-        protected Node resolvePlaceholderTag(Element tag) throws SystemException, PortalException {
+        protected Node resolvePlaceholderTag(Element tag) {
             Node node = super.resolvePlaceholderTag(tag);
             if (node != null) {
                 return node;

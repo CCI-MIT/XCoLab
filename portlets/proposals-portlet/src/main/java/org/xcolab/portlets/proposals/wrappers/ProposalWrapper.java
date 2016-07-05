@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -30,10 +29,12 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
 import java.io.IOException;
@@ -47,8 +48,8 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     private static final Log _log = LogFactoryUtil.getLog(ProposalWrapper.class);
 
-    protected static final Long LONG_DEFAULT_VAL = -1L;
-    protected static final String STRING_DEFAULT_VAL = "";
+    private static final Long LONG_DEFAULT_VAL = -1L;
+    private static final String STRING_DEFAULT_VAL = "";
 
     protected ProposalRatingsWrapper proposalRatings;
     private RibbonWrapper ribbonWrapper;
@@ -60,26 +61,27 @@ public class ProposalWrapper extends BaseProposalWrapper {
         this(ProposalLocalServiceUtil.getProposal(proposalId));
     }
 
-    public ProposalWrapper(Proposal proposal) throws NoSuchContestException {
+    public ProposalWrapper(Proposal proposal) {
         this(proposal, proposal.getCurrentVersion());
     }
 
-    public ProposalWrapper(Proposal proposal, int version) throws NoSuchContestException {
+    public ProposalWrapper(Proposal proposal, int version) {
         super(proposal, version, null, null, null);
     }
 
-    public ProposalWrapper(Proposal proposal, int version, Contest contest, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
+    public ProposalWrapper(Proposal proposal, int version, Contest contest,
+            ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal, version, contest, contestPhase, proposal2Phase);
     }
 
-    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) throws NoSuchContestException {
+    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal, proposal.getCurrentVersion(), null, contestPhase, proposal2Phase);
     }
-    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase) throws SystemException, NoSuchContestException {
+    public ProposalWrapper(Proposal proposal, ContestPhase contestPhase) {
         super(proposal, contestPhase);
     }
 
-    public ProposalWrapper(ProposalWrapper proposalWrapper) throws NoSuchContestException {
+    public ProposalWrapper(ProposalWrapper proposalWrapper) {
         super(proposalWrapper.getWrapped(),
                 proposalWrapper.getCurrentVersion(),
                 proposalWrapper.getContest(),
@@ -129,13 +131,19 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0, STRING_DEFAULT_VAL);
     }
 
-    public List<Long> getSelectedJudges() throws SystemException, PortalException {
+    public List<Long> getSelectedJudges() {
         List<Long> selectedJudges = new ArrayList<>();
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
-                selectedJudges.add(judge.getUserId());
+            try {
+                for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
+                    selectedJudges.add(judge.getUserId());
+                }
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            } catch (PortalException e) {
+                throw new IllegalStateException("Could not retrieve assigned judges");
             }
         } else {
             String s = proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
@@ -170,13 +178,13 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return selectedJudges;
     }
 
-    public boolean isUserAmongSelectedJudge(User user) throws PortalException, SystemException {
+    public boolean isUserAmongSelectedJudge(Member user) throws PortalException, SystemException {
         if (!getFellowScreeningNecessary()) {
             return isUserAmongJudges(user);
         }
 
         for (Long userId : getSelectedJudges()) {
-            if (userId == user.getUserId()) {
+            if (userId == user.getUserId().longValue()) {
                 return true;
             }
         }
@@ -215,8 +223,9 @@ public class ProposalWrapper extends BaseProposalWrapper {
             membershipRequests = new ArrayList<>();
             try {
                 for (MembershipRequest m : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())) {
-                    if(m.getStatusId()== MembershipRequestStatus.STATUS_PENDING_REQUESTED)
+                    if (m.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED) {
                         membershipRequests.add(new MembershipRequestWrapper(m));
+                    }
                 }
             } catch (SystemException | PortalException e) {
                 _log.warn(String.format("Could not retrieve membership requests for proposal %d", proposal.getProposalId()));
@@ -358,15 +367,13 @@ public class ProposalWrapper extends BaseProposalWrapper {
      *
      */
     public GenericJudgingStatus getJudgeStatus() {
-        try {
-            if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC || getFellowAction() == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER) {
-                return GenericJudgingStatus.STATUS_REJECTED;
-            }
-            if (!getSelectedJudges().isEmpty() && getAllJudgesReviewFinished()) {
-                return GenericJudgingStatus.STATUS_ACCEPTED;
-            }
-        } catch (SystemException | PortalException e) {
-            e.printStackTrace();
+        if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE
+                || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC
+                || getFellowAction() == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER) {
+            return GenericJudgingStatus.STATUS_REJECTED;
+        }
+        if (!getSelectedJudges().isEmpty() && getAllJudgesReviewFinished()) {
+            return GenericJudgingStatus.STATUS_ACCEPTED;
         }
         return GenericJudgingStatus.STATUS_UNKNOWN;
     }
@@ -375,11 +382,13 @@ public class ProposalWrapper extends BaseProposalWrapper {
      * Determines whether the screening/advance decision of the proposal is done
      */
     public GenericJudgingStatus getOverallStatus() {
-        if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON && Validator.isNotNull(getProposalReview())) {
+        if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON
+                && Validator.isNotNull(getProposalReview())) {
             return GenericJudgingStatus.STATUS_ACCEPTED;
         }
-        if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON && Validator.isNotNull(getProposalReview()) ||
-                getScreeningStatus() == GenericJudgingStatus.STATUS_REJECTED) {
+        if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON
+                && Validator.isNotNull(getProposalReview())
+                || getScreeningStatus() == GenericJudgingStatus.STATUS_REJECTED) {
             return GenericJudgingStatus.STATUS_REJECTED;
         }
 
@@ -394,31 +403,37 @@ public class ProposalWrapper extends BaseProposalWrapper {
         }
     }
 
-    public boolean getAllJudgesReviewFinished() throws SystemException, PortalException {
-        if (!getSelectedJudges().isEmpty()) {
-            for (long userId : getSelectedJudges()) {
-                List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
-                        userId,
-                        this.proposal.getProposalId(),
-                        this.contestPhase.getContestPhasePK());
-                ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
-                if (!wrapper.isReviewComplete()) {
-                    return false;
+    public boolean getAllJudgesReviewFinished() {
+        try {
+            if (!getSelectedJudges().isEmpty()) {
+                for (long userId : getSelectedJudges()) {
+                    List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil
+                            .getJudgeRatingsForProposalAndUser(
+                                    userId, proposal.getProposalId(),
+                                    contestPhase.getContestPhasePK());
+                    ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId,
+                            proposalRatings);
+                    if (!wrapper.isReviewComplete()) {
+                        return false;
+                    }
                 }
             }
+            return true;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-        return true;
     }
 
-    public boolean getJudgeReviewFinishedStatusUserId(Long userId) throws SystemException, PortalException {
-
-        List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
-                userId,
-                this.proposal.getProposalId(),
-                this.contestPhase.getContestPhasePK());
-        ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
-        return wrapper.isReviewComplete();
-
+    public boolean getJudgeReviewFinishedStatusUserId(long userId) {
+        try {
+            List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil
+                    .getJudgeRatingsForProposalAndUser(
+                            userId, proposal.getProposalId(), contestPhase.getContestPhasePK());
+            ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
+            return wrapper.isReviewComplete();
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        }
     }
 	
 	public ProposalWrapper getBaseProposal() throws PortalException, SystemException {
@@ -433,14 +448,14 @@ public class ProposalWrapper extends BaseProposalWrapper {
 		return baseProposal;
 	}
 
-    public List<ProposalRatingWrapper> getRatings() throws SystemException, PortalException {
+    public List<ProposalRatingWrapper> getRatings() {
         if (this.proposalRatings == null) {
             return new ArrayList<>();
         }
         return this.proposalRatings.getRatings();
     }
 
-    public String getRatingComment() throws SystemException, PortalException {
+    public String getRatingComment() {
         if (this.proposalRatings == null) {
             return "";
         }
