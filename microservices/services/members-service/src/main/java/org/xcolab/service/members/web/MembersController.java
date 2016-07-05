@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.member.MemberDao;
@@ -36,17 +35,18 @@ public class MembersController {
     @Autowired
     private RoleService roleService;
 
+
     @RequestMapping(value = "/members", method = RequestMethod.GET)
     public List<Member> listMembers(HttpServletResponse response,
-            @RequestParam(required = false) Integer startRecord,
-            @RequestParam(required = false) Integer limitRecord,
-            @RequestParam(required = false) String sort,
-            @RequestParam(required = false) String partialName,
-            @RequestParam(required = false) String roleName,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String screenName,
-            @RequestParam(required = false) Long facebookId,
-            @RequestParam(required = false) String openId) {
+                                    @RequestParam(required = false) Integer startRecord,
+                                    @RequestParam(required = false) Integer limitRecord,
+                                    @RequestParam(required = false) String sort,
+                                    @RequestParam(required = false) String partialName,
+                                    @RequestParam(required = false) String roleName,
+                                    @RequestParam(required = false) String email,
+                                    @RequestParam(required = false) String screenName,
+                                    @RequestParam(required = false) Long facebookId,
+                                    @RequestParam(required = false) String openId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
@@ -100,6 +100,20 @@ public class MembersController {
                 member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
 
+    @RequestMapping(value = "/members/isUsed", method = RequestMethod.GET)
+    public boolean isUsed(
+            @RequestParam(required = false) String screenName,
+            @RequestParam(required = false) String email) {
+        boolean ret = false;
+        if (screenName != null) {
+            ret = memberDao.isScreenNameTaken(screenName);
+        }
+        if (email != null) {
+            ret = ret || memberDao.isEmailUsed(email);
+        }
+        return ret;
+    }
+
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.PUT)
     public boolean updateMember(@RequestBody Member member, @PathVariable Long memberId)
             throws NotFoundException {
@@ -129,19 +143,6 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members/isUsed", method = RequestMethod.GET)
-    public boolean isUsed(
-            @RequestParam(required = false) String screenName,
-            @RequestParam(required = false) String email) {
-        boolean ret = false;
-        if (screenName != null) {
-            ret = memberDao.isScreenNameTaken(screenName);
-        }
-        if (email != null) {
-            ret = ret || memberDao.isEmailUsed(email);
-        }
-        return ret;
-    }
 
     @RequestMapping(value = "/members/generateScreenName", method = RequestMethod.GET)
     public String generateScreenName(@RequestParam String[] values) {
@@ -181,12 +182,11 @@ public class MembersController {
             @RequestParam(required = false) Long memberId)
             throws NoSuchAlgorithmException, NotFoundException {
         if (memberId != null) {
-                return memberService.createNewForgotPasswordToken(memberId);
+            return memberService.createNewForgotPasswordToken(memberId);
         }
         throw new NotFoundException(
                 "The endpoint you requested is not available for the given attributes");
     }
-
 
 
     @RequestMapping(value = "/members/updateForgottenPassword", method = RequestMethod.POST)

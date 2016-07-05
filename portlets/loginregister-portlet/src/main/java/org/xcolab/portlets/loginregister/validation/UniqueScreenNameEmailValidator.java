@@ -1,6 +1,8 @@
 package org.xcolab.portlets.loginregister.validation;
 
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.utils.validation.ConstraintValidatorHelper;
 
 import javax.validation.ConstraintValidator;

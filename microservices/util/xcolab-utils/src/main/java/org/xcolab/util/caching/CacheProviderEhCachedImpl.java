@@ -11,6 +11,7 @@ import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
+import org.xcolab.util.http.caching.CacheProvider;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;

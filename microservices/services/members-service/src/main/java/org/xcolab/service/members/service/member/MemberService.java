@@ -3,6 +3,7 @@ package org.xcolab.service.members.service.member;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
@@ -23,6 +24,7 @@ public class MemberService {
     private final static int MAX_SCREEN_NAME_LENGTH = 26;
 
     private final MemberDao memberDao;
+
 
     private final ConnectorEmmaAPI connectorEmmaAPI;
 

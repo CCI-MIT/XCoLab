@@ -25,6 +25,10 @@ public interface MemberDao {
     Member findOneByScreenName(String screenName);
     Member findOneByEmail(String email);
 
+    boolean isScreenNameTaken(String screenName);
+
+    boolean isEmailUsed(String email);
+
     Member findOneByForgotPasswordHash(String newPasswordToken);
 
     boolean updateMember(Member member);
@@ -32,6 +36,4 @@ public interface MemberDao {
             String firstName, String lastName, String shortBio, String country,
             Long facebookId, String openId, Long imageid, Long liferayUserId);
 
-    boolean isScreenNameTaken(String screenName);
-    boolean isEmailUsed(String email);
 }

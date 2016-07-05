@@ -47,6 +47,7 @@ import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
@@ -380,7 +381,7 @@ public class MainViewController {
         User loggedInUser = ((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
 
         if (!loggedInUser.getScreenName().equals(screenName)) {
-            if (StringUtils.isNotEmpty(screenName) && MembersClient.isScreenNameUsed(screenName)
+            if (StringUtils.isNotEmpty(screenName) && SharedColabClient.isScreenNameUsed(screenName)
                     && UserCreationUtil.isUsernameValid(screenName)) {
                 loggedInUser.setScreenName(screenName);
                 json.getJSONObject("screenName").put("success", true);

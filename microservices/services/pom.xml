@@ -29,6 +29,7 @@
         <module>members-service</module>
         <module>proposals-service</module>
         <module>search-service</module>
+        <module>sharedcolab-service</module>
     </modules>
 
     <dependencies>

@@ -23,8 +23,9 @@ import org.climatecollaboratorium.facelets.discussions.support.CategoryWrapper;
 import org.climatecollaboratorium.facelets.discussions.support.MessageWrapper;
 import org.climatecollaboratorium.navigation.NavigationEvent;
 import org.climatecollaboratorium.utils.Helper;
-import org.xcolab.activityEntry.ActivityEntryType;
+
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.util.enums.activities.ActivityEntryType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -461,11 +462,11 @@ public class DiscussionBean implements Serializable {
                 if (isSubscribed()) {
                     // user is subscribed, unsubscribe
                     ActivitiesClient.deleteSubscription(liferayUser.getUserId(), ActivityEntryType
-                            .DISCUSSION.getPrimaryTypeId(), getDiscussionId(), 0, extraData.toString());
+                            .DISCUSSION, getDiscussionId(), extraData.toString());
                     ;
                 } else {
-                    ActivitiesClient.addSubscription(ActivityEntryType.DISCUSSION.getPrimaryTypeId(),
-                            getDiscussionId(), 0, extraData.toString(), liferayUser.getUserId());
+                    ActivitiesClient.addSubscription(liferayUser.getUserId(),ActivityEntryType.DISCUSSION,
+                            getDiscussionId(), extraData.toString());
                 }
             } else {
                 _log.error("Could not retrieve user for subscription: user was null");

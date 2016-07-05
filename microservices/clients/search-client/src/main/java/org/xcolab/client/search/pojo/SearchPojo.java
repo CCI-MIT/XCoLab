@@ -1,7 +1,21 @@
 package org.xcolab.client.search.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.core.ParameterizedTypeReference;
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SearchPojo {
+
+    public static final TypeProvider<SearchPojo> TYPES =
+            new TypeProvider<>(SearchPojo.class,
+                    new ParameterizedTypeReference<List<SearchPojo>>() {
+                    });
 
     private Double relevance;
 

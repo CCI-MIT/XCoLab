@@ -25,6 +25,11 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>sharedcolab-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.2</version>
@@ -73,7 +78,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>members_Member|User_|Users_Roles|Role_|xcolab_Message|xcolab_MessageRecipientStatus|xcolab_MessagingUserPreferences|Contact_|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory|xcolab_ContestTeamMember|members_RoleGroupRoles|members_RoleGroup</includes>
+							<includes>members_ColabSSO|members_Member|User_|Users_Roles|Role_|xcolab_Message|xcolab_MessageRecipientStatus|xcolab_MessagingUserPreferences|Contact_|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory|xcolab_ContestTeamMember|members_RoleGroupRoles|members_RoleGroup</includes>
 						</database>
 					</generator>
 				</configuration>
