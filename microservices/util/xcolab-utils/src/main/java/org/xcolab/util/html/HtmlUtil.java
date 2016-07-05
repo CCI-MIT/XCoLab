@@ -1,4 +1,4 @@
-package org.xcolab.util;
+package org.xcolab.util.html;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;

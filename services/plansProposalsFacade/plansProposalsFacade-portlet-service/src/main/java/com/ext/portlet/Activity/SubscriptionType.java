@@ -1,6 +1,6 @@
 package com.ext.portlet.Activity;
 
-import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;

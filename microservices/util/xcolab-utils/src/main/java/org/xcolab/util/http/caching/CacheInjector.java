@@ -1,9 +1,9 @@
-package org.xcolab.util.caching;
+package org.xcolab.util.http.caching;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.util.RequestUtils;
+import org.xcolab.util.http.RequestUtils;
 
 import javax.annotation.PostConstruct;
 

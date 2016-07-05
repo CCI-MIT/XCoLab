@@ -28,7 +28,7 @@ import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 
 import java.io.IOException;

@@ -16,7 +16,7 @@ import org.xcolab.portlets.proposals.utils.ProposalUnversionedAttributeUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.html.HtmlUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

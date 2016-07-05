@@ -1,4 +1,4 @@
-package org.xcolab.util.enums.activities;
+package org.xcolab.util.enums.activity;
 
 public enum ActivityEntryType {
     MEMBER(10038L),

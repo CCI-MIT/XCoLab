@@ -1,4 +1,4 @@
-package org.xcolab.util.enums.contestPhase;
+package org.xcolab.util.enums.contest;
 
 public class ProposalContestPhaseAttributeKeys {
     /**

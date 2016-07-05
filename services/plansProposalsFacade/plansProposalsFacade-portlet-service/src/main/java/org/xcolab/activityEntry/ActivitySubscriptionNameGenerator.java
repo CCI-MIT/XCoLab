@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import org.apache.commons.lang.StringUtils;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.utils.IdListUtil;
 
 import java.util.List;

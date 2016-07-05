@@ -1,6 +1,6 @@
 package com.ext.utils.subscriptions;
 
-import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.activityEntry.proposal.ProposalBaseActivityEntry;
 
 import java.util.ArrayList;

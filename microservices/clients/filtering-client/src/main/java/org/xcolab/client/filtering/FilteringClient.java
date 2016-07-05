@@ -1,41 +1,33 @@
 package org.xcolab.client.filtering;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public final class FilteringClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:" + RequestUtils.getServicesPort() + "/filtering-service";
+    private static final RestService filteringService = new RestService("filtering-service");
+    private static final RestResource<FilteredEntry> filteredEntryResource = new RestResource<>(
+            filteringService, "filteredEntries", FilteredEntry.TYPES);
 
     public static FilteredEntry getFilteredEntryByUuid(String uuid)
             throws FilteredEntryNotFoundException {
         try {
-            if (StringUtils.isNotBlank(uuid)) {
-                UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                        EUREKA_APPLICATION_ID + "/filteredEntries/" + uuid);
-                return RequestUtils
-                        .get(uriBuilder, FilteredEntry.class, "filteredEntryId_ " + uuid);
-            }
+            return filteredEntryResource.get(uuid)
+                    .cacheIdentifier("filteredEntryId_ " + uuid)
+                    .execute();
         } catch (EntityNotFoundException ignored) {
+            throw new FilteredEntryNotFoundException(uuid);
         }
-        throw new FilteredEntryNotFoundException("FilteredEntry with uuid " + uuid + " not found.");
     }
-    public static FilteredEntry createFilteredEntry(FilteredEntry filteredEntry) {
 
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/filteredEntries");
-        return RequestUtils.post(uriBuilder, filteredEntry, FilteredEntry.class);
+    public static FilteredEntry createFilteredEntry(FilteredEntry filteredEntry) {
+        return filteredEntryResource.create(filteredEntry).execute();
     }
 
     public static void updateFilteredEntry(FilteredEntry filteredEntry) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/filteredEntries/" + filteredEntry.getFilteredEntryId());
-
-        RequestUtils.put(uriBuilder, filteredEntry);
+        filteredEntryResource.update(filteredEntry, filteredEntry.getUuid());
     }
 }

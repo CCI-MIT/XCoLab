@@ -1,17 +1,18 @@
 package org.xcolab.client.members;
 
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.util.RequestUtils;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
 public final class PermissionsClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/members-service";
+    private static final RestService membersService = new RestService("members-service");
+    private static final RestResource<Object> roleGroupResource = new RestResource<>(membersService,
+            "roleGroups", new TypeProvider<>(null, null));
 
     private PermissionsClient() {
     }
@@ -37,11 +38,11 @@ public final class PermissionsClient {
     }
 
     public static boolean hasRoleGroup(long memberId, long roleGroupId) {
-        UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl("http://" + EUREKA_APPLICATION_ID + "/roleGroups/" + roleGroupId + "/roles");
-        final List<Role_> roles = RequestUtils
-                .getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
-                }, "memberId_" + memberId + "_roleGroupId_" + roleGroupId);
+        final List<Role_> roles = roleGroupResource
+                        .getSubResource(roleGroupId, "roles", Role_.TYPES)
+                .list()
+                .cacheIdentifier("memberId_" + memberId + "_roleGroupId_" + roleGroupId)
+                .execute();
         for (Role_ role : roles) {
             if (memberHasRole(memberId, role.getRoleId())) {
                 return true;

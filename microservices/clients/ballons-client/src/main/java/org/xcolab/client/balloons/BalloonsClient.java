@@ -1,51 +1,48 @@
 package org.xcolab.client.balloons;
 
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.util.RequestUtils;
-import org.xcolab.util.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class BalloonsClient {
 
-    private static final String EUREKA_APPLICATION_ID = "localhost:"+RequestUtils.getServicesPort()+"/balloons-service";
-
+    private static final RestService balloonService = new RestService("balloons-service");
+    private static final RestResource<BalloonLink> balloonLinkResource = new RestResource<>(
+            balloonService, "balloonLinks", BalloonLink.TYPES);
+    private static final RestResource<BalloonUserTracking> balloonUserTrackingResource =
+            new RestResource<>(balloonService, "balloonUserTracking", BalloonUserTracking.TYPES);
+    private static final RestResource<BalloonText> balloonTextResource = new RestResource<>(
+            balloonService, "balloonTexts", BalloonText.TYPES);
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonLinks/" + uuid + "");
-
         try {
-            return RequestUtils.get(uriBuilder, BalloonLink.class);
+            return balloonLinkResource.get(uuid).execute();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonLink " + uuid + " does not exist");
         }
     }
 
-    public static BalloonLink createBalloonLink(
-            BalloonLink balloonLink) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonLinks/");
-        return RequestUtils.post(uriBuilder, balloonLink, BalloonLink.class);
+    public static BalloonLink createBalloonLink(BalloonLink balloonLink) {
+        return balloonLinkResource.create(balloonLink).execute();
     }
-    public static void updateBalloonLink(BalloonLink balloonLink) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonLinks/" + balloonLink.getUuid_());
-
-        RequestUtils.put(uriBuilder, balloonLink);
+    public static boolean updateBalloonLink(BalloonLink balloonLink) {
+        return balloonLinkResource.update(balloonLink, balloonLink.getUuid_()).execute();
     }
 
-    public static BalloonLink getBalloonLinkByMemberUuid(String memberUuid) throws BalloonUserTrackingNotFound {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonLinks/");
-        uriBuilder.queryParam("memberUuid",memberUuid);
+    public static BalloonLink getBalloonLinkByMemberUuid(String memberUuid)
+            throws BalloonUserTrackingNotFound {
+        //TODO: port to new methods
+        final UriBuilder uriBuilder = balloonLinkResource.getResourceUrl()
+                .queryParam("memberUuid", memberUuid);
 
         try {
             return RequestUtils.get(uriBuilder, BalloonLink.class);
@@ -55,13 +52,10 @@ public final class BalloonsClient {
         }
     }
 
-
-    public static BalloonUserTracking getBalloonUserTracking(String uuid) throws BalloonUserTrackingNotFound {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonUserTracking/" + uuid + "");
-
+    public static BalloonUserTracking getBalloonUserTracking(String uuid)
+            throws BalloonUserTrackingNotFound {
         try {
-            return RequestUtils.get(uriBuilder, BalloonUserTracking.class);
+            return balloonUserTrackingResource.get(uuid).execute();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonUserTracking " + uuid + " does not exist");
@@ -69,79 +63,46 @@ public final class BalloonsClient {
     }
 
     public static List<BalloonUserTracking> getBalloonUserTrackingByEmail(String email)  {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonUserTracking/");
-        uriBuilder.queryParam("email",email);
-
-            return RequestUtils.getList(uriBuilder,
-                    new ParameterizedTypeReference<List<BalloonUserTracking>>() {
-                    });
-
+        return balloonUserTrackingResource.list()
+                .queryParam("email", email)
+                .execute();
     }
 
     public static List<BalloonUserTracking> getAllBalloonUserTracking() {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonUserTracking/");
-
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<BalloonUserTracking>>() {
-                });
+        return balloonUserTrackingResource.list().execute();
     }
 
     public static BalloonUserTracking createBalloonUserTracking(
             BalloonUserTracking balloonUserTracking) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonUserTracking/");
-        return RequestUtils.post(uriBuilder, balloonUserTracking, BalloonUserTracking.class);
+        return balloonUserTrackingResource.create(balloonUserTracking).execute();
     }
-    public static void updateBalloonUserTracking(BalloonUserTracking balloonUserTracking) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonUserTracking/" + balloonUserTracking.getUuid_());
-
-        RequestUtils.put(uriBuilder, balloonUserTracking);
+    public static boolean updateBalloonUserTracking(BalloonUserTracking balloonUserTracking) {
+        return balloonUserTrackingResource.update(balloonUserTracking,
+                balloonUserTracking.getUuid_()).execute();
     }
 
     public static BalloonText getBalloonText(Long id) throws BalloonUserTrackingNotFound {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonTexts/" + id + "");
-
         try {
-            return RequestUtils.get(uriBuilder, BalloonText.class);
+            return balloonTextResource.get(id).execute();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonText " + id + " does not exist");
         }
     }
 
-
-    public static BalloonText createBalloonText(
-            BalloonText balloonText) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonTexts/");
-        return RequestUtils.post(uriBuilder, balloonText, BalloonText.class);
+    public static BalloonText createBalloonText(BalloonText balloonText) {
+        return balloonTextResource.create(balloonText).execute();
     }
 
-    public static List<BalloonText> getAllEnabledBallonTexts() {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonTexts/");
-
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<BalloonText>>() {
-                });
+    public static List<BalloonText> getAllEnabledBalloonTexts() {
+        return balloonTextResource.list().execute();
     }
 
-    public static void updateBalloonText(BalloonText balloonText) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonTexts/" + balloonText.getId_());
-        RequestUtils.put(uriBuilder, balloonText);
+    public static boolean updateBalloonText(BalloonText balloonText) {
+        return balloonTextResource.update(balloonText, balloonText.getId_()).execute();
     }
 
-    public static void deleteBalloonText(Long id) {
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" +
-                EUREKA_APPLICATION_ID + "/balloonTexts/" + id);
-        RequestUtils.delete(uriBuilder);
+    public static boolean deleteBalloonText(Long id) {
+        return balloonTextResource.delete(id).execute();
     }
 }

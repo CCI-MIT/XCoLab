@@ -9,8 +9,8 @@ import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.util.HumanTime;
-import org.xcolab.util.HtmlUtil;
+import org.xcolab.util.time.HumanTime;
+import org.xcolab.util.html.HtmlUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

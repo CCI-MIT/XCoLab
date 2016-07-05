@@ -1,8 +1,17 @@
 package org.xcolab.client.flagging.pojo;
 
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.util.http.client.types.TypeProvider;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class AggregatedReport {
+    public static final TypeProvider<AggregatedReport> TYPES =
+            new TypeProvider<>(AggregatedReport.class,
+                    new ParameterizedTypeReference<List<AggregatedReport>>() {
+                    });
 
     private Long firstReportId;
     private Long reporterMemberId;

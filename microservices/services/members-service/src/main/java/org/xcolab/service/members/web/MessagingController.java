@@ -69,9 +69,10 @@ public class MessagingController {
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
-    public void createMessage(@RequestBody Message message) {
+    public Message createMessage(@RequestBody Message message) {
         messagingService.createMessage(message.getMessageId(), message.getFromId(), message.getRepliesTo(),
                 message.getSubject(), message.getContent());
+        return message;
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.POST)

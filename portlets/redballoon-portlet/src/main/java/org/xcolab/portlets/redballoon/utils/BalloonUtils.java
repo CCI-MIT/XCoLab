@@ -101,7 +101,7 @@ public class BalloonUtils {
 			}
 			
 			// pick randomly balloon text to be displayed
-			List<BalloonText> texts = BalloonsClient.getAllEnabledBallonTexts();
+			List<BalloonText> texts = BalloonsClient.getAllEnabledBalloonTexts();
 			if (! texts.isEmpty()) {
 				but.setBalloonTextId(texts.get(rand.nextInt(texts.size())).getId_());
 			}
