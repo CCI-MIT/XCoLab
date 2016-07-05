@@ -25,7 +25,8 @@ import org.climatecollaboratorium.navigation.NavigationEvent;
 import org.climatecollaboratorium.utils.Helper;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.util.enums.activities.ActivityEntryType;
+import org.xcolab.util.enums.activity.ActivityEntryType;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
