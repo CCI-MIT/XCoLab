@@ -67,10 +67,9 @@ public final class MessagingClient {
     }
 
     public static void createRecipient(long messageId, long recipientId) {
-        messageResource.getTypelessSubResource(messageId, "recipients")
-                .create(null)
+        messageResource.service(messageId, "recipients", Void.class)
                 .queryParam("recipientId", recipientId)
-                .execute();
+                .post();
     }
 
     public static List<Member> getMessageRecipients(long messageId) {
