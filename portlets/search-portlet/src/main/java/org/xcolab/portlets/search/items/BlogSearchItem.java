@@ -5,10 +5,12 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.xcolab.client.search.pojo.SearchPojo;
 
 import java.io.IOException;
 
 public class BlogSearchItem extends AbstractSearchItem {
+
 
     private static final String BLOG_URL_FORMAT =
             "/c/blogs/find_entry?redirect=/web/guest/community&noSuchEntryRedirect=/web/guest/community&entryId=%1$s";
@@ -17,24 +19,27 @@ public class BlogSearchItem extends AbstractSearchItem {
     private final static String[] CONTENT_FIELDS = {"content"};
 
     @Override
+    public void init(SearchPojo pojo, String searchQuery) {
+
+    }
+
+    @Override
     public String getPrintName() {
         return "News";
     }
 
     @Override
-    public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        return concatFields(TITLE_FIELDS, doc, highlighter);
+    public String getTitle() {
+        return "";
     }
 
     @Override
-    public String getLinkUrl(Document doc) throws SystemException {
-        String id = doc.get(Field.ENTRY_CLASS_PK);
-        return String.format(BLOG_URL_FORMAT, id);
+    public String getLinkUrl() {
+        return "";
     }
 
     @Override
-    public String getContent(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        String content = concatFields(CONTENT_FIELDS, doc, highlighter);
-        return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
+    public String getContent() {
+        return " ...";
     }
 }

@@ -43,7 +43,7 @@ public class FulltextCondition extends CustomCondition {
                         sql.append(field.getName());
                         isFirst = false;
                     } else {
-                        sql.append(", ").append(field);
+                        sql.append(", ").append(field.getName());
                     }
                 }
                 sql.append(") AGAINST ('");

@@ -1,10 +1,31 @@
 package org.xcolab.service.search.domain;
 
-import org.xcolab.model.tables.pojos.ProposalAttribute;
+
+import org.xcolab.service.search.pojo.SearchPojo;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
+import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
+
 public interface SearchDao {
-    List<ProposalAttribute> findProposalAttribute(PaginationHelper paginationHelper, String query);
+    List<SearchPojo> findProposalAttribute(PaginationHelper paginationHelper, String query);
+
+    List<SearchPojo> findMember(PaginationHelper paginationHelper, String query);
+
+    List<SearchPojo> findContest(PaginationHelper paginationHelper, String query);
+
+    List<SearchPojo> findComment(PaginationHelper paginationHelper, String query);
+
+    List<SearchPojo> findAllSite(PaginationHelper paginationHelper,
+                                 String query);
+    Integer findAllSiteCount(String query);
+
+    Integer findProposalAttributeCount(String query);
+
+    Integer findMemberCount(String query);
+
+    Integer findCommentCount(String query);
+
+    Integer findContestCount(String query);
 }

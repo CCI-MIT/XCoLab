@@ -1,6 +1,7 @@
 package org.xcolab.portlets.search;
 
 import com.liferay.portal.kernel.search.Document;
+import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.portlets.search.items.AbstractSearchItem;
 import org.xcolab.portlets.search.items.BlogSearchItem;
 import org.xcolab.portlets.search.items.ContentSearchItem;
@@ -12,30 +13,31 @@ import org.xcolab.portlets.search.paging.PageLinkWrapper;
 
 public enum SearchItemType {
 
-    PLAN(new String[]{"entryClassName", "com.ext.portlet.model.Proposal"},
+    PLAN(1368503l,new String[]{"entryClassName", "com.ext.portlet.model.Proposal"},
             new String[]{"content", "title", "pitch", "sections"}, ProposalSearchItem.class),
 
-    CONTEST(new String[]{"entryClassName", "com.ext.portlet.model.Contest"},
+    CONTEST(39701l,new String[]{"entryClassName", "com.ext.portlet.model.Contest"},
             new String[]{"content", "title"}, ContestSearchItem.class),
 
-    USER(new String[]{"entryClassName", "com.liferay.portal.model.User"},
+    USER(10038l,new String[]{"entryClassName", "com.liferay.portal.model.User"},
             new String[]{"screenName", "firstName", "lastName"}, UserSearchItem.class),
 
-    CONTENT(new String[]{"entryClassName",
+    CONTENT(1l,new String[]{"entryClassName",
             "com.liferay.portlet.wiki.model.* OR com.liferay.portlet.journal.model.JournalArticle"},
             new String[]{"title"}, ContentSearchItem.class),
 
-    BLOG(new String[]{"entryClassName", "com.liferay.portlet.blogs.model.*"},
+    BLOG(2l,new String[]{"entryClassName", "com.liferay.portlet.blogs.model.*"},
             new String[]{"title", "content"}, BlogSearchItem.class),
 
-    DISCUSSION(new String[]{"entryClassName", "com.ext.portlet.model.DiscussionMessage"},
+    DISCUSSION(39202l,new String[]{"entryClassName", "com.ext.portlet.model.DiscussionMessage"},
             new String[]{"title", "content"}, DiscussionSearchItem.class);
 
+    private Long id;
     private final String[] determinatorFieldValue;
     private final String[] searchFields;
     private final Class<? extends AbstractSearchItem> searchItemClass;
 
-    SearchItemType(String[] determinatorInfo, String[] searchFields,
+    SearchItemType(Long id, String[] determinatorInfo, String[] searchFields,
             Class<? extends AbstractSearchItem> searchItemClass) {
         this.searchItemClass = searchItemClass;
         if (determinatorInfo.length != 2) {
@@ -43,6 +45,7 @@ public enum SearchItemType {
         }
         this.determinatorFieldValue = determinatorInfo;
         this.searchFields = searchFields;
+        this.id = id;
     }
 
     public String getQuery(String userQuery) {
@@ -75,17 +78,12 @@ public enum SearchItemType {
         return sb.toString();
     }
 
-    public boolean isOfGivenType(Document doc) {
-        String detFieldVal = doc.get(determinatorFieldValue[0]);
-        if (detFieldVal != null) {
-            String[] detFieldVals = determinatorFieldValue[1].split(" ");
-            for (String fv : detFieldVals) {
-                if (detFieldVal.matches(fv)) {
-                    return true;
-                }
-            }
+    public boolean isOfGivenType(SearchPojo pojo) {
+        if(pojo.getSearchTypeId().longValue() == this.id.longValue()){
+            return true;
+        }else {
+            return false;
         }
-        return false;
     }
 
     public String getName() {

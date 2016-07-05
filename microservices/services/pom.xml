@@ -28,6 +28,7 @@
         <module>filtering-service</module>
         <module>members-service</module>
         <module>proposals-service</module>
+        <module>search-service</module>
     </modules>
 
     <dependencies>

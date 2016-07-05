@@ -4,6 +4,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.Document;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.xcolab.client.search.pojo.SearchPojo;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -15,32 +16,33 @@ public class ContentSearchItem extends AbstractSearchItem {
     private final static String[] CONTENT_FIELDS = {"content"};
 
     @Override
+    public void init(SearchPojo pojo, String searchQuery) {
+
+    }
+
+    @Override
     public String getPrintName() {
         return "Content";
     }
 
     @Override
-    public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        return concatFields(TITLE_FIELDS, doc, highlighter);
+    public String getTitle() {
+        return "";
     }
 
     @Override
-    public String getLinkUrl(Document doc) throws SystemException {
-        String title = doc.get("title");
+    public String getLinkUrl() {
         try {
-            String pageUrl = doc.get("PAGE_URL");
-            if (pageUrl != null && !pageUrl.isEmpty()) {
-                return "/web/guest" + pageUrl;
-            }
-            return "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode(title, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return "";
+            return "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode("", "UTF-8");
+        } catch (UnsupportedEncodingException ignored) {
+
         }
+        return "";
     }
 
     @Override
-    public String getContent(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        String content = concatFields(CONTENT_FIELDS, doc, highlighter);
+    public String getContent() {
+        String content = "";
         return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
     }
 }

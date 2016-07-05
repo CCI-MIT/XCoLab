@@ -5,6 +5,10 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.search.pojo.SearchPojo;
 
 import java.io.IOException;
 
@@ -13,29 +17,42 @@ public class UserSearchItem extends AbstractSearchItem {
     private final static String[] TITLE_FIELDS = {"screenName"};
     private final static String[] CONTENT_FIELDS = {"firstName", "lastName"};
 
+    private SearchPojo searchPojo;
+    private String searchQuery;
+
+    private Member member;
+
+    @Override
+    public void init(SearchPojo pojo, String searchQuery) {
+        this.searchPojo = pojo;
+        this.searchQuery = searchQuery;
+        try {
+            member = MembersClient.getMember(searchPojo.getClassPrimaryKey());
+        } catch (MemberNotFoundException ignored) {
+
+        }
+    }
+
     @Override
     public String getPrintName() {
         return "Members";
     }
 
     @Override
-    public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        return concatFields(TITLE_FIELDS, doc, highlighter);
+    public String getTitle() {
+        return highlight(member.getScreenName(),searchQuery);
     }
 
     @Override
-    public String getLinkUrl(Document doc) throws SystemException {
-        return "/web/guest/member/-/member/userId/" + getUserId(doc);
+    public String getLinkUrl() {
+        return "/web/guest/member/-/member/userId/" + member.getId_();
     }
 
     @Override
-    public String getContent(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        String content = concatFields(CONTENT_FIELDS, doc, highlighter);
+    public String getContent() {
+        String content = highlight(member.getFirstName() + " " + member.getLastName() + " " + member.getShortBio(),searchQuery);
         return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
     }
 
-    public long getUserId(Document doc) {
-        String idStr = doc.get(Field.USER_ID);
-        return Long.parseLong(idStr);
-    }
+
 }

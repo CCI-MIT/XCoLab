@@ -12,12 +12,29 @@ import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.search.pojo.SearchPojo;
 
 import java.io.IOException;
 
 public class ContestSearchItem extends AbstractSearchItem {
     private final static String[] TITLE_FIELDS = {"title"};
     private final static String[] CONTENT_FIELDS = {"content"};
+
+    private SearchPojo searchPojo;
+    private String searchQuery;
+
+    private Contest contest;
+
+    @Override
+    public void init(SearchPojo pojo, String searchQuery) {
+        this.searchPojo = pojo;
+        this.searchQuery = searchQuery;
+        try{
+            contest = ContestLocalServiceUtil.getContest(searchPojo.getClassPrimaryKey());
+        }catch(SystemException | PortalException ignored){
+
+        }
+    }
 
     @Override
     public String getPrintName() {
@@ -33,31 +50,20 @@ public class ContestSearchItem extends AbstractSearchItem {
     }
 
     @Override
-    public String getTitle(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        return concatFields(TITLE_FIELDS, doc, highlighter);
+    public String getTitle(){
+        return highlight(contest.getContestShortName(),searchQuery);
     }
 
     @Override
-    public String getLinkUrl(Document doc) throws SystemException {
-        try {
-            return ContestLocalServiceUtil.getContestLinkUrl(getContest(doc));
-        } catch (PortalException e) {
-            return "/contests";
-        }
+    public String getLinkUrl() {
+            return ContestLocalServiceUtil.getContestLinkUrl(contest);
     }
 
     @Override
-    public String getContent(Document doc, Highlighter highlighter) throws IOException, InvalidTokenOffsetsException {
-        String content = concatFields(CONTENT_FIELDS, doc, highlighter);
+    public String getContent() {
+        String content = highlight(contest.getContestDescription(),searchQuery);
         return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
     }
 
-    public long getContestId(Document doc) {
-        String idStr = doc.get(Field.ENTRY_CLASS_PK);
-        return Long.parseLong(idStr);
-    }
 
-    public Contest getContest(Document doc) throws SystemException, PortalException {
-        return ContestLocalServiceUtil.getContest(getContestId(doc));
-    }
 }
