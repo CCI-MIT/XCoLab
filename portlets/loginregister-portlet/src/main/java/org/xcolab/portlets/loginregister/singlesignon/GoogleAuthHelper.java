@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -115,11 +116,10 @@ public final class GoogleAuthHelper {
 
             userInfo.put("openid_id", idTokenJson.getString("openid_id"));
         } catch (JSONException e) {
-            e.printStackTrace();
+            throw new InternalException(e);
         }
 
         return userInfo;
-
     }
 
     private String deserialize(String tokenString) {

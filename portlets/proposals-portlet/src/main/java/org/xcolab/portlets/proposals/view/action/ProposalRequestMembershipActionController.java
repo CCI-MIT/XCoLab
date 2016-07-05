@@ -40,6 +40,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.emailnotification.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.utils.emailnotification.proposal.ProposalUserActionNotification;
@@ -177,7 +178,7 @@ public class ProposalRequestMembershipActionController {
         try {
             response.getPortletOutputStream().write(responseJson.toString().getBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InternalException(e);
         }
     }
 

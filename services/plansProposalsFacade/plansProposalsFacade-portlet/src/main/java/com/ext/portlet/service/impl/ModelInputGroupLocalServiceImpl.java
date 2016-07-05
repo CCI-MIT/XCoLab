@@ -8,11 +8,14 @@ import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.ext.portlet.service.base.ModelInputGroupLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 
+import org.xcolab.util.exceptions.DatabaseAccessException;
+
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,15 +40,15 @@ public class ModelInputGroupLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ModelInputGroupLocalServiceUtil} to access the model input group local service.
      */
 
+    private static final Log _log = LogFactoryUtil.getLog(ModelInputGroupLocalServiceImpl.class);
+
     @Override
     public List<ModelInputGroup> getInputGroups(Simulation sim) {
         try {
             return modelInputGroupPersistence.findByModelId(sim.getId());
         } catch (SystemException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException(e);
         }
-
-        return Collections.emptyList();
     }
 
      @Override
@@ -53,26 +56,24 @@ public class ModelInputGroupLocalServiceImpl
          try {
              return modelInputGroupPersistence.findByparentModelId(group.getModelInputGroupPK());
          } catch (SystemException e) {
-             e.printStackTrace();
-
+             throw new DatabaseAccessException(e);
          }
-         return Collections.emptyList();
      }
-     
-     
 
      @Override
      public List<ModelInputItem> getInputItems(ModelInputGroup group) {
          return ModelInputItemLocalServiceUtil.getItemForGroupId(group.getModelInputGroupPK());
-        
      }
 
      @Override
      public ModelInputGroup getParent(ModelInputGroup group) {
          try {
              return ModelInputGroupLocalServiceUtil.getModelInputGroup(group.getParentGroupPK());
-         } catch (PortalException | SystemException e) {
-             e.printStackTrace();
+         } catch (PortalException e) {
+            _log.error("Parent " + group.getParentGroupPK()
+                    + " for ModelInputGroup not found: " + group.getPrimaryKey());
+         } catch (SystemException e) {
+             throw new DatabaseAccessException(e);
          }
          return null;
      }

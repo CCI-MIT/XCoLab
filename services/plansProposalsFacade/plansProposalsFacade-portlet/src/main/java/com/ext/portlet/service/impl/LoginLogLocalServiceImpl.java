@@ -7,6 +7,8 @@ import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 
@@ -33,6 +35,8 @@ public class LoginLogLocalServiceImpl extends LoginLogLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.LoginLogLocalServiceUtil} to access the login log local service.
      */
 
+    private static final Log _log = LogFactoryUtil.getLog(LoginLogLocalServiceImpl.class);
+
 	@Override
     public LoginLog createLoginLog(User user, String ipAddr, String entryUrl) throws SystemException, PortalException {
 		Long pk = CounterLocalServiceUtil.increment(LoginLog.class.getName());
@@ -51,7 +55,7 @@ public class LoginLogLocalServiceImpl extends LoginLogLocalServiceBaseImpl {
                 newLog.setCountry(userLocation.getCountry());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            _log.warn("Could not translate location for " + ipAddr);
         }
 
         updateLoginLog(newLog);

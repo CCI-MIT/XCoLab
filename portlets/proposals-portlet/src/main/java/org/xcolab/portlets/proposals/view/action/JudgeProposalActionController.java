@@ -46,6 +46,7 @@ import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.io.ByteArrayOutputStream;
@@ -181,7 +182,7 @@ public class JudgeProposalActionController {
             out.flush();
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InternalException(e);
         }
     }
 
@@ -305,6 +306,7 @@ public class JudgeProposalActionController {
             response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
                     proposalsContext.getProposal(request), proposalsContext.getContestPhase(request)) + "/tab/SCREENING");
         } catch (Exception e) {
+            //TODO: do we still want this?
             List<Long> recipientIds = new ArrayList<>();
             recipientIds.add(1451771L); //Manuel
             recipientIds.add(1011659L); //Patrick

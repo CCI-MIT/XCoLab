@@ -15,6 +15,8 @@ import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 
 import javax.portlet.PortletRequest;
 
@@ -116,24 +118,23 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal, Long contestPhaseId) {
-        boolean isFellow = false;
-        boolean isJudge = false;
-        boolean isAdvisor= false;
 
         try {
             ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal,contestPhase);
             ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
 
-            isJudge = proposalWrapper.isUserAmongSelectedJudge(
+            boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
                     MembersClient.getMemberUnchecked(user.getUserId()));
-            isFellow = proposalWrapper.isUserAmongFellows(user);
-            isAdvisor = contestWrapper.isUserAmongAdvisors(user);
-        } catch (SystemException | PortalException e) {
-            e.printStackTrace();
-        }
+            boolean isFellow = proposalWrapper.isUserAmongFellows(user);
+            boolean isAdvisor = contestWrapper.isUserAmongAdvisors(user);
 
-        return isFellow || isJudge || isAdvisor;
+            return isFellow || isJudge || isAdvisor;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (PortalException e) {
+            throw new InternalException(e);
+        }
     }
 
     private boolean isUserProposalAuthorOrTeamMember(User user, Proposal proposal){

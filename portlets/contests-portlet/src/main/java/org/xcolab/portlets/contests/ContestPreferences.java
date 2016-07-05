@@ -8,6 +8,7 @@ import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.IdListUtil;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
+import javax.xml.bind.DataBindingException;
 
 public class ContestPreferences {
     private List<Long> selectedContests;
@@ -112,12 +114,15 @@ public class ContestPreferences {
                                 c.getContestShortName()
                         ));
             }
-        } catch (SystemException | PortalException e) {
-            e.printStackTrace();
+        } catch (SystemException e) {
+            throw new DataBindingException(e);
+        } catch (PortalException e) {
+            throw new InternalException(e);
         }
     }
 
-    public String submit(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
+    public String submit(PortletRequest request)
+            throws ReadOnlyException, ValidatorException, IOException {
         PortletPreferences prefs = request.getPreferences();
 
         prefs.setValue(SELECTED_CONTESTS_PREFERENCE, IdListUtil.getStringFromIds(selectedContests));

@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import com.ext.portlet.model.Contest;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -32,22 +31,13 @@ public class ContestPermissions implements TabPermissions {
 
     @Override
     public boolean getCanRole(MemberRole role) {
-        if (isUserNotLoggedIn) {
-            return false;
-        }
-
-        try {
-            return contestWrapper.getHasUserRoleInContest(user, role.getPrintName());
-        } catch (SystemException | PortalException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return !isUserNotLoggedIn && contestWrapper
+                .getHasUserRoleInContest(user, role.getPrintName());
     }
 
     @Override
     public boolean getIsOwner() {
         return !isUserNotLoggedIn && user != null && contestWrapper.getAuthorId() == user.getUserId();
-
     }
 
     @Override

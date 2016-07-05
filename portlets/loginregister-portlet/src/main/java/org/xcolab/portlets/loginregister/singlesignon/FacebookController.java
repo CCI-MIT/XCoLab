@@ -32,6 +32,7 @@ import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -148,9 +149,7 @@ public class FacebookController {
                 String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
                     String path = httpReq.getSession().getServletContext().getRealPath("/");
-                    ImageUploadUtils.updateProfilePicture(path,liferayUser, realPictureURLString);
-
-
+                    ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
                 }
 
                 LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
@@ -158,7 +157,7 @@ public class FacebookController {
                 return;
             } catch (NoSuchUserException ignored) {
             } catch (PortalException | IOException e) {
-                e.printStackTrace();
+                throw new InternalException(e);
             }
         }
 
@@ -183,7 +182,7 @@ public class FacebookController {
                 return;
             } catch (NoSuchUserException ignored) {
             } catch (PortalException | IOException e) {
-                e.printStackTrace();
+                throw new InternalException(e);
             }
         }
 

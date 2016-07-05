@@ -25,7 +25,6 @@ import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.models.CollaboratoriumModelingService;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
@@ -78,6 +77,7 @@ import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.emailnotification.contest.ContestVoteQuestionNotification;
 import org.xcolab.utils.emailnotification.proposal.ContestVoteNotification;
@@ -908,9 +908,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     private Map<MemberRole, List<User>> getContestTeamMembersByRole(Contest contest) throws PortalException, SystemException {
         Map<MemberRole, List<User>> teamRoleToUsersMap = new TreeMap<>();
         for (ContestTeamMember ctm : getTeamMembers(contest)) {
-            ContestTeamMemberRole role;
             try {
-                role = ContestLocalServiceUtil.getRoleForMember(ctm);
+                ContestTeamMemberRole role = getRoleForMember(ctm);
                 MemberRole memberRole = MemberRole.fromRoleId(role.getPrimaryKey());
                 List<User> roleUsers = teamRoleToUsersMap.get(memberRole);
 
@@ -921,7 +920,9 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
                 roleUsers.add(contestTeamMemberLocalService.getUser(ctm));
             } catch (NoSuchModelException e) {
-                e.printStackTrace();
+                throw ReferenceResolutionException
+                        .toObject(ContestTeamMemberRole.class, ctm.getRoleId())
+                        .fromObject(ContestTeamMember.class, ctm.getId());
             }
         }
         return teamRoleToUsersMap;

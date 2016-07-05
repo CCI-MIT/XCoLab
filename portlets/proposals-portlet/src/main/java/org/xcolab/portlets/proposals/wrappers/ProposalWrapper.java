@@ -223,7 +223,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
             membershipRequests = new ArrayList<>();
             try {
                 for (MembershipRequest m : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())) {
-                    if (m.getStatusId()== MembershipRequestStatus.STATUS_PENDING_REQUESTED) {
+                    if (m.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED) {
                         membershipRequests.add(new MembershipRequestWrapper(m));
                     }
                 }

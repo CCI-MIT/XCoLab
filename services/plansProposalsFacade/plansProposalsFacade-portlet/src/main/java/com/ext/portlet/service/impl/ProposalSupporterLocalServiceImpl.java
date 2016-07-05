@@ -16,6 +16,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,24 +51,23 @@ public class ProposalSupporterLocalServiceImpl
         return createProposalSupporter(new ProposalSupporterPK(proposalID, userID));
     }
 
-
     @Override
-    public List<ProposalSupporter> getProposals(long userId) throws PortalException, com.liferay.portal.kernel.exception.SystemException {
+    public List<ProposalSupporter> getProposals(long userId) throws PortalException, SystemException {
         try {
             final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
             DynamicQuery dq = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class, (ClassLoader) PortletBeanLocatorUtil.locate(
                     ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
             dq.add(PropertyFactoryUtil.forName("primaryKey.userId").eq(userId));
             return (List<ProposalSupporter>) ProposalSupporterLocalServiceUtil.dynamicQuery(dq);
-        } catch (SystemException | BeanLocatorException e) {
-            System.out.println("got exception:"+e.getMessage());
-            e.printStackTrace();
-            return null;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
+        } catch (BeanLocatorException e) {
+            throw new InternalException(e);
         }
     }
 
     @Override
-    public List<User> getSupportingUsersForProposal(long proposalId) throws SystemException, com.liferay.portal.kernel.exception.PortalException {
+    public List<User> getSupportingUsersForProposal(long proposalId) throws SystemException, PortalException {
         DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalSupporter.class,
                 (ClassLoader) PortletBeanLocatorUtil.locate(ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader"));
         query.add(PropertyFactoryUtil.forName("proposalId").eq(proposalId));

@@ -22,6 +22,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.IdListUtil;
 
 import java.util.ArrayList;
@@ -101,8 +103,10 @@ public class ProposalPickerFilter {
                         }
                     }
                 }
-            } catch (SystemException | PortalException e){ /* LR EXCEPTIONS */
-                e.printStackTrace();
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            } catch (PortalException e) {
+                throw new InternalException(e);
             }
             return removedProposals;
         }
@@ -141,8 +145,10 @@ public class ProposalPickerFilter {
                         i.remove();
                     }
                 }
-            } catch (SystemException | PortalException e) { /* LR EXCEPTIONS */
-                e.printStackTrace();
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            } catch (PortalException e) {
+                throw new InternalException(e);
             }
 
             return removedContests;
@@ -211,8 +217,10 @@ public class ProposalPickerFilter {
                     // Remove element if it does not match any criterion
                     removedProposals.add(p.getProposalId());
                     i.remove();
-                } catch (SystemException | PortalException e){
-                    e.printStackTrace();
+                } catch (SystemException e) {
+                    throw new DatabaseAccessException(e);
+                } catch (PortalException e) {
+                    throw new InternalException(e);
                 }
             }
             return removedProposals;
@@ -251,8 +259,10 @@ public class ProposalPickerFilter {
                     // Remove element if it does not match any criterion
                     removedContests.add(c.getContestPK());
                     i.remove();
-                } catch (SystemException | PortalException e){
-                    e.printStackTrace();
+                } catch (SystemException e) {
+                    throw new DatabaseAccessException(e);
+                } catch (PortalException e) {
+                    throw new InternalException(e);
                 }
             }
             return removedContests;
@@ -276,7 +286,11 @@ public class ProposalPickerFilter {
                         removedProposals.add(p.getProposalId());
                         i.remove();
                     }
-                } catch (SystemException | PortalException e){ /* LR EXCEPTIONS */e.printStackTrace(); }
+                } catch (SystemException e) {
+                    throw new DatabaseAccessException(e);
+                } catch (PortalException e) {
+                    throw new InternalException(e);
+                }
             }
             return removedProposals;
         }
@@ -311,8 +325,10 @@ public class ProposalPickerFilter {
                         }
                     }
                 }
-            } catch (SystemException | PortalException e){
-                e.printStackTrace();
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            } catch (PortalException e) {
+                throw new InternalException(e);
             }
             return removedProposals;
         }

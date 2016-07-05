@@ -1,11 +1,10 @@
 package org.xcolab.enums;
 
-import com.ext.portlet.model.MemberCategory;
-import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Role;
 import org.apache.commons.lang.WordUtils;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.client.members.pojo.Role_;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,18 +42,19 @@ public enum MemberRole {
         this.otherRoleIds = Arrays.asList(otherRoleIds);
     }
 
-    public String getPrintName() throws SystemException {
+    public String getPrintName() {
         return WordUtils.capitalizeFully((getMemberCategory().getDisplayName()));
     }
 
-    public String getImageUrl() throws SystemException {
+    public String getImageUrl() {
         return getMemberCategory().getImageName();
     }
 
-    public MemberCategory getMemberCategory() throws SystemException {
-        final MemberCategory memberCategory = MemberCategoryLocalServiceUtil.fetchMemberCategory(roleId);
+    public MemberCategory getMemberCategory() {
+        final MemberCategory memberCategory = MembersClient.getMemberCategory(roleId);
         if (memberCategory == null) {
-            throw new SystemException(String.format("No member category with roleId %d exists", roleId));
+            throw new IllegalStateException(
+                    String.format("No member category with roleId %d exists", roleId));
         }
         return memberCategory;
     }
@@ -67,7 +67,7 @@ public enum MemberRole {
         return roleId;
     }
 
-    public static MemberRole fromRoleId(long roleId) throws NoSuchMemberRoleException {
+    public static MemberRole fromRoleId(long roleId) {
         for (MemberRole memberRole : MemberRole.values()) {
             if (roleId == memberRole.getRoleId() || memberRole.getOtherRoleIds().contains(roleId)) {
                 return memberRole;
@@ -76,7 +76,7 @@ public enum MemberRole {
         throw new NoSuchMemberRoleException("Unknown role id given: " + roleId);
     }
 
-    public static MemberRole fromRoleName(String roleName) throws NoSuchMemberRoleException {
+    public static MemberRole fromRoleName(String roleName) {
         for (MemberRole memberRole : MemberRole.values()) {
             if (isStringInList(roleName, memberRole.getRoleNames())) {
                 return memberRole;
@@ -85,10 +85,10 @@ public enum MemberRole {
         throw new NoSuchMemberRoleException("Unknown role name given: " + roleName);
     }
 
-    public static MemberRole getHighestRole(List<Role> roles) throws NoSuchMemberRoleException, SystemException {
+    public static MemberRole getHighestRole(List<Role_> roles) {
         MemberRole role = MemberRole.MEMBER;
 
-        for (Role r: roles) {
+        for (Role_ r: roles) {
             final String roleString = r.getName();
             try {
                 MemberRole currentRole = MemberRole.fromRoleName(roleString);
@@ -120,7 +120,7 @@ public enum MemberRole {
         return otherRoleIds;
     }
 
-    public static class NoSuchMemberRoleException extends PortalException {
+    public static class NoSuchMemberRoleException extends IllegalStateException {
         public NoSuchMemberRoleException(String message) {
             super(message);
         }

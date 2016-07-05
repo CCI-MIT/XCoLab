@@ -14,6 +14,8 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.util.List;
 
@@ -39,20 +41,30 @@ public class LoadThreadStartTag extends BodyTagSupport {
             String shareUrl = null;
 
             if (categoryId > 0) {
-                Category category = CommentClient.getCategory(categoryId);
-                shareTitle = category.getName();
-                //TODO: url
-                shareUrl = "";
+                try {
+                    Category category = CommentClient.getCategory(categoryId);
+                    shareTitle = category.getName();
+                    //TODO: url
+                    shareUrl = "";
+                } catch (CategoryNotFoundException e) {
+                    throw ReferenceResolutionException.toObject(Category.class, categoryId)
+                            .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
+                }
             }
 
             if (categoryGroupId > 0) {
-                CategoryGroup categoryGroup = CommentClient.getCategoryGroup(categoryGroupId);
-                if (shareTitle == null) {
-                    shareTitle = categoryGroup.getDescription();
-                }
-                if (shareUrl == null) {
-                    //TODO: url
-                    shareUrl = "";
+                try {
+                    CategoryGroup categoryGroup = CommentClient.getCategoryGroup(categoryGroupId);
+                    if (shareTitle == null) {
+                        shareTitle = categoryGroup.getDescription();
+                    }
+                    if (shareUrl == null) {
+                        //TODO: url
+                        shareUrl = "";
+                    }
+                } catch (CategoryGroupNotFoundException e) {
+                    throw ReferenceResolutionException.toObject(CategoryGroup.class, categoryGroupId)
+                            .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
                 }
             }
 
@@ -75,9 +87,11 @@ public class LoadThreadStartTag extends BodyTagSupport {
             final List<ReportTarget> reportTargets =
                     FlaggingClient.listReportTargets(TargetType.COMMENT);
             pageContext.setAttribute("reportTargets", reportTargets);
-        } catch (JspException | CategoryGroupNotFoundException
-                | ThreadNotFoundException | CategoryNotFoundException e) {
-            e.printStackTrace();
+        } catch (JspException e) {
+            throw new InternalException(e);
+        } catch (ThreadNotFoundException e) {
+            throw ReferenceResolutionException.toObject(Thread.class, threadId)
+                    .fromObject(LoadThreadStartTag.class, "");
         }
         return EVAL_BODY_INCLUDE;
     }

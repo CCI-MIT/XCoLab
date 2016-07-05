@@ -443,7 +443,7 @@ public class BaseContestWrapper {
         return contestTeamMembersByRole;
     }
 
-    public boolean getHasUserRoleInContest(User userInQuestion, String role) throws SystemException, PortalException {
+    public boolean getHasUserRoleInContest(User userInQuestion, String role) {
 
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase(role)) {
@@ -469,7 +469,7 @@ public class BaseContestWrapper {
         return activePhase;
     }
 
-    public List<Member> getContestJudges() throws PortalException, SystemException {
+    public List<Member> getContestJudges() {
         List<Member> judges = null;
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase("Judge")) {
@@ -482,7 +482,7 @@ public class BaseContestWrapper {
         return judges;
     }
 
-    public List<Member> getContestFellows() throws PortalException, SystemException {
+    public List<Member> getContestFellows() {
         List<Member> fellows = null;
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase("Fellow")) {
@@ -492,24 +492,29 @@ public class BaseContestWrapper {
         return fellows;
     }
 
-    public List<Member> getContestAdvisors() throws PortalException, SystemException {
+    public List<Member> getContestAdvisors() {
         List<Member> advisors = null;
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase("Advisor")) {
                 advisors = c.getUsers();
             }
         }
-        if(advisors == null) {
+        if (advisors == null) {
             return Collections.emptyList();
         }
         return advisors;
     }
 
-    public ContestType getContestType() throws SystemException {
-        if (contestType == null) {
-            contestType = ContestTypeLocalServiceUtil.fetchContestType(contest.getContestTypeId());
+    public ContestType getContestType() {
+        try {
+            if (contestType == null) {
+                contestType = ContestTypeLocalServiceUtil
+                        .fetchContestType(contest.getContestTypeId());
+            }
+            return contestType;
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-        return contestType;
     }
 
     public Contest getWrapped() {

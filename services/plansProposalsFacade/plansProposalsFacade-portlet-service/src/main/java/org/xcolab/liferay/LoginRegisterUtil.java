@@ -83,8 +83,8 @@ public final class LoginRegisterUtil {
         return MembersClient.getMember(liferayUser.getUserId());
     }
 
-    private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext, Member recipient)
-            throws PortalException, SystemException {
+    private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext,
+            Member recipient) {
         new MemberRegistrationNotification(recipient, serviceContext).sendEmailNotification();
     }
 
@@ -108,10 +108,10 @@ public final class LoginRegisterUtil {
         return user;
     }
 
-    private static String getScreenNameFromLogin(String login) throws SystemException, PortalException {
+    private static String getScreenNameFromLogin(String login) throws MemberNotFoundException {
         if (login.contains("@")) {
-            User user = UserLocalServiceUtil.getUserByEmailAddress(LIFERAY_COMPANY_ID, login);
-            return user.getScreenName();
+            Member member = MembersClient.findMemberByEmailAddress(login);
+            return member.getScreenName();
         }
         return login;
     }

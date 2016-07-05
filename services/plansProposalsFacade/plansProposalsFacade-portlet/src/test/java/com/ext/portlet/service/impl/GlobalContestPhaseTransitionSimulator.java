@@ -1,7 +1,6 @@
 package com.ext.portlet.service.impl;
 
 
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestTeamMember;
@@ -10,8 +9,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.model.User;
+
 import org.xcolab.enums.MemberRole;
 import org.xcolab.services.tasks.ProposalContestPhaseAutopromoteTask;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.utils.Clock;
 
 import java.text.ParseException;
@@ -149,6 +150,7 @@ public class GlobalContestPhaseTransitionSimulator extends GlobalContestSimulato
         //spawn 2 concurrent processes
         final Date targetTime = getDatePlusNMinutes(new Date(), 1);
         Runnable r = new Runnable() {
+            @Override
             public void run() {
                 while(new Date().before(targetTime)) {
                     try {
