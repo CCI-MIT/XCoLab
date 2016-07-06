@@ -30,4 +30,26 @@ public class ServiceResource extends AbstractHttpResource implements HttpResourc
     public <O> ServiceQuery<O> service(String serviceEndpoint, Class<O> returnType) {
         return new ServiceQuery<>(this, serviceEndpoint, returnType);
     }
+
+    public <O> ServiceQuery<O> query(long id, Class<O> returnType) {
+        return new ServiceQuery<>(this, id, returnType);
+    }
+
+    public <O> ServiceQuery<O> query(String id, Class<O> returnType) {
+        return new ServiceQuery<>(this, id, returnType);
+    }
+
+    public <O> ServiceQuery<O> query(Class<O> returnType) {
+        return new ServiceQuery<>(this, returnType);
+    }
+
+    public ServiceResource getSubServiceResource(final long resourceId, String subResourceName) {
+        return new ServiceResource(new HttpEndpoint() {
+            private final UriBuilder baseUrl = ServiceResource.this.getResourceUrl(resourceId);
+            @Override
+            public UriBuilder getBaseUrl() {
+                return baseUrl;
+            }
+        }, subResourceName);
+    }
 }

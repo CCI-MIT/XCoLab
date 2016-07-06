@@ -93,7 +93,7 @@ public final class MembersClient {
     }
 
     public static List<Role_> getMemberRoles(long memberId) {
-        return memberResource.getSubResource(memberId, "roles", Role_.TYPES)
+        return memberResource.getSubRestResource(memberId, "roles", Role_.TYPES)
                 .list()
                 .cacheIdentifier("memberId_" + memberId)
                 .execute();
@@ -101,7 +101,7 @@ public final class MembersClient {
 
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
         return memberResource
-                .getSubResource(memberId, "contestRoles", Role_.TYPES)
+                .getSubRestResource(memberId, "contestRoles", Role_.TYPES)
                 .list().queryParam("contestId", contestId)
                 .cacheIdentifier("memberId_" + memberId + "_contestId_" + contestId)
                 .execute();

@@ -22,10 +22,20 @@ public class ServiceQuery<T> {
         this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
     }
 
-    public ServiceQuery(HttpResource httpResource, String serviceName,
+    public ServiceQuery(HttpResource httpResource, long id, Class<T> entityType) {
+        this.entityType = entityType;
+        this.uriBuilder = httpResource.getResourceUrl(id);
+    }
+
+    public ServiceQuery(HttpResource httpResource, String serviceNameOrId,
             Class<T> entityType) {
         this.entityType = entityType;
-        this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceName);
+        this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceNameOrId);
+    }
+
+    public ServiceQuery(HttpResource httpResource, Class<T> entityType) {
+        this.entityType = entityType;
+        this.uriBuilder = httpResource.getResourceUrl();
     }
 
     public T get() throws EntityNotFoundException {

@@ -144,7 +144,7 @@ public final class ContentsClient {
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
         return contentArticleVersionResource
-                .getSubResource(folderId, "contentArticlesVersions", ContentArticleVersion.TYPES)
+                .getSubRestResource(folderId, "contentArticlesVersions", ContentArticleVersion.TYPES)
                 .list()
                 .execute();
     }

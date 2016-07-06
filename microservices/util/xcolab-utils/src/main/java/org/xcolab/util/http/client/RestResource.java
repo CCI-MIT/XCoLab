@@ -32,11 +32,15 @@ public class RestResource<T> extends ServiceResource implements HttpResource {
         this.typeReference = null;
     }
 
-    public <S> RestResource<S> getSubResource(long resourceId, String subResourceName,
+    public <S> RestResource<S> getSubRestResource(final long resourceId, String subResourceName,
             TypeProvider<S> typeProvider) {
-        return new RestResource<>(
-                new ParentResourceClient(this, resourceId),
-                subResourceName, typeProvider);
+        return new RestResource<>(new HttpEndpoint() {
+            private final UriBuilder baseUrl = RestResource.this.getResourceUrl(resourceId);
+            @Override
+            public UriBuilder getBaseUrl() {
+                return baseUrl;
+            }
+        }, subResourceName, typeProvider);
     }
 
     public CreateQuery<T> create(T pojo) {

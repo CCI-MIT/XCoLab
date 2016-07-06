@@ -7,7 +7,6 @@ import org.xcolab.util.http.client.queries.ServiceQuery;
 
 public class SharedColabClient {
 
-
     private static final RestService sharedColabService = new RestService("sharedcolab-service");
 
     private static final RestResource<Object> sharedColabResource = new RestResource<>(sharedColabService,
@@ -26,7 +25,7 @@ public class SharedColabClient {
 
     public static Long retrieveSharedId(String email, String screenName) {
 
-        ServiceQuery<Object,Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
+        ServiceQuery<Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
 
         if (email != null) {
             retrieveSharedId.optionalQueryParam("email", email);
