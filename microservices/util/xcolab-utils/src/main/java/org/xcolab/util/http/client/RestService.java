@@ -4,8 +4,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 
-public class RestService implements UrlProvider {
+public class RestService implements HttpEndpoint {
 
     private static final String SCHEMA = "HTTP://";
     private static final String HOST = "localhost";
