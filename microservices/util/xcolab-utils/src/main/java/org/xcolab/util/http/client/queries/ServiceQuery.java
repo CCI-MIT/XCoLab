@@ -48,6 +48,10 @@ public class ServiceQuery<T> {
         return RequestUtils.post(uriBuilder, null, entityType);
     }
 
+    public T post(Object pojo) {
+        return RequestUtils.post(uriBuilder, pojo, entityType);
+    }
+
     public boolean put() {
         return RequestUtils.put(uriBuilder);
     }

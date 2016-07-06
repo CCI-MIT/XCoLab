@@ -1,13 +1,9 @@
 package org.xcolab.client.contents;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -30,43 +26,38 @@ public final class ContentsClient {
     }
 
     public static List<ContentArticle> getContentArticles(Long folderId) {
-        final UriBuilder uriBuilder = contentArticleResource.getResourceUrl()
-                .optionalQueryParam("folderId", folderId);
-        return RequestUtils.getList(uriBuilder,
-                new ParameterizedTypeReference<List<ContentArticle>>() {
-                });
+        return contentArticleResource.list()
+                .optionalQueryParam("folderId", folderId)
+                .execute();
     }
 
     public static ContentArticleVersion getLatestContentArticleVersion(long folderId, String title)
             throws ContentNotFoundException {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl()
-                    .queryParam("folderId", folderId)
-                    .queryParam("title", title)
-                    .queryParam("sort", "-contentArticleVersion");
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-                    }, "_latest_folderId_" + folderId + "_title_" + title);
-        } catch (EntityNotFoundException e) {
+        final ContentArticleVersion contentArticleVersion = contentArticleVersionResource.list()
+                .queryParam("folderId", folderId)
+                .queryParam("title", title)
+                .queryParam("sort", "-contentArticleVersion")
+                .cacheIdentifier("_latest_folderId_" + folderId + "_title_" + title)
+                .executeWithResult().getFirstIfExists();
+        if (contentArticleVersion == null) {
             throw new ContentNotFoundException("No ContentArticleVersion with title " + title
                     + " found in folder " + folderId);
         }
+        return contentArticleVersion;
     }
 
     public static ContentArticleVersion getLatestContentArticleVersion(long articleId)
             throws ContentNotFoundException {
-        final UriBuilder uriBuilder = contentArticleVersionResource.getResourceUrl()
-                    .queryParam("contentArticleId", articleId)
-                    .queryParam("sort", "-contentArticleVersion");
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<ContentArticleVersion>>() {
-                    }, "_latest_articleId_" + articleId);
-        } catch (EntityNotFoundException e) {
+        final ContentArticleVersion contentArticleVersion = contentArticleVersionResource.list()
+                .queryParam("contentArticleId", articleId)
+                .queryParam("sort", "-contentArticleVersion")
+                .cacheIdentifier("_latest_articleId_" + articleId)
+                .executeWithResult().getFirstIfExists();
+        if (contentArticleVersion == null) {
             throw new ContentNotFoundException(
                     "No ContentArticleVersion for contentArticleID " + articleId);
         }
+        return contentArticleVersion;
     }
 
     public static List<ContentArticleVersion> getContentArticleVersions(Integer startRecord,

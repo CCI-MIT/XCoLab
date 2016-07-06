@@ -1,16 +1,10 @@
 package org.xcolab.client.contest;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
-
-import java.util.List;
 
 public class ContestClient {
 
@@ -30,16 +24,13 @@ public class ContestClient {
 
     public static Contest getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = contestResource.getResourceUrl()
+        final Contest contest = contestResource.list()
                 .queryParam("contestUrlName", contestUrlName)
-                .queryParam("contestYear", contestYear);
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<Contest>>() {
-                    });
-        } catch (EntityNotFoundException e) {
+                .queryParam("contestYear", contestYear)
+                .executeWithResult().getFirstIfExists();
+        if (contest == null) {
             throw new ContestNotFoundException(contestUrlName, contestYear);
         }
+        return contest;
     }
 }
