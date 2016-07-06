@@ -50,9 +50,11 @@ public class FlaggingController {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                 Integer.toString(reportDao.countByGiven(reporterMemberId, managerMemberId,
-                        targetType.name(), targetId, targetAdditionalId, managerAction)));
+                        targetType != null ?targetType.name() : null,
+                        targetId, targetAdditionalId, managerAction)));
         return reportDao.findByGiven(paginationHelper, reporterMemberId,
-                managerMemberId, targetType.name(), targetId, targetAdditionalId, managerAction);
+                managerMemberId, targetType != null ?targetType.name() : null,
+                targetId, targetAdditionalId, managerAction);
     }
 
     @RequestMapping(value = "/aggregatedReports", method = {RequestMethod.GET, RequestMethod.HEAD})
