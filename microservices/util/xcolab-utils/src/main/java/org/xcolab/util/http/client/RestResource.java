@@ -2,7 +2,7 @@ package org.xcolab.util.http.client;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.client.queries.CountQuery;
@@ -35,9 +35,10 @@ public class RestResource<T> extends ServiceResource implements HttpResource {
     public <S> RestResource<S> getSubRestResource(final long resourceId, String subResourceName,
             TypeProvider<S> typeProvider) {
         return new RestResource<>(new HttpEndpoint() {
-            private final UriBuilder baseUrl = RestResource.this.getResourceUrl(resourceId);
+            private final UriProvider baseUrl
+                    = new UriProvider(RestResource.this.getResourceUrl(resourceId));
             @Override
-            public UriBuilder getBaseUrl() {
+            public UriProvider getBaseUrl() {
                 return baseUrl;
             }
         }, subResourceName, typeProvider);
@@ -73,18 +74,5 @@ public class RestResource<T> extends ServiceResource implements HttpResource {
 
     public CountQuery<T> count() {
         return new CountQuery<>(this, entityType);
-    }
-
-    private static class ParentResourceClient implements HttpEndpoint {
-        private final UriBuilder baseUrl;
-
-        public ParentResourceClient(RestResource parentRestResource, long parentResourceId) {
-            this.baseUrl = parentRestResource.getResourceUrl(parentResourceId);
-        }
-
-        @Override
-        public UriBuilder getBaseUrl() {
-            return baseUrl;
-        }
     }
 }

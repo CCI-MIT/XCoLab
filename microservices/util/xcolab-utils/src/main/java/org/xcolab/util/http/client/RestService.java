@@ -1,9 +1,7 @@
 package org.xcolab.util.http.client;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 
 public class RestService implements HttpEndpoint {
@@ -18,8 +16,7 @@ public class RestService implements HttpEndpoint {
     }
 
     @Override
-    public UriBuilder getBaseUrl() {
-        return new UriBuilder(UriComponentsBuilder
-                .fromHttpUrl(SCHEMA + HOST + ":" + PORT + "/" + serviceName));
+    public UriProvider getBaseUrl() {
+        return new UriProvider(SCHEMA + HOST + ":" + PORT + "/" + serviceName);
     }
 }

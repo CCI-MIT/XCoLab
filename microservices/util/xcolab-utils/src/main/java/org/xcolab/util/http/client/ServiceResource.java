@@ -1,13 +1,13 @@
 package org.xcolab.util.http.client;
 
-import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.AbstractHttpResource;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.client.queries.ServiceQuery;
 
 public class ServiceResource extends AbstractHttpResource implements HttpResource {
-    private final UriBuilder baseUrl;
+    private final UriProvider baseUrl;
 
     public ServiceResource(HttpEndpoint serviceOrParent, String resourceName) {
         super(resourceName);
@@ -15,7 +15,7 @@ public class ServiceResource extends AbstractHttpResource implements HttpResourc
     }
 
     @Override
-    public UriBuilder getBaseUrl() {
+    public UriProvider getBaseUrl() {
         return baseUrl;
     }
 
@@ -45,9 +45,10 @@ public class ServiceResource extends AbstractHttpResource implements HttpResourc
 
     public ServiceResource getSubServiceResource(final long resourceId, String subResourceName) {
         return new ServiceResource(new HttpEndpoint() {
-            private final UriBuilder baseUrl = ServiceResource.this.getResourceUrl(resourceId);
+            private final UriProvider baseUrl
+                    = new UriProvider(ServiceResource.this.getResourceUrl(resourceId));
             @Override
-            public UriBuilder getBaseUrl() {
+            public UriProvider getBaseUrl() {
                 return baseUrl;
             }
         }, subResourceName);

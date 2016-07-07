@@ -1,7 +1,7 @@
 package org.xcolab.util.http.client.interfaces;
 
-import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.UriProvider;
 
 public interface HttpEndpoint {
-    UriBuilder getBaseUrl();
+    UriProvider getBaseUrl();
 }

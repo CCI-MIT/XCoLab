@@ -12,16 +12,16 @@ public abstract class AbstractHttpResource implements HttpResource {
 
     @Override
     public UriBuilder getResourceUrl() {
-        return getBaseUrl().path("/" + resourceName);
+        return getBaseUrl().getUriBuilder().path("/" + resourceName);
     }
 
     @Override
     public UriBuilder getResourceUrl(long resourceId) {
-        return getBaseUrl().path("/" + resourceName + "/" + resourceId);
+        return getBaseUrl().getUriBuilder().path("/" + resourceName + "/" + resourceId);
     }
 
     @Override
     public UriBuilder getResourceUrl(String resourceId) {
-        return getBaseUrl().path("/" + resourceName + "/" + resourceId);
+        return getBaseUrl().getUriBuilder().path("/" + resourceName + "/" + resourceId);
     }
 }
