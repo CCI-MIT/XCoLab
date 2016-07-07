@@ -121,6 +121,8 @@ public class OpenIdController {
             String path = httpReq.getSession().getServletContext().getRealPath("/");
 
             User user;
+            final HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(actionRequest);
+            final String path = httpReq.getSession().getServletContext().getRealPath("/");
             try {
                 user = UserLocalServiceUtil.getUserByOpenId(
                         themeDisplay.getCompanyId(), openId);

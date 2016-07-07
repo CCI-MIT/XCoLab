@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import java.text.ParseException;
 
-import static org.junit.Assert.assertTrue;
-
 public class PhaseTransitionTest extends XCoLabTest {
 
     @Test
@@ -39,14 +37,5 @@ public class PhaseTransitionTest extends XCoLabTest {
             //reset
             gcs.cleanupPointsSimulator();
         }
-    }
-
-    @Test
-     public void debugTestAlwaysFails() {
-        assertTrue(false);
-    }
-    @Test
-    public void debugTestAlwaysSucceeds() {
-        assertTrue(true);
     }
 }
