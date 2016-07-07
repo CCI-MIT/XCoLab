@@ -11,6 +11,7 @@ public class RestService implements UrlProvider {
     private static final String HOST = "localhost";
     private static final String PORT = RequestUtils.getServicesPort();
     private final String serviceName;
+    private String serviceHost = HOST;
 
     public RestService(String serviceName) {
         this.serviceName = serviceName;
@@ -19,6 +20,10 @@ public class RestService implements UrlProvider {
     @Override
     public UriBuilder getBaseUrl() {
         return new UriBuilder(UriComponentsBuilder
-                .fromHttpUrl(SCHEMA + HOST + ":" + PORT + "/" + serviceName));
+                .fromHttpUrl(SCHEMA + serviceHost + ":" + PORT + "/" + serviceName));
+    }
+
+    public void setServiceHost(String serviceHost) {
+        this.serviceHost = serviceHost;
     }
 }
