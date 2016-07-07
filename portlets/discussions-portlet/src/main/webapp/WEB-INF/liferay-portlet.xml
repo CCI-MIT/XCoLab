@@ -8,7 +8,6 @@
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>discussion</friendly-url-mapping>
 		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
-		<social-activity-interpreter-class>org.xcolab.portlets.discussions.activity.DiscussionActivityFeedEntry</social-activity-interpreter-class>
 		<instanceable>false</instanceable>
         <requires-namespaced-parameters>false</requires-namespaced-parameters>
 		<header-portlet-javascript>/js/main.js</header-portlet-javascript>
