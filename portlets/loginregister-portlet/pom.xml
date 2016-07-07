@@ -261,8 +261,5 @@
             <url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
         </repository>
 	</repositories>
-	<properties>
-		<spring.version>4.0.0.RELEASE</spring.version>
-	</properties>
 
 </project>

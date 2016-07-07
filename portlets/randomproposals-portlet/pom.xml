@@ -14,7 +14,6 @@
 
 	<properties>
 		<icefaces.version>3.3.0</icefaces.version>
-		<spring.version>4.0.0.RELEASE</spring.version>
 	</properties>
 	
 	<build>
