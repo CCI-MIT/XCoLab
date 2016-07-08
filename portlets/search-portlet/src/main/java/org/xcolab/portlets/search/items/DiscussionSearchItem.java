@@ -55,9 +55,9 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     public String getTitle() {
         String title = thread.getTitle();
         if (StringUtils.isBlank(title)) {
-                return "Comment";
+            return "Comment";
         }
-        return highlight(title,searchQuery);
+        return highlight(title, searchQuery);
     }
 
     @Override
@@ -67,12 +67,12 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public String getContent() {
-        String content = highlight(this.comment.getContent(),searchQuery);
+        String content = highlight(this.comment.getContent(), searchQuery);
         return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
     }
 
     @Override
     public boolean isVisible() {
-        return !thread.getIsQuiet();
+        return ((!getLinkUrl().isEmpty()) && (!thread.getIsQuiet()));
     }
 }
