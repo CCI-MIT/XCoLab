@@ -76,7 +76,7 @@ public class UserBean implements Serializable {
         firstName = member.getFirstName();
         lastName = member.getLastName();
         emailStored = member.getEmailAddress();
-        countryCode = CountryUtil.getCodeForCounty(member.getCountry());
+        countryCode = member.getCountry();
         shortBio = member.getShortBio();
 
         imageId = member.getPortraitFileEntryId();
