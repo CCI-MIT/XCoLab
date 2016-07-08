@@ -1,21 +1,12 @@
 package org.xcolab.portlets.admintasks;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.icesoft.faces.async.render.SessionRenderer;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -33,11 +24,10 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
 import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.utils.UrlBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -129,21 +119,6 @@ public class AdminTasksBean {
 		System.out.println("Bad activities count: " + badCount);
 	}
 
-    //TODO: might be useful for migrating new urls
-	public String fixProposalDiscussionUrlsAndDescriptions() throws SystemException, PortalException {
-		for (Proposal proposal : ProposalLocalServiceUtil.getProposals(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-			DiscussionCategoryGroup proposalDiscussion = DiscussionCategoryGroupLocalServiceUtil
-					.getDiscussionCategoryGroup(proposal.getDiscussionId());
-			final Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
-			proposalDiscussion.setUrl(UrlBuilder.getProposalCommentsUrl(contest, proposal));
-            String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
-			ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposal.getProposalId());
-			proposalDiscussion.setDescription(String.format("%s %s", contestType.getProposalName(), proposalName));
-			DiscussionCategoryGroupLocalServiceUtil.updateDiscussionCategoryGroup(proposalDiscussion);
-		}
-		return null;
-	}
-
     //TODO: figure out the whole IpTranslation thing
 	public String translateIp() throws Exception {
 		System.out.println(IpTranslationServiceUtil.getLocationForIp("89.67.113.30"));
@@ -213,14 +188,6 @@ public class AdminTasksBean {
         Indexer indexer = IndexerRegistryUtil.getIndexer(SocialActivity.class);
         for (SocialActivity s : SocialActivityLocalServiceUtil.getSocialActivities(0,Integer.MAX_VALUE)) {
 			indexer.delete(s);
-		}
-        pushAjaxUpdateFinishedIndexerTask();
-    }
-    public void removeDiscussions() throws SearchException, SystemException {
-        pushAjaxUpdate("Removing Discussions from index");
-        Indexer indexer = IndexerRegistryUtil.getIndexer(DiscussionMessage.class);
-        for (DiscussionMessage m : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0,Integer.MAX_VALUE)) {
-			indexer.delete(m);
 		}
         pushAjaxUpdateFinishedIndexerTask();
     }

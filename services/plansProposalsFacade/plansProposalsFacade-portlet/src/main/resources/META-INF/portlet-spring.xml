@@ -1,19 +1,6 @@
 <?xml version="1.0"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorService" class="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceImpl">
-		<property name="nameGenerators">
-			<list>
-				<bean id="com.ext.portlet.Activity.nameGenerators.ProposalSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.ProposalSubscriptionNameGenerator" />
-				<bean id="com.ext.portlet.Activity.nameGenerators.DiscussionSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.DiscussionSubscriptionNameGenerator" />
-				<bean id="com.ext.portlet.Activity.nameGenerators.ContestSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.ContestSubscriptionNameGenerator" />
-				<bean id="com.ext.portlet.Activity.nameGenerators.DefaultSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.DefaultSubscriptionNameGenerator" />
-			</list>
-		</property>
-	</bean>
-	<bean id="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil" class="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil">
-		<property name="service" ref="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorService" />
-	</bean>
 	<bean id="com.ext.portlet.service.ActivitySubscriptionLocalService" class="com.ext.portlet.service.impl.ActivitySubscriptionLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ActivitySubscriptionService" class="com.ext.portlet.service.impl.ActivitySubscriptionServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ActivitySubscriptionPersistence" class="com.ext.portlet.service.persistence.ActivitySubscriptionPersistenceImpl" parent="basePersistence" />

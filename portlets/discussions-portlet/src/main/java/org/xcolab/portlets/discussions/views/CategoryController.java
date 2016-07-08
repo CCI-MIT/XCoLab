@@ -148,9 +148,6 @@ public class CategoryController extends BaseDiscussionController {
                 categoryGroup, 0L);
 
         throw new OperationNotSupportedException("Not implemented");
-//        final DiscussionCategory category = DiscussionCategoryLocalServiceUtil.createDiscussionCategory(categoryGroup.getGroupId(), title, description, themeDisplay.getUser());
-//
-//        response.sendRedirect(new CategoryWrapper(category).getLinkUrl());
     }
 
     @ActionMapping(params = "action=subscribeCategory")

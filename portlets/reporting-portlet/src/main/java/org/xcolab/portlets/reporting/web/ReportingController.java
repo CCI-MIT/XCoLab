@@ -5,7 +5,6 @@ import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
-import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
@@ -13,7 +12,6 @@ import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -27,6 +25,8 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.enums.MemberRole;
@@ -333,11 +333,11 @@ public class ReportingController {
 			userActivities.get(activity.getUserId()).addActivity();
 		}
 
-		for (DiscussionMessage message : DiscussionMessageLocalServiceUtil.getDiscussionMessages(0, Integer.MAX_VALUE)) {
-			if (!userActivities.containsKey(message.getAuthorId())) {
+		for (Comment comment : CommentClient.listComments(0, Integer.MAX_VALUE)) {
+			if (!userActivities.containsKey(comment.getAuthorId())) {
 				continue;
 			}
-			userActivities.get(message.getAuthorId()).addComment();
+			userActivities.get(comment.getAuthorId()).addComment();
 		}
 		Map<Long, Set<Long>> proposalToTeamMemberIds = new HashMap<>();
 		Map<Long, Long> proposalToAuthorId = new HashMap<>();

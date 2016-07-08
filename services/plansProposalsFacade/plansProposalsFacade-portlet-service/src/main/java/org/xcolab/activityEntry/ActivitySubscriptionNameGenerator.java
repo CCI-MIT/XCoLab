@@ -25,7 +25,6 @@ import java.util.List;
 
 public class ActivitySubscriptionNameGenerator {
 
-
     public static String getName(ActivitySubscription subscription) {
 
         if (subscription.getClassNameId().equals(ActivityEntryType.PROPOSAL.getPrimaryTypeId())) {
@@ -52,8 +51,8 @@ public class ActivitySubscriptionNameGenerator {
         }
 
         return "";
-
     }
+
     private static String getNameForContestSubscription(ActivitySubscription subscription){
         try {
             Contest contest = ContestLocalServiceUtil.getContest(subscription.getClassPK());
