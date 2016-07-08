@@ -282,7 +282,8 @@ public class MessageWrapper implements Serializable {
 
     public MemberRole getAuthorRole() throws SystemException, PortalException {
         List<Role> roles = getAuthor().getRoles();
-        return MemberRole.getHighestRole(roles);
+        //MemberRole.getHighestRole(roles)
+        return null;
     }
     
     public Date getCreateDate() {
