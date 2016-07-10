@@ -156,8 +156,8 @@ public class CommentThread implements Serializable {
         if (categoryid != null && categoryid > 0) {
             try {
                 return CommentClient.getCategory(categoryid);
-            } catch (CategoryNotFoundException e) {
-                throw new KeyReferenceException(e);
+            } catch (CategoryNotFoundException ignored) {
+                //throw new KeyReferenceException(e);
             }
         }
         return null;
@@ -172,6 +172,7 @@ public class CommentThread implements Serializable {
                 return categoryGroup.getLinkUrl() + "/-/discussion/thread/" + threadid;
             }
         }
+        //Long propId = CommentClient.getProposalIdForThread(threadid);
         //TODO: handle proposal comments
         return "";
     }

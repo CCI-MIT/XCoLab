@@ -28,7 +28,7 @@ public final class CommentClient {
             "categories", Category.TYPES);
     private static final RestResource<CategoryGroup> categoryGroupResource = new RestResource<>(
             commentService,
-            "categoryGroups", CategoryGroup.TYPES);
+            "groups", CategoryGroup.TYPES);
 
     private CommentClient() {
     }
