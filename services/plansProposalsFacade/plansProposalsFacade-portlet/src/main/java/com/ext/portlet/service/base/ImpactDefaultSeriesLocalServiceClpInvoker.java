@@ -41,14 +41,14 @@ public class ImpactDefaultSeriesLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
+    private String _methodName488;
+    private String[] _methodParameterTypes488;
+    private String _methodName489;
+    private String[] _methodParameterTypes489;
+    private String _methodName494;
+    private String[] _methodParameterTypes494;
+    private String _methodName495;
+    private String[] _methodParameterTypes495;
 
     public ImpactDefaultSeriesLocalServiceClpInvoker() {
         _methodName0 = "addImpactDefaultSeries";
@@ -141,23 +141,23 @@ public class ImpactDefaultSeriesLocalServiceClpInvoker {
                 "com.ext.portlet.model.ImpactDefaultSeries"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName488 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes488 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName489 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes489 = new String[] { "java.lang.String" };
 
-        _methodName524 = "getAllImpactDefaultSeriesWithFocusArea";
+        _methodName494 = "getAllImpactDefaultSeriesWithFocusArea";
 
-        _methodParameterTypes524 = new String[] {
+        _methodParameterTypes494 = new String[] {
                 "com.ext.portlet.model.FocusArea"
             };
 
-        _methodName525 = "getImpactDefaultSeriesWithFocusAreaAndName";
+        _methodName495 = "getImpactDefaultSeriesWithFocusAreaAndName";
 
-        _methodParameterTypes525 = new String[] {
+        _methodParameterTypes495 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.String"
             };
     }
@@ -251,25 +251,25 @@ public class ImpactDefaultSeriesLocalServiceClpInvoker {
             return ImpactDefaultSeriesLocalServiceUtil.updateImpactDefaultSeries((com.ext.portlet.model.ImpactDefaultSeries) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName488.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
             return ImpactDefaultSeriesLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName489.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
             ImpactDefaultSeriesLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
             return ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea((com.ext.portlet.model.FocusArea) arguments[0]);
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName495.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
             return ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.String) arguments[1]);
         }

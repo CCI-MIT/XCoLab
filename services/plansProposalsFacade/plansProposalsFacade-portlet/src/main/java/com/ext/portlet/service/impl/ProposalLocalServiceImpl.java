@@ -5,12 +5,10 @@ import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
@@ -54,14 +52,10 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.MembershipRequestConstants;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.GroupService;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
-import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -99,11 +93,9 @@ import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.mail.internet.AddressException;
@@ -1148,7 +1140,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
     private Group createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) throws PortalException,
             SystemException {
 
-        // create new gropu
+        // create new group
         ServiceContext groupServiceContext = new ServiceContext();
         groupServiceContext.setUserId(authorId);
         final ContestType contestType = contestTypeLocalService.getContestType(contest);
@@ -1156,56 +1148,10 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
 
         final String groupDescription = TemplateReplacementUtil.replaceContestTypeStrings(DEFAULT_GROUP_DESCRIPTION, contestType);
-        Group group = groupService.addGroup(StringUtils.substring(groupName, 0, 80),
+
+        return groupService.addGroup(StringUtils.substring(groupName, 0, 80),
                 String.format(groupDescription, StringUtils.substring(groupName, 0, 80)),
                 GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
-
-        // set up permissions
-        Long companyId = group.getCompanyId();
-        Role owner = roleLocalService.getRole(companyId, RoleConstants.SITE_OWNER);
-        Role admin = roleLocalService.getRole(companyId, RoleConstants.SITE_ADMINISTRATOR);
-        Role member = roleLocalService.getRole(companyId, RoleConstants.SITE_MEMBER);
-        Role userRole = roleLocalService.getRole(companyId, RoleConstants.USER);
-        Role guest = roleLocalService.getRole(companyId, RoleConstants.GUEST);
-        Role moderator = roleLocalService.getRole(companyId, "Moderator");
-
-        String[] ownerActions = {DiscussionActions.ADMIN.name(), DiscussionActions.ADD_CATEGORY.name(),
-                DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
-                DiscussionActions.ADMIN_CATEGORIES.name(), DiscussionActions.ADMIN_MESSAGES.name(),
-                DiscussionActions.ADD_COMMENT.name()};
-
-        String[] adminActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
-                DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name()};
-
-        String[] moderatorActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
-                DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name()};
-
-        String[] memberActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADD_COMMENT.name()};
-
-        String[] userActions = {DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
-                DiscussionActions.ADD_COMMENT.name()};
-
-        String[] guestActions = {};
-
-        Map<Long, String[]> rolesActionsMap = new HashMap<>();
-
-        rolesActionsMap.put(owner.getRoleId(), ownerActions);
-        rolesActionsMap.put(admin.getRoleId(), adminActions);
-        rolesActionsMap.put(member.getRoleId(), memberActions);
-        rolesActionsMap.put(userRole.getRoleId(), userActions);
-        rolesActionsMap.put(guest.getRoleId(), guestActions);
-        rolesActionsMap.put(moderator.getRoleId(), moderatorActions);
-
-
-        ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId,
-                DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-                String.valueOf(group.getGroupId()), rolesActionsMap);
-
-
-        return group;
     }
 
     /**

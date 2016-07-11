@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class StaffMemberServiceClpInvoker {
-    private String _methodName502;
-    private String[] _methodParameterTypes502;
-    private String _methodName503;
-    private String[] _methodParameterTypes503;
+    private String _methodName472;
+    private String[] _methodParameterTypes472;
+    private String _methodName473;
+    private String[] _methodParameterTypes473;
 
     public StaffMemberServiceClpInvoker() {
-        _methodName502 = "getBeanIdentifier";
+        _methodName472 = "getBeanIdentifier";
 
-        _methodParameterTypes502 = new String[] {  };
+        _methodParameterTypes472 = new String[] {  };
 
-        _methodName503 = "setBeanIdentifier";
+        _methodName473 = "setBeanIdentifier";
 
-        _methodParameterTypes503 = new String[] { "java.lang.String" };
+        _methodParameterTypes473 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName502.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
+        if (_methodName472.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes472, parameterTypes)) {
             return StaffMemberServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName503.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
+        if (_methodName473.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes473, parameterTypes)) {
             StaffMemberServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

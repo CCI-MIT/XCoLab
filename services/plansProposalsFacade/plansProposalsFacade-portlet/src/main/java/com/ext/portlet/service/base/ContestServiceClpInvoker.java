@@ -9,43 +9,43 @@ import java.util.Arrays;
  * @generated
  */
 public class ContestServiceClpInvoker {
-    private String _methodName502;
-    private String[] _methodParameterTypes502;
-    private String _methodName503;
-    private String[] _methodParameterTypes503;
-    private String _methodName508;
-    private String[] _methodParameterTypes508;
+    private String _methodName472;
+    private String[] _methodParameterTypes472;
+    private String _methodName473;
+    private String[] _methodParameterTypes473;
+    private String _methodName478;
+    private String[] _methodParameterTypes478;
 
     public ContestServiceClpInvoker() {
-        _methodName502 = "getBeanIdentifier";
+        _methodName472 = "getBeanIdentifier";
 
-        _methodParameterTypes502 = new String[] {  };
+        _methodParameterTypes472 = new String[] {  };
 
-        _methodName503 = "setBeanIdentifier";
+        _methodName473 = "setBeanIdentifier";
 
-        _methodParameterTypes503 = new String[] { "java.lang.String" };
+        _methodParameterTypes473 = new String[] { "java.lang.String" };
 
-        _methodName508 = "getContestsOpenForProposals";
+        _methodName478 = "getContestsOpenForProposals";
 
-        _methodParameterTypes508 = new String[] {  };
+        _methodParameterTypes478 = new String[] {  };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName502.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
+        if (_methodName472.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes472, parameterTypes)) {
             return ContestServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName503.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
+        if (_methodName473.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes473, parameterTypes)) {
             ContestServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName508.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
+        if (_methodName478.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes478, parameterTypes)) {
             return ContestServiceUtil.getContestsOpenForProposals();
         }
 

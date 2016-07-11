@@ -4,7 +4,6 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>discussions-portlet</portlet-name>
-		<indexer-class>org.xcolab.portlets.discussions.Indexer</indexer-class>
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>discussion</friendly-url-mapping>
 		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>

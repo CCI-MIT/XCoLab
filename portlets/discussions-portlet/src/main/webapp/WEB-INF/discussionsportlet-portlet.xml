@@ -26,7 +26,7 @@
         <property name="exceptionMappings">
             <props>
                 <prop key=".DiscussionAuthorizationException">accessDenied</prop>
-                <prop key=".NoSuchDiscussionMessageException">notFound</prop>
+                <prop key=".CommentNotFoundException">notFound</prop>
             </props>
         </property>
     </bean>

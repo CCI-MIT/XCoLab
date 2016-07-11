@@ -41,14 +41,14 @@ public class ImpactDefaultSeriesDataLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
+    private String _methodName488;
+    private String[] _methodParameterTypes488;
+    private String _methodName489;
+    private String[] _methodParameterTypes489;
+    private String _methodName494;
+    private String[] _methodParameterTypes494;
+    private String _methodName495;
+    private String[] _methodParameterTypes495;
 
     public ImpactDefaultSeriesDataLocalServiceClpInvoker() {
         _methodName0 = "addImpactDefaultSeriesData";
@@ -141,21 +141,21 @@ public class ImpactDefaultSeriesDataLocalServiceClpInvoker {
                 "com.ext.portlet.model.ImpactDefaultSeriesData"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName488 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes488 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName489 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes489 = new String[] { "java.lang.String" };
 
-        _methodName524 = "getDefaultSeriesDataBySeriesId";
+        _methodName494 = "getDefaultSeriesDataBySeriesId";
 
-        _methodParameterTypes524 = new String[] { "long" };
+        _methodParameterTypes494 = new String[] { "long" };
 
-        _methodName525 = "getDefaultSeriesDataBySeriesIdAndYear";
+        _methodName495 = "getDefaultSeriesDataBySeriesIdAndYear";
 
-        _methodParameterTypes525 = new String[] { "long", "int" };
+        _methodParameterTypes495 = new String[] { "long", "int" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -247,25 +247,25 @@ public class ImpactDefaultSeriesDataLocalServiceClpInvoker {
             return ImpactDefaultSeriesDataLocalServiceUtil.updateImpactDefaultSeriesData((com.ext.portlet.model.ImpactDefaultSeriesData) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName488.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
             return ImpactDefaultSeriesDataLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName489.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
             ImpactDefaultSeriesDataLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
             return ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName495.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
             return ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesIdAndYear(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue());
         }

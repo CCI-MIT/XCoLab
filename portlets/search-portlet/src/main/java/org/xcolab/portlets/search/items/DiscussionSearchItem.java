@@ -1,7 +1,5 @@
 package org.xcolab.portlets.search.items;
 
-import com.ext.portlet.model.DiscussionCategoryGroup;
-import com.ext.portlet.model.DiscussionMessage;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.comment.CommentClient;
@@ -12,13 +10,6 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.search.pojo.SearchPojo;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
-
-    private final static String[] TITLE_FIELDS = {"title"};
-    private final static String[] CONTENT_FIELDS = {"content"};
-
-    private DiscussionMessage discussionMessage;
-    private DiscussionCategoryGroup categoryGroup;
-
     private CommentThread thread;
 
     private Comment comment;
