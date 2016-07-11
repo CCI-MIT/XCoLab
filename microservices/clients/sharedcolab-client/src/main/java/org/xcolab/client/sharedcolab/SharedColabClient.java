@@ -16,12 +16,15 @@ public class SharedColabClient {
             "members");
 
     public static boolean isScreenNameUsed(String screenName) {
+        sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue());
+        sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue());
         return sharedColabResource.service("isUsed",Boolean.class)
                 .queryParam("screenName", screenName).getUnchecked();
     }
 
     public static boolean isEmailUsed(String email) {
         sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue());
+        sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue());
         return sharedColabResource.service("isUsed", Boolean.class)
                 .queryParam("email", email)
                 .getUnchecked();
@@ -29,6 +32,7 @@ public class SharedColabClient {
 
     public static Long retrieveSharedId(String email, String screenName) {
         sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue());
+        sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue());
         ServiceQuery<Object,Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
 
         if (email != null) {

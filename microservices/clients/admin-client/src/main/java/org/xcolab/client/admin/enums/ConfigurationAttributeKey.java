@@ -44,7 +44,7 @@ public enum ConfigurationAttributeKey {
     SHOW_CONTEST_COUNTDOWN(AttributeType.BOOLEAN),
 
     FILTER_PROFANITY(AttributeType.BOOLEAN),
-
+    SHARED_COLAB_PORT(AttributeType.STRING),
     SHARED_COLAB_LOCATION(AttributeType.STRING);
 
     private final AttributeType type;
