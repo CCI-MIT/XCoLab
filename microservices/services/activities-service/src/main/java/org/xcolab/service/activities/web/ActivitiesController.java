@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
@@ -76,8 +74,6 @@ public class ActivitiesController {
     @RequestMapping(value = "/activitySubscriptions", method = RequestMethod.POST)
     public ActivitySubscription createActivitySubscription(
             @RequestBody ActivitySubscription activitySubscription) {
-
-
         return this.activitySubscriptionDao.create(activitySubscription);
     }
 
@@ -86,15 +82,15 @@ public class ActivitiesController {
             @RequestParam long receiverId,
             @RequestParam ActivityEntryType activityEntryType,
             @RequestParam long classPK,
-            @RequestParam String extraInfo)
-            throws ContestNotFoundException, ProposalNotFoundException {
+            @RequestParam String extraInfo) throws NotFoundException {
         return activitiesService.subscribe(receiverId, activityEntryType, classPK, extraInfo);
     }
 
     @RequestMapping(value = "/activitySubscriptions/{activitySubscriptionId}", method = RequestMethod.GET)
     public ActivitySubscription getActivitySubscription(long activitySubscriptionId)
             throws NotFoundException {
-        return activitySubscriptionDao.get(activitySubscriptionId);
+        return activitySubscriptionDao.get(activitySubscriptionId)
+                .orElseThrow(NotFoundException::new);
     }
 
     @RequestMapping(value = "/activitySubscriptions/{pk}", method = RequestMethod.DELETE)

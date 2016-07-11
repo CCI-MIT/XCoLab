@@ -95,8 +95,7 @@ public final class ActivitiesClient {
     }
 
     public static ActivitySubscription addSubscription(long memberId,
-            ActivityEntryType activityEntryType, long classPK,
-            String extraInfo) {
+            ActivityEntryType activityEntryType, long classPK, String extraInfo) {
         return activitySubscriptionResource.service("subscribe", ActivitySubscription.class)
                 .queryParam("receiverId", memberId)
                 .queryParam("activityEntryType", activityEntryType)
