@@ -17,6 +17,9 @@ import org.apache.commons.collections.comparators.ComparatorChain;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.exceptions.CommentNotFoundException;
+import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -26,6 +29,7 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -77,14 +81,14 @@ public class ActivitySubscriptionEmailHelper {
 
 
         //to ease debug please leave it here
-        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             lastEmailNotification = sdf.parse("2016-06-03 00:00:00");
             lastDailyEmailNotification = sdf.parse("2016-06-03 00:00:00");
         } catch (ParseException e) {
             lastEmailNotification = new Date();
-        }*/
-
+        }
+/*
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
             for (ActivityEntry activity : res) {
@@ -97,16 +101,16 @@ public class ActivitySubscriptionEmailHelper {
             }
             lastEmailNotification = new Date();
         }
-
+*/
 
         synchronized (lastDailyEmailNotification) {
             Date now = new Date();
 
             // Send the daily digest at the predefined hour only
-            if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
+            if /*(now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
                     && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR)
                     {
-
+*/(true){
                 try {
                     List<ActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
                     sendDailyDigestNotifications(res, serviceContext);
@@ -148,12 +152,14 @@ public class ActivitySubscriptionEmailHelper {
         Comparator<ActivityEntry> socialActivityClassIdComparator = new Comparator<ActivityEntry>() {
             @Override
             public int compare(ActivityEntry o1, ActivityEntry o2) {
+                    System.out.println("Primary type:"+ o1.getPrimaryType() + " - "+ o2.getPrimaryType());
                 return (int)(o1.getPrimaryType() - o2.getPrimaryType());
             }
         };
         Comparator<ActivityEntry> socialActivityCreateDateComparator = new Comparator<ActivityEntry>() {
             @Override
             public int compare(ActivityEntry o1, ActivityEntry o2) {
+                System.out.println("Create date" +o1.getCreateDate().getTime() + " - "+o2.getCreateDate().getTime());
                 return (int)(o1.getCreateDate().getTime() - o2.getCreateDate().getTime());
             }
         };
@@ -172,9 +178,24 @@ public class ActivitySubscriptionEmailHelper {
             if (socialActivity == null || serviceContext == null || serviceContext.getRequest() == null || serviceContext.getRequest().getAttribute(WebKeys.THEME_DISPLAY) == null) {
                 continue;
             }
+            if(socialActivity.getPrimaryType().equals(ActivityEntryType.DISCUSSION.getPrimaryTypeId())){
+                try{
+                    StringBuilder bodyWithComment = new StringBuilder();
+                    bodyWithComment.append(socialActivity.getActivityEntryBody());
+                    bodyWithComment.append("<br><br><div style='margin-left:20px;>");
+                    bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
+                    Comment comment = CommentClient.getComment(socialActivity.getClassPrimaryKey());
+                    bodyWithComment.append(comment.getContent());
+                    bodyWithComment.append("</div></div>");
+                    body.append("<div style='margin-left: 10px'>").append(bodyWithComment.toString()).append("</div><br/><br/>");
+                }catch(CommentNotFoundException ex){
+                    body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
+                }
 
+            }else{
+                body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
+            }
 
-            body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
         }
         return body.toString();
     }
