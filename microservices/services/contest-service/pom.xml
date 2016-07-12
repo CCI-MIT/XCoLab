@@ -56,7 +56,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_Contest</includes>
+                            <includes>xcolab_Contest|xcolab_ContestPhase|xcolab_ContestPhaseType|xcolab_ContestPhaseRibbonType|xcolab_ContestSchedule|xcolab_ContestTeamMember|xcolab_ContestType</includes>
                         </database>
                     </generator>
                 </configuration>
