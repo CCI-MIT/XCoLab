@@ -152,8 +152,8 @@ public final class ContentsClient {
     }
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
-        return contentArticleVersionResource
-                .getSubResource(folderId, "contentArticlesVersions", ContentArticleVersion.TYPES)
+        return contentFolderResource
+                .getSubResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)
                 .list()
                 .execute();
     }
