@@ -16,6 +16,8 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.ServiceNotFoundException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -235,9 +237,9 @@ public final class RequestUtils {
             String servicesPort = "";
 
             try {
-                InputStream inputStream =
-                        RequestUtils.class.getClassLoader()
-                                .getResourceAsStream("application.properties");
+                final String propertiesPath = System.getProperty("user.home") + File.separator
+                        + ".xcolab.application.properties";
+                InputStream inputStream = new FileInputStream(propertiesPath);
                 prop.load(inputStream);
                 servicesPort = prop.getProperty("services.port");
                 RequestUtils.servicesPort = servicesPort;
