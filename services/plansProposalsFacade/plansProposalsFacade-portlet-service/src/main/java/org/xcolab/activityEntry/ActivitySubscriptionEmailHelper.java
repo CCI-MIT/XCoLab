@@ -81,14 +81,16 @@ public class ActivitySubscriptionEmailHelper {
 
 
         //to ease debug please leave it here
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+       /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            lastEmailNotification = sdf.parse("2016-06-03 00:00:00");
-            lastDailyEmailNotification = sdf.parse("2016-06-03 00:00:00");
+            lastEmailNotification = sdf.parse("2016-07-09 00:00:00");
+            lastDailyEmailNotification = sdf.parse("2016-07-09 00:00:00");
         } catch (ParseException e) {
             lastEmailNotification = new Date();
         }
-/*
+        */
+
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
             for (ActivityEntry activity : res) {
@@ -101,16 +103,15 @@ public class ActivitySubscriptionEmailHelper {
             }
             lastEmailNotification = new Date();
         }
-*/
 
         synchronized (lastDailyEmailNotification) {
             Date now = new Date();
 
             // Send the daily digest at the predefined hour only
-            if /*(now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
+            if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
                     && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR)
                     {
-*/(true){
+
                 try {
                     List<ActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
                     sendDailyDigestNotifications(res, serviceContext);
@@ -152,14 +153,12 @@ public class ActivitySubscriptionEmailHelper {
         Comparator<ActivityEntry> socialActivityClassIdComparator = new Comparator<ActivityEntry>() {
             @Override
             public int compare(ActivityEntry o1, ActivityEntry o2) {
-                    System.out.println("Primary type:"+ o1.getPrimaryType() + " - "+ o2.getPrimaryType());
                 return (int)(o1.getPrimaryType() - o2.getPrimaryType());
             }
         };
         Comparator<ActivityEntry> socialActivityCreateDateComparator = new Comparator<ActivityEntry>() {
             @Override
             public int compare(ActivityEntry o1, ActivityEntry o2) {
-                System.out.println("Create date" +o1.getCreateDate().getTime() + " - "+o2.getCreateDate().getTime());
                 return (int)(o1.getCreateDate().getTime() - o2.getCreateDate().getTime());
             }
         };
