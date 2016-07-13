@@ -44,12 +44,13 @@ public class SharedMemberDaoImpl implements SharedMemberDao {
     }
 
     @Override
-    public Long create(String screenName, String emailAddress, Timestamp createDate) {
+    public Long create(String screenName, String emailAddress,String colabOrigin, Timestamp createDate) {
 
         SharedMemberRecord ret = this.dslContext.insertInto(SHARED_MEMBER)
                 .set(SHARED_MEMBER.SCREEN_NAME, screenName)
                 .set(SHARED_MEMBER.EMAIL_ADDRESS, emailAddress)
                 .set(SHARED_MEMBER.CREATE_DATE, createDate)
+                .set(SHARED_MEMBER.COLAB_ORIGIN,colabOrigin)
                 .returning(SHARED_MEMBER.SHARED_MEMBER_ID)
                 .fetchOne();
         if (ret != null) {

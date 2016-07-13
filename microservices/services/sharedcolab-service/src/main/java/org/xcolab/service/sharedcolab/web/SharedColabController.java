@@ -37,12 +37,13 @@ public class SharedColabController {
     @RequestMapping(value = "/members/retrieveSharedId", method = RequestMethod.POST)
     public Long retrieveSharedId(
             @RequestParam(required = false) String screenName,
-            @RequestParam(required = false) String email) {
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String colabOrigin) {
         SharedMember member = sharedMemberDao.getByScreenNameAndEmail(screenName, email);
         if (member != null) {
             return member.getSharedMemberId();
         } else {
-            Long ret = sharedMemberDao.create(screenName, email, new Timestamp(new Date().getTime()));
+            Long ret = sharedMemberDao.create(screenName, email,colabOrigin,  new Timestamp(new Date().getTime()));
             return ret;
         }
     }

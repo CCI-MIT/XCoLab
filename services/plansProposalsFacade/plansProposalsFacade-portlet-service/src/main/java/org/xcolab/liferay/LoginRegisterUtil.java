@@ -12,6 +12,7 @@ import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -185,7 +186,7 @@ public final class LoginRegisterUtil {
             throws Exception {
 
 
-        Long memberId = SharedColabClient.retrieveSharedId(email, screenName);
+        Long memberId = SharedColabClient.retrieveSharedId(email, screenName,ConfigurationAttributeKey.COLAB_NAME.getStringValue());
         User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName);
 
         Member member = new Member();
