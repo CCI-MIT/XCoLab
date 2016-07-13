@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 public interface SharedMemberDao {
 
-    Long create(String screenName, String emailAddress, Timestamp createDate);
+    Long create(String screenName, String emailAddress,String colabOrigin, Timestamp createDate);
 
     boolean isScreenNameTaken(String screenName);
 

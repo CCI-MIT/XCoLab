@@ -74,9 +74,10 @@ public class MessagingController {
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.POST)
-    public void createMessageRecipient(@PathVariable("messageId") long messageId,
+    public String createMessageRecipient(@PathVariable("messageId") long messageId,
             @RequestParam long recipientId) {
         messagingService.createRecipient(messageId, recipientId);
+        return "";
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients/{memberId}", method = RequestMethod.PUT)

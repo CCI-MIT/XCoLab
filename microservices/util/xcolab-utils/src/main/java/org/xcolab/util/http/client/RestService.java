@@ -11,6 +11,7 @@ public class RestService implements HttpEndpoint {
     private static final String PORT = RequestUtils.getServicesPort();
     private final String serviceName;
     private String serviceHost = HOST;
+    private String servicePort = PORT;
 
     public RestService(String serviceName) {
         this.serviceName = serviceName;
@@ -18,10 +19,14 @@ public class RestService implements HttpEndpoint {
 
     @Override
     public UriProvider getBaseUrl() {
-        return new UriProvider(SCHEMA + serviceHost + ":" + PORT + "/" + serviceName);
+        return new UriProvider(SCHEMA + serviceHost + ":" + servicePort + "/" + serviceName);
     }
 
     public void setServiceHost(String serviceHost) {
         this.serviceHost = serviceHost;
+    }
+
+    public void setServicePort(String servicePort) {
+        this.servicePort = servicePort;
     }
 }
