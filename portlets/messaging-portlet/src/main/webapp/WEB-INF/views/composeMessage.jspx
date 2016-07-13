@@ -15,10 +15,7 @@
         var users = [];
         var usersMap = {};
         var userNames = [];
-        <c:forEach var="user" items="${sendMessageBean.usersList}">
-        usersMap["${user.screenName}"] = "${user.userId}";
-        userNames.push("${user.screenName}");
-        </c:forEach>
+        
     </script>
 
     <h3>Compose message</h3>
