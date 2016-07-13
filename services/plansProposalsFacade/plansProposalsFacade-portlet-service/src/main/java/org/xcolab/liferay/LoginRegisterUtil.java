@@ -54,11 +54,16 @@ public final class LoginRegisterUtil {
         }
     }
 
-    private static User registerLiferayWithId(Long userId, String screenName, String password, String email, String firstName, String lastName) {
+    private static User registerLiferayWithId(Long userId, String screenName, String password, String email, String firstName, String lastName, String fbStringId) {
         User user = null;
         long companyId = LIFERAY_COMPANY_ID;
         long groupId = 10136;
         long facebookId = 0;
+        try{
+            facebookId = Long.parseLong(fbStringId);
+        }catch(NumberFormatException ignored){
+            facebookId = 0;
+        }
         try {
 
             Role role = RoleLocalServiceUtil.getRole(companyId, "User");
@@ -187,7 +192,7 @@ public final class LoginRegisterUtil {
 
 
         Long memberId = SharedColabClient.retrieveSharedId(email, screenName,ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-        User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName);
+        User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName, fbIdString);
 
         Member member = new Member();
         member.setId_(liferayUser.getUserId());
