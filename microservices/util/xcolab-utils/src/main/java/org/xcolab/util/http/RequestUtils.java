@@ -4,16 +4,16 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import org.xcolab.util.http.caching.CacheProvider;
 import org.xcolab.util.http.caching.CacheProviderNoOpImpl;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
-import org.xcolab.util.http.exceptions.ServiceNotFoundException;
+import org.xcolab.util.http.exceptions.ServiceExceptionTranslatorUtil;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.IOException;
@@ -134,13 +134,8 @@ public final class RequestUtils {
                 cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
             }
             return ret;
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                if (isNotFoundException(e)) {
-                    throw new UncheckedEntityNotFoundException();
-                }
-                throw new ServiceNotFoundException(uriBuilder.buildString());
-            }
+        } catch (HttpStatusCodeException e) {
+            ServiceExceptionTranslatorUtil.translateException(e, uriBuilder.buildString());
             throw e;
         }
     }
@@ -176,15 +171,9 @@ public final class RequestUtils {
             }
             return ret;
         } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new ServiceNotFoundException(uriBuilder.buildString());
-            }
+            ServiceExceptionTranslatorUtil.translateException(e, uriBuilder.buildString());
             throw e;
         }
-    }
-
-    private static boolean isNotFoundException(HttpClientErrorException e) {
-        return e.getResponseBodyAsString().contains("NotFoundException");
     }
 
     public static boolean put(UriBuilder uriBuilder) {
@@ -204,8 +193,7 @@ public final class RequestUtils {
 
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);
 
-        restTemplate
-                .exchange(uriBuilder.buildString(), HttpMethod.PUT, httpEntity, Void.class);
+        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.PUT, httpEntity, Void.class);
         return true;
     }
 
