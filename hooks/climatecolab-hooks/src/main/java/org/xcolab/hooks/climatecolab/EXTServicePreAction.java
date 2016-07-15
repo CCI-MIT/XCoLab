@@ -72,6 +72,9 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("betaRibbonShow",
                 ConfigurationAttributeKey.BETA_RIBBON_SHOW.getBooleanValue());
 
+        vmVariables.put("isSharedColab",
+                ConfigurationAttributeKey.IS_SHARED_COLAB.getBooleanValue());
+
         final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW
                 .getBooleanValue();
         vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);

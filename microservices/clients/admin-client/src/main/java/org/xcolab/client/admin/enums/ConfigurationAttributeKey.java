@@ -45,7 +45,8 @@ public enum ConfigurationAttributeKey {
 
     FILTER_PROFANITY(AttributeType.BOOLEAN),
     SHARED_COLAB_PORT(AttributeType.STRING),
-    SHARED_COLAB_LOCATION(AttributeType.STRING);
+    SHARED_COLAB_LOCATION(AttributeType.STRING),
+    IS_SHARED_COLAB(AttributeType.BOOLEAN);
 
     private final AttributeType type;
 
