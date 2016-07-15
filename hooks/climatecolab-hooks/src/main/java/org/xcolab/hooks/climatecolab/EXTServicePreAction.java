@@ -68,12 +68,11 @@ public class EXTServicePreAction extends Action {
         }
         vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
         vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
+        vmVariables.put("_googleAnalyticsKey", ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.getStringValue());
 
-        vmVariables.put("betaRibbonShow",
-                ConfigurationAttributeKey.BETA_RIBBON_SHOW.getBooleanValue());
+        vmVariables.put("betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.getBooleanValue());
 
-        final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW
-                .getBooleanValue();
+        final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.getBooleanValue();
         vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);
         if (mitHeaderBarShow) {
             vmVariables.put("mitHeaderBarLinkText", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.getStringValue());
