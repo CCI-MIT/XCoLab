@@ -1,8 +1,9 @@
 <?php
 require 'jsonwrapper.php';
 
-$c = mysqli_connect("127.0.0.1", "ColabMaintenance", 'ColabMainten234234ance__', "ColabMaintenance") or die(mysqli_error($c));
-        $r = mysqli_query($c, "select * from email;") or die(mysqli_error($c));
+$config = parse_ini_file("../config.ini");
+$c = mysqli_connect("127.0.0.1", $config["databaseUser"], $config["databasePassword"], $config["databaseName"]) or die(mysqli_error($c));
+$r = mysqli_query($c, "select * from email;") or die(mysqli_error($c));
 
 while ($row = mysqli_fetch_row($r)) {
 
