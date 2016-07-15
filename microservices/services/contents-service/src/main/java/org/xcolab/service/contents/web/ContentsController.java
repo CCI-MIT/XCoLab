@@ -44,7 +44,7 @@ public class ContentsController {
     @Autowired
     private ContentArticleVersionDao contentArticleVersionDao;
 
-    @RequestMapping(value = "/contentArticles/", method = RequestMethod.POST)
+    @RequestMapping(value = "/contentArticles", method = RequestMethod.POST)
     public ContentArticle createContentArticle(@RequestBody ContentArticle contentArticle) {
         java.util.Date date = new java.util.Date();
         contentArticle.setCreateDate(new Timestamp(date.getTime()));
@@ -125,7 +125,7 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentArticleVersions/", method = RequestMethod.POST)
+    @RequestMapping(value = "/contentArticleVersions", method = RequestMethod.POST)
     public ContentArticleVersion createContentArticleVersion(
             @RequestBody ContentArticleVersion contentArticleVersion) {
         java.util.Date date = new java.util.Date();
@@ -183,7 +183,7 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentFolders/", method = RequestMethod.POST)
+    @RequestMapping(value = "/contentFolders", method = RequestMethod.POST)
     public ContentFolder createContentFolder(@RequestBody ContentFolder contentFolder) {
         return this.contentFolderDao.create(contentFolder);
     }
