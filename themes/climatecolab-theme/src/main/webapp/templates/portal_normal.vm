@@ -206,7 +206,7 @@
             <div style="margin-top: 4px;">
                 <a href="/web/guest/loginregister/-/login/SSO/facebookLogin" class="sketchy-icon facebook-sketchy" style="margin: 0 5px 0 0px;"></a>
                 <a href="/web/guest/loginregister/-/login/SSO/googleLogin" class="sketchy-icon google-sketchy" style="margin: 0 5px 0 0px;"></a>
-                <a href="/web/guest/loginregister/-/login/SSO/sharedColabLogin" class="sketchy-icon sharedColab-sketchy" style="margin: 0 5px 0 0px;"></a>
+                <a href="#" class="sketchy-icon $partnerColabClassName" style="margin: 0 5px 0 0px;" onclick="javascript:showSharedColabLogin()"></a>
             </div>
         </div>
         #else

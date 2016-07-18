@@ -74,6 +74,12 @@ public class EXTServicePreAction extends Action {
 
         vmVariables.put("isSharedColab",
                 ConfigurationAttributeKey.IS_SHARED_COLAB.getBooleanValue());
+        final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.getStringValue();
+        final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
+        vmVariables.put("partnerColabName",partnerColabName);
+        vmVariables.put("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
+        vmVariables.put("partnerColabLogo",partnerColabImgsAndClasses+ "PartnerLogo.png");
+
 
         final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW
                 .getBooleanValue();
