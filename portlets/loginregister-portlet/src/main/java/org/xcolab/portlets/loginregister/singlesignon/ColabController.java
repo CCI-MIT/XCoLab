@@ -56,6 +56,7 @@ public class ColabController {
                 userBean.setPassword(password);
                 userBean.setRetypePassword(password);
                 //TODO: get user imageId and save it locally
+                userBean.setShortBio(foreignColab.getShortBio());
                 try {
                     MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
 
