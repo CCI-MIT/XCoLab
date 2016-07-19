@@ -29,15 +29,19 @@ public class SharedColabClient {
             "members");
 
     public static boolean isScreenNameUsed(String screenName) {
-        sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue());
-        sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue());
+        String location = ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue();
+        String port = ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue();
+        sharedColabService.setServiceHost(location);
+        sharedColabService.setServicePort(port);
         return sharedColabResource.service("isUsed",Boolean.class)
                 .queryParam("screenName", screenName).getUnchecked();
     }
 
     public static boolean isEmailUsed(String email) {
-        sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue());
-        sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue());
+        String location = ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue();
+        String port = ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue();
+        sharedColabService.setServiceHost(location);
+        sharedColabService.setServicePort(port);
         return sharedColabResource.service("isUsed", Boolean.class)
                 .queryParam("email", email)
                 .getUnchecked();
