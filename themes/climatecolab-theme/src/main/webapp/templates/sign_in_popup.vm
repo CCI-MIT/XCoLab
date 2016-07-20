@@ -13,14 +13,8 @@
             Welcome!  To access the link you clicked, please login or register as a free member using Facebook, Google, or your username &amp; password.
         </div>
         <div class="c-Header__login__with">
-        #if ($isSharedColab)
-            <a href="/web/guest/loginregister/-/login/SSO/facebookRegister" class="sketchy-icon-black facebook-sketchy" style="margin:0px 30px 0 106px;"></a>
-            <a href="/web/guest/loginregister/-/login/SSO/googleRegister" class="sketchy-icon-black google-sketchy" style="margin: 0 30px 0 0px;"></a>
-            <a href="#" class="sketchy-icon $partnerColabClassName" style="margin: 0 5px 0 0px;" onclick="javascript:showSharedColabLogin()"></a>
-        #else
             <a href="/web/guest/loginregister/-/login/SSO/facebookRegister" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 70px;"><span>Facebook</span></a>
             <a href="/web/guest/loginregister/-/login/SSO/googleRegister" class="sketchy-icon-black google-sketchy"><span>Google</span></a>
-        #end
         </div>
         <div class="clearfix"></div>
            <div class="login_popup_box">
@@ -81,15 +75,12 @@
     <div id="popup_SSO_login" class="c-Popup__wrapper small" style="display: none;">
     <div class="c-Popup">
         <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
-        <div><img src="$images_folder/$partnerColabLogo"/> </div>
+        <div><img style="max-height:55px" src="$images_folder/$partnerColabLogo"/> </div>
         <div style="margin-top: 15px;margin-bottom: 15px;">Are you a $partnerColabName member? Login to $_colab_name using your $partnerColabName username and password.</div>
         <div style="font-size: small;">$_colab_name will receive your $partnerColabName public profile and email address.</div>
         <div class="clearfix"></div>
-    #if ($request.getParameter('isSigningIn'))
-        #parse ("$full_templates_path/signin_reg_error_message_translator.vm")
-        #set($loginMessageClass='hidden')
-    #else
-        #set($loginMessageClass='')
+    #if ($request.getParameter('isSSOSigningIn'))
+        <div class="c-Alert__error__message"><p>Authentication failed, please check your username and password.</p></div>
     #end
         <div class="login_popup_box">
             <form id="signInSSOForm_form" method="post" action="/web/guest/loginregister/-/login/SSO/colabSSO?p_auth=TLipuzLG&_loginregisterportlet_WAR_loginregisterportlet_javax.portlet.action=initiateLoginOrReg"
