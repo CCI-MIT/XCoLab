@@ -81,4 +81,12 @@
         <generated-parameter name="pageToDisplay">password_reset</generated-parameter>
         <generated-parameter name="resetTicket">{resetPasswordToken}</generated-parameter>
     </route>
+    <route>
+        <pattern>/SSO/colabSSO</pattern>
+        <generated-parameter name="SSO">colab</generated-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+        <implicit-parameter name="p_p_mode">view</implicit-parameter>
+        <implicit-parameter name="action">initiateLoginOrReg</implicit-parameter>
+    </route>
 </routes>

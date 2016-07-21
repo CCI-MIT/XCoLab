@@ -15,7 +15,7 @@ public class FilesController {
     @Autowired
     private FileEntryDao fileEntryDao;
 
-    @RequestMapping(value = "/fileEntries/", method = RequestMethod.POST)
+    @RequestMapping(value = "/fileEntries", method = RequestMethod.POST)
     public FileEntry createFileEntry(@RequestBody FileEntry fileEntry) {
 
         return this.fileEntryDao.create(fileEntry);

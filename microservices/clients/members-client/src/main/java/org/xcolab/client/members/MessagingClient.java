@@ -67,7 +67,7 @@ public final class MessagingClient {
     }
 
     public static void createRecipient(long messageId, long recipientId) {
-        messageResource.service(messageId, "recipients", Void.class)
+        messageResource.service(messageId, "recipients", String.class)
                 .queryParam("recipientId", recipientId)
                 .post();
     }

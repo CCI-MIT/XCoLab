@@ -200,6 +200,17 @@ function deferUntilLogin(fn) {
     }
 }
 
+function showSharedColabLogin(fn) {
+
+	if (Liferay.ThemeDisplay.isSignedIn()) {
+		return true;
+	} else {
+		jQuery('#popup_login').hide();
+		jQuery('#popup_SSO_login').show();
+		jQuery("#signInSSOForm_form input[name=redirect]").val(location.toString());
+	}
+}
+
 function showForgotPasswordPopup() {
 	jQuery('#popup_login').hide();
 	jQuery('#popup_forgotpassword').show();

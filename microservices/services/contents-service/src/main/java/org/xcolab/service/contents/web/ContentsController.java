@@ -198,7 +198,7 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentFolders/{contentFolderId}/contentArticlesVersions/", method = RequestMethod.GET)
+    @RequestMapping(value = "/contentFolders/{contentFolderId}/contentArticleVersions", method = RequestMethod.GET)
     public List<ContentArticleVersion> getContentFolderArticleVersions(
             @PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
         if (contentFolderId == 0) {
