@@ -11,7 +11,7 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 
 @Component
-@PropertySource({"classpath:application.properties", "file:${user.home}/.xcolab.application.properties"})
+@PropertySource({"file:${user.home}/.xcolab.application.properties"})
 public class AccountDetailsEmmaAPI {
 
     @Autowired
