@@ -89,7 +89,7 @@ cd ../..
 
 cd microservices/util
 mvn install -N
-cd ../../..
+cd ../..
 
 cd microservices/util/xcolab-utils
 mvn clean compile package install clean
