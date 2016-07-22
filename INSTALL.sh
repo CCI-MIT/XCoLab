@@ -99,6 +99,15 @@ cd microservices/services
 mvn install -N
 cd ../..
 
+# many clients depend on admin client and members-client -> they need to be installed first
+cd microservices/clients/admin-client
+mvn clean compile package install clean
+cd ../../..
+
+cd microservices/clients/members-client
+mvn clean compile package install clean
+cd ../../..
+
 cd microservices/clients
 for D in *; do
     if [ -d "${D}" ]; then
