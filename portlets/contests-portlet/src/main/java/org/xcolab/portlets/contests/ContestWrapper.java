@@ -19,10 +19,16 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
 
     private static final Log _log = LogFactoryUtil.getLog(ContestWrapper.class);
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    public ContestWrapper(Contest contest) {
-        super(contest);
+    private org.xcolab.client.contest.pojo.Contest localContestPojo;
+
+    public ContestWrapper(org.xcolab.client.contest.pojo.Contest contest) {
+        try {
+            super(contest.getContestPK());
+        } catch(SystemException | PortalException ignored){
+
+        }
     }
 
     public long getTotalCommentsCount() {
@@ -57,7 +63,7 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
             return 0L;
         }
     }
-    
+
     public boolean getContestInVotingPhase() {
         try {
             ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
@@ -74,7 +80,7 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
             return false;
         }
     }
-    
+
     public long getVotesCount() {
         try {
             return ContestLocalServiceUtil.getVotesCount(contest);

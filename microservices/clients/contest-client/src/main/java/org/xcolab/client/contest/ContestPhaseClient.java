@@ -10,7 +10,5 @@ import java.util.List;
 public class ContestPhaseClient {
 
     private static final RestService contestPhaseService = new RestService("contest-service");
-    private static final RestResource<Contest> contestPhaseResource = new RestResource<>(contestPhaseService,
-            "contestPhases", Contest.class, new ParameterizedTypeReference<List<Contest>>() {
-    });
+
 }

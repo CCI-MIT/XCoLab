@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.web;
 
-import com.netflix.discovery.converters.Auto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xcolab.model.tables.pojos.*;
@@ -40,8 +40,10 @@ public class ContestController {
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContests(
             @RequestParam(required = false) String contestUrlName,
-            @RequestParam(required = false) Long contestYear) {
-        return contestDao.findByGiven(contestUrlName, contestYear);
+            @RequestParam(required = false) Long contestYear,
+            @RequestParam(required = false) Boolean active,
+            @RequestParam(required = false) Boolean featured) {
+        return contestDao.findByGiven(contestUrlName, contestYear, active, featured);
     }
 
     @RequestMapping(value = "/contests/{contestId}", method = RequestMethod.GET)

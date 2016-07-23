@@ -42,4 +42,10 @@ public class ContestClient {
             throw new ContestNotFoundException(contestUrlName, contestYear);
         }
     }
+    public static List<Contest> findByActiveFeatured(Boolean active, Boolean featured) {
+        return contestResource.list()
+                .optionalQueryParam("active", active)
+                .optionalQueryParam("featured",featured)
+                .execute();
+    }
 }

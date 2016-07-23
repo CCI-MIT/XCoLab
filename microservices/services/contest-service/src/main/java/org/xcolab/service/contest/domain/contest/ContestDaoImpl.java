@@ -31,7 +31,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public List<Contest> findByGiven(String contestUrlName, Long contestYear) {
+    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();
 
@@ -41,7 +41,14 @@ public class ContestDaoImpl implements ContestDao {
         if (contestYear != null) {
             query.addConditions(CONTEST.CONTEST_YEAR.eq(contestYear));
         }
+        if (active != null) {
+            query.addConditions(CONTEST.CONTEST_ACTIVE.eq(active));
+        }
+        if (featured != null) {
+            query.addConditions(CONTEST.FEATURED_.eq(featured));
+        }
         query.addOrderBy(CONTEST.CREATED.desc());
         return query.fetchInto(Contest.class);
     }
+
 }

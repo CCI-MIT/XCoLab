@@ -8,5 +8,5 @@ import java.util.List;
 public interface ContestDao {
     Contest get(Long contestId) throws NotFoundException;
 
-    List<Contest> findByGiven(String contestUrlName, Long contestYear);
+    List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured);
 }
