@@ -1,5 +1,6 @@
 package org.xcolab.portlets.loginregister.validation;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
@@ -29,8 +30,8 @@ public class UniqueScreenNameEmailValidator implements ConstraintValidator<Uniqu
         if (email == null || screenName == null) {
             return true;
         }
-        boolean uniqueScreenName = !MembersClient.isScreenNameUsed(screenName);
-        boolean uniqueEmail = !MembersClient.isEmailUsed(email);
+        boolean uniqueScreenName = !SharedColabClient.isScreenNameUsed(screenName);
+        boolean uniqueEmail = !SharedColabClient.isEmailUsed(email);
         boolean isValid = uniqueEmail && uniqueScreenName;
 
         if (!isValid) {
@@ -49,7 +50,11 @@ public class UniqueScreenNameEmailValidator implements ConstraintValidator<Uniqu
                     sb.append(" screen name");
 
                 }
-                sb.append(" already exists");
+                if (!ConfigurationAttributeKey.IS_SHARED_COLAB.getBooleanValue()) {
+                    sb.append(" already exists");
+                } else {
+                    sb.append(" already exists , or is already registered on another colab! Please use the Colab logo above to sign in!");
+                }
                 context.disableDefaultConstraintViolation();
                 ConstraintViolationBuilder violationBuilder =
                         context.buildConstraintViolationWithTemplate(sb.toString());
