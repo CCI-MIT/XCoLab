@@ -1,7 +1,7 @@
 package org.xcolab.client.sharedcolab;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.xcolab.client.admin.AdminClient;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException;
 import org.xcolab.client.sharedcolab.pojo.Member;
@@ -16,7 +16,6 @@ import java.util.List;
 
 
 public class SharedColabClient {
-
 
     private static final RestService sharedColabService = new RestService("sharedcolab-service");
 
@@ -50,7 +49,7 @@ public class SharedColabClient {
     public static Long retrieveSharedId(String email, String screenName, String colabName) {
         sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue());
         sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue());
-        ServiceQuery<Object,Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
+        ServiceQuery<Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
 
         if (email != null) {
             retrieveSharedId.optionalQueryParam("email", email);

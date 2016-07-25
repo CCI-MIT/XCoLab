@@ -1,19 +1,6 @@
 <?xml version="1.0"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorService" class="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceImpl">
-		<property name="nameGenerators">
-			<list>
-				<bean id="com.ext.portlet.Activity.nameGenerators.ProposalSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.ProposalSubscriptionNameGenerator" />
-				<bean id="com.ext.portlet.Activity.nameGenerators.DiscussionSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.DiscussionSubscriptionNameGenerator" />
-				<bean id="com.ext.portlet.Activity.nameGenerators.ContestSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.ContestSubscriptionNameGenerator" />
-				<bean id="com.ext.portlet.Activity.nameGenerators.DefaultSubscriptionNameGenerator" class="com.ext.portlet.Activity.nameGenerators.DefaultSubscriptionNameGenerator" />
-			</list>
-		</property>
-	</bean>
-	<bean id="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil" class="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorServiceUtil">
-		<property name="service" ref="com.ext.portlet.Activity.ActivitySubscriptionNameGeneratorService" />
-	</bean>
 	<bean id="com.ext.portlet.service.ActivitySubscriptionLocalService" class="com.ext.portlet.service.impl.ActivitySubscriptionLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ActivitySubscriptionService" class="com.ext.portlet.service.impl.ActivitySubscriptionServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ActivitySubscriptionPersistence" class="com.ext.portlet.service.persistence.ActivitySubscriptionPersistenceImpl" parent="basePersistence" />
@@ -71,18 +58,6 @@
 	<bean id="com.ext.portlet.service.ContestTypeLocalService" class="com.ext.portlet.service.impl.ContestTypeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestTypeService" class="com.ext.portlet.service.impl.ContestTypeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestTypePersistence" class="com.ext.portlet.service.persistence.ContestTypePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.DiscussionCategoryLocalService" class="com.ext.portlet.service.impl.DiscussionCategoryLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.DiscussionCategoryService" class="com.ext.portlet.service.impl.DiscussionCategoryServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.DiscussionCategoryPersistence" class="com.ext.portlet.service.persistence.DiscussionCategoryPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.DiscussionCategoryGroupLocalService" class="com.ext.portlet.service.impl.DiscussionCategoryGroupLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.DiscussionCategoryGroupService" class="com.ext.portlet.service.impl.DiscussionCategoryGroupServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence" class="com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.DiscussionMessageLocalService" class="com.ext.portlet.service.impl.DiscussionMessageLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.DiscussionMessageService" class="com.ext.portlet.service.impl.DiscussionMessageServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.DiscussionMessagePersistence" class="com.ext.portlet.service.persistence.DiscussionMessagePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.DiscussionMessageFlagLocalService" class="com.ext.portlet.service.impl.DiscussionMessageFlagLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.DiscussionMessageFlagService" class="com.ext.portlet.service.impl.DiscussionMessageFlagServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence" class="com.ext.portlet.service.persistence.DiscussionMessageFlagPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.EmailListLocalService" class="com.ext.portlet.service.impl.EmailListLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.EmailListService" class="com.ext.portlet.service.impl.EmailListServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.EmailListPersistence" class="com.ext.portlet.service.persistence.EmailListPersistenceImpl" parent="basePersistence" />
@@ -244,9 +219,6 @@
 	<bean id="com.ext.portlet.service.ProposalVoteLocalService" class="com.ext.portlet.service.impl.ProposalVoteLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalVoteService" class="com.ext.portlet.service.impl.ProposalVoteServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalVotePersistence" class="com.ext.portlet.service.persistence.ProposalVotePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.SpamReportLocalService" class="com.ext.portlet.service.impl.SpamReportLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.SpamReportService" class="com.ext.portlet.service.impl.SpamReportServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.SpamReportPersistence" class="com.ext.portlet.service.persistence.SpamReportPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.StaffMemberLocalService" class="com.ext.portlet.service.impl.StaffMemberLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.StaffMemberService" class="com.ext.portlet.service.impl.StaffMemberServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.StaffMemberPersistence" class="com.ext.portlet.service.persistence.StaffMemberPersistenceImpl" parent="basePersistence" />

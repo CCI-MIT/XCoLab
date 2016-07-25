@@ -5,17 +5,17 @@ import org.jooq.Query;
 
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
-import org.xcolab.service.activities.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ActivitySubscriptionDao {
 
     ActivitySubscription create(ActivitySubscription activitySubscription);
 
-    ActivitySubscription get(Long pk) throws NotFoundException;
-    ActivitySubscription get(Long receiverId, Long classNameId, Long classPK,String extraInfo)
-            throws NotFoundException;
+    Optional<ActivitySubscription> get(Long pk);
+    Optional<ActivitySubscription> get(Long receiverId, Long classNameId,
+            Long classPK, String extraInfo);
 
     boolean update(ActivitySubscription activitySubscription);
 

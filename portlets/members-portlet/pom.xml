@@ -194,8 +194,4 @@
 		</repository>
 	</repositories>
 
-	<properties>
-		<spring.version>4.2.5.RELEASE</spring.version>
-	</properties>
-
 </project>

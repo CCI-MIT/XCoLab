@@ -108,46 +108,6 @@ public class ThreadController extends BaseDiscussionController {
         }
     }
 
-//    @ActionMapping(params = "action=subscribeThread")
-//    public void subscribeThread(ActionRequest request, ActionResponse response, @RequestParam long threadId)
-//            throws DiscussionAuthorizationException, PortalException, SystemException {
-//
-//        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-//        CategoryGroup categoryGroup = getCategoryGroup(request);
-//        checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
-//
-//        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
-//
-//        if (!themeDisplay.getUser().isDefaultUser()) {
-//            if (threadId > 0) {
-//                ActivitySubscriptionLocalServiceUtil.addSubscription(DiscussionCategoryGroup.class, discussionCategoryGroupId,
-//                        0, extraData, userId);
-//                DiscussionMessageLocalServiceUtil.subscribe(themeDisplay.getUserId(),
-//                        categoryGroup.getGroupId(), threadWrapper.getCategory().getId(), threadId);
-//            }
-//        }
-//    }
-
-//    @ActionMapping(params = "action=unsubscribeThread")
-//    public void unsubscribeThread(ActionRequest request, ActionResponse response, @RequestParam long threadId)
-//            throws DiscussionAuthorizationException, PortalException, SystemException {
-//
-//        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-//        CategoryGroup categoryGroup = getCategoryGroup(request);
-//        checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
-//
-//        ThreadWrapper threadWrapper = new ThreadWrapper(threadId);
-//
-//        if (!themeDisplay.getUser().isDefaultUser()) {
-//            if (threadId > 0) {
-//                ActivitySubscriptionLocalServiceUtil.deleteSubscription(userId,
-//                        DiscussionCategoryGroup.class, discussionCategoryGroupId, 0, "");
-//                DiscussionMessageLocalServiceUtil.unsubscribe(themeDisplay.getUserId(),
-//                        categoryGroup.getGroupId(), threadWrapper.getCategory().getId(), threadId);
-//            }
-//        }
-//    }
-
     @Override
     public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         try {

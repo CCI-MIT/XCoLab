@@ -74,10 +74,8 @@ public class MessagingController {
         return "";
     }
 
-    //TODO: patch doesn't work
-    @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.PUT)
-    public boolean patchMessage(@PathVariable long messageId,
-            @RequestParam Long memberId,
+    @RequestMapping(value = "/messages/{messageId}/recipients/{memberId}", method = RequestMethod.PUT)
+    public boolean updateRecipientStatus(@PathVariable long messageId, @PathVariable long memberId,
             @RequestParam(required = false) Boolean isArchived,
             @RequestParam(required = false) Boolean isOpened) {
         boolean success = true;

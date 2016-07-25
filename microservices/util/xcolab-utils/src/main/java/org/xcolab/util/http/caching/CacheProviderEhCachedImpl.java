@@ -11,7 +11,6 @@ import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
-import org.xcolab.util.http.caching.CacheProvider;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -19,9 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class CacheProviderEhCachedImpl implements CacheProvider, DisposableBean {
 
-
-    
-    private CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+    private final CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
             .withCache("preConfigured",
                     CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, Object.class,
                             ResourcePoolsBuilder.heap(300))

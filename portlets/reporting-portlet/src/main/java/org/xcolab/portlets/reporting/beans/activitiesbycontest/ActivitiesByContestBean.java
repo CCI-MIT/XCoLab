@@ -1,17 +1,18 @@
 package org.xcolab.portlets.reporting.beans.activitiesbycontest;
 
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.DiscussionMessage;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
+
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.Comment;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,7 +32,7 @@ public class ActivitiesByContestBean {
         List<ProposalVote> proposalVotes = ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE);
         List<User> users = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
         List<Proposal> proposals = ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE);
-        List<DiscussionMessage> discussionMessages = DiscussionMessageLocalServiceUtil.getDiscussionMessages(0, Integer.MAX_VALUE);
+        List<Comment> comments = CommentClient.listComments(0, Integer.MAX_VALUE);
 
         Map<Long, Contest> proposalContestMap = getProposalContestMap();
 
@@ -45,7 +46,7 @@ public class ActivitiesByContestBean {
             }
 
             try {
-                calculateCommentCount(proposals, discussionMessages, proposalContestMap, user, contestActivityMap);
+                calculateCommentCount(proposals, comments, proposalContestMap, user, contestActivityMap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -93,18 +94,18 @@ public class ActivitiesByContestBean {
         }
     }
 
-    private void calculateCommentCount(List<Proposal> proposals, List<DiscussionMessage> discussionMessages, Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) {
-        List<DiscussionMessage> targetMessages = new LinkedList<>();
-        for (DiscussionMessage discussionMessage : discussionMessages) {
-            if (discussionMessage.getAuthorId() == user.getUserId()) {
-                targetMessages.add(discussionMessage);
+    private void calculateCommentCount(List<Proposal> proposals, List<Comment> comments, Map<Long, Contest> proposalContestMap, User user, Map<Long, ContestActivity> contestActivityMap) {
+        List<Comment> targetMessages = new LinkedList<>();
+        for (Comment comment : comments) {
+            if (comment.getAuthorId() == user.getUserId()) {
+                targetMessages.add(comment);
             }
         }
 
         //comments on proposals
         for (Proposal proposal : proposals) {
-            for (DiscussionMessage targetMessage : targetMessages) {
-                if (proposal.getDiscussionId() == targetMessage.getCategoryGroupId()) {
+            for (Comment targetComment : targetMessages) {
+                if (proposal.getDiscussionId() == targetComment.getThreadId()) {
                     Contest contest = proposalContestMap.get(proposal.getProposalId());
                     if (contest == null) continue;
                     ContestActivity target = getOrAddContestActivity(contestActivityMap, contest);

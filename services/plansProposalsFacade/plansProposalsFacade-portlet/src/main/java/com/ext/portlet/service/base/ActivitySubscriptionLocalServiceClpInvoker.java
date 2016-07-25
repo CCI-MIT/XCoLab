@@ -41,50 +41,50 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
-    private String _methodName526;
-    private String[] _methodParameterTypes526;
-    private String _methodName527;
-    private String[] _methodParameterTypes527;
-    private String _methodName528;
-    private String[] _methodParameterTypes528;
-    private String _methodName529;
-    private String[] _methodParameterTypes529;
-    private String _methodName530;
-    private String[] _methodParameterTypes530;
-    private String _methodName531;
-    private String[] _methodParameterTypes531;
-    private String _methodName532;
-    private String[] _methodParameterTypes532;
-    private String _methodName533;
-    private String[] _methodParameterTypes533;
-    private String _methodName534;
-    private String[] _methodParameterTypes534;
-    private String _methodName535;
-    private String[] _methodParameterTypes535;
-    private String _methodName536;
-    private String[] _methodParameterTypes536;
-    private String _methodName537;
-    private String[] _methodParameterTypes537;
-    private String _methodName538;
-    private String[] _methodParameterTypes538;
-    private String _methodName539;
-    private String[] _methodParameterTypes539;
-    private String _methodName540;
-    private String[] _methodParameterTypes540;
-    private String _methodName541;
-    private String[] _methodParameterTypes541;
-    private String _methodName542;
-    private String[] _methodParameterTypes542;
-    private String _methodName543;
-    private String[] _methodParameterTypes543;
-    private String _methodName544;
-    private String[] _methodParameterTypes544;
+    private String _methodName488;
+    private String[] _methodParameterTypes488;
+    private String _methodName489;
+    private String[] _methodParameterTypes489;
+    private String _methodName495;
+    private String[] _methodParameterTypes495;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
+    private String _methodName497;
+    private String[] _methodParameterTypes497;
+    private String _methodName498;
+    private String[] _methodParameterTypes498;
+    private String _methodName499;
+    private String[] _methodParameterTypes499;
+    private String _methodName500;
+    private String[] _methodParameterTypes500;
+    private String _methodName501;
+    private String[] _methodParameterTypes501;
+    private String _methodName502;
+    private String[] _methodParameterTypes502;
+    private String _methodName503;
+    private String[] _methodParameterTypes503;
+    private String _methodName504;
+    private String[] _methodParameterTypes504;
+    private String _methodName505;
+    private String[] _methodParameterTypes505;
+    private String _methodName506;
+    private String[] _methodParameterTypes506;
+    private String _methodName507;
+    private String[] _methodParameterTypes507;
+    private String _methodName508;
+    private String[] _methodParameterTypes508;
+    private String _methodName509;
+    private String[] _methodParameterTypes509;
+    private String _methodName510;
+    private String[] _methodParameterTypes510;
+    private String _methodName511;
+    private String[] _methodParameterTypes511;
+    private String _methodName512;
+    private String[] _methodParameterTypes512;
+    private String _methodName513;
+    private String[] _methodParameterTypes513;
+    private String _methodName514;
+    private String[] _methodParameterTypes514;
 
     public ActivitySubscriptionLocalServiceClpInvoker() {
         _methodName0 = "addActivitySubscription";
@@ -169,136 +169,136 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
                 "com.ext.portlet.model.ActivitySubscription"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName488 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes488 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName489 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes489 = new String[] { "java.lang.String" };
 
-        _methodName525 = "getActivitySubscriptions";
+        _methodName495 = "getActivitySubscriptions";
 
-        _methodParameterTypes525 = new String[] {
+        _methodParameterTypes495 = new String[] {
                 "java.lang.Class", "java.lang.Long", "java.lang.Integer",
                 "java.lang.String"
             };
 
-        _methodName526 = "findByUser";
+        _methodName496 = "findByUser";
 
-        _methodParameterTypes526 = new String[] { "java.lang.Long" };
+        _methodParameterTypes496 = new String[] { "java.lang.Long" };
 
-        _methodName527 = "isSubscribed";
+        _methodName497 = "isSubscribed";
 
-        _methodParameterTypes527 = new String[] {
+        _methodParameterTypes497 = new String[] {
                 "java.lang.Long", "java.lang.Long", "java.lang.Long",
                 "java.lang.Integer", "java.lang.String"
             };
 
-        _methodName528 = "isSubscribed";
+        _methodName498 = "isSubscribed";
 
-        _methodParameterTypes528 = new String[] {
+        _methodParameterTypes498 = new String[] {
                 "java.lang.Long", "java.lang.Class", "java.lang.Long",
                 "java.lang.Integer", "java.lang.String"
             };
 
-        _methodName529 = "deleteSubscription";
+        _methodName499 = "deleteSubscription";
 
-        _methodParameterTypes529 = new String[] {
+        _methodParameterTypes499 = new String[] {
                 "java.lang.Long", "java.lang.Long", "java.lang.Long",
                 "java.lang.Integer", "java.lang.String"
             };
 
-        _methodName530 = "deleteSubscription";
+        _methodName500 = "deleteSubscription";
 
-        _methodParameterTypes530 = new String[] {
+        _methodParameterTypes500 = new String[] {
                 "java.lang.Long", "java.lang.Long", "java.lang.Long",
                 "java.lang.Integer", "java.lang.String", "boolean"
             };
 
-        _methodName531 = "deleteSubscription";
+        _methodName501 = "deleteSubscription";
 
-        _methodParameterTypes531 = new String[] {
+        _methodParameterTypes501 = new String[] {
                 "java.lang.Long", "java.lang.Class", "java.lang.Long",
                 "java.lang.Integer", "java.lang.String", "boolean"
             };
 
-        _methodName532 = "deleteSubscription";
+        _methodName502 = "deleteSubscription";
 
-        _methodParameterTypes532 = new String[] {
+        _methodParameterTypes502 = new String[] {
                 "java.lang.Long", "java.lang.Class", "java.lang.Long",
                 "java.lang.Integer", "java.lang.String"
             };
 
-        _methodName533 = "addSubscription";
+        _methodName503 = "addSubscription";
 
-        _methodParameterTypes533 = new String[] {
+        _methodParameterTypes503 = new String[] {
                 "java.lang.Long", "java.lang.Long", "java.lang.Integer",
                 "java.lang.String", "java.lang.Long"
             };
 
-        _methodName534 = "addSubscription";
+        _methodName504 = "addSubscription";
 
-        _methodParameterTypes534 = new String[] {
+        _methodParameterTypes504 = new String[] {
                 "java.lang.Long", "java.lang.Long", "java.lang.Integer",
                 "java.lang.String", "java.lang.Long", "boolean"
             };
 
-        _methodName535 = "addSubscription";
+        _methodName505 = "addSubscription";
 
-        _methodParameterTypes535 = new String[] {
+        _methodParameterTypes505 = new String[] {
                 "java.lang.Class", "java.lang.Long", "java.lang.Integer",
                 "java.lang.String", "java.lang.Long"
             };
 
-        _methodName536 = "addSubscription";
+        _methodName506 = "addSubscription";
 
-        _methodParameterTypes536 = new String[] {
+        _methodParameterTypes506 = new String[] {
                 "java.lang.Class", "java.lang.Long", "java.lang.Integer",
                 "java.lang.String", "java.lang.Long", "boolean"
             };
 
-        _methodName537 = "getActivities";
+        _methodName507 = "getActivities";
 
-        _methodParameterTypes537 = new String[] { "java.lang.Long", "int", "int" };
+        _methodParameterTypes507 = new String[] { "java.lang.Long", "int", "int" };
 
-        _methodName538 = "store";
+        _methodName508 = "store";
 
-        _methodParameterTypes538 = new String[] {
+        _methodParameterTypes508 = new String[] {
                 "com.ext.portlet.model.ActivitySubscription"
             };
 
-        _methodName539 = "getName";
+        _methodName509 = "getName";
 
-        _methodParameterTypes539 = new String[] {
+        _methodParameterTypes509 = new String[] {
                 "com.ext.portlet.model.ActivitySubscription"
             };
 
-        _methodName540 = "getSubscriptionType";
+        _methodName510 = "getSubscriptionType";
 
-        _methodParameterTypes540 = new String[] {
+        _methodParameterTypes510 = new String[] {
                 "com.ext.portlet.model.ActivitySubscription"
             };
 
-        _methodName541 = "delete";
+        _methodName511 = "delete";
 
-        _methodParameterTypes541 = new String[] {
+        _methodParameterTypes511 = new String[] {
                 "com.ext.portlet.model.ActivitySubscription"
             };
 
-        _methodName542 = "sendEmailNotifications";
+        _methodName512 = "sendEmailNotifications";
 
-        _methodParameterTypes542 = new String[] {
+        _methodParameterTypes512 = new String[] {
                 "com.liferay.portal.service.ServiceContext"
             };
 
-        _methodName543 = "getSubscribedUsers";
+        _methodName513 = "getSubscribedUsers";
 
-        _methodParameterTypes543 = new String[] { "java.lang.Class", "long" };
+        _methodParameterTypes513 = new String[] { "java.lang.Class", "long" };
 
-        _methodName544 = "getSubscribedUsers";
+        _methodName514 = "getSubscribedUsers";
 
-        _methodParameterTypes544 = new String[] { "long", "long" };
+        _methodParameterTypes514 = new String[] { "long", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -390,49 +390,49 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return ActivitySubscriptionLocalServiceUtil.updateActivitySubscription((com.ext.portlet.model.ActivitySubscription) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName488.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName489.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName495.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.getActivitySubscriptions((java.lang.Class) arguments[0],
                 (java.lang.Long) arguments[1],
                 (java.lang.Integer) arguments[2],
                 (java.lang.String) arguments[3]);
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.findByUser((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
+        if (_methodName497.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes497, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.isSubscribed((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1], (java.lang.Long) arguments[2],
                 (java.lang.Integer) arguments[3],
                 (java.lang.String) arguments[4]);
         }
 
-        if (_methodName528.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
+        if (_methodName498.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.isSubscribed((java.lang.Long) arguments[0],
                 (java.lang.Class) arguments[1], (java.lang.Long) arguments[2],
                 (java.lang.Integer) arguments[3],
                 (java.lang.String) arguments[4]);
         }
 
-        if (_methodName529.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
+        if (_methodName499.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes499, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.deleteSubscription((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1], (java.lang.Long) arguments[2],
                 (java.lang.Integer) arguments[3],
@@ -441,8 +441,8 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName530.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes530, parameterTypes)) {
+        if (_methodName500.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes500, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.deleteSubscription((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1], (java.lang.Long) arguments[2],
                 (java.lang.Integer) arguments[3],
@@ -452,8 +452,8 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName531.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
+        if (_methodName501.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes501, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.deleteSubscription((java.lang.Long) arguments[0],
                 (java.lang.Class) arguments[1], (java.lang.Long) arguments[2],
                 (java.lang.Integer) arguments[3],
@@ -463,8 +463,8 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName532.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes532, parameterTypes)) {
+        if (_methodName502.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes502, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.deleteSubscription((java.lang.Long) arguments[0],
                 (java.lang.Class) arguments[1], (java.lang.Long) arguments[2],
                 (java.lang.Integer) arguments[3],
@@ -473,8 +473,8 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName533.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes533, parameterTypes)) {
+        if (_methodName503.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes503, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.addSubscription((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1],
                 (java.lang.Integer) arguments[2],
@@ -483,8 +483,8 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName534.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes534, parameterTypes)) {
+        if (_methodName504.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes504, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.addSubscription((java.lang.Long) arguments[0],
                 (java.lang.Long) arguments[1],
                 (java.lang.Integer) arguments[2],
@@ -494,8 +494,8 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName535.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes535, parameterTypes)) {
+        if (_methodName505.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes505, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.addSubscription((java.lang.Class) arguments[0],
                 (java.lang.Long) arguments[1],
                 (java.lang.Integer) arguments[2],
@@ -504,8 +504,8 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName536.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes536, parameterTypes)) {
+        if (_methodName506.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes506, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.addSubscription((java.lang.Class) arguments[0],
                 (java.lang.Long) arguments[1],
                 (java.lang.Integer) arguments[2],
@@ -515,52 +515,52 @@ public class ActivitySubscriptionLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName537.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes537, parameterTypes)) {
+        if (_methodName507.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes507, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.getActivities((java.lang.Long) arguments[0],
                 ((Integer) arguments[1]).intValue(),
                 ((Integer) arguments[2]).intValue());
         }
 
-        if (_methodName538.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes538, parameterTypes)) {
+        if (_methodName508.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes508, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.store((com.ext.portlet.model.ActivitySubscription) arguments[0]);
 
             return null;
         }
 
-        if (_methodName539.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes539, parameterTypes)) {
+        if (_methodName509.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes509, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.getName((com.ext.portlet.model.ActivitySubscription) arguments[0]);
         }
 
-        if (_methodName540.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes540, parameterTypes)) {
+        if (_methodName510.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes510, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.getSubscriptionType((com.ext.portlet.model.ActivitySubscription) arguments[0]);
         }
 
-        if (_methodName541.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes541, parameterTypes)) {
+        if (_methodName511.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes511, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.delete((com.ext.portlet.model.ActivitySubscription) arguments[0]);
 
             return null;
         }
 
-        if (_methodName542.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes542, parameterTypes)) {
+        if (_methodName512.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes512, parameterTypes)) {
             ActivitySubscriptionLocalServiceUtil.sendEmailNotifications((com.liferay.portal.service.ServiceContext) arguments[0]);
 
             return null;
         }
 
-        if (_methodName543.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes543, parameterTypes)) {
+        if (_methodName513.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes513, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.getSubscribedUsers((java.lang.Class) arguments[0],
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName544.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes544, parameterTypes)) {
+        if (_methodName514.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes514, parameterTypes)) {
             return ActivitySubscriptionLocalServiceUtil.getSubscribedUsers(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }

@@ -41,12 +41,12 @@ public class ContestDiscussionLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
+    private String _methodName488;
+    private String[] _methodParameterTypes488;
+    private String _methodName489;
+    private String[] _methodParameterTypes489;
+    private String _methodName494;
+    private String[] _methodParameterTypes494;
 
     public ContestDiscussionLocalServiceClpInvoker() {
         _methodName0 = "addContestDiscussion";
@@ -131,17 +131,17 @@ public class ContestDiscussionLocalServiceClpInvoker {
                 "com.ext.portlet.model.ContestDiscussion"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName488 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes488 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName489 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes489 = new String[] { "java.lang.String" };
 
-        _methodName524 = "getDiscussionIdByContestIdAndTabName";
+        _methodName494 = "getDiscussionIdByContestIdAndTabName";
 
-        _methodParameterTypes524 = new String[] {
+        _methodParameterTypes494 = new String[] {
                 "java.lang.Long", "java.lang.String"
             };
     }
@@ -235,20 +235,20 @@ public class ContestDiscussionLocalServiceClpInvoker {
             return ContestDiscussionLocalServiceUtil.updateContestDiscussion((com.ext.portlet.model.ContestDiscussion) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName488.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
             return ContestDiscussionLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName489.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
             ContestDiscussionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
             return ContestDiscussionLocalServiceUtil.getDiscussionIdByContestIdAndTabName((java.lang.Long) arguments[0],
                 (java.lang.String) arguments[1]);
         }

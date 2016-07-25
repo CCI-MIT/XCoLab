@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
+
 import org.xcolab.model.tables.pojos.ConfigurationAttribute;
+import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
 import org.xcolab.service.admin.exceptions.NotFoundException;
 import org.xcolab.service.admin.service.AdminService;
 

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
-import org.xcolab.service.activities.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.xcolab.model.Tables.ACTIVITY_SUBSCRIPTION;
 
@@ -48,23 +48,19 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     }
 
     @Override
-    public ActivitySubscription get(Long activitySubscriptionId) throws NotFoundException {
-
+    public Optional<ActivitySubscription> get(Long activitySubscriptionId) {
         final Record record = this.dslContext.selectFrom(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.PK.eq(activitySubscriptionId))
                 .fetchOne();
-
         if (record == null) {
-            throw new NotFoundException(
-                    "ActivitySubscription with id " + activitySubscriptionId + " does not exist");
+            return Optional.empty();
         }
-        return record.into(ActivitySubscription.class);
-
+        return Optional.of(record.into(ActivitySubscription.class));
     }
 
     @Override
-    public ActivitySubscription get(Long receiverId, Long classNameId, Long classPK,
-            String extraInfo) throws NotFoundException {
+    public Optional<ActivitySubscription> get(Long receiverId, Long classNameId, Long classPK,
+            String extraInfo) {
         final Record record = dslContext.select()
                 .from(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId))
@@ -73,9 +69,9 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
                 .and(ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo))
                 .fetchOne();
         if (record == null) {
-            throw new NotFoundException();
+            return Optional.empty();
         }
-        return record.into(ActivitySubscription.class);
+        return Optional.of(record.into(ActivitySubscription.class));
     }
 
     @Override
