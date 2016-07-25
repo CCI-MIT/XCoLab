@@ -15,6 +15,7 @@ import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.messaging.MessagingService;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.util.List;
 
@@ -51,30 +52,23 @@ public class MessagingController {
     }
 
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)
-    public Message getMessage(@PathVariable("messageId") long messageId) throws NotFoundException {
-        if (messageId == 0) {
-            throw new NotFoundException("No message id given");
-        } else {
-            return messageDao.getMessage(messageId);
-        }
+    public Message getMessage(@PathVariable long messageId) throws NotFoundException {
+         return messageDao.getMessage(messageId);
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
-    public List<Member> getMessageRecipients(@PathVariable("messageId") long messageId) throws NotFoundException {
-        if (messageId == 0) {
-            throw new NotFoundException("No message id given");
-        } else {
-            return messageDao.getRecipients(messageId);
-        }
+    public List<Member> getMessageRecipients(@PathVariable long messageId) {
+        return messageDao.getRecipients(messageId);
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody Message message) {
-        return messagingService.createMessage(message);
+        return messagingService.createMessage(message)
+                .orElseThrow(() -> new InternalException("Could not retrieve id of created message: " + message));
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.POST)
-    public String createMessageRecipient(@PathVariable("messageId") long messageId,
+    public String createMessageRecipient(@PathVariable long messageId,
             @RequestParam long recipientId) {
         messagingService.createRecipient(messageId, recipientId);
         return "";
@@ -82,7 +76,7 @@ public class MessagingController {
 
     //TODO: patch doesn't work
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.PUT)
-    public boolean patchMessage(@PathVariable("messageId") long messageId,
+    public boolean patchMessage(@PathVariable long messageId,
             @RequestParam Long memberId,
             @RequestParam(required = false) Boolean isArchived,
             @RequestParam(required = false) Boolean isOpened) {

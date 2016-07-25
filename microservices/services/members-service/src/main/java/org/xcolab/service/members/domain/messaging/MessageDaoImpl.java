@@ -17,6 +17,7 @@ import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.xcolab.model.Tables.MEMBER;
 import static org.xcolab.model.Tables.MESSAGE;
@@ -151,7 +152,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public Message createMessage(Message message) {
+    public Optional<Message> createMessage(Message message) {
         final MessageRecord record = dslContext.insertInto(MESSAGE)
                 .set(MESSAGE.FROM_ID, message.getFromId())
                 .set(MESSAGE.REPLIES_TO, message.getRepliesTo())
@@ -162,9 +163,9 @@ public class MessageDaoImpl implements MessageDao {
                 .fetchOne();
         if (record != null) {
             message.setMessageId(record.getValue(MESSAGE.MESSAGE_ID));
-            return message;
+            return Optional.of(message);
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 
