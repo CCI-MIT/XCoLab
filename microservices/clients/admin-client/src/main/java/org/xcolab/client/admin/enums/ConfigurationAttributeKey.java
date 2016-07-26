@@ -15,6 +15,8 @@ public enum ConfigurationAttributeKey {
     DEFAULT_TIME_ZONE_ID(AttributeType.STRING),
     SHOW_CONTESTS_DISPLAY_OPTIONS(AttributeType.BOOLEAN),
 
+    GOOGLE_ANALYTICS_KEY(AttributeType.STRING),
+
     GOOGLE_AUTH_CLIENT_ID(AttributeType.STRING),
     GOOGLE_AUTH_CLIENT_SECRET(AttributeType.STRING),
     FACEBOOK_APPLICATION_ID(AttributeType.STRING),

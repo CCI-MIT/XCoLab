@@ -4,12 +4,10 @@ import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.contests.ContestStatus;
-import com.ext.portlet.discussions.DiscussionActions;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestTeamMember;
 import com.ext.portlet.model.ContestTeamMemberRole;
-import com.ext.portlet.model.DiscussionCategoryGroup;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.ImpactIteration;
@@ -54,14 +52,9 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.Image;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
-import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
@@ -180,55 +173,6 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         thread.setAuthorId(c.getAuthorId());
         thread.setIsQuiet(false);
         long discussionId = CommentClient.createThread(thread).getThreadId();
-
-        // set up permissions
-
-        Long companyId = group.getCompanyId();
-        Role owner = RoleLocalServiceUtil.getRole(companyId, RoleConstants.SITE_OWNER);
-        Role admin = RoleLocalServiceUtil.getRole(companyId, RoleConstants.SITE_ADMINISTRATOR);
-        Role member = RoleLocalServiceUtil.getRole(companyId, RoleConstants.SITE_MEMBER);
-        Role userRole = RoleLocalServiceUtil.getRole(companyId, RoleConstants.USER);
-        Role guest = RoleLocalServiceUtil.getRole(companyId, RoleConstants.GUEST);
-        Role moderator = RoleLocalServiceUtil.getRole(companyId, "Moderator");
-
-        String[] ownerActions = {DiscussionActions.ADMIN.name(), DiscussionActions.ADD_CATEGORY.name(),
-                DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
-                DiscussionActions.ADMIN_CATEGORIES.name(), DiscussionActions.ADMIN_MESSAGES.name(),
-                DiscussionActions.ADD_COMMENT.name()};
-
-        String[] adminActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
-                DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name()};
-
-        String[] moderatorActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADMIN_CATEGORIES.name(),
-                DiscussionActions.ADMIN_MESSAGES.name(), DiscussionActions.ADD_COMMENT.name()};
-
-        String[] memberActions = {DiscussionActions.ADD_CATEGORY.name(), DiscussionActions.ADD_MESSAGE.name(),
-                DiscussionActions.ADD_THREAD.name(), DiscussionActions.ADD_COMMENT.name()};
-
-        String[] userActions = {DiscussionActions.ADD_MESSAGE.name(), DiscussionActions.ADD_THREAD.name(),
-                DiscussionActions.ADD_COMMENT.name()};
-
-        String[] guestActions = {};
-
-        Map<Role, String[]> rolesActionsMap = new HashMap<>();
-
-        rolesActionsMap.put(owner, ownerActions);
-        rolesActionsMap.put(admin, adminActions);
-        rolesActionsMap.put(member, memberActions);
-        rolesActionsMap.put(userRole, userActions);
-        rolesActionsMap.put(guest, guestActions);
-        rolesActionsMap.put(moderator, moderatorActions);
-
-        for (Map.Entry<Role, String[]> entry : rolesActionsMap.entrySet()) {
-            final Role role = entry.getKey();
-            final String[] actionIds = entry.getValue();
-            ResourcePermissionLocalServiceUtil.setResourcePermissions(companyId,
-                    DiscussionCategoryGroup.class.getName(), ResourceConstants.SCOPE_GROUP,
-                    String.valueOf(group.getGroupId()), role.getRoleId(), actionIds);
-        }
-
         c.setGroupId(group.getGroupId());
         c.setDiscussionGroupId(discussionId);
         store(c);

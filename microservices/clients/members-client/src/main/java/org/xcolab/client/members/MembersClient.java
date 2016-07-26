@@ -1,15 +1,11 @@
 package org.xcolab.client.members;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
@@ -97,20 +93,18 @@ public final class MembersClient {
     }
 
     public static List<Role_> getMemberRoles(long memberId) {
-        return memberResource.getSubResource(memberId, "roles", Role_.TYPES)
+        return memberResource.getSubRestResource(memberId, "roles", Role_.TYPES)
                 .list()
                 .cacheIdentifier("memberId_" + memberId)
                 .execute();
     }
 
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
-        //TODO: make uri nicer - then port to new methods
-        final UriBuilder uriBuilder =
-                memberResource.getSubResource(memberId, "roles", Role_.TYPES)
-                        .getResourceUrl()
-                        .path("/contests/" + contestId);
-        return RequestUtils.getList(uriBuilder, new ParameterizedTypeReference<List<Role_>>() {
-        }, "memberId_" + memberId + "_contestId_" + contestId);
+        return memberResource
+                .getSubRestResource(memberId, "contestRoles", Role_.TYPES)
+                .list().queryParam("contestId", contestId)
+                .cacheIdentifier("memberId_" + memberId + "_contestId_" + contestId)
+                .execute();
     }
 
     public static MemberCategory getMemberCategory(long roleId) {
@@ -122,17 +116,14 @@ public final class MembersClient {
     }
 
     public static MemberCategory getMemberCategory(String displayName) {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = memberCategoryResource.getResourceUrl()
-                .queryParam("displayName", displayName);
-
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<MemberCategory>>() {
-                    }, "displayName_" + displayName);
-        } catch (EntityNotFoundException e) {
+        MemberCategory memberCategory = memberCategoryResource.list()
+                .queryParam("displayName", displayName)
+                .cacheIdentifier("displayName_" + displayName)
+                .executeWithResult().getFirstIfExists();
+        if (memberCategory == null) {
             throw new MemberCategoryNotFoundException("Category with name " + displayName + " not found.");
         }
+        return memberCategory;
     }
 
     public static Member getMember(long memberId) throws MemberNotFoundException {
@@ -152,55 +143,43 @@ public final class MembersClient {
     }
 
     public static Member findMemberByEmailAddress(String emailAddress) throws MemberNotFoundException {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .queryParam("email", emailAddress);
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<Member>>() {
-                    });
-        } catch (EntityNotFoundException e) {
+        Member member = memberResource.list()
+                .queryParam("email", emailAddress)
+                .executeWithResult().getFirstIfExists();
+        if (member == null) {
             throw new MemberNotFoundException("Member with email " + emailAddress + " does not exist");
         }
+        return member;
     }
 
     public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .queryParam("screenName", screenName);
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<Member>>() {
-                    });
-        } catch (EntityNotFoundException e) {
+        Member member = memberResource.list()
+                .queryParam("screenName", screenName)
+                .executeWithResult().getFirstIfExists();
+        if (member == null) {
             throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
         }
+        return member;
     }
 
     public static Member findMemberByFacebookId(long facebookId) throws MemberNotFoundException {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .queryParam("facebookId", facebookId);
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<Member>>() {
-                    });
-        } catch (EntityNotFoundException e) {
+        Member member = memberResource.list()
+                .queryParam("facebookId", facebookId)
+                .executeWithResult().getFirstIfExists();
+        if (member == null) {
             throw new MemberNotFoundException("Member with facebookId " + facebookId + " does not exist");
         }
+        return member;
     }
 
     public static Member findMemberByOpenId(String openId) throws MemberNotFoundException {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = memberResource.getResourceUrl()
-                .queryParam("openId", openId);
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<Member>>() {
-                    });
-        } catch (EntityNotFoundException e) {
+        Member member = memberResource.list()
+                .queryParam("openId", openId)
+                .executeWithResult().getFirstIfExists();
+        if (member == null) {
             throw new MemberNotFoundException("Member with openId " + openId + " does not exist");
         }
+        return member;
     }
 
     public static boolean updateMember(Member member) {

@@ -33,6 +33,13 @@ public final class CommentClient {
     private CommentClient() {
     }
 
+    public static List<Comment> listComments(int start, int last) {
+        return commentResource.list()
+                .addRange(start, last)
+                .queryParam("sort", "createDate")
+                .execute();
+    }
+
     public static List<Comment> listComments(int start, int last, long threadId) {
         return commentResource.list()
                 .addRange(start, last)
@@ -44,6 +51,12 @@ public final class CommentClient {
     public static int countComments(long threadId) {
         return commentResource.count()
                 .queryParam("threadId", threadId)
+                .execute();
+    }
+
+    public static int countCommentsByAuthor(long authorId) {
+        return commentResource.count()
+                .queryParam("authorId", authorId)
                 .execute();
     }
 

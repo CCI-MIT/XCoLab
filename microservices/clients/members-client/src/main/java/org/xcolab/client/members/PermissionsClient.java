@@ -39,7 +39,7 @@ public final class PermissionsClient {
 
     public static boolean hasRoleGroup(long memberId, long roleGroupId) {
         final List<Role_> roles = roleGroupResource
-                        .getSubResource(roleGroupId, "roles", Role_.TYPES)
+                        .getSubRestResource(roleGroupId, "roles", Role_.TYPES)
                 .list()
                 .cacheIdentifier("memberId_" + memberId + "_roleGroupId_" + roleGroupId)
                 .execute();

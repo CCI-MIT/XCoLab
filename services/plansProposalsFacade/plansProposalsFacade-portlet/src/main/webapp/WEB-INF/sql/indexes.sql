@@ -49,19 +49,6 @@ create index IX_D97B920F on xcolab_ContestPhaseColumn (ContestPhasePK);
 
 create index IX_E1468F04 on xcolab_ContestTeamMember (contestId);
 
-create index IX_8526458A on xcolab_DiscussionCategory (categoryGroupId);
-create index IX_306B69EF on xcolab_DiscussionCategory (categoryId);
-
-create index IX_EB07D049 on xcolab_DiscussionMessage (authorId);
-create index IX_XCOLAB_DM_CATEGORY_GROUP_ID on xcolab_DiscussionMessage (categoryGroupId);
-create index IX_XCOLAB_DM_CATEGORY_GROUP_ID_DELETED on xcolab_DiscussionMessage (categoryGroupId, deleted);
-create index IX_39430975 on xcolab_DiscussionMessage (categoryId, threadId);
-create index IX_189EA1C3 on xcolab_DiscussionMessage (messageId);
-create index IX_FDE36548 on xcolab_DiscussionMessage (threadId);
-
-create index IX_63652E37 on xcolab_DiscussionMessageFlag (messageId);
-create unique index IX_BEA683B1 on xcolab_DiscussionMessageFlag (messageId, flagType);
-
 create index IX_55E95283 on xcolab_EmailList (name(50), email(50));
 
 create index IX_B61888D4 on xcolab_FocusArea (name(50));
@@ -191,12 +178,6 @@ create index IX_43559ACF on xcolab_ProposalVote (proposalId, contestPhaseId);
 create index IX_562EB409 on xcolab_ProposalVote (proposalId, contestPhaseId, userId);
 create index IX_5E8D7ED3 on xcolab_ProposalVote (proposalId, userId);
 create index IX_497348F2 on xcolab_ProposalVote (userId);
-
-create index IX_A9DC76B1 on xcolab_SpamReport (discussionMessageId);
-create index IX_B9542B14 on xcolab_SpamReport (reporterUserId);
-create index IX_3BB6FD56 on xcolab_SpamReport (reporterUserId, discussionMessageId);
-create index IX_C4701AFC on xcolab_SpamReport (spamUserId);
-create index IX_81E78E6E on xcolab_SpamReport (spamUserId, discussionMessageId);
 
 create index IX_9C5CE364 on xcolab_StaffMember (userId);
 

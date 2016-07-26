@@ -312,64 +312,6 @@
 		<field name="rulesPageName" type="String" />
 		<field name="rulesPageUrl" type="String" />
 	</model>
-	<model name="com.ext.portlet.model.DiscussionCategory">
-		<field name="pk" type="long" />
-		<field name="categoryId" type="long" />
-		<field name="categoryGroupId" type="long" />
-		<field name="authorId" type="long" />
-		<field name="name" type="String">
-			<hint name="max-length">1024</hint>
-		</field>
-		<field name="description" type="String">
-			<hint name="max-length">4096</hint>
-		</field>
-		<field name="createDate" type="Date" />
-		<field name="deleted" type="Date" />
-		<field name="threadsCount" type="int" />
-		<field name="lastActivityDate" type="Date" />
-		<field name="lastActivityAuthorId" type="long" />
-	</model>
-	<model name="com.ext.portlet.model.DiscussionCategoryGroup">
-		<field name="id" type="long" />
-		<field name="description" type="String">
-			<hint name="max-length">4096</hint>
-		</field>
-		<field name="url" type="String">
-			<hint name="max-length">1024</hint>
-		</field>
-		<field name="commentsThread" type="long" />
-		<field name="isQuiet" type="boolean" />
-	</model>
-	<model name="com.ext.portlet.model.DiscussionMessage">
-		<field name="pk" type="long" />
-		<field name="messageId" type="long" />
-		<field name="subject" type="String">
-			<hint name="max-length">1024</hint>
-		</field>
-		<field name="body" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="threadId" type="long" />
-		<field name="categoryId" type="long" />
-		<field name="categoryGroupId" type="long" />
-		<field name="authorId" type="long" />
-		<field name="createDate" type="Date" />
-		<field name="version" type="long" />
-		<field name="deleted" type="Date" />
-		<field name="responsesCount" type="int" />
-		<field name="lastActivityDate" type="Date" />
-		<field name="lastActivityAuthorId" type="long" />
-	</model>
-	<model name="com.ext.portlet.model.DiscussionMessageFlag">
-		<field name="pk" type="long" />
-		<field name="messageId" type="long" />
-		<field name="flagType" type="String" />
-		<field name="data" type="String">
-			<hint name="max-length">2048</hint>
-		</field>
-		<field name="created" type="Date" />
-		<field name="userId" type="long" />
-	</model>
 	<model name="com.ext.portlet.model.EmailList">
 		<field name="id" type="long" />
 		<field name="name" type="String">
@@ -897,13 +839,6 @@
 		<field name="isValid" type="boolean" />
 		<field name="confirmationEmailSendDate" type="Date" />
 		<field name="confirmationToken" type="String" />
-	</model>
-	<model name="com.ext.portlet.model.SpamReport">
-		<field name="id_" type="long" />
-		<field name="spamUserId" type="long" />
-		<field name="reporterUserId" type="long" />
-		<field name="discussionMessageId" type="long" />
-		<field name="isAdminReport" type="boolean" />
 	</model>
 	<model name="com.ext.portlet.model.StaffMember">
 		<field name="id" type="long" />

@@ -1,7 +1,5 @@
 package org.xcolab.client.flagging;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.flagging.exceptions.ReportNotFoundException;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
@@ -10,8 +8,6 @@ import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -112,17 +108,15 @@ public final class FlaggingClient {
 
     public static ReportTarget getReportTarget(TargetType type, String reason)
             throws ReportTargetNotFoundException {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = reportTargetResource.getResourceUrl()
-                    .queryParam("type", type.name())
-                    .queryParam("reason", reason);
-        try {
-            return RequestUtils.getFirstFromList(uriBuilder,
-                    new ParameterizedTypeReference<List<ReportTarget>>() {
-                    }, "type_" + type.name() + "reason_" + reason);
-        } catch (EntityNotFoundException e) {
+        final ReportTarget reportTarget = reportTargetResource.list()
+                .queryParam("type", type.name())
+                .queryParam("reason", reason)
+                .cacheIdentifier("type_" + type.name() + "reason_" + reason)
+                .executeWithResult().getFirstIfExists();
+        if (reportTarget == null) {
             throw new ReportTargetNotFoundException(type, reason);
         }
+        return reportTarget;
     }
 
     public static boolean updateReportTarget(ReportTarget reportTarget) {

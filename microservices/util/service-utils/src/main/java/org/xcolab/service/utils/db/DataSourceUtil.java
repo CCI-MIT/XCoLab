@@ -1,8 +1,12 @@
 package org.xcolab.service.utils.db;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class DataSourceUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(DataSourceUtil.class);
 
     private static final int MAX_POOL_SIZE = 10;
     private static final int MIN_IDLE = 2;
@@ -15,6 +19,8 @@ public final class DataSourceUtil {
 
     public static HikariDataSource getConfiguredDataSource(String driverClassName,
             String databaseUrl, String databaseUsername, String databasePassword) {
+
+        log.info("Initializing HikariDataSource for user {} on {}", databaseUsername, databaseUrl);
 
         final HikariDataSource dataSource = new HikariDataSource();
 

@@ -41,12 +41,12 @@ public class BalloonLinkLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
+    private String _methodName488;
+    private String[] _methodParameterTypes488;
+    private String _methodName489;
+    private String[] _methodParameterTypes489;
+    private String _methodName494;
+    private String[] _methodParameterTypes494;
 
     public BalloonLinkLocalServiceClpInvoker() {
         _methodName0 = "addBalloonLink";
@@ -131,17 +131,17 @@ public class BalloonLinkLocalServiceClpInvoker {
                 "com.ext.portlet.model.BalloonLink"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName488 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes488 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName489 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes489 = new String[] { "java.lang.String" };
 
-        _methodName524 = "getBalloonLinkForUser";
+        _methodName494 = "getBalloonLinkForUser";
 
-        _methodParameterTypes524 = new String[] { "java.lang.String" };
+        _methodParameterTypes494 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class BalloonLinkLocalServiceClpInvoker {
             return BalloonLinkLocalServiceUtil.updateBalloonLink((com.ext.portlet.model.BalloonLink) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName488.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
             return BalloonLinkLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName489.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
             BalloonLinkLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
             return BalloonLinkLocalServiceUtil.getBalloonLinkForUser((java.lang.String) arguments[0]);
         }
 

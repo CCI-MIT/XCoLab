@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.member.MemberDao;
@@ -234,13 +235,9 @@ public class MembersController {
         return memberService.isSubscribedToNewsletter(memberId);
     }
 
-    @RequestMapping(value = "/members/{memberId}/roles/contests/{contestId}", method = RequestMethod.GET)
-    public List<Role_> getMemberRoles(@PathVariable Long memberId,
-                                      @PathVariable Long contestId) {
-        if (memberId == null || contestId == null) {
-            return new ArrayList<>();
-        } else {
-            return this.roleService.getMemberRolesInContest(memberId, contestId);
-        }
+    @RequestMapping(value = "/members/{memberId}/contestRoles", method = RequestMethod.GET)
+    public List<Role_> getMemberRoles(@PathVariable long memberId,
+                                      @RequestParam long contestId) {
+        return this.roleService.getMemberRolesInContest(memberId, contestId);
     }
 }

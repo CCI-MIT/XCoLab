@@ -17,7 +17,6 @@ import java.util.List;
 
 public class SharedColabClient {
 
-
     private static final RestService sharedColabService = new RestService("sharedcolab-service");
 
     private static final RestService memberService = new RestService("members-service");
