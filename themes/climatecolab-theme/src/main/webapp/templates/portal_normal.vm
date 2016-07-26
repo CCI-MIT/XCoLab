@@ -36,8 +36,9 @@
 
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="$_colab_name" />
     <meta property="og:title" content="$_openGraphShareTitle" />
-    <meta property="og:type" content="$_openGraphShareDescription" />
+    <meta property="og:description" content="$_openGraphShareDescription" />
 	<meta property="og:image" content="$themeDisplay.pathThemeImages/ClimateColabLogo_big.png" />
 	<link rel="image_src" type="image/png" href="$themeDisplay.pathThemeImages/ClimateColabLogo_big.png" />
 
