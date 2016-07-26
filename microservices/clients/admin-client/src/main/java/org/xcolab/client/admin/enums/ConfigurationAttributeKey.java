@@ -51,7 +51,10 @@ public enum ConfigurationAttributeKey {
     PARTNER_COLAB_NAME(AttributeType.STRING),
     PARTNER_COLAB_LOCATION(AttributeType.STRING),
     PARTNER_COLAB_PORT(AttributeType.STRING),
-    IS_SHARED_COLAB(AttributeType.BOOLEAN);
+    IS_SHARED_COLAB(AttributeType.BOOLEAN),
+
+    OPEN_GRAPH_SHARE_TITLE(AttributeType.STRING),
+    OPEN_GRAPH_SHARE_DESCRIPTION(AttributeType.STRING);
 
     private final AttributeType type;
 
