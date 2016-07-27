@@ -1,20 +1,18 @@
 package org.xcolab.service.proposal.domain.proposal2phase;
 
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.SelectQuery;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
-import org.xcolab.model.tables.records.Proposal2PhaseRecord;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
 import java.util.List;
 
-import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
+import static org.xcolab.model.Tables.*;
 
 @Repository
-public class Proposal2PhaseDaoImpl implements Proposa2PhaseDao {
+public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
     @Autowired
     private DSLContext dslContext;
@@ -93,6 +91,30 @@ public class Proposal2PhaseDaoImpl implements Proposa2PhaseDao {
             query.addConditions(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId));
         }
         return query.fetchInto(Proposal2Phase.class);
+    }
+
+    public Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
+
+        final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID)
+                .from(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
+                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NAME.eq("VISIBLE"))
+                .and(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NUMERIC_VALUE.eq(0l))
+                .and(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.CONTEST_PHASE_ID.eq(contestPhasePK))
+                .getQuery();
+
+        SelectQuery<Record1<Integer>> query2 = dslContext.selectCount()
+                .from(PROPOSAL_2_PHASE)
+                .join(PROPOSAL).on(PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID))
+                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhasePK))
+                .and(PROPOSAL_2_PHASE.PROPOSAL_ID.notIn(query))
+                .and(PROPOSAL.VISIBLE.eq(true)).getQuery();
+
+        if (query2 != null){
+            return query2.fetchOne().into(Integer.class);
+        }else{
+            return new Integer(0);
+        }
+
     }
 
     //Proposal2PhaseLocalServiceUtil.deleteProposal2Phase

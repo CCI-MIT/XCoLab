@@ -6,7 +6,9 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import java.util.List;
 
 public interface ContestDao {
-    Contest get(Long contestId) throws NotFoundException;
 
+    Contest create(Contest contest);
+    boolean update(Contest contest);
+    Contest get(Long contestId) throws NotFoundException;
     List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured);
 }

@@ -61,7 +61,11 @@ public class ContestsController {
                 if (contest.getContestPrivate()) {
                     continue;
                 }
-                contestWrappers.add(new ContestWrapper(contest));
+                try {
+                    contestWrappers.add(new ContestWrapper(contest));
+                }catch (ContestNotFoundException ignored){
+
+                }
             }
 
             model.addAttribute("contests", contestWrappers);

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -78,23 +79,23 @@ public class Contest implements Serializable {
     }
 
     public Contest(Long contestpk, Long contesttypeid, String contestname, String contestshortname,
-            String contesturlname,
-            Long contestyear, String contestdescription, String contestmodeldescription,
-            String contestpositionsdescription, Timestamp created, Timestamp updated,
-            Long authorid, Boolean contestactive, Long plantemplateid, Long contestscheduleid,
-            String proposalcreationtemplatestring, String votetemplatestring,
-            String proposalvotetemplatestring, String proposalvoteconfirmationtemplatestring,
-            String votequestiontemplatestring, Long focusareaid, Long contesttier,
-            Long contestlogoid, Boolean featured_, Boolean plansopenbydefault,
-            Long sponsorlogoid, String sponsortext, String sponsorlink,
-            Integer flag, String flagtext, String flagtooltip, Long groupid,
-            Long discussiongroupid, Long fellowdiscussiongroupid, Integer weight,
-            String resourcesurl, Boolean contestprivate, Boolean usepermissions,
-            String contestcreationstatus, Long defaultmodelid, String othermodels,
-            String defaultmodelsettings, Double points, Long defaultparentpointtype,
-            String pointdistributionstrategy, String emailtemplateurl, Boolean showInTileView,
-            Boolean showInListView, Boolean showInOutlineView, Boolean hideribbons,
-            Long resourceArticleId) {
+                   String contesturlname,
+                   Long contestyear, String contestdescription, String contestmodeldescription,
+                   String contestpositionsdescription, Timestamp created, Timestamp updated,
+                   Long authorid, Boolean contestactive, Long plantemplateid, Long contestscheduleid,
+                   String proposalcreationtemplatestring, String votetemplatestring,
+                   String proposalvotetemplatestring, String proposalvoteconfirmationtemplatestring,
+                   String votequestiontemplatestring, Long focusareaid, Long contesttier,
+                   Long contestlogoid, Boolean featured_, Boolean plansopenbydefault,
+                   Long sponsorlogoid, String sponsortext, String sponsorlink,
+                   Integer flag, String flagtext, String flagtooltip, Long groupid,
+                   Long discussiongroupid, Long fellowdiscussiongroupid, Integer weight,
+                   String resourcesurl, Boolean contestprivate, Boolean usepermissions,
+                   String contestcreationstatus, Long defaultmodelid, String othermodels,
+                   String defaultmodelsettings, Double points, Long defaultparentpointtype,
+                   String pointdistributionstrategy, String emailtemplateurl, Boolean showInTileView,
+                   Boolean showInListView, Boolean showInOutlineView, Boolean hideribbons,
+                   Long resourceArticleId) {
         this.contestpk = contestpk;
         this.contesttypeid = contesttypeid;
         this.contestname = contestname;
@@ -613,4 +614,19 @@ public class Contest implements Serializable {
                 ", " + resourceArticleId +
                 ")";
     }
+
+    public String getContestLinkUrl() {
+        String link = "/";
+        link += ContestClient.getContestType(this.getContestTypeId()).getFriendlyUrlStringContests();
+        link += "/%d/%s";
+        return String.format(link, this.getContestYear(), this.getContestUrlName());
+    }
+    public String getLogoPath(){
+        Long i = this.getContestLogoId();
+        if (i != null) {
+            return "/contest?img_id=" + i;// + "&t=" + ImageServletTokenUtil.getToken(i.getImageId());
+        }
+        return "";
+    }
+
 }

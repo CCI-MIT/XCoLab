@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.Proposal;
 
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
+import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
+import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDaoImpl;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -21,6 +24,9 @@ public class ProposalsController {
 
     @Autowired
     private ProposalDao proposalDao;
+
+    @Autowired
+    private Proposal2PhaseDao proposal2PhaseDao;
 
 
     @RequestMapping(value = "/proposals", method = RequestMethod.POST)
@@ -67,5 +73,12 @@ public class ProposalsController {
         final Proposal proposal = proposalDao.get(proposalId);
         proposal.setVisible(false);
         return proposalDao.update(proposal);
+    }
+
+    @RequestMapping(value = "/proposal2Phases/{proposal2PhaseId}/getProposalCount", method = RequestMethod.GET)
+    public Integer getProposalCountForActivePhase(@PathVariable Long proposal2PhaseId) throws NotFoundException {
+
+        return proposal2PhaseDao.getProposalCountForActiveContestPhase(proposal2PhaseId);
+
     }
 }

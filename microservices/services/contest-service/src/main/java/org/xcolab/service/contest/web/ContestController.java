@@ -3,11 +3,15 @@ package org.xcolab.service.contest.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.model.tables.pojos.*;
 import org.xcolab.service.contest.domain.contest.ContestDao;
+import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
+import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.domain.contestschedule.ContestScheduleDao;
 import org.xcolab.service.contest.domain.contestteammember.ContestTeamMemberDao;
+import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMemberRoleDao;
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
@@ -35,7 +39,17 @@ public class ContestController {
     private ContestTeamMemberDao contestTeamMemberDao;
 
     @Autowired
+    private ContestTeamMemberRoleDao contestTeamMemberRoleDao;
+
+    @Autowired
     private ContestPhaseRibbonTypeDao contestPhaseRibbonTypeDao;
+
+    @Autowired
+    private ContestPhaseDao contestPhaseDao;
+
+    @Autowired
+    private ContestPhaseTypeDao contestPhaseTypeDao;
+
 
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContests(
@@ -46,9 +60,57 @@ public class ContestController {
         return contestDao.findByGiven(contestUrlName, contestYear, active, featured);
     }
 
+    @RequestMapping(value = "/contests", method = RequestMethod.POST)
+    public Contest createContest(@RequestBody Contest contest) {
+        return this.contestDao.create(contest);
+    }
+
+    @RequestMapping(value = "/contests/{contestPK}", method = RequestMethod.PUT)
+    public boolean updateContest(@RequestBody Contest contest,
+                                 @PathVariable("contestPK") Long contestPK) throws NotFoundException {
+
+        if (contestPK == null || contestPK == 0 || contestDao.get(contestPK) == null) {
+            throw new NotFoundException("No Contest with id " + contestPK);
+        } else {
+            return contestDao.update(contest);
+        }
+    }
+
+
+
+
+
+    @RequestMapping(value = "/contests/{contestId}/activePhase", method = RequestMethod.GET)
+    public ContestPhase getActivePhaseForContest(@PathVariable long contestId) throws NotFoundException {
+
+        ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
+        if(activePhase == null ){
+            throw new NotFoundException();
+        }
+        return activePhase;
+
+    }
+
+    @RequestMapping(value = "/contests/{contestId}/proposalCountForActivePhase", method = RequestMethod.GET)
+    public Integer getProposalCountForActivePhase(@PathVariable long contestId) throws NotFoundException {
+
+        ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
+        if(activePhase == null ){
+            return 0;
+        }
+
+        return ProposalsClient.getProposalCountForActiveContestPhase(activePhase.getContestPhasePK());
+
+    }
+
     @RequestMapping(value = "/contests/{contestId}", method = RequestMethod.GET)
     public Contest getContest(@PathVariable long contestId) throws NotFoundException {
         return contestDao.get(contestId);
+    }
+
+    @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET})
+    public List<ContestPhase> getContestPhases(@RequestParam(required = true) Long contestPK) {
+        return contestPhaseDao.findByGiven(contestPK, null);
     }
 
     @RequestMapping(value = "/contestTypes/{contestTypeId}", method = RequestMethod.GET)
@@ -130,6 +192,16 @@ public class ContestController {
         }
     }
 
+    @RequestMapping(value = "/contestTeamMemberRoles/{contestTeamMemberRoleId}", method = RequestMethod.GET)
+    public ContestTeamMemberRole getContestTeamMemberRole(@PathVariable("contestTeamMemberRoleId") Long contestTeamMemberRoleId) throws NotFoundException {
+        if (contestTeamMemberRoleId == null || contestTeamMemberRoleId == 0) {
+            throw new NotFoundException("No contestTeamMemberRoleId given");
+        } else {
+            return contestTeamMemberRoleDao.get(contestTeamMemberRoleId);
+        }
+    }
+
+
     @RequestMapping(value = "/contestSchedules", method = RequestMethod.POST)
     public ContestSchedule createContestSchedule(@RequestBody ContestSchedule contestSchedule) {
         return this.contestScheduleDao.create(contestSchedule);
@@ -156,9 +228,7 @@ public class ContestController {
     }
 
     @RequestMapping(value = "/contestSchedules", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestSchedule> getContestSchedules(
-
-    ) {
+    public List<ContestSchedule> getContestSchedules() {
         return contestScheduleDao.findByGiven();
     }
 
@@ -176,6 +246,24 @@ public class ContestController {
             } else {
                 throw new NotFoundException("No ContestSchedule with id given");
             }
+        }
+    }
+
+    @RequestMapping(value = "/contestPhases/{contestPhaseId}", method = RequestMethod.GET)
+    public ContestPhase getContestPhase(@PathVariable("contestPhaseId") Long contestPhaseId) throws NotFoundException {
+        if (contestPhaseId == null || contestPhaseId == 0) {
+            throw new NotFoundException("No contestPhaseId given");
+        } else {
+            return contestPhaseDao.get(contestPhaseId);
+        }
+    }
+
+    @RequestMapping(value = "/contestPhaseTypes/{contestPhaseTypeId}", method = RequestMethod.GET)
+    public ContestPhaseType getContestPhaseType(@PathVariable("contestPhaseTypeId") Long contestPhaseTypeId) throws NotFoundException {
+        if (contestPhaseTypeId == null || contestPhaseTypeId == 0) {
+            throw new NotFoundException("No contestPhaseTypeId given");
+        } else {
+            return contestPhaseTypeDao.get(contestPhaseTypeId);
         }
     }
 

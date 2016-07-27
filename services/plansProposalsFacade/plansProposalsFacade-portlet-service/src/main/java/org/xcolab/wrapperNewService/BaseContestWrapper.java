@@ -1,23 +1,23 @@
-package org.xcolab.wrappers;
+package org.xcolab.wrapperNewService;
 
-import com.ext.portlet.model.*;
-import com.ext.portlet.service.*;
+
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.*;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.helpers.Tuple;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.model.ContestTeamMemberRole;
-import com.ext.portlet.model.ContestType;
+
+
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
@@ -27,19 +27,11 @@ import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.helpers.Tuple;
-import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.wrappers.BaseContestTeamRoleWrapper;
 
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -48,11 +40,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.*;
 
-public class ServiceBaseContestWrapper {
 
-        private final static Log _log = LogFactoryUtil.getLog(org.xcolab.wrappers.BaseContestWrapper.class);
+public class BaseContestWrapper {
+
+        private final static Log _log = LogFactoryUtil.getLog(org.xcolab.wrapperNewService.BaseContestWrapper.class);
         private final static Map<Long, FocusArea> faCache = new HashMap<>();
         private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
 
@@ -67,16 +59,16 @@ public class ServiceBaseContestWrapper {
         protected final Contest contest;
         protected BaseContestPhaseWrapper activePhase;
 
-        public ServiceBaseContestWrapper(long contestId) throws SystemException, PortalException {
-            this(ContestLocalServiceUtil.getContest(contestId));
+        public BaseContestWrapper(Long contestId) throws ContestNotFoundException {
+                this(ContestClient.getContest(contestId));
         }
 
-        public ServiceBaseContestWrapper(Contest contest) {
+        public BaseContestWrapper(Contest contest) {
             this.contest = contest;
         }
 
         public void persist() throws SystemException {
-            contest.persist();
+            ContestClient.updateContest(contest);
         }
 
         public long getContestPK() {
@@ -108,7 +100,7 @@ public class ServiceBaseContestWrapper {
         }
 
         public void setCreated(Date created) {
-            contest.setCreated(created);
+            contest.setCreated(new Timestamp(created.getTime()));
         }
 
         public Date getUpdated() {
@@ -116,7 +108,7 @@ public class ServiceBaseContestWrapper {
         }
 
         public void setUpdated(Date updated) {
-            contest.setUpdated(updated);
+            contest.setUpdated(new Timestamp(updated.getTime()));
         }
 
         public long getAuthorId() {
@@ -132,7 +124,7 @@ public class ServiceBaseContestWrapper {
         }
 
         public boolean isContestActive() {
-            return contest.isContestActive();
+            return contest.getContestActive();
         }
 
         public void setContestActive(boolean contestActive) {
@@ -164,15 +156,15 @@ public class ServiceBaseContestWrapper {
         }
 
         public boolean getFeatured() {
-            return contest.getFeatured();
+            return contest.getFeatured_();
         }
 
         public boolean isFeatured() {
-            return contest.isFeatured();
+            return contest.getFeatured_();
         }
 
         public void setFeatured(boolean featured) {
-            contest.setFeatured(featured);
+            contest.setFeatured_(featured);
         }
 
         public boolean getPlansOpenByDefault() {
@@ -180,7 +172,7 @@ public class ServiceBaseContestWrapper {
         }
 
         public boolean isPlansOpenByDefault() {
-            return contest.isPlansOpenByDefault();
+            return contest.getPlansOpenByDefault();
         }
 
         public void setPlansOpenByDefault(boolean plansOpenByDefault) {
@@ -328,17 +320,10 @@ public class ServiceBaseContestWrapper {
         }
 
         public long getProposalsCount() {
-            try {
-                return ContestLocalServiceUtil.getProposalsCount(contest);
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            } catch (PortalException e) {
-                _log.error("Could not count proposals in contest " + contest.getContestPK());
-                return 0L;
-            }
+            return ContestClient.getProposalCountForActiveContestPhase(contest.getContestPK());
         }
 
-        public long getTotalProposalsCount() {
+        /*public long getTotalProposalsCount() {
             Set<Proposal> proposalList = new HashSet<>();
             try {
                 List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil
@@ -357,10 +342,12 @@ public class ServiceBaseContestWrapper {
                 throw new DatabaseAccessException(e);
             }
             return proposalList.size();
-        }
+        }*/
 
         public long getCommentsCount() {
-            return ContestLocalServiceUtil.getCommentsCount(contest);
+            Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
+            //TODO: get each proposal comment count.
+            return contestComments;
         }
 
         public List<OntologyTerm> getWho() {
@@ -413,7 +400,7 @@ public class ServiceBaseContestWrapper {
         public List<BaseContestPhaseWrapper> getPhases() {
             if (phases == null) {
                 phases = new ArrayList<>();
-                for (ContestPhase phase : ContestLocalServiceUtil.getAllPhases(contest)) {
+                for (ContestPhase phase : ContestClient.getAllContestPhases(contest.getContestPK())) {
                     phases.add(new BaseContestPhaseWrapper(phase));
                 }
             }
@@ -422,13 +409,11 @@ public class ServiceBaseContestWrapper {
 
         public List<BaseContestTeamRoleWrapper> getContestTeamMembersByRole() {
             if (contestTeamMembersByRole == null) {
-                try {
+
                     Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
-                    for (ContestTeamMember teamMember : ContestLocalServiceUtil
-                            .getTeamMembers(contest)) {
+                    for (ContestTeamMember teamMember : ContestClient.getTeamMembers(contest.getContestPK())) {
                         try {
-                            ContestTeamMemberRole role = ContestLocalServiceUtil
-                                    .getRoleForMember(teamMember);
+                            ContestTeamMemberRole role = ContestClient.getContestTeamMemberRole(teamMember.getRoleId());
                             List<Member> roleUsers = teamRoleUsersMap
                                     .get(new Tuple<>(role.getRole(), role.getSort()));
                             if (roleUsers == null) {
@@ -439,9 +424,6 @@ public class ServiceBaseContestWrapper {
                             roleUsers.add(MembersClient.getMember(teamMember.getUserId()));
                         } catch (MemberNotFoundException e) {
                             _log.warn("Contest team member " + teamMember.getUserId() + " does not have an account");
-                        } catch (NoSuchModelException e) {
-                            throw new IllegalStateException("ContestTeamMemberRole "
-                                    + teamMember.getRoleId() + " does not exist");
                         }
                     }
                     contestTeamMembersByRole = new ArrayList<>(teamRoleUsersMap.size());
@@ -450,9 +432,7 @@ public class ServiceBaseContestWrapper {
                         contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role.getLeft(), entry.getValue(), role.getRight()));
                     }
                     Collections.sort(contestTeamMembersByRole);
-                } catch (SystemException e) {
-                    throw new DatabaseAccessException(e);
-                }
+
             }
             return contestTeamMembersByRole;
         }
@@ -474,7 +454,7 @@ public class ServiceBaseContestWrapper {
 
         public BaseContestPhaseWrapper getActivePhase() throws PortalException, SystemException {
             if (activePhase == null) {
-                ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
+                ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
                 if (phase == null) {
                     return null;
                 }
@@ -520,15 +500,10 @@ public class ServiceBaseContestWrapper {
         }
 
         public ContestType getContestType() {
-            try {
                 if (contestType == null) {
-                    contestType = ContestTypeLocalServiceUtil
-                            .fetchContestType(contest.getContestTypeId());
+                    contestType =  ContestClient.getContestType(contest.getContestTypeId());
                 }
                 return contestType;
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            }
         }
 
         public Contest getWrapped() {
@@ -536,7 +511,7 @@ public class ServiceBaseContestWrapper {
         }
 
         public String getContestUrl() {
-            return ContestLocalServiceUtil.getContestLinkUrl(contest);
+            return contest.getContestLinkUrl();
         }
 
         public Long getResourceArticleId() {

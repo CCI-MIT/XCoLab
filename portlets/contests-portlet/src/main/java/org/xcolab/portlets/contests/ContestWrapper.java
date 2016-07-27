@@ -1,8 +1,7 @@
 package org.xcolab.portlets.contests;
 
 import com.ext.portlet.contests.ContestStatus;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -10,8 +9,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.wrappers.BaseContestWrapper;
+import org.xcolab.wrapperNewService.BaseContestWrapper;
 
 import java.io.Serializable;
 
@@ -23,62 +27,34 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
 
     private org.xcolab.client.contest.pojo.Contest localContestPojo;
 
-    public ContestWrapper(org.xcolab.client.contest.pojo.Contest contest) {
-        try {
+    public ContestWrapper(Contest contest) throws ContestNotFoundException {
             super(contest.getContestPK());
-        } catch(SystemException | PortalException ignored){
-
-        }
     }
 
     public long getTotalCommentsCount() {
-        try {
-            return ContestLocalServiceUtil.getTotalCommentsCount(contest);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            _log.error("Could not find total comments count for contest " + contest.getContestPK());
-            return 0L;
-        }
+
+        Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
+
+        return contestComments;
     }
 
     public String getLogoPath() {
-        try {
-            return ContestLocalServiceUtil.getLogoPath(contest);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            _log.error("Could not find logo path for contest " + contest.getContestPK());
-            return "";
-        }
+        return contest.getLogoPath();
     }
 
-    public long getTotalComments() {
-        try {
-            return ContestLocalServiceUtil.getTotalCommentsCount(contest);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            _log.error("Could not find total comments for contest " + contest.getContestPK());
-            return 0L;
-        }
+    public long getTotalComments() { // What is the difference?
+        return getTotalCommentsCount();
     }
 
     public boolean getContestInVotingPhase() {
-        try {
-            ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
+            ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
             if (phase == null) {
                 return false;
             }
 
-            String status = ContestPhaseLocalServiceUtil.getContestStatusStr(phase);
+            String status = phase.getContestStatusStr();
             return status != null && ContestStatus.valueOf(status).isCanVote();
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            _log.error("Could not find active phase for contest " + contest.getContestPK());
-            return false;
-        }
+
     }
 
     public long getVotesCount() {

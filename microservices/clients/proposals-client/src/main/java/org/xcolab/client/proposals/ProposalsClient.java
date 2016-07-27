@@ -2,6 +2,7 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -13,6 +14,9 @@ public final class ProposalsClient {
     private static final RestService proposalService = new RestService("proposals-service");
     private static final RestResource<Proposal> proposalResource = new RestResource<>(
             proposalService, "proposals", Proposal.TYPES);
+
+    private static final RestResource<Proposal2Phase> proposal2PhaseResource = new RestResource<>(
+            proposalService, "proposal2Phases", Proposal2Phase.TYPES);
 
     public static Proposal createProposal(Proposal proposal) {
         return proposalResource.create(proposal).execute();
@@ -56,5 +60,13 @@ public final class ProposalsClient {
 
     public static boolean deleteProposal(long proposalId) {
         return proposalResource.delete(proposalId).execute();
+    }
+
+    public static Integer getProposalCountForActiveContestPhase(Long contestPhasePK ) {
+        try {
+            return proposal2PhaseResource.service(contestPhasePK, "getProposalCount", Integer.class).get();
+        } catch (EntityNotFoundException ignored){
+            return 0;
+        }
     }
 }

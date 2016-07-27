@@ -17,4 +17,6 @@ public interface ContestPhaseDao {
     List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId);
 
     ContestPhase get(Long contestPhasePK) throws NotFoundException;
+
+    boolean isPhaseActive(ContestPhase contestPhase);
 }

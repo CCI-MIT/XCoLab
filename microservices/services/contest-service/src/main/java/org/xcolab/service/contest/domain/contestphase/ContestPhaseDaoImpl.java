@@ -6,11 +6,14 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.model.tables.pojos.ContestPhaseType;
 import org.xcolab.model.tables.records.ContestPhaseRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
+import static org.xcolab.model.Tables.CONTEST;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 
 @Repository
@@ -97,6 +100,23 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
         return query.fetchInto(ContestPhase.class);
     }
 
+    public boolean isPhaseActive(ContestPhase contestPhase) {
+        if (contestPhase.getPhaseActiveOverride()) {
+            return contestPhase.getPhaseActiveOverride();
+        }
+        if (contestPhase.getPhaseInactiveOverride()) {
+            return contestPhase.getPhaseInactiveOverride();
+        }
+        if (contestPhase.getPhaseStartDate() != null) {
+            Date now = new Date();
+            if (now.after(contestPhase.getPhaseStartDate())) {
+                return contestPhase.getPhaseEndDate() == null
+                        || now.before(contestPhase.getPhaseEndDate());
+            }
+        }
+        return false;
+    }
+
     //ContestPhaseLocalServiceUtil.getContestPhase
     public ContestPhase get(Long contestPhasePK) throws NotFoundException {
 
@@ -110,4 +130,5 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
         return record.into(ContestPhase.class);
 
     }
+
 }
