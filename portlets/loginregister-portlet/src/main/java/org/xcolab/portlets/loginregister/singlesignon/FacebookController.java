@@ -18,12 +18,13 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -272,7 +273,9 @@ public class FacebookController {
     }
 
     @RequestMapping(params = "status=registerOrLogin")
-    public String registerOrLogin(PortletRequest request) {
+    public String registerOrLogin(PortletRequest request, Model model) {
+        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         return "SSO/registerOrLogin";
     }
 
