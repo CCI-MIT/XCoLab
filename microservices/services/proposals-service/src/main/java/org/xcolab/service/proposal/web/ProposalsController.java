@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.Proposal;
 
+import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDaoImpl;
+import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -28,6 +30,8 @@ public class ProposalsController {
     @Autowired
     private Proposal2PhaseDao proposal2PhaseDao;
 
+    @Autowired
+    private ProposalVoteDao proposalVoteDao;
 
     @RequestMapping(value = "/proposals", method = RequestMethod.POST)
     public Proposal createProposal(@RequestBody Proposal proposal) {
@@ -80,5 +84,13 @@ public class ProposalsController {
 
         return proposal2PhaseDao.getProposalCountForActiveContestPhase(proposal2PhaseId);
 
+    }
+    @RequestMapping(value = "/proposalVotes/count", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public Integer getProposalVotes(
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId
+    ) {
+        return proposalVoteDao.countByGiven(contestPhaseId, proposalId, userId);
     }
 }

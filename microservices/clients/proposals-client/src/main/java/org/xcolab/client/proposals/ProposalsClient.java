@@ -3,6 +3,7 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.ProposalVote;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -17,6 +18,10 @@ public final class ProposalsClient {
 
     private static final RestResource<Proposal2Phase> proposal2PhaseResource = new RestResource<>(
             proposalService, "proposal2Phases", Proposal2Phase.TYPES);
+
+    private static final RestResource<ProposalVote> proposalVoteResource = new RestResource<>(proposalService,
+            "proposalVotes", ProposalVote.TYPES);
+
 
     public static Proposal createProposal(Proposal proposal) {
         return proposalResource.create(proposal).execute();
@@ -68,5 +73,24 @@ public final class ProposalsClient {
         } catch (EntityNotFoundException ignored){
             return 0;
         }
+    }
+
+    public static Integer countProposalsInContestPhaseVotes(Long contestPhaseId){
+        try {
+            return proposalVoteResource.service("count", Integer.class)
+                    .optionalQueryParam("contestPhaseId", contestPhaseId)
+                    .cacheIdentifier("proposalsInContestPhaseVotes" + contestPhaseId)
+                    .get();
+        } catch (EntityNotFoundException e) {
+            return 0;
+        }
+    }
+
+    public static List<ProposalVote> getProposalVotes(Long contestPhaseId,Long proposalId,Long userId) {
+        return proposalVoteResource.list()
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("userId", userId)
+                .execute();
     }
 }
