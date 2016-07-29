@@ -224,10 +224,10 @@ public final class RequestUtils {
             Properties prop = new Properties();
             String servicesPort = "";
 
-            try {
-                final String propertiesPath = System.getProperty("user.home") + File.separator
-                        + ".xcolab.application.properties";
-                InputStream inputStream = new FileInputStream(propertiesPath);
+            final String propertiesPath = System.getProperty("user.home") + File.separator
+                    + ".xcolab.application.properties";
+
+            try (InputStream inputStream = new FileInputStream(propertiesPath)) {
                 prop.load(inputStream);
                 servicesPort = prop.getProperty("services.port");
                 RequestUtils.servicesPort = servicesPort;
