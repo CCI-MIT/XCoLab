@@ -82,7 +82,7 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("partnerColabName",partnerColabName);
         vmVariables.put("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
         vmVariables.put("partnerColabLogo",partnerColabImgsAndClasses+ "PartnerLogo.png");
-
+        
         final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.getBooleanValue();
         vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);
         if (mitHeaderBarShow) {
