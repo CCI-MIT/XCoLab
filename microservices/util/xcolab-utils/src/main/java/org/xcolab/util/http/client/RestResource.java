@@ -2,74 +2,49 @@ package org.xcolab.util.http.client;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.UriProvider;
+import org.xcolab.util.http.client.interfaces.HttpEndpoint;
+import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.client.queries.CountQuery;
 import org.xcolab.util.http.client.queries.CreateQuery;
 import org.xcolab.util.http.client.queries.DeleteQuery;
 import org.xcolab.util.http.client.queries.GetQuery;
 import org.xcolab.util.http.client.queries.ListQuery;
-import org.xcolab.util.http.client.queries.ServiceQuery;
 import org.xcolab.util.http.client.queries.UpdateQuery;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
-public class RestResource<T> implements UrlProvider {
-
-    private final UrlProvider urlProvider;
-    private final String resourceName;
+public class RestResource<T> extends ServiceResource implements HttpResource {
     private final Class<T> entityType;
     private final ParameterizedTypeReference<List<T>> typeReference;
 
-    public RestResource(UrlProvider serviceOrParent, String resourceName,
+    public RestResource(HttpEndpoint serviceOrParent, String resourceName,
             TypeProvider<T> typeProvider) {
-        this.urlProvider = serviceOrParent;
-        this.resourceName = resourceName;
+        super(serviceOrParent, resourceName);
         this.entityType = typeProvider.getEntityType();
         this.typeReference = typeProvider.getTypeReference();
     }
 
-    public RestResource(UrlProvider serviceOrParent, String resourceName) {
-        this.urlProvider = serviceOrParent;
-        this.resourceName = resourceName;
+    public RestResource(HttpEndpoint serviceOrParent, String resourceName) {
+        super(serviceOrParent, resourceName);
         this.entityType = null;
         this.typeReference = null;
     }
 
-    @Override
-    public UriBuilder getBaseUrl() {
-        return urlProvider.getBaseUrl();
-    }
-
-    public UriBuilder getResourceUrl() {
-        return urlProvider.getBaseUrl().path("/" + resourceName);
-    }
-
-    public UriBuilder getResourceUrl(long resourceId) {
-        return urlProvider.getBaseUrl().path("/" + resourceName + "/" + resourceId);
-    }
-
-    public UriBuilder getResourceUrl(String resourceId) {
-        return urlProvider.getBaseUrl().path("/" + resourceName + "/" + resourceId);
-    }
-
-    public <S> RestResource<S> getSubResource(long resourceId, String subResourceName,
+    public <S> RestResource<S> getSubRestResource(final long resourceId, String subResourceName,
             TypeProvider<S> typeProvider) {
-        return new RestResource<>(
-                new ParentResourceClient(this, resourceId),
-                subResourceName, typeProvider);
-    }
-
-    public <S> RestResource<S> getTypelessSubResource(long resourceId, String subResourceName) {
-        return new RestResource<>(
-                new ParentResourceClient(this, resourceId),
-                subResourceName);
+        return new RestResource<>(new HttpEndpoint() {
+            private final UriProvider baseUrl
+                    = new UriProvider(RestResource.this.getResourceUrl(resourceId));
+            @Override
+            public UriProvider getBaseUrl() {
+                return baseUrl;
+            }
+        }, subResourceName, typeProvider);
     }
 
     public CreateQuery<T> create(T pojo) {
-        if (entityType == null) {
-            throw new UnsupportedOperationException("This resource was initialized without type");
-        }
         return new CreateQuery<>(this, pojo, entityType);
     }
 
@@ -86,58 +61,18 @@ public class RestResource<T> implements UrlProvider {
     }
 
     public GetQuery<T> get(long id) {
-        if (entityType == null) {
-            throw new UnsupportedOperationException("This resource was initialized without type");
-        }
         return new GetQuery<>(this, id, entityType);
     }
 
     public GetQuery<T> get(String id) {
-        if (entityType == null) {
-            throw new UnsupportedOperationException("This resource was initialized without type");
-        }
         return new GetQuery<>(this, id, entityType);
     }
 
     public ListQuery<T> list() {
-        if (typeReference == null) {
-            throw new UnsupportedOperationException("This resource was initialized without type");
-        }
         return new ListQuery<>(this, typeReference);
     }
 
     public CountQuery<T> count() {
-        if (entityType == null) {
-            throw new UnsupportedOperationException("This resource was initialized without type");
-        }
         return new CountQuery<>(this, entityType);
-    }
-
-    public <O> ServiceQuery<T, O> service(long id, String serviceEndpoint, Class<O> returnType) {
-        return new ServiceQuery<>(this, id, serviceEndpoint, returnType);
-    }
-
-    public <O> ServiceQuery<T, O> service(String id, String serviceEndpoint, Class<O> returnType) {
-        return new ServiceQuery<>(this, id, serviceEndpoint, returnType);
-    }
-
-    public <O> ServiceQuery<T, O> service(String serviceEndpoint, Class<O> returnType) {
-        return new ServiceQuery<>(this, serviceEndpoint, returnType);
-    }
-
-    private static class ParentResourceClient implements UrlProvider {
-
-        private final RestResource parentRestResource;
-        private final long parentResourceId;
-
-        public ParentResourceClient(RestResource parentRestResource, long parentResourceId) {
-            this.parentRestResource = parentRestResource;
-            this.parentResourceId = parentResourceId;
-        }
-
-        @Override
-        public UriBuilder getBaseUrl() {
-            return parentRestResource.getResourceUrl(parentResourceId);
-        }
     }
 }

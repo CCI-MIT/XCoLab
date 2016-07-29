@@ -4,7 +4,6 @@
 
     <jsp:directive.include file="init.jspx"/>
 
-    <!--@elvariable id="thread" type="org.xcolab.jspTags.discussion.wrappers.ThreadWrapper"-->
     <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
 
     <div id="bread" class="pro">

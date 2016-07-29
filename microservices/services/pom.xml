@@ -182,6 +182,9 @@
                                     <types>(?i:TINYINT(\s*\(\d+\))?(\s*UNSIGNED)?)</types>
                                 </forcedType>
                             </forcedTypes>
+
+                            <!-- creates unqualified table names in queries to allow binaries to be used with different schemas -->
+                            <outputSchemaToDefault>true</outputSchemaToDefault>
                         </database>
                         <generate>
                             <pojos>true</pojos>

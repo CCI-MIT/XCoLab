@@ -41,26 +41,26 @@ public class ContestTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName518;
-    private String[] _methodParameterTypes518;
-    private String _methodName519;
-    private String[] _methodParameterTypes519;
-    private String _methodName524;
-    private String[] _methodParameterTypes524;
-    private String _methodName525;
-    private String[] _methodParameterTypes525;
-    private String _methodName526;
-    private String[] _methodParameterTypes526;
-    private String _methodName527;
-    private String[] _methodParameterTypes527;
-    private String _methodName528;
-    private String[] _methodParameterTypes528;
-    private String _methodName529;
-    private String[] _methodParameterTypes529;
-    private String _methodName530;
-    private String[] _methodParameterTypes530;
-    private String _methodName531;
-    private String[] _methodParameterTypes531;
+    private String _methodName488;
+    private String[] _methodParameterTypes488;
+    private String _methodName489;
+    private String[] _methodParameterTypes489;
+    private String _methodName494;
+    private String[] _methodParameterTypes494;
+    private String _methodName495;
+    private String[] _methodParameterTypes495;
+    private String _methodName496;
+    private String[] _methodParameterTypes496;
+    private String _methodName497;
+    private String[] _methodParameterTypes497;
+    private String _methodName498;
+    private String[] _methodParameterTypes498;
+    private String _methodName499;
+    private String[] _methodParameterTypes499;
+    private String _methodName500;
+    private String[] _methodParameterTypes500;
+    private String _methodName501;
+    private String[] _methodParameterTypes501;
 
     public ContestTypeLocalServiceClpInvoker() {
         _methodName0 = "addContestType";
@@ -145,49 +145,49 @@ public class ContestTypeLocalServiceClpInvoker {
                 "com.ext.portlet.model.ContestType"
             };
 
-        _methodName518 = "getBeanIdentifier";
+        _methodName488 = "getBeanIdentifier";
 
-        _methodParameterTypes518 = new String[] {  };
+        _methodParameterTypes488 = new String[] {  };
 
-        _methodName519 = "setBeanIdentifier";
+        _methodName489 = "setBeanIdentifier";
 
-        _methodParameterTypes519 = new String[] { "java.lang.String" };
+        _methodParameterTypes489 = new String[] { "java.lang.String" };
 
-        _methodName524 = "getContestTypeFromProposalId";
+        _methodName494 = "getContestTypeFromProposalId";
 
-        _methodParameterTypes524 = new String[] { "long" };
+        _methodParameterTypes494 = new String[] { "long" };
 
-        _methodName525 = "getContestTypeFromContestId";
+        _methodName495 = "getContestTypeFromContestId";
 
-        _methodParameterTypes525 = new String[] { "long" };
+        _methodParameterTypes495 = new String[] { "long" };
 
-        _methodName526 = "getContestType";
+        _methodName496 = "getContestType";
 
-        _methodParameterTypes526 = new String[] { "com.ext.portlet.model.Contest" };
+        _methodParameterTypes496 = new String[] { "com.ext.portlet.model.Contest" };
 
-        _methodName527 = "getAllContestTypes";
+        _methodName497 = "getAllContestTypes";
 
-        _methodParameterTypes527 = new String[] {  };
+        _methodParameterTypes497 = new String[] {  };
 
-        _methodName528 = "getActiveContestTypes";
+        _methodName498 = "getActiveContestTypes";
 
-        _methodParameterTypes528 = new String[] {  };
+        _methodParameterTypes498 = new String[] {  };
 
-        _methodName529 = "getLabelName";
+        _methodName499 = "getLabelName";
 
-        _methodParameterTypes529 = new String[] {
+        _methodParameterTypes499 = new String[] {
                 "com.ext.portlet.model.ContestType"
             };
 
-        _methodName530 = "getProposalNames";
+        _methodName500 = "getProposalNames";
 
-        _methodParameterTypes530 = new String[] {
+        _methodParameterTypes500 = new String[] {
                 "java.util.List", "java.lang.String", "java.lang.String"
             };
 
-        _methodName531 = "getContestNames";
+        _methodName501 = "getContestNames";
 
-        _methodParameterTypes531 = new String[] {
+        _methodParameterTypes501 = new String[] {
                 "java.util.List", "java.lang.String", "java.lang.String"
             };
     }
@@ -281,56 +281,56 @@ public class ContestTypeLocalServiceClpInvoker {
             return ContestTypeLocalServiceUtil.updateContestType((com.ext.portlet.model.ContestType) arguments[0]);
         }
 
-        if (_methodName518.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes518, parameterTypes)) {
+        if (_methodName488.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName519.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes519, parameterTypes)) {
+        if (_methodName489.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
             ContestTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName524.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes524, parameterTypes)) {
+        if (_methodName494.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getContestTypeFromProposalId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName525.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes525, parameterTypes)) {
+        if (_methodName495.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes495, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getContestTypeFromContestId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName526.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes526, parameterTypes)) {
+        if (_methodName496.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes496, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getContestType((com.ext.portlet.model.Contest) arguments[0]);
         }
 
-        if (_methodName527.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes527, parameterTypes)) {
+        if (_methodName497.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes497, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getAllContestTypes();
         }
 
-        if (_methodName528.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes528, parameterTypes)) {
+        if (_methodName498.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes498, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getActiveContestTypes();
         }
 
-        if (_methodName529.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes529, parameterTypes)) {
+        if (_methodName499.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes499, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getLabelName((com.ext.portlet.model.ContestType) arguments[0]);
         }
 
-        if (_methodName530.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes530, parameterTypes)) {
+        if (_methodName500.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes500, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getProposalNames((java.util.List<java.lang.Long>) arguments[0],
                 (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
         }
 
-        if (_methodName531.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes531, parameterTypes)) {
+        if (_methodName501.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes501, parameterTypes)) {
             return ContestTypeLocalServiceUtil.getContestNames((java.util.List<java.lang.Long>) arguments[0],
                 (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
         }

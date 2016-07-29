@@ -79,6 +79,18 @@ cd microservices
 mvn install -N
 cd ..
 
+cd microservices/util
+mvn install -N
+cd ../..
+
+cd microservices/util/xcolab-utils
+mvn clean compile package install clean
+cd ../../..
+
+cd microservices/util/service-utils
+mvn clean compile package install clean
+cd ../../..
+
 cd microservices/clients
 mvn install -N
 cd ../..
@@ -86,14 +98,6 @@ cd ../..
 cd microservices/services
 mvn install -N
 cd ../..
-
-cd microservices/util
-mvn install -N
-cd ../../..
-
-cd microservices/util/xcolab-utils
-mvn clean compile package install clean
-cd ../../..
 
 cd microservices/clients
 for D in *; do

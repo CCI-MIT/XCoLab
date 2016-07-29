@@ -18,18 +18,17 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.loginregister.CreateUserBean;
-import org.xcolab.portlets.loginregister.ImageUploadUtils;
 import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.util.exceptions.InternalException;
@@ -146,11 +145,12 @@ public class FacebookController {
             try {
                 liferayUser = UserLocalServiceUtil.getUserByFacebookId(themeDisplay.getCompanyId(), facebookId);
 
+                /*
                 String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
                     String path = httpReq.getSession().getServletContext().getRealPath("/");
                     ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
-                }
+                }*/
 
                 LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
@@ -169,11 +169,12 @@ public class FacebookController {
                         themeDisplay.getCompanyId(), emailAddress);
                 updateUserWithFBId(liferayUser, facebookId);
 
+                /*
                 String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
                 if (realPictureURLString != null) {
                     String path = httpReq.getSession().getServletContext().getRealPath("/");
                     ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
-                }
+                }*/
 
                 updateUserAccountInformation(liferayUser, jsonObject);
 
@@ -212,6 +213,7 @@ public class FacebookController {
         }
 
         // Get the FB image url
+        /*
         if (facebookId > 0) {
             String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
             if (realPictureURLString != null) {
@@ -221,7 +223,7 @@ public class FacebookController {
                 portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId),
                         PortletSession.APPLICATION_SCOPE);
             }
-        }
+        }*/
 
         // Finish registration
         if (session.getAttribute(MainViewController.SSO_TARGET_KEY) != null &&
@@ -251,8 +253,17 @@ public class FacebookController {
             }
 
             userBean.setScreenName(screenName);
+            if (userBean.getScreenName() == null ||
+                    userBean.getScreenName().isEmpty() ||
+                    userBean.getEmail() == null ||
+                    userBean.getEmail().isEmpty()) {
+                response.setRenderParameter("status", "registerOrLogin");
+                response.setRenderParameter("SSO", "general");
+                request.setAttribute("credentialsError", true);
+            } else {
 
-            MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
+                MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
+            }
         } else {
             response.setRenderParameter("status", "registerOrLogin");
             response.setRenderParameter("SSO", "general");
@@ -278,7 +289,8 @@ public class FacebookController {
             if (StringUtils.isEmpty(country)) {
                 try {
                     member.setCountry(getCountry(jsonObject));
-                } catch (UserLocationNotResolvableException ignored) { }
+                } catch (UserLocationNotResolvableException ignored) {
+                }
             }
 
             //TODO: do we need this?
@@ -288,7 +300,8 @@ public class FacebookController {
                 try {
                     setExpandoValue(user, CommunityConstants.CITY, getCountry(jsonObject));
 
-                } catch (UserLocationNotResolvableException ignored) {}
+                } catch (UserLocationNotResolvableException ignored) {
+                }
             }
             MembersClient.updateMember(member);
         } catch (PortalException | MemberNotFoundException e) {

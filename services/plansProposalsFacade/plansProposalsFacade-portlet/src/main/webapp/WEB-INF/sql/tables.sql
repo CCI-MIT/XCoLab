@@ -151,12 +151,6 @@ create table xcolab_ContestDiscussion (
 	Tab VARCHAR(75) null
 );
 
-create table xcolab_ContestDiscussions (
-	DiscussionId LONG not null primary key,
-	ContestId LONG,
-	Tab VARCHAR(75) null
-);
-
 create table xcolab_ContestEmailTemplate (
 	type_ VARCHAR(75) not null primary key,
 	subject TEXT null,
@@ -248,54 +242,6 @@ create table xcolab_ContestType (
 	suggestionContestId LONG,
 	rulesPageName VARCHAR(75) null,
 	rulesPageUrl VARCHAR(75) null
-);
-
-create table xcolab_DiscussionCategory (
-	pk LONG not null primary key,
-	categoryId LONG,
-	categoryGroupId LONG,
-	authorId LONG,
-	name VARCHAR(1024) null,
-	description TEXT null,
-	createDate DATE null,
-	deleted DATE null,
-	threadsCount INTEGER,
-	lastActivityDate DATE null,
-	lastActivityAuthorId LONG
-);
-
-create table xcolab_DiscussionCategoryGroup (
-	id_ LONG not null primary key,
-	description TEXT null,
-	url VARCHAR(1024) null,
-	commentsThread LONG,
-	isQuiet BOOLEAN
-);
-
-create table xcolab_DiscussionMessage (
-	pk LONG not null primary key,
-	messageId LONG,
-	subject VARCHAR(1024) null,
-	body TEXT null,
-	threadId LONG,
-	categoryId LONG,
-	categoryGroupId LONG,
-	authorId LONG,
-	createDate DATE null,
-	version LONG,
-	deleted DATE null,
-	responsesCount INTEGER,
-	lastActivityDate DATE null,
-	lastActivityAuthorId LONG
-);
-
-create table xcolab_DiscussionMessageFlag (
-	pk LONG not null primary key,
-	messageId LONG,
-	flagType VARCHAR(75) null,
-	data_ VARCHAR(2048) null,
-	created DATE null,
-	userId LONG
 );
 
 create table xcolab_EmailList (
@@ -791,14 +737,6 @@ create table xcolab_SocialActivity (
 	userId LONG
 );
 
-create table xcolab_SpamReport (
-	id_ LONG not null primary key,
-	spamUserId LONG,
-	reporterUserId LONG,
-	discussionMessageId LONG,
-	isAdminReport BOOLEAN
-);
-
 create table xcolab_StaffMember (
 	id_ LONG not null primary key,
 	userId LONG,
@@ -810,16 +748,6 @@ create table xcolab_StaffMember (
 	role VARCHAR(75) null,
 	organization VARCHAR(75) null,
 	sort INTEGER
-);
-
-
-create table xcolab_TestTable (
-	name VARCHAR(75) not null,
-	additionalId LONG not null,
-	numericValue LONG,
-	stringValue VARCHAR(75) null,
-	realValue DOUBLE,
-	primary key (name, additionalId)
 );
 
 create table xcolab_TrackedVisit (

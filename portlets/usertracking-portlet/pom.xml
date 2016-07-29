@@ -12,10 +12,6 @@
 	<packaging>war</packaging>
 	<name>usertracking-portlet Portlet</name>
 	<version>2.0-SNAPSHOT</version>
-
-	<properties>
-		<spring.version>4.0.0.RELEASE</spring.version>
-	</properties>
 	
 	<build>
 		<plugins>

@@ -59,9 +59,9 @@ public final class LoginRegisterUtil {
         long companyId = LIFERAY_COMPANY_ID;
         long groupId = 10136;
         long facebookId = 0;
-        try{
+        try {
             facebookId = Long.parseLong(fbStringId);
-        }catch(NumberFormatException ignored){
+        } catch (NumberFormatException ignored) {
             facebookId = 0;
         }
         try {
@@ -85,7 +85,11 @@ public final class LoginRegisterUtil {
             contact.setJobTitle("");
             contact.setParentContactId(0l);
             contact.setBirthday(new Date());
-            ContactLocalServiceUtil.addContact(contact);
+            try {
+                ContactLocalServiceUtil.addContact(contact);
+            } catch (SystemException ignored) {
+
+            }
 
             String greeting = "Welcome " + firstName + " " + lastName;
 
@@ -99,10 +103,10 @@ public final class LoginRegisterUtil {
                 ByteBuffer byteBuffer = ByteBuffer.allocate(secretKeyBytes.length);
                 byteBuffer.put(secretKeyBytes);
                 encryptedPassword = DatatypeConverter.printBase64Binary((byteBuffer.array()));
-            }catch(NoSuchAlgorithmException e){
+            } catch (NoSuchAlgorithmException e) {
 
             }
-            user.setPassword("{SHA-1}"+ encryptedPassword);
+            user.setPassword("{SHA-1}" + encryptedPassword);
             user.setScreenName(screenName);
             user.setEmailAddress(email);
             user.setFacebookId(facebookId);
@@ -137,14 +141,22 @@ public final class LoginRegisterUtil {
             userGrp.setFriendlyURL("/" + user.getScreenName());
             userGrp.setCreatorUserId(user.getUserId());
             userGrp.setActive(true);
-            GroupLocalServiceUtil.addGroup(userGrp);
+            try {
+                GroupLocalServiceUtil.addGroup(userGrp);
+            } catch (SystemException ignored) {
+
+            }
 
 
             //Associate a role with user
             long userid[] = {user.getUserId()};
             long roleids[] = {role.getRoleId()};
-            UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), groupId, roleids);
-            UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userid);
+            try {
+                UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), groupId, roleids);
+                UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userid);
+            } catch (SystemException ignored) {
+
+            }
 
             //Create AssetEntry
             long assetEntryId = CounterLocalServiceUtil.increment(AssetEntry.class.getName());
@@ -153,7 +165,11 @@ public final class LoginRegisterUtil {
             ae.setClassPK(user.getUserId());
             ae.setGroupId(userGrp.getGroupId());
             ae.setClassNameId(classNameId);
-            AssetEntryLocalServiceUtil.addAssetEntry(ae);
+            try {
+                AssetEntryLocalServiceUtil.addAssetEntry(ae);
+            } catch (SystemException ignored) {
+
+            }
 
             //Insert Layoutset for public and private
             long layoutSetIdPub = CounterLocalServiceUtil.increment(LayoutSet.class.getName());
@@ -174,8 +190,11 @@ public final class LoginRegisterUtil {
             layoutSetPriv.setPrivateLayout(true);
             layoutSetPriv.setThemeId("classic");
             layoutSetPriv.setGroupId(userGrp.getGroupId());
+            try {
+                LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPriv);
+            } catch (SystemException ignored) {
 
-            LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPriv);
+            }
         } catch (SystemException | PortalException ignored) {
 
         }
@@ -191,7 +210,7 @@ public final class LoginRegisterUtil {
             throws Exception {
 
 
-        Long memberId = SharedColabClient.retrieveSharedId(email, screenName,ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        Long memberId = SharedColabClient.retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.getStringValue());
         User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName, fbIdString);
 
         Member member = new Member();
@@ -226,7 +245,7 @@ public final class LoginRegisterUtil {
     }
 
     private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext,
-            Member recipient) {
+                                                              Member recipient) {
         new MemberRegistrationNotification(recipient, serviceContext).sendEmailNotification();
     }
 

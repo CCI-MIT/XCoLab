@@ -39,14 +39,6 @@ import com.ext.portlet.service.ContestTeamMemberRoleServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryGroupServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryLocalServiceUtil;
-import com.ext.portlet.service.DiscussionCategoryServiceUtil;
-import com.ext.portlet.service.DiscussionMessageFlagLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageFlagServiceUtil;
-import com.ext.portlet.service.DiscussionMessageLocalServiceUtil;
-import com.ext.portlet.service.DiscussionMessageServiceUtil;
 import com.ext.portlet.service.EmailListLocalServiceUtil;
 import com.ext.portlet.service.EmailListServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
@@ -153,8 +145,6 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
-import com.ext.portlet.service.SpamReportLocalServiceUtil;
-import com.ext.portlet.service.SpamReportServiceUtil;
 import com.ext.portlet.service.StaffMemberLocalServiceUtil;
 import com.ext.portlet.service.StaffMemberServiceUtil;
 import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
@@ -237,18 +227,6 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestTypeLocalServiceUtil.clearService();
 
             ContestTypeServiceUtil.clearService();
-            DiscussionCategoryLocalServiceUtil.clearService();
-
-            DiscussionCategoryServiceUtil.clearService();
-            DiscussionCategoryGroupLocalServiceUtil.clearService();
-
-            DiscussionCategoryGroupServiceUtil.clearService();
-            DiscussionMessageLocalServiceUtil.clearService();
-
-            DiscussionMessageServiceUtil.clearService();
-            DiscussionMessageFlagLocalServiceUtil.clearService();
-
-            DiscussionMessageFlagServiceUtil.clearService();
             EmailListLocalServiceUtil.clearService();
 
             EmailListServiceUtil.clearService();
@@ -408,9 +386,6 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalVoteLocalServiceUtil.clearService();
 
             ProposalVoteServiceUtil.clearService();
-            SpamReportLocalServiceUtil.clearService();
-
-            SpamReportServiceUtil.clearService();
             StaffMemberLocalServiceUtil.clearService();
 
             StaffMemberServiceUtil.clearService();

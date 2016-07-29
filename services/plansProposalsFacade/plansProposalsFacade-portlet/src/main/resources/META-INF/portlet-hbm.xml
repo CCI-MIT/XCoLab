@@ -21,10 +21,6 @@
 	<import class="com.ext.portlet.model.ContestTeamMember" />
 	<import class="com.ext.portlet.model.ContestTeamMemberRole" />
 	<import class="com.ext.portlet.model.ContestType" />
-	<import class="com.ext.portlet.model.DiscussionCategory" />
-	<import class="com.ext.portlet.model.DiscussionCategoryGroup" />
-	<import class="com.ext.portlet.model.DiscussionMessage" />
-	<import class="com.ext.portlet.model.DiscussionMessageFlag" />
 	<import class="com.ext.portlet.model.EmailList" />
 	<import class="com.ext.portlet.model.FocusArea" />
 	<import class="com.ext.portlet.model.FocusAreaOntologyTerm" />
@@ -78,7 +74,6 @@
 	<import class="com.ext.portlet.model.ProposalUnversionedAttribute" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
-	<import class="com.ext.portlet.model.SpamReport" />
 	<import class="com.ext.portlet.model.StaffMember" />
 	<import class="com.ext.portlet.model.TrackedVisit" />
 	<import class="com.ext.portlet.model.TrackedVisitor2User" />
@@ -364,62 +359,6 @@
 		<property name="suggestionContestId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="rulesPageName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="rulesPageUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.DiscussionCategoryImpl" table="xcolab_DiscussionCategory">
-		<cache usage="read-write" />
-		<id name="pk" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="categoryGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="deleted" type="org.hibernate.type.TimestampType" />
-		<property name="threadsCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="lastActivityDate" type="org.hibernate.type.TimestampType" />
-		<property name="lastActivityAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.DiscussionCategoryGroupImpl" table="xcolab_DiscussionCategoryGroup">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="commentsThread" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="isQuiet" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.DiscussionMessageImpl" table="xcolab_DiscussionMessage">
-		<cache usage="read-write" />
-		<id name="pk" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="subject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="body" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="threadId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="categoryGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="version" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="deleted" type="org.hibernate.type.TimestampType" />
-		<property name="responsesCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="lastActivityDate" type="org.hibernate.type.TimestampType" />
-		<property name="lastActivityAuthorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.DiscussionMessageFlagImpl" table="xcolab_DiscussionMessageFlag">
-		<cache usage="read-write" />
-		<id name="pk" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="flagType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="data" type="com.liferay.portal.dao.orm.hibernate.StringType" column="data_" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.EmailListImpl" table="xcolab_EmailList">
 		<cache usage="read-write" />
@@ -990,16 +929,6 @@
 		<property name="isValid" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="confirmationEmailSendDate" type="org.hibernate.type.TimestampType" />
 		<property name="confirmationToken" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.SpamReportImpl" table="xcolab_SpamReport">
-		<cache usage="read-write" />
-		<id name="id_" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="spamUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="reporterUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="discussionMessageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="isAdminReport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.StaffMemberImpl" table="xcolab_StaffMember">
 		<cache usage="read-write" />

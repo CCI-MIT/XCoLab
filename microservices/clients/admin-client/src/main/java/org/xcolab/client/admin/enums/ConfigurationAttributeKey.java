@@ -15,6 +15,8 @@ public enum ConfigurationAttributeKey {
     DEFAULT_TIME_ZONE_ID(AttributeType.STRING),
     SHOW_CONTESTS_DISPLAY_OPTIONS(AttributeType.BOOLEAN),
 
+    GOOGLE_ANALYTICS_KEY(AttributeType.STRING),
+
     GOOGLE_AUTH_CLIENT_ID(AttributeType.STRING),
     GOOGLE_AUTH_CLIENT_SECRET(AttributeType.STRING),
     FACEBOOK_APPLICATION_ID(AttributeType.STRING),
@@ -49,7 +51,10 @@ public enum ConfigurationAttributeKey {
     PARTNER_COLAB_NAME(AttributeType.STRING),
     PARTNER_COLAB_LOCATION(AttributeType.STRING),
     PARTNER_COLAB_PORT(AttributeType.STRING),
-    IS_SHARED_COLAB(AttributeType.BOOLEAN);
+    IS_SHARED_COLAB(AttributeType.BOOLEAN),
+
+    OPEN_GRAPH_SHARE_TITLE(AttributeType.STRING),
+    OPEN_GRAPH_SHARE_DESCRIPTION(AttributeType.STRING);
 
     private final AttributeType type;
 

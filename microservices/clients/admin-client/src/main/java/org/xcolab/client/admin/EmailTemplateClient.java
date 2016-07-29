@@ -2,8 +2,6 @@ package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.exceptions.EmailTemplateNotFoundException;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -29,13 +27,11 @@ public final class EmailTemplateClient {
     }
 
     public static void updateContestEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
-        final UriBuilder uriBuilder = emailTemplatesResource.getResourceUrl(
-                contestEmailTemplate.getType_());
-        RequestUtils.put(uriBuilder, contestEmailTemplate);
+        emailTemplatesResource.update(contestEmailTemplate, contestEmailTemplate.getType_())
+                .execute();
     }
 
     public static ContestEmailTemplate createEmailTemplate(ContestEmailTemplate template) {
-        final UriBuilder uriBuilder = emailTemplatesResource.getResourceUrl();
-        return RequestUtils.post(uriBuilder, template, ContestEmailTemplate.class);
+        return emailTemplatesResource.create(template).execute();
     }
 }

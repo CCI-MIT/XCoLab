@@ -27,6 +27,10 @@ public class ListQuery<T> {
         }
     }
 
+    public ListResult<T> executeWithResult() {
+        return new ListResult<>(this);
+    }
+
     public ListQuery<T> addRange(int startRecord, int limitRecord) {
         uriBuilder.queryParam("startRecord", startRecord)
                 .queryParam("limitRecord", limitRecord);
@@ -46,5 +50,43 @@ public class ListQuery<T> {
     public ListQuery<T> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;
+    }
+
+    public static class ListResult<T> {
+        private final ListQuery<T> query;
+
+        private ListResult(ListQuery<T> query) {
+            this.query = query;
+        }
+
+        public List<T> get() {
+            return query.execute();
+        }
+
+        public T getOne() {
+            //fetch two elements so we can check if the result is unique
+            List<T> result = query.addRange(0, 2).execute();
+            if (result.size() == 1) {
+                return result.get(0);
+            }
+            throw new IndexOutOfBoundsException("Expected exactly one element, found (at least) "
+                    + result.size());
+        }
+
+        public T getFirst() {
+            List<T> result = query.addRange(0, 1).execute();
+            if (!result.isEmpty()) {
+                return result.get(0);
+            }
+            throw new IndexOutOfBoundsException("Can't get first element of empty list");
+        }
+
+        public T getFirstIfExists() {
+            List<T> result = query.addRange(0, 1).execute();
+            if (!result.isEmpty()) {
+                return result.get(0);
+            }
+            return null;
+        }
     }
 }

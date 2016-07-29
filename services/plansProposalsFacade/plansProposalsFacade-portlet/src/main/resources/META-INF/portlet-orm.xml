@@ -391,89 +391,6 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.DiscussionCategoryModelImpl">
-		<attributes>
-			<id name="pk" />
-			<basic name="categoryId" />
-			<basic name="categoryGroupId" />
-			<basic name="authorId" />
-			<basic name="name" />
-			<basic name="description" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="deleted">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="threadsCount" />
-			<basic name="lastActivityDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="lastActivityAuthorId" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.DiscussionCategoryGroupModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="description" />
-			<basic name="url" />
-			<basic name="commentsThread" />
-			<basic name="isQuiet" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.DiscussionMessageModelImpl">
-		<attributes>
-			<id name="pk" />
-			<basic name="messageId" />
-			<basic name="subject" />
-			<basic name="body" />
-			<basic name="threadId" />
-			<basic name="categoryId" />
-			<basic name="categoryGroupId" />
-			<basic name="authorId" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="version" />
-			<basic name="deleted">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="responsesCount" />
-			<basic name="lastActivityDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="lastActivityAuthorId" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.DiscussionMessageFlagModelImpl">
-		<attributes>
-			<id name="pk" />
-			<basic name="messageId" />
-			<basic name="flagType" />
-			<basic name="data">
-				<column name="DATA_" />
-			</basic>
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="userId" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.EmailListModelImpl">
 		<attributes>
 			<id name="id">
@@ -1257,20 +1174,6 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.SpamReportModelImpl">
-		<attributes>
-			<id name="id_" />
-			<basic name="spamUserId" />
-			<basic name="reporterUserId" />
-			<basic name="discussionMessageId" />
-			<basic name="isAdminReport" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="reporterUserUuid" />
-			<transient name="spamUserUuid" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.StaffMemberModelImpl">
 		<attributes>
 			<id name="id">
@@ -1406,22 +1309,6 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestTypeImpl" name="ContestType">
 		<table name="xcolab_ContestType" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.DiscussionCategoryImpl" name="DiscussionCategory">
-		<table name="xcolab_DiscussionCategory" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.DiscussionCategoryGroupImpl" name="DiscussionCategoryGroup">
-		<table name="xcolab_DiscussionCategoryGroup" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.DiscussionMessageImpl" name="DiscussionMessage">
-		<table name="xcolab_DiscussionMessage" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.DiscussionMessageFlagImpl" name="DiscussionMessageFlag">
-		<table name="xcolab_DiscussionMessageFlag" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.EmailListImpl" name="EmailList">
@@ -1630,10 +1517,6 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalVoteImpl" name="ProposalVote">
 		<table name="xcolab_ProposalVote" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.SpamReportImpl" name="SpamReport">
-		<table name="xcolab_SpamReport" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.StaffMemberImpl" name="StaffMember">

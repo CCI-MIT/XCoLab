@@ -21,10 +21,6 @@ import com.ext.portlet.service.persistence.ContestSchedulePersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberPersistence;
 import com.ext.portlet.service.persistence.ContestTeamMemberRolePersistence;
 import com.ext.portlet.service.persistence.ContestTypePersistence;
-import com.ext.portlet.service.persistence.DiscussionCategoryGroupPersistence;
-import com.ext.portlet.service.persistence.DiscussionCategoryPersistence;
-import com.ext.portlet.service.persistence.DiscussionMessageFlagPersistence;
-import com.ext.portlet.service.persistence.DiscussionMessagePersistence;
 import com.ext.portlet.service.persistence.EmailListPersistence;
 import com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence;
 import com.ext.portlet.service.persistence.FocusAreaPersistence;
@@ -80,7 +76,6 @@ import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalUnversionedAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
-import com.ext.portlet.service.persistence.SpamReportPersistence;
 import com.ext.portlet.service.persistence.StaffMemberPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence;
@@ -238,30 +233,6 @@ public abstract class ModelInputItemLocalServiceBaseImpl
     protected com.ext.portlet.service.ContestTypeService contestTypeService;
     @BeanReference(type = ContestTypePersistence.class)
     protected ContestTypePersistence contestTypePersistence;
-    @BeanReference(type = com.ext.portlet.service.DiscussionCategoryLocalService.class)
-    protected com.ext.portlet.service.DiscussionCategoryLocalService discussionCategoryLocalService;
-    @BeanReference(type = com.ext.portlet.service.DiscussionCategoryService.class)
-    protected com.ext.portlet.service.DiscussionCategoryService discussionCategoryService;
-    @BeanReference(type = DiscussionCategoryPersistence.class)
-    protected DiscussionCategoryPersistence discussionCategoryPersistence;
-    @BeanReference(type = com.ext.portlet.service.DiscussionCategoryGroupLocalService.class)
-    protected com.ext.portlet.service.DiscussionCategoryGroupLocalService discussionCategoryGroupLocalService;
-    @BeanReference(type = com.ext.portlet.service.DiscussionCategoryGroupService.class)
-    protected com.ext.portlet.service.DiscussionCategoryGroupService discussionCategoryGroupService;
-    @BeanReference(type = DiscussionCategoryGroupPersistence.class)
-    protected DiscussionCategoryGroupPersistence discussionCategoryGroupPersistence;
-    @BeanReference(type = com.ext.portlet.service.DiscussionMessageLocalService.class)
-    protected com.ext.portlet.service.DiscussionMessageLocalService discussionMessageLocalService;
-    @BeanReference(type = com.ext.portlet.service.DiscussionMessageService.class)
-    protected com.ext.portlet.service.DiscussionMessageService discussionMessageService;
-    @BeanReference(type = DiscussionMessagePersistence.class)
-    protected DiscussionMessagePersistence discussionMessagePersistence;
-    @BeanReference(type = com.ext.portlet.service.DiscussionMessageFlagLocalService.class)
-    protected com.ext.portlet.service.DiscussionMessageFlagLocalService discussionMessageFlagLocalService;
-    @BeanReference(type = com.ext.portlet.service.DiscussionMessageFlagService.class)
-    protected com.ext.portlet.service.DiscussionMessageFlagService discussionMessageFlagService;
-    @BeanReference(type = DiscussionMessageFlagPersistence.class)
-    protected DiscussionMessageFlagPersistence discussionMessageFlagPersistence;
     @BeanReference(type = com.ext.portlet.service.EmailListLocalService.class)
     protected com.ext.portlet.service.EmailListLocalService emailListLocalService;
     @BeanReference(type = com.ext.portlet.service.EmailListService.class)
@@ -584,12 +555,6 @@ public abstract class ModelInputItemLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalVoteService proposalVoteService;
     @BeanReference(type = ProposalVotePersistence.class)
     protected ProposalVotePersistence proposalVotePersistence;
-    @BeanReference(type = com.ext.portlet.service.SpamReportLocalService.class)
-    protected com.ext.portlet.service.SpamReportLocalService spamReportLocalService;
-    @BeanReference(type = com.ext.portlet.service.SpamReportService.class)
-    protected com.ext.portlet.service.SpamReportService spamReportService;
-    @BeanReference(type = SpamReportPersistence.class)
-    protected SpamReportPersistence spamReportPersistence;
     @BeanReference(type = com.ext.portlet.service.StaffMemberLocalService.class)
     protected com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService;
     @BeanReference(type = com.ext.portlet.service.StaffMemberService.class)
@@ -1932,234 +1897,6 @@ public abstract class ModelInputItemLocalServiceBaseImpl
     public void setContestTypePersistence(
         ContestTypePersistence contestTypePersistence) {
         this.contestTypePersistence = contestTypePersistence;
-    }
-
-    /**
-     * Returns the discussion category local service.
-     *
-     * @return the discussion category local service
-     */
-    public com.ext.portlet.service.DiscussionCategoryLocalService getDiscussionCategoryLocalService() {
-        return discussionCategoryLocalService;
-    }
-
-    /**
-     * Sets the discussion category local service.
-     *
-     * @param discussionCategoryLocalService the discussion category local service
-     */
-    public void setDiscussionCategoryLocalService(
-        com.ext.portlet.service.DiscussionCategoryLocalService discussionCategoryLocalService) {
-        this.discussionCategoryLocalService = discussionCategoryLocalService;
-    }
-
-    /**
-     * Returns the discussion category remote service.
-     *
-     * @return the discussion category remote service
-     */
-    public com.ext.portlet.service.DiscussionCategoryService getDiscussionCategoryService() {
-        return discussionCategoryService;
-    }
-
-    /**
-     * Sets the discussion category remote service.
-     *
-     * @param discussionCategoryService the discussion category remote service
-     */
-    public void setDiscussionCategoryService(
-        com.ext.portlet.service.DiscussionCategoryService discussionCategoryService) {
-        this.discussionCategoryService = discussionCategoryService;
-    }
-
-    /**
-     * Returns the discussion category persistence.
-     *
-     * @return the discussion category persistence
-     */
-    public DiscussionCategoryPersistence getDiscussionCategoryPersistence() {
-        return discussionCategoryPersistence;
-    }
-
-    /**
-     * Sets the discussion category persistence.
-     *
-     * @param discussionCategoryPersistence the discussion category persistence
-     */
-    public void setDiscussionCategoryPersistence(
-        DiscussionCategoryPersistence discussionCategoryPersistence) {
-        this.discussionCategoryPersistence = discussionCategoryPersistence;
-    }
-
-    /**
-     * Returns the discussion category group local service.
-     *
-     * @return the discussion category group local service
-     */
-    public com.ext.portlet.service.DiscussionCategoryGroupLocalService getDiscussionCategoryGroupLocalService() {
-        return discussionCategoryGroupLocalService;
-    }
-
-    /**
-     * Sets the discussion category group local service.
-     *
-     * @param discussionCategoryGroupLocalService the discussion category group local service
-     */
-    public void setDiscussionCategoryGroupLocalService(
-        com.ext.portlet.service.DiscussionCategoryGroupLocalService discussionCategoryGroupLocalService) {
-        this.discussionCategoryGroupLocalService = discussionCategoryGroupLocalService;
-    }
-
-    /**
-     * Returns the discussion category group remote service.
-     *
-     * @return the discussion category group remote service
-     */
-    public com.ext.portlet.service.DiscussionCategoryGroupService getDiscussionCategoryGroupService() {
-        return discussionCategoryGroupService;
-    }
-
-    /**
-     * Sets the discussion category group remote service.
-     *
-     * @param discussionCategoryGroupService the discussion category group remote service
-     */
-    public void setDiscussionCategoryGroupService(
-        com.ext.portlet.service.DiscussionCategoryGroupService discussionCategoryGroupService) {
-        this.discussionCategoryGroupService = discussionCategoryGroupService;
-    }
-
-    /**
-     * Returns the discussion category group persistence.
-     *
-     * @return the discussion category group persistence
-     */
-    public DiscussionCategoryGroupPersistence getDiscussionCategoryGroupPersistence() {
-        return discussionCategoryGroupPersistence;
-    }
-
-    /**
-     * Sets the discussion category group persistence.
-     *
-     * @param discussionCategoryGroupPersistence the discussion category group persistence
-     */
-    public void setDiscussionCategoryGroupPersistence(
-        DiscussionCategoryGroupPersistence discussionCategoryGroupPersistence) {
-        this.discussionCategoryGroupPersistence = discussionCategoryGroupPersistence;
-    }
-
-    /**
-     * Returns the discussion message local service.
-     *
-     * @return the discussion message local service
-     */
-    public com.ext.portlet.service.DiscussionMessageLocalService getDiscussionMessageLocalService() {
-        return discussionMessageLocalService;
-    }
-
-    /**
-     * Sets the discussion message local service.
-     *
-     * @param discussionMessageLocalService the discussion message local service
-     */
-    public void setDiscussionMessageLocalService(
-        com.ext.portlet.service.DiscussionMessageLocalService discussionMessageLocalService) {
-        this.discussionMessageLocalService = discussionMessageLocalService;
-    }
-
-    /**
-     * Returns the discussion message remote service.
-     *
-     * @return the discussion message remote service
-     */
-    public com.ext.portlet.service.DiscussionMessageService getDiscussionMessageService() {
-        return discussionMessageService;
-    }
-
-    /**
-     * Sets the discussion message remote service.
-     *
-     * @param discussionMessageService the discussion message remote service
-     */
-    public void setDiscussionMessageService(
-        com.ext.portlet.service.DiscussionMessageService discussionMessageService) {
-        this.discussionMessageService = discussionMessageService;
-    }
-
-    /**
-     * Returns the discussion message persistence.
-     *
-     * @return the discussion message persistence
-     */
-    public DiscussionMessagePersistence getDiscussionMessagePersistence() {
-        return discussionMessagePersistence;
-    }
-
-    /**
-     * Sets the discussion message persistence.
-     *
-     * @param discussionMessagePersistence the discussion message persistence
-     */
-    public void setDiscussionMessagePersistence(
-        DiscussionMessagePersistence discussionMessagePersistence) {
-        this.discussionMessagePersistence = discussionMessagePersistence;
-    }
-
-    /**
-     * Returns the discussion message flag local service.
-     *
-     * @return the discussion message flag local service
-     */
-    public com.ext.portlet.service.DiscussionMessageFlagLocalService getDiscussionMessageFlagLocalService() {
-        return discussionMessageFlagLocalService;
-    }
-
-    /**
-     * Sets the discussion message flag local service.
-     *
-     * @param discussionMessageFlagLocalService the discussion message flag local service
-     */
-    public void setDiscussionMessageFlagLocalService(
-        com.ext.portlet.service.DiscussionMessageFlagLocalService discussionMessageFlagLocalService) {
-        this.discussionMessageFlagLocalService = discussionMessageFlagLocalService;
-    }
-
-    /**
-     * Returns the discussion message flag remote service.
-     *
-     * @return the discussion message flag remote service
-     */
-    public com.ext.portlet.service.DiscussionMessageFlagService getDiscussionMessageFlagService() {
-        return discussionMessageFlagService;
-    }
-
-    /**
-     * Sets the discussion message flag remote service.
-     *
-     * @param discussionMessageFlagService the discussion message flag remote service
-     */
-    public void setDiscussionMessageFlagService(
-        com.ext.portlet.service.DiscussionMessageFlagService discussionMessageFlagService) {
-        this.discussionMessageFlagService = discussionMessageFlagService;
-    }
-
-    /**
-     * Returns the discussion message flag persistence.
-     *
-     * @return the discussion message flag persistence
-     */
-    public DiscussionMessageFlagPersistence getDiscussionMessageFlagPersistence() {
-        return discussionMessageFlagPersistence;
-    }
-
-    /**
-     * Sets the discussion message flag persistence.
-     *
-     * @param discussionMessageFlagPersistence the discussion message flag persistence
-     */
-    public void setDiscussionMessageFlagPersistence(
-        DiscussionMessageFlagPersistence discussionMessageFlagPersistence) {
-        this.discussionMessageFlagPersistence = discussionMessageFlagPersistence;
     }
 
     /**
@@ -5214,63 +4951,6 @@ public abstract class ModelInputItemLocalServiceBaseImpl
     public void setProposalVotePersistence(
         ProposalVotePersistence proposalVotePersistence) {
         this.proposalVotePersistence = proposalVotePersistence;
-    }
-
-    /**
-     * Returns the spam report local service.
-     *
-     * @return the spam report local service
-     */
-    public com.ext.portlet.service.SpamReportLocalService getSpamReportLocalService() {
-        return spamReportLocalService;
-    }
-
-    /**
-     * Sets the spam report local service.
-     *
-     * @param spamReportLocalService the spam report local service
-     */
-    public void setSpamReportLocalService(
-        com.ext.portlet.service.SpamReportLocalService spamReportLocalService) {
-        this.spamReportLocalService = spamReportLocalService;
-    }
-
-    /**
-     * Returns the spam report remote service.
-     *
-     * @return the spam report remote service
-     */
-    public com.ext.portlet.service.SpamReportService getSpamReportService() {
-        return spamReportService;
-    }
-
-    /**
-     * Sets the spam report remote service.
-     *
-     * @param spamReportService the spam report remote service
-     */
-    public void setSpamReportService(
-        com.ext.portlet.service.SpamReportService spamReportService) {
-        this.spamReportService = spamReportService;
-    }
-
-    /**
-     * Returns the spam report persistence.
-     *
-     * @return the spam report persistence
-     */
-    public SpamReportPersistence getSpamReportPersistence() {
-        return spamReportPersistence;
-    }
-
-    /**
-     * Sets the spam report persistence.
-     *
-     * @param spamReportPersistence the spam report persistence
-     */
-    public void setSpamReportPersistence(
-        SpamReportPersistence spamReportPersistence) {
-        this.spamReportPersistence = spamReportPersistence;
     }
 
     /**
