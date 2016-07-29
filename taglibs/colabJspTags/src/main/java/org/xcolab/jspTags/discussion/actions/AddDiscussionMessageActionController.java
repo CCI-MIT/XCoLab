@@ -1,6 +1,5 @@
 package org.xcolab.jspTags.discussion.actions;
 
-import com.ext.portlet.service.DiscussionCategoryGroupLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -133,7 +132,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
         indexer.reindex(userId);
 
-        int commentCount = DiscussionCategoryGroupLocalServiceUtil.getUserMessages(userId);
+        int commentCount = CommentClient.countCommentsByAuthor(userId);
         if (commentCount > 0) {
             int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(commentCount);
             AnalyticsUtil.publishEvent(request, userId, COMMENT_ANALYTICS_KEY + analyticsValue,

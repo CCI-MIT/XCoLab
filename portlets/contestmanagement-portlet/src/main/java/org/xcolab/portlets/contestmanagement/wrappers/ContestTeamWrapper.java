@@ -1,32 +1,24 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.bean.BeanLocatorException;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
+
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.util.List;
 
-/**
- * Created by Thomas on 2/12/2015.
- */
 public class ContestTeamWrapper {
 
     private final ContestTeamBean contestTeamBean;
     private final Long contestId;
-    private static final String ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
     public ContestTeamWrapper(ContestTeamBean contestTeamBean) {
         this.contestTeamBean = contestTeamBean;
@@ -44,9 +36,9 @@ public class ContestTeamWrapper {
 
     private void assignMemberToContest(MemberRole memberRole, List<Long> userIds)
             throws SystemException, PortalException {
-        assignMemberWithRoleToContest(memberRole, userIds);
+        assignMembersToContestWithRole(userIds, memberRole);
         assignMemberRoleToUser(memberRole, userIds);
-        subscribeUserToContest(userIds);
+        subscribeUsersToContest(userIds);
     }
 
     private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds)
@@ -59,18 +51,10 @@ public class ContestTeamWrapper {
         }
     }
 
-    private void assignMemberWithRoleToContest(MemberRole memberRole, List<Long> userIds)
+    private void assignMembersToContestWithRole(List<Long> userIds, MemberRole memberRole)
             throws SystemException, PortalException {
-        String memberRoleName = memberRole.getPrintName();
-        if (memberRole == MemberRole.JUDGE) {
-            memberRoleName = "Judge"; // TODO change in config file
-        }
         for (Long userId : userIds) {
             Long contestMemberId = CounterLocalServiceUtil.increment(ContestTeamMember.class.getName());
-            if (contestMemberId < 400) { // TODO check how the value is currently generated
-                CounterLocalServiceUtil.reset(ContestTeamMember.class.getName(), 400);
-                contestMemberId = CounterLocalServiceUtil.increment(ContestTeamMember.class.getName());
-            }
             ContestTeamMember contestTeamMember =
                     ContestTeamMemberLocalServiceUtil.createContestTeamMember(contestMemberId);
             contestTeamMember.setContestId(contestId);
@@ -84,15 +68,13 @@ public class ContestTeamWrapper {
             throws SystemException, PortalException {
         List<ContestTeamMember> contestTeamMembers = ContestTeamMemberLocalServiceUtil.findForContest(contestId);
         for (ContestTeamMember contestTeamMember : contestTeamMembers) {
-            String contestTeamMemberRole = MemberRole.fromRoleId(contestTeamMember.getRoleId()).getRoleNames()[0];
-            Long userId = contestTeamMember.getUserId();
             ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
         }
     }
 
-    private void subscribeUserToContest(List<Long> userIds) throws PortalException, SystemException {
+    private void subscribeUsersToContest(List<Long> userIds) {
         for (Long userId : userIds) {
-            ContestLocalServiceUtil.subscribe(contestId, userId);
+            ActivitiesClient.addSubscription(userId, ActivityEntryType.CONTEST, contestId, "");
         }
     }
 }

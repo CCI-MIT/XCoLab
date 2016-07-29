@@ -14,6 +14,7 @@ import org.xcolab.service.balloons.domain.balloonlink.BalloonLinkDao;
 import org.xcolab.service.balloons.domain.balloontext.BalloonTextDao;
 import org.xcolab.service.balloons.domain.balloonusertracking.BalloonUserTrackingDao;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
@@ -56,15 +57,10 @@ public class BalloonsController {
         }
     }
 
-    @RequestMapping(value = "/balloonLinks/", method = RequestMethod.GET)
-    public BalloonLink getBalloonLinkByMemberUuid(@RequestParam(required = false) String memberUuid) throws NotFoundException {
-        if (memberUuid == null) {
-            throw new NotFoundException();
-        } else {
-            return this.balloonLinkDao.getBalloonLinkByUserUuid(memberUuid);
-        }
+    @RequestMapping(value = "/balloonLinks", method = RequestMethod.GET)
+    public List<BalloonLink> listBalloonLinks(@RequestParam(required = false) String memberUuid) {
+        return this.balloonLinkDao.findByGiven(PaginationHelper.EVERYTHING, memberUuid);
     }
-
 
     /*
     @RequestMapping(value = "/balloonUserTracking/", method = RequestMethod.GET)

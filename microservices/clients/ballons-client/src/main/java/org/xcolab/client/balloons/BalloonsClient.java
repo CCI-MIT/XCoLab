@@ -4,8 +4,6 @@ import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -40,16 +38,14 @@ public final class BalloonsClient {
 
     public static BalloonLink getBalloonLinkByMemberUuid(String memberUuid)
             throws BalloonUserTrackingNotFound {
-        //TODO: port to new methods
-        final UriBuilder uriBuilder = balloonLinkResource.getResourceUrl()
-                .queryParam("memberUuid", memberUuid);
-
-        try {
-            return RequestUtils.get(uriBuilder, BalloonLink.class);
-        } catch (EntityNotFoundException e) {
+        final BalloonLink balloonLink = balloonLinkResource.list()
+                .queryParam("memberUuid", memberUuid)
+                .executeWithResult().getFirstIfExists();
+        if (balloonLink == null) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonLink with memberUuid " + memberUuid + " does not exist");
         }
+        return balloonLink;
     }
 
     public static BalloonUserTracking getBalloonUserTracking(String uuid)

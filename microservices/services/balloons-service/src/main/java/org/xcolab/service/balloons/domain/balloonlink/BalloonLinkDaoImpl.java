@@ -2,10 +2,15 @@ package org.xcolab.service.balloons.domain.balloonlink;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.BalloonLink;
 import org.xcolab.service.balloons.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
+
+import java.util.List;
 
 import static org.xcolab.model.Tables.BALLOON_LINK;
 
@@ -27,15 +32,17 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
     }
 
     @Override
-    public BalloonLink getBalloonLinkByUserUuid(String uuid) throws NotFoundException {
-
-        final Record record = dslContext.select()
+    public List<BalloonLink> findByGiven(PaginationHelper paginationHelper, String uuid) {
+        final SelectQuery<Record> query = dslContext.select()
                 .from(BALLOON_LINK)
-                .where(BALLOON_LINK.BALLOON_USER_UUID.eq(uuid)).fetchOne();
-        if (record == null) {
-            throw new NotFoundException();
+                .getQuery();
+
+        if (uuid != null) {
+            query.addConditions(BALLOON_LINK.BALLOON_USER_UUID.eq(uuid));
         }
-        return record.into(BalloonLink.class);
+
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        return query.fetchInto(BalloonLink.class);
     }
 
     @Override

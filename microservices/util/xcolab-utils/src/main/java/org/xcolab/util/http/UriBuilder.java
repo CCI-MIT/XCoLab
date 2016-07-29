@@ -11,6 +11,10 @@ public class UriBuilder {
         this.uriComponentsBuilder = uriComponentsBuilder;
     }
 
+    public UriBuilder cloneBuilder() {
+        return new UriBuilder(uriComponentsBuilder.cloneBuilder());
+    }
+
     public UriBuilder path(String path) {
         uriComponentsBuilder.path(path);
         return this;

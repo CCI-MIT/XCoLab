@@ -1,7 +1,5 @@
 package org.xcolab.jspTags.discussion.actions;
 
-import com.ext.portlet.NoSuchDiscussionMessageException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +25,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
     public void handleAction(ActionRequest request, ActionResponse response,
             @RequestParam long commentId,
             @RequestParam("comment") String content)
-            throws IOException, SystemException, DiscussionAuthorizationException,
-            NoSuchDiscussionMessageException, CommentNotFoundException {
+            throws IOException, DiscussionAuthorizationException, CommentNotFoundException {
 
         checkPermissions(request, "User isn't allowed to edit message", commentId);
         Comment comment = CommentClient.getComment(commentId);

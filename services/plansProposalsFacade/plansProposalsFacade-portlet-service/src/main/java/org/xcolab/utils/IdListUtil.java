@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -76,7 +77,7 @@ public final class IdListUtil {
      */
     public static List<Long> getIdsFromString(String commaSeparated) {
         if (StringUtils.isEmpty(commaSeparated)) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         String[] stringIds = commaSeparated.trim().split("\\s*,\\s*");
         List<Long> longsIds = new ArrayList<>(stringIds.length);

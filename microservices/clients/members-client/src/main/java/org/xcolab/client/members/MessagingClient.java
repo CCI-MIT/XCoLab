@@ -3,8 +3,6 @@ package org.xcolab.client.members;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -73,27 +71,25 @@ public final class MessagingClient {
     }
 
     public static List<Member> getMessageRecipients(long messageId) {
-        return messageResource.getSubResource(messageId, "recipients",
+        return messageResource.getSubRestResource(messageId, "recipients",
                 Member.TYPES)
                 .list()
                 .execute();
     }
 
     public static void setArchived(long messageId, long memberId, boolean isArchived) {
-        //TODO: change to proper put
-        UriBuilder uriBuilder = messageResource.getResourceUrl(messageId)
+        messageResource.getSubServiceResource(messageId, "recipients")
+                .query(memberId, Void.class)
                 .queryParam("memberId", memberId)
-                .queryParam("isArchived", isArchived);
-
-        RequestUtils.put(uriBuilder, null);
+                .queryParam("isArchived", isArchived)
+                .put();
     }
 
     public static void setOpened(long messageId, long memberId, boolean isOpened) {
-        //TODO: change to proper put
-        UriBuilder uriBuilder = messageResource.getResourceUrl(messageId)
+        messageResource.getSubServiceResource(messageId, "recipients")
+                .query(memberId, Void.class)
                 .queryParam("memberId", memberId)
-                .queryParam("isOpened", isOpened);
-
-        RequestUtils.put(uriBuilder, null);
+                .queryParam("isOpened", isOpened)
+                .put();
     }
 }

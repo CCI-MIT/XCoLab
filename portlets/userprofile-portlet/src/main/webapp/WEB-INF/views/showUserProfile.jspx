@@ -177,10 +177,6 @@
 				<strong>${userBean.firstName}</strong> a Message </a>
 		</c:if>
 
-		<c:if test="${not empty spamReportsWrapper}">
-			<jsp:directive.include file="spamReports/userReport.jspx" />
-		</c:if>
-
 		<p>
 			${userBean.shortBio}
 		</p>

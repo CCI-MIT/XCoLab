@@ -71,8 +71,6 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("_googleAnalyticsKey", ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.getStringValue());
 
         vmVariables.put("betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.getBooleanValue());
-        vmVariables.put("_openGraphShareTitle", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.getStringValue());
-        vmVariables.put("_openGraphShareDescription", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.getStringValue());
 
 
         vmVariables.put("isSharedColab",
@@ -84,8 +82,7 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("partnerColabLogo",partnerColabImgsAndClasses+ "PartnerLogo.png");
 
 
-        final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW
-                .getBooleanValue();
+        final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.getBooleanValue();
         vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);
         if (mitHeaderBarShow) {
             vmVariables.put("mitHeaderBarLinkText", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.getStringValue());

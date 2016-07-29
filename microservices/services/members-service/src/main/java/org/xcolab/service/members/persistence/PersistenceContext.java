@@ -16,7 +16,7 @@ import org.xcolab.service.utils.db.jooq.config.JooqConfiguration;
 
 @Configuration
 //@EnableTransactionManagement
-@PropertySource({"classpath:application.properties", "file:${user.home}/.xcolab.application.properties"})
+@PropertySource("file:${user.home}/.xcolab.application.properties")
 public class PersistenceContext {
 
     @Autowired

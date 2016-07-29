@@ -1,16 +1,15 @@
 package org.xcolab.client.emails;
 
 import org.xcolab.client.emails.pojo.Email;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.ServiceResource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class EmailClient {
-
     private static final RestService emailService = new RestService("emails-service");
+    private static final ServiceResource emailResource = new ServiceResource(emailService, "emails");
 
     private EmailClient() {
     }
@@ -23,9 +22,6 @@ public final class EmailClient {
     }
 
     public static void sendEmail(String from, List<String> to, String subject, String emailBody, Boolean isHtml, String replyTo) {
-
-        final UriBuilder uriBuilder = emailService.getBaseUrl().path("/sendEmail");
-
         Email email = new Email();
         email.setFrom(from);
         email.setTo(to);
@@ -34,7 +30,6 @@ public final class EmailClient {
         email.setHtml(isHtml);
         email.setReplyTo(((replyTo == null ? ("") : (replyTo))));
 
-        RequestUtils.post(uriBuilder, email, String.class);
+        emailResource.service("send", String.class).post(email);
     }
-
 }

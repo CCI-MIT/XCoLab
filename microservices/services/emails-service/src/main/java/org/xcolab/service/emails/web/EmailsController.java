@@ -14,11 +14,11 @@ public class EmailsController {
     @Autowired
     private EmailUtil emailUtil;
 
-    @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
+    @RequestMapping(value = "/emails/send", method = RequestMethod.POST)
     public String sendEmail(@RequestBody Email email) {
 
         emailUtil.sendEmailToRecipient(email);
 
         return "Email sent successfully";
     }
-}/**/
+}
