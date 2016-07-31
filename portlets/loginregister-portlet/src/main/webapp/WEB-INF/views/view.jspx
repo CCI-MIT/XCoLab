@@ -67,6 +67,12 @@
             <span class="required-field"><!-- --></span> is a required field.
         </div>
 
+        <c:if test="${hasLoginInfoText}">
+            <div class="c-Alert" style="font-size: 15px">
+                ${loginInfoText}
+            </div>
+        </c:if>
+
 		<c:if test="${ error != null and isRegistering }">
 			<div class="c-Alert__error__message">${error}</div>
 		</c:if>
