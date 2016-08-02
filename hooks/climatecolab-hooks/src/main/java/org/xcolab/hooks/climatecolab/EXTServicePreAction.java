@@ -74,7 +74,6 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("_openGraphShareTitle", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.getStringValue());
         vmVariables.put("_openGraphShareDescription", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.getStringValue());
 
-
         vmVariables.put("isSharedColab",
                 ConfigurationAttributeKey.IS_SHARED_COLAB.getBooleanValue());
         final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.getStringValue();
