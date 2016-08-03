@@ -138,7 +138,7 @@ public final class LoginRegisterUtil {
             userGrp.setClassPK(user.getUserId());
             userGrp.setCompanyId(companyId);
             userGrp.setName(user.getUserId() + "");
-            userGrp.setFriendlyURL("/" + user.getScreenName());
+            userGrp.setFriendlyURL("/" + user.getScreenName() + user.getUserId());
             userGrp.setCreatorUserId(user.getUserId());
             userGrp.setActive(true);
             try {

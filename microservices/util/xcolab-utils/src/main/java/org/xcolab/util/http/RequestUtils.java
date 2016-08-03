@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -28,7 +29,7 @@ public final class RequestUtils {
 
     private static final int CACHE_TIMEOUT = 3;
 
-    private static final RestTemplate restTemplate = new RestTemplate();
+    //private static final RestTemplate restTemplate = new RestTemplate();
 
     private static String servicesPort;
 
@@ -37,13 +38,17 @@ public final class RequestUtils {
     private RequestUtils() {
     }
 
+    private static RestTemplate getRestTemplate() {
+        return new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+    }
+
     public static <T> T getFirstFromList(UriBuilder uriBuilder,
-            ParameterizedTypeReference<List<T>> typeReference) throws EntityNotFoundException {
+                                         ParameterizedTypeReference<List<T>> typeReference) throws EntityNotFoundException {
         return getFirstFromList(uriBuilder, typeReference, null);
     }
 
     public static <T> T getFirstFromList(UriBuilder uriBuilder,
-            ParameterizedTypeReference<List<T>> typeReference, String cacheQueryIdentifier)
+                                         ParameterizedTypeReference<List<T>> typeReference, String cacheQueryIdentifier)
             throws EntityNotFoundException {
         uriBuilder.addRange(0, 1);
 
@@ -72,13 +77,13 @@ public final class RequestUtils {
     }
 
     public static <T> List<T> getList(UriBuilder uriBuilder,
-            ParameterizedTypeReference<List<T>> typeReference) {
+                                      ParameterizedTypeReference<List<T>> typeReference) {
         return getList(uriBuilder, typeReference, null);
     }
 
     public static <T> List<T> getList(UriBuilder uriBuilder,
-            ParameterizedTypeReference<List<T>> typeReference,
-            String cacheQueryIdentifier) {
+                                      ParameterizedTypeReference<List<T>> typeReference,
+                                      String cacheQueryIdentifier) {
         List<T> ret;
         final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
         final String cachePrefix = "_" + typeReference.getType() + "_list_";
@@ -89,7 +94,7 @@ public final class RequestUtils {
                 return ret;
             }
         }
-        ResponseEntity<List<T>> response = restTemplate.exchange(uriBuilder.buildString(),
+        ResponseEntity<List<T>> response = getRestTemplate().exchange(uriBuilder.buildString(),
                 HttpMethod.GET, null, typeReference);
         ret = response.getBody();
 
@@ -105,7 +110,7 @@ public final class RequestUtils {
     }
 
     public static <T> T get(UriBuilder uriBuilder, Class<T> entityType,
-            String cacheQueryIdentifier)
+                            String cacheQueryIdentifier)
             throws EntityNotFoundException {
         try {
             return getUnchecked(uriBuilder, entityType, cacheQueryIdentifier);
@@ -119,7 +124,7 @@ public final class RequestUtils {
     }
 
     public static <T> T getUnchecked(UriBuilder uriBuilder, Class<T> entityType,
-            String cacheQueryIdentifier) {
+                                     String cacheQueryIdentifier) {
         try {
             T ret;
             final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
@@ -131,7 +136,7 @@ public final class RequestUtils {
                     return ret;
                 }
             }
-            ret = restTemplate.getForObject(uriBuilder.buildString(), entityType);
+            ret = getRestTemplate().getForObject(uriBuilder.buildString(), entityType);
             if (cacheActive) {
                 cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
             }
@@ -147,7 +152,7 @@ public final class RequestUtils {
     }
 
     public static int getCount(UriBuilder uriBuilder,
-            Class<?> entityType, String cacheQueryIdentifier) {
+                               Class<?> entityType, String cacheQueryIdentifier) {
         Integer ret;
         final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
         final String cachePrefix = "_" + entityType.getSimpleName() + "_count_";
@@ -160,7 +165,7 @@ public final class RequestUtils {
         }
 
         try {
-            final HttpHeaders httpHeaders = restTemplate
+            final HttpHeaders httpHeaders = getRestTemplate()
                     .headForHeaders(uriBuilder.buildString());
             final List<String> countHeaders = httpHeaders.get("X-Total-Count");
             if (countHeaders.isEmpty()) {
@@ -195,17 +200,17 @@ public final class RequestUtils {
 
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);
 
-        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.PUT, httpEntity, Void.class);
+        getRestTemplate().exchange(uriBuilder.buildString(), HttpMethod.PUT, httpEntity, Void.class);
         return true;
     }
 
     public static boolean delete(UriBuilder uriBuilder) {
-        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
+        getRestTemplate().exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
         return true;
     }
 
     public static <T> T post(UriBuilder uriBuilder, Object entity, Class<T> returnType) {
-        return restTemplate.postForObject(uriBuilder.buildString(), entity, returnType);
+        return getRestTemplate().postForObject(uriBuilder.buildString(), entity, returnType);
     }
 
     private static String sanitize(String identifier) {
