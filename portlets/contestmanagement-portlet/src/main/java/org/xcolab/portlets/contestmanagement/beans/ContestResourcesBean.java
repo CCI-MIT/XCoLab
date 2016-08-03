@@ -1,8 +1,5 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
@@ -15,6 +12,10 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -88,7 +89,7 @@ public class ContestResourcesBean implements Serializable {
 
     @SuppressWarnings("unused")
     public ContestResourcesBean() throws SystemException, PortalException {
-        this(ContestTypeLocalServiceUtil.getContestType(
+        this(ContestClient.getContestType(
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue()));
     }
 
@@ -244,9 +245,7 @@ public class ContestResourcesBean implements Serializable {
     }
 
     public void fillOverviewSectionContent(Contest contest) {
-        try {
-            List<ContestPhase> contestPhaseList = ContestPhaseLocalServiceUtil
-                    .getPhasesForContest(contest);
+            List<ContestPhase> contestPhaseList = ContestClient.getAllContestPhases(contest.getContestPK());
             String proposalSubmissionEndDate = "";
             for (ContestPhase contestPhase : contestPhaseList) {
                 Long contestPhaseType = contestPhase.getContestPhaseType();
@@ -269,7 +268,7 @@ public class ContestResourcesBean implements Serializable {
             overviewSectionValues = new LinkedHashMap<>();
             overviewSectionValues.put("Question:", contest.getContestName());
 
-            final String contestLinkUrl = ContestLocalServiceUtil.getContestLinkUrl(contest);
+            final String contestLinkUrl = contest.getContestLinkUrl();
             final String overviewSubmitProposalsContent = TemplateReplacementUtil
                     .replaceContestTypeStrings(
                             TemplateReplacementUtil
@@ -295,9 +294,7 @@ public class ContestResourcesBean implements Serializable {
                     overviewSectionValues.put(OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE, "See below.");
                 }
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 }
 

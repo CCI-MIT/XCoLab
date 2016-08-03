@@ -1,7 +1,8 @@
-package org.xcolab.service.proposal.domain.ontologyspace;
+package org.xcolab.service.contest.domain.ontologyspace;
+
 
 import org.xcolab.model.tables.pojos.OntologySpace;
-import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 

@@ -60,6 +60,27 @@ public class ContestPhase implements Serializable {
     public ContestPhase() {
     }
 
+    public static ContestPhase createFromContestPhase(ContestPhase originalPhase) {
+        ContestPhase newPhase = new ContestPhase();
+
+        newPhase.setContestPK(originalPhase.getContestPK());
+        newPhase.setPhaseStartDate(originalPhase.getPhaseStartDate());
+        newPhase.setPhaseEndDate(originalPhase.getPhaseEndDate());
+        newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
+        newPhase.setContestPhaseType(originalPhase.getContestPhaseType());
+        newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
+        newPhase.setFellowScreeningActive(originalPhase.getFellowScreeningActive());
+        newPhase.setContestPhaseAutopromote(originalPhase.getContestPhaseAutopromote());
+        newPhase.setContestPhaseDescriptionOverride(originalPhase.getContestPhaseDescriptionOverride());
+        newPhase.setPhaseBufferEndDated(originalPhase.getPhaseBufferEndDated());
+        newPhase.setNextStatus(originalPhase.getNextStatus());
+        newPhase.setCreated(new Timestamp(new Date().getTime()));
+        newPhase.setUpdated(new Timestamp(new Date().getTime()));
+        newPhase.setAuthorId(originalPhase.getAuthorId());
+
+        return newPhase;
+    }
+
     public ContestPhase(ContestPhase value) {
         this.contestphasepk = value.contestphasepk;
         this.contestpk = value.contestpk;

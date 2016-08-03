@@ -41,7 +41,7 @@ public class ContestsController {
 
             List<Contest> contests;
             if (contestPreferences.getSelectedContests().isEmpty()) {
-                contests = ContestClient.findByActiveFeatured(true, true);
+                contests = ContestClient.findContestsByActiveFeatured(true, true);
             } else {
                 contests = new ArrayList<>();
                 for (Long contestId : contestPreferences.getSelectedContests()) {

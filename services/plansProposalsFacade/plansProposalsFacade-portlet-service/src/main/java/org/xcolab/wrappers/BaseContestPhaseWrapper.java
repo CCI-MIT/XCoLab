@@ -2,36 +2,31 @@ package org.xcolab.wrappers;
 
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.StringUtils;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by johannes on 10/27/15.
- * A wrapper class for contest phases to be shared across portlets.
- * More specific wrappers should inherit from this one.
- */
-public class BaseContestPhaseWrapper {
-    protected final ContestPhase contestPhase;
-    protected ContestStatus status;
 
-    public BaseContestPhaseWrapper(long contestPhaseId) throws SystemException, PortalException {
-        this(ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId));
+public class BaseContestPhaseWrapper {
+    protected ContestStatus status;
+    protected final org.xcolab.client.contest.pojo.ContestPhase contestPhase;
+
+    public BaseContestPhaseWrapper(long contestPhaseId) {
+        this(ContestClient.getContestPhase(contestPhaseId));
     }
 
-    public BaseContestPhaseWrapper(ContestPhase contestPhase) {
-        if (contestPhase == null){
+    public BaseContestPhaseWrapper(org.xcolab.client.contest.pojo.ContestPhase contestPhase) {
+        if (contestPhase == null) {
             throw new IllegalArgumentException("Contest phase must not be null.");
         }
         this.contestPhase = contestPhase;
@@ -53,8 +48,8 @@ public class BaseContestPhaseWrapper {
         contestPhase.setContestPK(ContestPK);
     }
 
-    public ContestPhaseType getContestPhaseTypeObject() throws SystemException {
-        return ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(this.getContestPhaseType());
+    public org.xcolab.client.contest.pojo.ContestPhaseType getContestPhaseTypeObject() throws SystemException {
+        return ContestClient.getContestPhaseType(this.getContestPhaseType());
     }
 
     public long getContestPhaseType() {
@@ -98,7 +93,7 @@ public class BaseContestPhaseWrapper {
         Calendar cal = Calendar.getInstance();
         cal.setTime(referenceDate);
 
-        return ""+cal.get(Calendar.YEAR);
+        return "" + cal.get(Calendar.YEAR);
     }
 
     public Date getCreated() {
@@ -106,7 +101,7 @@ public class BaseContestPhaseWrapper {
     }
 
     public void setCreated(Date created) {
-        contestPhase.setCreated(created);
+        contestPhase.setCreated(new Timestamp(created.getTime()));
     }
 
     public long getAuthorId() {
@@ -119,7 +114,7 @@ public class BaseContestPhaseWrapper {
 
     public ContestStatus getStatus() throws PortalException, SystemException {
         if (status == null) {
-            String statusStr = ContestPhaseLocalServiceUtil.getContestStatusStr(contestPhase);
+            String statusStr = ContestClient.getContestStatusStr(contestPhase.getContestPhasePK());
             if (statusStr != null) {
                 status = ContestStatus.valueOf(statusStr);
             }
@@ -136,7 +131,7 @@ public class BaseContestPhaseWrapper {
     }
 
     public boolean isActive() {
-        return ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase);
+        return contestPhase.getPhaseActive();
     }
 
     public long getMillisecondsTillEnd() {
@@ -144,7 +139,7 @@ public class BaseContestPhaseWrapper {
     }
 
     public String getName() throws PortalException, SystemException {
-        return ContestPhaseLocalServiceUtil.getName(contestPhase);
+        return ContestClient.getContestPhaseType(contestPhase.getContestPhaseType()).getName();
     }
 
     public boolean isEnded() {
@@ -188,15 +183,15 @@ public class BaseContestPhaseWrapper {
         return descriptionOverride;
     }
 
-    public boolean getFellowScreeningActive(){
+    public boolean getFellowScreeningActive() {
         return contestPhase.getFellowScreeningActive();
     }
 
-    public ContestPhase getWrapped() {
+    public org.xcolab.client.contest.pojo.ContestPhase getWrapped() {
         return contestPhase;
     }
 
     public String getContestPhaseUrl() throws SystemException {
-        return ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl(contestPhase);
+        return contestPhase.getContestPhaseLinkUrl();
     }
 }

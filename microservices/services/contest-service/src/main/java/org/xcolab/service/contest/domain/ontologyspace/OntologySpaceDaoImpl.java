@@ -1,4 +1,4 @@
-package org.xcolab.service.proposal.domain.ontologyspace;
+package org.xcolab.service.contest.domain.ontologyspace;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;

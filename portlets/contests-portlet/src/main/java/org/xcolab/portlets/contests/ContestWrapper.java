@@ -12,7 +12,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.proposals.ProposalsClient;
 
-import org.xcolab.wrapperNewService.BaseContestWrapper;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.io.Serializable;
 
@@ -30,6 +30,8 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
     public long getTotalCommentsCount() {
 
         Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
+        ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
+        contestComments += CommentClient.countCommentsByProposalsInContestPhase(phase.getContestPhasePK());
 
         return contestComments;
     }

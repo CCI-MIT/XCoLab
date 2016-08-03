@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.model.ContestType;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.utils.TemplateReplacementUtil;
 

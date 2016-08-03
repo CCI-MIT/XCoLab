@@ -1,6 +1,6 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.model.ContestType;
+
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -8,6 +8,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.UnsupportedEncodingException;
@@ -48,21 +50,13 @@ public final class TemplateReplacementUtil {
     }
 
     public static String replaceContestTypeStrings(String text, ContestType contestType) {
-        try {
             if (contestType == null) {
-                contestType = ContestTypeLocalServiceUtil.getContestType(
-                        ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
+                contestType = ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
             }
             return text.replaceAll(PROPOSAL_PLACEHOLDER, contestType.getProposalName())
                     .replaceAll(PROPOSALS_PLACEHOLDER, contestType.getProposalNamePlural())
                     .replaceAll(CONTEST_PLACEHOLDER, contestType.getContestName())
                     .replaceAll(CONTESTS_PLACEHOLDER, contestType.getContestNamePlural());
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new IllegalStateException("Default contest type does not exist: "
-                    + ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
-        }
     }
 
     public static InternetAddress getAdminFromEmailAddress() throws UnsupportedEncodingException {

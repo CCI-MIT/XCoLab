@@ -1,7 +1,7 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
+
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -11,6 +11,9 @@ import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
@@ -42,15 +45,11 @@ public class WikiPageWrapper {
     }
 
     public ContestResourcesBean getContestResourcesBean() {
-        try {
-            final ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
+            final ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
             ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
             String resourcesContent = contentArticleVersion.getContent();
             contestResourcesBean.fillSectionsWithContent(resourcesContent);
             return contestResourcesBean;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
     }
 
     public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean)
@@ -67,7 +66,7 @@ public class WikiPageWrapper {
     }
 
     private void initWikiPage() {
-        try {
+
             if (contest.getResourceArticleId() > 0) {
                 try {
                     contentArticle = ContentsClient
@@ -95,13 +94,12 @@ public class WikiPageWrapper {
 
                     final long resourceArticleId = contentArticle.getContentArticleId();
                     contest.setResourceArticleId(resourceArticleId);
-                    ContestLocalServiceUtil.updateContest(contest);
+                    ContestClient.updateContest(contest);
+
                 } catch (ContentNotFoundException e) {
                     throw new IllegalStateException("Could not retrieve ContentArticle after creation: " + contentArticle);
                 }
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 }

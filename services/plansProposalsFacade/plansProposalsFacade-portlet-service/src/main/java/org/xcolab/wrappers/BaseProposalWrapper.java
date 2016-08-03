@@ -24,6 +24,8 @@ import org.apache.commons.lang.StringUtils;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -383,7 +385,11 @@ public class BaseProposalWrapper {
         try{
             Contest c = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
             if (c.getContestPK() != contest.getContestPK()) {
-                return new BaseContestWrapper(c);
+                try{
+                    return new BaseContestWrapper(ContestClient.getContest(c.getContestPK()));
+                }catch (ContestNotFoundException ignored){
+                }
+
             }
             return null;
         } catch (PortalException e) {

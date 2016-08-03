@@ -60,6 +60,16 @@ public final class CommentClient {
                 .execute();
     }
 
+    public static int countCommentsByProposalsInContestPhase(long contestPhaseId) {
+        try {
+            return commentResource.service("countProposalsInContestPhases", Integer.class)
+                    .queryParam("contestPhaseId", contestPhaseId)
+                    .get();
+        }catch(EntityNotFoundException ignored){
+            return 0;
+        }
+    }
+
     public static Comment getComment(long commentId) throws CommentNotFoundException {
         return getComment(commentId, false);
     }

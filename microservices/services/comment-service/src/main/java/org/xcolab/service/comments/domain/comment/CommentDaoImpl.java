@@ -16,6 +16,8 @@ import org.xcolab.service.utils.PaginationHelper.SortColumn;
 import java.util.List;
 
 import static org.xcolab.model.Tables.COMMENT;
+import static org.xcolab.model.Tables.PROPOSAL;
+import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 
 @Repository
 public class CommentDaoImpl implements CommentDao {
@@ -110,5 +112,18 @@ public class CommentDaoImpl implements CommentDao {
         }
         return null;
     }
+
+    @Override
+    public int countProposalCommentsByContestPhase(Long contestPhaseId) {
+        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
+                .from(COMMENT)
+                .join(PROPOSAL).on(PROPOSAL.DISCUSSION_ID.eq(COMMENT.THREAD_ID))
+                .join(PROPOSAL_2_PHASE).on(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID))
+                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
+                .getQuery();
+            query.addConditions(COMMENT.DELETED_DATE.isNull());
+        return query.fetchOne().into(Integer.class);
+    }
+
 
 }

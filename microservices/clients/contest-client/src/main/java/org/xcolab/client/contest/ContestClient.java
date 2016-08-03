@@ -8,6 +8,9 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContestClient {
 
     private static final RestService contestService = new RestService("contest-service");
@@ -30,6 +33,8 @@ public class ContestClient {
     private static final RestResource<ContestTeamMemberRole> contestTeamMemberRoleResource = new RestResource<>(contestService,
             "contestTeamMemberRoles", ContestTeamMemberRole.TYPES);
 
+    private static final RestResource<ContestSchedule> contestScheduleResource = new RestResource<>(contestService,
+            "contestSchedules", ContestSchedule.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
@@ -71,15 +76,102 @@ public class ContestClient {
         return contest;
     }
 
-    public static List<Contest> findByActiveFeatured(Boolean active, Boolean featured) {
+    public static List<Contest> findContestsByActiveFeatured(Boolean active, Boolean featured) {
         return contestResource.list()
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
                 .execute();
     }
 
+    public static List<Contest> findContestsTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTerms) {
+        return contestResource.list()
+                .optionalQueryParam("contestTier", contestTier)
+                .optionalQueryParam("focusAreaOntologyTerms", focusAreaOntologyTerms)
+                .execute();
+    }
+    public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId){
+
+        try{
+            return contestResource.service(contestId, "getSubContestsByOntologySpaceId",List.class)
+                    .optionalQueryParam("ontologySpaceId", ontologySpaceId)
+                    .get();
+        }catch (EntityNotFoundException e){
+            return new ArrayList<>();
+        }
+    }
+
+    public static List<Contest> getAllContests() {
+        return contestResource.list().execute();
+    }
+
+    public static List<Contest> getContestsByContestScheduleId(Long contestScheduleId){
+        return contestResource
+                .list()
+                .queryParam("contestScheduleId", contestScheduleId)
+                .execute();
+    }
+
+    public static  ContestSchedule createContestSchedule(ContestSchedule contestSchedule) {
+        return contestScheduleResource.create(contestSchedule).execute();
+    }
+    public static boolean updateContestSchedule(ContestSchedule contestSchedule) {
+        return contestScheduleResource.update(contestSchedule, contestSchedule.getId_())
+                .execute();
+    }
+    public static ContestSchedule getContestSchedule(long Id_) {
+        try {
+            return contestScheduleResource.get(Id_)
+                    .cacheIdentifier("contestScheduleId_" + Id_)
+                    .execute();
+        } catch (EntityNotFoundException e) {
+            return null;
+        }
+    }
+
+    public static List<ContestSchedule> getAllContestSchedules() {
+        return contestScheduleResource.list().execute();
+    }
+
+
+    public static List<ContestPhase> getVisibleContestPhases(Long contestPK) {
+        List<ContestPhase> allPhases = getAllContestPhases(contestPK);
+
+        List<ContestPhase> visiblePhases = new ArrayList<>();
+        for (ContestPhase phase : allPhases) {
+            ContestPhaseType phaseType = getContestPhaseType(phase.getContestPhaseType());
+            if (!phaseType.getInvisible()) {
+                visiblePhases.add(phase);
+            }
+        }
+
+        return visiblePhases;
+    }
+
+    public static void deleteContestPhase(Long contestPhasePK){
+        contestPhasesResource.delete(contestPhasePK);
+    }
+    public static boolean updateContestPhase(ContestPhase contestPhase) {
+        return contestPhasesResource.update(contestPhase, contestPhase.getContestPhasePK())
+                .execute();
+    }
+    public static  ContestPhase createContestPhase(ContestPhase contestPhase) {
+        return contestPhasesResource.create(contestPhase).execute();
+    }
+
     public static List<ContestPhase> getAllContestPhases(Long contestPK) {
         return contestPhasesResource.list().queryParam("contestPK", contestPK).execute();
+    }
+
+    public static List<ContestPhase> getPhasesForContestScheduleId(Long contestScheduleId){
+        return contestPhasesResource.list()
+                .queryParam("contestScheduleId", contestScheduleId)
+                .execute();
+    }
+    public static List<ContestPhase> getPhasesForContestScheduleIdAndContest(Long contestScheduleId, Long contestPK) {
+        return contestPhasesResource.list()
+                .queryParam("contestPK", contestPK)
+                .queryParam("contestScheduleId", contestScheduleId)
+                .execute();
     }
 
     public static Integer getProposalCountForActiveContestPhase(Long contestId) {

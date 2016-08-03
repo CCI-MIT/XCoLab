@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.Proposal;
+import org.xcolab.model.tables.pojos.*;
 
-import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDaoImpl;
+import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -32,6 +31,9 @@ public class ProposalsController {
 
     @Autowired
     private ProposalVoteDao proposalVoteDao;
+
+    @Autowired
+    private ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
 
     @RequestMapping(value = "/proposals", method = RequestMethod.POST)
     public Proposal createProposal(@RequestBody Proposal proposal) {
@@ -55,7 +57,7 @@ public class ProposalsController {
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.GET)
     public Proposal getProposal(@PathVariable long proposalId,
-            @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
+                                @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
             throws NotFoundException {
         final Proposal proposal = proposalDao.get(proposalId);
         if (proposal.getVisible() || includeDeleted) {
@@ -85,6 +87,19 @@ public class ProposalsController {
         return proposal2PhaseDao.getProposalCountForActiveContestPhase(proposal2PhaseId);
 
     }
+
+    @RequestMapping(value = "/proposal2Phases", method = {RequestMethod.GET})
+    public Proposal2Phase getProposal2Phases(
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId
+    ) throws NotFoundException {
+        List<Proposal2Phase> ret = proposal2PhaseDao.findByGiven(proposalId, contestPhaseId);
+        if (ret == null || ret.size() == 0) {
+            throw new NotFoundException("Proposal2Phase not found by given proposalId: " + proposalId + " and contestPhaseId: " + contestPhaseId);
+        }
+        return ret.get(0);
+    }
+
     @RequestMapping(value = "/proposalVotes/count", method = {RequestMethod.GET, RequestMethod.HEAD})
     public Integer getProposalVotes(
             @RequestParam(required = false) Long contestPhaseId,
@@ -92,5 +107,18 @@ public class ProposalsController {
             @RequestParam(required = false) Long userId
     ) {
         return proposalVoteDao.countByGiven(contestPhaseId, proposalId, userId);
+    }
+
+    @RequestMapping(value = "/proposalContestPhaseAttributes", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ProposalContestPhaseAttribute> getProposalContestPhaseAttributes(
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) String name
+    ) {
+        return proposalContestPhaseAttributeDao.findByGiven(contestPhaseId, proposalId, name);
+    }
+    @RequestMapping(value = "/proposalContestPhaseAttributes", method = RequestMethod.POST)
+    public ProposalContestPhaseAttribute createProposalContestPhaseAttribute(@RequestBody ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
+        return this.proposalContestPhaseAttributeDao.create(proposalContestPhaseAttribute);
     }
 }

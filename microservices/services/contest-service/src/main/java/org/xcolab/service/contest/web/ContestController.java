@@ -1,6 +1,7 @@
 package org.xcolab.service.contest.web;
 
 
+import com.sun.tools.corba.se.idl.constExpr.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -16,6 +17,7 @@ import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -56,8 +58,20 @@ public class ContestController {
             @RequestParam(required = false) String contestUrlName,
             @RequestParam(required = false) Long contestYear,
             @RequestParam(required = false) Boolean active,
-            @RequestParam(required = false) Boolean featured) {
-        return contestDao.findByGiven(contestUrlName, contestYear, active, featured);
+            @RequestParam(required = false) Boolean featured,
+            @RequestParam(required = false) Long contestTier,
+            @RequestParam(required = false) Long contestScheduleId,
+            @RequestParam(required = false) List<Long> focusAreaOntologyTerms) {
+        return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId);
+    }
+
+
+    @RequestMapping(value = "/contests/{contestId}/subContestsByOntologySpaceId", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Contest> getSubContestsByOntologySpaceId(
+            @PathVariable long contestId,
+            @RequestParam Long ontologySpaceId) {
+
+        return contestService.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
     }
 
     @RequestMapping(value = "/contests", method = RequestMethod.POST)
@@ -77,14 +91,11 @@ public class ContestController {
     }
 
 
-
-
-
     @RequestMapping(value = "/contests/{contestId}/activePhase", method = RequestMethod.GET)
     public ContestPhase getActivePhaseForContest(@PathVariable long contestId) throws NotFoundException {
 
         ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
-        if(activePhase == null ){
+        if (activePhase == null) {
             throw new NotFoundException();
         }
         return activePhase;
@@ -95,7 +106,7 @@ public class ContestController {
     public Integer getProposalCountForActivePhase(@PathVariable long contestId) throws NotFoundException {
 
         ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
-        if(activePhase == null ){
+        if (activePhase == null) {
             return 0;
         }
 
@@ -109,8 +120,9 @@ public class ContestController {
     }
 
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET})
-    public List<ContestPhase> getContestPhases(@RequestParam(required = true) Long contestPK) {
-        return contestPhaseDao.findByGiven(contestPK, null);
+    public List<ContestPhase> getContestPhases(@RequestParam() Long contestPK,
+                                               @RequestParam(required = false) Long contestScheduleId) {
+        return contestPhaseDao.findByGiven(contestPK, contestScheduleId);
     }
 
     @RequestMapping(value = "/contestTypes/{contestTypeId}", method = RequestMethod.GET)
@@ -255,6 +267,22 @@ public class ContestController {
             throw new NotFoundException("No contestPhaseId given");
         } else {
             return contestPhaseDao.get(contestPhaseId);
+        }
+    }
+    @RequestMapping(value = "/contestPhases/{contestPhasePK}", method = RequestMethod.DELETE)
+    public String deleteContestPhase(@PathVariable("contestPhasePK") Long contestPhasePK)
+            throws NotFoundException {
+
+        if (contestPhasePK == null || contestPhasePK == 0) {
+            throw new NotFoundException("No ContestPhase with id given");
+        } else {
+            ContestPhase contestPhase = this.contestPhaseDao.get(contestPhasePK);
+            if (contestPhase != null) {
+                this.contestPhaseDao.delete(contestPhase.getContestPhasePK());
+                return "ContestPhase deleted successfully";
+            } else {
+                throw new NotFoundException("No ContestPhase with id given");
+            }
         }
     }
 

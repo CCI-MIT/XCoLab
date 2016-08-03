@@ -1,13 +1,15 @@
 package org.xcolab.portlets.contests;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.IdListUtil;
 
@@ -77,8 +79,7 @@ public class ContestPreferences {
     }
 
     private void populateContestMap() {
-        try {
-            final List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
+            final List<Contest> contests = ContestClient.getAllContests();
             contestMap = new LinkedHashMap<>();
 
             Collections.sort(contests, new Comparator<Contest>() {
@@ -98,27 +99,23 @@ public class ContestPreferences {
             });
 
             for (Contest c: contests) {
-                final ContestPhase activeOrLastPhase = ContestLocalServiceUtil.getActiveOrLastPhase(c);
+                final ContestPhase activeOrLastPhase = ContestClient.getActivePhase(c.getContestPK());
                 final String phaseName;
                 if (activeOrLastPhase != null) {
                     final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();
-                    final ContestPhaseType contestPhaseType= ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
+                    final ContestPhaseType contestPhaseType= ContestClient.getContestPhaseType(contestPhaseTypeId);
                     phaseName = contestPhaseType.getName();
                 } else {
                     phaseName = " ";
                 }
-                contestMap.put(c.getPrimaryKey(),
+                contestMap.put(c.getContestPK(),
                         String.format("%d [%s] %s",
                                 c.getContestPK(),
                                 phaseName,
                                 c.getContestShortName()
                         ));
             }
-        } catch (SystemException e) {
-            throw new DataBindingException(e);
-        } catch (PortalException e) {
-            throw new InternalException(e);
-        }
+
     }
 
     public String submit(PortletRequest request)

@@ -1,8 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
+
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
@@ -13,11 +11,16 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,15 +79,15 @@ public class ContestPhaseBean implements Serializable {
         this.phaseActiveOverride = contestPhase.getPhaseActiveOverride();
         this.phaseInactiveOverride = contestPhase.getPhaseInactiveOverride();
         this.nextStatus = contestPhase.getNextStatus();
-        try {
-            this.contestPhaseTypeObj = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseType);
-        } catch (SystemException | PortalException ignored) { }
+
+        this.contestPhaseTypeObj = ContestClient.getContestPhaseType(contestPhaseType);
+
 
         try {
             this.contestPhaseHasProposalAssociations = false;
-            List<Contest> contestsUsingThisContestPhase = ContestLocalServiceUtil.getContestsByContestScheduleId(this.contestScheduleId);
+            List<Contest> contestsUsingThisContestPhase = ContestClient.getContestsByContestScheduleId(this.contestScheduleId);
             for (Contest contest : contestsUsingThisContestPhase) {
-                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest(this.contestScheduleId, contest.getContestPK());
+                List<ContestPhase> contestPhases = ContestClient.getPhasesForContestScheduleIdAndContest(this.contestScheduleId, contest.getContestPK());
                 for (ContestPhase contestPhase1 : contestPhases) {
                     if (contestPhase1.getContestPhaseType() == this.contestPhaseType) {
                         List<Proposal2Phase> proposal2PhaseList = Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhase1.getContestPhasePK());
@@ -254,28 +257,20 @@ public class ContestPhaseBean implements Serializable {
             createNewContestPhase();
         }
 
-        try {
             if (contestPhaseDeleted) {
-                ContestPhase contestPhase = ContestPhaseLocalServiceUtil
-                        .fetchContestPhase(contestPhasePK);
-                ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
+                ContestPhase contestPhase = ContestClient
+                        .getContestPhase(contestPhasePK);
+                ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
             } else {
-                getContestPhase().persist();
+                ContestClient.updateContestPhase(getContestPhase());
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     private void createNewContestPhase() {
-        try {
-            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.createContestPhase(
-                    CounterLocalServiceUtil.increment(ContestPhase.class.getName()));
-            contestPhase.persist();
+            ContestPhase contestPhase = new ContestPhase();
+            contestPhase = ContestClient.createContestPhase(contestPhase);
             contestPhasePK = contestPhase.getContestPhasePK();
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
     }
 
     public String getContestPhaseDescriptionOverride() {
@@ -296,21 +291,18 @@ public class ContestPhaseBean implements Serializable {
 
     //TODO: improve naming?
     public ContestPhase getContestPhase() {
-        try {
-            ContestPhase contestPhase = ContestPhaseLocalServiceUtil
-                    .fetchContestPhase(contestPhasePK);
+            ContestPhase contestPhase = ContestClient.getContestPhase(contestPhasePK);
             contestPhase.setContestPK(contestPK);
             contestPhase.setContestPhaseType(contestPhaseType);
             contestPhase.setContestScheduleId(contestScheduleId);
-            contestPhase.setPhaseStartDate(phaseStartDate);
-            contestPhase.setPhaseEndDate(phaseEndDate);
-            contestPhase.setPhaseBufferEndDated(phaseBufferEndDated);
+            contestPhase.setPhaseStartDate(new Timestamp(phaseStartDate.getTime()));
+            contestPhase.setPhaseEndDate( new Timestamp(phaseEndDate.getTime()));
+            contestPhase.setPhaseBufferEndDated( new Timestamp(phaseBufferEndDated.getTime()));
             contestPhase.setFellowScreeningActive(fellowScreeningActive);
 
             if (contestPhaseAutopromote
                     .equalsIgnoreCase(ContestPhasePromoteType.DEFAULT.getValue())) {
-                ContestPhaseType type = ContestPhaseTypeLocalServiceUtil
-                        .fetchContestPhaseType(contestPhaseType);
+                ContestPhaseType type = ContestClient.getContestPhaseType(contestPhaseType);
                 contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
             } else {
                 contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
@@ -321,8 +313,6 @@ public class ContestPhaseBean implements Serializable {
             contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
             contestPhase.setNextStatus(nextStatus);
             return contestPhase;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 }

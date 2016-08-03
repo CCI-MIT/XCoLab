@@ -1,11 +1,12 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.IdListUtil;
 

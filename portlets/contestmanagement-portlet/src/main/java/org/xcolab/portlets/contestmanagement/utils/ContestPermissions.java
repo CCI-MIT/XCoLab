@@ -1,12 +1,13 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.model.Contest;
+
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.interfaces.TabPermissions;
