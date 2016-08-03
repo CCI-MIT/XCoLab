@@ -35,11 +35,13 @@ public final class RequestUtils {
 
     private static CacheProvider cacheProvider = new CacheProviderNoOpImpl();
 
+    private static HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+    
     private RequestUtils() {
     }
 
     private static RestTemplate getRestTemplate() {
-        return new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+        return new RestTemplate(httpComponentsClientHttpRequestFactory);
     }
 
     public static <T> T getFirstFromList(UriBuilder uriBuilder,
