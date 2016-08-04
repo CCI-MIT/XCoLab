@@ -29,20 +29,18 @@ public final class RequestUtils {
 
     private static final int CACHE_TIMEOUT = 3;
 
-    //private static final RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 
     private static String servicesPort;
 
     private static CacheProvider cacheProvider = new CacheProviderNoOpImpl();
 
-    private static HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-    
+
+
     private RequestUtils() {
     }
 
-    private static RestTemplate getRestTemplate() {
-        return new RestTemplate(httpComponentsClientHttpRequestFactory);
-    }
+
 
     public static <T> T getFirstFromList(UriBuilder uriBuilder,
                                          ParameterizedTypeReference<List<T>> typeReference) throws EntityNotFoundException {
@@ -96,7 +94,7 @@ public final class RequestUtils {
                 return ret;
             }
         }
-        ResponseEntity<List<T>> response = getRestTemplate().exchange(uriBuilder.buildString(),
+        ResponseEntity<List<T>> response = restTemplate.exchange(uriBuilder.buildString(),
                 HttpMethod.GET, null, typeReference);
         ret = response.getBody();
 
@@ -138,7 +136,7 @@ public final class RequestUtils {
                     return ret;
                 }
             }
-            ret = getRestTemplate().getForObject(uriBuilder.buildString(), entityType);
+            ret = restTemplate.getForObject(uriBuilder.buildString(), entityType);
             if (cacheActive) {
                 cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
             }
@@ -167,7 +165,7 @@ public final class RequestUtils {
         }
 
         try {
-            final HttpHeaders httpHeaders = getRestTemplate()
+            final HttpHeaders httpHeaders = restTemplate
                     .headForHeaders(uriBuilder.buildString());
             final List<String> countHeaders = httpHeaders.get("X-Total-Count");
             if (countHeaders.isEmpty()) {
@@ -202,17 +200,17 @@ public final class RequestUtils {
 
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);
 
-        getRestTemplate().exchange(uriBuilder.buildString(), HttpMethod.PUT, httpEntity, Void.class);
+        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.PUT, httpEntity, Void.class);
         return true;
     }
 
     public static boolean delete(UriBuilder uriBuilder) {
-        getRestTemplate().exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
+        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
         return true;
     }
 
     public static <T> T post(UriBuilder uriBuilder, Object entity, Class<T> returnType) {
-        return getRestTemplate().postForObject(uriBuilder.buildString(), entity, returnType);
+        return restTemplate.postForObject(uriBuilder.buildString(), entity, returnType);
     }
 
     private static String sanitize(String identifier) {
