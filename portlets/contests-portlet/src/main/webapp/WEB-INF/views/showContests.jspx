@@ -11,12 +11,14 @@
             <div class="c-ContestBox backgroundLight">
                 <div class="c-ContestBox__image">
                     <a href="${contest.contestUrl}">
-                        <c:if test="${contest.contestLogoId > 0}">
-                            <img src="/image/contest?img_id=${contest.contestLogoId}" width="151" height="151" alt="${contest.contestShortName}" />
-                        </c:if>
-                        <c:if test="${empty contest.logoPath}">
-                            <img src="${themeDisplay.pathThemeImages}/blank.gif" width="151" height="151" alt="${contest.contestShortName}" style="border: 1px solid #bbb;"/>
-                        </c:if>
+                        <c:choose>
+                            <c:when test="${contest.contestLogoId > 0}">
+                                <img src="/image/contest?img_id=${contest.contestLogoId}" width="151" height="151" alt="${contest.contestShortName}" />
+                            </c:when>
+                            <c:otherwise>
+                                <img src="${themeDisplay.pathThemeImages}/blank.gif" width="151" height="151" alt="${contest.contestShortName}" style="border: 1px solid #bbb;"/>
+                            </c:otherwise>
+                        </c:choose>
                     </a>
                 </div>
                 <div class="c-ContestBox__text">

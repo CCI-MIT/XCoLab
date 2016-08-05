@@ -6,6 +6,7 @@ import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MessageDao {
 
@@ -22,7 +23,7 @@ public interface MessageDao {
 
     boolean setOpened(long messageId, long memberId, boolean isOpened);
 
-    Message createMessage(Message message);
+    Optional<Message> createMessage(Message message);
 
     void createMessageRecipient(long messageId, long recipientId);
 }

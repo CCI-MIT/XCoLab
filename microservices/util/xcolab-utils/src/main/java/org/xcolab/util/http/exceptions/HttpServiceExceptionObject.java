@@ -1,7 +1,10 @@
 package org.xcolab.util.http.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class HttpServiceExceptionObject {
 
     private Date timestamp;

@@ -5,6 +5,8 @@ import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.*;
 import com.liferay.portal.service.*;
 import com.liferay.portal.util.PortalUtil;
@@ -37,6 +39,8 @@ public final class LoginRegisterUtil {
 
     private static final long LIFERAY_COMPANY_ID = 10112L;
 
+    private final static Log _log = LogFactoryUtil.getLog(LoginRegisterUtil.class);
+
     private LoginRegisterUtil() {
     }
 
@@ -59,9 +63,9 @@ public final class LoginRegisterUtil {
         long companyId = LIFERAY_COMPANY_ID;
         long groupId = 10136;
         long facebookId = 0;
-        try{
+        try {
             facebookId = Long.parseLong(fbStringId);
-        }catch(NumberFormatException ignored){
+        } catch (NumberFormatException ignored) {
             facebookId = 0;
         }
         try {
@@ -85,7 +89,11 @@ public final class LoginRegisterUtil {
             contact.setJobTitle("");
             contact.setParentContactId(0l);
             contact.setBirthday(new Date());
-            ContactLocalServiceUtil.addContact(contact);
+            try {
+                ContactLocalServiceUtil.addContact(contact);
+            } catch (SystemException ignored) {
+                _log.debug("LOGINREGISTERDEBUG: Creating contact failed userId: " + userId + " - screenName: " + screenName);
+            }
 
             String greeting = "Welcome " + firstName + " " + lastName;
 
@@ -99,10 +107,10 @@ public final class LoginRegisterUtil {
                 ByteBuffer byteBuffer = ByteBuffer.allocate(secretKeyBytes.length);
                 byteBuffer.put(secretKeyBytes);
                 encryptedPassword = DatatypeConverter.printBase64Binary((byteBuffer.array()));
-            }catch(NoSuchAlgorithmException e){
+            } catch (NoSuchAlgorithmException e) {
 
             }
-            user.setPassword("{SHA-1}"+ encryptedPassword);
+            user.setPassword("{SHA-1}" + encryptedPassword);
             user.setScreenName(screenName);
             user.setEmailAddress(email);
             user.setFacebookId(facebookId);
@@ -134,17 +142,25 @@ public final class LoginRegisterUtil {
             userGrp.setClassPK(user.getUserId());
             userGrp.setCompanyId(companyId);
             userGrp.setName(user.getUserId() + "");
-            userGrp.setFriendlyURL("/" + user.getScreenName());
+            userGrp.setFriendlyURL("/" + user.getScreenName() + user.getUserId());
             userGrp.setCreatorUserId(user.getUserId());
             userGrp.setActive(true);
-            GroupLocalServiceUtil.addGroup(userGrp);
+            try {
+                GroupLocalServiceUtil.addGroup(userGrp);
+            } catch (SystemException ignored) {
+                _log.debug("LOGINREGISTERDEBUG: Creating group failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId);
+            }
 
 
             //Associate a role with user
             long userid[] = {user.getUserId()};
             long roleids[] = {role.getRoleId()};
-            UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), groupId, roleids);
-            UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userid);
+            try {
+                UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), groupId, roleids);
+                UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userid);
+            } catch (SystemException ignored) {
+                _log.debug("LOGINREGISTERDEBUG: Creating addRoleUser failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId);
+            }
 
             //Create AssetEntry
             long assetEntryId = CounterLocalServiceUtil.increment(AssetEntry.class.getName());
@@ -153,7 +169,11 @@ public final class LoginRegisterUtil {
             ae.setClassPK(user.getUserId());
             ae.setGroupId(userGrp.getGroupId());
             ae.setClassNameId(classNameId);
-            AssetEntryLocalServiceUtil.addAssetEntry(ae);
+            try {
+                AssetEntryLocalServiceUtil.addAssetEntry(ae);
+            } catch (SystemException ignored) {
+                _log.debug("LOGINREGISTERDEBUG: Creating AssetEntry failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId);
+            }
 
             //Insert Layoutset for public and private
             long layoutSetIdPub = CounterLocalServiceUtil.increment(LayoutSet.class.getName());
@@ -165,7 +185,8 @@ public final class LoginRegisterUtil {
             try {
                 LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPub);
             } catch (SystemException se) {
-
+                _log.debug("LOGINREGISTERDEBUG: Creating LayoutSet failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId
+                + " layoutSetIdPub public " + layoutSetIdPub);
             }
 
             long layoutSetIdPriv = CounterLocalServiceUtil.increment(LayoutSet.class.getName());
@@ -174,10 +195,15 @@ public final class LoginRegisterUtil {
             layoutSetPriv.setPrivateLayout(true);
             layoutSetPriv.setThemeId("classic");
             layoutSetPriv.setGroupId(userGrp.getGroupId());
-
-            LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPriv);
+            try {
+                LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPriv);
+            } catch (SystemException ignored) {
+                _log.debug("LOGINREGISTERDEBUG: Creating LayoutSet failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId
+                       + " layoutSetIdPriv private" + layoutSetIdPriv);
+            }
         } catch (SystemException | PortalException ignored) {
-
+            _log.debug("LOGINREGISTERDEBUG: Outside exception failed userId: " + userId + " - screenName: " + screenName
+                    +" exception: "+ ignored.getLocalizedMessage());
         }
 
         return user;
@@ -191,7 +217,7 @@ public final class LoginRegisterUtil {
             throws Exception {
 
 
-        Long memberId = SharedColabClient.retrieveSharedId(email, screenName,ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        Long memberId = SharedColabClient.retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.getStringValue());
         User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName, fbIdString);
 
         Member member = new Member();
@@ -226,7 +252,7 @@ public final class LoginRegisterUtil {
     }
 
     private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext,
-            Member recipient) {
+                                                              Member recipient) {
         new MemberRegistrationNotification(recipient, serviceContext).sendEmailNotification();
     }
 

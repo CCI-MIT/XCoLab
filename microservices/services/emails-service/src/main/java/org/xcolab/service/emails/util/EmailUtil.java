@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
 
-
-@PropertySource({"classpath:application.properties", "file:${user.home}/.xcolab.application.properties"})
+//"classpath:application.properties",
+@PropertySource({"file:${user.home}/.xcolab.application.properties"})
 @Component
 public class EmailUtil {
 

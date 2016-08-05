@@ -7,7 +7,7 @@
         xmlns:form="http://www.springframework.org/tags/form"
         xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <h1 style="padding-left: 20px;">Welcome to the Climate CoLab!</h1>
+    <h1 style="padding-left: 20px;">Welcome to the ${colabName}!</h1>
     <br /><br />
     <div style="padding-left: 20px;">We successfully verified your Facebook or Google account. Please choose from the following options in order to finish the process:</div>
     <br /><br /><br />
@@ -19,9 +19,9 @@
     <table>
         <tr>
             <td style="width:50%; padding: 0 20px;">
-                <h2>Link your existing CoLab member account</h2>
+                <h2>Link your existing ${colabShortName} member account</h2>
                 <br />
-                <span>You can sign in to your account to link your social media and Climate CoLab account and use the social media login when returning to the site.</span>
+                <span>You can sign in to your account to link your social media and ${colabName} account and use the social media login when returning to the site.</span>
                 <div style="height:15px;">&#160;</div>
                 <c:if test="${credentialsError}">
                     <div class="error-message-registerOrLogin"><p>Authentication failed</p></div>
@@ -35,9 +35,9 @@
                 </div>
             </td>
             <td style="width:50%; padding: 0 20px;">
-                <h2>Register as new CoLab member</h2>
+                <h2>Register as new ${colabShortName} member</h2>
                 <br />
-                <span>You can register as new member of the Climate CoLab with your social media account to be part of the community.</span>
+                <span>You can register as new member of the ${colabName} with your social media account to be part of the community.</span>
                 <br /><br /><br /><br />
                 <h1 style="text-align: center;"><a href="/web/guest/loginregister">Register as new member</a></h1>
             </td>

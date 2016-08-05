@@ -19,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -114,7 +116,9 @@ public class SingleSignOnController {
     }
 
     @RequestMapping(params = "status=registerOrLogin")
-    public String registerOrLogin(PortletRequest request) {
+    public String registerOrLogin(PortletRequest request, Model model) {
+        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         return "SSO/registerOrLogin";
     }
 }
