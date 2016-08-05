@@ -1,8 +1,6 @@
 package org.xcolab.proposals.events.handlers;
 
-import com.ext.portlet.service.ActivitySubscriptionLocalService;
 import com.google.common.eventbus.Subscribe;
-import com.liferay.portal.kernel.bean.BeanReference;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
@@ -20,9 +18,6 @@ import java.util.List;
  *
  */
 public class SubscribeProposalForAllContestSubscribersEventHandler extends BaseEventHandler {
-
-    @BeanReference(type = ActivitySubscriptionLocalService.class) 
-    private ActivitySubscriptionLocalService activitySubscriptionLocalService;
     
     @Subscribe
     public void handleProposalCreatedEvent(ProposalAssociatedWithContestPhaseEvent event) {
