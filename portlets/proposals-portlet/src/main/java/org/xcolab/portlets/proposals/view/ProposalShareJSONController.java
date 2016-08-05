@@ -22,16 +22,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.utils.MessageLimitManager;
 
-import javax.mail.internet.AddressException;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.mail.internet.AddressException;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 /**
  * Created by Klemens Mang on 16.03.14.
@@ -151,31 +153,18 @@ public class ProposalShareJSONController {
 
         // Send the message
         try {
-			User user = UserLocalServiceUtil.getUserById(userId);
-			synchronized (MessageLimitManager.getMutex(userId)) {
-				if (recipientIds != null && !MessageLimitManager.canSendMessages(recipientIds.size(), user)) {
-//					System.err.println("OBSERVED VALIDATION PROBLEM AGAIN. " + userId);
-//
-//					// Only send the email once in 24h!
-//					if (MessageLimitManager.shouldSendValidationErrorMessage(user)) {
-//						recipientIds.clear();
-//						recipientIds.add(1011659L); //patrick
-//						MessageUtil.sendMessage("VALIDATION PROBLEM  " + subject, "VALIDATION PROBLEM  " + body, userId,
-//								userId, recipientIds, null);
-//					}
-
-					sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, " +
+            if (recipientIds != null) {
+                if (MessageLimitManager.canSendMessages(recipientIds.size(), userId)) {
+                    MessageUtil.sendMessage(subject, body, userId, userId, recipientIds);
+                    sendResponseJSON(true, String.format("You successfully shared the %s", contestType.getProposalName()), response);
+                } else {
+                    sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, " +
                             "please contact the administrators.", response);
-					return;
-				}
-			}
-            MessageUtil.sendMessage(subject, body, userId, userId, recipientIds);
-        } catch (com.liferay.portal.kernel.exception.SystemException | AddressException | MailEngineException e) {
+                }
+            }
+        } catch (AddressException | MailEngineException e) {
             sendResponseJSON(false, "We were unable to share this proposal. Please try again later.", response);
-			return;
         }
-
-        sendResponseJSON(true, String.format("You successfully shared the %s", contestType.getProposalName()), response);
     }
 
     private static class RecipientParseException extends Exception {
