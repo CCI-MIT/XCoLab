@@ -233,6 +233,14 @@ public class MainViewController {
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
         newAccountBean.setCaptchaText("");
+        boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.getBooleanValue();
+        model.addAttribute("isSharedCollab", isSharedColab);
+        if(isSharedColab) {
+            final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.getStringValue();
+            final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
+            model.addAttribute("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
+            model.addAttribute("partnerColabName", partnerColabName);
+        }
         return "view";
     }
 

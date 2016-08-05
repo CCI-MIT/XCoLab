@@ -5,6 +5,8 @@ import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.*;
 import com.liferay.portal.service.*;
 import com.liferay.portal.util.PortalUtil;
@@ -36,6 +38,8 @@ import javax.xml.bind.DatatypeConverter;
 public final class LoginRegisterUtil {
 
     private static final long LIFERAY_COMPANY_ID = 10112L;
+
+    private final static Log _log = LogFactoryUtil.getLog(LoginRegisterUtil.class);
 
     private LoginRegisterUtil() {
     }
@@ -88,7 +92,7 @@ public final class LoginRegisterUtil {
             try {
                 ContactLocalServiceUtil.addContact(contact);
             } catch (SystemException ignored) {
-
+                _log.debug("LOGINREGISTERDEBUG: Creating contact failed userId: " + userId + " - screenName: " + screenName);
             }
 
             String greeting = "Welcome " + firstName + " " + lastName;
@@ -138,13 +142,13 @@ public final class LoginRegisterUtil {
             userGrp.setClassPK(user.getUserId());
             userGrp.setCompanyId(companyId);
             userGrp.setName(user.getUserId() + "");
-            userGrp.setFriendlyURL("/" + user.getScreenName());
+            userGrp.setFriendlyURL("/" + user.getScreenName() + user.getUserId());
             userGrp.setCreatorUserId(user.getUserId());
             userGrp.setActive(true);
             try {
                 GroupLocalServiceUtil.addGroup(userGrp);
             } catch (SystemException ignored) {
-
+                _log.debug("LOGINREGISTERDEBUG: Creating group failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId);
             }
 
 
@@ -155,7 +159,7 @@ public final class LoginRegisterUtil {
                 UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), groupId, roleids);
                 UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userid);
             } catch (SystemException ignored) {
-
+                _log.debug("LOGINREGISTERDEBUG: Creating addRoleUser failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId);
             }
 
             //Create AssetEntry
@@ -168,7 +172,7 @@ public final class LoginRegisterUtil {
             try {
                 AssetEntryLocalServiceUtil.addAssetEntry(ae);
             } catch (SystemException ignored) {
-
+                _log.debug("LOGINREGISTERDEBUG: Creating AssetEntry failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId);
             }
 
             //Insert Layoutset for public and private
@@ -181,7 +185,8 @@ public final class LoginRegisterUtil {
             try {
                 LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPub);
             } catch (SystemException se) {
-
+                _log.debug("LOGINREGISTERDEBUG: Creating LayoutSet failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId
+                + " layoutSetIdPub public " + layoutSetIdPub);
             }
 
             long layoutSetIdPriv = CounterLocalServiceUtil.increment(LayoutSet.class.getName());
@@ -193,10 +198,12 @@ public final class LoginRegisterUtil {
             try {
                 LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPriv);
             } catch (SystemException ignored) {
-
+                _log.debug("LOGINREGISTERDEBUG: Creating LayoutSet failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId
+                       + " layoutSetIdPriv private" + layoutSetIdPriv);
             }
         } catch (SystemException | PortalException ignored) {
-
+            _log.debug("LOGINREGISTERDEBUG: Outside exception failed userId: " + userId + " - screenName: " + screenName
+                    +" exception: "+ ignored.getLocalizedMessage());
         }
 
         return user;
