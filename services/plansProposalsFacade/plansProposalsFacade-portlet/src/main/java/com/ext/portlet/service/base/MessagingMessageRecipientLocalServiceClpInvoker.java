@@ -41,10 +41,10 @@ public class MessagingMessageRecipientLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName488;
-    private String[] _methodParameterTypes488;
-    private String _methodName489;
-    private String[] _methodParameterTypes489;
+    private String _methodName464;
+    private String[] _methodParameterTypes464;
+    private String _methodName465;
+    private String[] _methodParameterTypes465;
 
     public MessagingMessageRecipientLocalServiceClpInvoker() {
         _methodName0 = "addMessagingMessageRecipient";
@@ -129,13 +129,13 @@ public class MessagingMessageRecipientLocalServiceClpInvoker {
                 "com.ext.portlet.model.MessagingMessageRecipient"
             };
 
-        _methodName488 = "getBeanIdentifier";
+        _methodName464 = "getBeanIdentifier";
 
-        _methodParameterTypes488 = new String[] {  };
+        _methodParameterTypes464 = new String[] {  };
 
-        _methodName489 = "setBeanIdentifier";
+        _methodName465 = "setBeanIdentifier";
 
-        _methodParameterTypes489 = new String[] { "java.lang.String" };
+        _methodParameterTypes465 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class MessagingMessageRecipientLocalServiceClpInvoker {
             return MessagingMessageRecipientLocalServiceUtil.updateMessagingMessageRecipient((com.ext.portlet.model.MessagingMessageRecipient) arguments[0]);
         }
 
-        if (_methodName488.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
+        if (_methodName464.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes464, parameterTypes)) {
             return MessagingMessageRecipientLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName489.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
+        if (_methodName465.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes465, parameterTypes)) {
             MessagingMessageRecipientLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

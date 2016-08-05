@@ -8,9 +8,7 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 5.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_5_2_0.dtd">
 <service-builder package-path="com.ext.portlet">
     <namespace>xcolab</namespace>
-    <service-builder-import file="services/service-activity.xml" />
     <service-builder-import file="services/service-contests.xml" />
-    <service-builder-import file="services/service-messaging.xml" />
     <service-builder-import file="services/service-modeling.xml" />
     <service-builder-import file="services/service-ontology.xml" />
     <service-builder-import file="services/service-plans.xml" />

@@ -989,11 +989,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @param proposalId proposal id
      * @param userId     user id
      * @return true if user has subscribed to a proposal, false otherwise
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public boolean isSubscribed(long proposalId, long userId) throws PortalException, SystemException {
+    public boolean isSubscribed(long proposalId, long userId) {
         return ActivitiesClient.isSubscribedToActivity(userId,
                 ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "");
     }
@@ -1003,11 +1001,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      *
      * @param proposalId proposal id
      * @param userId     user id
-     * @throws PortalException in case of LR error
-     * @throws SystemException in case of LR error
      */
     @Override
-    public void subscribe(long proposalId, long userId) throws PortalException, SystemException {
+    public void subscribe(long proposalId, long userId) {
         subscribe(proposalId, userId, false);
     }
 

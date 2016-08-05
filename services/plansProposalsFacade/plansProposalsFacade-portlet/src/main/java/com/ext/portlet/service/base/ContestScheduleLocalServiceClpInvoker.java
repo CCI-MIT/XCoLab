@@ -41,12 +41,12 @@ public class ContestScheduleLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName488;
-    private String[] _methodParameterTypes488;
-    private String _methodName489;
-    private String[] _methodParameterTypes489;
-    private String _methodName494;
-    private String[] _methodParameterTypes494;
+    private String _methodName464;
+    private String[] _methodParameterTypes464;
+    private String _methodName465;
+    private String[] _methodParameterTypes465;
+    private String _methodName470;
+    private String[] _methodParameterTypes470;
 
     public ContestScheduleLocalServiceClpInvoker() {
         _methodName0 = "addContestSchedule";
@@ -131,17 +131,17 @@ public class ContestScheduleLocalServiceClpInvoker {
                 "com.ext.portlet.model.ContestSchedule"
             };
 
-        _methodName488 = "getBeanIdentifier";
+        _methodName464 = "getBeanIdentifier";
 
-        _methodParameterTypes488 = new String[] {  };
+        _methodParameterTypes464 = new String[] {  };
 
-        _methodName489 = "setBeanIdentifier";
+        _methodName465 = "setBeanIdentifier";
 
-        _methodParameterTypes489 = new String[] { "java.lang.String" };
+        _methodParameterTypes465 = new String[] { "java.lang.String" };
 
-        _methodName494 = "isContestScheduleUsed";
+        _methodName470 = "isContestScheduleUsed";
 
-        _methodParameterTypes494 = new String[] { "long" };
+        _methodParameterTypes470 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class ContestScheduleLocalServiceClpInvoker {
             return ContestScheduleLocalServiceUtil.updateContestSchedule((com.ext.portlet.model.ContestSchedule) arguments[0]);
         }
 
-        if (_methodName488.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes488, parameterTypes)) {
+        if (_methodName464.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes464, parameterTypes)) {
             return ContestScheduleLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName489.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes489, parameterTypes)) {
+        if (_methodName465.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes465, parameterTypes)) {
             ContestScheduleLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName494.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes494, parameterTypes)) {
+        if (_methodName470.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes470, parameterTypes)) {
             return ContestScheduleLocalServiceUtil.isContestScheduleUsed(((Long) arguments[0]).longValue());
         }
 

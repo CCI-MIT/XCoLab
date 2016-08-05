@@ -1,15 +1,3 @@
-create index IX_XCOLAB_MEMBERS_CREATE_DATE on members_Member (createDate, modifiedDate);
-create unique index IX_XCOLAB_MEMBERS_EMAIL_ADDRESS on members_Member (emailAddress);
-create index IX_XCOLAB_MEMBERS_FACEBOOK_ID on members_Member (facebookId);
-create index IX_XCOLAB_MEMBERS_MODIFIED_DATE on members_Member (modifiedDate);
-create index IX_XCOLAB_MEMBERS_OPEN_ID on members_Member (openId);
-create unique index IX_XCOLAB_MEMBERS_SCREEN_NAME on members_Member (screenName);
-
-create index IX_61FA63BB on xcolab_ActivitySubscription (classNameId, classPK, receiverId);
-create index IX_C2ED8710 on xcolab_ActivitySubscription (classNameId, classPK, type_, extraData(50), receiverId);
-create index IX_1413A2B6 on xcolab_ActivitySubscription (classNameId, classPK, type_, receiverId);
-create index IX_33049EE6 on xcolab_ActivitySubscription (receiverId);
-
 create index IX_1AD9FFEC on xcolab_BalloonLink (balloonUserUuid);
 
 create index IX_CE6BAAA5 on xcolab_BalloonText (enabled);
@@ -70,21 +58,12 @@ create index IX_E0F07F11 on xcolab_ImpactTemplateMaxFocusArea (focusAreaListId);
 create index IX_B3858EE9 on xcolab_MemberCategory (displayName);
 create index IX_8336AE28 on xcolab_MemberCategory (showInList);
 
-create index IX_9DF5C6F0 on xcolab_Message (fromId);
-
-create index IX_E4B60412 on xcolab_MessageRecipientStatus (messageId);
-create index IX_76FF2A4C on xcolab_MessageRecipientStatus (messageId, userId);
-create index IX_74DCC2DA on xcolab_MessageRecipientStatus (userId);
-create index IX_88CD5CB0 on xcolab_MessageRecipientStatus (userId, archived);
-
 create index IX_2073B48 on xcolab_MessagingIgnoredRecipients (email(50));
 create index IX_19B87BE on xcolab_MessagingIgnoredRecipients (userId);
 
 create index IX_F1E7F5C on xcolab_MessagingMessageConversion (messageId, conversionTypeId);
 
 create index IX_15CF71AE on xcolab_MessagingMessageConversionType (name(50));
-
-create index IX_F504493F on xcolab_MessagingUserPreferences (userId);
 
 create index IX_C4F6226E on xcolab_ModelDiscussion (categoryId);
 create index IX_72D6F073 on xcolab_ModelDiscussion (modelId);

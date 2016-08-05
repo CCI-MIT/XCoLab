@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.ext.portlet.service.ActivitySubscriptionLocalService" class="com.ext.portlet.service.impl.ActivitySubscriptionLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ActivitySubscriptionService" class="com.ext.portlet.service.impl.ActivitySubscriptionServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ActivitySubscriptionPersistence" class="com.ext.portlet.service.persistence.ActivitySubscriptionPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.AnalyticsUserEventLocalService" class="com.ext.portlet.service.impl.AnalyticsUserEventLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.AnalyticsUserEventService" class="com.ext.portlet.service.impl.AnalyticsUserEventServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.AnalyticsUserEventPersistence" class="com.ext.portlet.service.persistence.AnalyticsUserEventPersistenceImpl" parent="basePersistence" />
@@ -94,12 +91,6 @@
 	<bean id="com.ext.portlet.service.MemberCategoryLocalService" class="com.ext.portlet.service.impl.MemberCategoryLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.MemberCategoryService" class="com.ext.portlet.service.impl.MemberCategoryServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.MemberCategoryPersistence" class="com.ext.portlet.service.persistence.MemberCategoryPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessageLocalService" class="com.ext.portlet.service.impl.MessageLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessageService" class="com.ext.portlet.service.impl.MessageServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessagePersistence" class="com.ext.portlet.service.persistence.MessagePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessageRecipientStatusLocalService" class="com.ext.portlet.service.impl.MessageRecipientStatusLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessageRecipientStatusService" class="com.ext.portlet.service.impl.MessageRecipientStatusServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessageRecipientStatusPersistence" class="com.ext.portlet.service.persistence.MessageRecipientStatusPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsLocalService" class="com.ext.portlet.service.impl.MessagingIgnoredRecipientsLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsService" class="com.ext.portlet.service.impl.MessagingIgnoredRecipientsServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence" class="com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistenceImpl" parent="basePersistence" />
@@ -118,9 +109,6 @@
 	<bean id="com.ext.portlet.service.MessagingRedirectLinkLocalService" class="com.ext.portlet.service.impl.MessagingRedirectLinkLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.MessagingRedirectLinkService" class="com.ext.portlet.service.impl.MessagingRedirectLinkServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence" class="com.ext.portlet.service.persistence.MessagingRedirectLinkPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessagingUserPreferencesLocalService" class="com.ext.portlet.service.impl.MessagingUserPreferencesLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessagingUserPreferencesService" class="com.ext.portlet.service.impl.MessagingUserPreferencesServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence" class="com.ext.portlet.service.persistence.MessagingUserPreferencesPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ModelCategoryLocalService" class="com.ext.portlet.service.impl.ModelCategoryLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ModelCategoryService" class="com.ext.portlet.service.impl.ModelCategoryServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ModelCategoryPersistence" class="com.ext.portlet.service.persistence.ModelCategoryPersistenceImpl" parent="basePersistence" />

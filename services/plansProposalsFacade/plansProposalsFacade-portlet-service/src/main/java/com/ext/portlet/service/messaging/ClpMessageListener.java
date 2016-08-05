@@ -1,7 +1,5 @@
 package com.ext.portlet.service.messaging;
 
-import com.ext.portlet.service.ActivitySubscriptionLocalServiceUtil;
-import com.ext.portlet.service.ActivitySubscriptionServiceUtil;
 import com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil;
 import com.ext.portlet.service.AnalyticsUserEventServiceUtil;
 import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
@@ -63,10 +61,6 @@ import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.portlet.service.LoginLogServiceUtil;
 import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
 import com.ext.portlet.service.MemberCategoryServiceUtil;
-import com.ext.portlet.service.MessageLocalServiceUtil;
-import com.ext.portlet.service.MessageRecipientStatusLocalServiceUtil;
-import com.ext.portlet.service.MessageRecipientStatusServiceUtil;
-import com.ext.portlet.service.MessageServiceUtil;
 import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.portlet.service.MessagingIgnoredRecipientsServiceUtil;
 import com.ext.portlet.service.MessagingMessageConversionLocalServiceUtil;
@@ -79,8 +73,6 @@ import com.ext.portlet.service.MessagingMessageRecipientServiceUtil;
 import com.ext.portlet.service.MessagingMessageServiceUtil;
 import com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil;
 import com.ext.portlet.service.MessagingRedirectLinkServiceUtil;
-import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
-import com.ext.portlet.service.MessagingUserPreferencesServiceUtil;
 import com.ext.portlet.service.ModelCategoryLocalServiceUtil;
 import com.ext.portlet.service.ModelCategoryServiceUtil;
 import com.ext.portlet.service.ModelDiscussionLocalServiceUtil;
@@ -170,9 +162,6 @@ public class ClpMessageListener extends BaseMessageListener {
 
         if (command.equals("undeploy") &&
                 servletContextName.equals(getServletContextName())) {
-            ActivitySubscriptionLocalServiceUtil.clearService();
-
-            ActivitySubscriptionServiceUtil.clearService();
             AnalyticsUserEventLocalServiceUtil.clearService();
 
             AnalyticsUserEventServiceUtil.clearService();
@@ -263,12 +252,6 @@ public class ClpMessageListener extends BaseMessageListener {
             MemberCategoryLocalServiceUtil.clearService();
 
             MemberCategoryServiceUtil.clearService();
-            MessageLocalServiceUtil.clearService();
-
-            MessageServiceUtil.clearService();
-            MessageRecipientStatusLocalServiceUtil.clearService();
-
-            MessageRecipientStatusServiceUtil.clearService();
             MessagingIgnoredRecipientsLocalServiceUtil.clearService();
 
             MessagingIgnoredRecipientsServiceUtil.clearService();
@@ -287,9 +270,6 @@ public class ClpMessageListener extends BaseMessageListener {
             MessagingRedirectLinkLocalServiceUtil.clearService();
 
             MessagingRedirectLinkServiceUtil.clearService();
-            MessagingUserPreferencesLocalServiceUtil.clearService();
-
-            MessagingUserPreferencesServiceUtil.clearService();
             ModelCategoryLocalServiceUtil.clearService();
 
             ModelCategoryServiceUtil.clearService();

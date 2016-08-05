@@ -2,7 +2,6 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-lazy="false" auto-import="false">
-	<import class="com.ext.portlet.model.ActivitySubscription" />
 	<import class="com.ext.portlet.model.AnalyticsUserEvent" />
 	<import class="com.ext.portlet.model.BalloonLink" />
 	<import class="com.ext.portlet.model.BalloonStatsEntry" />
@@ -33,15 +32,12 @@
 	<import class="com.ext.portlet.model.LandingPage" />
 	<import class="com.ext.portlet.model.LoginLog" />
 	<import class="com.ext.portlet.model.MemberCategory" />
-	<import class="com.ext.portlet.model.Message" />
-	<import class="com.ext.portlet.model.MessageRecipientStatus" />
 	<import class="com.ext.portlet.model.MessagingIgnoredRecipients" />
 	<import class="com.ext.portlet.model.MessagingMessage" />
 	<import class="com.ext.portlet.model.MessagingMessageConversion" />
 	<import class="com.ext.portlet.model.MessagingMessageConversionType" />
 	<import class="com.ext.portlet.model.MessagingMessageRecipient" />
 	<import class="com.ext.portlet.model.MessagingRedirectLink" />
-	<import class="com.ext.portlet.model.MessagingUserPreferences" />
 	<import class="com.ext.portlet.model.ModelCategory" />
 	<import class="com.ext.portlet.model.ModelDiscussion" />
 	<import class="com.ext.portlet.model.ModelGlobalPreference" />
@@ -78,20 +74,6 @@
 	<import class="com.ext.portlet.model.TrackedVisit" />
 	<import class="com.ext.portlet.model.TrackedVisitor2User" />
 	<import class="com.ext.portlet.model.Xcolab_User" />
-	<class name="com.ext.portlet.model.impl.ActivitySubscriptionImpl" table="xcolab_ActivitySubscription">
-		<cache usage="read-write" />
-		<id name="pk" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="type_" />
-		<property name="automaticSubscriptionCounter" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="extraData" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="receiverId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-	</class>
 	<class name="com.ext.portlet.model.impl.AnalyticsUserEventImpl" table="xcolab_AnalyticsUserEvent">
 		<cache usage="read-write" />
 		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.AnalyticsUserEventPK">
@@ -465,27 +447,6 @@
 		<property name="imageName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.ext.portlet.model.impl.MessageImpl" table="xcolab_Message">
-		<cache usage="read-write" />
-		<id name="messageId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="fromId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="repliesTo" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="subject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.MessageRecipientStatusImpl" table="xcolab_MessageRecipientStatus">
-		<cache usage="read-write" />
-		<id name="messageRecipientId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="opened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="archived" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
 	<class name="com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl" table="xcolab_MessagingIgnoredRecipients">
 		<cache usage="read-write" />
 		<id name="ignoredRecipientId" type="long">
@@ -550,17 +511,6 @@
 		<property name="link" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="messageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.MessagingUserPreferencesImpl" table="xcolab_MessagingUserPreferences">
-		<cache usage="read-write" />
-		<id name="messagingPreferencesId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="emailOnSend" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="emailOnReceipt" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="emailOnActivity" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="emailActivityDailyDigest" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.ModelCategoryImpl" table="xcolab_ModelCategory">
 		<cache usage="read-write" />

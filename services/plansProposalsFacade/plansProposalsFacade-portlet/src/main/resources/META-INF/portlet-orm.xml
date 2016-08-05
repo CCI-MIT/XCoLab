@@ -7,29 +7,6 @@
 			<access>PROPERTY</access>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
-	<mapped-superclass class="com.ext.portlet.model.impl.ActivitySubscriptionModelImpl">
-		<attributes>
-			<id name="pk" />
-			<basic name="classNameId" />
-			<basic name="classPK" />
-			<basic name="type">
-				<column name="TYPE_" />
-			</basic>
-			<basic name="automaticSubscriptionCounter" />
-			<basic name="extraData" />
-			<basic name="receiverId" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="modifiedDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="className" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.AnalyticsUserEventModelImpl">
 		<id-class class="com.ext.portlet.service.persistence.AnalyticsUserEventPK" />
 		<attributes>
@@ -540,34 +517,6 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.MessageModelImpl">
-		<attributes>
-			<id name="messageId" />
-			<basic name="fromId" />
-			<basic name="repliesTo" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="subject" />
-			<basic name="content" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.MessageRecipientStatusModelImpl">
-		<attributes>
-			<id name="messageRecipientId" />
-			<basic name="messageId" />
-			<basic name="userId" />
-			<basic name="opened" />
-			<basic name="archived" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl">
 		<attributes>
 			<id name="ignoredRecipientId" />
@@ -655,20 +604,6 @@
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.MessagingUserPreferencesModelImpl">
-		<attributes>
-			<id name="messagingPreferencesId" />
-			<basic name="userId" />
-			<basic name="emailOnSend" />
-			<basic name="emailOnReceipt" />
-			<basic name="emailOnActivity" />
-			<basic name="emailActivityDailyDigest" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ModelCategoryModelImpl">
@@ -1235,10 +1170,6 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<entity class="com.ext.portlet.model.impl.ActivitySubscriptionImpl" name="ActivitySubscription">
-		<table name="xcolab_ActivitySubscription" />
-		<attributes />
-	</entity>
 	<entity class="com.ext.portlet.model.impl.AnalyticsUserEventImpl" name="AnalyticsUserEvent">
 		<table name="xcolab_AnalyticsUserEvent" />
 		<attributes />
@@ -1359,14 +1290,6 @@
 		<table name="xcolab_MemberCategory" />
 		<attributes />
 	</entity>
-	<entity class="com.ext.portlet.model.impl.MessageImpl" name="Message">
-		<table name="xcolab_Message" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.MessageRecipientStatusImpl" name="MessageRecipientStatus">
-		<table name="xcolab_MessageRecipientStatus" />
-		<attributes />
-	</entity>
 	<entity class="com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl" name="MessagingIgnoredRecipients">
 		<table name="xcolab_MessagingIgnoredRecipients" />
 		<attributes />
@@ -1389,10 +1312,6 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.MessagingRedirectLinkImpl" name="MessagingRedirectLink">
 		<table name="xcolab_MessagingRedirectLink" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.MessagingUserPreferencesImpl" name="MessagingUserPreferences">
-		<table name="xcolab_MessagingUserPreferences" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ModelCategoryImpl" name="ModelCategory">
