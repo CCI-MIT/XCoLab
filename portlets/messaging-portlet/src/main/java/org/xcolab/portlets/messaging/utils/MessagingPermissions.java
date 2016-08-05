@@ -1,9 +1,6 @@
 package org.xcolab.portlets.messaging.utils;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.members.PermissionsClient;
@@ -15,14 +12,13 @@ import javax.portlet.PortletRequest;
 
 public class MessagingPermissions {
 
-    private final User user;
+    private final long memberId;
     private MessageBean message;
     private Boolean isRecipient;
 
     public MessagingPermissions(PortletRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-        user = themeDisplay.getUser();
+        memberId = themeDisplay.getUser().getUserId();
     }
 
     public MessagingPermissions(PortletRequest request, MessageBean message) {
@@ -31,22 +27,18 @@ public class MessagingPermissions {
     }
 
     public boolean getCanSendMessage() {
-        try {
-            return MessageLimitManager.canSendMessages(1, user) || getCanAdminAll();
-        } catch (PortalException | SystemException e) {
-            return getCanAdminAll();
-        }
+        return MessageLimitManager.canSendMessages(1, memberId) || getCanAdminAll();
     }
 
     public boolean getCanViewMessage() {
-        return message.getFrom().getUserId() == user.getUserId()
+        return message.getFrom().getUserId() == memberId
                 || isRecipient();
     }
 
     public boolean isRecipient() {
         if (isRecipient == null) {
             for (Member recipient : message.getTo()) {
-                if (recipient.getId_() == user.getUserId()) {
+                if (recipient.getId_() == memberId) {
                     isRecipient = true;
                     return true;
                 }
@@ -56,14 +48,7 @@ public class MessagingPermissions {
         return isRecipient;
     }
 
-    /**
-     * Returns true if user is admin (not only proposal contributor)
-     */
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(user.getUserId());
-    }
-
-    public User getUser() {
-        return user;
+        return PermissionsClient.canAdminAll(memberId);
     }
 }

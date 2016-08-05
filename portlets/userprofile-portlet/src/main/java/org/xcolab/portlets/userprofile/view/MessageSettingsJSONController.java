@@ -1,8 +1,5 @@
 package org.xcolab.portlets.userprofile.view;
 
-import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.MessagingUserPreferences;
-import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -13,16 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
-
-import java.io.IOException;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
 
-/**
- * Created by Thomas on 1/12/2015.
- */
 @Controller
 @RequestMapping("view")
 public class MessageSettingsJSONController extends JSONHelper {
@@ -30,12 +24,9 @@ public class MessageSettingsJSONController extends JSONHelper {
     public MessageSettingsJSONController() { }
 
     @ResourceMapping("updateUserSendEmailOnMessageSettings")
-    public
-    @ResponseBody
-    void handleUpdateUserSendEmailOnMessageSettingAJAXRequest(
-            PortletRequest request,
-            ResourceResponse response,
-            @RequestParam("messageSetting") String messageSettingParameter) throws IOException {
+    public @ResponseBody void handleUpdateUserSendEmailOnMessageSettingAJAXRequest(
+            PortletRequest request, ResourceResponse response,
+            @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
         boolean result = updateSendEmailOnMessageSettings(request, messageSetting);
@@ -52,21 +43,16 @@ public class MessageSettingsJSONController extends JSONHelper {
         return true;
     }
 
-    private void updateUserSendEmailOnMessagePreferences(User user, boolean setting) throws SystemException {
-        //TODO: port to messaging service
-        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
-        prefs.setEmailOnReceipt(setting);
-        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+    private void updateUserSendEmailOnMessagePreferences(User user, boolean setting) {
+        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(user.getUserId());
+        preferences.setEmailOnReceipt(setting);
+        MessagingClient.updateMessagingPreferences(preferences);
     }
 
     @ResourceMapping("updateUserSendEmailOnActivitySettings")
-    public
-    @ResponseBody
-    void handleUpdateUserSendEmailOnActivityAJAXRequest(
-            PortletRequest request,
-            ResourceResponse response,
-            @RequestParam("messageSetting") String messageSettingParameter
-    ) throws IOException {
+    public @ResponseBody void handleUpdateUserSendEmailOnActivityAJAXRequest(
+            PortletRequest request, ResourceResponse response,
+            @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
         boolean result = updateSendEmailOnActivitySettings(request, messageSetting);
@@ -86,32 +72,22 @@ public class MessageSettingsJSONController extends JSONHelper {
         return true;
     }
 
-    private void updateUserSendEmailOnActivityPreferences(User user, boolean setting) throws SystemException {
-
-        //TODO: port to messaging service
-        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
-        prefs.setEmailOnActivity(setting);
-        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-
+    private void updateUserSendEmailOnActivityPreferences(User user, boolean setting) {
+        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(user.getUserId());
+        preferences.setEmailOnActivity(setting);
+        MessagingClient.updateMessagingPreferences(preferences);
     }
 
-    private void updateUserSendDailyEmailOnActivityPreferences(User user, boolean setting) throws SystemException {
-
-        //TODO: port to messaging service
-        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
-        prefs.setEmailActivityDailyDigest(setting);
-        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-
+    private void updateUserSendDailyEmailOnActivityPreferences(User user, boolean setting) {
+        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(user.getUserId());
+        preferences.setEmailActivityDailyDigest(setting);
+        MessagingClient.updateMessagingPreferences(preferences);
     }
 
     @ResourceMapping("updateUserSendDailyEmailOnActivitySettings")
-    public
-    @ResponseBody
-    void handleUpdateUserSendDailyEmailOnActivityAJAXRequest(
-            PortletRequest request,
-            ResourceResponse response,
-            @RequestParam("messageSetting") String messageSettingParameter)
-            throws PortalException, SystemException, IOException {
+    public @ResponseBody void handleUpdateUserSendDailyEmailOnActivityAJAXRequest(
+            PortletRequest request, ResourceResponse response,
+            @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
         boolean result = updateSendDailyEmailOnActivitySettings(request, messageSetting);

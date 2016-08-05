@@ -47,8 +47,7 @@ public class SendMessageBean implements Serializable {
     }
 
     public boolean send(User sender, String baseUri)
-            throws AddressException, SystemException, PortalException, MailEngineException,
-            UnsupportedEncodingException {
+            throws AddressException, MailEngineException, UnsupportedEncodingException {
         //TODO: do we need this?
 //        if (messageHoneypot != null && !messageHoneypot.isEmpty()) {
 //            _log.info("Message was not sent because honeypot was filled - text: " + messageContent + " honeypot: "

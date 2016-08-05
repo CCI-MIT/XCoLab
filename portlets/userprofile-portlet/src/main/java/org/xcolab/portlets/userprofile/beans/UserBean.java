@@ -1,11 +1,12 @@
 package org.xcolab.portlets.userprofile.beans;
 
-import com.ext.portlet.messaging.MessageUtil;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.portlets.userprofile.validators.UniqueEmail;
 import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.validation.CompareStrings;
@@ -81,9 +82,12 @@ public class UserBean implements Serializable {
 
         imageId = member.getPortraitFileEntryId();
 
-        sendEmailOnMessage = MessageUtil.getMessagingPreferences(member.getId_()).getEmailOnReceipt();
-        sendEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId_()).getEmailOnActivity();
-        sendDailyEmailOnActivity = MessageUtil.getMessagingPreferences(member.getId_()).getEmailActivityDailyDigest();
+        final MessagingUserPreferences messagingPreferences = MessagingClient
+                .getMessagingPreferencesForMember(member.getId_());
+        sendEmailOnMessage = messagingPreferences.getEmailOnReceipt();
+        sendEmailOnActivity = messagingPreferences.getEmailOnActivity();
+        sendDailyEmailOnActivity = messagingPreferences
+                .getEmailActivityDailyDigest();
     }
 
     public String getPortrait() {

@@ -1,25 +1,10 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.model.Message;
-import com.ext.portlet.model.MessageRecipientStatus;
-import com.ext.portlet.service.MessageLocalServiceUtil;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
-import com.liferay.portlet.expando.model.ExpandoColumn;
-import com.liferay.portlet.expando.model.ExpandoColumnConstants;
-import com.liferay.portlet.expando.model.ExpandoTable;
-import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import org.joda.time.DateTime;
-import org.xcolab.enums.ColabConstants;
+
+import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.MessagingUserPreferences;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -33,8 +18,6 @@ import java.util.Map;
  * @author janusz
  */
 public final class MessageLimitManager {
-    private static final String MESSAGES_LIMIT_COLUMN = "messages_limit";
-    private static final String MESSAGE_ENTITY_CLASS_LOADER_CONTEXT = "plansProposalsFacade-portlet";
 
     private static final Map<Long, Object> mutexes = new HashMap<>();
 	private static final int MESSAGES_DAILY_LIMIT = 15;
@@ -48,56 +31,24 @@ public final class MessageLimitManager {
      * 
      * @param messagesToSend
      *            number of messages that user wants to send
-     * @throws com.liferay.portal.kernel.exception.PortalException
-     *             in case of LR error
-     * @throws com.liferay.portal.kernel.exception.SystemException
-     *             in case of LR error
      */
-    public static boolean canSendMessages(int messagesToSend, User user) throws PortalException, SystemException {
-        // synchronize on senderId
-        synchronized (getMutex(user.getUserId())) {
+    public static boolean canSendMessages(int messagesToSend, long memberId) {
+        synchronized (getMutex(memberId)) {
 
-            // ensure that expando column has been created
-            ExpandoColumn column = null;
-            try {
-                column = ExpandoColumnLocalServiceUtil.getColumn(ColabConstants.COLAB_COMPANY_ID, User.class.getName(),
-                        CommunityConstants.EXPANDO, MESSAGES_LIMIT_COLUMN);
-            } catch (SystemException ignored) { }
-            if (column == null) {
+            MessagingUserPreferences messagingPreferences = MessagingClient.getMessagingPreferencesForMember(memberId);
 
-                ExpandoTable table = ExpandoTableLocalServiceUtil.getTable(ColabConstants.COLAB_COMPANY_ID, User.class.getName(),
-                        CommunityConstants.EXPANDO);
-                ExpandoColumnLocalServiceUtil.addColumn(table.getTableId(), MESSAGES_LIMIT_COLUMN,
-                        ExpandoColumnConstants.INTEGER);
-            }
-            // get messagesLimit from expando table (if exists)
-            Integer messagesLimit = ExpandoValueLocalServiceUtil.getData(ColabConstants.COLAB_COMPANY_ID, User.class.getName(),
-                    CommunityConstants.EXPANDO, MESSAGES_LIMIT_COLUMN, user.getUserId(), -1);
-
-            if (messagesLimit < 0) {
-                // limit not defined in expando table, fetch it from properties
-                // file
+            int messagesLimit;
+            if (messagingPreferences.getDailyMessageLimit() != null) {
+                messagesLimit = messagingPreferences.getDailyMessageLimit();
+            } else {
                 messagesLimit = MESSAGES_DAILY_LIMIT;
             }
 
-            // count messages that user has already sent today
-
-            ClassLoader portletClassLoader = (ClassLoader) PortletBeanLocatorUtil.locate(
-                    MESSAGE_ENTITY_CLASS_LOADER_CONTEXT, "portletClassLoader");
-
             Calendar c = Calendar.getInstance();
             c.add(Calendar.DATE, -1);
+            final Date yesterday = c.getTime();
 
-            DynamicQuery messagesQuery = DynamicQueryFactoryUtil.forClass(Message.class, portletClassLoader);
-            messagesQuery.add(PropertyFactoryUtil.forName("fromId").eq(user.getUserId()));
-            messagesQuery.add(PropertyFactoryUtil.forName("createDate").gt(c.getTime()));
-
-            DynamicQuery messageRecipientsQuery = DynamicQueryFactoryUtil.forClass(MessageRecipientStatus.class,
-                    portletClassLoader);
-            messageRecipientsQuery.add(PropertyFactoryUtil.forName("messageId").in(
-                    messagesQuery.setProjection(ProjectionFactoryUtil.property("messageId"))));
-
-            long count = MessageLocalServiceUtil.dynamicQueryCount(messageRecipientsQuery);
+            long count = MessagingClient.getMessageCountForMemberSinceDate(memberId, yesterday);
 
             return messagesLimit >= count + messagesToSend;
         }

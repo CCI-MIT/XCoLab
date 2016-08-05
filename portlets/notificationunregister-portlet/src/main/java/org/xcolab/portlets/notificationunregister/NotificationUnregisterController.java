@@ -1,31 +1,28 @@
 package org.xcolab.portlets.notificationunregister;
 
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.MessagingIgnoredRecipients;
-import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
-import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
 import com.ext.utils.NotificationUnregisterUtils;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MessagingUserPreferences;
 
 import java.util.Date;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-
-//import javax.validation.Validator;
 
 @Controller
 @RequestMapping("view")
@@ -113,8 +110,8 @@ public class NotificationUnregisterController {
 }
 
 interface NotificationUnregisterHandler {
-    public void unregister(Member user) throws SystemException;
-    public String getSuccessResponse();
+    void unregister(Member user) throws SystemException;
+    String getSuccessResponse();
 }
 
 class MassmessagingNotificationUnregisterHandler implements NotificationUnregisterHandler {
@@ -161,11 +158,12 @@ class ActivityDailyDigestNotificationUnregisterHandler implements NotificationUn
                     "and select the “Manage” button underneath “Subscribed Activity” on the righthand side.";
 
     @Override
-    public void unregister(Member user) throws SystemException {
-        MessagingUserPreferences prefs = MessageUtil.getMessagingPreferences(user.getUserId());
-        prefs.setEmailActivityDailyDigest(false);
-        prefs.setEmailOnActivity(false);
-        MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
+    public void unregister(Member member) {
+        final MessagingUserPreferences preferences = MessagingClient
+                .getMessagingPreferencesForMember(member.getUserId());
+        preferences.setEmailActivityDailyDigest(false);
+        preferences.setEmailOnActivity(false);
+        MessagingClient.updateMessagingPreferences(preferences);
     }
 
     @Override

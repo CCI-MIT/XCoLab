@@ -3,16 +3,20 @@ package org.xcolab.client.members;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 public final class MessagingClient {
 
-    private static final RestService membersService = new RestService("members-service");
-    private static final RestResource<Message> messageResource = new RestResource<>(membersService,
+    private static final RestService memberService = new RestService("members-service");
+    private static final RestResource<Member> memberResource = new RestResource<>(memberService,
+            "members", Member.TYPES);
+    private static final RestResource<Message> messageResource = new RestResource<>(memberService,
             "messages", Message.TYPES);
 
     private MessagingClient() { }
@@ -43,6 +47,13 @@ public final class MessagingClient {
         return messageResource.count()
                 .queryParam("recipientId", userId)
                 .queryParam("isArchived", isArchived)
+                .execute();
+    }
+
+    public static int getMessageCountForMemberSinceDate(long memberId, Date sinceDate) {
+        return messageResource.count()
+                .queryParam("recipientId", memberId)
+                .queryParam("sinceDate", sinceDate)
                 .execute();
     }
 
@@ -91,5 +102,30 @@ public final class MessagingClient {
                 .queryParam("memberId", memberId)
                 .queryParam("isOpened", isOpened)
                 .put();
+    }
+
+    public static MessagingUserPreferences getMessagingPreferencesForMember(long memberId) {
+        return memberResource
+                .getSubRestResource(memberId, "messagingPreferences", MessagingUserPreferences.TYPES)
+                .get(memberId)
+                .executeUnchecked();
+    }
+
+    public static MessagingUserPreferences createMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {
+        return memberResource
+                .getSubRestResource(messagingUserPreferences.getUserId(), "messagingPreferences", MessagingUserPreferences.TYPES)
+                .create(messagingUserPreferences)
+                .execute();
+    }
+
+    public static boolean updateMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {
+        if (messagingUserPreferences.getMessagingPreferencesId() == null) {
+            createMessagingPreferences(messagingUserPreferences);
+            return true;
+        }
+        return memberResource
+                .getSubRestResource(messagingUserPreferences.getUserId(), "messagingPreferences", MessagingUserPreferences.TYPES)
+                .update(messagingUserPreferences, messagingUserPreferences.getMessagingPreferencesId())
+                .execute();
     }
 }

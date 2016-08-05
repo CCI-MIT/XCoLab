@@ -5,6 +5,7 @@ import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +13,10 @@ public interface MessageDao {
 
     Message getMessage(long messageId) throws NotFoundException;
 
-    int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened);
+    int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate);
 
     List<Message> findByGiven(PaginationHelper paginationHelper, Long senderId, Long recipientId,
-            Boolean isArchived, Boolean isOpened);
+            Boolean isArchived, Boolean isOpened, Timestamp sinceDate);
 
     List<Member> getRecipients(long messageId);
 

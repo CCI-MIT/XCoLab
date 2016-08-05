@@ -16,6 +16,7 @@ import org.xcolab.service.members.wrappers.MessageReceived;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened) {
+    public int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(MESSAGE).getQuery();
 
@@ -61,13 +62,16 @@ public class MessageDaoImpl implements MessageDao {
         if (isOpened != null) {
             query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpened));
         }
+        if (sinceDate != null) {
+            query.addConditions(MESSAGE.CREATE_DATE.gt(sinceDate));
+        }
 
         return query.fetchOne(0, Integer.class);
     }
 
     @Override
     public List<Message> findByGiven(PaginationHelper paginationHelper,
-            Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened) {
+            Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MESSAGE).getQuery();
 
@@ -85,6 +89,9 @@ public class MessageDaoImpl implements MessageDao {
         }
         if (isOpened != null) {
             query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpened));
+        }
+        if (sinceDate != null) {
+            query.addConditions(MESSAGE.CREATE_DATE.gt(sinceDate));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
