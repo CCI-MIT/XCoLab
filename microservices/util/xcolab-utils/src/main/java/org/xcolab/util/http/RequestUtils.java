@@ -165,8 +165,7 @@ public final class RequestUtils {
         }
 
         try {
-            final HttpHeaders httpHeaders = restTemplate
-                    .headForHeaders(uriBuilder.buildString());
+            final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.buildString());
             final List<String> countHeaders = httpHeaders.get("X-Total-Count");
             if (countHeaders.isEmpty()) {
                 return 0;
