@@ -24,14 +24,22 @@ import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.mail.internet.InternetAddress;
 
@@ -82,14 +90,14 @@ public class ActivitySubscriptionEmailHelper {
 
         //to ease debug please leave it here
 
-       /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            lastEmailNotification = sdf.parse("2016-07-09 00:00:00");
-            lastDailyEmailNotification = sdf.parse("2016-07-09 00:00:00");
+            lastEmailNotification = sdf.parse("2016-08-01 00:00:00");
+            lastDailyEmailNotification = sdf.parse("2016-08-01 00:00:00");
         } catch (ParseException e) {
             lastEmailNotification = new Date();
-        }
-        */
+        }*/
+
 
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
@@ -166,35 +174,40 @@ public class ActivitySubscriptionEmailHelper {
         ComparatorChain comparatorChain = new ComparatorChain();
         comparatorChain.addComparator(socialActivityClassIdComparator);
         comparatorChain.addComparator(socialActivityCreateDateComparator);
-
-        Collections.sort(userDigestActivities, comparatorChain);
         StringBuilder body = new StringBuilder();
-        body.append(StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)));
-        body.append("<br/><br/>");
+        try {
+            Collections.sort(userDigestActivities, comparatorChain);
 
-        for (ActivityEntry socialActivity : userDigestActivities) {
-            //prevent null pointer exceptions which might happen at this point
-            if (socialActivity == null || serviceContext == null || serviceContext.getRequest() == null || serviceContext.getRequest().getAttribute(WebKeys.THEME_DISPLAY) == null) {
-                continue;
-            }
-            if(socialActivity.getPrimaryType().equals(ActivityEntryType.DISCUSSION.getPrimaryTypeId())){
-                try{
-                    StringBuilder bodyWithComment = new StringBuilder();
-                    bodyWithComment.append(socialActivity.getActivityEntryBody());
-                    bodyWithComment.append("<br><br><div style='margin-left:20px;>");
-                    bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
-                    Comment comment = CommentClient.getComment(socialActivity.getClassPrimaryKey());
-                    bodyWithComment.append(comment.getContent());
-                    bodyWithComment.append("</div></div>");
-                    body.append("<div style='margin-left: 10px'>").append(bodyWithComment.toString()).append("</div><br/><br/>");
-                }catch(CommentNotFoundException ex){
+            body.append(StringUtil.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, dateToDateString(lastDailyEmailNotification)));
+            body.append("<br/><br/>");
+
+            for (ActivityEntry socialActivity : userDigestActivities) {
+                //prevent null pointer exceptions which might happen at this point
+                if (socialActivity == null || serviceContext == null || serviceContext.getRequest() == null || serviceContext.getRequest().getAttribute(WebKeys.THEME_DISPLAY) == null) {
+                    continue;
+                }
+                if (socialActivity.getPrimaryType().equals(ActivityEntryType.DISCUSSION.getPrimaryTypeId())) {
+                    try {
+                        StringBuilder bodyWithComment = new StringBuilder();
+                        bodyWithComment.append(socialActivity.getActivityEntryBody());
+                        bodyWithComment.append("<br><br><div style='margin-left:20px;>");
+                        bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
+                        Long commentId = new Long(socialActivity.getExtraData());
+                        Comment comment = CommentClient.getComment(commentId);
+                        bodyWithComment.append(comment.getContent());
+                        bodyWithComment.append("</div></div>");
+                        body.append("<div style='margin-left: 10px'>").append(bodyWithComment.toString()).append("</div><br/><br/>");
+                    } catch (CommentNotFoundException ex) {
+                        body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
+                    }
+
+                } else {
                     body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
                 }
 
-            }else{
-                body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
             }
-
+        }catch(java.lang.IllegalArgumentException comparatorFailed){
+            _log.debug("Comparator failed " + comparatorFailed.getLocalizedMessage());
         }
         return body.toString();
     }
