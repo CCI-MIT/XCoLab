@@ -23,7 +23,7 @@ public class Member implements Serializable {
 
     private static final long serialVersionUID = 343994517;
 
-    private Long id_;
+    private long id_;
     private String screenName;
     private String emailAddress;
     private Timestamp createDate;
@@ -40,7 +40,7 @@ public class Member implements Serializable {
     private Timestamp loginDate;
     private Integer status;
     private int reportKarma;
-    private Long portraitfileentryid;
+    private Long portraitFileEntryId;
 
     public Member() {
     }
@@ -62,20 +62,20 @@ public class Member implements Serializable {
         this.loginDate = value.loginDate;
         this.status = value.status;
         this.reportKarma = value.reportKarma;
-        this.portraitfileentryid = value.portraitfileentryid;
+        this.portraitFileEntryId = value.portraitFileEntryId;
     }
 
-    public Long getId_() {
+    public long getId_() {
         return this.id_;
     }
 
     //For liferay/jsp compatibility
     @JsonIgnore
-    public Long getUserId() {
+    public long getUserId() {
         return this.id_;
     }
 
-    public void setId_(Long id_) {
+    public void setId_(long id_) {
         this.id_ = id_;
     }
 
@@ -192,11 +192,11 @@ public class Member implements Serializable {
     }
 
     public Long getPortraitFileEntryId() {
-        return this.portraitfileentryid;
+        return this.portraitFileEntryId;
     }
 
     public void setPortraitFileEntryId(Long portraitfileentryid) {
-        this.portraitfileentryid = portraitfileentryid;
+        this.portraitFileEntryId = portraitfileentryid;
     }
 
     @JsonIgnore
@@ -259,19 +259,13 @@ public class Member implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Member)) {
-            return false;
-        }
-        if (((Member) obj).getId_() == this.getId_()) {
-            return true;
-        } else {
-            return false;
-        }
+        return obj instanceof Member
+                && ((Member) obj).getId_() == this.getId_();
     }
 
 
     @Override
     public int hashCode() {
-        return this.getId_().intValue();
+        return (int) (this.getId_() ^ this.getId_() >>> 32);
     }
 }

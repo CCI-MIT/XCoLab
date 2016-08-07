@@ -1,15 +1,13 @@
 package org.xcolab.proposals.events.handlers;
 
-import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
-
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ActivitySubscriptionLocalService;
-import com.ext.portlet.service.ProposalLocalService;
 import com.google.common.eventbus.Subscribe;
-import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
+import org.xcolab.util.enums.activity.ActivityEntryType;
+
+import java.util.List;
 
 
 /**
@@ -20,19 +18,18 @@ import com.liferay.portal.model.User;
  *
  */
 public class SubscribeProposalForAllContestSubscribersEventHandler extends BaseEventHandler {
-
-    @BeanReference(type = ActivitySubscriptionLocalService.class) 
-    private ActivitySubscriptionLocalService activitySubscriptionLocalService;
     
     @Subscribe
-    public void handleProposalCreatedEvent(ProposalAssociatedWithContestPhaseEvent event) throws PortalException, SystemException {
+    public void handleProposalCreatedEvent(ProposalAssociatedWithContestPhaseEvent event) {
         
         long proposalId = event.getProposal().getProposalId();
         long contestId = event.getContestPhase().getContestPK();
-        
-        // autosubscribe all users that have been subscribed to 
-        for (User user: activitySubscriptionLocalService.getSubscribedUsers(Contest.class, contestId)) {
-            proposalLocalService.subscribe(proposalId, user.getUserId(), true);
+
+        final List<ActivitySubscription> activitySubscriptions = ActivitiesClient
+                .getActivitySubscriptions(ActivityEntryType.CONTEST.getPrimaryTypeId(), contestId, null);
+
+        for (ActivitySubscription activitySubscription : activitySubscriptions) {
+            proposalLocalService.subscribe(proposalId, activitySubscription.getReceiverId(), true);
         }
     }
 

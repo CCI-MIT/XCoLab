@@ -1759,7 +1759,6 @@ INSERT INTO ClassName_ (classNameId, value) VALUES
 (32005, 'com.ext.portlet.mass_messaging.model.MessagingRedirectLink'),
 (22701, 'com.ext.portlet.migration.model.MigrationData'),
 (22702, 'com.ext.portlet.migration.model.MigrationMapping'),
-(18601, 'com.ext.portlet.model.ActivitySubscription'),
 (1386201, 'com.ext.portlet.model.AnalyticsUserEvent'),
 (1424801, 'com.ext.portlet.model.BalloonLink'),
 (1238402, 'com.ext.portlet.model.BalloonStatsEntry'),

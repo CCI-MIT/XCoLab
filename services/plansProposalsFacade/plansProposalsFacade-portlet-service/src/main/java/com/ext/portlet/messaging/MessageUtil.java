@@ -1,10 +1,5 @@
 package com.ext.portlet.messaging;
 
-import com.ext.portlet.model.MessagingUserPreferences;
-import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
@@ -21,7 +16,6 @@ import org.xcolab.client.members.legacy.enums.MessageConstants;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.TemplateReplacementUtil;
 
@@ -70,12 +64,11 @@ public final class MessageUtil {
 
     public static boolean checkLimitAndSendMessage(String subject, String content,
             User fromUser, Collection<Long> recipientIds)
-            throws AddressException, PortalException, MailEngineException,
-            SystemException, UnsupportedEncodingException {
+            throws MailEngineException, UnsupportedEncodingException, AddressException {
         Long fromId = fromUser.getUserId();
         synchronized (MessageLimitManager.getMutex(fromId)) {
             // Send a validation problem mail to patrick if the daily limit is reached for a user
-            if (!MessageLimitManager.canSendMessages(recipientIds.size(), fromUser)) {
+            if (!MessageLimitManager.canSendMessages(recipientIds.size(), fromId)) {
                 _log.warn("User exceeded validation limit " + fromId);
 
                 // Only send the email once in 24h!
@@ -107,37 +100,13 @@ public final class MessageUtil {
             try {
                 Member recipient = MembersClient.getMember(memberId);
                 MessagingClient.createRecipient(message.getMessageId(), memberId);
-                if (getMessagingPreferences(memberId).getEmailOnReceipt()) {
+                if (MessagingClient.getMessagingPreferencesForMember(memberId).getEmailOnReceipt()) {
                     copyRecipient(recipient, message);
                 }
             } catch (MemberNotFoundException e) {
                 _log.error("Member " + memberId + ", recipient of message "
                         + message.getMessageId() + ", does not exist");
             }
-        }
-    }
-
-    public static MessagingUserPreferences getMessagingPreferences(long userId) {
-        //TODO: port to service!
-        try {
-            MessagingUserPreferences prefs = MessagingUserPreferencesLocalServiceUtil
-                    .findByUser(userId);
-            if (prefs == null) {
-                long nextId = CounterLocalServiceUtil
-                        .increment(MessagingUserPreferencesLocalServiceUtil.class.getName());
-                prefs = MessagingUserPreferencesLocalServiceUtil
-                        .createMessagingUserPreferences(nextId);
-                prefs.setEmailOnReceipt(true);
-                prefs.setEmailOnSend(false);
-                prefs.setUserId(userId);
-                prefs.setEmailOnActivity(true);
-                prefs.setEmailActivityDailyDigest(true);
-                MessagingUserPreferencesLocalServiceUtil.addMessagingUserPreferences(prefs);
-            }
-
-            return prefs;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
         }
     }
 

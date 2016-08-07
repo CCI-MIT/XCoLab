@@ -1,15 +1,3 @@
-create table xcolab_ActivitySubscription (
-	pk LONG not null primary key,
-	classNameId LONG,
-	classPK LONG,
-	type_ INTEGER,
-	automaticSubscriptionCounter INTEGER,
-	extraData VARCHAR(256) null,
-	receiverId LONG,
-	createDate DATE null,
-	modifiedDate DATE null
-);
-
 create table xcolab_AnalyticsUserEvent (
 	userId LONG not null,
 	idString VARCHAR(75) not null,
@@ -330,23 +318,6 @@ create table xcolab_MemberCategory (
 	description VARCHAR(2048) null
 );
 
-create table xcolab_Message (
-	messageId LONG not null primary key,
-	fromId LONG,
-	repliesTo LONG,
-	createDate DATE null,
-	subject VARCHAR(2048) null,
-	content TEXT null
-);
-
-create table xcolab_MessageRecipientStatus (
-	messageRecipientId LONG not null primary key,
-	messageId LONG,
-	userId LONG,
-	opened BOOLEAN,
-	archived BOOLEAN
-);
-
 create table xcolab_MessagingIgnoredRecipients (
 	ignoredRecipientId LONG not null primary key,
 	email VARCHAR(512) null,
@@ -398,15 +369,6 @@ create table xcolab_MessagingRedirectLink (
 	link VARCHAR(1024) null,
 	messageId LONG,
 	createDate DATE null
-);
-
-create table xcolab_MessagingUserPreferences (
-	messagingPreferencesId LONG not null primary key,
-	userId LONG,
-	emailOnSend BOOLEAN,
-	emailOnReceipt BOOLEAN,
-	emailOnActivity BOOLEAN,
-	emailActivityDailyDigest BOOLEAN
 );
 
 create table xcolab_ModelCategory (
@@ -768,23 +730,4 @@ create table xcolab_TrackedVisitor2User (
 	uuid_ VARCHAR(36) null,
 	userId LONG,
 	createDate DATE null
-);
-
-create table members_Member (
-	id_ BIGINT(20) not null PRIMARY KEY,
-	screenName VARCHAR(42),
-	emailAddress  VARCHAR(75),
-	hashedPassword VARCHAR(75),
-	createDate datetime,
-	modifiedDate datetime,
-	passwordModifiedDate datetime,
-	firstName VARCHAR(75),
-	lastName VARCHAR(75),
-  country VARCHAR(75),
-  shortBio TEXT,
-	facebookId BIGINT(20),
-	openId VARCHAR(255),
-	loginIP VARCHAR(75),
-  loginDate datetime,
-	status int(11) DEFAULT 0
 );

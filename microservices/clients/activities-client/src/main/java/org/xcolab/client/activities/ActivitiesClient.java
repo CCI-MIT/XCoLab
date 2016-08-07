@@ -129,12 +129,16 @@ public final class ActivitiesClient {
                 .getUnchecked();
     }
 
-    public static List<ActivitySubscription> getActivitySubscription(Long classNameId, Long classPK,
+    public static List<ActivitySubscription> getActivitySubscriptions(Long classNameId, Long classPK,
             Long receiverId) {
         return activitySubscriptionResource.list()
-                .queryParam("classNameId", classNameId)
-                .queryParam("classPK", classPK)
-                .queryParam("receiverId", receiverId)
+                .optionalQueryParam("classNameId", classNameId)
+                .optionalQueryParam("classPK", classPK)
+                .optionalQueryParam("receiverId", receiverId)
                 .execute();
+    }
+
+    public static List<ActivitySubscription> getActivitySubscriptionsForMember(Long memberId) {
+        return getActivitySubscriptions(null, null, memberId);
     }
 }

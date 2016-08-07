@@ -139,7 +139,7 @@ public class ProposalPickerFilterUtil {
             long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        List<ActivitySubscription> activitySubscriptions = ActivitiesClient.getActivitySubscription(null, null, userId);
+        List<ActivitySubscription> activitySubscriptions = ActivitiesClient.getActivitySubscriptions(null, null, userId);
 
         for (ActivitySubscription as : activitySubscriptions) {
             if (as.getClassNameId() == ClassNameLocalServiceUtil

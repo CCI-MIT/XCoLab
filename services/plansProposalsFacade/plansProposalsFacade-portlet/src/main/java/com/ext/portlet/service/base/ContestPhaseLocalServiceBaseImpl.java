@@ -2,7 +2,6 @@ package com.ext.portlet.service.base;
 
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestPhaseLocalService;
-import com.ext.portlet.service.persistence.ActivitySubscriptionPersistence;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.BalloonLinkPersistence;
 import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
@@ -33,15 +32,12 @@ import com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
 import com.ext.portlet.service.persistence.LoginLogPersistence;
 import com.ext.portlet.service.persistence.MemberCategoryPersistence;
-import com.ext.portlet.service.persistence.MessagePersistence;
-import com.ext.portlet.service.persistence.MessageRecipientStatusPersistence;
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
 import com.ext.portlet.service.persistence.MessagingMessagePersistence;
 import com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence;
 import com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence;
-import com.ext.portlet.service.persistence.MessagingUserPreferencesPersistence;
 import com.ext.portlet.service.persistence.ModelCategoryPersistence;
 import com.ext.portlet.service.persistence.ModelDiscussionPersistence;
 import com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence;
@@ -119,12 +115,6 @@ import javax.sql.DataSource;
 public abstract class ContestPhaseLocalServiceBaseImpl
     extends BaseLocalServiceImpl implements ContestPhaseLocalService,
         IdentifiableBean {
-    @BeanReference(type = com.ext.portlet.service.ActivitySubscriptionLocalService.class)
-    protected com.ext.portlet.service.ActivitySubscriptionLocalService activitySubscriptionLocalService;
-    @BeanReference(type = com.ext.portlet.service.ActivitySubscriptionService.class)
-    protected com.ext.portlet.service.ActivitySubscriptionService activitySubscriptionService;
-    @BeanReference(type = ActivitySubscriptionPersistence.class)
-    protected ActivitySubscriptionPersistence activitySubscriptionPersistence;
     @BeanReference(type = com.ext.portlet.service.AnalyticsUserEventLocalService.class)
     protected com.ext.portlet.service.AnalyticsUserEventLocalService analyticsUserEventLocalService;
     @BeanReference(type = com.ext.portlet.service.AnalyticsUserEventService.class)
@@ -305,18 +295,6 @@ public abstract class ContestPhaseLocalServiceBaseImpl
     protected com.ext.portlet.service.MemberCategoryService memberCategoryService;
     @BeanReference(type = MemberCategoryPersistence.class)
     protected MemberCategoryPersistence memberCategoryPersistence;
-    @BeanReference(type = com.ext.portlet.service.MessageLocalService.class)
-    protected com.ext.portlet.service.MessageLocalService messageLocalService;
-    @BeanReference(type = com.ext.portlet.service.MessageService.class)
-    protected com.ext.portlet.service.MessageService messageService;
-    @BeanReference(type = MessagePersistence.class)
-    protected MessagePersistence messagePersistence;
-    @BeanReference(type = com.ext.portlet.service.MessageRecipientStatusLocalService.class)
-    protected com.ext.portlet.service.MessageRecipientStatusLocalService messageRecipientStatusLocalService;
-    @BeanReference(type = com.ext.portlet.service.MessageRecipientStatusService.class)
-    protected com.ext.portlet.service.MessageRecipientStatusService messageRecipientStatusService;
-    @BeanReference(type = MessageRecipientStatusPersistence.class)
-    protected MessageRecipientStatusPersistence messageRecipientStatusPersistence;
     @BeanReference(type = com.ext.portlet.service.MessagingIgnoredRecipientsLocalService.class)
     protected com.ext.portlet.service.MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService;
     @BeanReference(type = com.ext.portlet.service.MessagingIgnoredRecipientsService.class)
@@ -353,12 +331,6 @@ public abstract class ContestPhaseLocalServiceBaseImpl
     protected com.ext.portlet.service.MessagingRedirectLinkService messagingRedirectLinkService;
     @BeanReference(type = MessagingRedirectLinkPersistence.class)
     protected MessagingRedirectLinkPersistence messagingRedirectLinkPersistence;
-    @BeanReference(type = com.ext.portlet.service.MessagingUserPreferencesLocalService.class)
-    protected com.ext.portlet.service.MessagingUserPreferencesLocalService messagingUserPreferencesLocalService;
-    @BeanReference(type = com.ext.portlet.service.MessagingUserPreferencesService.class)
-    protected com.ext.portlet.service.MessagingUserPreferencesService messagingUserPreferencesService;
-    @BeanReference(type = MessagingUserPreferencesPersistence.class)
-    protected MessagingUserPreferencesPersistence messagingUserPreferencesPersistence;
     @BeanReference(type = com.ext.portlet.service.ModelCategoryLocalService.class)
     protected com.ext.portlet.service.ModelCategoryLocalService modelCategoryLocalService;
     @BeanReference(type = com.ext.portlet.service.ModelCategoryService.class)
@@ -815,63 +787,6 @@ public abstract class ContestPhaseLocalServiceBaseImpl
     public ContestPhase updateContestPhase(ContestPhase contestPhase)
         throws SystemException {
         return contestPhasePersistence.update(contestPhase);
-    }
-
-    /**
-     * Returns the activity subscription local service.
-     *
-     * @return the activity subscription local service
-     */
-    public com.ext.portlet.service.ActivitySubscriptionLocalService getActivitySubscriptionLocalService() {
-        return activitySubscriptionLocalService;
-    }
-
-    /**
-     * Sets the activity subscription local service.
-     *
-     * @param activitySubscriptionLocalService the activity subscription local service
-     */
-    public void setActivitySubscriptionLocalService(
-        com.ext.portlet.service.ActivitySubscriptionLocalService activitySubscriptionLocalService) {
-        this.activitySubscriptionLocalService = activitySubscriptionLocalService;
-    }
-
-    /**
-     * Returns the activity subscription remote service.
-     *
-     * @return the activity subscription remote service
-     */
-    public com.ext.portlet.service.ActivitySubscriptionService getActivitySubscriptionService() {
-        return activitySubscriptionService;
-    }
-
-    /**
-     * Sets the activity subscription remote service.
-     *
-     * @param activitySubscriptionService the activity subscription remote service
-     */
-    public void setActivitySubscriptionService(
-        com.ext.portlet.service.ActivitySubscriptionService activitySubscriptionService) {
-        this.activitySubscriptionService = activitySubscriptionService;
-    }
-
-    /**
-     * Returns the activity subscription persistence.
-     *
-     * @return the activity subscription persistence
-     */
-    public ActivitySubscriptionPersistence getActivitySubscriptionPersistence() {
-        return activitySubscriptionPersistence;
-    }
-
-    /**
-     * Sets the activity subscription persistence.
-     *
-     * @param activitySubscriptionPersistence the activity subscription persistence
-     */
-    public void setActivitySubscriptionPersistence(
-        ActivitySubscriptionPersistence activitySubscriptionPersistence) {
-        this.activitySubscriptionPersistence = activitySubscriptionPersistence;
     }
 
     /**
@@ -2583,119 +2498,6 @@ public abstract class ContestPhaseLocalServiceBaseImpl
     }
 
     /**
-     * Returns the message local service.
-     *
-     * @return the message local service
-     */
-    public com.ext.portlet.service.MessageLocalService getMessageLocalService() {
-        return messageLocalService;
-    }
-
-    /**
-     * Sets the message local service.
-     *
-     * @param messageLocalService the message local service
-     */
-    public void setMessageLocalService(
-        com.ext.portlet.service.MessageLocalService messageLocalService) {
-        this.messageLocalService = messageLocalService;
-    }
-
-    /**
-     * Returns the message remote service.
-     *
-     * @return the message remote service
-     */
-    public com.ext.portlet.service.MessageService getMessageService() {
-        return messageService;
-    }
-
-    /**
-     * Sets the message remote service.
-     *
-     * @param messageService the message remote service
-     */
-    public void setMessageService(
-        com.ext.portlet.service.MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    /**
-     * Returns the message persistence.
-     *
-     * @return the message persistence
-     */
-    public MessagePersistence getMessagePersistence() {
-        return messagePersistence;
-    }
-
-    /**
-     * Sets the message persistence.
-     *
-     * @param messagePersistence the message persistence
-     */
-    public void setMessagePersistence(MessagePersistence messagePersistence) {
-        this.messagePersistence = messagePersistence;
-    }
-
-    /**
-     * Returns the message recipient status local service.
-     *
-     * @return the message recipient status local service
-     */
-    public com.ext.portlet.service.MessageRecipientStatusLocalService getMessageRecipientStatusLocalService() {
-        return messageRecipientStatusLocalService;
-    }
-
-    /**
-     * Sets the message recipient status local service.
-     *
-     * @param messageRecipientStatusLocalService the message recipient status local service
-     */
-    public void setMessageRecipientStatusLocalService(
-        com.ext.portlet.service.MessageRecipientStatusLocalService messageRecipientStatusLocalService) {
-        this.messageRecipientStatusLocalService = messageRecipientStatusLocalService;
-    }
-
-    /**
-     * Returns the message recipient status remote service.
-     *
-     * @return the message recipient status remote service
-     */
-    public com.ext.portlet.service.MessageRecipientStatusService getMessageRecipientStatusService() {
-        return messageRecipientStatusService;
-    }
-
-    /**
-     * Sets the message recipient status remote service.
-     *
-     * @param messageRecipientStatusService the message recipient status remote service
-     */
-    public void setMessageRecipientStatusService(
-        com.ext.portlet.service.MessageRecipientStatusService messageRecipientStatusService) {
-        this.messageRecipientStatusService = messageRecipientStatusService;
-    }
-
-    /**
-     * Returns the message recipient status persistence.
-     *
-     * @return the message recipient status persistence
-     */
-    public MessageRecipientStatusPersistence getMessageRecipientStatusPersistence() {
-        return messageRecipientStatusPersistence;
-    }
-
-    /**
-     * Sets the message recipient status persistence.
-     *
-     * @param messageRecipientStatusPersistence the message recipient status persistence
-     */
-    public void setMessageRecipientStatusPersistence(
-        MessageRecipientStatusPersistence messageRecipientStatusPersistence) {
-        this.messageRecipientStatusPersistence = messageRecipientStatusPersistence;
-    }
-
-    /**
      * Returns the messaging ignored recipients local service.
      *
      * @return the messaging ignored recipients local service
@@ -3035,63 +2837,6 @@ public abstract class ContestPhaseLocalServiceBaseImpl
     public void setMessagingRedirectLinkPersistence(
         MessagingRedirectLinkPersistence messagingRedirectLinkPersistence) {
         this.messagingRedirectLinkPersistence = messagingRedirectLinkPersistence;
-    }
-
-    /**
-     * Returns the messaging user preferences local service.
-     *
-     * @return the messaging user preferences local service
-     */
-    public com.ext.portlet.service.MessagingUserPreferencesLocalService getMessagingUserPreferencesLocalService() {
-        return messagingUserPreferencesLocalService;
-    }
-
-    /**
-     * Sets the messaging user preferences local service.
-     *
-     * @param messagingUserPreferencesLocalService the messaging user preferences local service
-     */
-    public void setMessagingUserPreferencesLocalService(
-        com.ext.portlet.service.MessagingUserPreferencesLocalService messagingUserPreferencesLocalService) {
-        this.messagingUserPreferencesLocalService = messagingUserPreferencesLocalService;
-    }
-
-    /**
-     * Returns the messaging user preferences remote service.
-     *
-     * @return the messaging user preferences remote service
-     */
-    public com.ext.portlet.service.MessagingUserPreferencesService getMessagingUserPreferencesService() {
-        return messagingUserPreferencesService;
-    }
-
-    /**
-     * Sets the messaging user preferences remote service.
-     *
-     * @param messagingUserPreferencesService the messaging user preferences remote service
-     */
-    public void setMessagingUserPreferencesService(
-        com.ext.portlet.service.MessagingUserPreferencesService messagingUserPreferencesService) {
-        this.messagingUserPreferencesService = messagingUserPreferencesService;
-    }
-
-    /**
-     * Returns the messaging user preferences persistence.
-     *
-     * @return the messaging user preferences persistence
-     */
-    public MessagingUserPreferencesPersistence getMessagingUserPreferencesPersistence() {
-        return messagingUserPreferencesPersistence;
-    }
-
-    /**
-     * Sets the messaging user preferences persistence.
-     *
-     * @param messagingUserPreferencesPersistence the messaging user preferences persistence
-     */
-    public void setMessagingUserPreferencesPersistence(
-        MessagingUserPreferencesPersistence messagingUserPreferencesPersistence) {
-        this.messagingUserPreferencesPersistence = messagingUserPreferencesPersistence;
     }
 
     /**

@@ -1,11 +1,7 @@
 package org.xcolab.portlets.userprofile.view;
 
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.MessagingUserPreferences;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.MessagingUserPreferencesLocalServiceUtil;
-import com.liferay.portal.UserPortraitSizeException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -36,10 +32,13 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
+import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -358,17 +357,7 @@ public class UserProfileController {
             }
         }
 
-        try {
-            changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
-        } catch (Exception e) {
-            _log.warn("Updating Expando settings or portrait image failed for userId: " + currentUserProfile.getUser()
-                    .getId_());
-            _log.warn(e);
-            if (e instanceof UserPortraitSizeException) {
-                model.addAttribute("imageSizeError", true);
-            }
-            validationError = true;
-        }
+        changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
 
         if (validationError) {
             response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
@@ -406,17 +395,15 @@ public class UserProfileController {
         return MembersClient.validatePassword(password, currentUserProfile.getUser().getUserId());
     }
 
-    //TODO: remove reliance on all exceptions being thrown
-    private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean)
-            throws Exception {
+    private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean) {
 
-        boolean changedDetails = false;
+        boolean changedMember = false;
         Member member = currentUserProfile.getUser();
 
         long companyId = CompanyThreadLocal.getCompanyId();
         if (companyId == 0) {
             CompanyThreadLocal.setCompanyId(currentUserProfile.getThemeDisplay().getCompanyId());
-            changedDetails = true;
+            changedMember = true;
         }
 
         String existingBio = member.getShortBio();
@@ -426,7 +413,7 @@ public class UserProfileController {
 
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
             member.setShortBio(HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
-            changedDetails = true;
+            changedMember = true;
         }
 
         String existingCountry = member.getCountry();
@@ -438,7 +425,7 @@ public class UserProfileController {
 
         if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)) {
             member.setCountry(CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
-            changedDetails = true;
+            changedMember = true;
         }
 
         // TODO
@@ -448,57 +435,44 @@ public class UserProfileController {
 
         if (updatedUserBean.getImageId() != currentUserProfile.getUserBean().getImageId()) {
 
-            FileEntry fe = FilesClient.getFileEntry(updatedUserBean.getImageId());
-            if( fe!= null){
-                currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
-                changedDetails = true;
-            }
-        }
-
-        if (updatedUserBean.getSendEmailOnMessage() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getId_()).getEmailOnReceipt()) {
-            MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
-            prefs.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
             try {
-                MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
+                FileEntry fe = FilesClient.getFileEntry(updatedUserBean.getImageId());
+                if (fe != null) {
+                    currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
+                    changedMember = true;
+                }
+            } catch (FileEntryNotFoundException e) {
+                throw new IllegalStateException("No file entry found for imageId " + updatedUserBean.getImageId()
+                        + " for member " + updatedUserBean.getUserId());
             }
-            changedDetails = true;
         }
 
-        if (updatedUserBean.getSendEmailOnActivity() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getId_()).getEmailOnActivity()) {
-            MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
-            prefs.setEmailOnActivity(updatedUserBean.getSendEmailOnActivity());
-            try {
-                MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            }
-            changedDetails = true;
+        final MessagingUserPreferences messagingPreferences = MessagingClient
+                .getMessagingPreferencesForMember(currentUserProfile.getUser().getId_());
+        boolean changedMessagingPreferences = false;
+        if (updatedUserBean.getSendEmailOnMessage() != messagingPreferences.getEmailOnReceipt()) {
+            messagingPreferences.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
+            changedMessagingPreferences = true;
         }
 
-        if (updatedUserBean.getSendDailyEmailOnActivity() != MessageUtil
-                .getMessagingPreferences(currentUserProfile.getUser().getId_()).getEmailActivityDailyDigest()) {
-            MessagingUserPreferences prefs =
-                    MessageUtil.getMessagingPreferences(currentUserProfile.getUser().getId_());
-            prefs.setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
-            try {
-                MessagingUserPreferencesLocalServiceUtil.updateMessagingUserPreferences(prefs);
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            }
-            changedDetails = true;
+        if (updatedUserBean.getSendEmailOnActivity() != messagingPreferences.getEmailOnActivity()) {
+            messagingPreferences.setEmailOnActivity(updatedUserBean.getSendEmailOnActivity());
+            changedMessagingPreferences = true;
         }
 
-        if (changedDetails) {
+        if (updatedUserBean.getSendDailyEmailOnActivity() != messagingPreferences.getEmailActivityDailyDigest()) {
+            messagingPreferences.setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
+            changedMessagingPreferences = true;
+        }
+
+        if (changedMessagingPreferences) {
+            MessagingClient.updateMessagingPreferences(messagingPreferences);
+        }
+        if (changedMember) {
             MembersClient.updateMember(currentUserProfile.getUser());
         }
 
-        return changedDetails;
+        return changedMember || changedMessagingPreferences;
     }
 
     private void sendUpdatedEmail(Member user)

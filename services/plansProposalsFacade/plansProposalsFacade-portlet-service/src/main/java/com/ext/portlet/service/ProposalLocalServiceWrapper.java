@@ -869,13 +869,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     * @param proposalId proposal id
     * @param userId     user id
     * @return true if user has subscribed to a proposal, false otherwise
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
     @Override
-    public boolean isSubscribed(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public boolean isSubscribed(long proposalId, long userId) {
         return _proposalLocalService.isSubscribed(proposalId, userId);
     }
 
@@ -884,13 +880,9 @@ public class ProposalLocalServiceWrapper implements ProposalLocalService,
     *
     * @param proposalId proposal id
     * @param userId     user id
-    * @throws PortalException in case of LR error
-    * @throws SystemException in case of LR error
     */
     @Override
-    public void subscribe(long proposalId, long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
+    public void subscribe(long proposalId, long userId) {
         _proposalLocalService.subscribe(proposalId, userId);
     }
 

@@ -10,13 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Message;
+import org.xcolab.model.tables.pojos.MessagingUserPreferences;
 import org.xcolab.service.members.domain.messaging.MessageDao;
+import org.xcolab.service.members.domain.messaginguserpreferences.DefaultMessagingUserPreferences;
+import org.xcolab.service.members.domain.messaginguserpreferences.MessagingUserPreferencesDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.messaging.MessagingService;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.exceptions.InternalException;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +34,9 @@ public class MessagingController {
     @Autowired
     private MessageDao messageDao;
 
+    @Autowired
+    private MessagingUserPreferencesDao messagingUserPreferencesDao;
+
     @RequestMapping(value = "/messages", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Message> getMemberMessages(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
@@ -38,6 +45,7 @@ public class MessagingController {
             @RequestParam(required = false) Long senderId,
             @RequestParam(required = false) Boolean isArchived,
             @RequestParam(required = false) Boolean isOpened,
+            @RequestParam(required = false) Timestamp sinceDate,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false, defaultValue = "true") boolean includeCount) {
 
@@ -46,14 +54,16 @@ public class MessagingController {
 
         if (includeCount) {
             response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                    Integer.toString(messageDao.countByGiven(senderId, recipientId, isArchived, isOpened)));
+                    Integer.toString(messageDao
+                            .countByGiven(senderId, recipientId, isArchived, isOpened, sinceDate)));
         }
-        return messageDao.findByGiven(paginationHelper, senderId, recipientId, isArchived, isOpened);
+        return messageDao.findByGiven(paginationHelper, senderId, recipientId, isArchived, isOpened,
+                sinceDate);
     }
 
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)
     public Message getMessage(@PathVariable long messageId) throws NotFoundException {
-         return messageDao.getMessage(messageId);
+        return messageDao.getMessage(messageId);
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
@@ -64,7 +74,8 @@ public class MessagingController {
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody Message message) {
         return messagingService.createMessage(message)
-                .orElseThrow(() -> new InternalException("Could not retrieve id of created message: " + message));
+                .orElseThrow(() -> new InternalException(
+                        "Could not retrieve id of created message: " + message));
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.POST)
@@ -86,5 +97,26 @@ public class MessagingController {
             success = success && messageDao.setArchived(messageId, memberId, isArchived);
         }
         return success;
+    }
+
+    @RequestMapping(value = "/members/{memberId}/messagingPreferences", method = RequestMethod.GET)
+    public MessagingUserPreferences getMessagingPreferences(@PathVariable long memberId) {
+        return messagingUserPreferencesDao.getByMemberId(memberId)
+                .orElse(new DefaultMessagingUserPreferences(memberId));
+    }
+
+    @RequestMapping(value = "/members/{memberId}/messagingPreferences/{messagingPreferencesId}", method = RequestMethod.PUT)
+    public boolean updateMessagingPreferences(@PathVariable long memberId,
+            @PathVariable long messagingPreferencesId,
+            @RequestBody MessagingUserPreferences messagingUserPreferences) {
+        return messagingUserPreferencesDao.update(messagingUserPreferences);
+    }
+
+    @RequestMapping(value = "/members/{memberId}/messagingPreferences", method = RequestMethod.POST)
+    public MessagingUserPreferences createMessagingPreferences(@PathVariable long memberId,
+            @RequestBody MessagingUserPreferences messagingUserPreferences) {
+        return messagingUserPreferencesDao.create(messagingUserPreferences)
+                .orElseThrow(() -> new InternalException(
+                "Could not retrieve id of created messagingPreferences: " + messagingUserPreferences));
     }
 }
