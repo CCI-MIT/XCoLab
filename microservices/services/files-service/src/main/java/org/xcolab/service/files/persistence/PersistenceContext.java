@@ -13,6 +13,8 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.xcolab.service.utils.db.DataSourceUtil;
 import org.xcolab.service.utils.db.jooq.config.JooqConfiguration;
 
+import javax.sql.DataSource;
+
 @Configuration
 //@EnableTransactionManagement
 @PropertySource("file:${user.home}/.xcolab.application.properties")
@@ -41,10 +43,10 @@ public class PersistenceContext {
 //    }
 
     @Bean
-    public DefaultDSLContext dsl() {
+    @Autowired
+    public DefaultDSLContext dsl(DataSource dataSource) {
         return new DefaultDSLContext(new JooqConfiguration(
-                new DataSourceConnectionProvider(
-                        new LazyConnectionDataSourceProxy(hikariDataSource())),
+                new DataSourceConnectionProvider(new LazyConnectionDataSourceProxy(dataSource)),
                 env.getRequiredProperty("jooq.sql.dialect")));
     }
 }

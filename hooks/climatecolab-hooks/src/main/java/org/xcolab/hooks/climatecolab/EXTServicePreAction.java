@@ -100,11 +100,11 @@ public class EXTServicePreAction extends Action {
                 _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
             }
         }
-        if(themeDisplay.getUserId()!= 0l) {
+        if (themeDisplay.getUserId()!= 0L) {
             try {
                 Member member = MembersClient.getMember(themeDisplay.getUserId());
                 vmVariables.put("member", member);
-            }catch(MemberNotFoundException ignore){
+            } catch(MemberNotFoundException ignore) {
 
             }
         }
