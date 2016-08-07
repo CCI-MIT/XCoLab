@@ -1,5 +1,7 @@
 package org.xcolab.service.members.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class MessagingController {
+
+    private static final Logger log = LoggerFactory.getLogger(MessagingController.class);
 
     @Autowired
     private MessagingService messagingService;
@@ -63,8 +67,10 @@ public class MessagingController {
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody Message message) {
-        return messagingService.createMessage(message)
-                .orElseThrow(() -> new InternalException("Could not retrieve id of created message: " + message));
+        return messagingService.createMessage(message).orElseGet(() -> {
+            log.warn("Could not retrieve id of created message: " + message);
+            return message;
+        });
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.POST)
