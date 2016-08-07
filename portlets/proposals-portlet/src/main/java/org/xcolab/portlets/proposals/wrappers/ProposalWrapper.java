@@ -184,7 +184,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         }
 
         for (Long userId : getSelectedJudges()) {
-            if (userId == user.getUserId().longValue()) {
+            if (userId == user.getUserId()) {
                 return true;
             }
         }
