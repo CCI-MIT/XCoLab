@@ -1,17 +1,6 @@
 <div class="lrContentPlaceholder lfr-column ">
     $processor.processColumn("column-1")
 </div>
-
-<div id="c-Popup__suggest" >
-    <div class="c-Popup__wrapper p1" id="suggestContestPopup">
-        <div class="c-Popup">
-            <h4>Please enter your suggestion below.  A message will be sent to the CoLab staff and they will follow up with you soon.</h4>
-            <div id="suggestContestPopupContent" class="lrContentPlaceholder lfr-column ">
-                $processor.processColumn("column-4")
-            </div>
-        </div>
-    </div>
-</div>
         
 <div id="c-Footer">
     <div id="c-Footer__menu">

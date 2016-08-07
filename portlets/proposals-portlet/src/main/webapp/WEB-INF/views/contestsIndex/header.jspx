@@ -124,29 +124,6 @@
 	            </form>
     	    </div>
 		</c:if>
-        <portlet:actionURL var="suggestContestURL">
-            <portlet:param name="action" value="suggestContest" />
-        </portlet:actionURL>
-        <form method="post">
-            <div id="c-Popup__suggest" style="display: none;">
-                <div class="c-Popup__wrapper p1" id="suggestContestPopup">
-                    <div class="c-Popup"><h4>Please review the&#160;<a
-                            href="/web/guest/resources/-/wiki/Main/Guidelines+for+suggesting+new+contests"
-                            target="_blank">new ${contestType.contestName} guidelines</a> and the enter your suggestion below. A message will be sent to the ${colabName} staff and they will follow up with you soon.
-                    </h4>
-
-                        <div class="lrContentPlaceholder lfr-column " id="suggestContestPopupContent">
-                               <div><textarea name="suggestContestText" class="portlet-form-input-field" style="display: block; width: 100%; height: 80px;">Your suggestion</textarea></div>
-                                <center>
-                                    <a class="c-Button__primary iceCmdLnk" href="javascript:;" onclick=" $(this).parents('form:first').get(0).setAttribute('action', '${suggestContestURL}'); $(this).parents('form:first').submit();">
-										Send</a>
-                                    <a class="c-Button__primary" href="javascript:;" onclick="$('#c-Popup__suggest').hide();">Cancel</a>
-                                </center>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
 	<div class="c-Headline">
 		${preferences.callToAction}
