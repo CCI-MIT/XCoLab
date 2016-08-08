@@ -79,7 +79,7 @@ public class ProposalDaoImpl implements ProposalDao {
         if (contestId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
         }
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Proposal.class);
     }
 

@@ -103,7 +103,7 @@ public class MemberDaoImpl implements MemberDao {
                 default:
             }
         }
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Member.class);
     }
 

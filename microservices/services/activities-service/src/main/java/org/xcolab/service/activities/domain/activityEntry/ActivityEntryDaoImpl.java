@@ -88,7 +88,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
         query.addOrderBy(ACTIVITY_ENTRY.CREATE_DATE.desc());
 
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(ActivityEntry.class);
     }
 

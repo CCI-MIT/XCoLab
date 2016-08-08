@@ -47,7 +47,7 @@ public class MemberCategoryDaoImpl implements MemberCategoryDao {
                 default:
             }
         }
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(MemberCategory.class);
     }
 }

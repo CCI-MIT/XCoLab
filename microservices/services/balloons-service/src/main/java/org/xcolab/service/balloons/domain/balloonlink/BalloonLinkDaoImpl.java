@@ -41,7 +41,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
             query.addConditions(BALLOON_LINK.BALLOON_USER_UUID.eq(uuid));
         }
 
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(BalloonLink.class);
     }
 

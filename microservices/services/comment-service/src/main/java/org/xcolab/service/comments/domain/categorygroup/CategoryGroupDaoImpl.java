@@ -26,7 +26,7 @@ public class CategoryGroupDaoImpl implements CategoryGroupDao {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CATEGORY_GROUP)
                 .getQuery();
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(CategoryGroup.class);
     }
 

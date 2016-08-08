@@ -37,6 +37,10 @@ public class PaginationHelper {
         return limitRecord;
     }
 
+    public int getCount() {
+        return limitRecord - startRecord + 1;
+    }
+
     public List<SortColumn> getSortColumns() {
         return sortColumns;
     }
