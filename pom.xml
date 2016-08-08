@@ -12,7 +12,7 @@
 	<properties>
         <liferay.version>6.2.3</liferay.version>
         <liferay.maven.plugin.version>6.2.2</liferay.maven.plugin.version>
-		<spring.version>4.3.1.RELEASE</spring.version>
+		<spring.version>4.3.2.RELEASE</spring.version>
 	</properties>
 
 	<repositories>
