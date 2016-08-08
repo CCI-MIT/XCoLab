@@ -1,8 +1,5 @@
 package org.xcolab.portlets.redballoon.web;
 
-//import com.ext.portlet.model.BalloonLink;
-
-//import com.ext.portlet.model.BalloonText;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -32,28 +29,23 @@ import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-//import com.ext.portlet.model.BalloonUserTracking;
-
 @RequestMapping("view")
 @Controller
 public class BalloonController {
 
-
     @RequestMapping
-    public String showBalloon(Model model,
-                              PortletRequest request,
-                              RenderResponse response,
-                              @RequestParam(required = false) String linkuuid,
+    public String showBalloon(Model model, PortletRequest request, RenderResponse response,
+                              @RequestParam(required = false) String linkUuid,
                               @RequestParam(required = false) String context,
                               @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
             throws IOException, ParserConfigurationException {
 
-        BalloonLink link = null;
         BalloonUserTracking but = null;
-        if (linkuuid != null) {
+        if (linkUuid != null) {
 
+            BalloonLink link;
             try {
-                link = BalloonsClient.getBalloonLink(linkuuid);
+                link = BalloonsClient.getBalloonLink(linkUuid);
             } catch (BalloonUserTrackingNotFound balloonUserTrackingNotFound) {
                 link = null;
             }
@@ -62,7 +54,7 @@ public class BalloonController {
                 model.addAttribute("balloonLink", link);
 
                 // get user tracking information, if user is new, then owner of this link should be set as a parent
-                but = BalloonUtils.getBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkuuid, context);
+                but = BalloonUtils.getBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkUuid, context);
                 link.setVisits(link.getVisits() + 1);
                 BalloonsClient.updateBalloonLink(link);
 
@@ -74,7 +66,7 @@ public class BalloonController {
             but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
         }
         if (but.getBalloonTextId() > 0) {
-            BalloonText text = null;
+            BalloonText text;
             try {
                 text = BalloonsClient.getBalloonText(but.getBalloonTextId());
 
@@ -89,18 +81,18 @@ public class BalloonController {
             Element element = doc.createElement("meta");
 
             element.setAttribute("property", "og:title");
-            element.setAttribute("content", text.getFacebookSubject());
+            element.setAttribute("content", text != null ? text.getFacebookSubject() : "");
             response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, element);
 
             element = doc.createElement("meta");
             element.setAttribute("property", "og:description");
-            element.setAttribute("content", text.getFacebookDescription());
+            element.setAttribute("content", text != null ? text.getFacebookDescription() : "");
 
             response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, element);
         }
 
         if (StringUtils.isNotBlank(but.getEmail())) {
-            BalloonLink bl = null;
+            BalloonLink bl;
             try {
                 bl = BalloonsClient.getBalloonLinkByMemberUuid(but.getUuid_());
             } catch (BalloonUserTrackingNotFound balloonUserTrackingNotFound) {
