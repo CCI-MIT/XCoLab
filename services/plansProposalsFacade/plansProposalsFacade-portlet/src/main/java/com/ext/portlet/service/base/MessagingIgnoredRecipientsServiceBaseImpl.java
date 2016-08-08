@@ -3,11 +3,6 @@ package com.ext.portlet.service.base;
 import com.ext.portlet.model.MessagingIgnoredRecipients;
 import com.ext.portlet.service.MessagingIgnoredRecipientsService;
 import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
-import com.ext.portlet.service.persistence.BalloonLinkPersistence;
-import com.ext.portlet.service.persistence.BalloonStatsEntryPersistence;
-import com.ext.portlet.service.persistence.BalloonTextPersistence;
-import com.ext.portlet.service.persistence.BalloonUserTrackingPersistence;
-import com.ext.portlet.service.persistence.ConfigurationAttributePersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestDiscussionPersistence;
 import com.ext.portlet.service.persistence.ContestEmailTemplatePersistence;
@@ -31,7 +26,6 @@ import com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistence
 import com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
 import com.ext.portlet.service.persistence.LoginLogPersistence;
-import com.ext.portlet.service.persistence.MemberCategoryPersistence;
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
@@ -72,7 +66,6 @@ import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalUnversionedAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
-import com.ext.portlet.service.persistence.StaffMemberPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitPersistence;
 import com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence;
 import com.ext.portlet.service.persistence.Xcolab_UserFinder;
@@ -108,36 +101,6 @@ public abstract class MessagingIgnoredRecipientsServiceBaseImpl
     protected com.ext.portlet.service.AnalyticsUserEventService analyticsUserEventService;
     @BeanReference(type = AnalyticsUserEventPersistence.class)
     protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
-    @BeanReference(type = com.ext.portlet.service.BalloonLinkLocalService.class)
-    protected com.ext.portlet.service.BalloonLinkLocalService balloonLinkLocalService;
-    @BeanReference(type = com.ext.portlet.service.BalloonLinkService.class)
-    protected com.ext.portlet.service.BalloonLinkService balloonLinkService;
-    @BeanReference(type = BalloonLinkPersistence.class)
-    protected BalloonLinkPersistence balloonLinkPersistence;
-    @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryLocalService.class)
-    protected com.ext.portlet.service.BalloonStatsEntryLocalService balloonStatsEntryLocalService;
-    @BeanReference(type = com.ext.portlet.service.BalloonStatsEntryService.class)
-    protected com.ext.portlet.service.BalloonStatsEntryService balloonStatsEntryService;
-    @BeanReference(type = BalloonStatsEntryPersistence.class)
-    protected BalloonStatsEntryPersistence balloonStatsEntryPersistence;
-    @BeanReference(type = com.ext.portlet.service.BalloonTextLocalService.class)
-    protected com.ext.portlet.service.BalloonTextLocalService balloonTextLocalService;
-    @BeanReference(type = com.ext.portlet.service.BalloonTextService.class)
-    protected com.ext.portlet.service.BalloonTextService balloonTextService;
-    @BeanReference(type = BalloonTextPersistence.class)
-    protected BalloonTextPersistence balloonTextPersistence;
-    @BeanReference(type = com.ext.portlet.service.BalloonUserTrackingLocalService.class)
-    protected com.ext.portlet.service.BalloonUserTrackingLocalService balloonUserTrackingLocalService;
-    @BeanReference(type = com.ext.portlet.service.BalloonUserTrackingService.class)
-    protected com.ext.portlet.service.BalloonUserTrackingService balloonUserTrackingService;
-    @BeanReference(type = BalloonUserTrackingPersistence.class)
-    protected BalloonUserTrackingPersistence balloonUserTrackingPersistence;
-    @BeanReference(type = com.ext.portlet.service.ConfigurationAttributeLocalService.class)
-    protected com.ext.portlet.service.ConfigurationAttributeLocalService configurationAttributeLocalService;
-    @BeanReference(type = com.ext.portlet.service.ConfigurationAttributeService.class)
-    protected com.ext.portlet.service.ConfigurationAttributeService configurationAttributeService;
-    @BeanReference(type = ConfigurationAttributePersistence.class)
-    protected ConfigurationAttributePersistence configurationAttributePersistence;
     @BeanReference(type = com.ext.portlet.service.ContestLocalService.class)
     protected com.ext.portlet.service.ContestLocalService contestLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestService.class)
@@ -276,12 +239,6 @@ public abstract class MessagingIgnoredRecipientsServiceBaseImpl
     protected com.ext.portlet.service.LoginLogService loginLogService;
     @BeanReference(type = LoginLogPersistence.class)
     protected LoginLogPersistence loginLogPersistence;
-    @BeanReference(type = com.ext.portlet.service.MemberCategoryLocalService.class)
-    protected com.ext.portlet.service.MemberCategoryLocalService memberCategoryLocalService;
-    @BeanReference(type = com.ext.portlet.service.MemberCategoryService.class)
-    protected com.ext.portlet.service.MemberCategoryService memberCategoryService;
-    @BeanReference(type = MemberCategoryPersistence.class)
-    protected MemberCategoryPersistence memberCategoryPersistence;
     @BeanReference(type = com.ext.portlet.service.MessagingIgnoredRecipientsLocalService.class)
     protected com.ext.portlet.service.MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService;
     @BeanReference(type = com.ext.portlet.service.MessagingIgnoredRecipientsService.class)
@@ -514,12 +471,6 @@ public abstract class MessagingIgnoredRecipientsServiceBaseImpl
     protected com.ext.portlet.service.ProposalVoteService proposalVoteService;
     @BeanReference(type = ProposalVotePersistence.class)
     protected ProposalVotePersistence proposalVotePersistence;
-    @BeanReference(type = com.ext.portlet.service.StaffMemberLocalService.class)
-    protected com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService;
-    @BeanReference(type = com.ext.portlet.service.StaffMemberService.class)
-    protected com.ext.portlet.service.StaffMemberService staffMemberService;
-    @BeanReference(type = StaffMemberPersistence.class)
-    protected StaffMemberPersistence staffMemberPersistence;
     @BeanReference(type = com.ext.portlet.service.TrackedVisitLocalService.class)
     protected com.ext.portlet.service.TrackedVisitLocalService trackedVisitLocalService;
     @BeanReference(type = com.ext.portlet.service.TrackedVisitService.class)
@@ -613,291 +564,6 @@ public abstract class MessagingIgnoredRecipientsServiceBaseImpl
     public void setAnalyticsUserEventPersistence(
         AnalyticsUserEventPersistence analyticsUserEventPersistence) {
         this.analyticsUserEventPersistence = analyticsUserEventPersistence;
-    }
-
-    /**
-     * Returns the balloon link local service.
-     *
-     * @return the balloon link local service
-     */
-    public com.ext.portlet.service.BalloonLinkLocalService getBalloonLinkLocalService() {
-        return balloonLinkLocalService;
-    }
-
-    /**
-     * Sets the balloon link local service.
-     *
-     * @param balloonLinkLocalService the balloon link local service
-     */
-    public void setBalloonLinkLocalService(
-        com.ext.portlet.service.BalloonLinkLocalService balloonLinkLocalService) {
-        this.balloonLinkLocalService = balloonLinkLocalService;
-    }
-
-    /**
-     * Returns the balloon link remote service.
-     *
-     * @return the balloon link remote service
-     */
-    public com.ext.portlet.service.BalloonLinkService getBalloonLinkService() {
-        return balloonLinkService;
-    }
-
-    /**
-     * Sets the balloon link remote service.
-     *
-     * @param balloonLinkService the balloon link remote service
-     */
-    public void setBalloonLinkService(
-        com.ext.portlet.service.BalloonLinkService balloonLinkService) {
-        this.balloonLinkService = balloonLinkService;
-    }
-
-    /**
-     * Returns the balloon link persistence.
-     *
-     * @return the balloon link persistence
-     */
-    public BalloonLinkPersistence getBalloonLinkPersistence() {
-        return balloonLinkPersistence;
-    }
-
-    /**
-     * Sets the balloon link persistence.
-     *
-     * @param balloonLinkPersistence the balloon link persistence
-     */
-    public void setBalloonLinkPersistence(
-        BalloonLinkPersistence balloonLinkPersistence) {
-        this.balloonLinkPersistence = balloonLinkPersistence;
-    }
-
-    /**
-     * Returns the balloon stats entry local service.
-     *
-     * @return the balloon stats entry local service
-     */
-    public com.ext.portlet.service.BalloonStatsEntryLocalService getBalloonStatsEntryLocalService() {
-        return balloonStatsEntryLocalService;
-    }
-
-    /**
-     * Sets the balloon stats entry local service.
-     *
-     * @param balloonStatsEntryLocalService the balloon stats entry local service
-     */
-    public void setBalloonStatsEntryLocalService(
-        com.ext.portlet.service.BalloonStatsEntryLocalService balloonStatsEntryLocalService) {
-        this.balloonStatsEntryLocalService = balloonStatsEntryLocalService;
-    }
-
-    /**
-     * Returns the balloon stats entry remote service.
-     *
-     * @return the balloon stats entry remote service
-     */
-    public com.ext.portlet.service.BalloonStatsEntryService getBalloonStatsEntryService() {
-        return balloonStatsEntryService;
-    }
-
-    /**
-     * Sets the balloon stats entry remote service.
-     *
-     * @param balloonStatsEntryService the balloon stats entry remote service
-     */
-    public void setBalloonStatsEntryService(
-        com.ext.portlet.service.BalloonStatsEntryService balloonStatsEntryService) {
-        this.balloonStatsEntryService = balloonStatsEntryService;
-    }
-
-    /**
-     * Returns the balloon stats entry persistence.
-     *
-     * @return the balloon stats entry persistence
-     */
-    public BalloonStatsEntryPersistence getBalloonStatsEntryPersistence() {
-        return balloonStatsEntryPersistence;
-    }
-
-    /**
-     * Sets the balloon stats entry persistence.
-     *
-     * @param balloonStatsEntryPersistence the balloon stats entry persistence
-     */
-    public void setBalloonStatsEntryPersistence(
-        BalloonStatsEntryPersistence balloonStatsEntryPersistence) {
-        this.balloonStatsEntryPersistence = balloonStatsEntryPersistence;
-    }
-
-    /**
-     * Returns the balloon text local service.
-     *
-     * @return the balloon text local service
-     */
-    public com.ext.portlet.service.BalloonTextLocalService getBalloonTextLocalService() {
-        return balloonTextLocalService;
-    }
-
-    /**
-     * Sets the balloon text local service.
-     *
-     * @param balloonTextLocalService the balloon text local service
-     */
-    public void setBalloonTextLocalService(
-        com.ext.portlet.service.BalloonTextLocalService balloonTextLocalService) {
-        this.balloonTextLocalService = balloonTextLocalService;
-    }
-
-    /**
-     * Returns the balloon text remote service.
-     *
-     * @return the balloon text remote service
-     */
-    public com.ext.portlet.service.BalloonTextService getBalloonTextService() {
-        return balloonTextService;
-    }
-
-    /**
-     * Sets the balloon text remote service.
-     *
-     * @param balloonTextService the balloon text remote service
-     */
-    public void setBalloonTextService(
-        com.ext.portlet.service.BalloonTextService balloonTextService) {
-        this.balloonTextService = balloonTextService;
-    }
-
-    /**
-     * Returns the balloon text persistence.
-     *
-     * @return the balloon text persistence
-     */
-    public BalloonTextPersistence getBalloonTextPersistence() {
-        return balloonTextPersistence;
-    }
-
-    /**
-     * Sets the balloon text persistence.
-     *
-     * @param balloonTextPersistence the balloon text persistence
-     */
-    public void setBalloonTextPersistence(
-        BalloonTextPersistence balloonTextPersistence) {
-        this.balloonTextPersistence = balloonTextPersistence;
-    }
-
-    /**
-     * Returns the balloon user tracking local service.
-     *
-     * @return the balloon user tracking local service
-     */
-    public com.ext.portlet.service.BalloonUserTrackingLocalService getBalloonUserTrackingLocalService() {
-        return balloonUserTrackingLocalService;
-    }
-
-    /**
-     * Sets the balloon user tracking local service.
-     *
-     * @param balloonUserTrackingLocalService the balloon user tracking local service
-     */
-    public void setBalloonUserTrackingLocalService(
-        com.ext.portlet.service.BalloonUserTrackingLocalService balloonUserTrackingLocalService) {
-        this.balloonUserTrackingLocalService = balloonUserTrackingLocalService;
-    }
-
-    /**
-     * Returns the balloon user tracking remote service.
-     *
-     * @return the balloon user tracking remote service
-     */
-    public com.ext.portlet.service.BalloonUserTrackingService getBalloonUserTrackingService() {
-        return balloonUserTrackingService;
-    }
-
-    /**
-     * Sets the balloon user tracking remote service.
-     *
-     * @param balloonUserTrackingService the balloon user tracking remote service
-     */
-    public void setBalloonUserTrackingService(
-        com.ext.portlet.service.BalloonUserTrackingService balloonUserTrackingService) {
-        this.balloonUserTrackingService = balloonUserTrackingService;
-    }
-
-    /**
-     * Returns the balloon user tracking persistence.
-     *
-     * @return the balloon user tracking persistence
-     */
-    public BalloonUserTrackingPersistence getBalloonUserTrackingPersistence() {
-        return balloonUserTrackingPersistence;
-    }
-
-    /**
-     * Sets the balloon user tracking persistence.
-     *
-     * @param balloonUserTrackingPersistence the balloon user tracking persistence
-     */
-    public void setBalloonUserTrackingPersistence(
-        BalloonUserTrackingPersistence balloonUserTrackingPersistence) {
-        this.balloonUserTrackingPersistence = balloonUserTrackingPersistence;
-    }
-
-    /**
-     * Returns the configuration attribute local service.
-     *
-     * @return the configuration attribute local service
-     */
-    public com.ext.portlet.service.ConfigurationAttributeLocalService getConfigurationAttributeLocalService() {
-        return configurationAttributeLocalService;
-    }
-
-    /**
-     * Sets the configuration attribute local service.
-     *
-     * @param configurationAttributeLocalService the configuration attribute local service
-     */
-    public void setConfigurationAttributeLocalService(
-        com.ext.portlet.service.ConfigurationAttributeLocalService configurationAttributeLocalService) {
-        this.configurationAttributeLocalService = configurationAttributeLocalService;
-    }
-
-    /**
-     * Returns the configuration attribute remote service.
-     *
-     * @return the configuration attribute remote service
-     */
-    public com.ext.portlet.service.ConfigurationAttributeService getConfigurationAttributeService() {
-        return configurationAttributeService;
-    }
-
-    /**
-     * Sets the configuration attribute remote service.
-     *
-     * @param configurationAttributeService the configuration attribute remote service
-     */
-    public void setConfigurationAttributeService(
-        com.ext.portlet.service.ConfigurationAttributeService configurationAttributeService) {
-        this.configurationAttributeService = configurationAttributeService;
-    }
-
-    /**
-     * Returns the configuration attribute persistence.
-     *
-     * @return the configuration attribute persistence
-     */
-    public ConfigurationAttributePersistence getConfigurationAttributePersistence() {
-        return configurationAttributePersistence;
-    }
-
-    /**
-     * Sets the configuration attribute persistence.
-     *
-     * @param configurationAttributePersistence the configuration attribute persistence
-     */
-    public void setConfigurationAttributePersistence(
-        ConfigurationAttributePersistence configurationAttributePersistence) {
-        this.configurationAttributePersistence = configurationAttributePersistence;
     }
 
     /**
@@ -2207,63 +1873,6 @@ public abstract class MessagingIgnoredRecipientsServiceBaseImpl
      */
     public void setLoginLogPersistence(LoginLogPersistence loginLogPersistence) {
         this.loginLogPersistence = loginLogPersistence;
-    }
-
-    /**
-     * Returns the member category local service.
-     *
-     * @return the member category local service
-     */
-    public com.ext.portlet.service.MemberCategoryLocalService getMemberCategoryLocalService() {
-        return memberCategoryLocalService;
-    }
-
-    /**
-     * Sets the member category local service.
-     *
-     * @param memberCategoryLocalService the member category local service
-     */
-    public void setMemberCategoryLocalService(
-        com.ext.portlet.service.MemberCategoryLocalService memberCategoryLocalService) {
-        this.memberCategoryLocalService = memberCategoryLocalService;
-    }
-
-    /**
-     * Returns the member category remote service.
-     *
-     * @return the member category remote service
-     */
-    public com.ext.portlet.service.MemberCategoryService getMemberCategoryService() {
-        return memberCategoryService;
-    }
-
-    /**
-     * Sets the member category remote service.
-     *
-     * @param memberCategoryService the member category remote service
-     */
-    public void setMemberCategoryService(
-        com.ext.portlet.service.MemberCategoryService memberCategoryService) {
-        this.memberCategoryService = memberCategoryService;
-    }
-
-    /**
-     * Returns the member category persistence.
-     *
-     * @return the member category persistence
-     */
-    public MemberCategoryPersistence getMemberCategoryPersistence() {
-        return memberCategoryPersistence;
-    }
-
-    /**
-     * Sets the member category persistence.
-     *
-     * @param memberCategoryPersistence the member category persistence
-     */
-    public void setMemberCategoryPersistence(
-        MemberCategoryPersistence memberCategoryPersistence) {
-        this.memberCategoryPersistence = memberCategoryPersistence;
     }
 
     /**
@@ -4465,63 +4074,6 @@ public abstract class MessagingIgnoredRecipientsServiceBaseImpl
     public void setProposalVotePersistence(
         ProposalVotePersistence proposalVotePersistence) {
         this.proposalVotePersistence = proposalVotePersistence;
-    }
-
-    /**
-     * Returns the staff member local service.
-     *
-     * @return the staff member local service
-     */
-    public com.ext.portlet.service.StaffMemberLocalService getStaffMemberLocalService() {
-        return staffMemberLocalService;
-    }
-
-    /**
-     * Sets the staff member local service.
-     *
-     * @param staffMemberLocalService the staff member local service
-     */
-    public void setStaffMemberLocalService(
-        com.ext.portlet.service.StaffMemberLocalService staffMemberLocalService) {
-        this.staffMemberLocalService = staffMemberLocalService;
-    }
-
-    /**
-     * Returns the staff member remote service.
-     *
-     * @return the staff member remote service
-     */
-    public com.ext.portlet.service.StaffMemberService getStaffMemberService() {
-        return staffMemberService;
-    }
-
-    /**
-     * Sets the staff member remote service.
-     *
-     * @param staffMemberService the staff member remote service
-     */
-    public void setStaffMemberService(
-        com.ext.portlet.service.StaffMemberService staffMemberService) {
-        this.staffMemberService = staffMemberService;
-    }
-
-    /**
-     * Returns the staff member persistence.
-     *
-     * @return the staff member persistence
-     */
-    public StaffMemberPersistence getStaffMemberPersistence() {
-        return staffMemberPersistence;
-    }
-
-    /**
-     * Sets the staff member persistence.
-     *
-     * @param staffMemberPersistence the staff member persistence
-     */
-    public void setStaffMemberPersistence(
-        StaffMemberPersistence staffMemberPersistence) {
-        this.staffMemberPersistence = staffMemberPersistence;
     }
 
     /**

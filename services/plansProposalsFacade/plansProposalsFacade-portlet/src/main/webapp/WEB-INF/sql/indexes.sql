@@ -1,9 +1,3 @@
-create index IX_1AD9FFEC on xcolab_BalloonLink (balloonUserUuid);
-
-create index IX_CE6BAAA5 on xcolab_BalloonText (enabled);
-
-create index IX_AFDD82EB on xcolab_BalloonUserTracking (email(50));
-
 create index IX_3CD643E3 on xcolab_Contest (ContestUrlName(50), ContestYear);
 create index IX_4E7AA29D on xcolab_Contest (ContestYear);
 create index IX_CEF1EFC6 on xcolab_Contest (contestActive);
@@ -54,9 +48,6 @@ create index IX_97B70823 on xcolab_ImpactDefaultSeriesData (seriesId, year);
 create index IX_512E56E1 on xcolab_ImpactIteration (iterationId);
 
 create index IX_E0F07F11 on xcolab_ImpactTemplateMaxFocusArea (focusAreaListId);
-
-create index IX_B3858EE9 on xcolab_MemberCategory (displayName);
-create index IX_8336AE28 on xcolab_MemberCategory (showInList);
 
 create index IX_2073B48 on xcolab_MessagingIgnoredRecipients (email(50));
 create index IX_19B87BE on xcolab_MessagingIgnoredRecipients (userId);
@@ -157,7 +148,5 @@ create index IX_43559ACF on xcolab_ProposalVote (proposalId, contestPhaseId);
 create index IX_562EB409 on xcolab_ProposalVote (proposalId, contestPhaseId, userId);
 create index IX_5E8D7ED3 on xcolab_ProposalVote (proposalId, userId);
 create index IX_497348F2 on xcolab_ProposalVote (userId);
-
-create index IX_9C5CE364 on xcolab_StaffMember (userId);
 
 create index IX_21569857 on xcolab_TrackedVisit (uuid_);

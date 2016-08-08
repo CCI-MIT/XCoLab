@@ -41,12 +41,12 @@ public class MessagingMessageConversionTypeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName464;
-    private String[] _methodParameterTypes464;
-    private String _methodName465;
-    private String[] _methodParameterTypes465;
-    private String _methodName470;
-    private String[] _methodParameterTypes470;
+    private String _methodName422;
+    private String[] _methodParameterTypes422;
+    private String _methodName423;
+    private String[] _methodParameterTypes423;
+    private String _methodName428;
+    private String[] _methodParameterTypes428;
 
     public MessagingMessageConversionTypeLocalServiceClpInvoker() {
         _methodName0 = "addMessagingMessageConversionType";
@@ -131,17 +131,17 @@ public class MessagingMessageConversionTypeLocalServiceClpInvoker {
                 "com.ext.portlet.model.MessagingMessageConversionType"
             };
 
-        _methodName464 = "getBeanIdentifier";
+        _methodName422 = "getBeanIdentifier";
 
-        _methodParameterTypes464 = new String[] {  };
+        _methodParameterTypes422 = new String[] {  };
 
-        _methodName465 = "setBeanIdentifier";
+        _methodName423 = "setBeanIdentifier";
 
-        _methodParameterTypes465 = new String[] { "java.lang.String" };
+        _methodParameterTypes423 = new String[] { "java.lang.String" };
 
-        _methodName470 = "getByName";
+        _methodName428 = "getByName";
 
-        _methodParameterTypes470 = new String[] { "java.lang.String" };
+        _methodParameterTypes428 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,20 +233,20 @@ public class MessagingMessageConversionTypeLocalServiceClpInvoker {
             return MessagingMessageConversionTypeLocalServiceUtil.updateMessagingMessageConversionType((com.ext.portlet.model.MessagingMessageConversionType) arguments[0]);
         }
 
-        if (_methodName464.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes464, parameterTypes)) {
+        if (_methodName422.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
             return MessagingMessageConversionTypeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName465.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes465, parameterTypes)) {
+        if (_methodName423.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
             MessagingMessageConversionTypeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName470.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes470, parameterTypes)) {
+        if (_methodName428.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
             return MessagingMessageConversionTypeLocalServiceUtil.getByName((java.lang.String) arguments[0]);
         }
 

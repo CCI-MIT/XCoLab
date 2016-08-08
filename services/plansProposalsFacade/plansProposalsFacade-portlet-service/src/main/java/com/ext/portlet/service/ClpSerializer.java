@@ -1,11 +1,6 @@
 package com.ext.portlet.service;
 
 import com.ext.portlet.model.AnalyticsUserEventClp;
-import com.ext.portlet.model.BalloonLinkClp;
-import com.ext.portlet.model.BalloonStatsEntryClp;
-import com.ext.portlet.model.BalloonTextClp;
-import com.ext.portlet.model.BalloonUserTrackingClp;
-import com.ext.portlet.model.ConfigurationAttributeClp;
 import com.ext.portlet.model.ContestClp;
 import com.ext.portlet.model.ContestDebateClp;
 import com.ext.portlet.model.ContestDiscussionClp;
@@ -29,7 +24,6 @@ import com.ext.portlet.model.ImpactTemplateMaxFocusAreaClp;
 import com.ext.portlet.model.ImpactTemplateSeriesClp;
 import com.ext.portlet.model.LandingPageClp;
 import com.ext.portlet.model.LoginLogClp;
-import com.ext.portlet.model.MemberCategoryClp;
 import com.ext.portlet.model.MessagingIgnoredRecipientsClp;
 import com.ext.portlet.model.MessagingMessageClp;
 import com.ext.portlet.model.MessagingMessageConversionClp;
@@ -67,7 +61,6 @@ import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalUnversionedAttributeClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
-import com.ext.portlet.model.StaffMemberClp;
 import com.ext.portlet.model.TrackedVisitClp;
 import com.ext.portlet.model.TrackedVisitor2UserClp;
 
@@ -159,26 +152,6 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(AnalyticsUserEventClp.class.getName())) {
             return translateInputAnalyticsUserEvent(oldModel);
-        }
-
-        if (oldModelClassName.equals(BalloonLinkClp.class.getName())) {
-            return translateInputBalloonLink(oldModel);
-        }
-
-        if (oldModelClassName.equals(BalloonStatsEntryClp.class.getName())) {
-            return translateInputBalloonStatsEntry(oldModel);
-        }
-
-        if (oldModelClassName.equals(BalloonTextClp.class.getName())) {
-            return translateInputBalloonText(oldModel);
-        }
-
-        if (oldModelClassName.equals(BalloonUserTrackingClp.class.getName())) {
-            return translateInputBalloonUserTracking(oldModel);
-        }
-
-        if (oldModelClassName.equals(ConfigurationAttributeClp.class.getName())) {
-            return translateInputConfigurationAttribute(oldModel);
         }
 
         if (oldModelClassName.equals(ContestClp.class.getName())) {
@@ -273,10 +246,6 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals(LoginLogClp.class.getName())) {
             return translateInputLoginLog(oldModel);
-        }
-
-        if (oldModelClassName.equals(MemberCategoryClp.class.getName())) {
-            return translateInputMemberCategory(oldModel);
         }
 
         if (oldModelClassName.equals(
@@ -434,10 +403,6 @@ public class ClpSerializer {
             return translateInputProposalVote(oldModel);
         }
 
-        if (oldModelClassName.equals(StaffMemberClp.class.getName())) {
-            return translateInputStaffMember(oldModel);
-        }
-
         if (oldModelClassName.equals(TrackedVisitClp.class.getName())) {
             return translateInputTrackedVisit(oldModel);
         }
@@ -465,58 +430,6 @@ public class ClpSerializer {
         AnalyticsUserEventClp oldClpModel = (AnalyticsUserEventClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getAnalyticsUserEventRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
-    public static Object translateInputBalloonLink(BaseModel<?> oldModel) {
-        BalloonLinkClp oldClpModel = (BalloonLinkClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getBalloonLinkRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
-    public static Object translateInputBalloonStatsEntry(BaseModel<?> oldModel) {
-        BalloonStatsEntryClp oldClpModel = (BalloonStatsEntryClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getBalloonStatsEntryRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
-    public static Object translateInputBalloonText(BaseModel<?> oldModel) {
-        BalloonTextClp oldClpModel = (BalloonTextClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getBalloonTextRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
-    public static Object translateInputBalloonUserTracking(
-        BaseModel<?> oldModel) {
-        BalloonUserTrackingClp oldClpModel = (BalloonUserTrackingClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getBalloonUserTrackingRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
-    public static Object translateInputConfigurationAttribute(
-        BaseModel<?> oldModel) {
-        ConfigurationAttributeClp oldClpModel = (ConfigurationAttributeClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getConfigurationAttributeRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -756,16 +669,6 @@ public class ClpSerializer {
         LoginLogClp oldClpModel = (LoginLogClp) oldModel;
 
         BaseModel<?> newModel = oldClpModel.getLoginLogRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
-    public static Object translateInputMemberCategory(BaseModel<?> oldModel) {
-        MemberCategoryClp oldClpModel = (MemberCategoryClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getMemberCategoryRemoteModel();
 
         newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1157,16 +1060,6 @@ public class ClpSerializer {
         return newModel;
     }
 
-    public static Object translateInputStaffMember(BaseModel<?> oldModel) {
-        StaffMemberClp oldClpModel = (StaffMemberClp) oldModel;
-
-        BaseModel<?> newModel = oldClpModel.getStaffMemberRemoteModel();
-
-        newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-        return newModel;
-    }
-
     public static Object translateInputTrackedVisit(BaseModel<?> oldModel) {
         TrackedVisitClp oldClpModel = (TrackedVisitClp) oldModel;
 
@@ -1206,181 +1099,6 @@ public class ClpSerializer {
         if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.AnalyticsUserEventImpl")) {
             return translateOutputAnalyticsUserEvent(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.BalloonLinkImpl")) {
-            return translateOutputBalloonLink(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.BalloonStatsEntryImpl")) {
-            return translateOutputBalloonStatsEntry(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.BalloonTextImpl")) {
-            return translateOutputBalloonText(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.BalloonUserTrackingImpl")) {
-            return translateOutputBalloonUserTracking(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.ConfigurationAttributeImpl")) {
-            return translateOutputConfigurationAttribute(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
             try {
                 ClassLoader classLoader = ClpSerializer.class.getClassLoader();
@@ -2182,41 +1900,6 @@ public class ClpSerializer {
 
         if (oldModelClassName.equals("com.ext.portlet.model.impl.LoginLogImpl")) {
             return translateOutputLoginLog(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.MemberCategoryImpl")) {
-            return translateOutputMemberCategory(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
             try {
                 ClassLoader classLoader = ClpSerializer.class.getClassLoader();
@@ -3542,41 +3225,6 @@ public class ClpSerializer {
         }
 
         if (oldModelClassName.equals(
-                    "com.ext.portlet.model.impl.StaffMemberImpl")) {
-            return translateOutputStaffMember(oldModel);
-        } else if (oldModelClassName.endsWith("Clp")) {
-            try {
-                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-                Method getClpSerializerClassMethod = oldModelClass.getMethod(
-                        "getClpSerializerClass");
-
-                Class<?> oldClpSerializerClass = (Class<?>) getClpSerializerClassMethod.invoke(oldModel);
-
-                Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-                Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-                        BaseModel.class);
-
-                Class<?> oldModelModelClass = oldModel.getModelClass();
-
-                Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-                        oldModelModelClass.getSimpleName() + "RemoteModel");
-
-                Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-                BaseModel<?> newModel = (BaseModel<?>) translateOutputMethod.invoke(null,
-                        oldRemoteModel);
-
-                return newModel;
-            } catch (Throwable t) {
-                if (_log.isInfoEnabled()) {
-                    _log.info("Unable to translate " + oldModelClassName, t);
-                }
-            }
-        }
-
-        if (oldModelClassName.equals(
                     "com.ext.portlet.model.impl.TrackedVisitImpl")) {
             return translateOutputTrackedVisit(oldModel);
         } else if (oldModelClassName.endsWith("Clp")) {
@@ -3830,28 +3478,6 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchAnalyticsUserEventException();
         }
 
-        if (className.equals("com.ext.portlet.NoSuchBalloonLinkException")) {
-            return new com.ext.portlet.NoSuchBalloonLinkException();
-        }
-
-        if (className.equals("com.ext.portlet.NoSuchBalloonStatsEntryException")) {
-            return new com.ext.portlet.NoSuchBalloonStatsEntryException();
-        }
-
-        if (className.equals("com.ext.portlet.NoSuchBalloonTextException")) {
-            return new com.ext.portlet.NoSuchBalloonTextException();
-        }
-
-        if (className.equals(
-                    "com.ext.portlet.NoSuchBalloonUserTrackingException")) {
-            return new com.ext.portlet.NoSuchBalloonUserTrackingException();
-        }
-
-        if (className.equals(
-                    "com.ext.portlet.NoSuchConfigurationAttributeException")) {
-            return new com.ext.portlet.NoSuchConfigurationAttributeException();
-        }
-
         if (className.equals("com.ext.portlet.NoSuchContestException")) {
             return new com.ext.portlet.NoSuchContestException();
         }
@@ -3952,10 +3578,6 @@ public class ClpSerializer {
 
         if (className.equals("com.ext.portlet.NoSuchLoginLogException")) {
             return new com.ext.portlet.NoSuchLoginLogException();
-        }
-
-        if (className.equals("com.ext.portlet.NoSuchMemberCategoryException")) {
-            return new com.ext.portlet.NoSuchMemberCategoryException();
         }
 
         if (className.equals(
@@ -4123,10 +3745,6 @@ public class ClpSerializer {
             return new com.ext.portlet.NoSuchProposalVoteException();
         }
 
-        if (className.equals("com.ext.portlet.NoSuchStaffMemberException")) {
-            return new com.ext.portlet.NoSuchStaffMemberException();
-        }
-
         if (className.equals("com.ext.portlet.NoSuchTrackedVisitException")) {
             return new com.ext.portlet.NoSuchTrackedVisitException();
         }
@@ -4146,58 +3764,6 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setAnalyticsUserEventRemoteModel(oldModel);
-
-        return newModel;
-    }
-
-    public static Object translateOutputBalloonLink(BaseModel<?> oldModel) {
-        BalloonLinkClp newModel = new BalloonLinkClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setBalloonLinkRemoteModel(oldModel);
-
-        return newModel;
-    }
-
-    public static Object translateOutputBalloonStatsEntry(BaseModel<?> oldModel) {
-        BalloonStatsEntryClp newModel = new BalloonStatsEntryClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setBalloonStatsEntryRemoteModel(oldModel);
-
-        return newModel;
-    }
-
-    public static Object translateOutputBalloonText(BaseModel<?> oldModel) {
-        BalloonTextClp newModel = new BalloonTextClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setBalloonTextRemoteModel(oldModel);
-
-        return newModel;
-    }
-
-    public static Object translateOutputBalloonUserTracking(
-        BaseModel<?> oldModel) {
-        BalloonUserTrackingClp newModel = new BalloonUserTrackingClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setBalloonUserTrackingRemoteModel(oldModel);
-
-        return newModel;
-    }
-
-    public static Object translateOutputConfigurationAttribute(
-        BaseModel<?> oldModel) {
-        ConfigurationAttributeClp newModel = new ConfigurationAttributeClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setConfigurationAttributeRemoteModel(oldModel);
 
         return newModel;
     }
@@ -4438,16 +4004,6 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setLoginLogRemoteModel(oldModel);
-
-        return newModel;
-    }
-
-    public static Object translateOutputMemberCategory(BaseModel<?> oldModel) {
-        MemberCategoryClp newModel = new MemberCategoryClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setMemberCategoryRemoteModel(oldModel);
 
         return newModel;
     }
@@ -4835,16 +4391,6 @@ public class ClpSerializer {
         newModel.setModelAttributes(oldModel.getModelAttributes());
 
         newModel.setProposalVoteRemoteModel(oldModel);
-
-        return newModel;
-    }
-
-    public static Object translateOutputStaffMember(BaseModel<?> oldModel) {
-        StaffMemberClp newModel = new StaffMemberClp();
-
-        newModel.setModelAttributes(oldModel.getModelAttributes());
-
-        newModel.setStaffMemberRemoteModel(oldModel);
 
         return newModel;
     }

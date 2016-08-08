@@ -41,10 +41,10 @@ public class ImpactTemplateMaxFocusAreaLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName464;
-    private String[] _methodParameterTypes464;
-    private String _methodName465;
-    private String[] _methodParameterTypes465;
+    private String _methodName422;
+    private String[] _methodParameterTypes422;
+    private String _methodName423;
+    private String[] _methodParameterTypes423;
 
     public ImpactTemplateMaxFocusAreaLocalServiceClpInvoker() {
         _methodName0 = "addImpactTemplateMaxFocusArea";
@@ -137,13 +137,13 @@ public class ImpactTemplateMaxFocusAreaLocalServiceClpInvoker {
                 "com.ext.portlet.model.ImpactTemplateMaxFocusArea"
             };
 
-        _methodName464 = "getBeanIdentifier";
+        _methodName422 = "getBeanIdentifier";
 
-        _methodParameterTypes464 = new String[] {  };
+        _methodParameterTypes422 = new String[] {  };
 
-        _methodName465 = "setBeanIdentifier";
+        _methodName423 = "setBeanIdentifier";
 
-        _methodParameterTypes465 = new String[] { "java.lang.String" };
+        _methodParameterTypes423 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -235,13 +235,13 @@ public class ImpactTemplateMaxFocusAreaLocalServiceClpInvoker {
             return ImpactTemplateMaxFocusAreaLocalServiceUtil.updateImpactTemplateMaxFocusArea((com.ext.portlet.model.ImpactTemplateMaxFocusArea) arguments[0]);
         }
 
-        if (_methodName464.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes464, parameterTypes)) {
+        if (_methodName422.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
             return ImpactTemplateMaxFocusAreaLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName465.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes465, parameterTypes)) {
+        if (_methodName423.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
             ImpactTemplateMaxFocusAreaLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

@@ -2,17 +2,7 @@ package com.ext.portlet.service.messaging;
 
 import com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil;
 import com.ext.portlet.service.AnalyticsUserEventServiceUtil;
-import com.ext.portlet.service.BalloonLinkLocalServiceUtil;
-import com.ext.portlet.service.BalloonLinkServiceUtil;
-import com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil;
-import com.ext.portlet.service.BalloonStatsEntryServiceUtil;
-import com.ext.portlet.service.BalloonTextLocalServiceUtil;
-import com.ext.portlet.service.BalloonTextServiceUtil;
-import com.ext.portlet.service.BalloonUserTrackingLocalServiceUtil;
-import com.ext.portlet.service.BalloonUserTrackingServiceUtil;
 import com.ext.portlet.service.ClpSerializer;
-import com.ext.portlet.service.ConfigurationAttributeLocalServiceUtil;
-import com.ext.portlet.service.ConfigurationAttributeServiceUtil;
 import com.ext.portlet.service.ContestDebateLocalServiceUtil;
 import com.ext.portlet.service.ContestDebateServiceUtil;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
@@ -59,8 +49,6 @@ import com.ext.portlet.service.LandingPageLocalServiceUtil;
 import com.ext.portlet.service.LandingPageServiceUtil;
 import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.portlet.service.LoginLogServiceUtil;
-import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
-import com.ext.portlet.service.MemberCategoryServiceUtil;
 import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.portlet.service.MessagingIgnoredRecipientsServiceUtil;
 import com.ext.portlet.service.MessagingMessageConversionLocalServiceUtil;
@@ -137,8 +125,6 @@ import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteServiceUtil;
-import com.ext.portlet.service.StaffMemberLocalServiceUtil;
-import com.ext.portlet.service.StaffMemberServiceUtil;
 import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
 import com.ext.portlet.service.TrackedVisitServiceUtil;
 import com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil;
@@ -165,21 +151,6 @@ public class ClpMessageListener extends BaseMessageListener {
             AnalyticsUserEventLocalServiceUtil.clearService();
 
             AnalyticsUserEventServiceUtil.clearService();
-            BalloonLinkLocalServiceUtil.clearService();
-
-            BalloonLinkServiceUtil.clearService();
-            BalloonStatsEntryLocalServiceUtil.clearService();
-
-            BalloonStatsEntryServiceUtil.clearService();
-            BalloonTextLocalServiceUtil.clearService();
-
-            BalloonTextServiceUtil.clearService();
-            BalloonUserTrackingLocalServiceUtil.clearService();
-
-            BalloonUserTrackingServiceUtil.clearService();
-            ConfigurationAttributeLocalServiceUtil.clearService();
-
-            ConfigurationAttributeServiceUtil.clearService();
             ContestLocalServiceUtil.clearService();
 
             ContestServiceUtil.clearService();
@@ -249,9 +220,6 @@ public class ClpMessageListener extends BaseMessageListener {
             LoginLogLocalServiceUtil.clearService();
 
             LoginLogServiceUtil.clearService();
-            MemberCategoryLocalServiceUtil.clearService();
-
-            MemberCategoryServiceUtil.clearService();
             MessagingIgnoredRecipientsLocalServiceUtil.clearService();
 
             MessagingIgnoredRecipientsServiceUtil.clearService();
@@ -366,9 +334,6 @@ public class ClpMessageListener extends BaseMessageListener {
             ProposalVoteLocalServiceUtil.clearService();
 
             ProposalVoteServiceUtil.clearService();
-            StaffMemberLocalServiceUtil.clearService();
-
-            StaffMemberServiceUtil.clearService();
             TrackedVisitLocalServiceUtil.clearService();
 
             TrackedVisitServiceUtil.clearService();
