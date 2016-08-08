@@ -259,12 +259,6 @@ public class StaffMemberLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.ext.portlet.model.StaffMember> getStaffMembersByCategoryId(
-        long categoryId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getStaffMembersByCategoryId(categoryId);
-    }
-
     public static void clearService() {
         _service = null;
     }

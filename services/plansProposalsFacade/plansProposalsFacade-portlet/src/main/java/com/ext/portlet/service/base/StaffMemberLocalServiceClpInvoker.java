@@ -45,8 +45,6 @@ public class StaffMemberLocalServiceClpInvoker {
     private String[] _methodParameterTypes464;
     private String _methodName465;
     private String[] _methodParameterTypes465;
-    private String _methodName470;
-    private String[] _methodParameterTypes470;
 
     public StaffMemberLocalServiceClpInvoker() {
         _methodName0 = "addStaffMember";
@@ -138,10 +136,6 @@ public class StaffMemberLocalServiceClpInvoker {
         _methodName465 = "setBeanIdentifier";
 
         _methodParameterTypes465 = new String[] { "java.lang.String" };
-
-        _methodName470 = "getStaffMembersByCategoryId";
-
-        _methodParameterTypes470 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -243,11 +237,6 @@ public class StaffMemberLocalServiceClpInvoker {
             StaffMemberLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName470.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes470, parameterTypes)) {
-            return StaffMemberLocalServiceUtil.getStaffMembersByCategoryId(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();
