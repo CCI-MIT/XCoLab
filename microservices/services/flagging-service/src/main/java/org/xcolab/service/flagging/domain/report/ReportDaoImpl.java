@@ -59,7 +59,7 @@ public class ReportDaoImpl implements ReportDao {
                     break;
             }
         }
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Report.class);
     }
 
@@ -120,7 +120,7 @@ public class ReportDaoImpl implements ReportDao {
                     break;
             }
         }
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(AggregatedReport.class);
     }
 

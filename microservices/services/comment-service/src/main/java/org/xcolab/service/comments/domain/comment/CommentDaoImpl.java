@@ -63,7 +63,7 @@ public class CommentDaoImpl implements CommentDao {
         if (!includeDeleted) {
             query.addConditions(COMMENT.DELETED_DATE.isNull());
         }
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Comment.class);
     }
 

@@ -45,7 +45,7 @@ public class CategoryDaoImpl implements CategoryDao {
             }
         }
         query.addConditions(CATEGORY.DELETED_DATE.isNull());
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Category.class);
     }
 

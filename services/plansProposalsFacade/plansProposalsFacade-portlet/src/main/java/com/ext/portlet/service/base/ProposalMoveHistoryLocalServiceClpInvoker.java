@@ -41,34 +41,34 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName464;
-    private String[] _methodParameterTypes464;
-    private String _methodName465;
-    private String[] _methodParameterTypes465;
-    private String _methodName470;
-    private String[] _methodParameterTypes470;
-    private String _methodName471;
-    private String[] _methodParameterTypes471;
-    private String _methodName472;
-    private String[] _methodParameterTypes472;
-    private String _methodName473;
-    private String[] _methodParameterTypes473;
-    private String _methodName474;
-    private String[] _methodParameterTypes474;
-    private String _methodName475;
-    private String[] _methodParameterTypes475;
-    private String _methodName476;
-    private String[] _methodParameterTypes476;
-    private String _methodName477;
-    private String[] _methodParameterTypes477;
-    private String _methodName478;
-    private String[] _methodParameterTypes478;
-    private String _methodName479;
-    private String[] _methodParameterTypes479;
-    private String _methodName480;
-    private String[] _methodParameterTypes480;
-    private String _methodName481;
-    private String[] _methodParameterTypes481;
+    private String _methodName422;
+    private String[] _methodParameterTypes422;
+    private String _methodName423;
+    private String[] _methodParameterTypes423;
+    private String _methodName428;
+    private String[] _methodParameterTypes428;
+    private String _methodName429;
+    private String[] _methodParameterTypes429;
+    private String _methodName430;
+    private String[] _methodParameterTypes430;
+    private String _methodName431;
+    private String[] _methodParameterTypes431;
+    private String _methodName432;
+    private String[] _methodParameterTypes432;
+    private String _methodName433;
+    private String[] _methodParameterTypes433;
+    private String _methodName434;
+    private String[] _methodParameterTypes434;
+    private String _methodName435;
+    private String[] _methodParameterTypes435;
+    private String _methodName436;
+    private String[] _methodParameterTypes436;
+    private String _methodName437;
+    private String[] _methodParameterTypes437;
+    private String _methodName438;
+    private String[] _methodParameterTypes438;
+    private String _methodName439;
+    private String[] _methodParameterTypes439;
 
     public ProposalMoveHistoryLocalServiceClpInvoker() {
         _methodName0 = "addProposalMoveHistory";
@@ -153,70 +153,70 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalMoveHistory"
             };
 
-        _methodName464 = "getBeanIdentifier";
+        _methodName422 = "getBeanIdentifier";
 
-        _methodParameterTypes464 = new String[] {  };
+        _methodParameterTypes422 = new String[] {  };
 
-        _methodName465 = "setBeanIdentifier";
+        _methodName423 = "setBeanIdentifier";
 
-        _methodParameterTypes465 = new String[] { "java.lang.String" };
+        _methodParameterTypes423 = new String[] { "java.lang.String" };
 
-        _methodName470 = "create";
+        _methodName428 = "create";
 
-        _methodParameterTypes470 = new String[] {
+        _methodParameterTypes428 = new String[] {
                 "long", "long", "long", "long", "long", "long", "long",
                 "java.lang.String"
             };
 
-        _methodName471 = "createMoveHistory";
+        _methodName429 = "createMoveHistory";
 
-        _methodParameterTypes471 = new String[] {
+        _methodParameterTypes429 = new String[] {
                 "long", "long", "long", "long", "long", "long"
             };
 
-        _methodName472 = "createCopyHistory";
+        _methodName430 = "createCopyHistory";
 
-        _methodParameterTypes472 = new String[] {
+        _methodParameterTypes430 = new String[] {
                 "long", "long", "long", "long", "long", "long"
             };
 
-        _methodName473 = "createForkHistory";
+        _methodName431 = "createForkHistory";
 
-        _methodParameterTypes473 = new String[] {
+        _methodParameterTypes431 = new String[] {
                 "long", "long", "long", "long", "long", "long", "long"
             };
 
-        _methodName474 = "getBySourceProposalId";
+        _methodName432 = "getBySourceProposalId";
 
-        _methodParameterTypes474 = new String[] { "long" };
+        _methodParameterTypes432 = new String[] { "long" };
 
-        _methodName475 = "getBySourceContestId";
+        _methodName433 = "getBySourceContestId";
 
-        _methodParameterTypes475 = new String[] { "long" };
+        _methodParameterTypes433 = new String[] { "long" };
 
-        _methodName476 = "getBySourcePhaseId";
+        _methodName434 = "getBySourcePhaseId";
 
-        _methodParameterTypes476 = new String[] { "long" };
+        _methodParameterTypes434 = new String[] { "long" };
 
-        _methodName477 = "getByTargetProposalId";
+        _methodName435 = "getByTargetProposalId";
 
-        _methodParameterTypes477 = new String[] { "long" };
+        _methodParameterTypes435 = new String[] { "long" };
 
-        _methodName478 = "getByTargetContestId";
+        _methodName436 = "getByTargetContestId";
 
-        _methodParameterTypes478 = new String[] { "long" };
+        _methodParameterTypes436 = new String[] { "long" };
 
-        _methodName479 = "getByTargetPhaseId";
+        _methodName437 = "getByTargetPhaseId";
 
-        _methodParameterTypes479 = new String[] { "long" };
+        _methodParameterTypes437 = new String[] { "long" };
 
-        _methodName480 = "getBySourceProposalIdContestId";
+        _methodName438 = "getBySourceProposalIdContestId";
 
-        _methodParameterTypes480 = new String[] { "long", "long" };
+        _methodParameterTypes438 = new String[] { "long", "long" };
 
-        _methodName481 = "getByTargetProposalIdContestId";
+        _methodName439 = "getByTargetProposalIdContestId";
 
-        _methodParameterTypes481 = new String[] { "long", "long" };
+        _methodParameterTypes439 = new String[] { "long", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -308,20 +308,20 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
             return ProposalMoveHistoryLocalServiceUtil.updateProposalMoveHistory((com.ext.portlet.model.ProposalMoveHistory) arguments[0]);
         }
 
-        if (_methodName464.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes464, parameterTypes)) {
+        if (_methodName422.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName465.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes465, parameterTypes)) {
+        if (_methodName423.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
             ProposalMoveHistoryLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName470.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes470, parameterTypes)) {
+        if (_methodName428.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.create(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -332,8 +332,8 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 (java.lang.String) arguments[7]);
         }
 
-        if (_methodName471.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes471, parameterTypes)) {
+        if (_methodName429.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes429, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.createMoveHistory(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -342,8 +342,8 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 ((Long) arguments[5]).longValue());
         }
 
-        if (_methodName472.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes472, parameterTypes)) {
+        if (_methodName430.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes430, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.createCopyHistory(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -352,8 +352,8 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 ((Long) arguments[5]).longValue());
         }
 
-        if (_methodName473.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes473, parameterTypes)) {
+        if (_methodName431.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes431, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.createForkHistory(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 ((Long) arguments[2]).longValue(),
@@ -363,44 +363,44 @@ public class ProposalMoveHistoryLocalServiceClpInvoker {
                 ((Long) arguments[6]).longValue());
         }
 
-        if (_methodName474.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes474, parameterTypes)) {
+        if (_methodName432.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes432, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getBySourceProposalId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName475.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes475, parameterTypes)) {
+        if (_methodName433.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes433, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getBySourceContestId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName476.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes476, parameterTypes)) {
+        if (_methodName434.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes434, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getBySourcePhaseId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName477.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes477, parameterTypes)) {
+        if (_methodName435.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes435, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getByTargetProposalId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName478.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes478, parameterTypes)) {
+        if (_methodName436.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes436, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getByTargetContestId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName479.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes479, parameterTypes)) {
+        if (_methodName437.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes437, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getByTargetPhaseId(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName480.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes480, parameterTypes)) {
+        if (_methodName438.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes438, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getBySourceProposalIdContestId(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }
 
-        if (_methodName481.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes481, parameterTypes)) {
+        if (_methodName439.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes439, parameterTypes)) {
             return ProposalMoveHistoryLocalServiceUtil.getByTargetProposalIdContestId(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue());
         }

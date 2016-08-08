@@ -9,71 +9,6 @@ create table xcolab_AnalyticsUserEvent (
 	primary key (userId, idString)
 );
 
-create table xcolab_BalloonLink (
-	uuid_ VARCHAR(75) not null primary key,
-	targetUrl VARCHAR(75) null,
-	visits INTEGER,
-	balloonUserUuid VARCHAR(75) null,
-	createDate DATE null
-);
-
-create table xcolab_BalloonStatsEntry (
-	id_ LONG not null primary key,
-	firstContestId LONG,
-	secondContestId LONG,
-	choosenContest INTEGER,
-	cookie VARCHAR(256) null,
-	ip VARCHAR(75) null,
-	extraData VARCHAR(256) null
-);
-
-create table xcolab_BalloonText (
-	id_ LONG not null primary key,
-	name VARCHAR(75) null,
-	textBeforeForm TEXT null,
-	textAfterForm TEXT null,
-	textBeforeShareButtons TEXT null,
-	textAfterShareButtons TEXT null,
-	acceptTosText TEXT null,
-	emailTemplate TEXT null,
-	emailSubjectTemplate TEXT null,
-	twitterDescription TEXT null,
-	twitterSubject TEXT null,
-	facebookDescription TEXT null,
-	facebookSubject TEXT null,
-	enabled BOOLEAN
-);
-
-create table xcolab_BalloonUserTracking (
-	uuid_ VARCHAR(75) not null primary key,
-	email VARCHAR(200) null,
-	parent VARCHAR(75) null,
-	ip VARCHAR(75) null,
-	createDate DATE null,
-	registrationDate DATE null,
-	formFiledDate DATE null,
-	userId LONG,
-	balloonTextId LONG,
-	referrer VARCHAR(500) null,
-	latitude DOUBLE,
-	longitude DOUBLE,
-	city VARCHAR(75) null,
-	country VARCHAR(75) null,
-	extraData TEXT null,
-	balloonLinkUuid VARCHAR(75) null,
-	balloonLinkContext VARCHAR(75) null,
-	userAgent VARCHAR(500) null
-);
-
-create table xcolab_ConfigurationAttribute (
-	name VARCHAR(75) not null,
-	additionalId LONG not null,
-	numericValue LONG,
-	stringValue TEXT null,
-	realValue DOUBLE,
-	primary key (name, additionalId)
-);
-
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
 	contestTypeId LONG,
@@ -306,16 +241,6 @@ create table xcolab_LoginLog (
 	city VARCHAR(75) null,
 	country VARCHAR(75) null,
 	entryUrl VARCHAR(255) null
-);
-
-create table xcolab_MemberCategory (
-	roleId LONG not null primary key,
-	displayName VARCHAR(75) null,
-	categoryName VARCHAR(75) null,
-	sortOrder LONG,
-	showInList BOOLEAN,
-	imageName VARCHAR(75) null,
-	description VARCHAR(2048) null
 );
 
 create table xcolab_MessagingIgnoredRecipients (
@@ -697,19 +622,6 @@ create table xcolab_RolesCategory (
 create table xcolab_SocialActivity (
 	activityId LONG not null primary key,
 	userId LONG
-);
-
-create table xcolab_StaffMember (
-	id_ LONG not null primary key,
-	userId LONG,
-	categoryId LONG,
-	firstNames VARCHAR(75) null,
-	lastName VARCHAR(75) null,
-	url VARCHAR(255) null,
-	photoUrl VARCHAR(255) null,
-	role VARCHAR(75) null,
-	organization VARCHAR(75) null,
-	sort INTEGER
 );
 
 create table xcolab_TrackedVisit (

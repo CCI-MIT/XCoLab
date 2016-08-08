@@ -10,101 +10,6 @@
 		<field name="value" type="int" />
 		<field name="created" type="Date" />
 	</model>
-	<model name="com.ext.portlet.model.BalloonLink">
-		<field name="uuid" type="String" />
-		<field name="targetUrl" type="String" />
-		<field name="visits" type="int" />
-		<field name="balloonUserUuid" type="String" />
-		<field name="createDate" type="Date" />
-	</model>
-	<model name="com.ext.portlet.model.BalloonStatsEntry">
-		<field name="id" type="long" />
-		<field name="firstContestId" type="long" />
-		<field name="secondContestId" type="long" />
-		<field name="choosenContest" type="int" />
-		<field name="cookie" type="String">
-			<hint name="max-length">256</hint>
-		</field>
-		<field name="ip" type="String" />
-		<field name="extraData" type="String">
-			<hint name="max-length">256</hint>
-		</field>
-	</model>
-	<model name="com.ext.portlet.model.BalloonText">
-		<field name="id" type="long" />
-		<field name="name" type="String" />
-		<field name="textBeforeForm" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="textAfterForm" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="textBeforeShareButtons" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="textAfterShareButtons" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="acceptTosText" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="emailTemplate" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="emailSubjectTemplate" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="twitterDescription" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="twitterSubject" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="facebookDescription" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="facebookSubject" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="enabled" type="boolean" />
-	</model>
-	<model name="com.ext.portlet.model.BalloonUserTracking">
-		<field name="uuid" type="String" />
-		<field name="email" type="String">
-			<hint name="max-length">200</hint>
-		</field>
-		<field name="parent" type="String" />
-		<field name="ip" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="registrationDate" type="Date" />
-		<field name="formFiledDate" type="Date" />
-		<field name="userId" type="long" />
-		<field name="balloonTextId" type="long" />
-		<field name="referrer" type="String">
-			<hint name="max-length">500</hint>
-		</field>
-		<field name="latitude" type="double" />
-		<field name="longitude" type="double" />
-		<field name="city" type="String" />
-		<field name="country" type="String" />
-		<field name="extraData" type="String">
-			<hint name="max-length">2000000</hint>
-		</field>
-		<field name="balloonLinkUuid" type="String" />
-		<field name="balloonLinkContext" type="String" />
-		<field name="userAgent" type="String">
-			<hint name="max-length">500</hint>
-		</field>
-	</model>
-	<model name="com.ext.portlet.model.ConfigurationAttribute">
-		<field name="name" type="String" />
-		<field name="additionalId" type="long" />
-		<field name="numericValue" type="long" />
-		<field name="stringValue" type="String">
-			<hint name="max-length">10000</hint>
-		</field>
-		<field name="realValue" type="double" />
-	</model>
 	<model name="com.ext.portlet.model.Contest">
 		<field name="ContestPK" type="long" />
 		<field name="contestTypeId" type="long" />
@@ -371,17 +276,6 @@
 		<field name="country" type="String" />
 		<field name="entryUrl" type="String">
 			<hint name="max-length">255</hint>
-		</field>
-	</model>
-	<model name="com.ext.portlet.model.MemberCategory">
-		<field name="roleId" type="long" />
-		<field name="displayName" type="String" />
-		<field name="categoryName" type="String" />
-		<field name="sortOrder" type="long" />
-		<field name="showInList" type="boolean" />
-		<field name="imageName" type="String" />
-		<field name="description" type="String">
-			<hint name="max-length">2048</hint>
 		</field>
 	</model>
 	<model name="com.ext.portlet.model.MessagingIgnoredRecipients">
@@ -799,22 +693,6 @@
 		<field name="isValid" type="boolean" />
 		<field name="confirmationEmailSendDate" type="Date" />
 		<field name="confirmationToken" type="String" />
-	</model>
-	<model name="com.ext.portlet.model.StaffMember">
-		<field name="id" type="long" />
-		<field name="userId" type="long" />
-		<field name="categoryId" type="long" />
-		<field name="firstNames" type="String" />
-		<field name="lastName" type="String" />
-		<field name="url" type="String">
-			<hint name="max-length">255</hint>
-		</field>
-		<field name="photoUrl" type="String">
-			<hint name="max-length">255</hint>
-		</field>
-		<field name="role" type="String" />
-		<field name="organization" type="String" />
-		<field name="sort" type="int" />
 	</model>
 	<model name="com.ext.portlet.model.TrackedVisit">
 		<field name="id" type="long" />

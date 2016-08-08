@@ -30,7 +30,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
         if (type != null) {
             query.addConditions(REPORT_TARGET.TYPE.eq(type.name()));
         }
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(ReportTarget.class);
     }
 

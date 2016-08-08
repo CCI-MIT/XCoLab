@@ -9,5 +9,5 @@ public interface MemberCategoryDao {
     MemberCategory getMemberCategory(Long roleId);
 
     List<MemberCategory> findByGiven(PaginationHelper paginationHelper, String displayName,
-            String categoryName);
+            String categoryName, Boolean showInList);
 }

@@ -126,6 +126,12 @@ public final class MembersClient {
         return memberCategory;
     }
 
+    public static List<MemberCategory> getVisibleMemberCategories() {
+        return memberCategoryResource.list()
+                .queryParam("showInList", true)
+                .execute();
+    }
+
     public static Member getMember(long memberId) throws MemberNotFoundException {
         try {
             return memberResource.get(memberId).cacheIdentifier("memberId_" + memberId).execute();

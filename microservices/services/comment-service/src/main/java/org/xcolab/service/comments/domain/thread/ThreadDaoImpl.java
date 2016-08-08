@@ -93,7 +93,7 @@ public class ThreadDaoImpl implements ThreadDao {
             }
         }
         query.addConditions(THREAD.DELETED_DATE.isNull());
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Thread.class);
     }
 

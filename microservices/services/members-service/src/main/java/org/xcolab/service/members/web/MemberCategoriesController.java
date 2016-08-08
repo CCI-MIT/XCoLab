@@ -34,8 +34,9 @@ public class MemberCategoriesController {
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String displayName,
-            @RequestParam(required = false) String categoryName) {
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) Boolean showInList) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
-        return this.memberCategoryDao.findByGiven(paginationHelper, displayName, categoryName);
+        return this.memberCategoryDao.findByGiven(paginationHelper, displayName, categoryName, showInList);
     }
 }

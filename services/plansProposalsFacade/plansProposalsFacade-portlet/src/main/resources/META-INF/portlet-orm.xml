@@ -25,108 +25,6 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.BalloonLinkModelImpl">
-		<attributes>
-			<id name="uuid">
-				<column name="UUID_" />
-			</id>
-			<basic name="targetUrl" />
-			<basic name="visits" />
-			<basic name="balloonUserUuid" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.BalloonStatsEntryModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="firstContestId" />
-			<basic name="secondContestId" />
-			<basic name="choosenContest" />
-			<basic name="cookie" />
-			<basic name="ip" />
-			<basic name="extraData" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.BalloonTextModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="name" />
-			<basic name="textBeforeForm" />
-			<basic name="textAfterForm" />
-			<basic name="textBeforeShareButtons" />
-			<basic name="textAfterShareButtons" />
-			<basic name="acceptTosText" />
-			<basic name="emailTemplate" />
-			<basic name="emailSubjectTemplate" />
-			<basic name="twitterDescription" />
-			<basic name="twitterSubject" />
-			<basic name="facebookDescription" />
-			<basic name="facebookSubject" />
-			<basic name="enabled" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.BalloonUserTrackingModelImpl">
-		<attributes>
-			<id name="uuid">
-				<column name="UUID_" />
-			</id>
-			<basic name="email" />
-			<basic name="parent" />
-			<basic name="ip" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="registrationDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="formFiledDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="userId" />
-			<basic name="balloonTextId" />
-			<basic name="referrer" />
-			<basic name="latitude" />
-			<basic name="longitude" />
-			<basic name="city" />
-			<basic name="country" />
-			<basic name="extraData" />
-			<basic name="balloonLinkUuid" />
-			<basic name="balloonLinkContext" />
-			<basic name="userAgent" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.ConfigurationAttributeModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.ConfigurationAttributePK" />
-		<attributes>
-			<id name="name" />
-			<id name="additionalId" />
-			<basic name="numericValue" />
-			<basic name="stringValue" />
-			<basic name="realValue" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestModelImpl">
 		<attributes>
 			<id name="ContestPK" />
@@ -501,20 +399,6 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.MemberCategoryModelImpl">
-		<attributes>
-			<id name="roleId" />
-			<basic name="displayName" />
-			<basic name="categoryName" />
-			<basic name="sortOrder" />
-			<basic name="showInList" />
-			<basic name="imageName" />
-			<basic name="description" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl">
@@ -1109,26 +993,6 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.StaffMemberModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="userId" />
-			<basic name="categoryId" />
-			<basic name="firstNames" />
-			<basic name="lastName" />
-			<basic name="url" />
-			<basic name="photoUrl" />
-			<basic name="role" />
-			<basic name="organization" />
-			<basic name="sort" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.TrackedVisitModelImpl">
 		<attributes>
 			<id name="id">
@@ -1172,26 +1036,6 @@
 	</mapped-superclass>
 	<entity class="com.ext.portlet.model.impl.AnalyticsUserEventImpl" name="AnalyticsUserEvent">
 		<table name="xcolab_AnalyticsUserEvent" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.BalloonLinkImpl" name="BalloonLink">
-		<table name="xcolab_BalloonLink" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.BalloonStatsEntryImpl" name="BalloonStatsEntry">
-		<table name="xcolab_BalloonStatsEntry" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.BalloonTextImpl" name="BalloonText">
-		<table name="xcolab_BalloonText" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.BalloonUserTrackingImpl" name="BalloonUserTracking">
-		<table name="xcolab_BalloonUserTracking" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.ConfigurationAttributeImpl" name="ConfigurationAttribute">
-		<table name="xcolab_ConfigurationAttribute" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestImpl" name="Contest">
@@ -1284,10 +1128,6 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.LoginLogImpl" name="LoginLog">
 		<table name="xcolab_LoginLog" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.MemberCategoryImpl" name="MemberCategory">
-		<table name="xcolab_MemberCategory" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl" name="MessagingIgnoredRecipients">
@@ -1436,10 +1276,6 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalVoteImpl" name="ProposalVote">
 		<table name="xcolab_ProposalVote" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.StaffMemberImpl" name="StaffMember">
-		<table name="xcolab_StaffMember" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.TrackedVisitImpl" name="TrackedVisit">

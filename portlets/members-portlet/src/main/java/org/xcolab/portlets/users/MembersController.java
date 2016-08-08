@@ -1,8 +1,5 @@
 package org.xcolab.portlets.users;
 
-import com.ext.portlet.NoSuchMemberCategoryException;
-import com.ext.portlet.service.MemberCategoryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -42,7 +39,7 @@ public class MembersController {
     public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage,
                             @RequestParam(value = "page", required = false) Long pageParam,
                             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam,
-                            Model model) throws NoSuchMemberCategoryException, SystemException {
+                            Model model) {
         int page = 1;
         if (pageParam != null) {
             page = pageParam.intValue();
@@ -109,8 +106,7 @@ public class MembersController {
             model.addAttribute("memberCategory", memberCategory);
         }
         model.addAttribute("memberCategoryParam", memberCategoryParam);
-        model.addAttribute("memberCategories", MemberCategoryLocalServiceUtil
-                .getVisibleMemberCategories());
+        model.addAttribute("memberCategories", MembersClient.getVisibleMemberCategories());
 
         model.addAttribute("colabName",
                 ConfigurationAttributeKey.COLAB_NAME.getStringValue());

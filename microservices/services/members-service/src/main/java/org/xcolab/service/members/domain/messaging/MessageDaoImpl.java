@@ -126,7 +126,7 @@ public class MessageDaoImpl implements MessageDao {
             }
         }
         query.addOrderBy(MESSAGE.CREATE_DATE.desc());
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
 
         return query.fetchInto(recipientId != null ? MessageReceived.class : Message.class);
     }

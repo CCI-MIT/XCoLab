@@ -1,13 +1,11 @@
 package org.xcolab.portlets.staffmembers;
 
-import com.ext.portlet.model.StaffMember;
-import com.ext.portlet.service.StaffMemberLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.client.members.StaffMemberClient;
+import org.xcolab.client.members.pojo.StaffMember;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +25,17 @@ public class StaffMemberController {
         model.addAttribute("displayPhoto", preferences.isDisplayPhoto());
         model.addAttribute("displayUrl", preferences.isDisplayUrl());
 
-        try {
-            //retrieve staff members which belong to the category indicated in the portlet's preferences
-            List<StaffMember> results = StaffMemberLocalServiceUtil
-                    .getStaffMembersByCategoryId(preferences.getCategoryId());
+        final int categoryId = preferences.getCategoryId();
+        List<StaffMember> results = StaffMemberClient.getStaffMembersByCategoryId(categoryId);
 
-            List<StaffMemberWrapper> staffMembers = new ArrayList<StaffMemberWrapper>();
+        List<StaffMemberWrapper> staffMembers = new ArrayList<>();
 
-            for (StaffMember staffMember : results) {
-                staffMembers.add(new StaffMemberWrapper(staffMember));
-            }
-
-            model.addAttribute("staffMembers", staffMembers);
-
-            //return the name of the view to be rendered
-            return "staffmembers";
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+        for (StaffMember staffMember : results) {
+            staffMembers.add(new StaffMemberWrapper(staffMember));
         }
+
+        model.addAttribute("staffMembers", staffMembers);
+
+        return "staffmembers";
     }
 }

@@ -1,0 +1,35 @@
+package org.xcolab.service.members.domain.staffmember;
+
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.SelectQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import org.xcolab.model.tables.pojos.StaffMember;
+import org.xcolab.service.utils.PaginationHelper;
+
+import java.util.List;
+
+import static org.xcolab.model.Tables.STAFF_MEMBER;
+
+@Repository
+public class StaffMemberDaoImpl implements StaffMemberDao {
+
+    @Autowired
+    private DSLContext dslContext;
+
+    @Override
+    public List<StaffMember> findByGiven(PaginationHelper paginationHelper, Long categoryId) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(STAFF_MEMBER)
+                .getQuery();
+
+        if (categoryId != null) {
+            query.addConditions(STAFF_MEMBER.CATEGORY_ID.eq(categoryId));
+        }
+
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
+        return query.fetchInto(StaffMember.class);
+    }
+}

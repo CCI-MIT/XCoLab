@@ -16,6 +16,7 @@ import static org.xcolab.model.Tables.BALLOON_LINK;
 
 @Repository
 public class BalloonLinkDaoImpl implements BalloonLinkDao {
+
     @Autowired
     private DSLContext dslContext;
 
@@ -41,7 +42,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
             query.addConditions(BALLOON_LINK.BALLOON_USER_UUID.eq(uuid));
         }
 
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord());
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(BalloonLink.class);
     }
 
@@ -62,11 +63,11 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
         this.dslContext.insertInto(BALLOON_LINK)
                 .set(BALLOON_LINK.UUID_, balloonLink.getUuid_())
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
-                .set(BALLOON_LINK.VISITS, ((balloonLink.getVisits()==null)?(0):(balloonLink.getVisits())))
+                .set(BALLOON_LINK.VISITS, ((balloonLink.getVisits() == null) ? (0) : (balloonLink.getVisits())))
                 .set(BALLOON_LINK.BALLOON_USER_UUID, balloonLink.getBalloonUserUuid())
                 .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreateDate())
                 .execute();
-            return balloonLink;
+        return balloonLink;
     }
 
 }
