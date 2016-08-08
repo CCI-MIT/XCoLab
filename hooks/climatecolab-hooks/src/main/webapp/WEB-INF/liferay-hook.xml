@@ -39,10 +39,6 @@
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.sessionping.SessionPingFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
-		<servlet-filter-name>BalloonStatsFilter</servlet-filter-name>
-		<servlet-filter-impl>org.xcolab.hooks.climatecolab.balloon.BalloonStatsFilter</servlet-filter-impl>
-	</servlet-filter>
-	<servlet-filter>
 		<servlet-filter-name>FileUploadFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.FileUploadFilter</servlet-filter-impl>
 	</servlet-filter>

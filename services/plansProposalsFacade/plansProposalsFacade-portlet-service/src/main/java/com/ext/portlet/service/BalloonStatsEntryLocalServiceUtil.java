@@ -262,12 +262,6 @@ public class BalloonStatsEntryLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.BalloonStatsEntry store(
-        com.ext.portlet.model.BalloonStatsEntry entry)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().store(entry);
-    }
-
     public static void clearService() {
         _service = null;
     }

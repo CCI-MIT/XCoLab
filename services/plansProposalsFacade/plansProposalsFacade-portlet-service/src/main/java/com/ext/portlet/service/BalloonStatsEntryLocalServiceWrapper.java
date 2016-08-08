@@ -275,13 +275,6 @@ public class BalloonStatsEntryLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.BalloonStatsEntry store(
-        com.ext.portlet.model.BalloonStatsEntry entry)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _balloonStatsEntryLocalService.store(entry);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

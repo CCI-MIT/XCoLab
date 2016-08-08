@@ -45,8 +45,6 @@ public class BalloonStatsEntryLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
 
     public BalloonStatsEntryLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -141,12 +139,6 @@ public class BalloonStatsEntryLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "store";
-
-        _methodParameterTypes19 = new String[] {
-                "com.ext.portlet.model.BalloonStatsEntry"
-            };
     }
 
     @Override
@@ -662,33 +654,5 @@ public class BalloonStatsEntryLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public com.ext.portlet.model.BalloonStatsEntry store(
-        com.ext.portlet.model.BalloonStatsEntry entry)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] { ClpSerializer.translateInput(entry) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.BalloonStatsEntry) ClpSerializer.translateOutput(returnObj);
     }
 }

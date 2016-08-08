@@ -45,8 +45,6 @@ public class BalloonStatsEntryLocalServiceClpInvoker {
     private String[] _methodParameterTypes464;
     private String _methodName465;
     private String[] _methodParameterTypes465;
-    private String _methodName470;
-    private String[] _methodParameterTypes470;
 
     public BalloonStatsEntryLocalServiceClpInvoker() {
         _methodName0 = "addBalloonStatsEntry";
@@ -138,12 +136,6 @@ public class BalloonStatsEntryLocalServiceClpInvoker {
         _methodName465 = "setBeanIdentifier";
 
         _methodParameterTypes465 = new String[] { "java.lang.String" };
-
-        _methodName470 = "store";
-
-        _methodParameterTypes470 = new String[] {
-                "com.ext.portlet.model.BalloonStatsEntry"
-            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -245,11 +237,6 @@ public class BalloonStatsEntryLocalServiceClpInvoker {
             BalloonStatsEntryLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName470.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes470, parameterTypes)) {
-            return BalloonStatsEntryLocalServiceUtil.store((com.ext.portlet.model.BalloonStatsEntry) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

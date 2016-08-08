@@ -1,9 +1,6 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.model.BalloonStatsEntry;
 import com.ext.portlet.service.base.BalloonStatsEntryLocalServiceBaseImpl;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The implementation of the balloon stats entry local service.
@@ -26,18 +23,4 @@ public class BalloonStatsEntryLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.BalloonStatsEntryLocalServiceUtil} to access the balloon stats entry local service.
      */
-    
-    @Override
-    public BalloonStatsEntry store(BalloonStatsEntry entry) throws SystemException {
-        if (entry.isNew() || entry.getId() <= 0) {
-            if (entry.getId() <= 0) {
-                entry.setId(CounterLocalServiceUtil.increment(BalloonStatsEntry.class.getName()));
-            }
-            addBalloonStatsEntry(entry);
-        }
-        else {
-            updateBalloonStatsEntry(entry);
-        }
-        return entry;
-    }
 }
