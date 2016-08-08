@@ -29,7 +29,7 @@ public class MemberCategoryDaoImpl implements MemberCategoryDao {
 
     @Override
     public List<MemberCategory> findByGiven(PaginationHelper paginationHelper,
-            String displayName, String categoryName) {
+            String displayName, String categoryName, Boolean showInList) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBER_CATEGORY)
                 .getQuery();
@@ -40,6 +40,10 @@ public class MemberCategoryDaoImpl implements MemberCategoryDao {
 
         if (categoryName != null) {
             query.addConditions(MEMBER_CATEGORY.CATEGORY_NAME.eq(categoryName));
+        }
+
+        if (showInList != null) {
+            query.addConditions(MEMBER_CATEGORY.SHOW_IN_LIST.eq(showInList));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {

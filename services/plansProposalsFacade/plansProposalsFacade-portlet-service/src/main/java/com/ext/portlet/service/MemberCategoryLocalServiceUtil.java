@@ -262,17 +262,6 @@ public class MemberCategoryLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.MemberCategory getByDisplayName(
-        java.lang.String displayName) {
-        return getService().getByDisplayName(displayName);
-    }
-
-    public static java.util.List<com.ext.portlet.model.MemberCategory> getVisibleMemberCategories()
-        throws com.ext.portlet.NoSuchMemberCategoryException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getVisibleMemberCategories();
-    }
-
     public static void clearService() {
         _service = null;
     }

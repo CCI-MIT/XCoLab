@@ -28,14 +28,4 @@ public class MemberCategoryLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.MemberCategoryLocalServiceUtil} to access the member category local service.
      */
-
-    @Override
-    public MemberCategory getByDisplayName(String displayName) {
-        return null;
-    }
-
-    @Override
-    public List<MemberCategory> getVisibleMemberCategories() throws NoSuchMemberCategoryException, SystemException {
-        return memberCategoryPersistence.findByshowInList(true);
-    }
 }
