@@ -18,9 +18,9 @@ $r = mysqli_query($c, "select * from email;") or die(mysqli_error($c));
 while ($row = mysqli_fetch_row($r)) {
     echo "[INFO] Sending email to: " . $row[0] . "\n";
     $subject = "$colabName is back online!";
-    $message = "Dear $colabName member,\n\n" .
-            "Thank you very much for waiting for us to make some critical updates to the $colabName. The site is back online now: $colabUrl.\n\n" .
-            "Best regards,\nThe $colabName Team";
+    $message = "Dear $colabName member,<br/> <br />" .
+        "Thank you very much for waiting for us to make some critical updates to the $colabName. The site is back online now: $colabUrl.<br /> <br />" .
+        "Best regards,<br />The $colabName Team";
 
     sendEmail($row[0], $fromUrl, $subject, $message);
 }
@@ -39,7 +39,7 @@ function sendEmail($to, $from, $subject, $emailBody){
     );
 
     // Setup cURL
-    $ch = curl_init('http://localhost:8080/emails-service/sendEmail');
+    $ch = curl_init('http://localhost:8080/emails-service/emails/send');
     curl_setopt_array($ch, array(
         CURLOPT_POST => TRUE,
         CURLOPT_RETURNTRANSFER => TRUE,
