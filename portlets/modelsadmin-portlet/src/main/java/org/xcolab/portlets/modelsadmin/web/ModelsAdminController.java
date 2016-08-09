@@ -1,24 +1,5 @@
 package org.xcolab.portlets.modelsadmin.web;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.portlets.modelsadmin.web.form.UpdateIndividualInputGroupBean;
-import org.xcolab.portlets.modelsadmin.web.form.UpdateModelDisplayFromJSONBean;
-import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
-import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputWidgetsBean;
-import org.xcolab.portlets.modelsadmin.web.form.UpdateModelOutputWidgetsBean;
-
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
@@ -33,8 +14,26 @@ import com.ext.portlet.models.ui.ModelOutputSeriesType;
 import com.ext.portlet.models.ui.ModelUIFactory;
 import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import edu.mit.cci.roma.client.Simulation;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import org.xcolab.portlets.modelsadmin.web.form.UpdateIndividualInputGroupBean;
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelDisplayFromJSONBean;
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputWidgetsBean;
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelOutputWidgetsBean;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @RequestMapping("view")
 @Controller
@@ -56,7 +55,6 @@ public class ModelsAdminController {
 				
 		});
 		model.addAttribute("models", simulationsSorted);
-		System.out.println("CollaboratoriumModelingService.repository().getAllSimulations()");
 		return "modelsIndex";
 	}
 	
@@ -175,7 +173,6 @@ public class ModelsAdminController {
 	}
 	
 	private List<ModelInputGroupDisplayItem> getSubGroups(ModelInputGroupDisplayItem parent) {
-		System.out.println("getting sub groups for parent: " + parent.getGroupId() + " " + parent.getName());
 		List<ModelInputGroupDisplayItem> ret = new ArrayList<ModelInputGroupDisplayItem>();
 		ret.add(parent);
 		

@@ -1,28 +1,26 @@
 package org.xcolab.portlets.modelsadmin.web;
 
-import java.io.IOException;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
-
 import com.ext.portlet.model.ModelInputGroup;
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
-import com.ext.portlet.models.ui.ModelInputGroupDisplayItem;
 import com.ext.portlet.models.ui.ModelUIFactory;
 import com.ext.portlet.service.ModelInputGroupLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import edu.mit.cci.roma.client.Simulation;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
+
+import java.io.IOException;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 
 @RequestMapping("view")
 @Controller
@@ -34,14 +32,11 @@ public class AddUpdateModelInputGroupAction {
 			UpdateModelInputGroupBean updateModelInputGroup,
 			@RequestParam Long modelId) throws SystemException,
 			IllegalUIConfigurationException, IOException, PortalException {
-
-		System.out.println("updating group: " + updateModelInputGroup.getId());
-
 		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		
 
-		ModelInputGroup modelInputGroup = null;
+		ModelInputGroup modelInputGroup;
 		if (updateModelInputGroup.getId() == 0) {
 			// create new one
 			modelInputGroup = ModelInputGroupLocalServiceUtil.createModelInputGroup(CounterLocalServiceUtil.increment(ModelInputGroup.class.getName()));
@@ -71,8 +66,6 @@ public class AddUpdateModelInputGroupAction {
 		modelInputGroup.setGroupType(updateModelInputGroup.getGroupType());
 		modelInputGroup.setDisplayItemOrder(updateModelInputGroup.getOrder());
 		modelInputGroup.setParentGroupPK(updateModelInputGroup.getParentGroupPK());
-		
-		
 
 		if (updateModelInputGroup.getId() == 0) {
 			ModelInputGroupLocalServiceUtil.addModelInputGroup(modelInputGroup);

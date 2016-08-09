@@ -1,21 +1,17 @@
 package org.xcolab.libs.iptolocationtranslator;
 
+import au.com.bytecode.opencsv.CSVParser;
+import au.com.bytecode.opencsv.CSVReader;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import au.com.bytecode.opencsv.CSVParser;
-import au.com.bytecode.opencsv.CSVReader;
 
 public class IpToLocationTranslator {
 	
@@ -35,7 +31,6 @@ public class IpToLocationTranslator {
 		String[] line = null;
 		blocks = new ArrayList<IpBlock>();
 		while ((line = csvBlocksReader.readNext()) != null) {
-			//System.out.println(Arrays.toString(line));
 			blocks.add(new IpBlock(Long.parseLong(line[0]), Long.parseLong(line[1]), Integer.parseInt(line[2])));
 		}
 		csvBlocksReader.close();
@@ -46,7 +41,6 @@ public class IpToLocationTranslator {
 		
 		locations = new HashMap<Integer, Location>();
 		while ((line = csvLocationsReader.readNext()) != null) {
-			//System.out.println(Arrays.toString(line));
 			//blocks.add(new IpBlock(Long.parseLong(line[0]), Long.parseLong(line[1]), Integer.parseInt(line[2])));
 			int locId = Integer.parseInt(line[0]);
 			locations.put(locId, new Location(locId, line[1], line[2], line[3], line[4], 

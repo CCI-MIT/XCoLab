@@ -133,11 +133,9 @@
 	ue.printStackTrace();
 }*/
   catch (PortletException pe) {
-    //System.out.println("PortletException");
     pe.printStackTrace();
   }
   catch (RuntimeException re) {
-    //System.out.println("RuntimeException");
     re.printStackTrace();
   }
 

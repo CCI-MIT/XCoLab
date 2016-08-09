@@ -1,20 +1,5 @@
 package org.xcolab.portlets.modelsadmin.web;
 
-import java.io.IOException;
-import java.util.Collection;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.portlets.modelsadmin.web.form.UpdateModelDisplayFromJSONBean;
-
 import com.ext.portlet.model.ModelInputGroup;
 import com.ext.portlet.model.ModelInputItem;
 import com.ext.portlet.model.ModelOutputChartOrder;
@@ -34,8 +19,22 @@ import com.ext.portlet.service.ModelOutputChartOrderLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import edu.mit.cci.roma.client.Simulation;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import org.xcolab.portlets.modelsadmin.web.form.UpdateModelDisplayFromJSONBean;
+
+import java.io.IOException;
+import java.util.Collection;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 
 @RequestMapping("view")
 @Controller
@@ -95,8 +94,12 @@ public class UpdateModelDisplayFromJSONAction {
 			ModelInputGroup group = ModelInputGroupLocalServiceUtil.createModelInputGroup(groupId);
 			group.setGroupType(type);
 			group.setModelId(modelId);
-			if (inputConf.containsKey("name")) group.setName((String) inputConf.get("name"));
-			if (inputConf.containsKey("description")) group.setDescription((String) inputConf.get("description"));
+			if (inputConf.containsKey("name")) {
+				group.setName((String) inputConf.get("name"));
+			}
+			if (inputConf.containsKey("description")) {
+				group.setDescription((String) inputConf.get("description"));
+			}
 			
 			if (inputConf.containsKey("metaDataName")) {
 				for (ModelInputDisplayItem metaDataItem: modelDisplay.getAllIndividualInputs()) {
@@ -131,7 +134,7 @@ public class UpdateModelDisplayFromJSONAction {
 				}
 			}
 			if (!found) {
-				System.out.println("individual input [" + name + "] not found");
+				//TODO: logging
 			}
 		}
 		return count;
@@ -142,18 +145,16 @@ public class UpdateModelDisplayFromJSONAction {
 	private void configureOutputArray(Long modelId, ModelDisplay modelDisplay, JSONArray jsonArray, int order) throws SystemException {
 		for (int i=0; i < jsonArray.size(); i++) {
 			JSONObject outputObj = (JSONObject) jsonArray.get(i);
-			
+
 			String name = (String) outputObj.get("name");
-			System.out.println("processing output: " + name);
 			Collection<ModelOutputDisplayItem> allOutputs = ModelsAdminController.getAllOutputsFromDisplay(modelDisplay);
-			
+
 			for (ModelOutputDisplayItem item: allOutputs) {
-				
+
 				if (item.getName().equals(name)) {
-					System.out.println("got output: " + item);
 					item.setOrder(order++);
-					
-					
+
+
 					if (item instanceof ModelOutputSeriesDisplayItem) {
 						ModelOutputSeriesDisplayItem seriesItem = (ModelOutputSeriesDisplayItem) item;
 						String chartType = (String) outputObj.get("chartType");
@@ -161,7 +162,6 @@ public class UpdateModelDisplayFromJSONAction {
 							seriesItem.setSeriesType(ModelOutputSeriesType.valueOf(chartType));
 						}
 						String associatedMetaDataName = (String) outputObj.get("associatedOutput");
-						System.out.println("associated: " + String.valueOf(associatedMetaDataName));
 						if (associatedMetaDataName != null) {
 							for (ModelOutputDisplayItem associatedItem: allOutputs) {
 								if (associatedItem instanceof ModelOutputSeriesDisplayItem && associatedItem.getName().equals(associatedMetaDataName)) {
@@ -169,11 +169,11 @@ public class UpdateModelDisplayFromJSONAction {
 								}
 							}
 						}
-						
+
 					}
 				}
 			}
-			
+
 		}
 	}
 

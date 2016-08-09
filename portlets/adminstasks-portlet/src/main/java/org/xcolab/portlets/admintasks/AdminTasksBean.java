@@ -30,7 +30,6 @@ import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -85,38 +84,20 @@ public class AdminTasksBean {
 		for (SocialActivity activity : SocialActivityLocalServiceUtil
 				.getSocialActivities(0, Integer.MAX_VALUE)) {
 			try {
-				// System.out.println("processing activity: " +
-				// activity.getActivityId());
 				String className = ClassNameLocalServiceUtil.getClassName(
 						activity.getClassNameId()).getClassName();
-				/*
-				 * if
-				 * (className.equals("com.liferay.portlet.wiki.model.WikiPage"))
-				 * { System.out.println("\t\t\t" + activity); }
-				 */
 				SocialActivityFeedEntry interpreted = SocialActivityInterpreterLocalServiceUtil
 						.interpret(activity, td);
 				if (interpreted == null) {
 					badCount++;
-					System.out.println("Can't interpret activity: "
-							+ activity.getActivityId() + "\n\t\t"
-							+ new Date(activity.getCreateDate()) + "\t"
-							+ className);
-					System.out.println("\t\t\t" + activity);
 					if (removeEmptyActivitiesWithClass.contains(className)) {
 						SocialActivityLocalServiceUtil.deleteActivity(activity);
 					}
 				}
 			} catch (Exception e) {
 				badCount++;
-				System.out.println("Can't interpret activity: "
-						+ new Date(activity.getCreateDate())
-						+ "\t"
-						+ ClassNameLocalServiceUtil.getClassName(
-								activity.getClassNameId()).getClassName());
 			}
 		}
-		System.out.println("Bad activities count: " + badCount);
 	}
 
     //TODO: figure out the whole IpTranslation thing
