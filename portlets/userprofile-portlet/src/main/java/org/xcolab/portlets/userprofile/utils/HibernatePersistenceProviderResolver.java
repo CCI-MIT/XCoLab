@@ -1,17 +1,18 @@
 package org.xcolab.portlets.userprofile.utils;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.hibernate.ejb.HibernatePersistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceProviderResolver;
 import javax.persistence.spi.PersistenceProviderResolverHolder;
-import java.util.Collections;
-import java.util.List;
 
 public class HibernatePersistenceProviderResolver implements PersistenceProviderResolver {
-    private final static Log _log = LogFactoryUtil.getLog(HibernatePersistenceProviderResolver.class.getName());
+    private final static Logger _log = LoggerFactory.getLogger(HibernatePersistenceProviderResolver.class);
 
     private volatile PersistenceProvider persistenceProvider = new HibernatePersistence();
 
