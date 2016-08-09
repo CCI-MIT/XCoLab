@@ -1,9 +1,9 @@
 package org.xcolab.portlets.messaging.beans;
 
-import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.html.HtmlUtil;
@@ -61,7 +61,7 @@ public class SendMessageBean implements Serializable {
             }
         }
 
-        MessageUtil.checkLimitAndSendMessage(subject, HtmlUtil.cleanSome(messageContent, baseUri), sender, recipientIds);
+        MessagingClient.checkLimitAndSendMessage(subject, HtmlUtil.cleanSome(messageContent, baseUri), sender.getUserId(), recipientIds);
     }
 
     public String getUserIdsRecipients() {

@@ -2,7 +2,6 @@ package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
@@ -25,6 +24,7 @@ import com.liferay.util.EncryptorException;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.legacy.enums.MessageType;
@@ -305,7 +305,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : MessageUtil.getMessages(this.user.getId_(), 0, 2, MessageType.INBOX)) {
+            for (Message msg : MessagingClient.getMessages(this.user.getId_(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }

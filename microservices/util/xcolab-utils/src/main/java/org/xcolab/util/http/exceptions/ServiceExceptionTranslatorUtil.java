@@ -28,6 +28,8 @@ public final class ServiceExceptionTranslatorUtil {
                 throw new UncheckedEntityNotFoundException();
             case BAD_REQUEST:
                 throw new Http400BadRequestException(exceptionObject);
+            case TOO_MANY_REQUESTS:
+                throw new Http429TooManyRequestsException(exceptionObject);
             case INTERNAL_SERVER_ERROR:
                 throw new Http500InternalServiceException(exceptionObject);
             default:

@@ -1,7 +1,6 @@
 package org.xcolab.utils.emailnotification.basic;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
@@ -19,6 +18,7 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -224,7 +224,7 @@ public abstract class EmailNotification {
         EmailTemplateWrapper template = getTemplateWrapper();
         String content = template.getHeader() + template.getFooter();
         content = content.replace("\n", " ").replace("\r", " ");
-        MessageUtil.sendMessage(template.getSubject(), content,
+        MessagingClient.sendMessage(template.getSubject(), content,
                 ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients);
     }
 

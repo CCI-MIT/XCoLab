@@ -3,10 +3,10 @@ package org.xcolab.portlets.messaging.utils;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.messaging.beans.MessageBean;
-import org.xcolab.client.members.messaging.MessageLimitManager;
 
 import javax.portlet.PortletRequest;
 
@@ -27,7 +27,7 @@ public class MessagingPermissions {
     }
 
     public boolean getCanSendMessage() {
-        return MessageLimitManager.canSendMessages(1, memberId) || getCanAdminAll();
+        return MessagingClient.canMemberSendMessage(memberId) || getCanAdminAll();
     }
 
     public boolean getCanViewMessage() {

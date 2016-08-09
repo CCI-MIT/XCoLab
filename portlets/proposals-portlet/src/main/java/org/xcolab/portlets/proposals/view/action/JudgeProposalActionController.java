@@ -3,7 +3,6 @@ package org.xcolab.portlets.proposals.view.action;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
@@ -35,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -312,7 +312,7 @@ public class JudgeProposalActionController {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             String exceptionAsString = sw.toString();
-            MessageUtil.sendMessage("Exception thrown when fellow rated proposal",
+            MessagingClient.sendMessage("Exception thrown when fellow rated proposal",
                     e.getMessage()+"\n\n"+exceptionAsString, 1010458L, 1010458L, recipientIds);
             throw e;
         }

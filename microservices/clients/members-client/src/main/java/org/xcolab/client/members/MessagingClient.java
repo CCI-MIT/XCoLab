@@ -1,14 +1,20 @@
 package org.xcolab.client.members;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
+import org.xcolab.client.members.legacy.enums.MessageType;
+import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.client.members.pojo.SendMessageBean;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
 
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 public final class MessagingClient {
@@ -29,7 +35,21 @@ public final class MessagingClient {
         }
     }
 
-    public static List<Message> getMessagesForUser(int firstMessage, int lastMessage, long userId, boolean isArchived) {
+    public static List<Message> getMessages(long userId, int pagerStart, int pagerNext, MessageType type) {
+        switch (type) {
+            case INBOX:
+                return getMessagesForUser(pagerStart, pagerNext, userId, false);
+            case ARCHIVED:
+                return getMessagesForUser(pagerStart, pagerNext, userId, true);
+            case SENT:
+                return getSentMessagesForUser(pagerStart, pagerNext, userId);
+            default:
+                return Collections.emptyList();
+        }
+    }
+
+    private static List<Message> getMessagesForUser(int firstMessage, int lastMessage, long userId,
+            boolean isArchived) {
         return messageResource.list()
                 .addRange(firstMessage, lastMessage)
                 .queryParam("recipientId", userId)
@@ -37,27 +57,41 @@ public final class MessagingClient {
                 .execute();
     }
 
-    public static List<Message> getSentMessagesForUser(int firstMessage, int lastMessage, long userId) {
+    private static List<Message> getSentMessagesForUser(int firstMessage, int lastMessage,
+            long userId) {
         return messageResource.list()
                 .addRange(firstMessage, lastMessage)
                 .queryParam("senderId", userId).execute();
     }
 
-    public static int getMessageCountForUser(long userId, boolean isArchived) {
+    public static int countMessages(long userId, MessageType type) {
+
+        switch (type) {
+            case INBOX:
+                return countMessagesForUser(userId, false);
+            case ARCHIVED:
+                return countMessagesForUser(userId, true);
+            case SENT:
+                return countSentMessagesForUser(userId);
+            default:
+                return 0;
+        }
+    }
+
+    private static int countMessagesForUser(long userId, boolean isArchived) {
         return messageResource.count()
                 .queryParam("recipientId", userId)
                 .queryParam("isArchived", isArchived)
                 .execute();
     }
 
-    public static int getMessageCountForMemberSinceDate(long memberId, Date sinceDate) {
+    private static int countSentMessagesForUser(long userId) {
         return messageResource.count()
-                .queryParam("recipientId", memberId)
-                .queryParam("sinceDate", sinceDate)
+                .queryParam("senderId", userId)
                 .execute();
     }
 
-    public static int getUnreadMessageCountForUser(long userId) {
+    public static int countUnreadMessagesForUser(long userId) {
         return messageResource.count()
                 .queryParam("recipientId", userId)
                 .queryParam("isOpened", false)
@@ -65,26 +99,37 @@ public final class MessagingClient {
                 .execute();
     }
 
-    public static int getSentMessageCountForUser(long userId) {
-        return messageResource.count()
-                .queryParam("senderId", userId)
+    public static List<Member> getMessageRecipients(long messageId) {
+        return messageResource.getSubRestResource(messageId, "recipients", Member.TYPES)
+                .list()
                 .execute();
     }
 
-    public static Message createMessage(Message message) {
-        return messageResource.create(message).execute();
+    public static void checkLimitAndSendMessage(String subject, String content,
+            long fromId, List<Long> recipientIds) throws MessageLimitExceededException {
+        try {
+            sendMessage(subject, content, fromId, fromId, recipientIds, true);
+        } catch (Http429TooManyRequestsException e) {
+            throw new MessageLimitExceededException(fromId);
+        }
     }
 
-    public static void createRecipient(long messageId, long recipientId) {
-        messageResource.service(messageId, "recipients", String.class)
-                .queryParam("recipientId", recipientId)
-                .post();
+    public static void sendMessage(String subject, String content, Long fromId,
+            long replyToId, List<Long> recipientIds) {
+        sendMessage(subject, content, fromId, fromId, recipientIds, false);
     }
 
-    public static List<Member> getMessageRecipients(long messageId) {
-        return messageResource.getSubRestResource(messageId, "recipients",
-                Member.TYPES)
-                .list()
+    private static void sendMessage(String subject, String content, long fromId, long replyToId,
+            List<Long> recipientIds, boolean checkLimit) {
+        SendMessageBean sendMessageBean = new SendMessageBean();
+        sendMessageBean.setSubject(StringEscapeUtils.unescapeXml(subject));
+        sendMessageBean.setContent(content.replaceAll("\n", ""));
+        sendMessageBean.setFromId(fromId);
+        sendMessageBean.setRepliesTo(replyToId);
+        sendMessageBean.setRecipientIds(recipientIds);
+
+        messageResource.create(sendMessageBean)
+                .queryParam("checkLimit", checkLimit)
                 .execute();
     }
 
@@ -125,5 +170,10 @@ public final class MessagingClient {
                 .getSubRestResource(messagingUserPreferences.getUserId(), "messagingPreferences", MessagingUserPreferences.TYPES)
                 .update(messagingUserPreferences, messagingUserPreferences.getMessagingPreferencesId())
                 .execute();
+    }
+
+    public static boolean canMemberSendMessage(long memberId) {
+        return memberResource.service(memberId, "canSendMessage", Boolean.class)
+                .getUnchecked();
     }
 }

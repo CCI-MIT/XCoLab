@@ -1,10 +1,10 @@
 package org.xcolab.service.members.domain.member;
 
 import org.xcolab.model.tables.pojos.Member;
-import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberDao {
 
@@ -12,11 +12,7 @@ public interface MemberDao {
             String roleName, String email, String screenName, Long facebookId, String openId);
     int countByGiven(String partialName, String roleName);
 
-    Member getMember(long memberId) throws NotFoundException;
-
-    Integer countMembersFilteredByCategory(String filter, String roleName);
-
-    Integer countMembers(String filter);
+    Optional<Member> getMember(long memberId);
 
     Integer getMemberMaterializedPoints(Long memberId);
 

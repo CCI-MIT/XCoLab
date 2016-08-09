@@ -27,15 +27,19 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class MembersController {
 
-    @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
+
+    private final MemberDao memberDao;
+
+    private final RoleService roleService;
 
     @Autowired
-    private MemberDao memberDao;
-
-    @Autowired
-    private RoleService roleService;
-
+    public MembersController(MemberDao memberDao, RoleService roleService,
+            MemberService memberService) {
+        this.memberDao = memberDao;
+        this.roleService = roleService;
+        this.memberService = memberService;
+    }
 
     @RequestMapping(value = "/members", method = RequestMethod.GET)
     public List<Member> listMembers(HttpServletResponse response,
@@ -62,7 +66,7 @@ public class MembersController {
         if (memberId == 0) {
             throw new NotFoundException("No message id given");
         } else {
-            return memberDao.getMember(memberId);
+            return memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
         }
     }
 
@@ -71,7 +75,7 @@ public class MembersController {
         if (memberId == 0) {
             throw new NotFoundException("No message id given");
         } else {
-            final Member member = memberDao.getMember(memberId);
+            final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
             member.setStatus(5);
             return memberDao.updateMember(member);
         }
@@ -170,13 +174,12 @@ public class MembersController {
         }
 
         if (memberId != null) {
+            final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
             return memberService
-                    .validatePassword(password, memberDao.getMember(memberId).getHashedPassword());
+                    .validatePassword(password, member.getHashedPassword());
         }
-        throw new NotFoundException(
-                "The endpoint you requested is not available for the given attributes");
+        throw new NotFoundException("The endpoint you requested is not available for the given attributes");
     }
-
 
     @RequestMapping(value = "/members/createForgotPasswordToken", method = RequestMethod.GET)
     public String createForgotPasswordToken(
@@ -188,7 +191,6 @@ public class MembersController {
         throw new NotFoundException(
                 "The endpoint you requested is not available for the given attributes");
     }
-
 
     @RequestMapping(value = "/members/updateForgottenPassword", method = RequestMethod.POST)
     public Long updateForgottenPasswordByToken(
@@ -216,7 +218,7 @@ public class MembersController {
     @RequestMapping(value = "/members/{memberId}/login", method = RequestMethod.POST)
     public boolean login(@PathVariable long memberId, @RequestBody String password)
             throws NoSuchAlgorithmException, NotFoundException {
-        final Member member = memberDao.getMember(memberId);
+        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
         return memberService.validatePassword(password, member.getHashedPassword());
     }
 

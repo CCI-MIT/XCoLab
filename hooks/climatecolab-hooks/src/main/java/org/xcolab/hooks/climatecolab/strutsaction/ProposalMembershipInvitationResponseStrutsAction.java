@@ -1,7 +1,6 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -16,6 +15,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
@@ -79,6 +79,6 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 	}
 
 	private void sendMessage(long sender, List<Long> recipients, String subject, String content) {
-		MessageUtil.sendMessage(subject, content, sender, sender, recipients);
+		MessagingClient.sendMessage(subject, content, sender, sender, recipients);
 	}
 }

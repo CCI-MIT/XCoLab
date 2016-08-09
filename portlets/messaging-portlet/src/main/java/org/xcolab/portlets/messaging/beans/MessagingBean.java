@@ -1,9 +1,8 @@
 package org.xcolab.portlets.messaging.beans;
 
-import com.ext.portlet.messaging.MessageUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.portlets.messaging.paging.MessageDataPage;
 import org.xcolab.portlets.messaging.paging.PageLinkWrapper;
@@ -36,7 +35,7 @@ public class MessagingBean implements Serializable {
 
         dataPage = new MessageDataPage(user, messageType, PAGE_SIZE, pageNumber);
 
-        messagesCount = MessageUtil.countMessages(user.getUserId(), messageType);
+        messagesCount = MessagingClient.countMessages(user.getUserId(), messageType);
     }
 
     public MessageType getType() {
