@@ -46,10 +46,8 @@ public class NotificationUnregisterController {
 	    
 	    
 	    Member user = null;
-	    ActivitySubscription subscription = null;
-	    boolean error = false;
-	    boolean unregisteringSubscription = false;
-	    if (userId > 0) {
+        boolean error = false;
+        if (userId > 0) {
 	        try {
 
                 user = MembersClient.getMember(userId);
@@ -60,13 +58,13 @@ public class NotificationUnregisterController {
 	            _log.error("Error when unsubscribing", e);
 	        }
 	    }
-	    if (subscriptionId > 0) {
+        ActivitySubscription subscription = null;
+        if (subscriptionId > 0) {
 	        try {
 	            subscription = ActivitiesClient.getActivitySubscription(subscriptionId);
                 //ActivitySubscriptionLocalServiceUtil.getActivitySubscription(subscriptionId);
                 error = ! NotificationUnregisterUtils.isTokenValid(token, subscription);
-                unregisteringSubscription = true;
-	        }
+            }
 	        catch (Exception e) {
                 _log.error("Error when unsubscribing", e);
                 // error = true; ignore, but log exception
@@ -81,7 +79,6 @@ public class NotificationUnregisterController {
         String responseText = null;
 	    // unregister user
 	    if (subscription != null) {
-	        //ActivitySubscriptionLocalServiceUtil.delete(subscription);
             ActivitiesClient.deleteSubscriptionById(subscription.getPk());
             responseText = UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT;
 	    }
