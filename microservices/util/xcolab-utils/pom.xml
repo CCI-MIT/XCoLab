@@ -52,13 +52,20 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.0.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>3.0.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+
+        <!-- Logging adapter for liferay - TODO: replace  -->
+        <dependency>
+            <groupId>com.liferay.portal</groupId>
+            <artifactId>util-slf4j</artifactId>
+            <version>6.2.4</version>
         </dependency>
 
         <dependency>
