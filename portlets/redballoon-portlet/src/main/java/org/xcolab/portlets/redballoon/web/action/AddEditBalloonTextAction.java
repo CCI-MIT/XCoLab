@@ -2,11 +2,10 @@ package org.xcolab.portlets.redballoon.web.action;
 
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonText;
@@ -20,8 +19,8 @@ import javax.portlet.ActionResponse;
 public class AddEditBalloonTextAction {
 
     @RequestMapping(params = {"balloonTextId", "action=addEditBalloonText"})
-    private void execute(ActionRequest request, ActionResponse response, AddEditBalloonTextBean addEditBalloonTextBean) throws PortalException, SystemException {
-        BalloonText balloonText = null;
+    private void execute(ActionRequest request, ActionResponse response, AddEditBalloonTextBean addEditBalloonTextBean) throws SystemException {
+        BalloonText balloonText;
 
         if (addEditBalloonTextBean.getBalloonTextId() > 0) {
 
@@ -32,7 +31,7 @@ public class AddEditBalloonTextAction {
             }
         } else {
             balloonText = new BalloonText();
-            balloonText.setId_(CounterLocalServiceUtil.increment(com.ext.portlet.model.BalloonText.class.getName()));
+            balloonText.setId_(CounterLocalServiceUtil.increment("com.ext.portlet.model.BalloonText"));
 
         }
         balloonText.setName(addEditBalloonTextBean.getName());
@@ -57,7 +56,5 @@ public class AddEditBalloonTextAction {
             BalloonsClient.createBalloonText(balloonText);
 
         }
-
     }
-
 }
