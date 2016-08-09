@@ -17,21 +17,19 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import org.xcolab.client.members.messaging.MessageLimitManager;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.utils.MessageLimitManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.mail.internet.AddressException;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -152,18 +150,14 @@ public class ProposalShareJSONController {
         }
 
         // Send the message
-        try {
-            if (recipientIds != null) {
-                if (MessageLimitManager.canSendMessages(recipientIds.size(), userId)) {
-                    MessageUtil.sendMessage(subject, body, userId, userId, recipientIds);
-                    sendResponseJSON(true, String.format("You successfully shared the %s", contestType.getProposalName()), response);
-                } else {
-                    sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, " +
-                            "please contact the administrators.", response);
-                }
+        if (recipientIds != null) {
+            if (MessageLimitManager.canSendMessages(recipientIds.size(), userId)) {
+                MessageUtil.sendMessage(subject, body, userId, userId, recipientIds);
+                sendResponseJSON(true, String.format("You successfully shared the %s", contestType.getProposalName()), response);
+            } else {
+                sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, " +
+                        "please contact the administrators.", response);
             }
-        } catch (AddressException | MailEngineException e) {
-            sendResponseJSON(false, "We were unable to share this proposal. Please try again later.", response);
         }
     }
 

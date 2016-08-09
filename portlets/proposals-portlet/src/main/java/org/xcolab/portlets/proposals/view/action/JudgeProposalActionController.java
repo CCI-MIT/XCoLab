@@ -236,8 +236,7 @@ public class JudgeProposalActionController {
             ActionResponse response,
             @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
             BindingResult result)
-            throws PortalException, SystemException, ProposalsAuthorizationException, AddressException,
-            MailEngineException, IOException {
+            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         try {
             if (result.hasErrors()) {
                 SessionErrors.clear(request);

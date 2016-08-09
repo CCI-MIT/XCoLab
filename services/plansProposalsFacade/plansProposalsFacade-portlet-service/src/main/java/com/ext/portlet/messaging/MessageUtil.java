@@ -2,8 +2,6 @@ package com.ext.portlet.messaging;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.joda.time.DateTime;
 
@@ -14,19 +12,16 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageConstants;
 import org.xcolab.client.members.legacy.enums.MessageType;
+import org.xcolab.client.members.messaging.MessageLimitExceededException;
+import org.xcolab.client.members.messaging.MessageLimitManager;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.utils.MessageLimitManager;
 import org.xcolab.utils.TemplateReplacementUtil;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 public final class MessageUtil {
 
@@ -62,9 +57,8 @@ public final class MessageUtil {
         }
     }
 
-    public static boolean checkLimitAndSendMessage(String subject, String content,
-            User fromUser, Collection<Long> recipientIds)
-            throws MailEngineException, UnsupportedEncodingException, AddressException {
+    public static void checkLimitAndSendMessage(String subject, String content,
+            Member fromUser, Collection<Long> recipientIds) throws MessageLimitExceededException {
         Long fromId = fromUser.getUserId();
         synchronized (MessageLimitManager.getMutex(fromId)) {
             // Send a validation problem mail to patrick if the daily limit is reached for a user
@@ -78,17 +72,15 @@ public final class MessageUtil {
                     sendMessage("VALIDATION PROBLEM  " + subject, "VALIDATION PROBLEM  " + content,
                             fromId, fromId, recipientIds);
                 }
-                return false;
+                throw new MessageLimitExceededException(fromId);
             }
 
             sendMessage(subject, content, fromId, fromId, recipientIds);
-            return true;
         }
     }
 
     public static void sendMessage(String subject, String content, Long fromId,
-            Long replyToId, Collection<Long> recipientIds)
-            throws MailEngineException, AddressException, UnsupportedEncodingException {
+            Long replyToId, Collection<Long> recipientIds) {
         Message message = new Message();
         message.setSubject(StringEscapeUtils.unescapeXml(subject));
         message.setContent(content.replaceAll("\n", ""));
@@ -110,8 +102,7 @@ public final class MessageUtil {
         }
     }
 
-    private static void copyRecipient(Member recipient, Message m)
-            throws AddressException, MailEngineException, UnsupportedEncodingException {
+    private static void copyRecipient(Member recipient, Message m) {
         try {
             Member from = MembersClient.getMember(m.getFromId());
             String subject = m.getSubject();
@@ -128,13 +119,10 @@ public final class MessageUtil {
                             .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,
                                     m.getContent()));
 
-            InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
-            InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress());
-            EmailClient
-                    .sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject, message, true,
-                            fromEmail.getAddress());
+            String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
+            EmailClient.sendEmail(fromEmail, recipient.getEmailAddress(), subject, message, true,
+                            fromEmail);
         } catch (MemberNotFoundException e) {
-            //should never happen
             throw new IllegalArgumentException("Sender " + m.getFromId()
                     + " of message " + m.getMessageId() + " does not exist");
         }

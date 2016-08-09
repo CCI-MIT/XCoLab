@@ -3,19 +3,15 @@ package org.xcolab.portlets.messaging.beans;
 import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.util.mail.MailEngineException;
 
+import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.mail.internet.AddressException;
 
 public class SendMessageBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -46,8 +42,8 @@ public class SendMessageBean implements Serializable {
         this.recipientList = new ArrayList<>();
     }
 
-    public boolean send(User sender, String baseUri)
-            throws AddressException, MailEngineException, UnsupportedEncodingException {
+    public void send(Member sender, String baseUri)
+            throws MessageLimitExceededException {
         //TODO: do we need this?
 //        if (messageHoneypot != null && !messageHoneypot.isEmpty()) {
 //            _log.info("Message was not sent because honeypot was filled - text: " + messageContent + " honeypot: "
@@ -65,8 +61,7 @@ public class SendMessageBean implements Serializable {
             }
         }
 
-        return MessageUtil.checkLimitAndSendMessage(subject,
-                HtmlUtil.cleanSome(messageContent, baseUri), sender, recipientIds);
+        MessageUtil.checkLimitAndSendMessage(subject, HtmlUtil.cleanSome(messageContent, baseUri), sender, recipientIds);
     }
 
     public String getUserIdsRecipients() {

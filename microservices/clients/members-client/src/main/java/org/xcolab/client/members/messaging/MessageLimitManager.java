@@ -1,9 +1,9 @@
-package org.xcolab.utils;
+package org.xcolab.client.members.messaging;
 
-import com.liferay.portal.model.User;
 import org.joda.time.DateTime;
 
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 
 import java.util.Calendar;
@@ -21,7 +21,7 @@ public final class MessageLimitManager {
 
     private static final Map<Long, Object> mutexes = new HashMap<>();
 	private static final int MESSAGES_DAILY_LIMIT = 15;
-	private static final Map<User, Date> lastValidationDateMap = new HashMap<>();
+	private static final Map<Member, Date> lastValidationDateMap = new HashMap<>();
 
     private MessageLimitManager() { }
 
@@ -63,7 +63,7 @@ public final class MessageLimitManager {
         return mutex;
     }
 
-	public static boolean shouldSendValidationErrorMessage(User user) {
+	public static boolean shouldSendValidationErrorMessage(Member user) {
 		if (user == null) {
 			return false;
 		}

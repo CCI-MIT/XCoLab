@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
 
@@ -65,10 +66,16 @@ public final class TemplateReplacementUtil {
         }
     }
 
-    public static InternetAddress getAdminFromEmailAddress() throws UnsupportedEncodingException {
-            final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL
-                    .getStringValue();
-            return new InternetAddress(adminFromEmail,
+    public static InternetAddress getAdminFromEmailAddress() {
+        try {
+            return new InternetAddress(getAdminFromEmail(),
                     TemplateReplacementUtil.replacePlatformConstants("The <colab-name/> Team"));
+        } catch (UnsupportedEncodingException e) {
+            throw new InternalException(e);
+        }
+    }
+
+    public static String getAdminFromEmail() {
+        return ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
     }
 }

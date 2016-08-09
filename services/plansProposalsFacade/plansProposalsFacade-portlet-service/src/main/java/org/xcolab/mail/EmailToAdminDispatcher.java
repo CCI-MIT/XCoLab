@@ -1,27 +1,15 @@
 package org.xcolab.mail;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.utils.TemplateReplacementUtil;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
-/**
- * Created by Mente on 29/07/15.
- */
 public class EmailToAdminDispatcher {
 
-    private static final Log _log = LogFactoryUtil.getLog(EmailToAdminDispatcher.class);
-
-    public final static int VERBOSITY_ERROR = 1;
-    public final static int VERBOSITY_DEBUG = 2;
+    private final static int VERBOSITY_ERROR = 1;
+    private final static int VERBOSITY_DEBUG = 2;
 
     private static final Recipient[] ADMIN_EMAIL_RECIPIENTS = {
             new Recipient("pdeboer@mit.edu", VERBOSITY_ERROR),
@@ -45,16 +33,11 @@ public class EmailToAdminDispatcher {
     }
 
     public void sendMessage() {
-        try {
-            InternetAddress fromAddress = TemplateReplacementUtil.getAdminFromEmailAddress();
-            //MailEngine.send(fromAddress, getRecipientAddresses(), subject, body, true);
-            EmailClient.sendEmail(fromAddress.getAddress(), getRecipientAddresses(), subject, body, true, fromAddress.getAddress());
-        } catch (AddressException | UnsupportedEncodingException e) {
-            _log.error("Could not send error message", e);
-        }
+        String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
+        EmailClient.sendEmail(fromEmail, getRecipientAddresses(), subject, body, true, fromEmail);
     }
 
-    private List<String> getRecipientAddresses() throws AddressException {
+    private List<String> getRecipientAddresses() {
         List<String> addressTo = new ArrayList<>();
         for (Recipient recipient : ADMIN_EMAIL_RECIPIENTS) {
             if (recipient.verbosity >= messageVerbosity) {

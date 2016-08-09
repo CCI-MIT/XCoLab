@@ -25,7 +25,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,11 +45,9 @@ import org.xcolab.utils.emailnotification.proposal.ProposalMembershipInviteNotif
 import org.xcolab.utils.emailnotification.proposal.ProposalUserActionNotification;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.ResourceRequest;
@@ -223,11 +220,7 @@ public class ProposalRequestMembershipActionController {
         List<Long> recipients = new ArrayList<>();
         recipients.add(recipient);
 
-        try{
-            MessageUtil.sendMessage(subject, content, sender, sender,recipients);
-        } catch (AddressException | MailEngineException | UnsupportedEncodingException e) {
-            _log.error("Failed to send message", e);
-        }
+        MessageUtil.sendMessage(subject, content, sender, sender,recipients);
     }
 
     private List<User> getRecipientSuggestions(String input, long proposalId) throws PortalException, SystemException {

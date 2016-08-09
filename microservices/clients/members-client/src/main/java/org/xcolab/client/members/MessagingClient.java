@@ -105,10 +105,8 @@ public final class MessagingClient {
     }
 
     public static MessagingUserPreferences getMessagingPreferencesForMember(long memberId) {
-        return memberResource
-                .getSubRestResource(memberId, "messagingPreferences", MessagingUserPreferences.TYPES)
-                .get(memberId)
-                .executeUnchecked();
+        return memberResource.service(memberId, "messagingPreferences", MessagingUserPreferences.class)
+                .getUnchecked();
     }
 
     public static MessagingUserPreferences createMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {

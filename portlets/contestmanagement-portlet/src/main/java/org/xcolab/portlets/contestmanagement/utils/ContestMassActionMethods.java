@@ -9,12 +9,11 @@ import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -32,13 +31,11 @@ import java.util.List;
 import java.util.Set;
 
 import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
 
 public class ContestMassActionMethods {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestMassActionMethods.class);
     private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
     private static final List<String> CSV_EXPORT_HEADER =
             Arrays.asList("Contest", "Proposal Title", "Proposal Link", "Username", "First Name",
@@ -102,12 +99,10 @@ public class ContestMassActionMethods {
                         recipientIds.size(), contestList.size(), contestNames) + HtmlUtil
                         .addHtmlLineBreaks(messageBody);
 
-        InternetAddress adminEmail = new InternetAddress("admin@climatecolab.org");
-        InternetAddress[] adminEmailArray = {adminEmail};
+        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.getStringValue();
 
-        EmailClient.sendEmail(adminEmail.getAddress(), adminEmail.getAddress(), emailSubject,
+        EmailClient.sendEmail(adminEmail, adminEmail, emailSubject,
                 emailBody, true, null);
-
     }
 
     public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject,

@@ -12,7 +12,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -32,7 +31,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 public abstract class EmailNotification {
@@ -224,14 +222,10 @@ public abstract class EmailNotification {
         List<Long> recipients = new ArrayList<>();
         recipients.add(getRecipient().getUserId());
         EmailTemplateWrapper template = getTemplateWrapper();
-        try {
-            String content = template.getHeader() + template.getFooter();
-            content = content.replace("\n", " ").replace("\r", " ");
-            MessageUtil.sendMessage(template.getSubject(), content,
-                    ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients);
-        } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
-            throw new InternalException(e);
-        }
+        String content = template.getHeader() + template.getFooter();
+        content = content.replace("\n", " ").replace("\r", " ");
+        MessageUtil.sendMessage(template.getSubject(), content,
+                ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients);
     }
 
     protected class EmailNotificationTemplate extends EmailTemplateWrapper {

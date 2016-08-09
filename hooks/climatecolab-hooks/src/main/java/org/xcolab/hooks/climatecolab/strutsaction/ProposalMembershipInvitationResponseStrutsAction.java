@@ -15,17 +15,13 @@ import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.util.mail.MailEngineException;
 
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -83,10 +79,6 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 	}
 
 	private void sendMessage(long sender, List<Long> recipients, String subject, String content) {
-		try{
-			MessageUtil.sendMessage(subject, content, sender, sender, recipients);
-		} catch (AddressException | MailEngineException | UnsupportedEncodingException e) {
-			throw new InternalException("Could not send message " + subject, e);
-		}
+		MessageUtil.sendMessage(subject, content, sender, sender, recipients);
 	}
 }

@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageType;
+import org.xcolab.client.members.messaging.MessageLimitExceededException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.portlets.messaging.beans.MessageBean;
@@ -110,16 +113,17 @@ public class MessagingController {
     @RequestMapping(params = {"action=sendMessage"})
     public void sendMessage(ActionRequest request, ActionResponse response, Model model,
             @ModelAttribute("sendMessageBean") SendMessageBean sendMessageBean)
-            throws AddressException, PortalException, UnsupportedEncodingException, MailEngineException,
-            SystemException {
+            throws AddressException, UnsupportedEncodingException, MailEngineException,
+            //TODO: show better message for validation error
+            MessageLimitExceededException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        User user = themeDisplay.getUser();
+        Member member = MembersClient.getMemberUnchecked(themeDisplay.getUserId());
 
         final MessagingPermissions messagingPermissions = new MessagingPermissions(request);
 
         if (messagingPermissions.getCanSendMessage()) {
-            sendMessageBean.send(user, LinkUtils.getBaseUri(request));
+            sendMessageBean.send(member, LinkUtils.getBaseUri(request));
         }
     }
 }
