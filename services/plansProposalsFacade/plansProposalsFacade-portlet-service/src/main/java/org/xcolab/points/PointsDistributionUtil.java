@@ -20,9 +20,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by johannes on 12/9/15.
- */
 public class PointsDistributionUtil {
     public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId)
             throws SystemException, PortalException {

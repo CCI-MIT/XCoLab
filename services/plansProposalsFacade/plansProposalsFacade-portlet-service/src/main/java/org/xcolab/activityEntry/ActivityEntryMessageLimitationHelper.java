@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ActivityEntryMessageLimitationHelper {
-        Set<Long> limitedClassesIds = new HashSet<>();
+        private final Set<Long> limitedClassesIds = new HashSet<>();
 
         public ActivityEntryMessageLimitationHelper(Long... limitedClasses) {
             for (Long c : limitedClasses) {

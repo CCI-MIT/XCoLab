@@ -1,8 +1,5 @@
 package org.xcolab.enums;
 
-/**
- * Created by Thomas on 10/23/2015.
- */
 public enum ModelRegions {
     UNITED_STATES("US", "United States"),
     EUROPE("EU", "European Union"),

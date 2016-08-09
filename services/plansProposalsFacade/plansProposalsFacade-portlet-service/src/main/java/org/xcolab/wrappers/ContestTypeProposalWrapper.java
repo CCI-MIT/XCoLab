@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by johannes on 10/28/15.
  * Wrapper to access a contest type and the user's proposals contained in it.
  */
 public class ContestTypeProposalWrapper {

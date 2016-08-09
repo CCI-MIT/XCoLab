@@ -2,7 +2,6 @@ package org.xcolab.wrappers;
 
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseType;
@@ -14,11 +13,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.StringUtils;
 
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by johannes on 10/27/15.
  * A wrapper class for contest phases to be shared across portlets.
  * More specific wrappers should inherit from this one.
  */

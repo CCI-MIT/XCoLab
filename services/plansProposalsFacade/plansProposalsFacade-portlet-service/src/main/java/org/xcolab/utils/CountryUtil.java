@@ -3,11 +3,8 @@ package org.xcolab.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by johannes on 12/8/15.
- */
 public final class CountryUtil {
-    public final static Map<String, String> codeToCountryMap = new HashMap<>();
+    private final static Map<String, String> codeToCountryMap = new HashMap<>();
 
     static {
         codeToCountryMap.put("AF", "Afghanistan");

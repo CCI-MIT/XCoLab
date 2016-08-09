@@ -1,8 +1,5 @@
 package com.ext.portlet.proposals;
 
-/**
- * Created by manu on 23/06/14.
- */
 public enum ProposalJudgeType {
     JUDGE(1),
     FELLOW(2),

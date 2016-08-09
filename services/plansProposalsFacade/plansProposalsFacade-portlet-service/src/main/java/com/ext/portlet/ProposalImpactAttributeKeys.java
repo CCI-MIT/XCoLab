@@ -1,8 +1,5 @@
 package com.ext.portlet;
 
-/**
- * Created by Mente on 04/05/15.
- */
 public class ProposalImpactAttributeKeys extends ProposalAttributeKeys {
     /**
      * modelling impact tab

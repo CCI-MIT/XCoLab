@@ -1,8 +1,5 @@
 package org.xcolab.enums;
 
-/**
- * Created by Klemens Mang on 24/06/15.
- */
 public enum OntologySpaceEnum {
     WHAT(103L, 2L),
     WHERE(104L, 3L),

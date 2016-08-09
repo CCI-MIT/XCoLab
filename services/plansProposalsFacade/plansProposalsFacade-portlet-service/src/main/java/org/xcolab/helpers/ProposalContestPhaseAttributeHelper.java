@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.util.List;
 
 /**
- * Created by johannes on 9/24/15.
  * Utility class to retrieve ProposalContestPhaseAttributes in various formats
  * TODO: use new ProposalContestPhaseAttributeLocalServiceUtil methods!
  */

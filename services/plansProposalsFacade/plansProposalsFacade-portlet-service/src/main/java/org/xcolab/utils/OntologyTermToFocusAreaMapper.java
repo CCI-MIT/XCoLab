@@ -16,9 +16,6 @@ import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.util.List;
 
-/**
- * Created by Klemens Mang on 25/06/15.
- */
 public class OntologyTermToFocusAreaMapper {
 
     private final List<OntologyTerm> toBeMatchedTerms;

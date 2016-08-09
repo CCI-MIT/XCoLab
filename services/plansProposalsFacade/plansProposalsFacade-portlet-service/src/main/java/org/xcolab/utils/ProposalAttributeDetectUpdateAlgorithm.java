@@ -6,9 +6,6 @@ import com.ext.portlet.model.ProposalAttribute;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by kmang on 15/03/15.
- */
 public class ProposalAttributeDetectUpdateAlgorithm {
 
     private final static ProposalAttributeDetectUpdateImpl PROPOSAL_IMPACT_ATTRIBUTE_UPDATE = new ProposalAttributeDetectUpdateImpl() {

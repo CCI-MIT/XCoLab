@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by johannes on 11/20/15.
  * This is a utility class to group entities by certain other criteria.
  * It's in a separate class, because the liferay service layer does not support returning maps!
  */

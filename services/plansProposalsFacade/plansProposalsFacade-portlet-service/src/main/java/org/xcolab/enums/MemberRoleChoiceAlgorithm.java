@@ -15,8 +15,6 @@ import java.util.Map;
 /**
  * This interface is used for member role choice algorithm implementations to choose the highest member role depending on the context
  * (i.e. highest role in context of members-portlet or for the proposal impact tab)
- *
- * Created by kmang on 03/05/15.
  */
 public abstract class MemberRoleChoiceAlgorithm {
     private static final Log _log = LogFactoryUtil.getLog(MemberRoleChoiceAlgorithm.class);

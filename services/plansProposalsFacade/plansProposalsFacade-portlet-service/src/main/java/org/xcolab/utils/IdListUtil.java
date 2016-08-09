@@ -17,8 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by johannes on 11/4/15.
- *
  * Utility class for common conversions of ids lists to strings or models.
  */
 public final class IdListUtil {

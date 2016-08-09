@@ -5,9 +5,6 @@ import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-/**
- * Created by kmang on 21/05/14.
- */
 public enum ContestPhaseTypeValue {
 
     PROPOSAL_CREATION(1, "Proposal creation"),

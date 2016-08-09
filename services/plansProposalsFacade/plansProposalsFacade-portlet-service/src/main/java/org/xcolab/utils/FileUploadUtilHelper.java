@@ -4,22 +4,19 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-/**
- * Created by steve on 11/03/16.
- */
 public class FileUploadUtilHelper {
 
-    private BufferedImage img;
+    private final BufferedImage img;
 
-    private boolean containsTransparancy;
+    private boolean containsTransparency;
 
     public FileUploadUtilHelper(BufferedImage img) {
         this.img = img;
-        this.containsTransparancy = false;
+        this.containsTransparency = false;
     }
 
-    public boolean getContainsTransparancy() {
-        return containsTransparancy;
+    public boolean getContainsTransparency() {
+        return containsTransparency;
     }
 
     public BufferedImage resizeImage(int IMG_WIDTH, int IMG_HEIGHT) {
@@ -60,7 +57,7 @@ public class FileUploadUtilHelper {
             for (int y = 0; y < img.getHeight(); y++) {
                 Color c = new Color(img.getRGB(x, y), true);
                 if (c.getAlpha() < 255) {
-                    containsTransparancy = true;
+                    containsTransparency = true;
                     return true;
                 }
             }

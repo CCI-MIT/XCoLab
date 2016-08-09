@@ -2,9 +2,6 @@ package org.xcolab.utils;
 
 import java.util.Date;
 
-/**
- * Created by manu on 07/10/14.
- */
 public class ClockImpl implements Clock {
 
     /**

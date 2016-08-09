@@ -6,16 +6,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.portlet.PortletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @author pdeboer
- *         First created on 28/01/14 at 19:40
- */
+import javax.portlet.PortletRequest;
+
 public final class LinkUtils {
 
     private LinkUtils() { }

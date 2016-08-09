@@ -2,9 +2,6 @@ package org.xcolab.enums;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
-/**
- * Created by kmang on 17/02/15.
- */
 public enum ContestTier {
     NONE(0L, "None"),
     BASIC(1L, "Tier I"),

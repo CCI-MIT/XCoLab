@@ -14,9 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-/**
- * Created by johannes on 12/11/15.
- */
 public class CustomSqlUtil {
     public static <T> List<T> getListFromQuery(String queryIdentifier, int begin, int end, Dialect dialect, QueryInitializer queryInitializer) {
         SessionFactory sessionFactory = (SessionFactory) PortalBeanLocatorUtil.locate("liferaySessionFactory");

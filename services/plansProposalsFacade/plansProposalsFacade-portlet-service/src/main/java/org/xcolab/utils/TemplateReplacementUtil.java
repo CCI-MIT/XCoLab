@@ -4,8 +4,6 @@ import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -16,8 +14,6 @@ import java.io.UnsupportedEncodingException;
 import javax.mail.internet.InternetAddress;
 
 public final class TemplateReplacementUtil {
-
-    private static final Log _log = LogFactoryUtil.getLog(TemplateReplacementUtil.class);
 
     private final static String COLAB_NAME_PLACEHOLDER = "<colab-name/>";
     private final static String COLAB_SHORT_NAME_PLACEHOLDER = "<colab-short-name/>";
