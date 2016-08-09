@@ -2,11 +2,14 @@ package org.xcolab.service.contest.domain.contestphasetype;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ContestPhaseType;
 import org.xcolab.model.tables.records.ContestPhaseTypeRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+
+import java.util.List;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE_TYPE;
 
@@ -72,6 +75,14 @@ public class ContestPhaseTypeDaoImpl implements ContestPhaseTypeDao{
         return dslContext.deleteFrom(CONTEST_PHASE_TYPE)
                 .where(CONTEST_PHASE_TYPE.ID_.eq(id_))
                 .execute();
+    }
+
+    @Override
+    public List<ContestPhaseType> findByGiven() {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(CONTEST_PHASE_TYPE).getQuery();
+
+        return query.fetchInto(ContestPhaseType.class);
     }
 }
 

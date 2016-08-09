@@ -23,6 +23,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
@@ -277,18 +279,25 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
         Set<Proposal> referencedSubProposals =
                 IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalParent, ContestTier.BASIC.getTierType());
-        ContestWrapper contestWrapper = new ContestWrapper(contest);
-        List<OntologyTerm> ontologyTermList = contestWrapper.getWhere();
-        List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
-        for (Proposal proposal : referencedSubProposals) {
-            ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal);
-            for (ProposalImpactSeries proposalImpactSeries : proposalImpactSeriesList.getImpactSerieses()) {
-                if (proposalImpactSeries.getWhereTerm().equals(ontologyTermList.get(0))) {
-                    proposalImpactSerieses.add(proposalImpactSeries);
+        try {
+
+            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+            ContestWrapper contestWrapper = new ContestWrapper(contestMicro);//contest
+            List<OntologyTerm> ontologyTermList = contestWrapper.getWhere();
+            List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
+            for (Proposal proposal : referencedSubProposals) {
+                ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal);
+                for (ProposalImpactSeries proposalImpactSeries : proposalImpactSeriesList.getImpactSerieses()) {
+                    if (proposalImpactSeries.getWhereTerm().equals(ontologyTermList.get(0))) {
+                        proposalImpactSerieses.add(proposalImpactSeries);
+                    }
                 }
             }
+            return proposalImpactSerieses;
+        }catch(ContestNotFoundException ignored){
+
         }
-        return proposalImpactSerieses;
+        return null;
     }
 
 

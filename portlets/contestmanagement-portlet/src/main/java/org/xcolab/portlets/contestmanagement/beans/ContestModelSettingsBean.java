@@ -16,7 +16,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,10 +1,12 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
@@ -65,15 +67,11 @@ public class ContestOverviewWrapper {
     }
 
     private void populateContestWrappersAndSelectedContestList() {
-        try {
-            List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
+            List<Contest> contests = ContestClient.getAllContests();
             for (Contest contest : contests) {
                 contestWrappers.add(new BaseContestWrapper(contest));
                 selectedContest.add(false);
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
     }
 
     public List<BaseContestWrapper> getContestWrappers() {
@@ -141,15 +139,11 @@ public class ContestOverviewWrapper {
     }
 
     public void persistOrder() {
-        try {
             for (BaseContestWrapper contestWrapper : contestWrappers) {
                 Contest contest = contestWrapper.getWrapped();
                 contest.setWeight(contestWrapper.getWeight());
-                contest.persist();
+                ContestClient.updateContest(contest);
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
     }
 
     public String getSelectedMassActionTitle() {

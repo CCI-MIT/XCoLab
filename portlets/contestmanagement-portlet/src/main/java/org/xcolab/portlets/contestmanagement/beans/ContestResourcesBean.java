@@ -1,8 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +16,7 @@ import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
+
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.Serializable;

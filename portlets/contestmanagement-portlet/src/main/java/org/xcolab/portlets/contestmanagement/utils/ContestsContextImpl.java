@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -11,6 +11,9 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Component;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabPermissions;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -74,11 +77,9 @@ public class ContestsContextImpl implements TabContext {
             final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
             Contest contest;
             try {
-                contest = ContestLocalServiceUtil.getContest(contestId);
-            } catch (PortalException e) {
+                contest = ContestClient.getContest(contestId);
+            } catch (ContestNotFoundException e) {
                 throw new InternalException(e);
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
             }
 
             if (contest != null) {

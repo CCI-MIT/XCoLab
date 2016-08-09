@@ -1,12 +1,13 @@
 package org.xcolab.utils.emailnotification.basic;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.service.ServiceContext;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 
 public class ProposalNotification extends ContestNotification {
@@ -16,7 +17,7 @@ public class ProposalNotification extends ContestNotification {
     private ProposalNotificationTemplate templateWrapper;
 
     public ProposalNotification(Proposal proposal, Contest contest, Member recipient, String templateName,
-            ServiceContext serviceContext) {
+                                ServiceContext serviceContext) {
         super(contest, recipient, templateName, serviceContext);
         this.proposal = proposal;
     }

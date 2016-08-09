@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -9,6 +9,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -52,12 +55,10 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     private void initContest(PortletRequest request) {
         Long contestId = getContestIdFromRequest(request);
         try {
-            contest = ContestLocalServiceUtil.getContest(contestId);
+            contest = ContestClient.getContest(contestId);
             contestWrapper = new BaseContestWrapper(contest);
-        } catch (SystemException e) {
+        } catch (ContestNotFoundException e) {
             throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw ReferenceResolutionException.toObject(Contest.class, contestId).build();
         }
     }
 

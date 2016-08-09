@@ -26,6 +26,8 @@ import com.liferay.portal.util.PortalUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -317,10 +319,16 @@ public class ProposalsContextImpl implements ProposalsContext {
             }
             ContestType contestType = null;
             if (contest != null) {
-                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
+                try {
+                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                    request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contestMicro));//contest
+                }catch (ContestNotFoundException ignored){
+
+                }
                 if (contestPhase != null) {
+                    org.xcolab.client.contest.pojo.ContestPhase contestPhaseMicro = ContestClient.getContestPhase(contestPhase.getContestPhasePK());
                     request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,
-                            new BaseContestPhaseWrapper(contestPhase));
+                            new BaseContestPhaseWrapper(contestPhaseMicro));//contestPhase
 
                     contestType = ContestTypeLocalServiceUtil
                             .fetchContestType(contest.getContestTypeId());

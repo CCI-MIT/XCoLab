@@ -2,23 +2,17 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -26,8 +20,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * Created by Thomas on 2/20/2015.

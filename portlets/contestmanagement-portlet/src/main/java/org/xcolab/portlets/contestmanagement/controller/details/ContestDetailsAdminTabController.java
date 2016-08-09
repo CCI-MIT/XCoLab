@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
+
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -10,21 +9,18 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.interfaces.TabEnum;
@@ -37,17 +33,11 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.wrapper.TabWrapper;
 
+import javax.mail.internet.InternetAddress;
+import javax.portlet.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.mail.internet.InternetAddress;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 
 @Controller
 @RequestMapping("view")
@@ -95,7 +85,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
     @RequestMapping(params = "tab=ADMIN")
     public String showAdminTabController(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam(required = false) Long contestId)
+                                         @RequestParam(required = false) Long contestId)
             throws PortalException, SystemException {
 
         if (!tabWrapper.getCanView()) {
@@ -109,8 +99,8 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
     @RequestMapping(params = "action=updateContestAdmin")
     public void updateAdminTabController(ActionRequest request, Model model,
-            @ModelAttribute ContestAdminBean updateContestAdminBean,
-            ActionResponse response) {
+                                         @ModelAttribute ContestAdminBean updateContestAdminBean,
+                                         ActionResponse response) {
 
         if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
@@ -128,8 +118,10 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     }
 
     @ResourceMapping(value = "submitContest")
-    public @ResponseBody void handleSubmitContest(ResourceRequest request,
-            ResourceResponse response, @RequestParam long contestId, @RequestParam String tab)
+    public
+    @ResponseBody
+    void handleSubmitContest(ResourceRequest request,
+                             ResourceResponse response, @RequestParam long contestId, @RequestParam String tab)
             throws IOException {
 
         boolean success = true;
@@ -154,8 +146,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
             String subject = "<contest/> draft was submitted from the <contest/> management tool!";
 
-            ContestType contestType = ContestTypeLocalServiceUtil.getContestType(
-                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
+            ContestType contestType = ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
             subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
             body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);
 
@@ -202,16 +193,13 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        try {
-            for (ContestType contestType : ContestTypeLocalServiceUtil
-                    .getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-                selectItems.add(new LabelValue(contestType.getId(),
-                        String.format("%d - %s with %s", contestType.getId(),
-                                contestType.getContestName(), contestType.getProposalNamePlural())));
-            }
-        } catch (SystemException e) {
-            _log.warn("Could not get contest type selection items: " + e);
+
+        for (ContestType contestType : ContestClient.getAllContestTypes()) {
+            selectItems.add(new LabelValue(contestType.getId_(),
+                    String.format("%d - %s with %s", contestType.getId_(),
+                            contestType.getContestName(), contestType.getProposalNamePlural())));
         }
+
         return selectItems;
     }
 

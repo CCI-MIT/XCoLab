@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.OntologySpace;
 import org.xcolab.model.tables.records.OntologySpaceRecord;
-import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.contest.exceptions.NotFoundException;
+
 
 import java.util.List;
 

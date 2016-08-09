@@ -20,6 +20,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.helpers.Tuple;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
@@ -319,7 +320,8 @@ public class BaseContestWrapper {
     }
 
     public long getProposalsCount() {
-        return ContestClient.getProposalCountForActiveContestPhase(contest.getContestPK());
+        ContestPhase cp = ContestClient.getActivePhase(contest.getContestPK());
+        return ProposalsClient.getProposalCountForActiveContestPhase(cp.getContestPhasePK());
     }
 
         /*public long getTotalProposalsCount() {

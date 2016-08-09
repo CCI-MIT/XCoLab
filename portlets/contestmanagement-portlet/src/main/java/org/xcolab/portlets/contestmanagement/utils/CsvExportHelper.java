@@ -2,9 +2,7 @@ package org.xcolab.portlets.contestmanagement.utils;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.NoSuchContestException;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
+
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -21,6 +19,11 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.wrappers.BaseProposalTeamMemberWrapper;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
@@ -88,20 +91,26 @@ public class CsvExportHelper {
                 .getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
         BaseProposalWrapper proposalWrapper = getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
         Long contestId = contestPhase.getContestPK();
-        Contest contest = ContestLocalServiceUtil.getContest(contestId);
-        String contestTitle = normalizeApostrophes(contest.getContestShortName());
-        String proposalTitle = normalizeApostrophes(proposalWrapper.getName());
-        String proposalLink = URL_DOMAIN + proposalWrapper.getProposalUrl();
-        String lastPhaseTitle = getContestPhaseTitle(contestPhase);
+        try {
+            Contest contest = ContestClient.getContest(contestId);
 
-        List<BaseProposalTeamMemberWrapper> proposalTeam = proposalWrapper.getMembers();
-        for (BaseProposalTeamMemberWrapper teamMemberWrapper : proposalTeam) {
-            String[] csvRow =
-                    generateProposalAndUserDetailsRow(contestTitle, proposalTitle, proposalLink, teamMemberWrapper,
-                            lastPhaseTitle);
-            proposalExportData.add(csvRow);
+            String contestTitle = normalizeApostrophes(contest.getContestShortName());
+            String proposalTitle = normalizeApostrophes(proposalWrapper.getName());
+            String proposalLink = URL_DOMAIN + proposalWrapper.getProposalUrl();
+            String lastPhaseTitle = getContestPhaseTitle(contestPhase);
+
+            List<BaseProposalTeamMemberWrapper> proposalTeam = proposalWrapper.getMembers();
+            for (BaseProposalTeamMemberWrapper teamMemberWrapper : proposalTeam) {
+                String[] csvRow =
+                        generateProposalAndUserDetailsRow(contestTitle, proposalTitle, proposalLink, teamMemberWrapper,
+                                lastPhaseTitle);
+                proposalExportData.add(csvRow);
+            }
+            return proposalExportData;
+        }catch (ContestNotFoundException ignored){
+
         }
-        return proposalExportData;
+        return null;
     }
 
     private static BaseProposalWrapper getProposalWithLatestVersionInContestPhase(Proposal2Phase proposal2Phase,
@@ -118,7 +127,7 @@ public class CsvExportHelper {
 
     private static String getContestPhaseTitle(ContestPhase contestPhase) throws PortalException, SystemException {
         Long contestPhaseTypeId = contestPhase.getContestPhaseType();
-        ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId);
+        ContestPhaseType contestPhaseType = ContestClient.getContestPhaseType(contestPhaseTypeId);
         return contestPhaseType.getName();
     }
 

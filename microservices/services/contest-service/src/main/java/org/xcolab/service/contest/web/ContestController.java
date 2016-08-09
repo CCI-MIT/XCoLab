@@ -1,7 +1,6 @@
 package org.xcolab.service.contest.web;
 
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -61,8 +60,9 @@ public class ContestController {
             @RequestParam(required = false) Boolean featured,
             @RequestParam(required = false) Long contestTier,
             @RequestParam(required = false) Long contestScheduleId,
+            @RequestParam(required = false) Long planTemplateId,
             @RequestParam(required = false) List<Long> focusAreaOntologyTerms) {
-        return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId);
+        return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId, planTemplateId);
     }
 
 
@@ -102,17 +102,6 @@ public class ContestController {
 
     }
 
-    @RequestMapping(value = "/contests/{contestId}/proposalCountForActivePhase", method = RequestMethod.GET)
-    public Integer getProposalCountForActivePhase(@PathVariable long contestId) throws NotFoundException {
-
-        ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
-        if (activePhase == null) {
-            return 0;
-        }
-
-        return ProposalsClient.getProposalCountForActiveContestPhase(activePhase.getContestPhasePK());
-
-    }
 
     @RequestMapping(value = "/contests/{contestId}", method = RequestMethod.GET)
     public Contest getContest(@PathVariable long contestId) throws NotFoundException {
@@ -127,7 +116,7 @@ public class ContestController {
 
     @RequestMapping(value = "/contestTypes/{contestTypeId}", method = RequestMethod.GET)
     public ContestType getContestType(@PathVariable("contestTypeId") Long contestTypeId) throws NotFoundException {
-        if (contestTypeId == null || contestTypeId == 0) {
+        if (contestTypeId == null) {
             throw new NotFoundException("No contestTypeId given");
         } else {
             return contestTypeDao.get(contestTypeId);
@@ -293,6 +282,11 @@ public class ContestController {
         } else {
             return contestPhaseTypeDao.get(contestPhaseTypeId);
         }
+    }
+    @RequestMapping(value = "/contestPhaseTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ContestPhaseType> getContestPhaseTypes(
+    ) {
+        return contestPhaseTypeDao.findByGiven();
     }
 
 

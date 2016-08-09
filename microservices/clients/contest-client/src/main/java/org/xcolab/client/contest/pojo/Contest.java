@@ -628,5 +628,9 @@ public class Contest implements Serializable {
         }
         return "";
     }
+    public String generateContestUrlName() {
+        String contestUrlName = this.getContestShortName().toLowerCase();
+        return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
+    }
 
 }

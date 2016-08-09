@@ -349,8 +349,14 @@ public class BaseProposalWrapper {
         return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
     }
 
-    public String getProposalUrl(ContestPhase inPhase) {
-        return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, inPhase);
+    public String getProposalUrl(org.xcolab.client.contest.pojo.ContestPhase inPhase) {
+        try {
+            ContestPhase liferayCP = ContestPhaseLocalServiceUtil.fetchContestPhase(inPhase.getContestPhasePK());
+            return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, liferayCP);
+        }catch (SystemException ignored){
+
+        }
+        return null;
     }
 
     public List<User> getSupporters() {
@@ -448,8 +454,9 @@ public class BaseProposalWrapper {
         }
     }
 
-    public ContestPhase getContestPhase() {
-        return contestPhase;
+    public org.xcolab.client.contest.pojo.ContestPhase getContestPhase() {
+
+        return ContestClient.getContestPhase(contestPhase.getContestPhasePK());
     }
 
     public List<BaseProposalTeamMemberWrapper> getMembers() {

@@ -1,6 +1,7 @@
 package org.xcolab.service.contest.service.ontology;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
 import org.xcolab.model.tables.pojos.OntologyTerm;
 import org.xcolab.service.contest.domain.focusarea.FocusAreaDao;
@@ -12,6 +13,7 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class OntologyService {
 
     private final OntologyTermDao ontologyTermDao;

@@ -1,13 +1,10 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 
+
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.IdListUtil;
 
 import java.io.Serializable;
@@ -51,52 +48,30 @@ public class ContestTeamBean implements Serializable {
     }
 
     private void populateJudges() {
-        try {
-            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
-                userIdsJudges.add(judge.getUserId());
-            }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new IllegalStateException("Error while populating judges", e);
+        for (Long judge : ContestClient.getJudgesForContest(contest.getContestPK())) {
+            userIdsJudges.add(judge);
         }
     }
 
     private void populateFellows() {
-        try {
-            for (User fellow : ContestLocalServiceUtil.getFellowsForContest(contest)) {
-                userIdsFellows.add(fellow.getUserId());
-            }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new IllegalStateException("Error while populating fellows", e);
+        for (Long fellow : ContestClient.getFellowsForContest(contest.getContestPK())) {
+            userIdsFellows.add(fellow);
         }
     }
 
     private void populateAdvisors() {
-        try {
-            for (User advisor : ContestLocalServiceUtil.getAdvisorsForContest(contest)) {
-                userIdsAdvisors.add(advisor.getUserId());
-            }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new IllegalStateException("Error while populating advisors", e);
+        for (Long advisor : ContestClient.getAdvisorsForContest(contest.getContestPK())) {
+            userIdsAdvisors.add(advisor);
         }
     }
 
     private void populateContestManagers() {
-        try {
-            for (User contestManager : ContestLocalServiceUtil
-                    .getContestManagersForContest(contest)) {
-                userIdsContestManagers.add(contestManager.getUserId());
-            }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new IllegalStateException("Error while populating managers", e);
+
+        for (Long contestManager : ContestClient
+                .getContestManagersForContest(contest.getContestPK())) {
+            userIdsContestManagers.add(contestManager);
         }
+
     }
 
     public List<Long> getUserIdsJudges() {

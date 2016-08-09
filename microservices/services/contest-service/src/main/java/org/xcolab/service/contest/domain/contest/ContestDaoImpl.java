@@ -153,7 +153,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId) {
+    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();
 
@@ -164,8 +164,13 @@ public class ContestDaoImpl implements ContestDao {
         if (contestScheduleId != null) {
             query.addConditions(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
         }
+
+        if (planTemplateId != null) {
+            query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
+        }
+
         if (focusAreaOntologyTerms != null && focusAreaOntologyTerms.size() > 0) {
-            query.addConditions(CONTEST.CONTEST_URL_NAME.in(focusAreaOntologyTerms));
+            query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
         }
 
 

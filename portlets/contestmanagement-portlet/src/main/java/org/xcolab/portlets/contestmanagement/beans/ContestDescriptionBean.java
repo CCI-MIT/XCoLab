@@ -1,14 +1,9 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.hibernate.validator.constraints.Length;
-
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -17,14 +12,11 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.wrappers.BaseContestWrapper;
-
-import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 public class ContestDescriptionBean implements Serializable {
     private static final Log _log = LogFactoryUtil.getLog(ContestDescriptionBean.class);

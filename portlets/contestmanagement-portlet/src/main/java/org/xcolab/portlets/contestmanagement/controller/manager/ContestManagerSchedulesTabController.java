@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.ContestSchedule;
+
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -15,6 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -97,7 +99,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         try {
             ContestSchedule newContestSchedule = ContestCreatorUtil.createNewSchedule();
             SetRenderParameterUtil
-                    .setSuccessRenderRedirectManagerTab(response, tab.getName(), newContestSchedule.getId());
+                    .setSuccessRenderRedirectManagerTab(response, tab.getName(), newContestSchedule.getId_());
 
         } catch (IOException e) {
             _log.warn("Create contest schedule failed with: ", e);
@@ -156,30 +158,24 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
     }
 
     private Long getFirstScheduleId() {
-        try {
             final List<ContestSchedule> contestSchedules =
-                    ContestScheduleLocalServiceUtil.getContestSchedules(0, Integer.MAX_VALUE);
+                    ContestClient.getAllContestSchedules();
             if (!contestSchedules.isEmpty()) {
-                return contestSchedules.get(0).getId();
+                return contestSchedules.get(0).getId_();
             }
             return -1L;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     private List<LabelValue> getContestPhaseTypesSelectionItems() {
         List<LabelValue> contestPhaseTypesSelectionItems = new ArrayList<>();
-        try {
-            List<ContestPhaseType> contestPhases =
-                    ContestPhaseTypeLocalServiceUtil.getContestPhaseTypes(0, Integer.MAX_VALUE);
-            for (ContestPhaseType contestPhaseType : contestPhases) {
-                contestPhaseTypesSelectionItems
-                        .add(new LabelValue(contestPhaseType.getId(), contestPhaseType.getName()));
-            }
-        } catch (SystemException e) {
-            _log.warn("Could not get contest phase types selection items: ", e);
+
+        List<ContestPhaseType> contestPhases = ContestClient.getAllContestPhaseTypes();
+        for (ContestPhaseType contestPhaseType : contestPhases) {
+            contestPhaseTypesSelectionItems
+                    .add(new LabelValue(contestPhaseType.getId_(), contestPhaseType.getName()));
         }
+
         return contestPhaseTypesSelectionItems;
     }
 
