@@ -1,6 +1,7 @@
 package org.xcolab.service.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +20,12 @@ public class PaginationHelper {
     public PaginationHelper(Integer startRecord, Integer limitRecord, String sort) {
         this.startRecord = startRecord != null ? startRecord : 0;
         this.limitRecord = limitRecord != null ? limitRecord : this.startRecord + DEFAULT_PAGE_SIZE;
-        if (this.limitRecord < this.startRecord) {
-            throw new IllegalArgumentException("limitRecord can't be smaller than the startRecord");
-        }
+
+        Validate.isTrue(this.startRecord >= 0, "startRecord is %d, must be zero or positive", this.startRecord);
+        Validate.isTrue(this.limitRecord > 0, "limitRecord is %d, must be positive", this.limitRecord);
+        Validate.isTrue(this.limitRecord > this.startRecord,
+                "limitRecord (%d) has to be greater than startRecord (%d)", this.limitRecord, this.startRecord);
+
         if (StringUtils.isNotBlank(sort)) {
             for (String sortString : sort.split(",")) {
                 sortColumns.add(new SortColumn(sortString));
@@ -38,7 +42,12 @@ public class PaginationHelper {
     }
 
     public int getCount() {
-        return limitRecord - startRecord + 1;
+        final int difference = limitRecord - startRecord;
+        if (difference <  Integer.MAX_VALUE) {
+            return difference + 1;
+        } else {
+            return Integer.MAX_VALUE;
+        }
     }
 
     public List<SortColumn> getSortColumns() {
