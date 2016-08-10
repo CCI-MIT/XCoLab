@@ -1,7 +1,5 @@
 package org.xcolab.portlets.usertracking;
 
-import com.ext.portlet.service.TrackedVisitLocalServiceUtil;
-import com.ext.portlet.service.TrackedVisitor2UserLocalServiceUtil;
 import com.ext.utils.iptranslation.Location;
 import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -11,78 +9,21 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import org.xcolab.client.tracking.TrackingClient;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Enumeration;
-import java.util.UUID;
 
 public class UserTrackingServlet extends HttpServlet {
     private final static Log _log = LogFactoryUtil.getLog(UserTrackingServlet.class);
-
-
-    private static String getClientIpAddress(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        return ip;
-    }
-
-    private static String getHeadersAsString(HttpServletRequest request) {
-        StringBuilder headerStringBuilder = new StringBuilder();
-        Enumeration<String> headerNames = request.getHeaderNames();
-
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            Enumeration<String> headers = request.getHeaders(headerName);
-
-            while (headers.hasMoreElements()) {
-                headerStringBuilder.append(headers.nextElement()).append("\n");
-            }
-        }
-        return headerStringBuilder.toString();
-    }
-
-    private static User getLoggedInUser(HttpServletRequest request) {
-        String userIdStr = request.getParameter("userId");
-        User user = null;
-        try {
-            Integer userId = Integer.parseInt(userIdStr);
-            if (userId > 0) {
-                try {
-                    user = UserLocalServiceUtil.getUser(userId);
-                    if (user != null) {
-                        //make sure that the hash is correct
-                        if (!String.valueOf(user.getUuid().hashCode()).equals(request.getParameter("hash"))) {
-                            user = null;
-                        }//else the user is fine.
-                    }
-                } catch (PortalException | SystemException e) {
-                    user = null;
-                }
-            }
-        } catch (NumberFormatException ignored) { }
-
-        return user;
-    }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -113,44 +54,19 @@ public class UserTrackingServlet extends HttpServlet {
         //if user is logged in, check if tuple (uuid, userid) already exists. if not, create it.
         User user = getLoggedInUser(request);
 
-        boolean uuidFoundInTrackedVisitor2UserTable = false;
         //find out uuid. if it is not sent as request parameter, try to retrieve existing token if user is logged in.
         String uuid = request.getParameter("uuid");
-        if (uuid == null || uuid.isEmpty()) {
-            if (user != null) {
-                try {
-                    uuid = TrackedVisitor2UserLocalServiceUtil.findUuidForUserId(user.getUserId());
-                    if (uuid != null) {
-                        uuidFoundInTrackedVisitor2UserTable = true;
-                    }
-                } catch (SystemException ignored) { }
-            }
-
-            //if the previous attempts were not successful, generate a new uuid
-            if (uuid == null || uuid.isEmpty()) {
-                //generate a new uuid
-                uuid = UUID.randomUUID().toString();
-            }
-        }
-
-        //create new TrackedVisit
-        try {
-            TrackedVisitLocalServiceUtil.addTrackedVisit(uuid, url, ip, browser, referer, headers, city, country);
-        } catch (SystemException e) {
-            _log.debug("Could not track visit: " + e.getMessage() + " " + uuid + " " + url + " " + ip);
-        }
-
-        //track uuid to visitor relation if logged in. skip if the uuid has been retrieved from the table.
         String isTrackedVisitor = request.getParameter("isTrackedVisitor");
-        if (user != null && !uuidFoundInTrackedVisitor2UserTable && (isTrackedVisitor == null || isTrackedVisitor.isEmpty())) {
-            try {
-                TrackedVisitor2UserLocalServiceUtil.addIfNotExists(uuid, user.getUserId());
+        if (StringUtils.isBlank(uuid)) {
+            if (user != null) {
+                uuid = TrackingClient.getTrackedVisitorOrCreate(user.getUserId()).getUuid_();
                 isTrackedVisitor = "true";
-            } catch (SystemException e) {
-                _log.debug("Could not track visitor: " + e.getMessage() + " " + uuid + " " + user.getUserId() + " " + url + " " + ip);
+            } else {
+                uuid = TrackingClient.generateUUID();
             }
         }
 
+        TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, city, country);
 
         //write back the uuid as json. this will be set as a cookie and will be sent on future requests.
         response.setContentType("application/json");
@@ -158,11 +74,68 @@ public class UserTrackingServlet extends HttpServlet {
         out.print("{");
         out.print("\"uuid\":\""+ StringEscapeUtils.escapeEcmaScript(uuid)+"\"");
         //return the isTrackedVisitor to prevent additional unnecessary database queries
-        if (isTrackedVisitor != null && !isTrackedVisitor.isEmpty()) {
+        if (!StringUtils.isEmpty(isTrackedVisitor)) {
             out.print(",\"isTrackedVisitor\":\""+StringEscapeUtils.escapeEcmaScript(isTrackedVisitor)+"\"");
         }
         out.print("}");
         out.flush();
     }
 
+    private String getClientIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+
+    private String getHeadersAsString(HttpServletRequest request) {
+        StringBuilder headerStringBuilder = new StringBuilder();
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            Enumeration<String> headers = request.getHeaders(headerName);
+
+            while (headers.hasMoreElements()) {
+                headerStringBuilder.append(headers.nextElement()).append("\n");
+            }
+        }
+        return headerStringBuilder.toString();
+    }
+
+    private User getLoggedInUser(HttpServletRequest request) {
+        String userIdStr = request.getParameter("userId");
+        User user = null;
+        try {
+            Integer userId = Integer.parseInt(userIdStr);
+            if (userId > 0) {
+                try {
+                    user = UserLocalServiceUtil.getUser(userId);
+                    if (user != null) {
+                        //make sure that the hash is correct
+                        if (!String.valueOf(user.getUuid().hashCode()).equals(request.getParameter("hash"))) {
+                            user = null;
+                        }//else the user is fine.
+                    }
+                } catch (PortalException | SystemException e) {
+                    user = null;
+                }
+            }
+        } catch (NumberFormatException ignored) { }
+
+        return user;
+    }
 }
