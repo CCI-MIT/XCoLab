@@ -262,17 +262,6 @@ public class TrackedVisitor2UserLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.lang.String findUuidForUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findUuidForUserId(userId);
-    }
-
-    public static com.ext.portlet.model.TrackedVisitor2User addIfNotExists(
-        java.lang.String uuid, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().addIfNotExists(uuid, userId);
-    }
-
     public static void clearService() {
         _service = null;
     }

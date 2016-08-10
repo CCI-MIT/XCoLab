@@ -271,17 +271,6 @@ public class TrackedVisitLocalServiceWrapper implements TrackedVisitLocalService
             arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.TrackedVisit addTrackedVisit(
-        java.lang.String uuid, java.lang.String url, java.lang.String ip,
-        java.lang.String browser, java.lang.String referer,
-        java.lang.String headers, java.lang.String city,
-        java.lang.String country)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _trackedVisitLocalService.addTrackedVisit(uuid, url, ip,
-            browser, referer, headers, city, country);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

@@ -45,8 +45,6 @@ public class TrackedVisitLocalServiceClpInvoker {
     private String[] _methodParameterTypes422;
     private String _methodName423;
     private String[] _methodParameterTypes423;
-    private String _methodName428;
-    private String[] _methodParameterTypes428;
 
     public TrackedVisitLocalServiceClpInvoker() {
         _methodName0 = "addTrackedVisit";
@@ -138,14 +136,6 @@ public class TrackedVisitLocalServiceClpInvoker {
         _methodName423 = "setBeanIdentifier";
 
         _methodParameterTypes423 = new String[] { "java.lang.String" };
-
-        _methodName428 = "addTrackedVisit";
-
-        _methodParameterTypes428 = new String[] {
-                "java.lang.String", "java.lang.String", "java.lang.String",
-                "java.lang.String", "java.lang.String", "java.lang.String",
-                "java.lang.String", "java.lang.String"
-            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -247,17 +237,6 @@ public class TrackedVisitLocalServiceClpInvoker {
             TrackedVisitLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName428.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
-            return TrackedVisitLocalServiceUtil.addTrackedVisit((java.lang.String) arguments[0],
-                (java.lang.String) arguments[1],
-                (java.lang.String) arguments[2],
-                (java.lang.String) arguments[3],
-                (java.lang.String) arguments[4],
-                (java.lang.String) arguments[5],
-                (java.lang.String) arguments[6], (java.lang.String) arguments[7]);
         }
 
         throw new UnsupportedOperationException();

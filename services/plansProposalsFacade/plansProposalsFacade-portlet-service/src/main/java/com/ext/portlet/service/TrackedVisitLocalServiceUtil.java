@@ -259,17 +259,6 @@ public class TrackedVisitLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.TrackedVisit addTrackedVisit(
-        java.lang.String uuid, java.lang.String url, java.lang.String ip,
-        java.lang.String browser, java.lang.String referer,
-        java.lang.String headers, java.lang.String city,
-        java.lang.String country)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .addTrackedVisit(uuid, url, ip, browser, referer, headers,
-            city, country);
-    }
-
     public static void clearService() {
         _service = null;
     }

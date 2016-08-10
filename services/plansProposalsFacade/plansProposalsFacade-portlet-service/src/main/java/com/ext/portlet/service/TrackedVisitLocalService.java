@@ -236,11 +236,4 @@ public interface TrackedVisitLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public com.ext.portlet.model.TrackedVisit addTrackedVisit(
-        java.lang.String uuid, java.lang.String url, java.lang.String ip,
-        java.lang.String browser, java.lang.String referer,
-        java.lang.String headers, java.lang.String city,
-        java.lang.String country)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

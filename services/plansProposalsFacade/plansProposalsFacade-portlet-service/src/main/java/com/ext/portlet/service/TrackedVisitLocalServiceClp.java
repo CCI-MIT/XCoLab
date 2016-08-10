@@ -44,8 +44,6 @@ public class TrackedVisitLocalServiceClp implements TrackedVisitLocalService {
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
 
     public TrackedVisitLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -140,14 +138,6 @@ public class TrackedVisitLocalServiceClp implements TrackedVisitLocalService {
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "addTrackedVisit";
-
-        _methodParameterTypes19 = new String[] {
-                "java.lang.String", "java.lang.String", "java.lang.String",
-                "java.lang.String", "java.lang.String", "java.lang.String",
-                "java.lang.String", "java.lang.String"
-            };
     }
 
     @Override
@@ -658,52 +648,5 @@ public class TrackedVisitLocalServiceClp implements TrackedVisitLocalService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public com.ext.portlet.model.TrackedVisit addTrackedVisit(
-        java.lang.String uuid, java.lang.String url, java.lang.String ip,
-        java.lang.String browser, java.lang.String referer,
-        java.lang.String headers, java.lang.String city,
-        java.lang.String country)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(uuid),
-                        
-                    ClpSerializer.translateInput(url),
-                        
-                    ClpSerializer.translateInput(ip),
-                        
-                    ClpSerializer.translateInput(browser),
-                        
-                    ClpSerializer.translateInput(referer),
-                        
-                    ClpSerializer.translateInput(headers),
-                        
-                    ClpSerializer.translateInput(city),
-                        
-                    ClpSerializer.translateInput(country)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.TrackedVisit) ClpSerializer.translateOutput(returnObj);
     }
 }
