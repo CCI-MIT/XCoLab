@@ -29,11 +29,6 @@ public final class TrackingClient {
         return trackedVisitResource.create(trackedVisit).execute();
     }
 
-    public static TrackedVisitor getByUUID(String uuid) {
-        return trackedVisitorResource.get(uuid)
-                .execute();
-    }
-
     public static TrackedVisitor getTrackedVisitorOrCreate(long memberId) {
         return trackedVisitorResource.query(TrackedVisitor.class)
                 .queryParam("memberId", memberId)

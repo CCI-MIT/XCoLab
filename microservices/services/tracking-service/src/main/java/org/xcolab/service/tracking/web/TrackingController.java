@@ -10,7 +10,6 @@ import org.xcolab.model.tables.pojos.TrackedVisit;
 import org.xcolab.model.tables.pojos.TrackedVisitor2User;
 import org.xcolab.service.tracking.domain.trackedvisit.TrackedVisitDao;
 import org.xcolab.service.tracking.domain.trackedvisitor2user.TrackedVisitor2UserDao;
-import org.xcolab.service.tracking.exceptions.NotFoundException;
 import org.xcolab.service.tracking.service.trackedvisitor2user.TrackedVisitor2UserService;
 
 @RestController
@@ -44,11 +43,5 @@ public class TrackingController {
             trackedVisitor.setUuid_(trackedVisitor2UserService.generateUniqueUUID());
             return trackedVisitor;
         }
-    }
-
-    @RequestMapping(value = "/trackedVisitors/{uuid}", method = RequestMethod.GET)
-    public TrackedVisitor2User getTrackedVisitorByUUID(@RequestParam String uuid)
-            throws NotFoundException {
-        return trackedVisitor2UserDao.getByUUID(uuid).orElseThrow(NotFoundException::new);
     }
 }
