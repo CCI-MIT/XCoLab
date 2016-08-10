@@ -219,7 +219,7 @@ public class MembersController {
     public boolean login(@PathVariable long memberId, @RequestBody String password)
             throws NoSuchAlgorithmException, NotFoundException {
         final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
-        return memberService.validatePassword(password, member.getHashedPassword());
+        return memberService.login(member, password);
     }
 
     @RequestMapping(value = "/members/{memberId}/subscribe", method = RequestMethod.PUT)
