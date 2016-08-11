@@ -102,13 +102,14 @@ public class ContestClient {
                 .optionalQueryParam("focusAreaOntologyTerms", focusAreaOntologyTerms)
                 .execute();
     }
-    public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId){
 
-        try{
-            return contestResource.service(contestId, "getSubContestsByOntologySpaceId",List.class)
+    public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
+
+        try {
+            return contestResource.service(contestId, "getSubContestsByOntologySpaceId", List.class)
                     .optionalQueryParam("ontologySpaceId", ontologySpaceId)
                     .get();
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             return new ArrayList<>();
         }
     }
@@ -116,27 +117,30 @@ public class ContestClient {
     public static List<Contest> getAllContests() {
         return contestResource.list().execute();
     }
-    public static List<Contest> getContestsByPlanTemplateId(Long planTemplateId){
+
+    public static List<Contest> getContestsByPlanTemplateId(Long planTemplateId) {
         return contestResource
                 .list()
                 .queryParam("planTemplateId", planTemplateId)
                 .execute();
     }
 
-    public static List<Contest> getContestsByContestScheduleId(Long contestScheduleId){
+    public static List<Contest> getContestsByContestScheduleId(Long contestScheduleId) {
         return contestResource
                 .list()
                 .queryParam("contestScheduleId", contestScheduleId)
                 .execute();
     }
 
-    public static  ContestSchedule createContestSchedule(ContestSchedule contestSchedule) {
+    public static ContestSchedule createContestSchedule(ContestSchedule contestSchedule) {
         return contestScheduleResource.create(contestSchedule).execute();
     }
+
     public static boolean updateContestSchedule(ContestSchedule contestSchedule) {
         return contestScheduleResource.update(contestSchedule, contestSchedule.getId_())
                 .execute();
     }
+
     public static ContestSchedule getContestSchedule(long Id_) {
         try {
             return contestScheduleResource.get(Id_)
@@ -166,14 +170,16 @@ public class ContestClient {
         return visiblePhases;
     }
 
-    public static void deleteContestPhase(Long contestPhasePK){
+    public static void deleteContestPhase(Long contestPhasePK) {
         contestPhasesResource.delete(contestPhasePK);
     }
+
     public static boolean updateContestPhase(ContestPhase contestPhase) {
         return contestPhasesResource.update(contestPhase, contestPhase.getContestPhasePK())
                 .execute();
     }
-    public static  ContestPhase createContestPhase(ContestPhase contestPhase) {
+
+    public static ContestPhase createContestPhase(ContestPhase contestPhase) {
         return contestPhasesResource.create(contestPhase).execute();
     }
 
@@ -181,11 +187,12 @@ public class ContestClient {
         return contestPhasesResource.list().queryParam("contestPK", contestPK).execute();
     }
 
-    public static List<ContestPhase> getPhasesForContestScheduleId(Long contestScheduleId){
+    public static List<ContestPhase> getPhasesForContestScheduleId(Long contestScheduleId) {
         return contestPhasesResource.list()
                 .queryParam("contestScheduleId", contestScheduleId)
                 .execute();
     }
+
     public static List<ContestPhase> getPhasesForContestScheduleIdAndContest(Long contestScheduleId, Long contestPK) {
         return contestPhasesResource.list()
                 .queryParam("contestPK", contestPK)
@@ -237,54 +244,66 @@ public class ContestClient {
             return null;
         }
     }
-    public static List<ContestType> getAllContestTypes(){
-         return contestTypeResource.list().execute();
+
+    public static List<ContestType> getAllContestTypes() {
+        return contestTypeResource.list().execute();
     }
-    public static List<Long> getAdvisorsForContest(Long contestId){
+
+    public static List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
         Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
-        return teamRoleToUsersMap.get(MemberRole.ADVISOR);
+        List<Long> members = teamRoleToUsersMap.get(roleId);
+        if (members == null) {
+            return new ArrayList<>();
+        } else {
+            return members;
+        }
+    }
+    public static List<Long> getAdvisorsForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.ADVISOR.getRoleId());
 
     }
-    public static List<Long> getJudgesForContest(Long contestId){
-        Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
-        return teamRoleToUsersMap.get(MemberRole.JUDGE);
+
+    public static List<Long> getJudgesForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.JUDGE.getRoleId());
     }
-    public static List<Long> getFellowsForContest(Long contestId){
-        Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
-        return teamRoleToUsersMap.get(MemberRole.FELLOW);
+
+    public static List<Long> getFellowsForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.FELLOW.getRoleId());
     }
-    public static List<Long> getContestManagersForContest(Long contestId){
-        Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
-        return teamRoleToUsersMap.get(MemberRole.ADMINISTRATOR);
+
+    public static List<Long> getContestManagersForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.CONTEST_MANAGER.getRoleId());
 
     }
+
     public static Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
         Map<Long, List<Long>> teamRoleToUsersMap = new TreeMap<>();
         for (ContestTeamMember ctm : getTeamMembers(contestId)) {
-                List<Long> roleUsers = teamRoleToUsersMap.get(ctm.getRoleId());
+            List<Long> roleUsers = teamRoleToUsersMap.get(ctm.getRoleId());
 
-                if (roleUsers == null) {
-                    roleUsers = new ArrayList<>();
-                    teamRoleToUsersMap.put(ctm.getRoleId(), roleUsers);
-                }
+            if (roleUsers == null) {
+                roleUsers = new ArrayList<>();
+                teamRoleToUsersMap.put(ctm.getRoleId(), roleUsers);
+            }
 
-                roleUsers.add(ctm.getUserId());
+            roleUsers.add(ctm.getUserId());
 
         }
         return teamRoleToUsersMap;
     }
+
     public static List<ContestTeamMember> getTeamMembers(Long contestId) {
         return contestTeamMemberResource.list()
                 .optionalQueryParam("contestId", contestId)
                 .execute();
     }
 
-    public static  ContestTeamMember createContestTeamMember(ContestTeamMember contestTeamMember) {
+    public static ContestTeamMember createContestTeamMember(ContestTeamMember contestTeamMember) {
         return contestTeamMemberResource.create(contestTeamMember).execute();
     }
 
-    public static void deleteContestTeamMember(Long contestTeamMemberId){
-        contestTeamMemberResource.delete(contestTeamMemberId);
+    public static void deleteContestTeamMember(Long contestTeamMemberId) {
+        contestTeamMemberResource.delete(contestTeamMemberId).execute();
     }
 
     public static ContestTeamMemberRole getContestTeamMemberRole(long Id_) {

@@ -332,14 +332,16 @@ public class ContestScheduleWrapper {
             Date now = new Date();
             for (int i=0; i < curentContestSchedulePhases.size();i++){
                 ContestPhase phase =  curentContestSchedulePhases.get(i);
-                if (!(phase.getPhaseStartDate().after(now))) {
-                    boolean arePhaseTypesEqual = (selectablePhases.size() > i &&
-                            selectablePhases.get(i).getContestPhaseType() == phase.getContestPhaseType());
-                    if (!arePhaseTypesEqual) {
-                        return false;
+                if(phase.getPhaseStartDate() !=null){
+                    if (!(phase.getPhaseStartDate().after(now))) {
+                        boolean arePhaseTypesEqual = (selectablePhases.size() > i &&
+                                selectablePhases.get(i).getContestPhaseType() == phase.getContestPhaseType());
+                        if (!arePhaseTypesEqual) {
+                            return false;
+                        }
+                    } else {
+                        break;
                     }
-                } else {
-                    break;
                 }
             }
         return true;
