@@ -97,10 +97,10 @@ public class RibbonWrapper {
             } else if (getRibbonText().equalsIgnoreCase("Semi-Finalist")) {
                 return "Semi-Finalist";
             } else {
-                if(contestPhaseRibbonType.getId()!= 14 ||contestPhaseRibbonType.getId()!= 11 || contestPhaseRibbonType.getId()!= 12) {
-                    return "Winner";
-                }else{
+                if(contestPhaseRibbonType.getId()== 14 ||contestPhaseRibbonType.getId()== 11 || contestPhaseRibbonType.getId()== 12) {
                     return "Finalist";
+                }else{
+                    return "Winner";
                 }
             }
         }
