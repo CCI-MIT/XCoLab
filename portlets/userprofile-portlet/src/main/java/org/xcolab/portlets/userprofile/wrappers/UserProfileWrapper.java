@@ -13,6 +13,8 @@ import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
@@ -53,6 +55,8 @@ import java.util.Map;
 import javax.portlet.PortletRequest;
 
 public class UserProfileWrapper implements Serializable {
+
+    private static final Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
 
     private static final long serialVersionUID = 1L;
     private static final long DEFAULT_COMPANY_ID = 10112L;
@@ -158,9 +162,17 @@ public class UserProfileWrapper implements Serializable {
                 final List<Proposal> proposalsInContestType = proposalsByContestType
                         .get(contestType);
                 for (Proposal p : proposalsInContestType) {
-                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
-                            .getProposals()
-                            .add(new BaseProposalWrapper(p));
+                    try {
+                        final BaseProposalWrapper proposalWrapper = new BaseProposalWrapper(p);
+                        contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
+                                .getProposals()
+                                .add(proposalWrapper);
+                    } catch (DatabaseAccessException e) {
+                        //TODO: change exception type
+                        // DatabaseAccessException shouldn't be caught,
+                        // but the liferay service is throwing a SystemException when it shouldn't
+                        _log.error("Proposal " + p.getProposalId() + " doesn't have a phase associated with it");
+                    }
                 }
             }
         } catch (SystemException e) {
