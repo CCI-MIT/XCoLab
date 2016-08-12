@@ -19,6 +19,8 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.users.utils.MemberItem;
+import org.xcolab.portlets.users.utils.MemberListCsvConverter;
+import org.xcolab.portlets.users.utils.MembersPermissions;
 import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
@@ -118,6 +120,9 @@ public class MembersController {
                 ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
         model.addAttribute("pointsActive", isPointsActive);
 
+        MembersPermissions membersPermissions = new MembersPermissions(request);
+        model.addAttribute("permissions", membersPermissions);
+
         return "users";
     }
 
@@ -137,5 +142,17 @@ public class MembersController {
             jsonMembers.put(jsonMember);
         }
         response.getPortletOutputStream().write(jsonMembers.toString().getBytes());
+    }
+
+    @ResourceMapping("downloadMembersList")
+    public void downloadMembersList(ResourceRequest request, ResourceResponse response)
+            throws IOException {
+
+        MembersPermissions membersPermissions = new MembersPermissions(request);
+
+        if (membersPermissions.getCanDownloadMemberList()) {
+            MemberListCsvConverter csvConverter = new MemberListCsvConverter();
+            csvConverter.initiateDownload("membersList", response);
+        }
     }
 }

@@ -6,6 +6,7 @@
     <!--@elvariable id="users" type="java.util.List<org.xcolab.client.members.pojo.Member>"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
+    <!--@elvariable id="permissions" type="org.xcolab.portlets.users.utils.MembersPermissions"-->
 
 	<div class="main_long">
 
@@ -216,6 +217,13 @@
 				</c:forEach>
 			</ul>
 		</div>
+
+        <c:if test="${permissions.canDownloadMemberList}">
+            <div class="b-Spacing--large" style="margin-top: 20px;">
+                <portlet:resourceURL id="downloadMembersList" var="downloadMembersListUrl"/>
+                <a href="${downloadMembersListUrl}">Download members as CSV</a>
+            </div>
+        </c:if>
 	</div>
 
 </jsp:root>
