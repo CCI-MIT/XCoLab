@@ -53,7 +53,7 @@ public final class MessagingClient {
     public static int getMessageCountForMemberSinceDate(long memberId, Date sinceDate) {
         return messageResource.count()
                 .queryParam("recipientId", memberId)
-                .queryParam("sinceDate", sinceDate)
+                .queryParam("sinceDate", sinceDate.getTime())
                 .execute();
     }
 
