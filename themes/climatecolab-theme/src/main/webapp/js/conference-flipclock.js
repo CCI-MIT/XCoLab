@@ -10,7 +10,7 @@ ReadyList.push(function() {
     var sEl,
         today=new Date(),
         tickerTime=2,
-        BigDay=new Date("October 6, 2015"),
+        BigDay=new Date("September 28, 2016"),
         msPerDay=24*60*60*1000,
         timeLeft=(BigDay.getTime()-today.getTime()),
         e_daysLeft=timeLeft/msPerDay,
