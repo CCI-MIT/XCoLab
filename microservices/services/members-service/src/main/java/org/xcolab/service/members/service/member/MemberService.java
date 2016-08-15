@@ -3,7 +3,7 @@ package org.xcolab.service.members.service.member;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xcolab.client.sharedcolab.SharedColabClient;
+
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
@@ -12,6 +12,7 @@ import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.SecureRandomUtil;
 import org.xcolab.service.members.util.UsernameGenerator;
 import org.xcolab.service.members.util.email.ConnectorEmmaAPI;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -32,10 +33,6 @@ public class MemberService {
     public MemberService(MemberDao memberDao, ConnectorEmmaAPI connectorEmmaAPI) {
         this.memberDao = memberDao;
         this.connectorEmmaAPI = connectorEmmaAPI;
-    }
-
-    public Integer getMemberActivityCount(Long memberId) {
-        return this.memberDao.getMemberActivityCount(memberId);
     }
 
     public String generateScreenName(String[] inputData) {
@@ -104,26 +101,24 @@ public class MemberService {
     public boolean validateForgotPasswordToken(String passwordToken) throws NotFoundException {
         Member member = memberDao.findOneByForgotPasswordHash(passwordToken);
 
-        if (member == null) return false;
+        return member != null
+                && member.getForgotPasswordTokenExpireTime().getTime() >= Timestamp
+                .valueOf(LocalDateTime.now()).getTime();
 
-        if (member.getForgotPasswordTokenExpireTime().getTime() >= Timestamp.valueOf(LocalDateTime.now()).getTime()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
-    public String createNewForgotPasswordToken(Long memberId) throws NotFoundException {
-        Member member = memberDao.getMember(memberId);
+    public String createNewForgotPasswordToken(Long memberId) {
+        Member member = memberDao.getMember(memberId).orElseThrow(
+                () -> ReferenceResolutionException.toObject(Member.class, memberId).build());
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         member.setForgotPasswordToken(confirmationToken);
-        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10l);
+        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10L);
         member.setForgotPasswordTokenExpireTime(Timestamp.valueOf(localDateTime));
         memberDao.updateMember(member);
         return confirmationToken;
     }
 
-    public Long updateUserPasswordWithToken(String token, String newPassword) throws NoSuchAlgorithmException, NotFoundException{
+    public Long updateUserPasswordWithToken(String token, String newPassword) throws NoSuchAlgorithmException, NotFoundException {
         Member member = memberDao.findOneByForgotPasswordHash(token);
         if (member != null) {
             member.setPasswordModifiedDate(Timestamp.valueOf(LocalDateTime.now()));
@@ -132,23 +127,25 @@ public class MemberService {
             member.setForgotPasswordTokenExpireTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(-10)));
             memberDao.updateMember(member);
             return member.getId_();
-        }else{
+        } else {
             throw new NotFoundException();
         }
     }
 
     public boolean isSubscribedToNewsletter(long memberId) throws IOException, NotFoundException {
-        final String email = memberDao.getMember(memberId).getEmailAddress();
+        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+        final String email = member.getEmailAddress();
         JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);
         return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, false);
     }
 
     public boolean subscribeToNewsletter(long memberId) throws NotFoundException {
-        final String email = memberDao.getMember(memberId).getEmailAddress();
+        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+        final String email = member.getEmailAddress();
         return subscribeToNewsletter(email);
     }
 
-    public boolean subscribeToNewsletter(String email) {
+    private boolean subscribeToNewsletter(String email) {
         try {
             JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
             return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, true);
@@ -158,7 +155,8 @@ public class MemberService {
     }
 
     public boolean unsubscribeFromNewsletter(long memberId) throws NotFoundException {
-        final String email = memberDao.getMember(memberId).getEmailAddress();
+        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+        final String email = member.getEmailAddress();
         try {
             return connectorEmmaAPI.unSubscribeMemberWithEmail(email);
         } catch (IOException e) {

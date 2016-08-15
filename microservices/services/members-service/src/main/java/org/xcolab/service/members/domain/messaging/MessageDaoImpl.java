@@ -183,4 +183,10 @@ public class MessageDaoImpl implements MessageDao {
                 .set(MESSAGE_RECIPIENT_STATUS.OPENED, false)
                 .execute();
     }
+
+    @Override
+    public boolean delete(long messageId) {
+        return dslContext.deleteFrom(MESSAGE)
+                .where(MESSAGE.MESSAGE_ID.eq(messageId)).execute() > 0;
+    }
 }

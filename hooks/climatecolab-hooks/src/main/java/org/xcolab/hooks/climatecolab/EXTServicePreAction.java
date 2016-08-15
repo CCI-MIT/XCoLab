@@ -58,7 +58,7 @@ public class EXTServicePreAction extends Action {
             }
         }
 
-        vmVariables.put("unreadMessages", MessagingClient.getUnreadMessageCountForUser(themeDisplay.getUserId()));
+        vmVariables.put("unreadMessages", MessagingClient.countUnreadMessagesForUser(themeDisplay.getUserId()));
 
         //Decide whether to show contest menu items
         try {

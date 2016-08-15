@@ -9,24 +9,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.Member;
-
-import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import static org.jooq.impl.DSL.countDistinct;
 import static org.jooq.impl.DSL.sum;
-import static org.xcolab.model.Tables.*;
+import static org.xcolab.model.Tables.MEMBER;
+import static org.xcolab.model.Tables.POINTS;
+import static org.xcolab.model.Tables.ROLES_CATEGORY;
+import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
+import static org.xcolab.model.Tables.USERS_ROLES;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public MemberDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
@@ -128,60 +135,17 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Member getMember(long memberId) throws NotFoundException {
+    public Optional<Member> getMember(long memberId) {
         final Record memberRecord = dslContext.select()
                 .from(MEMBER)
                 .where(MEMBER.ID_.eq(memberId))
                 .fetchOne();
         if (memberRecord == null) {
-            throw new NotFoundException("Member with id " + memberId + " does not exist");
+            return Optional.empty();
         }
-        return memberRecord.into(Member.class);
+        return Optional.of(memberRecord.into(Member.class));
     }
 
-
-    @Override
-    public Integer countMembers(String filter) {
-        if (filter != null && !filter.isEmpty()) {
-            return this.dslContext.select(countDistinct(MEMBER.ID_))
-                    .from(MEMBER)
-                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
-                    .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                    .where(MEMBER.SCREEN_NAME.contains(filter))
-                    .or(MEMBER.FIRST_NAME.contains(filter))
-                    .or(MEMBER.LAST_NAME.contains(filter))
-                    .and(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%")).fetchOne(0, Integer.class);
-        } else {
-            return this.dslContext.select(countDistinct(MEMBER.ID_))
-                    .from(MEMBER)
-                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
-                    .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                    .where(ROLES_CATEGORY.CATEGORY_NAME.notLike("%Staff%")).fetchOne(0, Integer.class);
-        }
-    }
-
-    @Override
-    public Integer countMembersFilteredByCategory(String filter, String roleName) {
-        if (filter != null && !filter.isEmpty()) {
-            return this.dslContext.select(countDistinct(MEMBER.ID_))
-                    .from(MEMBER)
-                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
-                    .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                    .where(MEMBER.SCREEN_NAME.contains(filter))
-                    .or(MEMBER.FIRST_NAME.contains(filter))
-                    .or(MEMBER.LAST_NAME.contains(filter))
-                    .and(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
-                    .fetchOne(0, Integer.class);
-
-        } else {
-            return this.dslContext.select(countDistinct(MEMBER.ID_))
-                    .from(MEMBER)
-                    .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
-                    .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                    .where(ROLES_CATEGORY.CATEGORY_NAME.like("%" + roleName + "%"))
-                    .fetchOne(0, Integer.class);
-        }
-    }
 
     @Override
     public boolean isScreenNameTaken(String screenName) {

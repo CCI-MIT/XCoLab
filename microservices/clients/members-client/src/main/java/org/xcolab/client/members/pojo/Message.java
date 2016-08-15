@@ -1,6 +1,8 @@
 package org.xcolab.client.members.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
@@ -10,18 +12,18 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class Message implements Serializable {
+
     public static final TypeProvider<Message> TYPES =
-            new TypeProvider<>(Message.class,
-                    new ParameterizedTypeReference<List<Message>>() {
-                    });
+            new TypeProvider<>(Message.class, new ParameterizedTypeReference<List<Message>>() {});
 
     private static final long serialVersionUID = 1208926668;
 
-    private Long messageid;
-    private Long fromid;
-    private Long repliesto;
-    private Timestamp createdate;
+    private Long messageId;
+    private Long fromId;
+    private Long repliesTo;
+    private Timestamp createDate;
     private String subject;
     private String content;
     private Boolean opened;
@@ -31,10 +33,10 @@ public class Message implements Serializable {
     }
 
     public Message(Message value) {
-        this.messageid = value.messageid;
-        this.fromid = value.fromid;
-        this.repliesto = value.repliesto;
-        this.createdate = value.createdate;
+        this.messageId = value.messageId;
+        this.fromId = value.fromId;
+        this.repliesTo = value.repliesTo;
+        this.createDate = value.createDate;
         this.subject = value.subject;
         this.content = value.content;
     }
@@ -45,19 +47,12 @@ public class Message implements Serializable {
         this.archived = archived;
     }
 
-    public Message(
-            Long messageid,
-            Long fromid,
-            Long repliesto,
-            Timestamp createdate,
-            String subject,
-            String content,
-            Boolean opened,
-            Boolean archived) {
-        this.messageid = messageid;
-        this.fromid = fromid;
-        this.repliesto = repliesto;
-        this.createdate = createdate;
+    public Message(Long messageId, Long fromId, Long repliesTo, Timestamp createDate,
+            String subject, String content, Boolean opened, Boolean archived) {
+        this.messageId = messageId;
+        this.fromId = fromId;
+        this.repliesTo = repliesTo;
+        this.createDate = createDate;
         this.subject = subject;
         this.content = content;
         this.opened = opened;
@@ -65,35 +60,35 @@ public class Message implements Serializable {
     }
 
     public Long getMessageId() {
-        return this.messageid;
+        return this.messageId;
     }
 
-    public void setMessageId(Long messageid) {
-        this.messageid = messageid;
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
     }
 
     public Long getFromId() {
-        return this.fromid;
+        return this.fromId;
     }
 
-    public void setFromId(Long fromid) {
-        this.fromid = fromid;
+    public void setFromId(Long fromId) {
+        this.fromId = fromId;
     }
 
     public Long getRepliesTo() {
-        return this.repliesto;
+        return this.repliesTo;
     }
 
-    public void setRepliesTo(Long repliesto) {
-        this.repliesto = repliesto;
+    public void setRepliesTo(Long repliesTo) {
+        this.repliesTo = repliesTo;
     }
 
     public Timestamp getCreateDate() {
-        return this.createdate;
+        return this.createDate;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
     }
 
     public String getSubject() {
@@ -112,23 +107,6 @@ public class Message implements Serializable {
         this.content = content;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("Message (");
-
-        sb.append(messageid);
-        sb.append(", ").append(fromid);
-        sb.append(", ").append(repliesto);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(subject);
-        sb.append(", ").append(content);
-        sb.append(", ").append(opened);
-        sb.append(", ").append(archived);
-
-        sb.append(")");
-        return sb.toString();
-    }
-
     public Boolean getOpened() {
         return opened;
     }
@@ -143,5 +121,18 @@ public class Message implements Serializable {
 
     public void setArchived(Boolean archived) {
         this.archived = archived;
+    }
+
+    @Override
+    public String toString() {
+        return "Message (" + messageId +
+                ", " + fromId +
+                ", " + repliesTo +
+                ", " + createDate +
+                ", " + subject +
+                ", " + content +
+                ", " + opened +
+                ", " + archived +
+                ")";
     }
 }

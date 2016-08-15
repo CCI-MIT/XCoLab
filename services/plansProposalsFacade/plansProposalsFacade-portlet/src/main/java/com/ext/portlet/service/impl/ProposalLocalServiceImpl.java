@@ -5,7 +5,6 @@ import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
@@ -74,6 +73,7 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
@@ -1107,7 +1107,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);
         if (Validator.isNotNull(messageBody)) {
-            MessageUtil.sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
+            MessagingClient
+                    .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
         }
     }
 

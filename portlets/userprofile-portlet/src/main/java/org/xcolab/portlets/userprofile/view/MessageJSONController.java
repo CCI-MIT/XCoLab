@@ -1,6 +1,5 @@
 package org.xcolab.portlets.userprofile.view;
 
-import com.ext.portlet.messaging.MessageUtil;
 import com.liferay.portal.util.PortalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
 
@@ -50,8 +48,7 @@ public class MessageJSONController extends JSONHelper {
         if (!result.hasErrors()) {
             try {
                 final long senderMemberId = PortalUtil.getUserId(request);
-                final Member sender = MembersClient.getMemberUnchecked(senderMemberId);
-                sendMessage(messageBean, sender, userIdRecipient);
+                sendMessage(messageBean, senderMemberId, userIdRecipient);
                 this.writeSuccessResultResponseJSON(true, response);
             } catch (MessageLimitExceededException e) {
                 this.writeErrorResultResponseJSON("Daily message limit exceeded", response);
@@ -61,9 +58,9 @@ public class MessageJSONController extends JSONHelper {
         }
     }
 
-    private void sendMessage(MessageBean messageBean, Member sender, Long recipientMemberId)
+    private void sendMessage(MessageBean messageBean, long senderMemberId, Long recipientMemberId)
             throws MessageLimitExceededException {
-        MessageUtil.checkLimitAndSendMessage(messageBean.getMessageSubject(), messageBean.getMessageText(),
-                sender, Collections.singletonList(recipientMemberId));
+        MessagingClient.checkLimitAndSendMessage(messageBean.getMessageSubject(), messageBean.getMessageText(),
+                senderMemberId, Collections.singletonList(recipientMemberId));
     }
 }
