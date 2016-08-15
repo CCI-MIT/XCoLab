@@ -169,7 +169,7 @@
                     <!-- JDBC connection parameters -->
                     <jdbc>
                         <driver>${db.driver}</driver>
-                        <url>${db.url}</url>
+                        <url>${db.url.base}/${db.schema}?${db.url.params}</url>
                         <user>${db.username}</user>
                         <password>${db.password}</password>
                     </jdbc>
