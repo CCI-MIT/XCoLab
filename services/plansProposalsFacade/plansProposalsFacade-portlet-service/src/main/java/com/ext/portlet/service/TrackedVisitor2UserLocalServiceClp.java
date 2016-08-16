@@ -45,10 +45,6 @@ public class TrackedVisitor2UserLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
 
     public TrackedVisitor2UserLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -143,14 +139,6 @@ public class TrackedVisitor2UserLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "findUuidForUserId";
-
-        _methodParameterTypes19 = new String[] { "long" };
-
-        _methodName20 = "addIfNotExists";
-
-        _methodParameterTypes20 = new String[] { "java.lang.String", "long" };
     }
 
     @Override
@@ -670,59 +658,5 @@ public class TrackedVisitor2UserLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public java.lang.String findUuidForUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19, new Object[] { userId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public com.ext.portlet.model.TrackedVisitor2User addIfNotExists(
-        java.lang.String uuid, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
-                    new Object[] { ClpSerializer.translateInput(uuid), userId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.TrackedVisitor2User) ClpSerializer.translateOutput(returnObj);
     }
 }

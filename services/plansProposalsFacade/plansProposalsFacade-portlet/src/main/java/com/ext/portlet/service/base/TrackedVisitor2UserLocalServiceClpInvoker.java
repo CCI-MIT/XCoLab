@@ -45,10 +45,6 @@ public class TrackedVisitor2UserLocalServiceClpInvoker {
     private String[] _methodParameterTypes422;
     private String _methodName423;
     private String[] _methodParameterTypes423;
-    private String _methodName428;
-    private String[] _methodParameterTypes428;
-    private String _methodName429;
-    private String[] _methodParameterTypes429;
 
     public TrackedVisitor2UserLocalServiceClpInvoker() {
         _methodName0 = "addTrackedVisitor2User";
@@ -140,14 +136,6 @@ public class TrackedVisitor2UserLocalServiceClpInvoker {
         _methodName423 = "setBeanIdentifier";
 
         _methodParameterTypes423 = new String[] { "java.lang.String" };
-
-        _methodName428 = "findUuidForUserId";
-
-        _methodParameterTypes428 = new String[] { "long" };
-
-        _methodName429 = "addIfNotExists";
-
-        _methodParameterTypes429 = new String[] { "java.lang.String", "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -249,17 +237,6 @@ public class TrackedVisitor2UserLocalServiceClpInvoker {
             TrackedVisitor2UserLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName428.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
-            return TrackedVisitor2UserLocalServiceUtil.findUuidForUserId(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName429.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes429, parameterTypes)) {
-            return TrackedVisitor2UserLocalServiceUtil.addIfNotExists((java.lang.String) arguments[0],
-                ((Long) arguments[1]).longValue());
         }
 
         throw new UnsupportedOperationException();

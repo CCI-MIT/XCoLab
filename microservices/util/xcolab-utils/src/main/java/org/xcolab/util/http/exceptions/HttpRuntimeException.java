@@ -8,10 +8,9 @@ public class HttpRuntimeException extends RuntimeException {
     }
 
     public HttpRuntimeException(HttpServiceExceptionObject exceptionObject, Throwable cause) {
-        super("Path " + exceptionObject.getPath()
-                + " encountered http error" + exceptionObject.getStatus()
-                + " " + exceptionObject.getException()
-                + ": " + exceptionObject.getMessage(), cause);
+        super(String.format("Path %s encountered http error %d %s: %s", exceptionObject.getPath(),
+                exceptionObject.getStatus(), exceptionObject.getException(),
+                exceptionObject.getMessage()), cause);
         this.exceptionObject = exceptionObject;
     }
 

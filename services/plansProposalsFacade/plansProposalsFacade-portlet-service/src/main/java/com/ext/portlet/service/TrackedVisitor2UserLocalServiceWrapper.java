@@ -277,19 +277,6 @@ public class TrackedVisitor2UserLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public java.lang.String findUuidForUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _trackedVisitor2UserLocalService.findUuidForUserId(userId);
-    }
-
-    @Override
-    public com.ext.portlet.model.TrackedVisitor2User addIfNotExists(
-        java.lang.String uuid, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _trackedVisitor2UserLocalService.addIfNotExists(uuid, userId);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

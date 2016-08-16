@@ -1,10 +1,6 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.model.TrackedVisit;
 import com.ext.portlet.service.base.TrackedVisitLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import java.util.Date;
 
 /**
  * The implementation of the tracked visit local service.
@@ -27,36 +23,4 @@ public class TrackedVisitLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.TrackedVisitLocalServiceUtil} to access the tracked visit local service.
      */
-
-    @Override
-    public TrackedVisit addTrackedVisit(
-            String uuid,
-            String url,
-            String ip,
-            String browser,
-            String referer,
-            String headers,
-            String city,
-            String country
-
-    ) throws SystemException {
-
-        long trackedVisitId = counterLocalService.increment(TrackedVisit.class.getName());
-
-        TrackedVisit trackedVisit = trackedVisitPersistence.create(trackedVisitId);
-
-        trackedVisit.setCreateDate(new Date());
-        trackedVisit.setBrowser(browser);
-        trackedVisit.setReferer(referer);
-        trackedVisit.setHeaders(headers);
-        trackedVisit.setCity(city);
-        trackedVisit.setCountry(country);
-        trackedVisit.setUrl(url);
-        trackedVisit.setUuid(uuid);
-        trackedVisit.setIp(ip);
-
-        addTrackedVisit(trackedVisit);
-
-        return trackedVisit;
-    }
 }

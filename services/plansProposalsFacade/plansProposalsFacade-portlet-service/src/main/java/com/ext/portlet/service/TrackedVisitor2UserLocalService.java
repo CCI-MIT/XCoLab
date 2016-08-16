@@ -239,11 +239,4 @@ public interface TrackedVisitor2UserLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public java.lang.String findUuidForUserId(long userId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.TrackedVisitor2User addIfNotExists(
-        java.lang.String uuid, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

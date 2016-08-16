@@ -1,12 +1,12 @@
 package org.xcolab.portlets.admintasks;
 
+import com.icesoft.faces.async.render.SessionRenderer;
+import org.apache.commons.lang3.StringUtils;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
-import com.icesoft.faces.async.render.SessionRenderer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -24,10 +24,11 @@ import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -100,21 +101,9 @@ public class AdminTasksBean {
 		}
 	}
 
-    //TODO: figure out the whole IpTranslation thing
-	public String translateIp() throws Exception {
-		System.out.println(IpTranslationServiceUtil.getLocationForIp("89.67.113.30"));
-		return null;
-	}
-	
-	public String reloadIpLocationData() throws Exception {
-		IpTranslationServiceUtil.reloadLocationAndBlockData();
-		return null;
-		
-	}
-
 	public String populateLocationDataIntoBalloon() throws Exception {
 		for (BalloonUserTracking but: BalloonsClient.getAllBalloonUserTracking()) {
-			Location location = IpTranslationServiceUtil.getLocationForIp(but.getIp());
+			Location location = TrackingClient.getLocationForIp(but.getIp());
 			if (location != null) {
 				if (StringUtils.isBlank(but.getCity()) && StringUtils.isNotBlank(location.getCity())) {
 					but.setCity(location.getCity());
@@ -133,10 +122,7 @@ public class AdminTasksBean {
 				BalloonsClient.updateBalloonUserTracking(but);
 			}
 		}
-		
-		//IpTranslationServiceUtil.reloadLocationAndBlockData();
 		return null;
-		
 	}
 
     // ----- Reindex Tasks -----

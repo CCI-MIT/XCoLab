@@ -30,6 +30,7 @@
         <module>proposals-service</module>
         <module>search-service</module>
         <module>sharedcolab-service</module>
+        <module>tracking-service</module>
     </modules>
 
     <dependencies>

@@ -2,8 +2,6 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.model.LoginLog;
 import com.ext.portlet.service.base.LoginLogLocalServiceBaseImpl;
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -11,6 +9,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
+
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 
 import java.util.Date;
 
@@ -48,7 +49,7 @@ public class LoginLogLocalServiceImpl extends LoginLogLocalServiceBaseImpl {
 		newLog.setEntryUrl(entryUrl.substring(0,Math.min(250, entryUrl.length())));
 
         try {
-            Location userLocation = IpTranslationServiceUtil.getLocationForIp(ipAddr);
+            Location userLocation = TrackingClient.getLocationForIp(ipAddr);
 
             if (Validator.isNotNull(userLocation)) {
                 newLog.setCity(userLocation.getCity());

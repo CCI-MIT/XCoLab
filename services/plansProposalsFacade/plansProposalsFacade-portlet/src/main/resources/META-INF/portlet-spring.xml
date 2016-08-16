@@ -210,5 +210,4 @@
 		<property name="service" ref="com.ext.utils.userInput.UserInputFilter" />
 	</bean>
 	<bean id="com.ext.utils.authentication.AuthenticationService" class="com.ext.utils.authentication.AuthenticationServiceImpl" />
-	<bean id="com.ext.utils.iptranslation.IpTranslationService" class="com.ext.utils.iptranslation.IpTranslationServiceImpl" />
 </beans>

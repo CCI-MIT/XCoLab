@@ -73,6 +73,18 @@ public class ListQuery<T> {
                     + result.size());
         }
 
+        public T getOneIfExists() {
+            //fetch two elements so we can check if the result is unique
+            List<T> result = query.addRange(0, 2).execute();
+            if (result.size() == 1) {
+                return result.get(0);
+            }
+            if (result.isEmpty()) {
+                return null;
+            }
+            throw new IndexOutOfBoundsException("Expected at most one element, found 2 or more");
+        }
+
         public T getFirst() {
             List<T> result = query.addRange(0, 1).execute();
             if (!result.isEmpty()) {
