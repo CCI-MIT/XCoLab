@@ -1,17 +1,17 @@
 package org.xcolab.portlets.usertracking;
 
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,7 +42,7 @@ public class UserTrackingServlet extends HttpServlet {
         String city = "";
         String country = "";
         try {
-            Location location = IpTranslationServiceUtil.getLocationForIp(ip);
+            Location location = TrackingClient.getLocationForIp(ip);
             if (location != null) {
                 city = location.getCity();
                 country = location.getCountry();
