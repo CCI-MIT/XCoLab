@@ -4,6 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import org.xcolab.util.http.caching.CacheProvider;
 import org.xcolab.util.http.caching.CacheProviderNoOpImpl;
+import org.xcolab.util.http.client.HeaderRequestInterceptor;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.RestTemplateErrorHandler;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
@@ -36,6 +38,8 @@ public final class RequestUtils {
     static {
         restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
         restTemplate.setErrorHandler(new RestTemplateErrorHandler());
+        restTemplate.setInterceptors(HeaderRequestInterceptor
+                .newAsSingletonList(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE));
     }
 
     private RequestUtils() {
