@@ -1,8 +1,7 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import com.ext.portlet.messaging.MessageUtil;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
+
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
@@ -14,6 +13,10 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -51,8 +54,7 @@ public class ContestMassActionMethods {
         for (Long contestId : contestList) {
             try {
                 List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
-                ContestPhase activeContestPhase =
-                        ContestLocalServiceUtil.getActivePhase(ContestLocalServiceUtil.getContest(contestId));
+                ContestPhase activeContestPhase = ContestClient.getActivePhase(contestId);
                 csvExportHelper
                         .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
             } catch (SystemException e) {
@@ -119,10 +121,11 @@ public class ContestMassActionMethods {
     }
 
     private static void deleteContestPhases(Long contestId) throws PortalException, SystemException {
-        Contest contest = ContestLocalServiceUtil.getContest(contestId);
-        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(contest);
+
+
+        List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contestId);
         for (ContestPhase contestPhase : contestPhases) {
-            ContestPhaseLocalServiceUtil.deleteContestPhase(contestPhase);
+            ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
         }
     }
 
@@ -137,7 +140,7 @@ public class ContestMassActionMethods {
         Boolean showContestPhaseDeleteConfirmation = false;
         for (Long contestId : contestList) {
             List<ContestPhase> contestPhases =
-                    ContestLocalServiceUtil.getAllPhases(ContestLocalServiceUtil.getContest(contestId));
+                    ContestClient.getAllContestPhases(contestId);
             if (!contestPhases.isEmpty()) {
                 if (deletePhases) {
                     deleteContestAndPhases(contestId);
@@ -156,25 +159,33 @@ public class ContestMassActionMethods {
     public static void setFlag(List<Long> contestList, Object flagTexToolTipValue, PortletRequest request)
             throws PortalException, SystemException {
         for (Long contestId : contestList) {
-            Contest contest = ContestLocalServiceUtil.getContest(contestId);
-            ContestFlagTextToolTipBean contestFlagTextToolTipBean = (ContestFlagTextToolTipBean) flagTexToolTipValue;
-            contestFlagTextToolTipBean.persist(contest);
+            try{
+                Contest contest = ContestClient.getContest(contestId);
+                ContestFlagTextToolTipBean contestFlagTextToolTipBean = (ContestFlagTextToolTipBean) flagTexToolTipValue;
+                contestFlagTextToolTipBean.persist(contest);
+            }catch (ContestNotFoundException ignored){
+
+            }
+
         }
     }
 
     public static void setModelSettings(List<Long> contestList, Object modelSettings, PortletRequest request)
             throws PortalException, SystemException {
         for (Long contestId : contestList) {
-            Contest contest = ContestLocalServiceUtil.getContest(contestId);
-            ContestModelSettingsBean contestModelSettingsBean = (ContestModelSettingsBean) modelSettings;
-            contestModelSettingsBean.persist(contest);
+            try {
+                Contest contest = ContestClient.getContest(contestId);
+                ContestModelSettingsBean contestModelSettingsBean = (ContestModelSettingsBean) modelSettings;
+                contestModelSettingsBean.persist(contest);
+            }catch (ContestNotFoundException ignored){
+
+            }
         }
     }
 
     private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK)
             throws PortalException, SystemException {
-        Contest contest = ContestLocalServiceUtil.getContest(contestPK);
-        ContestPhase activeContestPhase = ContestLocalServiceUtil.getActivePhase(contest);
+        ContestPhase activeContestPhase = ContestClient.getActivePhase(contestPK);
         return ProposalLocalServiceUtil.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
     }
 }

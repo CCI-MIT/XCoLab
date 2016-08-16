@@ -1,11 +1,14 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 import com.ext.portlet.NoSuchContestException;
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
 import org.xcolab.wrappers.BaseContestWrapper;
@@ -84,10 +87,10 @@ public class MassActionConfirmationWrapper {
     private void populateValidContestWrapper(List<Integer> contestIds) throws PortalException, SystemException {
         for (Integer contestId : contestIds) {
             try {
-                Contest contest = ContestLocalServiceUtil.getContest(contestId);
+                Contest contest = ContestClient.getContest(contestId);
                 this.contestWrappers.add(new BaseContestWrapper(contest));
                 this.selectedContest.add(false);
-            } catch (NoSuchContestException e) {
+            } catch (ContestNotFoundException ignored) {
                 // Contest was removed already
             }
         }

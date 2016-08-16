@@ -1,28 +1,22 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.hibernate.validator.constraints.Length;
-
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.wrappers.BaseContestWrapper;
-
-import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 public class ContestDescriptionBean implements Serializable {
     private static final Log _log = LogFactoryUtil.getLog(ContestDescriptionBean.class);
@@ -68,7 +62,7 @@ public class ContestDescriptionBean implements Serializable {
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
 
-            shouldUpdateContestUrlName = !contest.isContestActive();
+            shouldUpdateContestUrlName = !contest.getContestActive();
         }
     }
 
@@ -80,28 +74,18 @@ public class ContestDescriptionBean implements Serializable {
         try {
             final CommentThread thread = CommentClient.getThread(contest.getDiscussionGroupId());
             ContestType contestType =
-                    ContestTypeLocalServiceUtil.getContestType(contest.getContestTypeId());
+                    ContestClient.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getContestShortName()));
             CommentClient.updateThread(thread);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw ReferenceResolutionException
-                    .toObject(ContestType.class, contest.getContestTypeId())
-                    .fromObject(Contest.class, contest.getContestPK());
         } catch (ThreadNotFoundException e) {
             _log.warn("No thread (id = " + contest.getDiscussionGroupId() + ") exists for contest "
                     + contest.getContestPK());
         }
 
         if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {
-            contest.setContestUrlName(ContestLocalServiceUtil.generateContestUrlName(contest));
-            try {
-                contest.persist();
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            }
+            contest.setContestUrlName((contest).getContestUrlName());
+                ContestClient.updateContest(contest);
         }
         WikiPageWrapper.updateContestWiki(contest);
     }
@@ -185,11 +169,8 @@ public class ContestDescriptionBean implements Serializable {
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
-        try {
-            contest.persist();
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+        ContestClient.updateContest(contest);
+
     }
 
     private static void updateContestSchedule(Contest contest, Long contestScheduleId) {
@@ -206,11 +187,8 @@ public class ContestDescriptionBean implements Serializable {
                         contestScheduleId);
             }
             contest.setContestScheduleId(contestScheduleId);
-            try {
-                contest.persist();
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            }
+            ContestClient.updateContest(contest);
+
         }
     }
 }

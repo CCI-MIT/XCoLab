@@ -1,8 +1,9 @@
 package org.xcolab.utils.emailnotification.contest;
 
-import com.ext.portlet.model.Contest;
+
 import com.liferay.portal.service.ServiceContext;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.utils.emailnotification.basic.ContestNotification;

@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
@@ -32,7 +33,12 @@ public class RibbonWrapper {
         if (contestPhaseRibbonType == null) {
             ProposalContestPhaseAttribute ribbonAttribute;
             final long proposalId = proposalWrapper.getProposalId();
-            final ContestPhase contestPhase = proposalWrapper.getContestPhase();
+            ContestPhase contestPhase = null;
+            try {
+                 contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
+            }catch (SystemException ignored){
+
+            }
             if (contestPhase == null) {
                 _log.info(String.format("Could not retrieve ribbon type. Wrapper for proposal %d in Contest %d has no contestPhase.",
                         proposalId, proposalWrapper.getContestPK()));

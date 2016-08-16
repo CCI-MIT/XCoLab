@@ -1,8 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
+
+
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -13,7 +12,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
@@ -38,7 +44,7 @@ public class ContestWrapper extends BaseContestWrapper {
     private Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<BaseContestPhaseWrapper> visiblePhases;
 
-    public ContestWrapper(long contestId) throws PortalException, SystemException {
+    public ContestWrapper(long contestId) throws ContestNotFoundException {
         super(contestId);
     }
 
@@ -46,21 +52,7 @@ public class ContestWrapper extends BaseContestWrapper {
         super(contest);
     }
 
-    public Class<?> getModelClass() {
-        return contest.getModelClass();
-    }
 
-    public String getModelClassName() {
-        return contest.getModelClassName();
-    }
-
-    public long getPrimaryKey() {
-        return contest.getPrimaryKey();
-    }
-
-    public void setPrimaryKey(long primaryKey) {
-        contest.setPrimaryKey(primaryKey);
-    }
 
     public String getContestDescription() {
         return contest.getContestDescription();
@@ -103,7 +95,7 @@ public class ContestWrapper extends BaseContestWrapper {
     }
 
     public boolean isShowInTileView(){
-        return contest.isShow_in_tile_view();
+        return contest.getShow_in_tile_view();
     }
 
     public void setShowInTileView(boolean showInTileView){
@@ -115,7 +107,7 @@ public class ContestWrapper extends BaseContestWrapper {
     }
 
     public boolean isShowInListView(){
-        return contest.isShow_in_list_view();
+        return contest.getShow_in_list_view();
     }
 
     public void setShowInListView(boolean showInListView){
@@ -127,16 +119,14 @@ public class ContestWrapper extends BaseContestWrapper {
     }
 
     public boolean isShowInOutlineView(){
-        return contest.isShow_in_outline_view();
+        return contest.getShow_in_outline_view();
     }
 
     public void setShowInOutlineView(boolean showInOutlineView){
         contest.setShow_in_outline_view(showInOutlineView);
     }
 
-    public void resetOriginalValues() {
-        contest.resetOriginalValues();
-    }
+
 
     public String getContestPositionsDescription() {
         return contest.getContestPositionsDescription();
@@ -158,13 +148,17 @@ public class ContestWrapper extends BaseContestWrapper {
 
     public long getTotalCommentsCount() throws PortalException, SystemException {
         if (getContestType().getHasDiscussion()) {
-            return ContestLocalServiceUtil.getTotalCommentsCount(contest);
+           return CommentClient.countComments(contest.getDiscussionGroupId());
         }
-        return ContestLocalServiceUtil.getProposalsCommentsCount(contest);
+        Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
+        ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
+        contestComments += CommentClient.countCommentsByProposalsInContestPhase(phase.getContestPhasePK());
+        return contestComments;
     }
 
     public long getVotesCount() throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getVotesCount(contest);
+        ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
+        return ProposalsClient.countProposalsInContestPhaseVotes(phase.getContestPhasePK());
     }
 
     public BaseContestPhaseWrapper getLastPhase() throws PortalException, SystemException {
@@ -217,7 +211,7 @@ public class ContestWrapper extends BaseContestWrapper {
     }
 
     public List<Contest> getSubContests() throws SystemException, PortalException {
-        List <Contest> subContests = ContestLocalServiceUtil.getSubContestsByOntologySpaceId(contest, ONTOLOGY_SPACE_ID_WHERE);
+        List <Contest> subContests = ContestClient.getSubContestsByOntologySpaceId(contest.getContestPK(), ONTOLOGY_SPACE_ID_WHERE);
         Collections.sort(subContests, new Comparator<Contest>() {
             @Override
             public int compare(Contest c1, Contest c2) {
@@ -230,7 +224,7 @@ public class ContestWrapper extends BaseContestWrapper {
     public ContestWrapper getParentContest() throws SystemException, PortalException {
         List<Long> focusAreaOntologyTermIds =
                 FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(contest.getFocusAreaId(), ONTOLOGY_SPACE_ID_WHERE);
-        List<Contest> contests = ContestLocalServiceUtil.getContestsByTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
+        List<Contest> contests = ContestClient.findContestsTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
         return new ContestWrapper(contests.get(0));
     }
 
@@ -248,9 +242,9 @@ public class ContestWrapper extends BaseContestWrapper {
         ContestPhaseType type;
         ContestPhase activePhase;
         try {
-            activePhase = ContestLocalServiceUtil.getActivePhase(this.contest);
+            activePhase = ContestClient.getActivePhase(this.contest.getContestPK());
             type = new BaseContestPhaseWrapper(activePhase).getContestPhaseTypeObject();
-        } catch (IllegalArgumentException | NullPointerException | SystemException | PortalException e) {
+        } catch (IllegalArgumentException | NullPointerException | SystemException  e) {
             return false;
         }
         return !(type == null || activePhase == null
@@ -261,7 +255,7 @@ public class ContestWrapper extends BaseContestWrapper {
     public List<BaseContestPhaseWrapper> getVisiblePhases() throws SystemException, PortalException {
         if (visiblePhases == null) {
             visiblePhases = new ArrayList<>();
-            for (ContestPhase phase : ContestLocalServiceUtil.getVisiblePhases(contest)) {
+            for (ContestPhase phase : ContestClient.getVisibleContestPhases(contest.getContestPK())) {
                 visiblePhases.add(new BaseContestPhaseWrapper(phase));
             }
         }
@@ -288,10 +282,11 @@ public class ContestWrapper extends BaseContestWrapper {
      */
     public boolean getJudgeStatus() {
         try {
-            ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
+            com.ext.portlet.model.Contest contestLiferay = ContestLocalServiceUtil.getContest(contest.getContestPK());
+            com.ext.portlet.model.ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contestLiferay);
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contestLiferay, contestPhase, p2p)).getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
                     return false;
                 }
             }
@@ -308,10 +303,12 @@ public class ContestWrapper extends BaseContestWrapper {
      */
     public boolean getScreeningStatus() {
         try {
-            ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contest);
+            com.ext.portlet.model.Contest contestLiferay = ContestLocalServiceUtil.getContest(contest.getContestPK());
+            com.ext.portlet.model.ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contestLiferay);
+
             for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
                 Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contestLiferay, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
                     return false;
                 }
             }

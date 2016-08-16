@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.model.ContestTeamMember;
+
 import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -9,6 +9,8 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.ContestTeamMember;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.util.enums.activity.ActivityEntryType;
@@ -54,21 +56,20 @@ public class ContestTeamWrapper {
     private void assignMembersToContestWithRole(List<Long> userIds, MemberRole memberRole)
             throws SystemException, PortalException {
         for (Long userId : userIds) {
-            Long contestMemberId = CounterLocalServiceUtil.increment(ContestTeamMember.class.getName());
-            ContestTeamMember contestTeamMember =
-                    ContestTeamMemberLocalServiceUtil.createContestTeamMember(contestMemberId);
+
+            ContestTeamMember contestTeamMember = new ContestTeamMember();
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
             contestTeamMember.setRoleId(memberRole.getRoleId());
-            ContestTeamMemberLocalServiceUtil.addContestTeamMember(contestTeamMember);
+            ContestClient.createContestTeamMember(contestTeamMember);
         }
     }
 
     private void removeAllContestTeamMembersForContest()
             throws SystemException, PortalException {
-        List<ContestTeamMember> contestTeamMembers = ContestTeamMemberLocalServiceUtil.findForContest(contestId);
+        List<ContestTeamMember> contestTeamMembers = ContestClient.getTeamMembers(contestId);
         for (ContestTeamMember contestTeamMember : contestTeamMembers) {
-            ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
+            ContestClient.deleteContestTeamMember(contestTeamMember.getId_());
         }
     }
 

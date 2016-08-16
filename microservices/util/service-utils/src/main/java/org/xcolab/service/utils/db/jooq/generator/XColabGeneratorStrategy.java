@@ -64,8 +64,9 @@ public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
     }
 
     private boolean containsPrefix(String string) {
+
         for (String prefix : TABLE_PREFIXES) {
-            if (string.startsWith(prefix)) {
+            if (string.startsWith(prefix) && (string.length() != prefix.length())) {
                 return true;
             }
         }
@@ -74,8 +75,11 @@ public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
 
     private String cleanUpSchemeAndPrefix(String val) {
         String ret = val;
+
         for (String prefix : TABLE_PREFIXES) {
-            ret = ret.replace(prefix, "");
+            if( ret.length() != prefix.length() ){
+                ret = ret.replace(prefix, "");
+            }
         }
         return ret;
     }

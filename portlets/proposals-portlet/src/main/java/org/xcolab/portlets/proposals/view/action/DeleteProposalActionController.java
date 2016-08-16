@@ -38,7 +38,7 @@ public class DeleteProposalActionController {
             Proposal proposal = proposalsContext.getProposal(request);
             Contest contest = proposalsContext.getContest(request);
 
-            BaseContestPhaseWrapper contestPhaseWrapper = new BaseContestPhaseWrapper(contestPhase);
+
 
             proposal.setVisible(!delete);
             ProposalLocalServiceUtil.updateProposal(proposal);

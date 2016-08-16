@@ -1,7 +1,7 @@
 package org.xcolab.wrapper;
 
 import com.ext.portlet.NoSuchContestDiscussionException;
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.model.ContestDiscussion;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
@@ -11,6 +11,7 @@ import com.liferay.portal.util.PortalUtil;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.interfaces.TabPermissions;

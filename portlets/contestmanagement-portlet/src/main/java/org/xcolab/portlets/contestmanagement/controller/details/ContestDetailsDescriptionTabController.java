@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
@@ -120,13 +123,10 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                 try {
                     ThemeDisplay themeDisplay = (ThemeDisplay) request
                             .getAttribute(WebKeys.THEME_DISPLAY);
-                    Contest contest = ContestLocalServiceUtil
-                            .getContest(updatedContestDescriptionBean.getContestPK());
+                    Contest contest = ContestClient.getContest(updatedContestDescriptionBean.getContestPK());
                     sendEmailNotificationToAuthor(themeDisplay, contest);
-                } catch (SystemException e) {
+                } catch (ContestNotFoundException | MemberNotFoundException e) {
                     throw new DatabaseAccessException(e);
-                } catch (MemberNotFoundException | PortalException e) {
-                    throw new InternalException(e);
                 }
             }
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());

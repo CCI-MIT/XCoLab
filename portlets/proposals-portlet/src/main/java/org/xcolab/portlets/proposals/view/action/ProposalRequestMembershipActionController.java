@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -97,8 +99,14 @@ public class ProposalRequestMembershipActionController {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
-        new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor, MEMBERSHIP_REQUEST_TEMPLATE,
-                serviceContext).sendMessage();
+
+            try {
+                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                new ProposalUserActionNotification(proposal, contestMicro, sender, proposalAuthor, MEMBERSHIP_REQUEST_TEMPLATE,
+                        serviceContext).sendMessage();
+            }catch (ContestNotFoundException ignored){
+
+            }
 
         SessionMessages.add(request, "membershipRequestSent");
         response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/tab/TEAM");
@@ -143,9 +151,14 @@ public class ProposalRequestMembershipActionController {
                         ServiceContext serviceContext = new ServiceContext();
                         serviceContext.setPortalURL(themeDisplay.getPortalURL());
                         final Member sender = proposalsContext.getMember(request);
-                        new ProposalMembershipInviteNotification(proposal, contest, sender,
-                                recipient,
-                                memberRequest, comment, serviceContext).sendMessage();
+                        try {
+                                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                            new ProposalMembershipInviteNotification(proposal, contestMicro, sender,
+                                    recipient,
+                                    memberRequest, comment, serviceContext).sendMessage();
+                        }catch (ContestNotFoundException ignored){
+
+                        }
 
                         SessionMessages.add(request, "memberInviteSent");
                     }

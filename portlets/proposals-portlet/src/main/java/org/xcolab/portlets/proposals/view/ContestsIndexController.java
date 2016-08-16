@@ -22,6 +22,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
@@ -116,7 +118,12 @@ public class ContestsIndexController extends BaseProposalsController {
 
         for (Contest contest: contestsToWrap) {
         	if (! contest.isContestPrivate()) {
-                contests.add(new ContestWrapper(contest));
+                try {
+                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                    contests.add(new ContestWrapper(contestMicro));//contest
+                }catch (ContestNotFoundException ignored){
+
+                }
             }
         }
 
@@ -177,7 +184,12 @@ public class ContestsIndexController extends BaseProposalsController {
 
             List<ContestWrapper> otherContests = new ArrayList<>();
             for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
-            	otherContests.add(new ContestWrapper(contest));
+                try {
+                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                    otherContests.add(new ContestWrapper(contestMicro));//contest
+                }catch (ContestNotFoundException ignored){
+
+                }
             }
         	List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
         	Collections.sort(sortedSpaces, new Comparator<OntologySpaceWrapper>() {

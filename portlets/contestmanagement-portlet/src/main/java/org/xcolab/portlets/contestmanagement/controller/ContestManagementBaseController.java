@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller;
 
-import com.ext.portlet.model.Contest;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 

@@ -64,7 +64,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>comment_.* | xcolab_Proposal</includes>
+							<includes>comment_.* | xcolab_Proposal | xcolab_Proposal2Phase</includes>
 						</database>
 					</generator>
 				</configuration>

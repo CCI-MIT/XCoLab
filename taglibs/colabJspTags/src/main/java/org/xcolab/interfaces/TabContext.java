@@ -1,8 +1,9 @@
 package org.xcolab.interfaces;
 
-import com.ext.portlet.model.Contest;
+
 import com.liferay.portal.model.User;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.io.Serializable;

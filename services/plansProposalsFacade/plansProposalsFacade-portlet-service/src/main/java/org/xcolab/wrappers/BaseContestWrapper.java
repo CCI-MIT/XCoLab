@@ -1,40 +1,31 @@
 package org.xcolab.wrappers;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.model.ContestTeamMemberRole;
-import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
-
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.helpers.Tuple;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 public class BaseContestWrapper {
 
@@ -48,13 +39,13 @@ public class BaseContestWrapper {
     protected static final String HOW = "how";
 
     protected List<BaseContestPhaseWrapper> phases;
-    protected ContestType contestType;
+    protected org.xcolab.client.contest.pojo.ContestType contestType;
     protected List<BaseContestTeamRoleWrapper> contestTeamMembersByRole;
     protected final Contest contest;
     protected BaseContestPhaseWrapper activePhase;
 
-    public BaseContestWrapper(long contestId) throws SystemException, PortalException {
-        this(ContestLocalServiceUtil.getContest(contestId));
+    public BaseContestWrapper(Long contestId) throws ContestNotFoundException {
+        this(ContestClient.getContest(contestId));
     }
 
     public BaseContestWrapper(Contest contest) {
@@ -62,7 +53,7 @@ public class BaseContestWrapper {
     }
 
     public void persist() throws SystemException {
-        contest.persist();
+        ContestClient.updateContest(contest);
     }
 
     public long getContestPK() {
@@ -94,7 +85,7 @@ public class BaseContestWrapper {
     }
 
     public void setCreated(Date created) {
-        contest.setCreated(created);
+        contest.setCreated(new Timestamp(created.getTime()));
     }
 
     public Date getUpdated() {
@@ -102,7 +93,7 @@ public class BaseContestWrapper {
     }
 
     public void setUpdated(Date updated) {
-        contest.setUpdated(updated);
+        contest.setUpdated(new Timestamp(updated.getTime()));
     }
 
     public long getAuthorId() {
@@ -118,7 +109,7 @@ public class BaseContestWrapper {
     }
 
     public boolean isContestActive() {
-        return contest.isContestActive();
+        return contest.getContestActive();
     }
 
     public void setContestActive(boolean contestActive) {
@@ -150,15 +141,15 @@ public class BaseContestWrapper {
     }
 
     public boolean getFeatured() {
-        return contest.getFeatured();
+        return contest.getFeatured_();
     }
 
     public boolean isFeatured() {
-        return contest.isFeatured();
+        return contest.getFeatured_();
     }
 
     public void setFeatured(boolean featured) {
-        contest.setFeatured(featured);
+        contest.setFeatured_(featured);
     }
 
     public boolean getPlansOpenByDefault() {
@@ -166,7 +157,7 @@ public class BaseContestWrapper {
     }
 
     public boolean isPlansOpenByDefault() {
-        return contest.isPlansOpenByDefault();
+        return contest.getPlansOpenByDefault();
     }
 
     public void setPlansOpenByDefault(boolean plansOpenByDefault) {
@@ -273,17 +264,32 @@ public class BaseContestWrapper {
         contest.setResourcesUrl(resourcesUrl);
     }
 
-    public boolean getShow_in_list_view(){ return contest.getShow_in_list_view();}
+    public boolean getShow_in_list_view() {
+        return contest.getShow_in_list_view();
+    }
+    public boolean isShow_in_list_view() {
+        return contest.getShow_in_list_view();
+    }
 
-    public void setShow_in_list_view(boolean show_in_list_view){ contest.setShow_in_list_view(show_in_list_view);}
+    public void setShow_in_list_view(boolean show_in_list_view) {
+        contest.setShow_in_list_view(show_in_list_view);
+    }
 
-    public boolean getShow_in_tile_view(){ return contest.getShow_in_tile_view();}
+    public boolean getShow_in_tile_view() {
+        return contest.getShow_in_tile_view();
+    }
 
-    public void setShow_in_tile_view(boolean show_in_tile_view){ contest.setShow_in_tile_view(show_in_tile_view);}
+    public void setShow_in_tile_view(boolean show_in_tile_view) {
+        contest.setShow_in_tile_view(show_in_tile_view);
+    }
 
-    public boolean getShow_in_outline_view(){ return contest.getShow_in_outline_view();}
+    public boolean getShow_in_outline_view() {
+        return contest.getShow_in_outline_view();
+    }
 
-    public void setShow_in_outline_view(boolean show_in_tile_view){ contest.setShow_in_outline_view(show_in_tile_view);}
+    public void setShow_in_outline_view(boolean show_in_tile_view) {
+        contest.setShow_in_outline_view(show_in_tile_view);
+    }
 
     public boolean getHideRibbons() {
         return contest.getHideRibbons();
@@ -314,39 +320,35 @@ public class BaseContestWrapper {
     }
 
     public long getProposalsCount() {
-        try {
-            return ContestLocalServiceUtil.getProposalsCount(contest);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            _log.error("Could not count proposals in contest " + contest.getContestPK());
-            return 0L;
-        }
+        ContestPhase cp = ContestClient.getActivePhase(contest.getContestPK());
+        return ProposalsClient.getProposalCountForActiveContestPhase(cp.getContestPhasePK());
     }
 
-    public long getTotalProposalsCount() {
-        Set<Proposal> proposalList = new HashSet<>();
-        try {
-            List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil
-                    .getPhasesForContest(contest);
-            for (ContestPhase contestPhase : contestPhases) {
-                try {
-                List<Proposal> proposals = ProposalLocalServiceUtil
-                        .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
-                proposalList.addAll(proposals);
-                } catch (PortalException e) {
-                    _log.error("Proposal count: failed to retrieve active proposals in contest phase " + contestPhase
-                            .getContestPhasePK());
+        /*public long getTotalProposalsCount() {
+            Set<Proposal> proposalList = new HashSet<>();
+            try {
+                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil
+                        .getPhasesForContest(contest);
+                for (ContestPhase contestPhase : contestPhases) {
+                    try {
+                        List<Proposal> proposals = ProposalLocalServiceUtil
+                                .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+                        proposalList.addAll(proposals);
+                    } catch (PortalException e) {
+                        _log.error("Proposal count: failed to retrieve active proposals in contest phase " + contestPhase
+                                .getContestPhasePK());
+                    }
                 }
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
-        return proposalList.size();
-    }
+            return proposalList.size();
+        }*/
 
     public long getCommentsCount() {
-        return ContestLocalServiceUtil.getCommentsCount(contest);
+        Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
+        //TODO: get each proposal comment count.
+        return contestComments;
     }
 
     public List<OntologyTerm> getWho() {
@@ -399,7 +401,7 @@ public class BaseContestWrapper {
     public List<BaseContestPhaseWrapper> getPhases() {
         if (phases == null) {
             phases = new ArrayList<>();
-            for (ContestPhase phase : ContestLocalServiceUtil.getAllPhases(contest)) {
+            for (org.xcolab.client.contest.pojo.ContestPhase phase : ContestClient.getAllContestPhases(contest.getContestPK())) {
                 phases.add(new BaseContestPhaseWrapper(phase));
             }
         }
@@ -408,37 +410,30 @@ public class BaseContestWrapper {
 
     public List<BaseContestTeamRoleWrapper> getContestTeamMembersByRole() {
         if (contestTeamMembersByRole == null) {
-            try {
-                Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
-                for (ContestTeamMember teamMember : ContestLocalServiceUtil
-                        .getTeamMembers(contest)) {
-                    try {
-                        ContestTeamMemberRole role = ContestLocalServiceUtil
-                                .getRoleForMember(teamMember);
-                        List<Member> roleUsers = teamRoleUsersMap
-                                .get(new Tuple<>(role.getRole(), role.getSort()));
-                        if (roleUsers == null) {
-                            roleUsers = new ArrayList<>();
-                            teamRoleUsersMap
-                                    .put(new Tuple<>(role.getRole(), role.getSort()), roleUsers);
-                        }
-                        roleUsers.add(MembersClient.getMember(teamMember.getUserId()));
-                    } catch (MemberNotFoundException e) {
-                        _log.warn("Contest team member " + teamMember.getUserId() + " does not have an account");
-                    } catch (NoSuchModelException e) {
-                        throw new IllegalStateException("ContestTeamMemberRole "
-                                + teamMember.getRoleId() + " does not exist");
+
+            Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
+            for (org.xcolab.client.contest.pojo.ContestTeamMember teamMember : ContestClient.getTeamMembers(contest.getContestPK())) {
+                try {
+                    org.xcolab.client.contest.pojo.ContestTeamMemberRole role = ContestClient.getContestTeamMemberRole(teamMember.getRoleId());
+                    List<Member> roleUsers = teamRoleUsersMap
+                            .get(new Tuple<>(role.getRole(), role.getSort()));
+                    if (roleUsers == null) {
+                        roleUsers = new ArrayList<>();
+                        teamRoleUsersMap
+                                .put(new Tuple<>(role.getRole(), role.getSort()), roleUsers);
                     }
+                    roleUsers.add(MembersClient.getMember(teamMember.getUserId()));
+                } catch (MemberNotFoundException e) {
+                    _log.warn("Contest team member " + teamMember.getUserId() + " does not have an account");
                 }
-                contestTeamMembersByRole = new ArrayList<>(teamRoleUsersMap.size());
-                for (Map.Entry<Tuple<String, Integer>, List<Member>> entry : teamRoleUsersMap.entrySet()) {
-                    final Tuple<String, Integer> role = entry.getKey();
-                    contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role.getLeft(), entry.getValue(), role.getRight()));
-                }
-                Collections.sort(contestTeamMembersByRole);
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
             }
+            contestTeamMembersByRole = new ArrayList<>(teamRoleUsersMap.size());
+            for (Map.Entry<Tuple<String, Integer>, List<Member>> entry : teamRoleUsersMap.entrySet()) {
+                final Tuple<String, Integer> role = entry.getKey();
+                contestTeamMembersByRole.add(new BaseContestTeamRoleWrapper(role.getLeft(), entry.getValue(), role.getRight()));
+            }
+            Collections.sort(contestTeamMembersByRole);
+
         }
         return contestTeamMembersByRole;
     }
@@ -460,7 +455,7 @@ public class BaseContestWrapper {
 
     public BaseContestPhaseWrapper getActivePhase() throws PortalException, SystemException {
         if (activePhase == null) {
-            ContestPhase phase = ContestLocalServiceUtil.getActivePhase(contest);
+            org.xcolab.client.contest.pojo.ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
             if (phase == null) {
                 return null;
             }
@@ -476,7 +471,7 @@ public class BaseContestWrapper {
                 judges = c.getUsers();
             }
         }
-        if(judges == null) {
+        if (judges == null) {
             return Collections.emptyList();
         }
         return judges;
@@ -505,24 +500,38 @@ public class BaseContestWrapper {
         return advisors;
     }
 
-    public ContestType getContestType() {
+    public long getTotalProposalsCount() {
+        Set<Proposal> proposalList = new HashSet<>();
         try {
-            if (contestType == null) {
-                contestType = ContestTypeLocalServiceUtil
-                        .fetchContestType(contest.getContestTypeId());
+            List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contest.getContestPK());
+            for (ContestPhase contestPhase : contestPhases) {
+                try {
+                    List<Proposal> proposals = ProposalLocalServiceUtil
+                            .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+                    proposalList.addAll(proposals);
+                } catch (PortalException e) {
+                    _log.error("Proposal count: failed to retrieve active proposals in contest phase " + contestPhase
+                            .getContestPhasePK());
+                }
             }
-            return contestType;
         } catch (SystemException e) {
             throw new DatabaseAccessException(e);
         }
+        return proposalList.size();
+    }
+    public org.xcolab.client.contest.pojo.ContestType getContestType() {
+        if (contestType == null) {
+            contestType = ContestClient.getContestType(contest.getContestTypeId());
+        }
+        return contestType;
     }
 
-    public Contest getWrapped() {
+    public org.xcolab.client.contest.pojo.Contest getWrapped() {
         return contest;
     }
 
     public String getContestUrl() {
-        return ContestLocalServiceUtil.getContestLinkUrl(contest);
+        return contest.getContestLinkUrl();
     }
 
     public Long getResourceArticleId() {

@@ -74,6 +74,7 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
@@ -1143,7 +1144,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
 
-        final String groupDescription = TemplateReplacementUtil.replaceContestTypeStrings(DEFAULT_GROUP_DESCRIPTION, contestType);
+        final org.xcolab.client.contest.pojo.ContestType contestTypeForLiferay = ContestClient.getContestType(contestType.getId());
+        final String groupDescription = TemplateReplacementUtil.replaceContestTypeStrings(DEFAULT_GROUP_DESCRIPTION, contestTypeForLiferay);
 
         return groupService.addGroup(StringUtils.substring(groupName, 0, 80),
                 String.format(groupDescription, StringUtils.substring(groupName, 0, 80)),

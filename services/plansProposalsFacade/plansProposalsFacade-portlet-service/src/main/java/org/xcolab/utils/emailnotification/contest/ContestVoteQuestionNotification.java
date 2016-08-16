@@ -1,6 +1,6 @@
 package org.xcolab.utils.emailnotification.contest;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
@@ -8,6 +8,7 @@ import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -25,7 +26,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
     private ContestVoteQuestionTemplate templateWrapper;
 
     public ContestVoteQuestionNotification(Member recipient, Contest contest, List<Proposal> supportedProposals,
-            ServiceContext serviceContext) {
+                                           ServiceContext serviceContext) {
         super(contest, recipient, null, serviceContext);
         this.supportedProposals = supportedProposals;
     }

@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.OntologySpace;
 import com.ext.portlet.model.OntologyTerm;
@@ -9,6 +9,7 @@ import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.OntologySpaceWrapper;
 import org.xcolab.wrapper.OntologyTermWrapper;

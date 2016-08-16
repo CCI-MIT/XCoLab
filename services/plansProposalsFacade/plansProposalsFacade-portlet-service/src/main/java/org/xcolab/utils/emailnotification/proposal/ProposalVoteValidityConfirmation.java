@@ -1,7 +1,7 @@
 package org.xcolab.utils.emailnotification.proposal;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.model.Proposal;
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
@@ -9,6 +9,7 @@ import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 
@@ -23,7 +24,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
     private ProposalVoteConfirmationTemplate templateWrapper;
 
     public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest, Member recipient,
-            ServiceContext serviceContext, String confirmationToken) {
+                                            ServiceContext serviceContext, String confirmationToken) {
         super(votedProposal, contest, recipient, null, serviceContext);
         this.confirmationToken = confirmationToken;
         this.votedProposal = votedProposal;
