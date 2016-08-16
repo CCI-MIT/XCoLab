@@ -31,7 +31,7 @@ public class ContestPhaseBean implements Serializable {
     private Long contestPhasePK;
     private Long contestPK;
     private Long contestPhaseType;
-    private Long contestPhaseTypeOld;
+    private Long contestPhaseTypeOld = 0l;
     private Long contestScheduleId;
     private final static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
@@ -54,25 +54,38 @@ public class ContestPhaseBean implements Serializable {
     private boolean contestPhaseHasProposalAssociations;
 
     @SuppressWarnings("unused")
-    public ContestPhaseBean() { }
+    public ContestPhaseBean() {
+    }
 
     public ContestPhaseBean(ContestPhase contestPhase) {
         this.contestPhasePK = contestPhase.getContestPhasePK();
         this.contestPK = contestPhase.getContestPK();
         this.contestPhaseType = contestPhase.getContestPhaseType();
-        this.contestPhaseTypeOld = contestPhase.getContestPhaseType();
+        if(contestPhase.getContestPhaseType()!=null) {
+            this.contestPhaseTypeOld = contestPhase.getContestPhaseType();
+        }
         this.contestScheduleId = contestPhase.getContestScheduleId();
         this.phaseStartDate = contestPhase.getPhaseStartDate();
         this.phaseEndDate = contestPhase.getPhaseEndDate();
         this.phaseBufferEndDated = contestPhase.getPhaseBufferEndDated();
-        this.fellowScreeningActive = contestPhase.getFellowScreeningActive();
-        this.contestPhaseAutopromote = contestPhase.getContestPhaseAutopromote();
-        this.contestPhaseDescriptionOverride = contestPhase.getContestPhaseDescriptionOverride();
-        this.phaseActiveOverride = contestPhase.getPhaseActiveOverride();
-        this.phaseInactiveOverride = contestPhase.getPhaseInactiveOverride();
-        this.nextStatus = contestPhase.getNextStatus();
+        if (contestPhase.getFellowScreeningActive() != null) {
+            this.fellowScreeningActive = contestPhase.getFellowScreeningActive();
+        }
 
-        this.contestPhaseTypeObj = ContestClient.getContestPhaseType(contestPhaseType);
+        this.contestPhaseAutopromote = contestPhase.getContestPhaseAutopromote();
+
+
+        this.contestPhaseDescriptionOverride = contestPhase.getContestPhaseDescriptionOverride();
+        if (contestPhase.getPhaseActiveOverride() != null) {
+            this.phaseActiveOverride = contestPhase.getPhaseActiveOverride();
+        }
+        if (contestPhase.getPhaseInactiveOverride() != null) {
+            this.phaseInactiveOverride = contestPhase.getPhaseInactiveOverride();
+        }
+        this.nextStatus = contestPhase.getNextStatus();
+        if (contestPhaseType != null) {
+            this.contestPhaseTypeObj = ContestClient.getContestPhaseType(contestPhaseType);
+        }
 
 
         try {
@@ -90,11 +103,12 @@ public class ContestPhaseBean implements Serializable {
                     }
                 }
             }
-        } catch (SystemException ignored) { }
+        } catch (SystemException ignored) {
+        }
     }
 
     public ContestPhaseBean(ContestPhaseTypeValue contestPhaseType, Date phaseStartDate,
-            Date phaseEndDate, String contestPhaseAutopromote, Boolean fellowScreeningActive) {
+                            Date phaseEndDate, String contestPhaseAutopromote, Boolean fellowScreeningActive) {
         this.phaseStartDate = phaseStartDate;
         this.phaseEndDate = phaseEndDate;
         this.fellowScreeningActive = fellowScreeningActive;
@@ -249,20 +263,20 @@ public class ContestPhaseBean implements Serializable {
             createNewContestPhase();
         }
 
-            if (contestPhaseDeleted) {
-                ContestPhase contestPhase = ContestClient
-                        .getContestPhase(contestPhasePK);
-                ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
-            } else {
-                ContestClient.updateContestPhase(getContestPhase());
-            }
+        if (contestPhaseDeleted) {
+            ContestPhase contestPhase = ContestClient
+                    .getContestPhase(contestPhasePK);
+            ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
+        } else {
+            ContestClient.updateContestPhase(getContestPhase());
+        }
 
     }
 
     private void createNewContestPhase() {
-            ContestPhase contestPhase = new ContestPhase();
-            contestPhase = ContestClient.createContestPhase(contestPhase);
-            contestPhasePK = contestPhase.getContestPhasePK();
+        ContestPhase contestPhase = new ContestPhase();
+        contestPhase = ContestClient.createContestPhase(contestPhase);
+        contestPhasePK = contestPhase.getContestPhasePK();
     }
 
     public String getContestPhaseDescriptionOverride() {
@@ -283,28 +297,30 @@ public class ContestPhaseBean implements Serializable {
 
     //TODO: improve naming?
     public ContestPhase getContestPhase() {
-            ContestPhase contestPhase = ContestClient.getContestPhase(contestPhasePK);
-            contestPhase.setContestPK(contestPK);
-            contestPhase.setContestPhaseType(contestPhaseType);
-            contestPhase.setContestScheduleId(contestScheduleId);
-            contestPhase.setPhaseStartDate(new Timestamp(phaseStartDate.getTime()));
-            contestPhase.setPhaseEndDate( new Timestamp(phaseEndDate.getTime()));
-            contestPhase.setPhaseBufferEndDated( new Timestamp(phaseBufferEndDated.getTime()));
-            contestPhase.setFellowScreeningActive(fellowScreeningActive);
+        ContestPhase contestPhase = ContestClient.getContestPhase(contestPhasePK);
+        contestPhase.setContestPK(contestPK);
+        contestPhase.setContestPhaseType(contestPhaseType);
+        contestPhase.setContestScheduleId(contestScheduleId);
+        contestPhase.setPhaseStartDate(new Timestamp(phaseStartDate.getTime()));
+        contestPhase.setPhaseEndDate(new Timestamp(phaseEndDate.getTime()));
+        if(phaseBufferEndDated!=null) {
+            contestPhase.setPhaseBufferEndDated(new Timestamp(phaseBufferEndDated.getTime()));
+        }
+        contestPhase.setFellowScreeningActive(fellowScreeningActive);
 
-            if (contestPhaseAutopromote
-                    .equalsIgnoreCase(ContestPhasePromoteType.DEFAULT.getValue())) {
-                ContestPhaseType type = ContestClient.getContestPhaseType(contestPhaseType);
-                contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
-            } else {
-                contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
-            }
+        if (contestPhaseAutopromote
+                .equalsIgnoreCase(ContestPhasePromoteType.DEFAULT.getValue())) {
+            ContestPhaseType type = ContestClient.getContestPhaseType(contestPhaseType);
+            contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
+        } else {
+            contestPhase.setContestPhaseAutopromote(contestPhaseAutopromote);
+        }
 
-            contestPhase.setContestPhaseDescriptionOverride(contestPhaseDescriptionOverride);
-            contestPhase.setPhaseActiveOverride(phaseActiveOverride);
-            contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
-            contestPhase.setNextStatus(nextStatus);
-            return contestPhase;
+        contestPhase.setContestPhaseDescriptionOverride(contestPhaseDescriptionOverride);
+        contestPhase.setPhaseActiveOverride(phaseActiveOverride);
+        contestPhase.setPhaseInactiveOverride(phaseInactiveOverride);
+        contestPhase.setNextStatus(nextStatus);
+        return contestPhase;
 
     }
 }

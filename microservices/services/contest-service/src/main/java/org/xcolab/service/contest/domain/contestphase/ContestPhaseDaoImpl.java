@@ -95,16 +95,17 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
         }
         if (contestScheduleId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
+            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(0l));
         }
         query.addOrderBy(CONTEST_PHASE.PHASE_START_DATE.asc());
         return query.fetchInto(ContestPhase.class);
     }
 
     public boolean isPhaseActive(ContestPhase contestPhase) {
-        if (contestPhase.getPhaseActiveOverride()) {
+        if (contestPhase.getPhaseActiveOverride() != null) {
             return contestPhase.getPhaseActiveOverride();
         }
-        if (contestPhase.getPhaseInactiveOverride()) {
+        if (contestPhase.getPhaseInactiveOverride()!=null) {
             return contestPhase.getPhaseInactiveOverride();
         }
         if (contestPhase.getPhaseStartDate() != null) {

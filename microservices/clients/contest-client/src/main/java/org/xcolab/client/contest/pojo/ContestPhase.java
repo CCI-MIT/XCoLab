@@ -4,6 +4,7 @@
 package org.xcolab.client.contest.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.core.ParameterizedTypeReference;
@@ -404,11 +405,12 @@ public class ContestPhase implements Serializable {
         return sb.toString();
     }
 
+    @JsonIgnore
     public boolean getPhaseActive() {
-        if (this.getPhaseActiveOverride()) {
+        if (this.getPhaseActiveOverride()!=null) {
             return this.getPhaseActiveOverride();
         }
-        if (this.getPhaseInactiveOverride()) {
+        if (this.getPhaseInactiveOverride()!=null) {
             return this.getPhaseInactiveOverride();
         }
         if (this.getPhaseStartDate() != null) {
@@ -421,6 +423,7 @@ public class ContestPhase implements Serializable {
         return false;
     }
 
+    @JsonIgnore
     public String getContestPhaseLinkUrl() {
         try {
             String link = "/";
@@ -434,6 +437,7 @@ public class ContestPhase implements Serializable {
 
     }
 
+    @JsonIgnore
     public String getContestStatusStr(){
         return ContestClient.getContestPhaseType(getContestPhaseType()).getStatus();
     }

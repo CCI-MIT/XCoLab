@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -614,13 +615,14 @@ public class Contest implements Serializable {
                 ", " + resourceArticleId +
                 ")";
     }
-
+    @JsonIgnore
     public String getContestLinkUrl() {
         String link = "/";
         link += ContestClient.getContestType(this.getContestTypeId()).getFriendlyUrlStringContests();
         link += "/%d/%s";
         return String.format(link, this.getContestYear(), this.getContestUrlName());
     }
+    @JsonIgnore
     public String getLogoPath(){
         Long i = this.getContestLogoId();
         if (i != null) {
@@ -628,6 +630,7 @@ public class Contest implements Serializable {
         }
         return "";
     }
+    @JsonIgnore
     public String generateContestUrlName() {
         String contestUrlName = this.getContestShortName().toLowerCase();
         return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");

@@ -10,10 +10,8 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.sql.Timestamp;
+import java.util.*;
 
 public class ContestClient {
 
@@ -56,6 +54,38 @@ public class ContestClient {
         c.setContestName(name);
         c.setContestShortName(name);
         c.setContestUrlName(c.generateContestUrlName());
+        c.setContestDescription("");
+        c.setContestModelDescription("");
+        c.setContestPositionsDescription("");
+        c.setContestActive(false);
+        c.setProposalCreationTemplateString("");
+        c.setProposalVoteTemplateString("");
+        c.setProposalVoteConfirmationTemplateString("");
+        c.setVoteQuestionTemplateString("");
+        c.setVoteTemplateString("");
+        c.setFocusAreaId(0l);
+        c.setContestTier(0l);
+        c.setContestLogoId(0l);
+        c.setFeatured_(false);
+        c.setPlansOpenByDefault(false);
+        c.setSponsorLogoId(0l);
+        c.setSponsorLink("");
+        c.setSponsorText("");
+        c.setFlag(0);
+        c.setFlagText("");
+        c.setFlagTooltip("");
+        c.setWeight(0);
+        c.setResourcesUrl("");
+        c.setUsePermissions(false);
+        c.setContestCreationStatus("");
+        c.setDefaultModelId(0l);
+        c.setOtherModels("");
+        c.setPoints(0.0);
+        c.setDefaultParentPointType(0l);
+        c.setPointDistributionStrategy("");
+        c.setEmailTemplateUrl("");
+        c.setHideRibbons(false);
+        c.setResourceArticleId(0l);
         return createContest(c);
     }
 
@@ -171,7 +201,7 @@ public class ContestClient {
     }
 
     public static void deleteContestPhase(Long contestPhasePK) {
-        contestPhasesResource.delete(contestPhasePK);
+        contestPhasesResource.delete(contestPhasePK).execute();
     }
 
     public static boolean updateContestPhase(ContestPhase contestPhase) {

@@ -109,7 +109,7 @@ public class ContestController {
     }
 
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET})
-    public List<ContestPhase> getContestPhases(@RequestParam() Long contestPK,
+    public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestPK,
                                                @RequestParam(required = false) Long contestScheduleId) {
         return contestPhaseDao.findByGiven(contestPK, contestScheduleId);
     }
@@ -256,6 +256,20 @@ public class ContestController {
             throw new NotFoundException("No contestPhaseId given");
         } else {
             return contestPhaseDao.get(contestPhaseId);
+        }
+    }
+    @RequestMapping(value = "/contestPhases", method = RequestMethod.POST)
+    public ContestPhase createContestPhase(@RequestBody ContestPhase contestPhase) {
+        return this.contestPhaseDao.create(contestPhase);
+    }
+    @RequestMapping(value = "/contestPhases/{contestPhasePK}", method = RequestMethod.PUT)
+    public boolean updateContestPhase(@RequestBody ContestPhase contestPhase,
+                                      @PathVariable("contestPhasePK") Long contestPhasePK) throws NotFoundException {
+
+        if (contestPhasePK == null || contestPhasePK == 0 || contestPhaseDao.get(contestPhasePK) == null) {
+            throw new NotFoundException("No ContestPhase with id " + contestPhasePK);
+        } else {
+            return contestPhaseDao.update(contestPhase);
         }
     }
     @RequestMapping(value = "/contestPhases/{contestPhasePK}", method = RequestMethod.DELETE)

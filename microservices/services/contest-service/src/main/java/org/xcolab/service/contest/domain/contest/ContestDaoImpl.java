@@ -23,7 +23,7 @@ public class ContestDaoImpl implements ContestDao {
     public Contest create(Contest contest) {
 
         ContestRecord ret = this.dslContext.insertInto(CONTEST)
-                .set(CONTEST.CONTEST_PK, contest.getContestPK())
+                //.set(CONTEST.CONTEST_PK, contest.getContestPK())
                 .set(CONTEST.CONTEST_TYPE_ID, contest.getContestTypeId())
                 .set(CONTEST.CONTEST_NAME, contest.getContestName())
                 .set(CONTEST.CONTEST_SHORT_NAME, contest.getContestShortName())
