@@ -23,7 +23,8 @@ public class IpTranslationService {
         blocks = geoLiteCityConfiguration.getBlocks();
     }
 
-    public Optional<Location> getLocationForIp(String ip) {
+    public Optional<Location> getLocationForIp(String ip) throws IpFormatException {
+        Validate.notBlank(ip, "ip is required");
         long ipToLookFor = convertStringIpToLong(ip);
         int val = Collections.binarySearch(blocks, new IpBlock(ipToLookFor, ipToLookFor, 0));
 
@@ -63,9 +64,11 @@ public class IpTranslationService {
         return Optional.ofNullable(location);
     }
 
-    private static long convertStringIpToLong(String ipAddress) {
+    private static long convertStringIpToLong(String ipAddress) throws IpFormatException {
         String[] parts = ipAddress.split("\\.");
-        Validate.isTrue(parts.length == 4, "Valid IPv4 address required: %s", ipAddress);
+        if (parts.length != 4) {
+            throw new IpFormatException(ipAddress);
+        }
 
         try {
             long ipNumber = 0;
@@ -74,7 +77,14 @@ public class IpTranslationService {
             }
             return ipNumber;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Valid IPv4 address required: " + ipAddress, e);
+            throw new IpFormatException(ipAddress);
         }
+    }
+
+    public static class IpFormatException extends Exception {
+        IpFormatException(String ipAddress) {
+            super("Not a valid IPv4 address: " + ipAddress);
+        }
+
     }
 }

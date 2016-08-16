@@ -20,7 +20,7 @@ public final class TrackingClient {
 
 
     public static TrackedVisit addTrackedVisit(String uuid, String url, String ip,
-            String browser, String referer, String headers, String city, String country) {
+            String browser, String referer, String headers) {
         TrackedVisit trackedVisit = new TrackedVisit();
         trackedVisit.setUuid_(uuid);
         trackedVisit.setUrl(url);
@@ -28,8 +28,6 @@ public final class TrackingClient {
         trackedVisit.setBrowser(browser);
         trackedVisit.setReferer(referer);
         trackedVisit.setHeaders(headers);
-        trackedVisit.setCity(city);
-        trackedVisit.setCountry(country);
 
         return trackedVisitResource.create(trackedVisit).execute();
     }

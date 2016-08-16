@@ -34,6 +34,8 @@ public class GeoLiteCityConfiguration {
     private Map<Integer, Location> locations;
     private List<IpBlock> blocks;
 
+    private long initializationStartTime;
+
     @Autowired
     public GeoLiteCityConfiguration(Environment env) {
         final String blocksFilePath = env.getProperty(GEO_LITE_CITY_BLOCKS_PROPERTY);
@@ -45,7 +47,7 @@ public class GeoLiteCityConfiguration {
         if (blocksFilePathGiven && locationsFilePathGiven) {
             loadFromFilePaths(blocksFilePath, locationsFilePath);
         } else {
-            log.warn("GeoLite City file locations are not configured, falling back to NoOp IpLocationTranslator");
+            log.warn("Configuration file locations are not set, falling back to NoOp IpLocationTranslator");
             locations = Collections.emptyMap();
             blocks = Collections.emptyList();
         }
@@ -59,10 +61,11 @@ public class GeoLiteCityConfiguration {
         final boolean locationsFileExists = locationsFile.exists();
 
         if (ipBlocksFileExists && locationsFileExists) {
-            log.info("GeoLite City configuration detected, loading configuration files");
+            log.info("Configuration detected, loading configuration files...");
+            initializationStartTime = System.nanoTime();
             loadFromFiles(ipBlocksFile, locationsFile);
         } else {
-            throw new GeoLiteCityConfigurationException("Configured GeoLite City files don't exist.",
+            throw new GeoLiteCityConfigurationException("Given configuration files don't exist.",
                     blocksFilePath, locationsFilePath);
         }
     }
@@ -100,7 +103,9 @@ public class GeoLiteCityConfiguration {
 
             this.locations = locations;
             this.blocks = blocks;
-            log.info("GeoLite City configuration loaded successfully");
+            final String initializationLoadTime = String.format("%.3f",
+                    (System.nanoTime() - initializationStartTime) / 1_000_000_000.0);
+            log.info("Configuration loaded successfully in {} seconds", initializationLoadTime);
         } catch (IOException e) {
             log.error("Error while reading GeoLite City configuration files", e);
             locations = Collections.emptyMap();

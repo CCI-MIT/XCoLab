@@ -23,7 +23,8 @@ public final class ServiceExceptionTranslatorUtil {
         try {
             final HttpHeaders responseHeaders = exception.getResponseHeaders();
             final List<String> contentTypeHeaders = responseHeaders.get(HttpHeaders.CONTENT_TYPE);
-            if (contentTypeHeaders.contains(MediaType.APPLICATION_JSON.toString())) {
+            if (contentTypeHeaders.contains(MediaType.APPLICATION_JSON_VALUE)
+                    || contentTypeHeaders.contains(MediaType.APPLICATION_JSON_UTF8_VALUE)) {
                 return objectMapper.readValue(exception.getResponseBodyAsString(), HttpServiceExceptionObject.class);
             } else {
                 return xmlMapper.readValue(exception.getResponseBodyAsString(), HttpServiceExceptionObject.class);

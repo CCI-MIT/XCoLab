@@ -15,6 +15,7 @@
 
     <logger name="org.xcolab.domain" level="WARN" />
     <logger name="org.xcolab.service" level="WARN" />
+    <logger name="org.xcolab.service.tracking.service.iptranslation.GeoLiteCityConfiguration" level="INFO" />
     <logger name="com.zaxxer.hikari" level="INFO" />
     <logger name="org.jooq" level="WARN" />
 

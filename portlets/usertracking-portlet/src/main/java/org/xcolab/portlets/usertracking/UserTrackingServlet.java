@@ -5,13 +5,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.Location;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class UserTrackingServlet extends HttpServlet {
-    private final static Log _log = LogFactoryUtil.getLog(UserTrackingServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -37,19 +33,6 @@ public class UserTrackingServlet extends HttpServlet {
 
         //get headers
         String headers = getHeadersAsString(request);
-
-        //get location
-        String city = "";
-        String country = "";
-        try {
-            Location location = TrackingClient.getLocationForIp(ip);
-            if (location != null) {
-                city = location.getCity();
-                country = location.getCountry();
-            }
-        } catch (Exception e) {
-            //silently fail to avoid spamming the logs
-        }
 
         //if user is logged in, check if tuple (uuid, userid) already exists. if not, create it.
         User user = getLoggedInUser(request);
@@ -66,7 +49,7 @@ public class UserTrackingServlet extends HttpServlet {
             }
         }
 
-        TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, city, country);
+        TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers);
 
         //write back the uuid as json. this will be set as a cookie and will be sent on future requests.
         response.setContentType("application/json");

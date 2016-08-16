@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService;
 import org.xcolab.service.tracking.service.iptranslation.Location;
+import org.xcolab.service.utils.exceptions.IllegalRequestParameterException;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,8 +22,12 @@ public class IpTranslationController {
 
     @RequestMapping(value = "/locations", method = RequestMethod.GET)
     public List<Location> getLocationForIp(@RequestParam String ipAddress) {
-        return ipTranslationService.getLocationForIp(ipAddress)
-                .map(Collections::singletonList)
-                .orElse(Collections.emptyList());
+        try {
+            return ipTranslationService.getLocationForIp(ipAddress)
+                    .map(Collections::singletonList)
+                    .orElse(Collections.emptyList());
+        } catch (IpTranslationService.IpFormatException e) {
+            throw new IllegalRequestParameterException("Valid IPv4 address required: " + ipAddress, e);
+        }
     }
 }
