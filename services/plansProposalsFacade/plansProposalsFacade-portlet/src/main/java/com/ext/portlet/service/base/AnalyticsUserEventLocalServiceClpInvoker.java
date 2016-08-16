@@ -45,10 +45,6 @@ public class AnalyticsUserEventLocalServiceClpInvoker {
     private String[] _methodParameterTypes422;
     private String _methodName423;
     private String[] _methodParameterTypes423;
-    private String _methodName428;
-    private String[] _methodParameterTypes428;
-    private String _methodName429;
-    private String[] _methodParameterTypes429;
 
     public AnalyticsUserEventLocalServiceClpInvoker() {
         _methodName0 = "addAnalyticsUserEvent";
@@ -148,17 +144,6 @@ public class AnalyticsUserEventLocalServiceClpInvoker {
         _methodName423 = "setBeanIdentifier";
 
         _methodParameterTypes423 = new String[] { "java.lang.String" };
-
-        _methodName428 = "eventExists";
-
-        _methodParameterTypes428 = new String[] { "long", "java.lang.String" };
-
-        _methodName429 = "createEvent";
-
-        _methodParameterTypes429 = new String[] {
-                "long", "java.lang.String", "java.lang.String",
-                "java.lang.String", "java.lang.String", "int"
-            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -260,22 +245,6 @@ public class AnalyticsUserEventLocalServiceClpInvoker {
             AnalyticsUserEventLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName428.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
-            return AnalyticsUserEventLocalServiceUtil.eventExists(((Long) arguments[0]).longValue(),
-                (java.lang.String) arguments[1]);
-        }
-
-        if (_methodName429.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes429, parameterTypes)) {
-            return AnalyticsUserEventLocalServiceUtil.createEvent(((Long) arguments[0]).longValue(),
-                (java.lang.String) arguments[1],
-                (java.lang.String) arguments[2],
-                (java.lang.String) arguments[3],
-                (java.lang.String) arguments[4],
-                ((Integer) arguments[5]).intValue());
         }
 
         throw new UnsupportedOperationException();

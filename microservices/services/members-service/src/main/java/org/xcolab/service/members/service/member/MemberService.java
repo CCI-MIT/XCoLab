@@ -4,14 +4,20 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.service.members.domain.loginlog.LoginLogDao;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.util.PBKDF2PasswordEncryptor;
 import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.SecureRandomUtil;
 import org.xcolab.service.members.util.UsernameGenerator;
 import org.xcolab.service.members.util.email.ConnectorEmmaAPI;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.io.IOException;
@@ -25,13 +31,14 @@ public class MemberService {
     private final static int MAX_SCREEN_NAME_LENGTH = 26;
 
     private final MemberDao memberDao;
-
-
+    private final LoginLogDao loginLogDao;
     private final ConnectorEmmaAPI connectorEmmaAPI;
 
     @Autowired
-    public MemberService(MemberDao memberDao, ConnectorEmmaAPI connectorEmmaAPI) {
+    public MemberService(MemberDao memberDao, LoginLogDao loginLogDao,
+            ConnectorEmmaAPI connectorEmmaAPI) {
         this.memberDao = memberDao;
+        this.loginLogDao = loginLogDao;
         this.connectorEmmaAPI = connectorEmmaAPI;
     }
 
@@ -60,20 +67,23 @@ public class MemberService {
                 .doEncrypt(PBKDF2PasswordEncryptor.DEFAULT_ALGORITHM, password, "");
     }
 
-    public boolean validatePassword(String password, String hash)
-            throws NoSuchAlgorithmException {
-        SHA1PasswordEncryptor sha1PasswordEncryptor = new SHA1PasswordEncryptor();
-        if (hash.startsWith("{SHA-1}")) {
-            return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash.substring(7));
+    public boolean validatePassword(String password, String hash) {
+        try {
+            SHA1PasswordEncryptor sha1PasswordEncryptor = new SHA1PasswordEncryptor();
+            if (hash.startsWith("{SHA-1}")) {
+                return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash.substring(7));
+            }
+            if (hash.startsWith("PBKDF2_")) {
+                PBKDF2PasswordEncryptor pbkdf2PasswordEncryptor = new PBKDF2PasswordEncryptor();
+                final String unprefixedHash = hash.substring(7);
+                return pbkdf2PasswordEncryptor.doEncrypt(
+                        PBKDF2PasswordEncryptor.DEFAULT_ALGORITHM, password, unprefixedHash)
+                        .equals(unprefixedHash);
+            }
+            return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new InternalException(e);
         }
-        if (hash.startsWith("PBKDF2_")) {
-            PBKDF2PasswordEncryptor pbkdf2PasswordEncryptor = new PBKDF2PasswordEncryptor();
-            final String unprefixedHash = hash.substring(7);
-            return pbkdf2PasswordEncryptor.doEncrypt(
-                    PBKDF2PasswordEncryptor.DEFAULT_ALGORITHM, password, unprefixedHash)
-                    .equals(unprefixedHash);
-        }
-        return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash);
     }
 
     public Member register(String screenName, String password, String email, String firstName, String lastName,
@@ -87,15 +97,31 @@ public class MemberService {
         return member;
     }
 
-    public boolean login(Member member, String password) {
-        try {
-            if (validatePassword(password, member.getHashedPassword())) {
-                //TODO: do login
-                return true;
-            }
-        } catch (NoSuchAlgorithmException ignored) {
+    public boolean login(Member member, LoginBean loginBean) {
+        if (validatePassword(loginBean.getPassword(), member.getHashedPassword())) {
+
+            createLoginLog(member.getId_(), loginBean.getIpAddress(), loginBean.getRedirectUrl());
+
+            //TODO: do login
+
+            return true;
         }
         return false;
+    }
+
+    public LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUserId(memberId);
+        loginLog.setIpAddress(ipAddress);
+        loginLog.setEntryUrl(redirectUrl);
+
+        final Location location = TrackingClient.getLocationForIp(ipAddress);
+        if (location != null) {
+            loginLog.setCountry(location.getCountry());
+            loginLog.setCity(location.getCity());
+        }
+
+        return loginLogDao.create(loginLog);
     }
 
     public boolean validateForgotPasswordToken(String passwordToken) throws NotFoundException {

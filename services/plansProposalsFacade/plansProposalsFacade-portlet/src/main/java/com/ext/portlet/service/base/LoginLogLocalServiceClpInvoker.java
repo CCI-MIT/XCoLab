@@ -45,8 +45,6 @@ public class LoginLogLocalServiceClpInvoker {
     private String[] _methodParameterTypes422;
     private String _methodName423;
     private String[] _methodParameterTypes423;
-    private String _methodName428;
-    private String[] _methodParameterTypes428;
 
     public LoginLogLocalServiceClpInvoker() {
         _methodName0 = "addLoginLog";
@@ -132,13 +130,6 @@ public class LoginLogLocalServiceClpInvoker {
         _methodName423 = "setBeanIdentifier";
 
         _methodParameterTypes423 = new String[] { "java.lang.String" };
-
-        _methodName428 = "createLoginLog";
-
-        _methodParameterTypes428 = new String[] {
-                "com.liferay.portal.model.User", "java.lang.String",
-                "java.lang.String"
-            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -240,12 +231,6 @@ public class LoginLogLocalServiceClpInvoker {
             LoginLogLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName428.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
-            return LoginLogLocalServiceUtil.createLoginLog((com.liferay.portal.model.User) arguments[0],
-                (java.lang.String) arguments[1], (java.lang.String) arguments[2]);
         }
 
         throw new UnsupportedOperationException();

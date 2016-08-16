@@ -1,7 +1,13 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -18,12 +24,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -153,7 +153,7 @@ public class FacebookController {
                     ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
                 }*/
 
-                LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
+                MembersClient.createLoginLog(liferayUser.getUserId(), httpReq.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
             } catch (NoSuchUserException ignored) {
@@ -179,7 +179,7 @@ public class FacebookController {
 
                 updateUserAccountInformation(liferayUser, jsonObject);
 
-                LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
+                MembersClient.createLoginLog(liferayUser.getUserId(), httpReq.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
             } catch (NoSuchUserException ignored) {

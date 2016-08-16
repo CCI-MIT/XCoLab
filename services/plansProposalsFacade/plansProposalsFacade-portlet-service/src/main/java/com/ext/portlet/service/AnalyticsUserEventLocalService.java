@@ -240,11 +240,4 @@ public interface AnalyticsUserEventLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public boolean eventExists(long userId, java.lang.String idString);
-
-    public com.ext.portlet.model.AnalyticsUserEvent createEvent(long userId,
-        java.lang.String idString, java.lang.String category,
-        java.lang.String action, java.lang.String label, int value)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

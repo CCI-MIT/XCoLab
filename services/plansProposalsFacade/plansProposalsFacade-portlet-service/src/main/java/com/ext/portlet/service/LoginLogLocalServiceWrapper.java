@@ -270,15 +270,6 @@ public class LoginLogLocalServiceWrapper implements LoginLogLocalService,
             arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.LoginLog createLoginLog(
-        com.liferay.portal.model.User user, java.lang.String ipAddr,
-        java.lang.String entryUrl)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _loginLogLocalService.createLoginLog(user, ipAddr, entryUrl);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

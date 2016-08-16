@@ -45,10 +45,6 @@ public class AnalyticsUserEventLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
 
     public AnalyticsUserEventLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -151,17 +147,6 @@ public class AnalyticsUserEventLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "eventExists";
-
-        _methodParameterTypes19 = new String[] { "long", "java.lang.String" };
-
-        _methodName20 = "createEvent";
-
-        _methodParameterTypes20 = new String[] {
-                "long", "java.lang.String", "java.lang.String",
-                "java.lang.String", "java.lang.String", "int"
-            };
     }
 
     @Override
@@ -694,69 +679,5 @@ public class AnalyticsUserEventLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean eventExists(long userId, java.lang.String idString) {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] { userId, ClpSerializer.translateInput(
-                            idString) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return ((Boolean) returnObj).booleanValue();
-    }
-
-    @Override
-    public com.ext.portlet.model.AnalyticsUserEvent createEvent(long userId,
-        java.lang.String idString, java.lang.String category,
-        java.lang.String action, java.lang.String label, int value)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
-                    new Object[] {
-                        userId,
-                        
-                    ClpSerializer.translateInput(idString),
-                        
-                    ClpSerializer.translateInput(category),
-                        
-                    ClpSerializer.translateInput(action),
-                        
-                    ClpSerializer.translateInput(label),
-                        
-                    value
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.AnalyticsUserEvent) ClpSerializer.translateOutput(returnObj);
     }
 }
