@@ -41,10 +41,10 @@ public class MessagingRedirectLinkLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName422;
-    private String[] _methodParameterTypes422;
-    private String _methodName423;
-    private String[] _methodParameterTypes423;
+    private String _methodName398;
+    private String[] _methodParameterTypes398;
+    private String _methodName399;
+    private String[] _methodParameterTypes399;
 
     public MessagingRedirectLinkLocalServiceClpInvoker() {
         _methodName0 = "addMessagingRedirectLink";
@@ -129,13 +129,13 @@ public class MessagingRedirectLinkLocalServiceClpInvoker {
                 "com.ext.portlet.model.MessagingRedirectLink"
             };
 
-        _methodName422 = "getBeanIdentifier";
+        _methodName398 = "getBeanIdentifier";
 
-        _methodParameterTypes422 = new String[] {  };
+        _methodParameterTypes398 = new String[] {  };
 
-        _methodName423 = "setBeanIdentifier";
+        _methodName399 = "setBeanIdentifier";
 
-        _methodParameterTypes423 = new String[] { "java.lang.String" };
+        _methodParameterTypes399 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class MessagingRedirectLinkLocalServiceClpInvoker {
             return MessagingRedirectLinkLocalServiceUtil.updateMessagingRedirectLink((com.ext.portlet.model.MessagingRedirectLink) arguments[0]);
         }
 
-        if (_methodName422.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
+        if (_methodName398.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
             return MessagingRedirectLinkLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName423.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
+        if (_methodName399.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
             MessagingRedirectLinkLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

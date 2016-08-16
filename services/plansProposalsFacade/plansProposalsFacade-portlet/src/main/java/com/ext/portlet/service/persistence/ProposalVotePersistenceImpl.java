@@ -169,7 +169,7 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
     private static final String _SQL_SELECT_PROPOSALVOTE = "SELECT proposalVote FROM ProposalVote proposalVote";
     private static final String _SQL_SELECT_PROPOSALVOTE_WHERE = "SELECT proposalVote FROM ProposalVote proposalVote WHERE ";
     private static final String _SQL_COUNT_PROPOSALVOTE = "SELECT COUNT(proposalVote) FROM ProposalVote proposalVote";
-    private static final String _SQL_COUNT_PROPOSALVOTE_WHERE = "SELECT COUNT(proposalVote) FROM ProposalVote proposalVote WHERE isValid=1 and ";
+    private static final String _SQL_COUNT_PROPOSALVOTE_WHERE = "SELECT COUNT(proposalVote) FROM ProposalVote proposalVote WHERE ";
     private static final String _ORDER_BY_ENTITY_ALIAS = "proposalVote.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ProposalVote exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ProposalVote exists with the key {";

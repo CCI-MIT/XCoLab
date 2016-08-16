@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.ext.portlet.service.AnalyticsUserEventLocalService" class="com.ext.portlet.service.impl.AnalyticsUserEventLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.AnalyticsUserEventService" class="com.ext.portlet.service.impl.AnalyticsUserEventServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.AnalyticsUserEventPersistence" class="com.ext.portlet.service.persistence.AnalyticsUserEventPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ContestLocalService" class="com.ext.portlet.service.impl.ContestLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestService" class="com.ext.portlet.service.impl.ContestServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestPersistence" class="com.ext.portlet.service.persistence.ContestPersistenceImpl" parent="basePersistence" />
@@ -70,9 +67,6 @@
 	<bean id="com.ext.portlet.service.LandingPageLocalService" class="com.ext.portlet.service.impl.LandingPageLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.LandingPageService" class="com.ext.portlet.service.impl.LandingPageServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.LandingPagePersistence" class="com.ext.portlet.service.persistence.LandingPagePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.LoginLogLocalService" class="com.ext.portlet.service.impl.LoginLogLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.LoginLogService" class="com.ext.portlet.service.impl.LoginLogServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.LoginLogPersistence" class="com.ext.portlet.service.persistence.LoginLogPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsLocalService" class="com.ext.portlet.service.impl.MessagingIgnoredRecipientsLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsService" class="com.ext.portlet.service.impl.MessagingIgnoredRecipientsServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence" class="com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistenceImpl" parent="basePersistence" />
@@ -189,12 +183,6 @@
 	<bean id="com.ext.portlet.service.ProposalVoteLocalService" class="com.ext.portlet.service.impl.ProposalVoteLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ProposalVoteService" class="com.ext.portlet.service.impl.ProposalVoteServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ProposalVotePersistence" class="com.ext.portlet.service.persistence.ProposalVotePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.TrackedVisitLocalService" class="com.ext.portlet.service.impl.TrackedVisitLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.TrackedVisitService" class="com.ext.portlet.service.impl.TrackedVisitServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.TrackedVisitPersistence" class="com.ext.portlet.service.persistence.TrackedVisitPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.TrackedVisitor2UserLocalService" class="com.ext.portlet.service.impl.TrackedVisitor2UserLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.TrackedVisitor2UserService" class="com.ext.portlet.service.impl.TrackedVisitor2UserServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence" class="com.ext.portlet.service.persistence.TrackedVisitor2UserPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.Xcolab_UserLocalService" class="com.ext.portlet.service.impl.Xcolab_UserLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.Xcolab_UserService" class="com.ext.portlet.service.impl.Xcolab_UserServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.Xcolab_UserFinder" class="com.ext.portlet.service.persistence.Xcolab_UserFinderImpl" parent="basePersistence" />
