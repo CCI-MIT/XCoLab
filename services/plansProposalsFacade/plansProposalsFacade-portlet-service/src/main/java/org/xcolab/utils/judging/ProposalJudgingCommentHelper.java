@@ -86,7 +86,7 @@ public class ProposalJudgingCommentHelper {
         return null;
     }
 
-    public void setAdvancingComment(String comment) throws NoSuchProposalContestPhaseAttributeException {
+    public void setAdvancingComment(String comment) {
         ProposalContestPhaseAttribute advanceDecisionAttribute = getProposalContestPhaseAttributeCreateIfNotExists(ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
         JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue());
 
@@ -172,7 +172,6 @@ public class ProposalJudgingCommentHelper {
                                 0
                         ).getStringValue();
 
-                //String templateToLoad = (fellowAction == JudgingSystemActions.FellowAction.INCOMPLETE) ? "SCREENING_DO_NOT_ADVANCE_INCOMPLETE" : "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC";
                 String templateToLoad = "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC";
                 if (fellowAction == JudgingSystemActions.FellowAction.INCOMPLETE) {
                     templateToLoad = "SCREENING_DO_NOT_ADVANCE_INCOMPLETE";
