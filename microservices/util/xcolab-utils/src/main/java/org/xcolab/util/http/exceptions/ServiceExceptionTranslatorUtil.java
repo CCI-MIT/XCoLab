@@ -1,19 +1,14 @@
 package org.xcolab.util.http.exceptions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import java.io.IOException;
-import java.util.List;
 
 public final class ServiceExceptionTranslatorUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final XmlMapper xmlMapper = new XmlMapper();
 
     private ServiceExceptionTranslatorUtil() {
     }
@@ -21,13 +16,7 @@ public final class ServiceExceptionTranslatorUtil {
     static HttpServiceExceptionObject getExceptionObject(HttpStatusCodeException exception,
             String path) {
         try {
-            final HttpHeaders responseHeaders = exception.getResponseHeaders();
-            final List<String> contentTypeHeaders = responseHeaders.get(HttpHeaders.CONTENT_TYPE);
-            if (contentTypeHeaders.contains(MediaType.APPLICATION_JSON.toString())) {
-                return objectMapper.readValue(exception.getResponseBodyAsString(), HttpServiceExceptionObject.class);
-            } else {
-                return xmlMapper.readValue(exception.getResponseBodyAsString(), HttpServiceExceptionObject.class);
-            }
+            return objectMapper.readValue(exception.getResponseBodyAsString(), HttpServiceExceptionObject.class);
         } catch (IOException e) {
             if (exception.getStatusCode() == HttpStatus.NOT_FOUND) {
                 throw new ServiceNotFoundException(path);
