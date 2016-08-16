@@ -44,8 +44,6 @@ public class LoginLogLocalServiceClp implements LoginLogLocalService {
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
 
     public LoginLogLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -133,13 +131,6 @@ public class LoginLogLocalServiceClp implements LoginLogLocalService {
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "createLoginLog";
-
-        _methodParameterTypes19 = new String[] {
-                "com.liferay.portal.model.User", "java.lang.String",
-                "java.lang.String"
-            };
     }
 
     @Override
@@ -650,45 +641,5 @@ public class LoginLogLocalServiceClp implements LoginLogLocalService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public com.ext.portlet.model.LoginLog createLoginLog(
-        com.liferay.portal.model.User user, java.lang.String ipAddr,
-        java.lang.String entryUrl)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(user),
-                        
-                    ClpSerializer.translateInput(ipAddr),
-                        
-                    ClpSerializer.translateInput(entryUrl)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.LoginLog) ClpSerializer.translateOutput(returnObj);
     }
 }

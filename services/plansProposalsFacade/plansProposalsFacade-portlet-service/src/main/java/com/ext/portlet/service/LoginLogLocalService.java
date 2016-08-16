@@ -236,10 +236,4 @@ public interface LoginLogLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public com.ext.portlet.model.LoginLog createLoginLog(
-        com.liferay.portal.model.User user, java.lang.String ipAddr,
-        java.lang.String entryUrl)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

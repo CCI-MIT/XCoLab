@@ -263,18 +263,6 @@ public class AnalyticsUserEventLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static boolean eventExists(long userId, java.lang.String idString) {
-        return getService().eventExists(userId, idString);
-    }
-
-    public static com.ext.portlet.model.AnalyticsUserEvent createEvent(
-        long userId, java.lang.String idString, java.lang.String category,
-        java.lang.String action, java.lang.String label, int value)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .createEvent(userId, idString, category, action, label, value);
-    }
-
     public static void clearService() {
         _service = null;
     }

@@ -1,6 +1,9 @@
 package com.ext.portlet.model.impl;
 
 import com.ext.portlet.model.AnalyticsUserEvent;
+import com.ext.portlet.service.AnalyticsUserEventLocalServiceUtil;
+
+import com.liferay.portal.kernel.exception.SystemException;
 
 /**
  * The extended model base implementation for the AnalyticsUserEvent service. Represents a row in the &quot;xcolab_AnalyticsUserEvent&quot; database table, with each column mapped to a property of this class.
@@ -21,4 +24,12 @@ public abstract class AnalyticsUserEventBaseImpl
      *
      * Never modify or reference this class directly. All methods that expect a analytics user event model instance should use the {@link AnalyticsUserEvent} interface instead.
      */
+    @Override
+    public void persist() throws SystemException {
+        if (this.isNew()) {
+            AnalyticsUserEventLocalServiceUtil.addAnalyticsUserEvent(this);
+        } else {
+            AnalyticsUserEventLocalServiceUtil.updateAnalyticsUserEvent(this);
+        }
+    }
 }

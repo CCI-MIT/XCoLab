@@ -259,14 +259,6 @@ public class LoginLogLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.LoginLog createLoginLog(
-        com.liferay.portal.model.User user, java.lang.String ipAddr,
-        java.lang.String entryUrl)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().createLoginLog(user, ipAddr, entryUrl);
-    }
-
     public static void clearService() {
         _service = null;
     }

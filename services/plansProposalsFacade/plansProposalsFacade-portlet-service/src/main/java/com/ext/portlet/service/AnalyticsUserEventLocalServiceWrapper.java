@@ -277,20 +277,6 @@ public class AnalyticsUserEventLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public boolean eventExists(long userId, java.lang.String idString) {
-        return _analyticsUserEventLocalService.eventExists(userId, idString);
-    }
-
-    @Override
-    public com.ext.portlet.model.AnalyticsUserEvent createEvent(long userId,
-        java.lang.String idString, java.lang.String category,
-        java.lang.String action, java.lang.String label, int value)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _analyticsUserEventLocalService.createEvent(userId, idString,
-            category, action, label, value);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

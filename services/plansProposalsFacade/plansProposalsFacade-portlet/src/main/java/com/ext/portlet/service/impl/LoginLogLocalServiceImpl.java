@@ -35,32 +35,5 @@ public class LoginLogLocalServiceImpl extends LoginLogLocalServiceBaseImpl {
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.LoginLogLocalServiceUtil} to access the login log local service.
      */
-
-    private static final Log _log = LogFactoryUtil.getLog(LoginLogLocalServiceImpl.class);
-
-	@Override
-    public LoginLog createLoginLog(User user, String ipAddr, String entryUrl) throws SystemException, PortalException {
-		Long pk = CounterLocalServiceUtil.increment(LoginLog.class.getName());
-		LoginLog newLog = createLoginLog(pk);
-
-		newLog.setUserId(user.getUserId());
-		newLog.setCreateDate(new Date());
-		newLog.setIpAddress(ipAddr);
-		newLog.setEntryUrl(entryUrl.substring(0,Math.min(250, entryUrl.length())));
-
-        try {
-            Location userLocation = TrackingClient.getLocationForIp(ipAddr);
-
-            if (Validator.isNotNull(userLocation)) {
-                newLog.setCity(userLocation.getCity());
-                newLog.setCountry(userLocation.getCountry());
-            }
-        } catch (Exception e) {
-            _log.warn("Could not translate location for " + ipAddr);
-        }
-
-        updateLoginLog(newLog);
-
-		return newLog;
-	}
+    
 }
