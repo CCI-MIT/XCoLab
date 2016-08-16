@@ -1,15 +1,14 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
+
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -18,11 +17,12 @@ import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.Helper;
 import org.xcolab.portlets.loginregister.MainViewController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "view", params = "SSO=colab")
@@ -48,11 +48,8 @@ public class ColabController {
 
         try {
             Member member = MembersClient.findMemberByScreenName(login);
-            boolean loggedIn = MembersClient.validatePassword(password, member.getId_());
+            boolean loggedIn = MembersClient.login(member.getId_(), password, httpReq.getRemoteAddr(), redirect);
             if (loggedIn) {
-                User liferayUser = UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), member.getScreenName());
-                LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirect);
-
                 AuthenticationServiceUtil.logUserIn(request, response, login, password);
                 response.sendRedirect(redirect);
                 return;

@@ -2,6 +2,7 @@ package org.xcolab.service.members.domain.loginlog;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +38,11 @@ public class LoginLogDaoImpl implements LoginLogDao {
     public LoginLog create(LoginLog loginLog) {
         final Record record = dslContext.insertInto(LOGIN_LOG)
                 .set(LOGIN_LOG.USER_ID, loginLog.getUserId())
+                .set(LOGIN_LOG.IP_ADDRESS, loginLog.getIpAddress())
+                .set(LOGIN_LOG.COUNTRY, loginLog.getCountry())
+                .set(LOGIN_LOG.CITY, loginLog.getCity())
+                .set(LOGIN_LOG.ENTRY_URL, loginLog.getEntryUrl())
+                .set(LOGIN_LOG.CREATE_DATE, DSL.currentTimestamp())
                 .returning(LOGIN_LOG.PK)
                 .fetchOne();
         if (record == null) {

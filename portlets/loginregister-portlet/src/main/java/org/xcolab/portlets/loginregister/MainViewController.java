@@ -320,7 +320,7 @@ public class MainViewController {
             final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                             newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                             newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, openId,
-                            newAccountBean.getImageId(), themeDisplay.getLocale(), serviceContext);
+                            newAccountBean.getImageId(), serviceContext);
 
             // SSO
             if (StringUtils.isNotBlank(fbIdString)) {
@@ -343,7 +343,7 @@ public class MainViewController {
                 }
             }
 
-            LoginRegisterUtil.login(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
+            LoginRegisterUtil.login(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);
 
             httpReq.getSession().setAttribute("collab_user_has_registered", true);
 

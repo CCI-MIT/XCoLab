@@ -1,7 +1,11 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
-import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
+import org.apache.commons.lang.RandomStringUtils;
+import org.json.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -12,12 +16,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import org.apache.commons.lang.RandomStringUtils;
-import org.json.JSONObject;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -128,7 +126,7 @@ public class OpenIdController {
                 actionResponse.sendRedirect(redirectUrl);
 
                 ImageUploadUtils.updateProfilePicture(path, user, profilePicURL);
-                LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
+                MembersClient.createLoginLog(user.getUserId(), request.getRemoteAddr(), redirectUrl);
             } catch (NoSuchUserException nsue) {
                 // try to get user by email
                 try {
@@ -148,7 +146,7 @@ public class OpenIdController {
                     portletSession
                             .setAttribute(SSOKeys.OPEN_ID_LOGIN, user.getUserId(), PortletSession.APPLICATION_SCOPE);
                     actionResponse.sendRedirect(redirectUrl);
-                    LoginLogLocalServiceUtil.createLoginLog(user, request.getRemoteAddr(), redirectUrl);
+                    MembersClient.createLoginLog(user.getUserId(), request.getRemoteAddr(), redirectUrl);
 
                     ImageUploadUtils.updateProfilePicture(path, user, profilePicURL);
                     user.getPortraitURL(themeDisplay);
@@ -232,16 +230,6 @@ public class OpenIdController {
 
     private String getCountry(String localeCountryString) throws UserLocationNotResolvableException {
         return getCountryFromLocaleObject(localeCountryString);
-    }
-
-    private void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {
-        ExpandoValueLocalServiceUtil.addValue(
-                user.getCompanyId(),
-                User.class.getName(),
-                CommunityConstants.EXPANDO,
-                valueName,
-                user.getUserId(),
-                data);
     }
 
     private String getCountryFromLocaleObject(String localeCountryString) throws UserLocationNotResolvableException {
