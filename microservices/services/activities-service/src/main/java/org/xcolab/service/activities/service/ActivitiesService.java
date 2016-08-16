@@ -13,7 +13,6 @@ import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.util.http.exceptions.ServiceNotFoundException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -114,10 +113,7 @@ public class ActivitiesService {
             Proposal proposal = ProposalsClient.getProposal(proposalId);
             subscribeDiscussion(memberId, proposal.getDiscussionId(), true);
         } catch (ProposalNotFoundException e) {
-            log.warn("Proposal {} not found: {}", proposalId, e);
-        } catch (ServiceNotFoundException e) {
-            //TODO: temporarily ignore until we solve the underlying problem
-            log.error("Proposal service not running", e);
+            log.warn("Proposal {} not found", proposalId, e);
         }
         return proposalSubscription;
     }

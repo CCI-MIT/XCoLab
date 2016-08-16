@@ -2,6 +2,7 @@ package org.xcolab.util.http.exceptions;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -16,7 +17,7 @@ public class ServiceExceptionTranslatorUtilTest {
                     + ",\"message\":\"test\""
                     + ",\"path\":\"/members-service/messages\"}";
     private static final HttpStatusCodeException HTTP_500_SERVER_ERROR_EXCEPTION = new HttpServerErrorException(
-            HttpStatus.INTERNAL_SERVER_ERROR, "",
+            HttpStatus.INTERNAL_SERVER_ERROR, "", new ContentTypeJsonHeaders(),
             HTTP_500_RUNTIME_EXCEPTION_STRING.getBytes(),
             null);
 
@@ -26,7 +27,7 @@ public class ServiceExceptionTranslatorUtilTest {
             + "\"message\":\"[omitted]\","
             + "\"path\":\"/members-service/messages/test\"}";
     private static final HttpStatusCodeException HTTP_400_BAD_REQUEST_EXCEPTION = new HttpClientErrorException(
-            HttpStatus.BAD_REQUEST, "",
+            HttpStatus.BAD_REQUEST, "", new ContentTypeJsonHeaders(),
             HTTP_400_BAD_REQUEST_EXCEPTION_STRING.getBytes(),
             null);
 
@@ -36,12 +37,12 @@ public class ServiceExceptionTranslatorUtilTest {
             + "\"message\":\"Object Not Found\","
             + "\"path\":\"/members-service/messages/112125234645345\"}";
     private static final HttpStatusCodeException HTTP_404_NOT_FOUND_EXCEPTION = new HttpClientErrorException(
-            HttpStatus.NOT_FOUND, "",
+            HttpStatus.NOT_FOUND, "", new ContentTypeJsonHeaders(),
             HTTP_404_NOT_FOUND_EXCEPTION_STRING.getBytes(),
             null);
 
     private static final HttpStatusCodeException HTTP_404_EMPTY_CLIENT_ERROR_EXCEPTION = new HttpClientErrorException(
-            HttpStatus.NOT_FOUND, "",
+            HttpStatus.NOT_FOUND, "", new ContentTypeJsonHeaders(),
             "".getBytes(),
             null);
 
@@ -82,4 +83,10 @@ public class ServiceExceptionTranslatorUtilTest {
         ServiceExceptionTranslatorUtil.translateException(HTTP_404_NOT_FOUND_EXCEPTION, "");
     }
 
+    private static class ContentTypeJsonHeaders extends HttpHeaders {
+        ContentTypeJsonHeaders() {
+            super();
+            add("Content-Type", "application/json");
+        }
+    }
 }
