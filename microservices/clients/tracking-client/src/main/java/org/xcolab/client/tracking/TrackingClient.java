@@ -46,6 +46,6 @@ public final class TrackingClient {
     public static Location getLocationForIp(String ipAddress) {
         return locationResource.list()
                 .queryParam("ipAddress", ipAddress)
-                .executeWithResult().getOne();
+                .executeWithResult().getOneIfExists();
     }
 }

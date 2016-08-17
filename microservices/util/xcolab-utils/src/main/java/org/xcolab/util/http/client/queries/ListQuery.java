@@ -69,8 +69,7 @@ public class ListQuery<T> {
             if (result.size() == 1) {
                 return result.get(0);
             }
-            throw new IndexOutOfBoundsException("Expected exactly one element, found (at least) "
-                    + result.size());
+            throw new IndexOutOfBoundsException("Expected exactly one element, found " + result.size());
         }
 
         public T getOneIfExists() {

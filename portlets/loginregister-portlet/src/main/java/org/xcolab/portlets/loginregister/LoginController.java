@@ -49,7 +49,7 @@ public class LoginController {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-        HttpServletRequest httpRequest = PortletUtils.getOryginalRequest(request);
+        HttpServletRequest httpRequest = PortletUtils.getOriginalRequest(request);
 
         String refererHeader = httpRequest.getHeader("referer");
         String refererRequest =  PortalUtil.getHttpServletRequest(request).getHeader("referer");
