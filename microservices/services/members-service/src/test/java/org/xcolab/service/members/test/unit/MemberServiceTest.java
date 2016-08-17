@@ -1,5 +1,7 @@
 package org.xcolab.service.members.test.unit;
 
+import org.jooq.SQLDialect;
+import org.jooq.impl.DefaultDSLContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,8 @@ public class MemberServiceTest {
 
     @Before
     public void setUp() {
-        memberService = new MemberService(new MemberDaoImpl(), null);
+        memberService = new MemberService(
+                new MemberDaoImpl(new DefaultDSLContext(SQLDialect.MYSQL)), null);
     }
 
     @Test

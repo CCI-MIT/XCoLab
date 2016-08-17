@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestType;
@@ -22,7 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import org.xcolab.client.members.messaging.MessageLimitManager;
+import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
 import java.io.IOException;
@@ -151,10 +151,10 @@ public class ProposalShareJSONController {
 
         // Send the message
         if (recipientIds != null) {
-            if (MessageLimitManager.canSendMessages(recipientIds.size(), userId)) {
-                MessageUtil.sendMessage(subject, body, userId, userId, recipientIds);
+            try {
+                MessagingClient.checkLimitAndSendMessage(subject, body, userId, recipientIds);
                 sendResponseJSON(true, String.format("You successfully shared the %s", contestType.getProposalName()), response);
-            } else {
+            } catch (MessageLimitExceededException e) {
                 sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, " +
                         "please contact the administrators.", response);
             }

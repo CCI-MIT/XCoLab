@@ -37,18 +37,14 @@ import java.util.List;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
 
-/**
- * Created by Thomas on 3/25/2015.
- */
 public class CsvExportHelper {
 
     private final static Log _log = LogFactoryUtil.getLog(CsvExportHelper.class);
     private final static String URL_DOMAIN = "http://www.climatecolab.org";
-    private final List<String[]> records;
+    private final List<String[]> records = new ArrayList<>();
 
 
     public CsvExportHelper() {
-        records = new ArrayList<>();
     }
 
     private String getCSVData() throws IOException {
@@ -141,15 +137,9 @@ public class CsvExportHelper {
         String emailAddress = user.getEmailAddress();
         String role = member.getMemberType();
 
-        return new String[]{contestTitle
-                , proposalTitle
-                , proposalLink
-                , username
-                , firstName
-                , lastName
-                , emailAddress
-                , role
-                , lastPhaseTitle};
+        return new String[]{contestTitle, proposalTitle, proposalLink
+                , username, firstName, lastName
+                , emailAddress, role, lastPhaseTitle};
 
     }
 

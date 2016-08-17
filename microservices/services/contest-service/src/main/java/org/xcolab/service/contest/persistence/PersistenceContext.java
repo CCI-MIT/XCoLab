@@ -26,11 +26,7 @@ public class PersistenceContext {
 
     @Bean(destroyMethod = "shutdown")
     public HikariDataSource hikariDataSource() {
-        return DataSourceUtil.getConfiguredDataSource(
-                env.getRequiredProperty("db.driver"),
-                env.getRequiredProperty("db.url"),
-                env.getRequiredProperty("db.username"),
-                env.getRequiredProperty("db.password"));
+        return DataSourceUtil.getConfiguredDataSource(env);
     }
 
 //    @Bean

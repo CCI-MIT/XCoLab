@@ -1,10 +1,7 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.messaging.MessageUtil;
-
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -18,6 +15,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
@@ -28,6 +26,7 @@ import org.xcolab.util.html.HtmlUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -92,8 +91,8 @@ public class ContestMassActionMethods {
 
         final String messageSubject = massMessageBean.getSubject();
         final String messageBody = massMessageBean.getBody();
-        MessageUtil.sendMessage(messageSubject, messageBody,
-                CLIMATE_COLAB_TEAM_USER_ID, CLIMATE_COLAB_TEAM_USER_ID, recipientIds);
+        MessagingClient.sendMessage(messageSubject, messageBody,
+                CLIMATE_COLAB_TEAM_USER_ID, CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<>(recipientIds));
 
         final String emailSubject = "Mass message: " + messageSubject;
         final String emailBody =

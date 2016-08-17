@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.messaging.MessageUtil;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -36,6 +35,7 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
@@ -233,7 +233,7 @@ public class ProposalRequestMembershipActionController {
         List<Long> recipients = new ArrayList<>();
         recipients.add(recipient);
 
-        MessageUtil.sendMessage(subject, content, sender, sender,recipients);
+        MessagingClient.sendMessage(subject, content, sender, sender, recipients);
     }
 
     private List<User> getRecipientSuggestions(String input, long proposalId) throws PortalException, SystemException {

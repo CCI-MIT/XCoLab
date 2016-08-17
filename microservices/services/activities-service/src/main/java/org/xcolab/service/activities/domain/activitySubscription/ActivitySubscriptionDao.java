@@ -26,7 +26,7 @@ public interface ActivitySubscriptionDao {
     DeleteFinalStep<ActivitySubscriptionRecord> getDeleteQuery(Long receiverId, Long classNameId,
             Long classPK, String extraInfo);
 
-    boolean isSubscribed(Long receiverId, Long classNameId, Long classPK, Integer type,
+    boolean isSubscribed(long receiverId, long classNameId, Long classPK, int type,
             String extraInfo);
 
     List<ActivitySubscription> getActivitySubscribers(Long classNameId, Long classPK,

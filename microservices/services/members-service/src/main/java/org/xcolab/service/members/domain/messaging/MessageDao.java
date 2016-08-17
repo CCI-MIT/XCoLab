@@ -27,4 +27,6 @@ public interface MessageDao {
     Optional<Message> createMessage(Message message);
 
     void createMessageRecipient(long messageId, long recipientId);
+
+    boolean delete(long messageId);
 }

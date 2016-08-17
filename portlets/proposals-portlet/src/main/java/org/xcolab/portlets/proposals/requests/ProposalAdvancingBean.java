@@ -1,15 +1,14 @@
 package org.xcolab.portlets.proposals.requests;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.hibernate.validator.constraints.NotBlank;
+
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-/**
- * Created by kmang on 25/05/14.
- */
 public class ProposalAdvancingBean extends RatingBean {
 
     private static final String[] EMAIL_TEMPLATES_TO_LOAD = {
@@ -20,7 +19,7 @@ public class ProposalAdvancingBean extends RatingBean {
 
     private JudgingSystemActions.AdvanceDecision advanceDecision;
 
-    @NotBlank
+    @NotBlank(message = "Please enter a comment before saving the decision")
     private String advanceComment;
 
     public ProposalAdvancingBean() {
@@ -32,7 +31,6 @@ public class ProposalAdvancingBean extends RatingBean {
         advanceDecision = wrapper.getJudgeDecision();
         advanceComment = wrapper.getProposalReview();
 
-        //initialize email templates
         this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD, wrapper.getName(), wrapper.getContest().getContestShortName());
     }
 

@@ -12,7 +12,6 @@ import com.liferay.portal.model.User;
 import org.xcolab.enums.MembershipRequestStatus;
 
 /**
- * Created by johannes on 9/30/15.
  * Helper class to decide whether a certain user should see things in the UI
  */
 public class ProposalsDisplayPermissions {

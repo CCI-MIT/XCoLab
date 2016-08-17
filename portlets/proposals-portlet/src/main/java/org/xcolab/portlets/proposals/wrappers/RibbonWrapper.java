@@ -1,11 +1,10 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
+import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -13,9 +12,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+
 /**
- * Created by johannes on 9/18/15.
- *
  * Wrapper around ContestPhaseRibbonType with utility methods for retrieving information related to the proposal
  */
 public class RibbonWrapper {
@@ -102,7 +101,11 @@ public class RibbonWrapper {
             } else if (getRibbonText().equalsIgnoreCase("Semi-Finalist")) {
                 return "Semi-Finalist";
             } else {
-                return "Winner";
+                if(contestPhaseRibbonType.getId()== 14 ||contestPhaseRibbonType.getId()== 11 || contestPhaseRibbonType.getId()== 12) {
+                    return "Finalist";
+                }else{
+                    return "Winner";
+                }
             }
         }
         _log.error(String.format("Could not get ribbon title: ContestPhaseRibbonType was null for proposal %d", proposalWrapper.getProposalId()));

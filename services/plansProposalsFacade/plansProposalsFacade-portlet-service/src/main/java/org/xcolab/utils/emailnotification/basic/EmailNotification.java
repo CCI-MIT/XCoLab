@@ -1,31 +1,28 @@
 package org.xcolab.utils.emailnotification.basic;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.messaging.MessageUtil;
-
-
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ServiceContext;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.helpers.ProposalAttributeHelper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
@@ -240,7 +237,7 @@ public abstract class EmailNotification {
         EmailTemplateWrapper template = getTemplateWrapper();
         String content = template.getHeader() + template.getFooter();
         content = content.replace("\n", " ").replace("\r", " ");
-        MessageUtil.sendMessage(template.getSubject(), content,
+        MessagingClient.sendMessage(template.getSubject(), content,
                 ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients);
     }
 

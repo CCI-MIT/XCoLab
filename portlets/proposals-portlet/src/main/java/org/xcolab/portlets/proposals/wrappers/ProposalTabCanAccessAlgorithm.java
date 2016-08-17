@@ -1,5 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.service.ContestLocalServiceUtil;
@@ -14,6 +17,9 @@ import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.utils.IdListUtil;
+
+import java.util.List;
 
 import javax.portlet.PortletRequest;
 
@@ -116,7 +122,7 @@ interface ProposalTabCanAccessAlgorithm {
 			return false;
 		}
 
-		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
+		private final Logger _log = LoggerFactory.getLogger(ProposalTabCanAccessAlgorithm.class);
 	};
 
 
@@ -139,7 +145,7 @@ interface ProposalTabCanAccessAlgorithm {
 			return false;
 		}
 
-		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
+        private final Logger _log = LoggerFactory.getLogger(ProposalTabCanAccessAlgorithm.class);
 	};
 
 
@@ -162,30 +168,47 @@ interface ProposalTabCanAccessAlgorithm {
 			return false;
 		}
 
-		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
+        private final Logger _log = LoggerFactory.getLogger(ProposalTabCanAccessAlgorithm.class);
 	};
 
 	ProposalTabCanAccessAlgorithm impactViewAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			try {
-				Contest contest = context.getContest(request);
+			if (ConfigurationAttributeKey.IMPACT_TAB_IS_ACTIVE.getBooleanValue()) {
+                try {
+                    final Contest contest = context.getContest(request);
 
-				long ADAPTATION_ONTOLOGY_TERM_ID = 1300355L;
-				long focusAreaId = contest.getFocusAreaId();
-				boolean isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm =
-						OntologyTermLocalServiceUtil.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId, ADAPTATION_ONTOLOGY_TERM_ID);
-
-				if ((contest.getContestTier() != ContestTier.NONE.getTierType() && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType() && !isAnyOntologyTermOfFocusAreaADescendantOfOntologyTerm)) {
-					return true;
-				}
-			} catch (SystemException | PortalException  e) {
-				_log.error("can't check if user is allowed to view impact tab", e);
-			}
+                    if (contest.getContestTier() != ContestTier.NONE.getTierType()
+                            && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType()) {
+                        long focusAreaId = contest.getFocusAreaId();
+                        if (!isDescendantOfExcludedOntologyTerm(focusAreaId)) {
+                            return true;
+                        }
+                    }
+                } catch (SystemException | PortalException e) {
+                    _log.error("can't check if user is allowed to view impact tab", e);
+                }
+            }
 			return false;
 		}
 
+		private boolean isDescendantOfExcludedOntologyTerm(long focusAreaId)
+                throws SystemException, PortalException {
+            final String commaSeparatedExcludedOntologyTermIds =
+                    ConfigurationAttributeKey.IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS
+                            .getStringValue();
+            final List<Long> excludedOntologyTermIds = IdListUtil
+                    .getIdsFromString(commaSeparatedExcludedOntologyTermIds);
+            for (Long excludedOntologyTermId : excludedOntologyTermIds) {
+                if (OntologyTermLocalServiceUtil
+                        .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+                                        focusAreaId, excludedOntologyTermId)) {
+                    return true;
+                }
+            }
+            return false;
+        }
 		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
 	};
 
@@ -210,7 +233,7 @@ interface ProposalTabCanAccessAlgorithm {
 			return false;
 		}
 
-		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
+        private final Logger _log = LoggerFactory.getLogger(ProposalTabCanAccessAlgorithm.class);
 	};
 
 }

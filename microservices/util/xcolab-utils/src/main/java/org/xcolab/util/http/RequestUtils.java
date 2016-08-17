@@ -4,17 +4,17 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import org.xcolab.util.http.caching.CacheProvider;
 import org.xcolab.util.http.caching.CacheProviderNoOpImpl;
+import org.xcolab.util.http.client.HeaderRequestInterceptor;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
-import org.xcolab.util.http.exceptions.ServiceExceptionTranslatorUtil;
+import org.xcolab.util.http.exceptions.RestTemplateErrorHandler;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.File;
@@ -29,17 +29,21 @@ public final class RequestUtils {
 
     private static final int CACHE_TIMEOUT = 3;
 
-    private static final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+    private static final RestTemplate restTemplate;
 
     private static String servicesPort;
 
     private static CacheProvider cacheProvider = new CacheProviderNoOpImpl();
 
-
+    static {
+        restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+        restTemplate.setErrorHandler(new RestTemplateErrorHandler());
+        restTemplate.setInterceptors(HeaderRequestInterceptor
+                .newAsSingletonList(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE));
+    }
 
     private RequestUtils() {
     }
-
 
 
     public static <T> T getFirstFromList(UriBuilder uriBuilder,
@@ -125,26 +129,21 @@ public final class RequestUtils {
 
     public static <T> T getUnchecked(UriBuilder uriBuilder, Class<T> entityType,
                                      String cacheQueryIdentifier) {
-        try {
-            T ret;
-            final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
-            final String cachePrefix = "_" + entityType.getSimpleName() + "_";
-            if (cacheActive) {
-                //noinspection unchecked
-                ret = (T) cacheProvider.get(sanitize(cachePrefix + cacheQueryIdentifier));
-                if (ret != null) {
-                    return ret;
-                }
+        T ret;
+        final boolean cacheActive = cacheProvider.isActive() && cacheQueryIdentifier != null;
+        final String cachePrefix = "_" + entityType.getSimpleName() + "_";
+        if (cacheActive) {
+            //noinspection unchecked
+            ret = (T) cacheProvider.get(sanitize(cachePrefix + cacheQueryIdentifier));
+            if (ret != null) {
+                return ret;
             }
-            ret = restTemplate.getForObject(uriBuilder.buildString(), entityType);
-            if (cacheActive) {
-                cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
-            }
-            return ret;
-        } catch (HttpStatusCodeException e) {
-            ServiceExceptionTranslatorUtil.translateException(e, uriBuilder.buildString());
-            throw e;
         }
+        ret = restTemplate.getForObject(uriBuilder.buildString(), entityType);
+        if (cacheActive) {
+            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
+        }
+        return ret;
     }
 
     public static int getCount(UriBuilder uriBuilder) {
@@ -164,22 +163,17 @@ public final class RequestUtils {
             }
         }
 
-        try {
-            final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.buildString());
-            final List<String> countHeaders = httpHeaders.get("X-Total-Count");
-            if (countHeaders.isEmpty()) {
-                return 0;
-            }
-
-            ret = Integer.valueOf(countHeaders.get(0));
-            if (cacheActive) {
-                cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
-            }
-            return ret;
-        } catch (HttpClientErrorException e) {
-            ServiceExceptionTranslatorUtil.translateException(e, uriBuilder.buildString());
-            throw e;
+        final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.buildString());
+        final List<String> countHeaders = httpHeaders.get("X-Total-Count");
+        if (countHeaders.isEmpty()) {
+            return 0;
         }
+
+        ret = Integer.valueOf(countHeaders.get(0));
+        if (cacheActive) {
+            cacheProvider.add(sanitize(cachePrefix + cacheQueryIdentifier), CACHE_TIMEOUT, ret);
+        }
+        return ret;
     }
 
     public static boolean put(UriBuilder uriBuilder) {

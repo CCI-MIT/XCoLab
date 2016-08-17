@@ -1,4 +1,4 @@
-package org.xcolab.client.members.legacy.enums;
+package org.xcolab.service.members.service.messaging;
 
 public class MessageConstants {
     public static final String EMAIL_MESSAGE_SUBJECT = "[<colab-name/>] Message from $USER";

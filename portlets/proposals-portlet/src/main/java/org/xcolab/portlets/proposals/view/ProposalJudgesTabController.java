@@ -1,7 +1,11 @@
 package org.xcolab.portlets.proposals.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.ext.portlet.JudgingSystemActions;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalRating;
@@ -9,10 +13,6 @@ import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -23,6 +23,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,12 +55,40 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
         bean.setContestPhaseId(contestPhase.getContestPhasePK());
+        model.addAttribute("proposalAdvancingBean", bean);
+
+        setCommonAdvancingAttributes(request, bean, model);
+        return "proposalAdvancing";
+    }
+
+    @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING", "error=true"})
+    public String showJudgesPanelError(PortletRequest request, Model model)
+            throws PortalException, SystemException, ProposalsAuthorizationException {
+        setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
+
+        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (!permissions.getCanSeeAdvancingTab()) {
+            throw new ProposalsAuthorizationException(ACCESS_TAB_DENIED_MESSAGE);
+        }
+
+        Proposal proposal = proposalsContext.getProposal(request);
+        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
+        bean.setContestPhaseId(contestPhase.getContestPhasePK());
+
+        setCommonAdvancingAttributes(request, bean, model);
+        return "proposalAdvancing";
+    }
+
+    private void setCommonAdvancingAttributes(PortletRequest request, ProposalAdvancingBean bean, Model model)
+            throws SystemException, PortalException {
+        Proposal proposal = proposalsContext.getProposal(request);
+        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
         model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
-        model.addAttribute("proposalAdvancingBean", bean);
         model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
-        model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
 
 
         List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(
@@ -89,15 +118,14 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
                 ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
                 0
         );
-        
+
         model.addAttribute("isFrozen", isFrozen);
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
 
         model.addAttribute("fellowRatings", fellowRatings);
         model.addAttribute("judgeRatings", judgeRatings);
-
-        return "proposalAdvancing";
     }
+
 
     private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings)
             throws SystemException, PortalException {
