@@ -1,8 +1,5 @@
 package org.xcolab.portlets.redballoon.utils;
 
-
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -17,6 +14,8 @@ import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.portlets.redballoon.BalloonCookie;
 import org.xcolab.util.exceptions.InternalException;
 
@@ -86,7 +85,8 @@ public class BalloonUtils {
 			but.setUserAgent(httpServletRequest.getHeader("User-Agent"));
 			// populate GeoLocation data
 			try {
-				Location location = IpTranslationServiceUtil.getLocationForIp(PortalUtil.getHttpServletRequest(request).getRemoteAddr());
+				Location location = TrackingClient
+						.getLocationForIp(PortalUtil.getHttpServletRequest(request).getRemoteAddr());
 				if (location != null) {
 					but.setCity(location.getCity());
 					but.setCountry(location.getCountry());

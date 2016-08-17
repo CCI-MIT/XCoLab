@@ -1,6 +1,11 @@
 package org.xcolab.portlets.loginregister;
 
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
+
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.PasswordExpiredException;
@@ -19,10 +24,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
@@ -48,7 +49,7 @@ public class LoginController {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-        HttpServletRequest httpRequest = PortletUtils.getOryginalRequest(request);
+        HttpServletRequest httpRequest = PortletUtils.getOriginalRequest(request);
 
         String refererHeader = httpRequest.getHeader("referer");
         String refererRequest =  PortalUtil.getHttpServletRequest(request).getHeader("referer");
@@ -68,7 +69,7 @@ public class LoginController {
         try {
             String login = request.getParameter("login");
 
-            user = LoginRegisterUtil.login(request, response, login, request.getParameter("password"));
+            user = LoginRegisterUtil.login(request, response, login, request.getParameter("password"), redirect);
 
         } catch (Exception e) {
             if (e instanceof AuthException) {

@@ -1,18 +1,30 @@
 package org.xcolab.liferay;
 
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.*;
-import com.liferay.portal.service.*;
+import com.liferay.portal.model.ClassName;
+import com.liferay.portal.model.Contact;
+import com.liferay.portal.model.Group;
+import com.liferay.portal.model.LayoutSet;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.service.ContactLocalServiceUtil;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.LayoutSetLocalServiceUtil;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -22,15 +34,14 @@ import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.emailnotification.member.MemberRegistrationNotification;
 
-
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 
 //TODO: temporary class for liferay transition
@@ -211,11 +222,10 @@ public final class LoginRegisterUtil {
 
     }
 
-    public static Member register(String screenName, String password, String email, String firstName, String lastName,
-                                  String shortBio, String country, String fbIdString, String openId, String imageId,
-                                  Locale liferayLocale, ServiceContext liferayServiceContext)
+    public static Member register(String screenName, String password, String email,
+            String firstName, String lastName, String shortBio, String country, String fbIdString,
+            String openId, String imageId, ServiceContext liferayServiceContext)
             throws Exception {
-
 
         Long memberId = SharedColabClient.retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.getStringValue());
         User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName, fbIdString);
@@ -267,13 +277,16 @@ public final class LoginRegisterUtil {
         if (StringUtils.isBlank(login)) {
             return null;
         }
+        HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
         final String screenName = getScreenNameFromLogin(login);
-        //TODO: liferay  throws a raw exception here
-        AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
-        User user = UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
-        LoginLogLocalServiceUtil.createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
-
-        return user;
+        Member member = MembersClient.findMemberByScreenName(screenName);
+        boolean loggedIn = MembersClient.login(member.getId_(), password, httpReq.getRemoteAddr(), referer);
+        if (loggedIn) {
+            //TODO: liferay  throws a raw exception here
+            AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
+            return UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
+        }
+        return null;
     }
 
     private static String getScreenNameFromLogin(String login) throws MemberNotFoundException {

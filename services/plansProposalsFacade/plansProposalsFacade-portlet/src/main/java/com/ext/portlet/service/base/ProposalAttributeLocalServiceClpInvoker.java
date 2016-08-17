@@ -41,44 +41,44 @@ public class ProposalAttributeLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
+    private String _methodName398;
+    private String[] _methodParameterTypes398;
+    private String _methodName399;
+    private String[] _methodParameterTypes399;
+    private String _methodName404;
+    private String[] _methodParameterTypes404;
+    private String _methodName405;
+    private String[] _methodParameterTypes405;
+    private String _methodName406;
+    private String[] _methodParameterTypes406;
+    private String _methodName407;
+    private String[] _methodParameterTypes407;
+    private String _methodName409;
+    private String[] _methodParameterTypes409;
+    private String _methodName410;
+    private String[] _methodParameterTypes410;
+    private String _methodName411;
+    private String[] _methodParameterTypes411;
+    private String _methodName412;
+    private String[] _methodParameterTypes412;
+    private String _methodName413;
+    private String[] _methodParameterTypes413;
+    private String _methodName414;
+    private String[] _methodParameterTypes414;
+    private String _methodName415;
+    private String[] _methodParameterTypes415;
+    private String _methodName416;
+    private String[] _methodParameterTypes416;
+    private String _methodName417;
+    private String[] _methodParameterTypes417;
+    private String _methodName418;
+    private String[] _methodParameterTypes418;
+    private String _methodName419;
+    private String[] _methodParameterTypes419;
+    private String _methodName421;
+    private String[] _methodParameterTypes421;
     private String _methodName422;
     private String[] _methodParameterTypes422;
-    private String _methodName423;
-    private String[] _methodParameterTypes423;
-    private String _methodName428;
-    private String[] _methodParameterTypes428;
-    private String _methodName429;
-    private String[] _methodParameterTypes429;
-    private String _methodName430;
-    private String[] _methodParameterTypes430;
-    private String _methodName431;
-    private String[] _methodParameterTypes431;
-    private String _methodName433;
-    private String[] _methodParameterTypes433;
-    private String _methodName434;
-    private String[] _methodParameterTypes434;
-    private String _methodName435;
-    private String[] _methodParameterTypes435;
-    private String _methodName436;
-    private String[] _methodParameterTypes436;
-    private String _methodName437;
-    private String[] _methodParameterTypes437;
-    private String _methodName438;
-    private String[] _methodParameterTypes438;
-    private String _methodName439;
-    private String[] _methodParameterTypes439;
-    private String _methodName440;
-    private String[] _methodParameterTypes440;
-    private String _methodName441;
-    private String[] _methodParameterTypes441;
-    private String _methodName442;
-    private String[] _methodParameterTypes442;
-    private String _methodName443;
-    private String[] _methodParameterTypes443;
-    private String _methodName445;
-    private String[] _methodParameterTypes445;
-    private String _methodName446;
-    private String[] _methodParameterTypes446;
 
     public ProposalAttributeLocalServiceClpInvoker() {
         _methodName0 = "addProposalAttribute";
@@ -163,110 +163,110 @@ public class ProposalAttributeLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalAttribute"
             };
 
-        _methodName422 = "getBeanIdentifier";
+        _methodName398 = "getBeanIdentifier";
 
-        _methodParameterTypes422 = new String[] {  };
+        _methodParameterTypes398 = new String[] {  };
 
-        _methodName423 = "setBeanIdentifier";
+        _methodName399 = "setBeanIdentifier";
 
-        _methodParameterTypes423 = new String[] { "java.lang.String" };
+        _methodParameterTypes399 = new String[] { "java.lang.String" };
 
-        _methodName428 = "getAttribute";
+        _methodName404 = "getAttribute";
 
-        _methodParameterTypes428 = new String[] {
+        _methodParameterTypes404 = new String[] {
                 "long", "int", "java.lang.String", "long"
             };
 
-        _methodName429 = "getAttribute";
+        _methodName405 = "getAttribute";
 
-        _methodParameterTypes429 = new String[] {
+        _methodParameterTypes405 = new String[] {
                 "long", "java.lang.String", "long"
             };
 
-        _methodName430 = "setAttribute";
+        _methodName406 = "setAttribute";
 
-        _methodParameterTypes430 = new String[] {
+        _methodParameterTypes406 = new String[] {
                 "long", "long", "java.lang.String", "long", "java.lang.String",
                 "long", "double"
             };
 
-        _methodName431 = "setAttribute";
+        _methodName407 = "setAttribute";
 
-        _methodParameterTypes431 = new String[] {
+        _methodParameterTypes407 = new String[] {
                 "long", "long", "java.lang.String", "long", "java.lang.String",
                 "long", "double", "java.util.Date", "boolean"
             };
 
-        _methodName433 = "setAttribute";
+        _methodName409 = "setAttribute";
 
-        _methodParameterTypes433 = new String[] {
+        _methodParameterTypes409 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String", "long",
                 "double"
             };
 
-        _methodName434 = "setAttribute";
+        _methodName410 = "setAttribute";
 
-        _methodParameterTypes434 = new String[] {
+        _methodParameterTypes410 = new String[] {
                 "long", "long", "java.lang.String", "long", "java.lang.String"
             };
 
-        _methodName435 = "setAttribute";
+        _methodName411 = "setAttribute";
 
-        _methodParameterTypes435 = new String[] {
+        _methodParameterTypes411 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String"
             };
 
-        _methodName436 = "setAttribute";
+        _methodName412 = "setAttribute";
 
-        _methodParameterTypes436 = new String[] {
+        _methodParameterTypes412 = new String[] {
                 "long", "long", "java.lang.String", "long", "long"
             };
 
-        _methodName437 = "setAttribute";
+        _methodName413 = "setAttribute";
 
-        _methodParameterTypes437 = new String[] {
+        _methodParameterTypes413 = new String[] {
                 "long", "long", "java.lang.String", "long"
             };
 
-        _methodName438 = "setAttribute";
+        _methodName414 = "setAttribute";
 
-        _methodParameterTypes438 = new String[] {
+        _methodParameterTypes414 = new String[] {
                 "long", "long", "java.lang.String", "long", "double"
             };
 
-        _methodName439 = "setAttribute";
+        _methodName415 = "setAttribute";
 
-        _methodParameterTypes439 = new String[] {
+        _methodParameterTypes415 = new String[] {
                 "long", "long", "java.lang.String", "double"
             };
 
-        _methodName440 = "getAttributes";
+        _methodName416 = "getAttributes";
 
-        _methodParameterTypes440 = new String[] { "long" };
+        _methodParameterTypes416 = new String[] { "long" };
 
-        _methodName441 = "getAttributes";
+        _methodName417 = "getAttributes";
 
-        _methodParameterTypes441 = new String[] { "long", "int" };
+        _methodParameterTypes417 = new String[] { "long", "int" };
 
-        _methodName442 = "removeAttribute";
+        _methodName418 = "removeAttribute";
 
-        _methodParameterTypes442 = new String[] {
+        _methodParameterTypes418 = new String[] {
                 "long", "com.ext.portlet.model.ProposalAttribute", "boolean"
             };
 
-        _methodName443 = "removeAttribute";
+        _methodName419 = "removeAttribute";
 
-        _methodParameterTypes443 = new String[] {
+        _methodParameterTypes419 = new String[] {
                 "long", "com.ext.portlet.model.ProposalAttribute"
             };
 
-        _methodName445 = "getImpactProposalAttributes";
+        _methodName421 = "getImpactProposalAttributes";
 
-        _methodParameterTypes445 = new String[] { "com.ext.portlet.model.Proposal" };
+        _methodParameterTypes421 = new String[] { "com.ext.portlet.model.Proposal" };
 
-        _methodName446 = "getImpactProposalAttributes";
+        _methodName422 = "getImpactProposalAttributes";
 
-        _methodParameterTypes446 = new String[] {
+        _methodParameterTypes422 = new String[] {
                 "com.ext.portlet.model.Proposal",
                 "com.ext.portlet.model.FocusArea"
             };
@@ -361,35 +361,35 @@ public class ProposalAttributeLocalServiceClpInvoker {
             return ProposalAttributeLocalServiceUtil.updateProposalAttribute((com.ext.portlet.model.ProposalAttribute) arguments[0]);
         }
 
-        if (_methodName422.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
+        if (_methodName398.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName423.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
+        if (_methodName399.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
             ProposalAttributeLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName428.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
+        if (_methodName404.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.getAttribute(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue(),
                 (java.lang.String) arguments[2],
                 ((Long) arguments[3]).longValue());
         }
 
-        if (_methodName429.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes429, parameterTypes)) {
+        if (_methodName405.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.getAttribute(((Long) arguments[0]).longValue(),
                 (java.lang.String) arguments[1],
                 ((Long) arguments[2]).longValue());
         }
 
-        if (_methodName430.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes430, parameterTypes)) {
+        if (_methodName406.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes406, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -399,8 +399,8 @@ public class ProposalAttributeLocalServiceClpInvoker {
                 ((Double) arguments[6]).doubleValue());
         }
 
-        if (_methodName431.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes431, parameterTypes)) {
+        if (_methodName407.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes407, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -412,8 +412,8 @@ public class ProposalAttributeLocalServiceClpInvoker {
                 ((Boolean) arguments[8]).booleanValue());
         }
 
-        if (_methodName433.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes433, parameterTypes)) {
+        if (_methodName409.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes409, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -422,8 +422,8 @@ public class ProposalAttributeLocalServiceClpInvoker {
                 ((Double) arguments[5]).doubleValue());
         }
 
-        if (_methodName434.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes434, parameterTypes)) {
+        if (_methodName410.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes410, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -431,15 +431,15 @@ public class ProposalAttributeLocalServiceClpInvoker {
                 (java.lang.String) arguments[4]);
         }
 
-        if (_methodName435.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes435, parameterTypes)) {
+        if (_methodName411.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes411, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
         }
 
-        if (_methodName436.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes436, parameterTypes)) {
+        if (_methodName412.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes412, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -447,16 +447,16 @@ public class ProposalAttributeLocalServiceClpInvoker {
                 ((Long) arguments[4]).longValue());
         }
 
-        if (_methodName437.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes437, parameterTypes)) {
+        if (_methodName413.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes413, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
                 ((Long) arguments[3]).longValue());
         }
 
-        if (_methodName438.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes438, parameterTypes)) {
+        if (_methodName414.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes414, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
@@ -464,27 +464,27 @@ public class ProposalAttributeLocalServiceClpInvoker {
                 ((Double) arguments[4]).doubleValue());
         }
 
-        if (_methodName439.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes439, parameterTypes)) {
+        if (_methodName415.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes415, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.setAttribute(((Long) arguments[0]).longValue(),
                 ((Long) arguments[1]).longValue(),
                 (java.lang.String) arguments[2],
                 ((Double) arguments[3]).doubleValue());
         }
 
-        if (_methodName440.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes440, parameterTypes)) {
+        if (_methodName416.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes416, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.getAttributes(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName441.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes441, parameterTypes)) {
+        if (_methodName417.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes417, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.getAttributes(((Long) arguments[0]).longValue(),
                 ((Integer) arguments[1]).intValue());
         }
 
-        if (_methodName442.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes442, parameterTypes)) {
+        if (_methodName418.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes418, parameterTypes)) {
             ProposalAttributeLocalServiceUtil.removeAttribute(((Long) arguments[0]).longValue(),
                 (com.ext.portlet.model.ProposalAttribute) arguments[1],
                 ((Boolean) arguments[2]).booleanValue());
@@ -492,21 +492,21 @@ public class ProposalAttributeLocalServiceClpInvoker {
             return null;
         }
 
-        if (_methodName443.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes443, parameterTypes)) {
+        if (_methodName419.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes419, parameterTypes)) {
             ProposalAttributeLocalServiceUtil.removeAttribute(((Long) arguments[0]).longValue(),
                 (com.ext.portlet.model.ProposalAttribute) arguments[1]);
 
             return null;
         }
 
-        if (_methodName445.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes445, parameterTypes)) {
+        if (_methodName421.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes421, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.getImpactProposalAttributes((com.ext.portlet.model.Proposal) arguments[0]);
         }
 
-        if (_methodName446.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes446, parameterTypes)) {
+        if (_methodName422.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
             return ProposalAttributeLocalServiceUtil.getImpactProposalAttributes((com.ext.portlet.model.Proposal) arguments[0],
                 (com.ext.portlet.model.FocusArea) arguments[1]);
         }

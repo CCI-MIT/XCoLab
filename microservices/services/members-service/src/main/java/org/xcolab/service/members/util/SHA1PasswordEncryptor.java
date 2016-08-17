@@ -3,6 +3,7 @@ package org.xcolab.service.members.util;
 import org.apache.http.impl.auth.UnsupportedDigestAlgorithmException;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -20,7 +21,7 @@ public class SHA1PasswordEncryptor {
 
         MessageDigest sha1Digest = MessageDigest.getInstance("SHA-1");
 
-        byte[] secretKeyBytes = sha1Digest.digest(plainTextPassword.getBytes());
+        byte[] secretKeyBytes = sha1Digest.digest(plainTextPassword.getBytes(StandardCharsets.UTF_8));
 
         ByteBuffer byteBuffer = ByteBuffer.allocate(secretKeyBytes.length);
         byteBuffer.put(secretKeyBytes);
