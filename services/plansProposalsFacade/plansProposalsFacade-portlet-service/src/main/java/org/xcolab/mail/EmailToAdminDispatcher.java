@@ -14,7 +14,7 @@ public class EmailToAdminDispatcher {
     private static final Recipient[] ADMIN_EMAIL_RECIPIENTS = {
             new Recipient("pdeboer@mit.edu", VERBOSITY_ERROR),
             new Recipient("jobachhu@mit.edu", VERBOSITY_DEBUG),
-            new Recipient("rabanser@mit.edu", VERBOSITY_ERROR),
+            new Recipient("mohs@mit.edu", VERBOSITY_ERROR),
             new Recipient("carlosbp@mit.edu", VERBOSITY_ERROR)
     };
 
