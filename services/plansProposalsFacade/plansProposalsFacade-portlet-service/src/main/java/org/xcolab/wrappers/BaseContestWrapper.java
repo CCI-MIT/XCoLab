@@ -321,7 +321,11 @@ public class BaseContestWrapper {
 
     public long getProposalsCount() {
         ContestPhase cp = ContestClient.getActivePhase(contest.getContestPK());
-        return ProposalsClient.getProposalCountForActiveContestPhase(cp.getContestPhasePK());
+        if(cp!=null) {
+            return ProposalsClient.getProposalCountForActiveContestPhase(cp.getContestPhasePK());
+        }else{
+            return 0l;
+        }
     }
 
         /*public long getTotalProposalsCount() {
