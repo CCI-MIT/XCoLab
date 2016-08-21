@@ -41,6 +41,8 @@ public class Member implements Serializable {
     private Integer status;
     private int reportKarma;
     private Long portraitFileEntryId;
+    private Integer   autoregisteredmemberstatus;
+
 
     public Member() {
     }
@@ -234,6 +236,14 @@ public class Member implements Serializable {
 
     public void setReportKarma(int reportKarma) {
         this.reportKarma = reportKarma;
+    }
+
+    public Integer getAutoregisteredmemberstatus() {
+        return autoregisteredmemberstatus;
+    }
+
+    public void setAutoregisteredmemberstatus(Integer autoregisteredmemberstatus) {
+        this.autoregisteredmemberstatus = autoregisteredmemberstatus;
     }
 
     @Override

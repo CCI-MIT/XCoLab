@@ -87,6 +87,22 @@ public class MemberService {
         return member;
     }
 
+    public Member registerWithHashedPassword(String screenName, String password, String email, String firstName, String lastName,
+                                             String shortBio, String country, Long facebookId, String openId, Long imageId, Long liferayUserId)
+            throws NoSuchAlgorithmException {
+        Member memberAlreadyRegistered = memberDao.getMember(liferayUserId).get();
+        if (memberAlreadyRegistered == null) {
+            memberDao.createMember(screenName, password, email, firstName, lastName,
+                    shortBio, country, facebookId, openId, imageId, liferayUserId);
+            final Member member = memberDao.findOneByScreenName(screenName);
+            member.setAutoRegisteredMemberStatus(1);
+            subscribeToNewsletter(member.getEmailAddress());
+            return member;
+        }else{
+            return memberAlreadyRegistered;
+        }
+    }
+
     public boolean login(Member member, String password) {
         try {
             if (validatePassword(password, member.getHashedPassword())) {

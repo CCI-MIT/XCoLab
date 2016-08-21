@@ -105,6 +105,14 @@ public class MembersController {
                 member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
 
+    @RequestMapping(value = "/members/registerFromSharedColab", method = RequestMethod.POST)
+    public Member registerFromSharedColab(@RequestBody Member member) throws NoSuchAlgorithmException {
+            return memberService.registerWithHashedPassword(member.getScreenName(), member.getHashedPassword(),
+                    member.getEmailAddress(), member.getFirstName(), member.getLastName(),
+                    member.getShortBio(), member.getCountry(), member.getFacebookId(),
+                    member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
+    }
+
     @RequestMapping(value = "/members/isUsed", method = RequestMethod.GET)
     public boolean isUsed(
             @RequestParam(required = false) String screenName,

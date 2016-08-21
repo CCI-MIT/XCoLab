@@ -211,6 +211,28 @@ public final class LoginRegisterUtil {
 
     }
 
+
+    public static void registerMemberInSharedColab(Long memberId) {
+        try {
+            Member memberInCurrentColab = MembersClient.getMember(memberId);
+
+            org.xcolab.client.sharedcolab.pojo.Member member = new org.xcolab.client.sharedcolab.pojo.Member();
+            member.setId_(memberInCurrentColab.getId_());
+            member.setScreenName(memberInCurrentColab.getScreenName());
+            member.setEmailAddress(memberInCurrentColab.getEmailAddress());
+            member.setFirstName(memberInCurrentColab.getFirstName());
+            member.setHashedPassword(memberInCurrentColab.getHashedPassword());
+            member.setLastName(memberInCurrentColab.getLastName());
+            member.setOpenId(memberInCurrentColab.getOpenId());
+            member.setFacebookId(memberInCurrentColab.getFacebookId());
+            member.setShortBio(memberInCurrentColab.getShortBio());
+            member.setCountry(memberInCurrentColab.getCountry());
+            SharedColabClient.registerInPartnerColab(member);
+        } catch (MemberNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Member register(String screenName, String password, String email, String firstName, String lastName,
                                   String shortBio, String country, String fbIdString, String openId, String imageId,
                                   Locale liferayLocale, ServiceContext liferayServiceContext)

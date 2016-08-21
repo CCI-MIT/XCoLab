@@ -73,11 +73,14 @@ public class Contest implements Serializable {
     private Boolean showInListView;
     private Boolean showInOutlineView;
     private Boolean hideribbons;
+    private Boolean   issharedcontest;
 
     private Long resourceArticleId;
 
     public Contest() {
     }
+
+
 
     public Contest(Long contestpk, Long contesttypeid, String contestname, String contestshortname,
                    String contesturlname,
@@ -96,7 +99,7 @@ public class Contest implements Serializable {
                    String defaultmodelsettings, Double points, Long defaultparentpointtype,
                    String pointdistributionstrategy, String emailtemplateurl, Boolean showInTileView,
                    Boolean showInListView, Boolean showInOutlineView, Boolean hideribbons,
-                   Long resourceArticleId) {
+                   Long resourceArticleId, Boolean   issharedcontest) {
         this.contestpk = contestpk;
         this.contesttypeid = contesttypeid;
         this.contestname = contestname;
@@ -148,6 +151,8 @@ public class Contest implements Serializable {
         this.showInOutlineView = showInOutlineView;
         this.hideribbons = hideribbons;
         this.resourceArticleId = resourceArticleId;
+        this.issharedcontest = issharedcontest;
+
     }
 
     public Long getContestPK() {
@@ -557,6 +562,14 @@ public class Contest implements Serializable {
 
     public void setResourceArticleId(Long resourceArticleId) {
         this.resourceArticleId = resourceArticleId;
+    }
+
+    public Boolean getIssharedcontest() {
+        return issharedcontest;
+    }
+
+    public void setIssharedcontest(Boolean issharedcontest) {
+        this.issharedcontest = issharedcontest;
     }
 
     @Override

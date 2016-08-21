@@ -328,7 +328,7 @@ public class BaseContestWrapper {
         }else{
 
             return 0l;
-            
+
         }
     }
 
