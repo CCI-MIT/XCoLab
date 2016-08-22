@@ -103,10 +103,14 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
     public boolean isPhaseActive(ContestPhase contestPhase) {
         if (contestPhase.getPhaseActiveOverride() != null) {
-            return contestPhase.getPhaseActiveOverride();
+            if(contestPhase.getPhaseActiveOverride()) {
+                return contestPhase.getPhaseActiveOverride();
+            }
         }
         if (contestPhase.getPhaseInactiveOverride()!=null) {
-            return contestPhase.getPhaseInactiveOverride();
+            if(contestPhase.getPhaseInactiveOverride()) {
+                return contestPhase.getPhaseInactiveOverride();
+            }
         }
         if (contestPhase.getPhaseStartDate() != null) {
             Date now = new Date();
