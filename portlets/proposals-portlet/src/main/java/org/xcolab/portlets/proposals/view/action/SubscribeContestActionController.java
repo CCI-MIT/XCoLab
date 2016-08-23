@@ -39,7 +39,7 @@ public class SubscribeContestActionController {
 
                 try {
                     org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contestId);
-                    if(contestMicro.getIssharedcontest()){
+                    if(contestMicro.getIsSharedContest()){
                         LoginRegisterUtil.registerMemberInSharedColab(userId);
                     }
                 }catch(ContestNotFoundException ignored){

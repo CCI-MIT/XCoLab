@@ -104,7 +104,7 @@ public class CreateProposalController extends BaseProposalsController {
 
         try {
             org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
-            if(contestMicro.getIssharedcontest()){
+            if(contestMicro.getIsSharedContest()){
                 LoginRegisterUtil.registerMemberInSharedColab(themeDisplay.getUserId());
             }
         }catch(ContestNotFoundException ignored){
