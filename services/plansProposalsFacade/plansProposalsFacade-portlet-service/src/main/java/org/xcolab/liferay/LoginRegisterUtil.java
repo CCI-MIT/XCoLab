@@ -291,6 +291,8 @@ public final class LoginRegisterUtil {
         }
         final String screenName = getScreenNameFromLogin(login);
         //TODO: liferay  throws a raw exception here
+        checkIfMemberAutoRegisteredNeedsLiferayCreation(screenName, password);
+
         AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
         User user = UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
         LoginLogLocalServiceUtil.createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
@@ -298,6 +300,20 @@ public final class LoginRegisterUtil {
         return user;
     }
 
+    private static void checkIfMemberAutoRegisteredNeedsLiferayCreation(String screenName, String password){
+        try {
+            Member member = MembersClient.findMemberByScreenNameNoRole(screenName);
+            if (member.getAutoregisteredmemberstatus() == 1) {
+                User liferayUser = registerLiferayWithId(member.getId_(), member.getScreenName(), password, member.getEmailAddress(), member.getFirstName(), member.getLastName(), (member.getFacebookId() != null ? (member.getFacebookId().toString()) : ("0")));
+                if(liferayUser != null ) {
+                    member.setAutoregisteredmemberstatus(2);
+                    MembersClient.updateMember(member);
+                }
+            }
+        }catch (MemberNotFoundException e){
+
+        }
+    }
     private static String getScreenNameFromLogin(String login) throws MemberNotFoundException {
         if (login.contains("@")) {
             Member member = MembersClient.findMemberByEmailAddress(login);

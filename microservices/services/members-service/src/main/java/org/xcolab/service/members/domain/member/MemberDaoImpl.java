@@ -205,6 +205,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.LOGIN_IP, member.getLoginIP())
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
+                .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
                 .set(MEMBER.COUNTRY, member.getCountry())
                 .set(MEMBER.STATUS, member.getStatus())
                 .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())

@@ -157,6 +157,11 @@ public class MembersController {
     }
 
 
+    @RequestMapping(value = "/members/findByScreenName", method = RequestMethod.GET)
+    public Member generateScreenName(@RequestParam String screenName) {
+        return memberDao.findOneByScreenName(screenName);
+    }
+
     @RequestMapping(value = "/members/generateScreenName", method = RequestMethod.GET)
     public String generateScreenName(@RequestParam String[] values) {
         return memberService.generateScreenName(values);
