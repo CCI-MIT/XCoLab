@@ -1,5 +1,8 @@
 package com.ext.portlet.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
@@ -59,8 +62,6 @@ import com.liferay.portal.service.RoleLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import org.xcolab.activityEntry.proposal.ProposalMemberAddedActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
@@ -73,6 +74,7 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
@@ -1144,7 +1146,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
 
-        final String groupDescription = TemplateReplacementUtil.replaceContestTypeStrings(DEFAULT_GROUP_DESCRIPTION, contestType);
+        final org.xcolab.client.contest.pojo.ContestType contestTypeForLiferay = ContestClient.getContestType(contestType.getId());
+        final String groupDescription = TemplateReplacementUtil.replaceContestTypeStrings(DEFAULT_GROUP_DESCRIPTION, contestTypeForLiferay);
 
         return groupService.addGroup(StringUtils.substring(groupName, 0, 80),
                 String.format(groupDescription, StringUtils.substring(groupName, 0, 80)),

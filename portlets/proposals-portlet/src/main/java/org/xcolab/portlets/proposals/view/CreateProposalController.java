@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -65,7 +67,12 @@ public class CreateProposalController extends BaseProposalsController {
 
 
         	model.addAttribute("baseProposal", baseProposalWrapper);
-        	model.addAttribute("baseContest", new ContestWrapper(baseContest));
+            try {
+                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(baseContest.getContestPK());
+                model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
+            }catch (ContestNotFoundException ignored){
+
+            }
         	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper));
         }
         else {

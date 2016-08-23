@@ -15,6 +15,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.utils.TemplateReplacementUtil;
 
@@ -58,6 +59,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		}
 
 		ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposalId);
+		org.xcolab.client.contest.pojo.ContestType contestTypeMicro = ContestClient.getContestType(contestType.getId());
 		String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
 		String proposalLink = String.format("<a href='%s'>%s</a>", ProposalLocalServiceUtil.getProposalLinkUrl(proposalId), proposalName);
 
@@ -65,11 +67,11 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 			User invitee = UserLocalServiceUtil.getUserById(membershipRequest.getUserId());
 			if (action.equalsIgnoreCase("ACCEPT")) {
 				ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, "The invitation was accepted.", invitee.getUserId());
-                final String membershipAcceptedMessage = TemplateReplacementUtil.replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED, contestType);
+                final String membershipAcceptedMessage = TemplateReplacementUtil.replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED, contestTypeMicro);
                 sendMessage(invitee.getUserId(),recipients,MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(membershipAcceptedMessage, invitee.getFullName(), proposalLink));
 			} else if (action.equalsIgnoreCase("DECLINE")) {
 				ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), membershipId, "The invitation was rejected.", invitee.getUserId());
-                final String membershipRejectedMessage = TemplateReplacementUtil.replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED, contestType);
+                final String membershipRejectedMessage = TemplateReplacementUtil.replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED, contestTypeMicro);
                 sendMessage(invitee.getUserId(),recipients,MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(membershipRejectedMessage, invitee.getFullName(), proposalLink));
 			}
 		}

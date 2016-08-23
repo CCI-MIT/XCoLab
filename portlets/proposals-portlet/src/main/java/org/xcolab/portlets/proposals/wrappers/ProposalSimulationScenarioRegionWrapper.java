@@ -4,6 +4,8 @@ import com.ext.portlet.model.Contest;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.log4j.Logger;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 
 /**
  * Created by Thomas on 7/2/2015.
@@ -25,8 +27,14 @@ public class ProposalSimulationScenarioRegionWrapper {
         this.proposalWrapper = proposalWrapper;
         proposalName = proposalWrapper.getName();
         Contest contestForProposal = proposalWrapper.getContest();
-        ContestWrapper contestWrapper = new ContestWrapper(contestForProposal);
-        this.region = contestWrapper.getWhereName();
+        try {
+            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contestForProposal.getContestPK());
+
+            ContestWrapper contestWrapper = new ContestWrapper(contestMicro); //contestForProposal
+            this.region = contestWrapper.getWhereName();
+        }catch(ContestNotFoundException ignored){
+
+        }
     }
 
     public ProposalSimulationScenarioRegionWrapper() {
@@ -57,8 +65,14 @@ public class ProposalSimulationScenarioRegionWrapper {
     }
 
     public void setRegion(Contest contest) throws SystemException, PortalException{
-        ContestWrapper contestWrapper = new ContestWrapper(contest);
-        this.region = contestWrapper.getWhereName();
+
+        try {
+            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+            ContestWrapper contestWrapper = new ContestWrapper(contestMicro);//contest
+            this.region = contestWrapper.getWhereName();
+        }catch (ContestNotFoundException ignored){
+
+        }
     }
 
 

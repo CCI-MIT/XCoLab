@@ -1,14 +1,15 @@
 package org.xcolab.portlets.users;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -65,11 +66,13 @@ public class MembersController {
             sortFilterPage.setFilter(filterParam);
         }
 
-        List<MemberItem> users = new ArrayList<>();
-
         final boolean isPointsActive = ConfigurationAttributeKey.IS_POINTS_ACTIVE.getBooleanValue();
         if (StringUtils.isEmpty(sortFilterPage.getSortColumn())) {
-            sortFilterPage.setSortColumn(isPointsActive ? "POINTS" : "ACTIVITY");
+            String sortColumn = ConfigurationAttributeKey.MEMBERS_DEFAULT_SORT_COLUMN.getStringValue();
+            if (StringUtils.isEmpty(sortColumn)) {
+                sortColumn = isPointsActive ? "POINTS" : "ACTIVITY";
+            }
+            sortFilterPage.setSortColumn(sortColumn);
             sortFilterPage.setSortAscending(false);
         }
 
@@ -82,6 +85,7 @@ public class MembersController {
                 sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
                 firstUser, endUser);
 
+        List<MemberItem> users = new ArrayList<>();
         for (Member member : members) {
             MemberItem memberItem = new MemberItem(member, memberCategoryParam);
             users.add(memberItem);

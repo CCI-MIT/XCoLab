@@ -1,10 +1,9 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.PlanTemplateSection;
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
@@ -13,6 +12,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -38,7 +39,8 @@ public class ProposalTemplateWrapper {
     private Boolean updateExistingSections = false;
     private Boolean createNew = false;
 
-    public ProposalTemplateWrapper() { }
+    public ProposalTemplateWrapper() {
+    }
 
     public ProposalTemplateWrapper(Long planTemplateId) throws PortalException, SystemException {
         this.planTemplate = PlanTemplateLocalServiceUtil.getPlanTemplate(planTemplateId);
@@ -290,11 +292,9 @@ public class ProposalTemplateWrapper {
         List<BaseContestWrapper> contestsUsingSelectedTemplate = new ArrayList<>();
         List<Contest> contestsUsingSelectedTemplateList = new ArrayList<>();
 
-        try {
-            Long planTemplateId = planTemplate.getId();
-            contestsUsingSelectedTemplateList = ContestLocalServiceUtil.getContestsByPlanTemplateId(planTemplateId);
-        } catch (SystemException ignored) {
-        }
+        Long planTemplateId = planTemplate.getId();
+        contestsUsingSelectedTemplateList = ContestClient.getContestsByPlanTemplateId(planTemplateId);
+
 
         for (Contest contest : contestsUsingSelectedTemplateList) {
             contestsUsingSelectedTemplate.add(new BaseContestWrapper(contest));

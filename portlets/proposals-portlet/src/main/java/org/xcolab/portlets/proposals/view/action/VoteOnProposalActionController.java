@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -86,16 +88,21 @@ public class VoteOnProposalActionController {
 
                 final boolean voteIsValid = validateVote(user, member, proposal, contest, serviceContext);
                 if (voteIsValid) {
-                    new ProposalVoteNotification(proposal, contest, member, serviceContext).sendMessage();
+                    try {
+                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                        new ProposalVoteNotification(proposal, contestMicro, member, serviceContext).sendMessage();
+                    } catch (ContestNotFoundException ignored) {
+
+                    }
                     hasVoted = true;
                 }
 
                 //publish event per contestPhaseId to allow voting on exactly one proposal per contest(phase)
-            	AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY+contestPhaseId,
-            			VOTE_ANALYTICS_CATEGORY,
-            			VOTE_ANALYTICS_ACTION,
-            			VOTE_ANALYTICS_LABEL,
-            			1);
+                AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY + contestPhaseId,
+                        VOTE_ANALYTICS_CATEGORY,
+                        VOTE_ANALYTICS_ACTION,
+                        VOTE_ANALYTICS_LABEL,
+                        1);
             }
         } else {
             if (user == null || user.getUserId() == 10115) {
@@ -147,17 +154,22 @@ public class VoteOnProposalActionController {
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Date());
-        new ProposalVoteValidityConfirmation(proposal, contest, member, serviceContext,
-                confirmationToken).sendEmailNotification();
+        try {
+                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+            new ProposalVoteValidityConfirmation(proposal, contestMicro, member, serviceContext,
+                    confirmationToken).sendEmailNotification();
+        }catch (ContestNotFoundException ignored){
+
+        }
     }
 
     @RequestMapping(params = "pageToDisplay=confirmVote")
     public String confirmVote(PortletRequest request,
                               PortletResponse response,
                               Model model,
-                            @RequestParam long proposalId,
-                            @RequestParam long userId,
-                            @RequestParam String confirmationToken) {
+                              @RequestParam long proposalId,
+                              @RequestParam long userId,
+                              @RequestParam String confirmationToken) {
         boolean success = false;
         try {
             ProposalVote vote = ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposalId, userId);

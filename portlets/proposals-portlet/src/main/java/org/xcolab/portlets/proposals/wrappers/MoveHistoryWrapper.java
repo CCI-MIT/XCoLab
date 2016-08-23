@@ -6,6 +6,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.joda.time.DateTime;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
@@ -27,7 +29,11 @@ public class MoveHistoryWrapper {
     }
 
     public ContestWrapper getSourceContest() throws PortalException, SystemException {
-        return new ContestWrapper(wrapped.getSourceContestId());
+        try {
+            return new ContestWrapper(wrapped.getSourceContestId());
+        }catch (ContestNotFoundException ignored){
+            return null;
+        }
     }
 
     public BaseContestPhaseWrapper getSourceContestPhase() throws PortalException, SystemException {
@@ -39,7 +45,11 @@ public class MoveHistoryWrapper {
     }
 
     public ContestWrapper getTargetContest() throws PortalException, SystemException {
-        return new ContestWrapper(wrapped.getTargetContestId());
+       try{
+           return new ContestWrapper(wrapped.getTargetContestId());
+       }catch (ContestNotFoundException ignored){
+           return null;
+       }
     }
 
     public BaseContestPhaseWrapper getTargetContestPhase() throws PortalException, SystemException {

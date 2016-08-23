@@ -16,6 +16,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
@@ -83,6 +85,11 @@ public final class ProposalCreationUtil {
         Contest contest = ContestPhaseLocalServiceUtil
                 .getContest(ContestPhaseLocalServiceUtil.getContestPhase(contestPhase.getContestPhasePK()));
         final Proposal updatedProposal = ProposalLocalServiceUtil.fetchProposal(proposalWrapper.getProposalId());
-        new ProposalCreationNotification(updatedProposal, contest, serviceContext).sendMessage();
+        try{
+            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                    new ProposalCreationNotification(updatedProposal, contestMicro, serviceContext).sendMessage();
+        }catch (ContestNotFoundException ignored){
+
+        }
     }
 }

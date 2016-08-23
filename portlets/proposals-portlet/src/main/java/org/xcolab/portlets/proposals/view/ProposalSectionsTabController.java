@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -99,7 +101,14 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         	ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
                     baseContest, baseContestPhase, null);
         	model.addAttribute("baseProposal", baseProposalWrapped);
-        	model.addAttribute("baseContest", new ContestWrapper(baseContest));
+
+            try{
+                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(baseContest.getContestPK());
+                model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
+            }catch (ContestNotFoundException ignored){
+
+            }
+
         	model.addAttribute("isMove", true);
 
         	UpdateProposalDetailsBean updateProposalDetailsBean = new UpdateProposalDetailsBean(

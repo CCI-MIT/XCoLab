@@ -14,4 +14,5 @@ public interface CommentDao {
     Comment get(long commentId) throws NotFoundException;
     boolean update(Comment comment);
     Comment create(Comment comment);
+    int countProposalCommentsByContestPhase(Long contestPhaseId);
 }

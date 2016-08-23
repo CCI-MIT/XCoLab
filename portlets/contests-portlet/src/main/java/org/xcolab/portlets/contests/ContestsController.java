@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contests;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.util.ArrayList;
@@ -35,16 +38,16 @@ public class ContestsController {
         ContestPreferences contestPreferences = new ContestPreferences(request);
 
         List<ContestWrapper> contestWrappers = new ArrayList<>();
-        try {
+
             List<Contest> contests;
             if (contestPreferences.getSelectedContests().isEmpty()) {
-                contests = ContestLocalServiceUtil.findByActiveFeatured(true, true);
+                contests = ContestClient.findContestsByActiveFeatured(true, true);
             } else {
                 contests = new ArrayList<>();
                 for (Long contestId : contestPreferences.getSelectedContests()) {
                     try {
-                        contests.add(ContestLocalServiceUtil.getContest(contestId));
-                    } catch (PortalException e) {
+                        contests.add(ContestClient.getContest(contestId));
+                    } catch (ContestNotFoundException e) {
                         _log.error("Could not find contest " + contestId);
                     }
                 }
@@ -58,14 +61,16 @@ public class ContestsController {
                 if (contest.getContestPrivate()) {
                     continue;
                 }
-                contestWrappers.add(new ContestWrapper(contest));
+                try {
+                    contestWrappers.add(new ContestWrapper(contest));
+                }catch (ContestNotFoundException ignored){
+
+                }
             }
 
             model.addAttribute("contests", contestWrappers);
             model.addAttribute("preferences", contestPreferences);
             return "showContests";
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 }

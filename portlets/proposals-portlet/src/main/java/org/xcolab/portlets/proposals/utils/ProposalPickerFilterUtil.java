@@ -19,6 +19,8 @@ import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.ArrayList;
@@ -65,8 +67,13 @@ public class ProposalPickerFilterUtil {
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
         for (Contest c: ContestLocalServiceUtil.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-            contests.add(Pair.of(new ContestWrapper(c),
-                    c.getCreated() == null ? new Date(0) : c.getCreated()));
+            try {
+                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(c.getContestPK());
+                contests.add(Pair.of(new ContestWrapper(contestMicro),  //c
+                        c.getCreated() == null ? new Date(0) : c.getCreated()));
+            }catch (ContestNotFoundException ignored){
+
+            }
         }
         return contests;
     }

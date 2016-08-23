@@ -1,15 +1,13 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.model.Contest;
-import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 
 public class ContestAdminBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -118,11 +116,9 @@ public class ContestAdminBean implements Serializable {
         contest.setContestTier(contestTier);
         contest.setContestTypeId(contestType);
         contest.setHideRibbons(hideRibbons);
-        try {
-            contest.persist();
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
+        ContestClient.updateContest(contest);
+
         contestModelSettings.persist(contest);
     }
 

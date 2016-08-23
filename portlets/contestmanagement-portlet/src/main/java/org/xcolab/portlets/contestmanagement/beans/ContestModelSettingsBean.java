@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONException;
@@ -11,10 +11,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.comm.ClientRepository;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -129,11 +130,9 @@ public class ContestModelSettingsBean implements Serializable {
         if (defaultModelSettings != null) {
             contest.setDefaultModelSettings(defaultModelSettings);
         }
-        try {
-            contest.persist();
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+        ContestClient.updateContest(contest);
+
+
     }
 
     public static List<LabelValue> getAllModelIds() {

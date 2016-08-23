@@ -62,6 +62,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -667,11 +669,22 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
                 Member member = MembersClient.getMember(user.getUserId());
                 if (proposals.size() == 1) {
                     voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
-                    new ContestVoteNotification(member, contest, proposals.get(0), serviceContext).sendMessage();
+                    try{
+                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                        new ContestVoteNotification(member, contestMicro, proposals.get(0), serviceContext).sendMessage();
+                    }catch (ContestNotFoundException ignored){
+
+                    }
+
                 }
                 // Send a notification to the user
                 else {
-                    new ContestVoteQuestionNotification(member, contest, proposals, serviceContext).sendMessage();
+                    try {
+                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                        new ContestVoteQuestionNotification(member, contestMicro, proposals, serviceContext).sendMessage();
+                    }catch (ContestNotFoundException ignored){
+
+                    }
                 }
             } catch (MemberNotFoundException e) {
                 //ignore, we know it exists

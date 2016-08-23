@@ -1,27 +1,28 @@
 package org.xcolab.utils.emailnotification.basic;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.ServiceContext;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
+import com.ext.portlet.ProposalAttributeKeys;
+import com.ext.portlet.model.Proposal;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.service.ServiceContext;
+
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.helpers.ProposalAttributeHelper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.TemplateReplacementUtil;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
@@ -76,12 +77,14 @@ public abstract class EmailNotification {
 
     private String getProposalLinkWithLinkText(Contest contest,
             Proposal proposal, String linkText, String tab) {
-        String proposalLinkUrl = serviceContext.getPortalURL()
-                + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
-        if (tab != null) {
-            proposalLinkUrl += "/tab/" + tab;
-        }
-        return String.format(LINK_FORMAT_STRING, proposalLinkUrl, linkText);
+
+            String proposalLinkUrl = serviceContext.getPortalURL()
+                    + ProposalLocalServiceUtil.getProposalLinkUrl(getLiferayContestFromContest(contest), proposal);
+            if (tab != null) {
+                proposalLinkUrl += "/tab/" + tab;
+            }
+            return String.format(LINK_FORMAT_STRING, proposalLinkUrl, linkText);
+
     }
 
     /**
@@ -94,11 +97,21 @@ public abstract class EmailNotification {
     protected String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) {
         final String proposalName = new ProposalAttributeHelper(proposal)
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
-        final String proposalLinkUrl = serviceContext.getPortalURL()
-                + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/vote";
-        return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
+
+            final String proposalLinkUrl = serviceContext.getPortalURL()
+                    + ProposalLocalServiceUtil.getProposalLinkUrl(getLiferayContestFromContest(contest), proposal) + "/vote";
+            return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
+
     }
 
+    public com.ext.portlet.model.Contest getLiferayContestFromContest(Contest contest){
+        try {
+            return ContestLocalServiceUtil.getContest(contest.getContestPK());
+
+        }catch (PortalException | SystemException ignored){
+        }
+        return null;
+    }
     /**
      * Returns the HTML link for the passed contest
      *
@@ -107,7 +120,7 @@ public abstract class EmailNotification {
      */
     private String getContestLink(Contest contest) {
         final String contestLinkUrl =
-                serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
+                serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(getLiferayContestFromContest(contest));
         return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getContestShortName());
     }
 
@@ -133,7 +146,7 @@ public abstract class EmailNotification {
      * @param proposalToShare The Proposal that should be shared
      */
     protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare) {
-        return serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposalToShare);
+        return serviceContext.getPortalURL() + ProposalLocalServiceUtil.getProposalLinkUrl(getLiferayContestFromContest(contest), proposalToShare);
     }
 
     /**
@@ -142,7 +155,7 @@ public abstract class EmailNotification {
      * @param contest Contest to be shared
      */
     protected String getContestLinkUrl(Contest contest) {
-        return serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(contest);
+        return serviceContext.getPortalURL() + ContestLocalServiceUtil.getContestLinkUrl(getLiferayContestFromContest(contest));
     }
 
     /**
@@ -243,12 +256,10 @@ public abstract class EmailNotification {
             Proposal proposal = getProposal();
             final boolean hasProposal = contest != null && proposal != null;
             final ContestType contestType;
-            try {
-                contestType = contest != null
-                        ? ContestTypeLocalServiceUtil.getContestType(contest) : null;
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            }
+
+            contestType = contest != null
+                        ? ContestClient.getContestType(contest.getContestTypeId()) : null;
+
 
             switch (tag.nodeName()) {
                 case FIRSTNAME_PLACEHOLDER:

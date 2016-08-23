@@ -1,18 +1,16 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.io.UnsupportedEncodingException;
@@ -42,15 +40,11 @@ public class WikiPageWrapper {
     }
 
     public ContestResourcesBean getContestResourcesBean() {
-        try {
-            final ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
-            ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
-            String resourcesContent = contentArticleVersion.getContent();
-            contestResourcesBean.fillSectionsWithContent(resourcesContent);
-            return contestResourcesBean;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+        final ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
+        ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
+        String resourcesContent = contentArticleVersion.getContent();
+        contestResourcesBean.fillSectionsWithContent(resourcesContent);
+        return contestResourcesBean;
     }
 
     public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean)
@@ -67,41 +61,40 @@ public class WikiPageWrapper {
     }
 
     private void initWikiPage() {
-        try {
-            if (contest.getResourceArticleId() > 0) {
-                try {
-                    contentArticle = ContentsClient
-                            .getContentArticle(contest.getResourceArticleId());
-                    contentArticleVersion =
-                            ContentsClient
-                                    .getContentArticleVersion(contentArticle.getMaxVersionId());
-                } catch (ContentNotFoundException e) {
-                    throw ReferenceResolutionException
-                            .toObject(ContentArticle.class, contest.getResourceArticleId())
-                            .fromObject(Contest.class, contest.getContestPK());
-                }
-            } else {
-                contentArticleVersion = new ContentArticleVersion();
-                contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
-                contentArticleVersion.setAuthorId(loggedInUserId);
-                contentArticleVersion.setTitle(contest.getContestShortName());
-                contentArticleVersion.setContent("");
-                contentArticleVersion = ContentsClient
-                        .createContentArticleVersion(contentArticleVersion);
 
-                try {
-                    contentArticle = ContentsClient.getContentArticle(
-                            contentArticleVersion.getContentArticleId());
-
-                    final long resourceArticleId = contentArticle.getContentArticleId();
-                    contest.setResourceArticleId(resourceArticleId);
-                    ContestLocalServiceUtil.updateContest(contest);
-                } catch (ContentNotFoundException e) {
-                    throw new IllegalStateException("Could not retrieve ContentArticle after creation: " + contentArticle);
-                }
+        if (contest.getResourceArticleId() > 0) {
+            try {
+                contentArticle = ContentsClient
+                        .getContentArticle(contest.getResourceArticleId());
+                contentArticleVersion =
+                        ContentsClient
+                                .getContentArticleVersion(contentArticle.getMaxVersionId());
+            } catch (ContentNotFoundException e) {
+                throw ReferenceResolutionException
+                        .toObject(ContentArticle.class, contest.getResourceArticleId())
+                        .fromObject(Contest.class, contest.getContestPK());
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+        } else {
+            contentArticleVersion = new ContentArticleVersion();
+            contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
+            contentArticleVersion.setAuthorId(loggedInUserId);
+            contentArticleVersion.setTitle(contest.getContestShortName());
+            contentArticleVersion.setContent("");
+            contentArticleVersion = ContentsClient
+                    .createContentArticleVersion(contentArticleVersion);
+
+            try {
+                contentArticle = ContentsClient.getContentArticle(
+                        contentArticleVersion.getContentArticleId());
+
+                final long resourceArticleId = contentArticle.getContentArticleId();
+                contest.setResourceArticleId(resourceArticleId);
+                ContestClient.updateContest(contest);
+
+            } catch (ContentNotFoundException e) {
+                throw new IllegalStateException("Could not retrieve ContentArticle after creation: " + contentArticle);
+            }
         }
+
     }
 }

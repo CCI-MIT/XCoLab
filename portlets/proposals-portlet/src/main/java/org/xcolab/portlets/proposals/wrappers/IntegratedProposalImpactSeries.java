@@ -6,6 +6,8 @@ import com.ext.portlet.model.Proposal;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.utils.SectorTypes;
 
@@ -47,12 +49,18 @@ public class IntegratedProposalImpactSeries {
     private OntologyTerm regionOntologyTerm;
 
     public IntegratedProposalImpactSeries(Proposal proposal, Contest contest) throws PortalException, SystemException {
-        ContestWrapper contestWrapper = new ContestWrapper(contest);
-        this.regionOntologyTerm = contestWrapper.getWhere().get(0);
-        this.proposal = proposal;
-        this.resultSeriesValues = new ProposalImpactSeriesValues();
-        boolean global = contest.getContestTier() == ContestTier.GLOBAL.getTierType();
-        calculateIntegratedImpactSeries(global);
+        try{
+            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+            ContestWrapper contestWrapper = new ContestWrapper(contestMicro);
+            this.regionOntologyTerm = contestWrapper.getWhere().get(0);
+            this.proposal = proposal;
+            this.resultSeriesValues = new ProposalImpactSeriesValues();
+            boolean global = contest.getContestTier() == ContestTier.GLOBAL.getTierType();
+            calculateIntegratedImpactSeries(global);
+        }catch (ContestNotFoundException ignored){
+
+        }
+
     }
 
     public IntegratedProposalImpactSeries(Proposal proposal) throws PortalException, SystemException {
