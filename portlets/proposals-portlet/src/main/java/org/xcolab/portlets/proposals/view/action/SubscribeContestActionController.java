@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.liferay.LoginRegisterUtil;
+import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -37,13 +38,6 @@ public class SubscribeContestActionController {
             else {
                 ContestLocalServiceUtil.subscribe(contestId, userId);
 
-                try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contestId);
-                    if(contestMicro.getIsSharedContest()){
-                        LoginRegisterUtil.registerMemberInSharedColab(userId);
-                    }
-                }catch(ContestNotFoundException ignored){
-                }
             }
             response.sendRedirect(ContestLocalServiceUtil.getContestLinkUrl(contestId));
         }

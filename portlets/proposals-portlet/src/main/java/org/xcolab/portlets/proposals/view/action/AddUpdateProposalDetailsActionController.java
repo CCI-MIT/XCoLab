@@ -23,6 +23,7 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
+import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -98,10 +99,14 @@ public class AddUpdateProposalDetailsActionController {
 
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
                     new ProposalCreatedActivityEntry());
+
         }else{
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
                     new ProposalAttributeUpdateActivityEntry());
         }
+
+        SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
+
         if(ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue()){
             try {
                 FilteredEntry filteredEntry = FilteringClient.getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());

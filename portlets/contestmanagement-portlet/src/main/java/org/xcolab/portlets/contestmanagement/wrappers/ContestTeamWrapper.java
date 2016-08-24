@@ -12,6 +12,7 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.ContestTeamMember;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
@@ -41,6 +42,13 @@ public class ContestTeamWrapper {
         assignMembersToContestWithRole(userIds, memberRole);
         assignMemberRoleToUser(memberRole, userIds);
         subscribeUsersToContest(userIds);
+        crossColabRegisterUsersForSharedContests(userIds);
+    }
+    private void crossColabRegisterUsersForSharedContests(List<Long> userIds){
+
+        for(Long id: userIds) {
+            SharedColabUtil.checkTriggerForAutoUserCreationInContest(contestId, id);
+        }
     }
 
     private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds)
