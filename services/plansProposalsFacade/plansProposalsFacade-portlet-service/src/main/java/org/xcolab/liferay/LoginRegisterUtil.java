@@ -303,10 +303,10 @@ public final class LoginRegisterUtil {
     private static void checkIfMemberAutoRegisteredNeedsLiferayCreation(String screenName, String password){
         try {
             Member member = MembersClient.findMemberByScreenNameNoRole(screenName);
-            if (member.getAutoregisteredmemberstatus() == 1) {
+            if (member.getAutoRegisteredMemberStatus() == 1) {
                 User liferayUser = registerLiferayWithId(member.getId_(), member.getScreenName(), password, member.getEmailAddress(), member.getFirstName(), member.getLastName(), (member.getFacebookId() != null ? (member.getFacebookId().toString()) : ("0")));
                 if(liferayUser != null ) {
-                    member.setAutoregisteredmemberstatus(2);
+                    member.setAutoRegisteredMemberStatus(2);
                     MembersClient.updateMember(member);
                 }
             }

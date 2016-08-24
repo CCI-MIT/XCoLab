@@ -65,6 +65,7 @@ public class Member implements Serializable {
         this.status = value.status;
         this.reportKarma = value.reportKarma;
         this.portraitFileEntryId = value.portraitFileEntryId;
+        this.autoregisteredmemberstatus = value.autoregisteredmemberstatus;
     }
 
     public long getId_() {
@@ -238,11 +239,11 @@ public class Member implements Serializable {
         this.reportKarma = reportKarma;
     }
 
-    public Integer getAutoregisteredmemberstatus() {
-        return autoregisteredmemberstatus;
+    public Integer getAutoRegisteredMemberStatus() {
+        return this.autoregisteredmemberstatus;
     }
 
-    public void setAutoregisteredmemberstatus(Integer autoregisteredmemberstatus) {
+    public void setAutoRegisteredMemberStatus(Integer autoregisteredmemberstatus) {
         this.autoregisteredmemberstatus = autoregisteredmemberstatus;
     }
 
