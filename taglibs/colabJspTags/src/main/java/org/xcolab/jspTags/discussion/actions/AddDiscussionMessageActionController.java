@@ -1,5 +1,7 @@
 package org.xcolab.jspTags.discussion.actions;
 
+import com.ext.portlet.model.Contest;
+import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -24,9 +26,11 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
+import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
+import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 
@@ -82,6 +86,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                         ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(),
                                 comment.getCommentId() + "",
                                 new DiscussionAddProposalCommentActivityEntry());
+                        Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposalIdForThread);
+                        SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(),userId);
                     }
                 } else {
                     ActivityEntryHelper.createActivityEntry(userId,
