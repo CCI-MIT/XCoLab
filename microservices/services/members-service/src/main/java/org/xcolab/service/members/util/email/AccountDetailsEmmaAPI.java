@@ -2,6 +2,8 @@ package org.xcolab.service.members.util.email;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -13,6 +15,8 @@ import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundExceptio
 @Component
 @PropertySource({"file:${user.home}/.xcolab.application.properties"})
 public class AccountDetailsEmmaAPI {
+
+    private static final Logger log = LoggerFactory.getLogger(AccountDetailsEmmaAPI.class);
 
     @Autowired
     private Environment env;
@@ -27,9 +31,12 @@ public class AccountDetailsEmmaAPI {
 
     private void init() {
         if (!initialized) {
-            enabled = ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.getBooleanValue()
-                    && "production".equalsIgnoreCase(env.getProperty("environment"));
+            final String environmentProperty = env.getProperty("environment");
+            final boolean isMyEmmaActive = ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE
+                    .getBooleanValue();
+            enabled = isMyEmmaActive && "production".equalsIgnoreCase(environmentProperty);
             if (enabled) {
+                log.info("MyEmma configuration enabled, retrieving account details");
                 try {
                     accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
                     groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
@@ -53,6 +60,9 @@ public class AccountDetailsEmmaAPI {
                 encodedAuthorization = "Basic " + new Base64()
                         .encodeToString((publicApiKey + ":" + privateApiKey).getBytes()).trim();
 
+            } else {
+                log.warn("MyEmma integration disabled: IS_MY_EMMA_ACTIVE = {}, environment = {}",
+                        isMyEmmaActive, environmentProperty);
             }
             initialized = true;
         }

@@ -16,6 +16,7 @@
     <logger name="org.xcolab.domain" level="WARN" />
     <logger name="org.xcolab.service" level="WARN" />
     <logger name="com.zaxxer.hikari" level="INFO" />
+    <logger name="org.xcolab.service.members.util.email" level="INFO" />
     <logger name="org.jooq" level="WARN" />
 
     <root>
