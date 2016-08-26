@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
 import org.xcolab.service.utils.ControllerUtils;
@@ -229,10 +231,17 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members/{memberId}/login", method = RequestMethod.POST)
-    public boolean login(@PathVariable long memberId, @RequestBody String password)
-            throws NoSuchAlgorithmException, NotFoundException {
+    public boolean login(@PathVariable long memberId, @RequestBody LoginBean loginBean)
+            throws NotFoundException {
         final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
-        return memberService.validatePassword(password, member.getHashedPassword());
+        return memberService.login(member, loginBean);
+    }
+
+    //TODO: remove once SSO is improved
+    @RequestMapping(value = "/loginLogs", method = RequestMethod.POST)
+    public LoginLog createLoginLog(@RequestBody LoginLog loginLog) {
+        return memberService.createLoginLog(loginLog.getUserId(), loginLog.getIpAddress(),
+                loginLog.getEntryUrl());
     }
 
     @RequestMapping(value = "/members/{memberId}/subscribe", method = RequestMethod.PUT)

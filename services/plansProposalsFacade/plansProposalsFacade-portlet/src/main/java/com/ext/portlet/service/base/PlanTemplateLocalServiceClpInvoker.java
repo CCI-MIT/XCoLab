@@ -41,20 +41,20 @@ public class PlanTemplateLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName422;
-    private String[] _methodParameterTypes422;
-    private String _methodName423;
-    private String[] _methodParameterTypes423;
-    private String _methodName428;
-    private String[] _methodParameterTypes428;
-    private String _methodName429;
-    private String[] _methodParameterTypes429;
-    private String _methodName430;
-    private String[] _methodParameterTypes430;
-    private String _methodName431;
-    private String[] _methodParameterTypes431;
-    private String _methodName432;
-    private String[] _methodParameterTypes432;
+    private String _methodName398;
+    private String[] _methodParameterTypes398;
+    private String _methodName399;
+    private String[] _methodParameterTypes399;
+    private String _methodName404;
+    private String[] _methodParameterTypes404;
+    private String _methodName405;
+    private String[] _methodParameterTypes405;
+    private String _methodName406;
+    private String[] _methodParameterTypes406;
+    private String _methodName407;
+    private String[] _methodParameterTypes407;
+    private String _methodName408;
+    private String[] _methodParameterTypes408;
 
     public PlanTemplateLocalServiceClpInvoker() {
         _methodName0 = "addPlanTemplate";
@@ -139,43 +139,43 @@ public class PlanTemplateLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanTemplate"
             };
 
-        _methodName422 = "getBeanIdentifier";
+        _methodName398 = "getBeanIdentifier";
 
-        _methodParameterTypes422 = new String[] {  };
+        _methodParameterTypes398 = new String[] {  };
 
-        _methodName423 = "setBeanIdentifier";
+        _methodName399 = "setBeanIdentifier";
 
-        _methodParameterTypes423 = new String[] { "java.lang.String" };
+        _methodParameterTypes399 = new String[] { "java.lang.String" };
 
-        _methodName428 = "store";
+        _methodName404 = "store";
 
-        _methodParameterTypes428 = new String[] {
+        _methodParameterTypes404 = new String[] {
                 "com.ext.portlet.model.PlanTemplate"
             };
 
-        _methodName429 = "getSections";
+        _methodName405 = "getSections";
 
-        _methodParameterTypes429 = new String[] {
+        _methodParameterTypes405 = new String[] {
                 "com.ext.portlet.model.PlanTemplate"
             };
 
-        _methodName430 = "addSection";
+        _methodName406 = "addSection";
 
-        _methodParameterTypes430 = new String[] {
+        _methodParameterTypes406 = new String[] {
                 "com.ext.portlet.model.PlanTemplate",
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName431 = "removeSection";
+        _methodName407 = "removeSection";
 
-        _methodParameterTypes431 = new String[] {
+        _methodParameterTypes407 = new String[] {
                 "com.ext.portlet.model.PlanTemplate",
                 "com.ext.portlet.model.PlanSectionDefinition"
             };
 
-        _methodName432 = "updateSectionWeight";
+        _methodName408 = "updateSectionWeight";
 
-        _methodParameterTypes432 = new String[] {
+        _methodParameterTypes408 = new String[] {
                 "com.ext.portlet.model.PlanTemplate",
                 "com.ext.portlet.model.PlanSectionDefinition", "int"
             };
@@ -270,48 +270,48 @@ public class PlanTemplateLocalServiceClpInvoker {
             return PlanTemplateLocalServiceUtil.updatePlanTemplate((com.ext.portlet.model.PlanTemplate) arguments[0]);
         }
 
-        if (_methodName422.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
+        if (_methodName398.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
             return PlanTemplateLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName423.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
+        if (_methodName399.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
             PlanTemplateLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName428.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
+        if (_methodName404.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
             PlanTemplateLocalServiceUtil.store((com.ext.portlet.model.PlanTemplate) arguments[0]);
 
             return null;
         }
 
-        if (_methodName429.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes429, parameterTypes)) {
+        if (_methodName405.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
             return PlanTemplateLocalServiceUtil.getSections((com.ext.portlet.model.PlanTemplate) arguments[0]);
         }
 
-        if (_methodName430.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes430, parameterTypes)) {
+        if (_methodName406.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes406, parameterTypes)) {
             PlanTemplateLocalServiceUtil.addSection((com.ext.portlet.model.PlanTemplate) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1]);
 
             return null;
         }
 
-        if (_methodName431.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes431, parameterTypes)) {
+        if (_methodName407.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes407, parameterTypes)) {
             PlanTemplateLocalServiceUtil.removeSection((com.ext.portlet.model.PlanTemplate) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1]);
 
             return null;
         }
 
-        if (_methodName432.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes432, parameterTypes)) {
+        if (_methodName408.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes408, parameterTypes)) {
             PlanTemplateLocalServiceUtil.updateSectionWeight((com.ext.portlet.model.PlanTemplate) arguments[0],
                 (com.ext.portlet.model.PlanSectionDefinition) arguments[1],
                 ((Integer) arguments[2]).intValue());

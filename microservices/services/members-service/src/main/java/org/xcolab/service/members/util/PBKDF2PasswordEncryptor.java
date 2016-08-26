@@ -2,6 +2,8 @@ package org.xcolab.service.members.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.util.exceptions.InternalException;
+
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -51,7 +53,7 @@ public class PBKDF2PasswordEncryptor {
         try {
             secretKey = secretKeyFactory.generateSecret(pbeKeySpec);
         } catch (InvalidKeySpecException e) {
-            throw new RuntimeException(e);
+            throw new InternalException(e);
         }
 
         byte[] secretKeyBytes = secretKey.getEncoded();

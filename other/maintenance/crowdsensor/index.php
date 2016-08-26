@@ -23,7 +23,7 @@
                     <img src="img/logo-climate-colab.png"/>
                 </div>
                 <p style="text-align: justify;">
-                    We are currently performing a planned maintenance on crowdsensor.mit.edu. During this time the site will be unavailable. We hope this won't be too much of an inconvenience as we work to perform some necessary upgrades that will provide you with more features in the future.
+                    We are currently performing a planned maintenance on crowdsensor.org. During this time the site will be unavailable. We hope this won't be too much of an inconvenience as we work to perform some necessary upgrades that will provide you with more features in the future.
                 </p>
                 <p>Sincerely, <br/>The Crowdsensor Team</p>
 

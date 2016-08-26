@@ -3,6 +3,8 @@ package org.xcolab.client.members;
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
+import org.xcolab.client.members.pojo.LoginBean;
+import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
@@ -23,6 +25,9 @@ public final class MembersClient {
             new RestResource<>(memberService, "membercategories", MemberCategory.TYPES);
     private static final RestResource<Contact_> contactResource = new RestResource<>(memberService,
             "contacts", Contact_.TYPES);
+
+    private static final RestResource<LoginLog> loginLogResource = new RestResource<>(memberService,
+            "loginLogs", LoginLog.TYPES);
 
     private MembersClient() {
     }
@@ -275,8 +280,24 @@ public final class MembersClient {
         return memberResource.create(member).execute();
     }
 
-    public static boolean login(long memberId, String password) {
-        return memberResource.service(memberId, "login", Boolean.class).post();
+    public static boolean login(long memberId, String password, String remoteIp, String redirectUrl) {
+        LoginBean loginBean = new LoginBean();
+        loginBean.setPassword(password);
+        loginBean.setIpAddress(remoteIp);
+        loginBean.setRedirectUrl(redirectUrl);
+        return memberResource.service(memberId, "login", Boolean.class)
+                .post(loginBean);
+    }
+
+    //TODO: this shouldn't be done manually
+    public static LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUserId(memberId);
+        loginLog.setIpAddress(ipAddress);
+        loginLog.setEntryUrl(redirectUrl.substring(0,Math.min(250, redirectUrl.length())));
+
+        return loginLogResource.create(loginLog)
+                .execute();
     }
 
     public static boolean subscribeToNewsletter(long memberId) {

@@ -29,6 +29,7 @@
         <module>proposals-client</module>
         <module>search-client</module>
         <module>sharedcolab-client</module>
+        <module>tracking-client</module>
     </modules>
 
     <properties>

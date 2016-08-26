@@ -60,7 +60,7 @@ public class ForgotPasswordController {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
                 WebKeys.THEME_DISPLAY);
 
-        HttpServletRequest httpRequest = PortletUtils.getOryginalRequest(request);
+        HttpServletRequest httpRequest = PortletUtils.getOriginalRequest(request);
 
         String redirect = httpRequest.getParameter("redirect");
         String referer = httpRequest.getHeader("referer");

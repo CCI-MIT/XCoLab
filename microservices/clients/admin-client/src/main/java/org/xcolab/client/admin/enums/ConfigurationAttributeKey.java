@@ -60,7 +60,9 @@ public enum ConfigurationAttributeKey {
     LOGIN_INFO_MESSAGE(AttributeType.STRING, Optionality.OPTIONAL),
 
     IMPACT_TAB_IS_ACTIVE(AttributeType.BOOLEAN, Optionality.OPTIONAL),
-    IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS(AttributeType.STRING, Optionality.OPTIONAL);
+    IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS(AttributeType.STRING, Optionality.OPTIONAL),
+
+    MEMBERS_DEFAULT_SORT_COLUMN(AttributeType.STRING, Optionality.OPTIONAL);
 
     private final AttributeType type;
     private final Optionality optionality;

@@ -8,5 +8,5 @@ cd themes/climatecolab-theme
 cd ../..
 
 cd themes/fow-theme
-  mvn clean compile liferay:build-css package liferay:deploy
+  mvn clean compile liferay:build-css package liferay:deploy clean
 cd ../..

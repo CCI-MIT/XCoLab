@@ -2,7 +2,6 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-lazy="false" auto-import="false">
-	<import class="com.ext.portlet.model.AnalyticsUserEvent" />
 	<import class="com.ext.portlet.model.Contest" />
 	<import class="com.ext.portlet.model.ContestDebate" />
 	<import class="com.ext.portlet.model.ContestDiscussion" />
@@ -25,7 +24,6 @@
 	<import class="com.ext.portlet.model.ImpactTemplateMaxFocusArea" />
 	<import class="com.ext.portlet.model.ImpactTemplateSeries" />
 	<import class="com.ext.portlet.model.LandingPage" />
-	<import class="com.ext.portlet.model.LoginLog" />
 	<import class="com.ext.portlet.model.MessagingIgnoredRecipients" />
 	<import class="com.ext.portlet.model.MessagingMessage" />
 	<import class="com.ext.portlet.model.MessagingMessageConversion" />
@@ -64,21 +62,7 @@
 	<import class="com.ext.portlet.model.ProposalUnversionedAttribute" />
 	<import class="com.ext.portlet.model.ProposalVersion" />
 	<import class="com.ext.portlet.model.ProposalVote" />
-	<import class="com.ext.portlet.model.TrackedVisit" />
-	<import class="com.ext.portlet.model.TrackedVisitor2User" />
 	<import class="com.ext.portlet.model.Xcolab_User" />
-	<class name="com.ext.portlet.model.impl.AnalyticsUserEventImpl" table="xcolab_AnalyticsUserEvent">
-		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.ext.portlet.service.persistence.AnalyticsUserEventPK">
-			<key-property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="idString" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		</composite-id>
-		<property name="category" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="action" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="label" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="value" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="created" type="org.hibernate.type.TimestampType" />
-	</class>
 	<class name="com.ext.portlet.model.impl.ContestImpl" table="xcolab_Contest">
 		<cache usage="read-write" />
 		<id name="ContestPK" type="long">
@@ -341,18 +325,6 @@
 		<property name="baseUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="targetUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="updated" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.LoginLogImpl" table="xcolab_LoginLog">
-		<cache usage="read-write" />
-		<id name="pk" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="ipAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="city" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="country" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="entryUrl" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl" table="xcolab_MessagingIgnoredRecipients">
 		<cache usage="read-write" />
@@ -786,29 +758,5 @@
 		<property name="isValid" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="confirmationEmailSendDate" type="org.hibernate.type.TimestampType" />
 		<property name="confirmationToken" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.TrackedVisitImpl" table="xcolab_TrackedVisit">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
-		<property name="ip" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="city" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="country" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="browser" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="headers" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="referer" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-	</class>
-	<class name="com.ext.portlet.model.impl.TrackedVisitor2UserImpl" table="xcolab_TrackedVisitor2User">
-		<cache usage="read-write" />
-		<id name="id" column="id_" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" column="uuid_" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
 	</class>
 </hibernate-mapping>

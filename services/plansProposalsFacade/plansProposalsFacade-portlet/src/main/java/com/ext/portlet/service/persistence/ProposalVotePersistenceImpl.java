@@ -4,6 +4,8 @@ import com.ext.portlet.NoSuchProposalVoteException;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.model.impl.ProposalVoteImpl;
 import com.ext.portlet.model.impl.ProposalVoteModelImpl;
+import com.ext.portlet.service.persistence.ProposalVotePersistence;
+
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -29,6 +31,7 @@ import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -166,7 +169,7 @@ public class ProposalVotePersistenceImpl extends BasePersistenceImpl<ProposalVot
     private static final String _SQL_SELECT_PROPOSALVOTE = "SELECT proposalVote FROM ProposalVote proposalVote";
     private static final String _SQL_SELECT_PROPOSALVOTE_WHERE = "SELECT proposalVote FROM ProposalVote proposalVote WHERE ";
     private static final String _SQL_COUNT_PROPOSALVOTE = "SELECT COUNT(proposalVote) FROM ProposalVote proposalVote";
-    private static final String _SQL_COUNT_PROPOSALVOTE_WHERE = "SELECT COUNT(proposalVote) FROM ProposalVote proposalVote WHERE isValid=1 and ";
+    private static final String _SQL_COUNT_PROPOSALVOTE_WHERE = "SELECT COUNT(proposalVote) FROM ProposalVote proposalVote WHERE ";
     private static final String _ORDER_BY_ENTITY_ALIAS = "proposalVote.";
     private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ProposalVote exists with the primary key ";
     private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ProposalVote exists with the key {";
