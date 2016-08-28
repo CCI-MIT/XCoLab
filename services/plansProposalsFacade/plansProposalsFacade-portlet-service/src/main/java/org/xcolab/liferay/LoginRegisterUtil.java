@@ -246,7 +246,7 @@ public final class LoginRegisterUtil {
         member.setShortBio(shortBio);
         member.setCountry(country);
         MembersClient.register(member);
-        member = MembersClient.getMember(member.getId_());
+        member = MembersClient.getMemberUnchecked(member.getId_());
 
         if (imageId != null && !imageId.isEmpty()) {
 
@@ -258,7 +258,7 @@ public final class LoginRegisterUtil {
         }
         sendEmailNotificationToRegisteredUser(liferayServiceContext, member);
 
-        return MembersClient.getMember(liferayUser.getUserId());
+        return MembersClient.getMemberUnchecked(liferayUser.getUserId());
     }
 
     private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext,
