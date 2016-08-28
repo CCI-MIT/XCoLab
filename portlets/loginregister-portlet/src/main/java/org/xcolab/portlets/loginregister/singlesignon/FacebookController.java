@@ -70,7 +70,7 @@ public class FacebookController {
         UriComponentsBuilder facebookAuthURL = UriComponentsBuilder.fromHttpUrl(
                 FacebookUtil.AUTH_URL)
                 .queryParam("client_id",
-                        ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.getStringValue())
+                        ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get())
                 .queryParam("redirect_uri", facebookAuthRedirectURL)
                 .queryParam("scope", "email");
 
@@ -117,7 +117,7 @@ public class FacebookController {
             return;
         }
 
-        if (ConfigurationAttributeKey.FACEBOOK_VERIFIED_REQUIRED.getBooleanValue()
+        if (ConfigurationAttributeKey.FACEBOOK_VERIFIED_REQUIRED.get()
                 && !jsonObject.getBoolean("verified")) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("SSO", "general");
@@ -270,8 +270,8 @@ public class FacebookController {
 
     @RequestMapping(params = "status=registerOrLogin")
     public String registerOrLogin(PortletRequest request, Model model) {
-        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
+        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
+        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         return "SSO/registerOrLogin";
     }
 

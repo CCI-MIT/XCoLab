@@ -66,9 +66,9 @@ public class MembersController {
             sortFilterPage.setFilter(filterParam);
         }
 
-        final boolean isPointsActive = ConfigurationAttributeKey.IS_POINTS_ACTIVE.getBooleanValue();
+        final boolean isPointsActive = ConfigurationAttributeKey.IS_POINTS_ACTIVE.get();
         if (StringUtils.isEmpty(sortFilterPage.getSortColumn())) {
-            String sortColumn = ConfigurationAttributeKey.MEMBERS_DEFAULT_SORT_COLUMN.getStringValue();
+            String sortColumn = ConfigurationAttributeKey.MEMBERS_DEFAULT_SORT_COLUMN.get();
             if (StringUtils.isEmpty(sortColumn)) {
                 sortColumn = isPointsActive ? "POINTS" : "ACTIVITY";
             }
@@ -115,9 +115,9 @@ public class MembersController {
         model.addAttribute("memberCategories", MembersClient.getVisibleMemberCategories());
 
         model.addAttribute("colabName",
-                ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+                ConfigurationAttributeKey.COLAB_NAME.get());
         model.addAttribute("colabShortName",
-                ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
+                ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         model.addAttribute("pointsActive", isPointsActive);
 
         MembersPermissions membersPermissions = new MembersPermissions(request);

@@ -144,7 +144,7 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("showContestManagementLink", showContestManagementLink);
 
         model.addAttribute("showContestDisplayOptions",
-                ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.getBooleanValue());
+                ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());
 
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
         

@@ -227,7 +227,7 @@ public final class LoginRegisterUtil {
             String openId, String imageId, ServiceContext liferayServiceContext)
             throws Exception {
 
-        Long memberId = SharedColabClient.retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+        Long memberId = SharedColabClient.retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.get());
         User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName, fbIdString);
 
         Member member = new Member();

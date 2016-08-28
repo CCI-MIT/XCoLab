@@ -28,8 +28,8 @@ public class SharedColabClient {
             "members");
 
     public static boolean isScreenNameUsed(String screenName) {
-        String location = ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue();
-        String port = ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue();
+        String location = ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get();
+        String port = ConfigurationAttributeKey.SHARED_COLAB_PORT.get();
         sharedColabService.setServiceHost(location);
         sharedColabService.setServicePort(port);
         return sharedColabResource.service("isUsed",Boolean.class)
@@ -37,8 +37,8 @@ public class SharedColabClient {
     }
 
     public static boolean isEmailUsed(String email) {
-        String location = ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue();
-        String port = ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue();
+        String location = ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get();
+        String port = ConfigurationAttributeKey.SHARED_COLAB_PORT.get();
         sharedColabService.setServiceHost(location);
         sharedColabService.setServicePort(port);
         return sharedColabResource.service("isUsed", Boolean.class)
@@ -47,8 +47,8 @@ public class SharedColabClient {
     }
 
     public static Long retrieveSharedId(String email, String screenName, String colabName) {
-        sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.getStringValue());
-        sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.getStringValue());
+        sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get());
+        sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.get());
         ServiceQuery<Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
 
         if (email != null) {
@@ -64,8 +64,8 @@ public class SharedColabClient {
     }
 
     public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
-        memberService.setServiceHost(ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.getStringValue());
-        memberService.setServicePort(ConfigurationAttributeKey.PARTNER_COLAB_PORT.getStringValue());
+        memberService.setServiceHost(ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get());
+        memberService.setServicePort(ConfigurationAttributeKey.PARTNER_COLAB_PORT.get());
         //TODO: port to new methods
         final UriBuilder uriBuilder = memberResource.getResourceUrl()
                 .queryParam("screenName", screenName);
@@ -80,8 +80,8 @@ public class SharedColabClient {
 
 
     public static boolean validatePassword(String password, long memberId) {
-        memberService.setServiceHost(ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.getStringValue());
-        memberService.setServicePort(ConfigurationAttributeKey.PARTNER_COLAB_PORT.getStringValue());
+        memberService.setServiceHost(ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get());
+        memberService.setServicePort(ConfigurationAttributeKey.PARTNER_COLAB_PORT.get());
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("memberId", memberId)

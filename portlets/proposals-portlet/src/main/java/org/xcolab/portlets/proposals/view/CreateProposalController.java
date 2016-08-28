@@ -78,7 +78,7 @@ public class CreateProposalController extends BaseProposalsController {
         else {
         	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped));
         }
-        model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue());
+        model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
         model.addAttribute("proposal", proposalWrapped);
 
         model.addAttribute("isEditingProposal", true);
@@ -93,8 +93,8 @@ public class CreateProposalController extends BaseProposalsController {
     			1);
 
         request.setAttribute("imageUploadServiceUrl",
-                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.getStringValue());
-        request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.getStringValue());
+                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
+        request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
         
         return "proposalDetails_edit";
     }

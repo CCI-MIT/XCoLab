@@ -78,7 +78,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showCountdown",
-                ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.getBooleanValue());
+                ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
         model.addAttribute("contestCompleted", proposalsContext.getContestWrapped(request).isContestCompleted(proposalsContext.getContestPhaseWrapped(request)));
 

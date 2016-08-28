@@ -1,8 +1,6 @@
 package org.xcolab.portlets.loginregister.validation;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.utils.validation.ConstraintValidatorHelper;
 
@@ -50,7 +48,7 @@ public class UniqueScreenNameEmailValidator implements ConstraintValidator<Uniqu
                     sb.append(" screen name");
 
                 }
-                if (!ConfigurationAttributeKey.IS_SHARED_COLAB.getBooleanValue()) {
+                if (!ConfigurationAttributeKey.IS_SHARED_COLAB.get()) {
                     sb.append(" already exists");
                 } else {
                     sb.append(" already exists , or is already registered on another colab! Please use the Colab logo above to sign in!");

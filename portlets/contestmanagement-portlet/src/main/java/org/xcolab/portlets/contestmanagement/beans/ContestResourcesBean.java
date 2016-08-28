@@ -88,7 +88,7 @@ public class ContestResourcesBean implements Serializable {
     @SuppressWarnings("unused")
     public ContestResourcesBean() throws SystemException, PortalException {
         this(ContestClient.getContestType(
-                ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue()));
+                ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
     }
 
     public ContestResourcesBean(ContestType contestType) {
@@ -252,7 +252,7 @@ public class ContestResourcesBean implements Serializable {
                             .withZone(
                                     DateTimeZone
                                             .forID(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID
-                                                    .getStringValue()));
+                                                    .get()));
                     boolean phaseHasNoEnd = (contestPhase.getPhaseEndDate() == null);
                     if (phaseHasNoEnd) {
                         proposalSubmissionEndDate = "This contest has no deadline.";

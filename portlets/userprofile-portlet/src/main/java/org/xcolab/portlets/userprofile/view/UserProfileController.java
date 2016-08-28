@@ -108,7 +108,7 @@ public class UserProfileController {
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
             model.addAttribute("pointsActive",
-                    ConfigurationAttributeKey.IS_POINTS_ACTIVE.getBooleanValue());
+                    ConfigurationAttributeKey.IS_POINTS_ACTIVE.get());
             return "showUserProfile";
         } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for " + userId);
@@ -137,7 +137,7 @@ public class UserProfileController {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserId()));
                 model.addAttribute("newsletterActive",
-                        ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.getBooleanValue());
+                        ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }
@@ -177,7 +177,7 @@ public class UserProfileController {
             model.addAttribute("userSubscriptions", currentUserProfile.getUserSubscriptions());
 
             final long contestTypeId = ConfigurationAttributeKey
-                    .DEFAULT_CONTEST_TYPE_ID.getLongValue();
+                    .DEFAULT_CONTEST_TYPE_ID.get();
             final ContestType contestType = ContestTypeLocalServiceUtil
                     .getContestType(contestTypeId);
             model.addAttribute("contestType", contestType);
@@ -235,8 +235,8 @@ public class UserProfileController {
         if (passwordError) {
             model.addAttribute("passwordError", true);
         }
-        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
+        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
+        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
             if (permissions.getCanEditMemberProfile(userId)) {

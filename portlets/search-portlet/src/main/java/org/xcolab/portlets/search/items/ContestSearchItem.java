@@ -6,15 +6,9 @@ import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.Field;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.search.pojo.SearchPojo;
-
-import java.io.IOException;
 
 public class ContestSearchItem extends AbstractSearchItem {
     private final static String[] TITLE_FIELDS = {"title"};
@@ -40,7 +34,7 @@ public class ContestSearchItem extends AbstractSearchItem {
     public String getPrintName() {
         try {
             final long contestTypeId =
-                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue();
+                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
             final ContestType contestType = ContestTypeLocalServiceUtil
                     .getContestType(contestTypeId);
             return contestType.getContestNamePlural();

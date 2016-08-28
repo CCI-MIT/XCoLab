@@ -86,7 +86,7 @@ public class ForgotPasswordController {
             }
 
             String token = MembersClient.createForgotPasswordToken(member.getUserId());
-            String colabUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue();
+            String colabUrl = ConfigurationAttributeKey.COLAB_URL.get();
             String passwordLink = colabUrl + FORGOTPASSWORDURL + "" + token;
 
             sendEmailNotificationToForPasswordReset(
@@ -179,7 +179,7 @@ public class ForgotPasswordController {
             CreateUserBean userBean = new CreateUserBean();
             model.addAttribute("createUserBean", userBean);
             model.addAttribute("passwordResetToken", resetTicket);
-            model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
+            model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
             return "password_reset";
         }
     }

@@ -117,8 +117,8 @@ public class SingleSignOnController {
 
     @RequestMapping(params = "status=registerOrLogin")
     public String registerOrLogin(PortletRequest request, Model model) {
-        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
+        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
+        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         return "SSO/registerOrLogin";
     }
 }

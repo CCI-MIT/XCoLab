@@ -90,7 +90,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                             new DiscussionAddCommentActivityEntry());
                 }
             }
-            if (ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue()) {
+            if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {
                 try {
                     FilteredEntry filteredEntry = FilteringClient
                             .getFilteredEntryByUuid(newMessage.getUuid());

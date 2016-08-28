@@ -145,11 +145,11 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         if (editValidated || isMove) {
             request.setAttribute("imageUploadServiceUrl",
-                    ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.getStringValue());
+                    ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
             request.setAttribute("imageUploadHelpText",
-                    ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.getStringValue());
+                    ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
 
-            model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue());
+            model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
 
             return "proposalDetails_edit";
         }
