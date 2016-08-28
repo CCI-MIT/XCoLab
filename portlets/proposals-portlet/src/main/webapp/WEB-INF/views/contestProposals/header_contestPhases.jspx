@@ -45,7 +45,7 @@
                         </c:if>
 						<c:if test="${not empty phase.phaseStartDate }">
 							<fmt:setLocale value="en_US" />
-							<fmt:setTimeZone value="America/New_York" />  
+							<fmt:setTimeZone value="${timeZone}" />  
 							<fmt:formatDate value="${phase.phaseStartDate}" type="date" dateStyle="SHORT"  pattern="MM/dd/yy zz" />  
 							<c:if test="${not empty phase.phaseEndDate }">
 								- <fmt:formatDate value="${phase.phaseEndDate}" type="date" dateStyle="SHORT"  pattern="MM/dd/yy zz" />
