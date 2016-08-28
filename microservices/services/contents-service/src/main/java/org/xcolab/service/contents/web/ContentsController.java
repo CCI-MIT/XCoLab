@@ -52,7 +52,7 @@ public class ContentsController {
     }
 
     @RequestMapping(value = "/contentArticles", method = RequestMethod.GET)
-    public List<ContentArticle> getContentArticles(@RequestParam(required = false) Long folderId) {
+    public List<? extends ContentArticle> getContentArticles(@RequestParam(required = false) Long folderId) {
         if (folderId != null) {
             return contentArticleDao.getArticlesInFolder(folderId);
         }

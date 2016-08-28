@@ -33,6 +33,10 @@
         <module>tracking-service</module>
     </modules>
 
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
     <dependencies>
         <!-- database dependencies -->
         <dependency>

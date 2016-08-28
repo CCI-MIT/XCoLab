@@ -76,7 +76,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     }
 
     @Override
-    public List<ContentArticle> getArticles() {
+    public List<ContentArticleWrapper> getArticles() {
         return dslContext.select()
                 .from(CONTENT_ARTICLE)
                 .join(CONTENT_ARTICLE_VERSION).on(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID
@@ -85,11 +85,10 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     }
 
     @Override
-    public List<ContentArticle> getArticlesInFolder(long folderId) {
+    public List<ContentArticleWrapper> getArticlesInFolder(long folderId) {
         return dslContext.select()
                 .from(CONTENT_ARTICLE)
                 .where(CONTENT_ARTICLE.FOLDER_ID.eq(folderId))
                 .fetchInto(ContentArticleWrapper.class);
-
     }
 }
