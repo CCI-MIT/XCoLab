@@ -102,11 +102,11 @@ public class MemberService {
     }
     public Member registerWithHashedPassword(String screenName, String password, String email, String firstName, String lastName,
                                              String shortBio, String country, Long facebookId, String openId, Long imageId, Long liferayUserId)
-            throws NoSuchAlgorithmException {
+             {
         if (!memberDao.getMember(liferayUserId).isPresent()) {
             memberDao.createMember(screenName, password, email, firstName, lastName,
                     shortBio, country, facebookId, openId, imageId, liferayUserId);
-            final Member member = memberDao.findOneByScreenName(screenName);
+            final Member member = memberDao.findOneByScreenName(screenName).get();
             member.setAutoRegisteredMemberStatus(1);
             memberDao.updateMember(member);
             subscribeToNewsletter(member.getEmailAddress());
