@@ -20,7 +20,6 @@
         <dependency>
             <groupId>org.codemonkey.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
-            <version>3.1.1</version>
         </dependency>
     </dependencies>
     <build>

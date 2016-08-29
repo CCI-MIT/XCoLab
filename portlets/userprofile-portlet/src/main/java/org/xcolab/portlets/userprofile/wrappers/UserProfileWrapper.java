@@ -1,7 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.community.CommunityConstants;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalSupporter;
@@ -19,7 +18,6 @@ import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
 
@@ -126,9 +124,7 @@ public class UserProfileWrapper implements Serializable {
                 realName = user.getFirstName();
             }
 
-            attendsConference = ExpandoValueLocalServiceUtil
-                    .getData(DEFAULT_COMPANY_ID, User.class.getName(), CommunityConstants.EXPANDO,
-                            CommunityConstants.CONFERENCE2014, user.getId_(), "").equals("1");
+            attendsConference = false; //TODO: store this outside expando if we want to reactive this
             badges = new BadgeBean(user.getId_());
 
             try {

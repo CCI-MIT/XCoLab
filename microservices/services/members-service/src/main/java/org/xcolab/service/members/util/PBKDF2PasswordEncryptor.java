@@ -25,8 +25,7 @@ public class PBKDF2PasswordEncryptor {
     private static final Pattern ALGORITHM_PATTERN = Pattern.compile("^.*/?([0-9]+)?/([0-9]+)$");
     private static final Pattern ENCODED_HASH_PATTERN = Pattern.compile("^?([0-9]+)_([0-9]+)_([0-9A-Za-z+/=]+)_([0-9A-Za-z+/=]+)$");
 
-    public String doEncrypt(String algorithm, String plainTextPassword, String encryptedPassword)
-            throws NoSuchAlgorithmException {
+    public String doEncrypt(String algorithm, String plainTextPassword, String encryptedPassword) {
 
         PBKDF2EncryptionConfiguration pbkdf2EncryptionConfiguration = new PBKDF2EncryptionConfiguration();
 
@@ -47,24 +46,23 @@ public class PBKDF2PasswordEncryptor {
             algorithmName = algorithm.substring(0, index);
         }
 
-        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithmName);
-
-        SecretKey secretKey;
         try {
-            secretKey = secretKeyFactory.generateSecret(pbeKeySpec);
-        } catch (InvalidKeySpecException e) {
-            throw new InternalException(e);
+            SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithmName);
+
+            SecretKey secretKey = secretKeyFactory.generateSecret(pbeKeySpec);
+
+            byte[] secretKeyBytes = secretKey.getEncoded();
+
+            return String.valueOf(pbkdf2EncryptionConfiguration.getKeySize()) +
+                    "_" +
+                    pbkdf2EncryptionConfiguration.getRounds() +
+                    "_" +
+                    DatatypeConverter.printBase64Binary(saltBytes) +
+                    "_" +
+                    DatatypeConverter.printBase64Binary(secretKeyBytes);
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            throw new InternalException("Internal error while hashing password", e);
         }
-
-        byte[] secretKeyBytes = secretKey.getEncoded();
-
-        return String.valueOf(pbkdf2EncryptionConfiguration.getKeySize()) +
-                "_" +
-                pbkdf2EncryptionConfiguration.getRounds() +
-                "_" +
-                DatatypeConverter.printBase64Binary(saltBytes) +
-                "_" +
-                DatatypeConverter.printBase64Binary(secretKeyBytes);
     }
 
     private static class PBKDF2EncryptionConfiguration {
