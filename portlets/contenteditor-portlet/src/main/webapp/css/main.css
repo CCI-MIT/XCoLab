@@ -325,3 +325,4 @@ span.ontology-term-label {
 .colFloatLef{float:left}
 #tree-view{width:350px}
 #saveArticle{cursor:pointer}
+#anchorArticleURL{display: block; width:0px;}
