@@ -5,6 +5,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -146,6 +147,18 @@ public class MemberDaoImpl implements MemberDao {
         return Optional.of(memberRecord.into(Member.class));
     }
 
+    @Override
+    public boolean updatePassword(long memberId, String hashedPassword) {
+        return dslContext.update(MEMBER)
+                .set(MEMBER.HASHED_PASSWORD, hashedPassword)
+                .set(MEMBER.PASSWORD_MODIFIED_DATE, DSL.currentTimestamp())
+                .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
+                .set(MEMBER.FORGOT_PASSWORD_TOKEN, (String) null)
+                .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, (Timestamp) null)
+                .where(MEMBER.ID_.eq(memberId))
+                .execute() > 0;
+    }
+
 
     @Override
     public boolean isScreenNameTaken(String screenName) {
@@ -164,38 +177,47 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Member findOneByScreenName(String screenName) {
-        return dslContext.select()
+    public Optional<Member> findOneByScreenName(String screenName) {
+        final Record record = dslContext.select()
                 .from(MEMBER)
                 .where(MEMBER.SCREEN_NAME.eq(screenName))
-                .fetchOne().into(Member.class);
+                .fetchOne();
+        if (record == null) {
+            return Optional.empty();
+        }
+        return Optional.of(record.into(Member.class));
     }
 
     @Override
-    public Member findOneByEmail(String email) {
-        return dslContext.select()
+    public Optional<Member> findOneByEmail(String email) {
+        final Record record = dslContext.select()
                 .from(MEMBER)
                 .where(MEMBER.EMAIL_ADDRESS.eq(email))
-                .fetchOne().into(Member.class);
+                .fetchOne();
+        if (record == null) {
+            return Optional.empty();
+        }
+        return Optional.of(record.into(Member.class));
     }
 
     @Override
-    public Member findOneByForgotPasswordHash(String newPasswordToken) {
-        return dslContext.select()
+    public Optional<Member> findOneByForgotPasswordHash(String newPasswordToken) {
+        final Record record = dslContext.select()
                 .from(MEMBER)
                 .where(MEMBER.FORGOT_PASSWORD_TOKEN.eq(newPasswordToken))
-                .fetchOne().into(Member.class);
+                .fetchOne();
+        if (record == null) {
+            return Optional.empty();
+        }
+        return Optional.of(record.into(Member.class));
     }
 
     @Override
     public boolean updateMember(Member member) {
 
-        return
-        this.dslContext.update(MEMBER)
+        return this.dslContext.update(MEMBER)
                 .set(MEMBER.CREATE_DATE, member.getCreateDate())
-                .set(MEMBER.MODIFIED_DATE, member.getModifiedDate())
-                .set(MEMBER.HASHED_PASSWORD, member.getHashedPassword())
-                .set(MEMBER.PASSWORD_MODIFIED_DATE, member.getPasswordModifiedDate())
+                .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
                 .set(MEMBER.SCREEN_NAME, member.getScreenName())
                 .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
                 .set(MEMBER.OPEN_ID, member.getOpenId())
@@ -234,8 +256,6 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.MODIFIED_DATE, new Timestamp(Instant.now().toEpochMilli()))
                 .execute();
     }
-
-
 
     @Override
     public Integer getMemberMaterializedPoints(Long memberId) {

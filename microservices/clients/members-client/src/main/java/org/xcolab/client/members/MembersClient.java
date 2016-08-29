@@ -245,24 +245,26 @@ public final class MembersClient {
                 .getUnchecked();
     }
 
+    //TODO: remove, needed for liferay
     public static String hashPassword(String password) {
-        return hashPassword(password, false);
-    }
-
-    public static String hashPassword(String password, boolean liferayCompatible) {
         return memberResource.service("hashPassword", String.class)
                 .queryParam("password", password)
-                .queryParam("liferayCompatible", liferayCompatible)
+                .queryParam("liferayCompatible", true)
                 .getUnchecked();
     }
-
-    // /members/createForgotPasswordToken
 
     public static boolean validatePassword(String password, long memberId) {
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("memberId", memberId)
                 .getUnchecked();
+    }
+
+    public static boolean updatePassword(long memberId, String oldPassword, String newPassword) {
+        return memberResource.service(memberId, "updatePassword", Boolean.class)
+                .queryParam("oldPassword", oldPassword)
+                .queryParam("newPassword", newPassword)
+                .post();
     }
 
     public static Member register(Member member) {

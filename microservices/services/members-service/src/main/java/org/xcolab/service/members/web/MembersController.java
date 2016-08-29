@@ -14,13 +14,13 @@ import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.login.LoginBean;
+import org.xcolab.service.members.exceptions.UnauthorizedException;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +100,7 @@ public class MembersController {
     }
 
     @RequestMapping(value = "/members", method = RequestMethod.POST)
-    public Member register(@RequestBody Member member) throws NoSuchAlgorithmException {
+    public Member register(@RequestBody Member member) {
         return memberService.register(member.getScreenName(), member.getHashedPassword(),
                 member.getEmailAddress(), member.getFirstName(), member.getLastName(),
                 member.getShortBio(), member.getCountry(), member.getFacebookId(),
@@ -158,8 +158,7 @@ public class MembersController {
 
     @RequestMapping(value = "/members/hashPassword", method = RequestMethod.GET)
     public String hashPassword(@RequestParam String password,
-                               @RequestParam(required = false) Boolean liferayCompatible)
-            throws NoSuchAlgorithmException {
+                               @RequestParam(required = false) Boolean liferayCompatible) {
         return memberService
                 .hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
     }
@@ -169,7 +168,7 @@ public class MembersController {
             @RequestParam String password,
             @RequestParam(required = false) String hash,
             @RequestParam(required = false) Long memberId)
-            throws NoSuchAlgorithmException, NotFoundException {
+            throws NotFoundException {
 
         if (hash != null) {
             return memberService.validatePassword(password, hash);
@@ -183,10 +182,20 @@ public class MembersController {
         throw new NotFoundException("The endpoint you requested is not available for the given attributes");
     }
 
+    @RequestMapping(value = "/members/{memberId}/updatePassword", method = RequestMethod.POST)
+    public boolean updateForgottenPasswordByToken(@PathVariable long memberId,
+            @RequestParam String oldPassword,
+            @RequestParam String newPassword)
+            throws NotFoundException, UnauthorizedException {
+        if (memberService.validatePassword(oldPassword, memberId)) {
+            return memberService.updatePassword(memberId, newPassword);
+        }
+        throw new UnauthorizedException("MemberId or old password incorrect");
+    }
+
     @RequestMapping(value = "/members/createForgotPasswordToken", method = RequestMethod.GET)
     public String createForgotPasswordToken(
-            @RequestParam(required = false) Long memberId)
-            throws NoSuchAlgorithmException, NotFoundException {
+            @RequestParam(required = false) Long memberId) throws NotFoundException {
         if (memberId != null) {
             return memberService.createNewForgotPasswordToken(memberId);
         }
@@ -196,20 +205,16 @@ public class MembersController {
 
     @RequestMapping(value = "/members/updateForgottenPassword", method = RequestMethod.POST)
     public Long updateForgottenPasswordByToken(
-            @RequestParam(required = false) String forgotPasswordToken,
-            @RequestParam(required = false) String password)
-            throws NoSuchAlgorithmException, NotFoundException {
-        if (forgotPasswordToken != null) {
-            return memberService.updateUserPasswordWithToken(forgotPasswordToken, password);
-        }
-        throw new NotFoundException(
-                "The endpoint you requested is not available for the given attributes");
+            @RequestParam String forgotPasswordToken,
+            @RequestParam String password)
+            throws NotFoundException {
+        return memberService.updateUserPasswordWithToken(forgotPasswordToken, password);
     }
 
     @RequestMapping(value = "/members/validateForgotPasswordToken", method = RequestMethod.GET)
     public boolean validateForgotPasswordToken(
             @RequestParam(required = false) String passwordToken)
-            throws NoSuchAlgorithmException, NotFoundException {
+            throws NotFoundException {
         if (passwordToken != null) {
             return memberService.validateForgotPasswordToken(passwordToken);
         }

@@ -55,13 +55,14 @@ public final class LoginRegisterUtil {
     private LoginRegisterUtil() {
     }
 
-    public static void updatePassword(String forgotPasswordToken, String newPassword) throws MemberNotFoundException, PortalException, SystemException {
+    public static void updatePassword(String forgotPasswordToken, String newPassword)
+            throws MemberNotFoundException, PortalException, SystemException {
         Long memberId = MembersClient.updateUserPassword(forgotPasswordToken, newPassword);
         if (memberId != null) {
             //TODO: remove, currently needed to update password for liferay
             final User liferayUser = UserLocalServiceUtil.getUser(memberId);
             liferayUser.setPassword
-                    (MembersClient.hashPassword(newPassword.trim(), true));
+                    (MembersClient.hashPassword(newPassword.trim()));
             UserLocalServiceUtil.updateUser(liferayUser);
         } else {
 
