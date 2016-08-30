@@ -103,7 +103,7 @@ public class MembersController {
         }
     }
 
-    @GetMapping(value = "count")
+    @GetMapping("count")
     public Integer countMembers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
@@ -126,19 +126,7 @@ public class MembersController {
                     member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
 
-    @GetMapping(value = "isUsed")
-    public boolean isUsed(
-            @RequestParam(required = false) String screenName,
-            @RequestParam(required = false) String email) {
-        boolean ret = false;
-        if (screenName != null) {
-            ret = memberDao.isScreenNameTaken(screenName);
-        }
-        if (email != null) {
-            ret = ret || memberDao.isEmailUsed(email);
-        }
-        return ret;
-    }
+
 
 
 

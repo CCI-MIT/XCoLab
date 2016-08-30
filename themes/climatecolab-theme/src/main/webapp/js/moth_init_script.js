@@ -217,8 +217,6 @@ function showSharedContestAutoRegPopUp(fn, contestId, userId) {
 
 		jQuery('#popup_login').hide();
 		jQuery('#popup_SSO_autoreg').show();
-		jQuery("#signInSSOForm_form input[name=redirect]").val(location.toString());
-		call(null, fn);
 		return true;
 	}
 }
