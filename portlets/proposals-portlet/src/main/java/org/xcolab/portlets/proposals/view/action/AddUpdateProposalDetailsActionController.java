@@ -104,10 +104,9 @@ public class AddUpdateProposalDetailsActionController {
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
                     new ProposalAttributeUpdateActivityEntry());
         }
-
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
-
-        if(ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue()){
+        
+        if(ConfigurationAttributeKey.FILTER_PROFANITY.get()){
             try {
                 FilteredEntry filteredEntry = FilteringClient.getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
                 filteredEntry.setSourceId(proposalWrapper.getProposalId());
@@ -137,13 +136,13 @@ public class AddUpdateProposalDetailsActionController {
                     proposalsContext.getContestPhase(request), null);
             model.addAttribute("proposal", proposalWrapped);
         }
-        model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue());
+        model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
         model.addAttribute("updateProposalSectionsBean",updateProposalSectionsBean);
 
         request.setAttribute("imageUploadServiceUrl",
-                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.getStringValue());
+                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
         request.setAttribute("imageUploadHelpText",
-                ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.getStringValue());
+                ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
         return "proposalDetails_edit";
     }
 }

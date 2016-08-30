@@ -17,7 +17,6 @@ import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.utils.IdListUtil;
 
 import java.util.List;
 
@@ -75,7 +74,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			return ConfigurationAttributeKey.PUBLISH_JUDGING_RESULTS.getBooleanValue();
+			return ConfigurationAttributeKey.PUBLISH_JUDGING_RESULTS.get();
 		}
 	};
 
@@ -175,7 +174,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			if (ConfigurationAttributeKey.IMPACT_TAB_IS_ACTIVE.getBooleanValue()) {
+			if (ConfigurationAttributeKey.IMPACT_TAB_IS_ACTIVE.get()) {
                 try {
                     final Contest contest = context.getContest(request);
 
@@ -195,11 +194,9 @@ interface ProposalTabCanAccessAlgorithm {
 
 		private boolean isDescendantOfExcludedOntologyTerm(long focusAreaId)
                 throws SystemException, PortalException {
-            final String commaSeparatedExcludedOntologyTermIds =
-                    ConfigurationAttributeKey.IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS
-                            .getStringValue();
-            final List<Long> excludedOntologyTermIds = IdListUtil
-                    .getIdsFromString(commaSeparatedExcludedOntologyTermIds);
+
+            final List<Long> excludedOntologyTermIds = ConfigurationAttributeKey
+					.IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS.get();
             for (Long excludedOntologyTermId : excludedOntologyTermIds) {
                 if (OntologyTermLocalServiceUtil
                         .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(

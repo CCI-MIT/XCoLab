@@ -26,7 +26,7 @@ public final class TemplateReplacementUtil {
 
     public static String replaceContestTypeStrings(String text, ContestType contestType) {
             if (contestType == null) {
-                contestType = ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
+                contestType = ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             }
             return text.replaceAll(PROPOSAL_PLACEHOLDER, contestType.getProposalName())
                     .replaceAll(PROPOSALS_PLACEHOLDER, contestType.getProposalNamePlural())

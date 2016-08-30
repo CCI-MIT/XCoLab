@@ -16,11 +16,11 @@ public final class TemplateReplacementUtilPlaceholder {
     }
 
     public static String replacePlatformConstants(String text) {
-        final String colabName = ConfigurationAttributeKey.COLAB_NAME.getStringValue();
-        final String colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue();
-        final String colabUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue();
-        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.getStringValue();
-        final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
+        final String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
+        final String colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.get();
+        final String colabUrl = ConfigurationAttributeKey.COLAB_URL.get();
+        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
+        final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
 
         return text.replaceAll(COLAB_NAME_PLACEHOLDER, colabName)
                 .replaceAll(COLAB_SHORT_NAME_PLACEHOLDER, colabShortName)
@@ -30,6 +30,6 @@ public final class TemplateReplacementUtilPlaceholder {
     }
 
     public static String getAdminFromEmail() {
-        return ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
+        return ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
     }
 }

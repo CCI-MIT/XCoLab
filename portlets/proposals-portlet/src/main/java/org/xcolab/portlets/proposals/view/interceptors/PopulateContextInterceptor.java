@@ -60,8 +60,8 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject(MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID, proposalsContext.getViewContestPhaseId(request));
             modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSALS_PREFERENCES, proposalsContext.getProposalsPreferences(request));
             modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_TYPE, proposalsContext.getContestType(request));
-            modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_NAME, ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-            modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_SHORT_NAME, ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
+            modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_NAME, ConfigurationAttributeKey.COLAB_NAME.get());
+            modelAndView.addObject(MODEL_ATTRIBUTE_COLAB_SHORT_NAME, ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         }
     }
 }

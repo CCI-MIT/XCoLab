@@ -27,7 +27,7 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
         String bodyTemplate = "%s joined the %s community";
         try {
             Member member = MembersClient.getMember(activityEntry.getMemberId());
-            String colabName = ConfigurationAttributeKey.COLAB_NAME.getStringValue();
+            String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
             return String.format(bodyTemplate, getUserLink(member), colabName);
 
         } catch (MemberNotFoundException e) {

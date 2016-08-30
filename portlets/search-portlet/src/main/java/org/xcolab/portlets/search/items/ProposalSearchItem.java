@@ -9,16 +9,10 @@ import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.Field;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.helpers.ProposalAttributeHelper;
-
-import java.io.IOException;
 
 public class ProposalSearchItem extends AbstractSearchItem {
 
@@ -55,7 +49,7 @@ public class ProposalSearchItem extends AbstractSearchItem {
     public String getPrintName() {
         try {
             final long contestTypeId =
-                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue();
+                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
             final ContestType contestType = ContestTypeLocalServiceUtil
                     .getContestType(contestTypeId);
             return contestType.getProposalNamePlural();

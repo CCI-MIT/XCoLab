@@ -32,18 +32,17 @@ public class AccountDetailsEmmaAPI {
     private void init() {
         if (!initialized) {
             final String environmentProperty = env.getProperty("environment");
-            final boolean isMyEmmaActive = ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE
-                    .getBooleanValue();
+            final boolean isMyEmmaActive = ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get();
             enabled = isMyEmmaActive && "production".equalsIgnoreCase(environmentProperty);
             if (enabled) {
                 log.info("MyEmma configuration enabled, retrieving account details");
                 try {
-                    accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.getStringValue();
-                    groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.getStringValue();
+                    accountId = ConfigurationAttributeKey.MY_EMMA_ACCOUNT_ID.get();
+                    groupId = ConfigurationAttributeKey.MY_EMMA_GROUP_ID.get();
                     publicApiKey = ConfigurationAttributeKey.MY_EMMA_PUBLIC_API_KEY
-                            .getStringValue();
+                            .get();
                     privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY
-                            .getStringValue();
+                            .get();
                 } catch (ConfigurationAttributeNotFoundException e) {
                     accountId = "";
                     groupId = "";

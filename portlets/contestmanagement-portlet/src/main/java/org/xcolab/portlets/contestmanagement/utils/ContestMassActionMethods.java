@@ -100,7 +100,7 @@ public class ContestMassActionMethods {
                         recipientIds.size(), contestList.size(), contestNames) + HtmlUtil
                         .addHtmlLineBreaks(messageBody);
 
-        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.getStringValue();
+        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
         EmailClient.sendEmail(adminEmail, adminEmail, emailSubject,
                 emailBody, true, null);

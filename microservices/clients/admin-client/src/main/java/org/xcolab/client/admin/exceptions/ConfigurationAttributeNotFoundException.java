@@ -1,9 +1,9 @@
 package org.xcolab.client.admin.exceptions;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.util.attributes.exceptions.AttributeNotFoundException;
 
-public class ConfigurationAttributeNotFoundException extends RuntimeException {
-    public ConfigurationAttributeNotFoundException(ConfigurationAttributeKey attribute) {
-        super("ConfigurationAttribute " + attribute.name() + " could not be found");
+public class ConfigurationAttributeNotFoundException extends AttributeNotFoundException {
+    public ConfigurationAttributeNotFoundException(String name) {
+        super("ConfigurationAttribute " + name + " could not be found");
     }
 }

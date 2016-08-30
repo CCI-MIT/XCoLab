@@ -1,154 +1,166 @@
 package org.xcolab.client.admin.enums;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
+import org.xcolab.util.attributes.AttributeGetter;
 
-public enum ConfigurationAttributeKey {
-    ADMIN_EMAIL(AttributeType.STRING),
-    ADMIN_FROM_EMAIL(AttributeType.STRING),
-    COLAB_NAME(AttributeType.STRING),
-    COLAB_SHORT_NAME(AttributeType.STRING),
-    COLAB_URL(AttributeType.STRING),
-    IS_PRODUCTION_ENVIRONMENT(AttributeType.BOOLEAN),
+import java.util.Collections;
+import java.util.List;
 
-    DEFAULT_CONTEST_TYPE_ID(AttributeType.NUMERIC),
-    GENERATE_SCREEN_NAME(AttributeType.BOOLEAN),
-    DEFAULT_TIME_ZONE_ID(AttributeType.STRING),
-    SHOW_CONTESTS_DISPLAY_OPTIONS(AttributeType.BOOLEAN),
+public final class ConfigurationAttributeKey {
 
-    GOOGLE_ANALYTICS_KEY(AttributeType.STRING),
+    //Main CoLab configuration
+    public static final AttributeGetter<String> ADMIN_EMAIL =
+            ConfigurationAttributes.newStringAttribute("ADMIN_EMAIL")
+                    .withCache().build();
+    public static final AttributeGetter<String> ADMIN_FROM_EMAIL =
+            ConfigurationAttributes.newStringAttribute("ADMIN_FROM_EMAIL")
+                    .withCache().build();
+    public static final AttributeGetter<String> COLAB_NAME =
+            ConfigurationAttributes.newStringAttribute("COLAB_NAME")
+                    .withCache().build();
+    public static final AttributeGetter<String> COLAB_SHORT_NAME =
+            ConfigurationAttributes.newStringAttribute("COLAB_SHORT_NAME")
+                    .withCache().build();
+    public static final AttributeGetter<String> COLAB_URL =
+            ConfigurationAttributes.newStringAttribute("COLAB_URL")
+                    .withCache().build();
 
-    GOOGLE_AUTH_CLIENT_ID(AttributeType.STRING),
-    GOOGLE_AUTH_CLIENT_SECRET(AttributeType.STRING),
-    FACEBOOK_APPLICATION_ID(AttributeType.STRING),
-    FACEBOOK_APPLICATION_SECRET(AttributeType.STRING),
-    FACEBOOK_VERIFIED_REQUIRED(AttributeType.BOOLEAN),
+    public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
+            ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
+                    .withCache().build();
+    public static final AttributeGetter<String> DEFAULT_TIME_ZONE_ID =
+            ConfigurationAttributes.newStringAttribute("DEFAULT_TIME_ZONE_ID")
+                    .withCache().build();
+    public static final AttributeGetter<String> GOOGLE_ANALYTICS_KEY =
+            ConfigurationAttributes.newStringAttribute("GOOGLE_ANALYTICS_KEY")
+                    .withCache().build();
 
-    IS_MY_EMMA_ACTIVE(AttributeType.BOOLEAN),
-    MY_EMMA_ACCOUNT_ID(AttributeType.STRING),
-    MY_EMMA_GROUP_ID(AttributeType.STRING),
-    MY_EMMA_PUBLIC_API_KEY(AttributeType.STRING),
-    MY_EMMA_PRIVATE_API_KEY(AttributeType.STRING),
 
-    IMAGE_UPLOAD_EXTERNAL_SERVICE_URL(AttributeType.STRING),
-    IMAGE_UPLOAD_HELP_TEXT(AttributeType.STRING),
+    //SSO Configuration
+    public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_ID =
+            ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_ID")
+                    .build();
+    public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_SECRET =
+            ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_SECRET")
+                    .build();
+    public static final AttributeGetter<String> FACEBOOK_APPLICATION_ID =
+            ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_ID")
+                    .build();
+    public static final AttributeGetter<String> FACEBOOK_APPLICATION_SECRET =
+            ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_SECRET")
+                    .build();
+    public static final AttributeGetter<Boolean> FACEBOOK_VERIFIED_REQUIRED =
+            ConfigurationAttributes.newBooleanAttribute("FACEBOOK_VERIFIED_REQUIRED")
+                    .build();
 
-    BETA_RIBBON_SHOW(AttributeType.BOOLEAN),
 
-    PUBLISH_JUDGING_RESULTS(AttributeType.BOOLEAN),
-    IS_POINTS_ACTIVE(AttributeType.BOOLEAN),
+    //MyEmma configuration
+    public static final AttributeGetter<Boolean> IS_MY_EMMA_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("IS_MY_EMMA_ACTIVE")
+                    .build();
+    public static final AttributeGetter<String> MY_EMMA_ACCOUNT_ID =
+            ConfigurationAttributes.newStringAttribute("MY_EMMA_ACCOUNT_ID")
+                    .build();
+    public static final AttributeGetter<String> MY_EMMA_GROUP_ID =
+            ConfigurationAttributes.newStringAttribute("MY_EMMA_GROUP_ID")
+                    .build();
+    public static final AttributeGetter<String> MY_EMMA_PUBLIC_API_KEY =
+            ConfigurationAttributes.newStringAttribute("MY_EMMA_PUBLIC_API_KEY")
+                    .build();
+    public static final AttributeGetter<String> MY_EMMA_PRIVATE_API_KEY =
+            ConfigurationAttributes.newStringAttribute("MY_EMMA_PRIVATE_API_KEY")
+                    .build();
 
-    FLAGGING_ALLOW_MEMBERS(AttributeType.BOOLEAN),
 
-    MIT_HEADER_BAR_SHOW(AttributeType.BOOLEAN),
-    MIT_HEADER_BAR_LINK_TEXT(AttributeType.STRING),
-    MIT_HEADER_BAR_LINK_URL(AttributeType.STRING),
+    //Image upload help messages
+    public static final AttributeGetter<String> IMAGE_UPLOAD_EXTERNAL_SERVICE_URL =
+            ConfigurationAttributes.newStringAttribute("IMAGE_UPLOAD_EXTERNAL_SERVICE_URL")
+                    .build();
+    public static final AttributeGetter<String> IMAGE_UPLOAD_HELP_TEXT =
+            ConfigurationAttributes.newStringAttribute("IMAGE_UPLOAD_HELP_TEXT")
+                    .build();
 
-    SHOW_CONTEST_COUNTDOWN(AttributeType.BOOLEAN),
+    //Shared CoLab configuration
+    public static final AttributeGetter<Boolean> IS_SHARED_COLAB =
+            ConfigurationAttributes.newBooleanAttribute("IS_SHARED_COLAB")
+                    .defaultValue(false).build();
+    public static final AttributeGetter<String> SHARED_COLAB_PORT =
+            ConfigurationAttributes.newStringAttribute("SHARED_COLAB_PORT")
+                    .defaultValue("8080").build();
+    public static final AttributeGetter<String> SHARED_COLAB_LOCATION =
+            ConfigurationAttributes.newStringAttribute("SHARED_COLAB_LOCATION")
+                    .defaultValue("localhost").build();
+    public static final AttributeGetter<String> PARTNER_COLAB_NAME =
+            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_NAME")
+                    .build();
+    public static final AttributeGetter<String> PARTNER_COLAB_LOCATION =
+            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_LOCATION")
+                    .build();
+    public static final AttributeGetter<String> PARTNER_COLAB_PORT =
+            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_PORT")
+                    .build();
 
-    FILTER_PROFANITY(AttributeType.BOOLEAN),
-    SHARED_COLAB_PORT(AttributeType.STRING),
-    SHARED_COLAB_LOCATION(AttributeType.STRING),
-    PARTNER_COLAB_NAME(AttributeType.STRING),
-    PARTNER_COLAB_LOCATION(AttributeType.STRING),
-    PARTNER_COLAB_PORT(AttributeType.STRING),
-    IS_SHARED_COLAB(AttributeType.BOOLEAN),
 
-    OPEN_GRAPH_SHARE_TITLE(AttributeType.STRING),
-    OPEN_GRAPH_SHARE_DESCRIPTION(AttributeType.STRING),
+    //Social media share text
+    public static final AttributeGetter<String> OPEN_GRAPH_SHARE_TITLE =
+            ConfigurationAttributes.newStringAttribute("OPEN_GRAPH_SHARE_TITLE")
+                    .build();
+    public static final AttributeGetter<String> OPEN_GRAPH_SHARE_DESCRIPTION =
+            ConfigurationAttributes.newStringAttribute("OPEN_GRAPH_SHARE_DESCRIPTION")
+                    .build();
 
-    LOGIN_INFO_MESSAGE(AttributeType.STRING, Optionality.OPTIONAL),
 
-    IMPACT_TAB_IS_ACTIVE(AttributeType.BOOLEAN, Optionality.OPTIONAL),
-    IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS(AttributeType.STRING, Optionality.OPTIONAL),
+    //Impact tab configuration
+    public static final AttributeGetter<Boolean> IMPACT_TAB_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("IMPACT_TAB_IS_ACTIVE")
+                    .defaultValue(false).build();
+    public static final AttributeGetter<List<Long>> IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS =
+            ConfigurationAttributes.newIdListAttribute("IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS")
+                    .defaultValue(Collections.<Long>emptyList()).build();
 
-    MEMBERS_DEFAULT_SORT_COLUMN(AttributeType.STRING, Optionality.OPTIONAL);
 
-    private final AttributeType type;
-    private final Optionality optionality;
-    
-    ConfigurationAttributeKey(AttributeType type) {
-        this(type, Optionality.REQUIRED);
-    }
+    //Misc features
+    public static final AttributeGetter<String> LOGIN_INFO_MESSAGE =
+            ConfigurationAttributes.newStringAttribute("LOGIN_INFO_MESSAGE")
+                    .defaultValue("").build();
+    public static final AttributeGetter<String> MEMBERS_DEFAULT_SORT_COLUMN =
+            ConfigurationAttributes.newStringAttribute("MEMBERS_DEFAULT_SORT_COLUMN")
+                    .defaultValue("").build();
 
-    ConfigurationAttributeKey(AttributeType type, Optionality optionality) {
-        this.type = type;
-        this.optionality = optionality;
-    }
+    //Misc feature flags
+    public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =
+            ConfigurationAttributes.newBooleanAttribute("BETA_RIBBON_SHOW")
+                    .build();
+    public static final AttributeGetter<Boolean> PUBLISH_JUDGING_RESULTS =
+            ConfigurationAttributes.newBooleanAttribute("PUBLISH_JUDGING_RESULTS")
+                    .build();
+    public static final AttributeGetter<Boolean> IS_POINTS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("IS_POINTS_ACTIVE")
+                    .build();
+    public static final AttributeGetter<Boolean> FLAGGING_ALLOW_MEMBERS =
+            ConfigurationAttributes.newBooleanAttribute("FLAGGING_ALLOW_MEMBERS")
+                    .build();
+    public static final AttributeGetter<Boolean> SHOW_CONTEST_COUNTDOWN =
+            ConfigurationAttributes.newBooleanAttribute("SHOW_CONTEST_COUNTDOWN")
+                    .build();
+    public static final AttributeGetter<Boolean> FILTER_PROFANITY =
+            ConfigurationAttributes.newBooleanAttribute("FILTER_PROFANITY")
+                    .build();
+    public static final AttributeGetter<Boolean> SHOW_CONTESTS_DISPLAY_OPTIONS =
+            ConfigurationAttributes.newBooleanAttribute("SHOW_CONTESTS_DISPLAY_OPTIONS")
+                    .build();
+    public static final AttributeGetter<Boolean> GENERATE_SCREEN_NAME =
+            ConfigurationAttributes.newBooleanAttribute("GENERATE_SCREEN_NAME")
+                    .build();
 
-    public AttributeType getType() {
-        return type;
-    }
 
-    public String getStringValue() {
-        if (type != AttributeType.STRING) {
-            throw new UnsupportedOperationException("Cannot retrieve String value from non-string attribute; "
-                    + "attribute type = " + type.name());
-        }
-        try {
-            return AdminClient.getConfigurationAttribute(this).getStringValue();
-        } catch (ConfigurationAttributeNotFoundException e) {
-            if (optionality == Optionality.OPTIONAL) {
-                return "";
-            }
-            throw e;
-        }
-    }
-
-    public long getLongValue() {
-        if (type != AttributeType.NUMERIC) {
-            throw new UnsupportedOperationException("Cannot retrieve numeric value from non-numeric attribute; "
-                    + "attribute type = " + type.name());
-        }
-        try {
-            return AdminClient.getConfigurationAttribute(this).getNumericValue();
-        } catch (ConfigurationAttributeNotFoundException e) {
-            if (optionality == Optionality.OPTIONAL) {
-                return 0L;
-            }
-            throw e;
-        }
-    }
-
-    public boolean getBooleanValue() {
-        if (type != AttributeType.BOOLEAN) {
-            throw new UnsupportedOperationException("Cannot retrieve Boolean value from non-boolean attribute; "
-                    + "attribute type = " + type.name());
-        }
-        try {
-            return AdminClient.getConfigurationAttribute(this).getNumericValue() > 0;
-        } catch (ConfigurationAttributeNotFoundException e) {
-            if (optionality == Optionality.OPTIONAL) {
-                return false;
-            }
-            throw e;
-        }
-    }
-
-    public double getDoubleValue() {
-        if (type != AttributeType.REAL) {
-            throw new UnsupportedOperationException("Cannot retrieve Double value from non-real attribute; "
-                    + "attribute type = " + type.name());
-        }
-        try {
-            return AdminClient.getConfigurationAttribute(this).getRealValue();
-        } catch (ConfigurationAttributeNotFoundException e) {
-            if (optionality == Optionality.OPTIONAL) {
-                return 0.0;
-            }
-            throw e;
-        }
-    }
-
-    private enum AttributeType {
-        NUMERIC,
-        BOOLEAN,
-        STRING,
-        REAL
-    }
-
-    private enum Optionality {
-        REQUIRED,
-        OPTIONAL
-    }
+    //Configuration of Solve's header bar
+    public static final AttributeGetter<Boolean> MIT_HEADER_BAR_SHOW =
+            ConfigurationAttributes.newBooleanAttribute("MIT_HEADER_BAR_SHOW")
+                    .defaultValue(false).build();
+    public static final AttributeGetter<String> MIT_HEADER_BAR_LINK_TEXT =
+            ConfigurationAttributes.newStringAttribute("MIT_HEADER_BAR_LINK_TEXT")
+                    .defaultValue("").build();
+    public static final AttributeGetter<String> MIT_HEADER_BAR_LINK_URL =
+            ConfigurationAttributes.newStringAttribute("MIT_HEADER_BAR_LINK_URL")
+                    .defaultValue("").build();
 }

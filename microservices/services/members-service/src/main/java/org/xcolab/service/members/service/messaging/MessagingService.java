@@ -117,13 +117,13 @@ public class MessagingService {
                         .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,
                                 m.getContent()));
 
-        String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
+        String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         EmailClient.sendEmail(fromEmail, recipient.getEmailAddress(), subject, message, true,
                 fromEmail);
     }
 
     private static String createMessageURL(Message m) {
-        String home = ConfigurationAttributeKey.COLAB_URL.getStringValue();
+        String home = ConfigurationAttributeKey.COLAB_URL.get();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
     }
 }
