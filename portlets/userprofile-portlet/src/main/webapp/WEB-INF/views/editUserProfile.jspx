@@ -256,7 +256,7 @@
 		<form:hidden id="userRegistrationImageId" path="imageId" />
 	</form:form>
 
-	<c:if test="newsletterActive">
+	<c:if test="${newsletterActive}">
 		<div class="right_col v1">
 			<div class="comm_rightcol">
 				<div class="comm_rightcol-title2">${colabShortName} Newsletter Settings</div>
