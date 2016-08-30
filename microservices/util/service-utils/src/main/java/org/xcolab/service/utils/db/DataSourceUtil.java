@@ -62,6 +62,7 @@ public final class DataSourceUtil {
         dataSource.setMaximumPoolSize(MAX_POOL_SIZE);
         dataSource.setMinimumIdle(MIN_IDLE);
         dataSource.setIdleTimeout(IDLE_TIMEOUT_MS);
+        dataSource.setRegisterMbeans(false);
 
         //mysql optimizations
         dataSource.addDataSourceProperty("cachePrepStmts", true);

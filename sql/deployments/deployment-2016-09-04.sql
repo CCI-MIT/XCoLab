@@ -9,3 +9,10 @@ ALTER TABLE xcolab_LoginLog MODIFY pk BIGINT(20) AUTO_INCREMENT;
 update `members_Member`, `User_`
 set `members_Member`.`hashedPassword` = `User_`.password_
 where `members_Member`.`id_` = `User_`.userId;
+
+-- [COLAB-1348] Shared colab
+ALTER TABLE `xcolab_Contest`
+ADD COLUMN `isSharedContest` TINYINT(4) NULL DEFAULT 0 AFTER `resourceArticleId`;
+
+ALTER TABLE `members_Member`
+ADD COLUMN `autoRegisteredMemberStatus` INT(4) NULL DEFAULT 0 AFTER `reportKarma`;
