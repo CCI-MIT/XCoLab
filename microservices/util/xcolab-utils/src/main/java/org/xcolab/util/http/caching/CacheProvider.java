@@ -1,12 +1,14 @@
 package org.xcolab.util.http.caching;
 
-import java.util.concurrent.Future;
-
 public interface CacheProvider {
-    Object get(String key);
-    Future<Boolean> add(String key, int exp, Object o);
-    Future<Boolean> replace(String key, int exp, Object o);
-    Future<Boolean> delete(String key);
+
+    Object get(CachingStrategy cachingStrategy, String key);
+
+    boolean add(CachingStrategy cachingStrategy, String key, Object o);
+
+    boolean replace(CachingStrategy cachingStrategy, String key, Object o);
+
+    boolean delete(CachingStrategy cachingStrategy, String key);
 
     boolean isActive();
 }

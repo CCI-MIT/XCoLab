@@ -5,6 +5,7 @@ import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundExcep
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.http.caching.CachingStrategy;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -30,8 +31,8 @@ public final class ActivitiesClient {
             throws ActivityEntryNotFoundException {
         try {
             return activityEntryResource.get(activityEntryId)
-                    .cacheIdentifier("activityEntryId_" + activityEntryId)
-                    .execute();
+                    .withCache("activityEntryId_" + activityEntryId, CachingStrategy.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ActivityEntryNotFoundException(
                     "ActivityEntry with id " + activityEntryId + " not found.");
@@ -64,8 +65,8 @@ public final class ActivitiesClient {
             return activityEntryResource.service("count", Integer.class)
                     .optionalQueryParam("memberId", memberId)
                     .optionalQueryParam("folderId", memberIdsToExclude)
-                    .cacheIdentifier("activities_count_")
-                    .get();
+                    .withCache("activities_count_", CachingStrategy.REQUEST)
+                    .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }
@@ -77,8 +78,9 @@ public final class ActivitiesClient {
         try {
             return activitySubscriptionResource
                     .get(activitySubscriptionId)
-                    .cacheIdentifier("activitySubscriptionId_" + activitySubscriptionId)
-                    .execute();
+                    .withCache("activitySubscriptionId_" + activitySubscriptionId,
+                            CachingStrategy.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ActivitySubscriptionNotFoundException(
                     "ActivitySubscription with id " + activitySubscriptionId + " not found.");
@@ -126,7 +128,7 @@ public final class ActivitiesClient {
                 .queryParam("classPK", classPK)
                 .queryParam("extraInfo", extraInfo)
                 .queryParam("type", type)
-                .getUnchecked();
+                .get();
     }
 
     public static List<ActivitySubscription> getActivitySubscriptions(Long classNameId, Long classPK,

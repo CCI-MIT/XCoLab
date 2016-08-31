@@ -2,13 +2,15 @@ package org.xcolab.util.http.client.queries;
 
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.caching.CachingStrategy;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-public class ServiceQuery<T> {
+public class ServiceQuery<T> implements CacheableQuery<T, T> {
     private final UriBuilder uriBuilder;
     private final Class<T> entityType;
     private String cacheIdentifierValue;
+    private CachingStrategy cachingStrategy;
 
     public ServiceQuery(HttpResource httpResource, long id, String serviceName,
             Class<T> entityType) {
@@ -38,19 +40,25 @@ public class ServiceQuery<T> {
         this.uriBuilder = httpResource.getResourceUrl();
     }
 
-    public T get() throws EntityNotFoundException {
+    @Override
+    public T execute() {
+        return get();
+    }
+
+    public T getChecked() throws EntityNotFoundException {
         if (cacheIdentifierValue == null) {
             return RequestUtils.get(uriBuilder, entityType);
         } else {
-            return RequestUtils.get(uriBuilder, entityType, cacheIdentifierValue);
+            return RequestUtils.get(uriBuilder, entityType, cacheIdentifierValue,
+                    CachingStrategy.REQUEST);
         }
     }
 
-    public T getUnchecked() {
+    public T get() {
         if (cacheIdentifierValue == null) {
             return RequestUtils.getUnchecked(uriBuilder, entityType);
         } else {
-            return RequestUtils.getUnchecked(uriBuilder, entityType, cacheIdentifierValue);
+            return RequestUtils.getUnchecked(uriBuilder, entityType, cacheIdentifierValue, cachingStrategy);
         }
     }
 
@@ -70,11 +78,14 @@ public class ServiceQuery<T> {
         return RequestUtils.delete(uriBuilder);
     }
 
-    public ServiceQuery<T> cacheIdentifier(String cacheIdentifier) {
+    @Override
+    public ServiceQuery<T> withCache(String cacheIdentifier, CachingStrategy cachingStrategy) {
         this.cacheIdentifierValue = cacheIdentifier;
+        this.cachingStrategy = cachingStrategy;
         return this;
     }
 
+    @Override
     public ServiceQuery<T> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
@@ -85,6 +96,7 @@ public class ServiceQuery<T> {
         return this;
     }
 
+    @Override
     public ServiceQuery<T> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

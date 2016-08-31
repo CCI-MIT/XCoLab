@@ -4,7 +4,7 @@ import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 
-public class UpdateQuery<T> {
+public class UpdateQuery<T> implements Query<T, Boolean> {
 
     private final UriBuilder uriBuilder;
     private final T pojo;
@@ -20,7 +20,8 @@ public class UpdateQuery<T> {
         this.uriBuilder = restResource.getResourceUrl(id);
     }
 
-    public boolean execute() {
+    @Override
+    public Boolean execute() {
         if (cacheIdentifierValue == null) {
             return RequestUtils.put(uriBuilder, pojo);
         } else {
@@ -33,11 +34,13 @@ public class UpdateQuery<T> {
         return this;
     }
 
+    @Override
     public UpdateQuery<T> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
+    @Override
     public UpdateQuery<T> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

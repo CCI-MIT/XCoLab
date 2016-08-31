@@ -2,6 +2,7 @@ package org.xcolab.client.filtering;
 
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
+import org.xcolab.util.http.caching.CachingStrategy;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -16,8 +17,8 @@ public final class FilteringClient {
             throws FilteredEntryNotFoundException {
         try {
             return filteredEntryResource.get(uuid)
-                    .cacheIdentifier("filteredEntryId_ " + uuid)
-                    .execute();
+                    .withCache("filteredEntryId_ " + uuid, CachingStrategy.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException ignored) {
             throw new FilteredEntryNotFoundException(uuid);
         }

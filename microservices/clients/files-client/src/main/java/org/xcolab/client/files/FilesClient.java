@@ -31,7 +31,7 @@ public final class FilesClient {
 
     public static FileEntry getFileEntry(Long fileEntryId) throws FileEntryNotFoundException {
         try {
-            return fileEntryResource.get(fileEntryId).execute();
+            return fileEntryResource.get(fileEntryId).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new FileEntryNotFoundException(fileEntryId);
         }
