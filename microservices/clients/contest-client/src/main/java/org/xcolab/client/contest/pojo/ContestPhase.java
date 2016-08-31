@@ -8,15 +8,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.util.http.client.types.TypeProvider;
 
-import javax.annotation.Generated;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
+import javax.annotation.Generated;
 
 
 /**

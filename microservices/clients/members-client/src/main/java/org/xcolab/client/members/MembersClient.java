@@ -75,7 +75,7 @@ public final class MembersClient {
                     .optionalQueryParam("screenName", screenNameFilterValue)
                     .optionalQueryParam("category", categoryFilterValue)
                     .withCache("members_count_category_" + categoryFilterValue
-                            + "_screenName_" + screenNameFilterValue, CachingStrategy.REQUEST)
+                            + "_screenName_" + screenNameFilterValue, CachingStrategy.SHORT)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
@@ -117,7 +117,7 @@ public final class MembersClient {
     public static MemberCategory getMemberCategory(long roleId) {
         try {
             return memberCategoryResource.get(roleId).withCache("roleId_" + roleId,
-                    CachingStrategy.REQUEST).executeChecked();
+                    CachingStrategy.MEDIUM).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MemberCategoryNotFoundException("Category with role id " + roleId + " not found.");
         }
@@ -126,7 +126,7 @@ public final class MembersClient {
     public static MemberCategory getMemberCategory(String displayName) {
         MemberCategory memberCategory = memberCategoryResource.list()
                 .queryParam("displayName", displayName)
-                .withCache("displayName_" + displayName, CachingStrategy.REQUEST)
+                .withCache("displayName_" + displayName, CachingStrategy.MEDIUM)
                 .executeWithResult().getFirstIfExists();
         if (memberCategory == null) {
             throw new MemberCategoryNotFoundException("Category with name " + displayName + " not found.");
