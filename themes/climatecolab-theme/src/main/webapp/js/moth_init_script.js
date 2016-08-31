@@ -242,10 +242,7 @@ function handleOkForSharedColabAutoReg() {
 	}
 }
 function handleNoForSharedColabAutoReg() {
-	$.cookie("sharedColab_"+sharedContestAutoRegContestId, "false");
-	if(sharedContestAutoRegCallbackFunction!=null){
-		sharedContestAutoRegCallbackFunction.call(null);
-	}
+	jQuery('#popup_SSO_autoreg').hide();
 }
 
 
