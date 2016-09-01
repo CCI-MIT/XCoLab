@@ -301,20 +301,19 @@ public final class LoginRegisterUtil {
         }
         HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
         final String screenName = getScreenNameFromLogin(login);
-        Member member = MembersClient.findMemberByScreenName(screenName);
+        Member member = MembersClient.findMemberByScreenNameNoRole(screenName);
         boolean loggedIn = MembersClient.login(member.getId_(), password, httpReq.getRemoteAddr(), referer);
         if (loggedIn) {
             //TODO: liferay  throws a raw exception here
-            checkIfMemberAutoRegisteredNeedsLiferayCreation(screenName, password);
+            checkIfMemberAutoRegisteredNeedsLiferayCreation(member, password);
             AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
             return UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
         }
         return null;
     }
 
-    private static void checkIfMemberAutoRegisteredNeedsLiferayCreation(String screenName, String password){
-        try {
-            Member member = MembersClient.findMemberByScreenNameNoRole(screenName);
+    private static void checkIfMemberAutoRegisteredNeedsLiferayCreation(Member member, String password){
+
             if (member.getAutoRegisteredMemberStatus() == 1) {
                 User liferayUser = registerLiferayWithId(member.getId_(), member.getScreenName(), password, member.getEmailAddress(), member.getFirstName(), member.getLastName(), (member.getFacebookId() != null ? (member.getFacebookId().toString()) : ("0")));
                 if(liferayUser != null ) {
@@ -322,9 +321,7 @@ public final class LoginRegisterUtil {
                     MembersClient.updateMember(member);
                 }
             }
-        }catch (MemberNotFoundException e){
 
-        }
     }
     private static String getScreenNameFromLogin(String login) throws MemberNotFoundException {
         if (login.contains("@")) {
