@@ -17,6 +17,7 @@ function filterContests() {
 }
 
 jQuery(function() {
+    initTooltips();
 	jQuery("#contestFilterInput").change(filterContests).keypress(function (e) {
 		if (e.keyCode == 13) {
 			filterContests();
