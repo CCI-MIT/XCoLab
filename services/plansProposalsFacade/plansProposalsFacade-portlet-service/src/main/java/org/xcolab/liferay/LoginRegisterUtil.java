@@ -1,8 +1,6 @@
 package org.xcolab.liferay;
 
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
-import org.apache.commons.lang3.StringUtils;
-
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -26,6 +24,7 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -38,7 +37,6 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -307,6 +305,7 @@ public final class LoginRegisterUtil {
         boolean loggedIn = MembersClient.login(member.getId_(), password, httpReq.getRemoteAddr(), referer);
         if (loggedIn) {
             //TODO: liferay  throws a raw exception here
+            checkIfMemberAutoRegisteredNeedsLiferayCreation(screenName, password);
             AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
             return UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
         }
