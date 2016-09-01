@@ -21,6 +21,7 @@ import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class MembersController {
         }
     }
 
-    @GetMapping(value = "count")
+    @GetMapping("count")
     public Integer countMembers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
@@ -116,6 +117,18 @@ public class MembersController {
                 member.getShortBio(), member.getCountry(), member.getFacebookId(),
                 member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
+
+    @PostMapping("registerFromSharedColab")
+    public Member registerFromSharedColab(@RequestBody Member member) throws NoSuchAlgorithmException {
+            return memberService.registerWithHashedPassword(member.getScreenName(), member.getHashedPassword(),
+                    member.getEmailAddress(), member.getFirstName(), member.getLastName(),
+                    member.getShortBio(), member.getCountry(), member.getFacebookId(),
+                    member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
+    }
+
+
+
+
 
     @GetMapping("{memberId}/activityCount")
     public int getMemberActivityCount(@PathVariable Long memberId) {

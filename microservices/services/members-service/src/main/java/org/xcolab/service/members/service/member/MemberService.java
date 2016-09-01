@@ -22,6 +22,7 @@ import org.xcolab.util.exceptions.ReferenceResolutionException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -100,7 +101,20 @@ public class MemberService {
         subscribeToNewsletter(member.getEmailAddress());
         return member;
     }
-
+    public Member registerWithHashedPassword(String screenName, String password, String email,
+            String firstName, String lastName, String shortBio, String country, Long facebookId,
+            String openId, Long imageId, Long liferayUserId) {
+        return memberDao.getMember(liferayUserId).orElseGet(() -> {
+            memberDao.createMember(screenName, password, email, firstName, lastName,
+                    shortBio, country, facebookId, openId, imageId, liferayUserId);
+            final Member member = memberDao.findOneByScreenName(screenName)
+                    .orElseThrow(IllegalStateException::new);
+            member.setAutoRegisteredMemberStatus(1);
+            memberDao.updateMember(member);
+            subscribeToNewsletter(member.getEmailAddress());
+            return member;
+        });
+    }
     public boolean login(Member member, LoginBean loginBean) {
         if (validatePassword(loginBean.getPassword(), member.getHashedPassword())) {
 

@@ -211,6 +211,16 @@ function showSharedColabLogin(fn) {
 	}
 }
 
+function showSharedContestAutoRegPopUp(fn, contestId, userId) {
+
+	if (Liferay.ThemeDisplay.isSignedIn()) {
+
+		jQuery('#popup_login').hide();
+		jQuery('#popup_SSO_autoreg').show();
+		return true;
+	}
+}
+
 function showForgotPasswordPopup() {
 	jQuery('#popup_login').hide();
 	jQuery('#popup_forgotpassword').show();

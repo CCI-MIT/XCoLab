@@ -173,6 +173,17 @@ public final class MembersClient {
         return member;
     }
 
+    public static Member findMemberByScreenNameNoRole(String screenName) throws MemberNotFoundException {
+        try {
+            Member member = memberResource.service("findByScreenName", Member.class)
+                    .queryParam("screenName", screenName).get();
+            return member;
+        }catch (EntityNotFoundException ignored){
+            throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
+        }
+
+    }
+
     public static Member findMemberByFacebookId(long facebookId) throws MemberNotFoundException {
         Member member = memberResource.list()
                 .queryParam("facebookId", facebookId)

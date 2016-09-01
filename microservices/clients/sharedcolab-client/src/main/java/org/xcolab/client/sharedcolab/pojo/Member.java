@@ -40,6 +40,9 @@ public class Member implements Serializable {
     private Integer status;
     private int reportKarma;
     private Long portraitfileentryid;
+    private Integer   autoregisteredmemberstatus;
+
+
 
     public Member() {
     }
@@ -196,6 +199,14 @@ public class Member implements Serializable {
 
     public void setPortraitFileEntryId(Long portraitfileentryid) {
         this.portraitfileentryid = portraitfileentryid;
+    }
+
+    public Integer getAutoregisteredmemberstatus() {
+        return autoregisteredmemberstatus;
+    }
+
+    public void setAutoregisteredmemberstatus(Integer autoregisteredmemberstatus) {
+        this.autoregisteredmemberstatus = autoregisteredmemberstatus;
     }
 
     @JsonIgnore

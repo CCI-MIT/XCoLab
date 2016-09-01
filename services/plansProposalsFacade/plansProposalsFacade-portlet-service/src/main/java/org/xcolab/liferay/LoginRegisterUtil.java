@@ -38,6 +38,7 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -223,9 +224,31 @@ public final class LoginRegisterUtil {
 
     }
 
-    public static Member register(String screenName, String password, String email,
-            String firstName, String lastName, String shortBio, String country, String fbIdString,
-            String openId, String imageId, ServiceContext liferayServiceContext)
+
+    public static void registerMemberInSharedColab(Long memberId) {
+        try {
+            Member memberInCurrentColab = MembersClient.getMember(memberId);
+
+            org.xcolab.client.sharedcolab.pojo.Member member = new org.xcolab.client.sharedcolab.pojo.Member();
+            member.setId_(memberInCurrentColab.getId_());
+            member.setScreenName(memberInCurrentColab.getScreenName());
+            member.setEmailAddress(memberInCurrentColab.getEmailAddress());
+            member.setFirstName(memberInCurrentColab.getFirstName());
+            member.setHashedPassword(memberInCurrentColab.getHashedPassword());
+            member.setLastName(memberInCurrentColab.getLastName());
+            member.setOpenId(memberInCurrentColab.getOpenId());
+            member.setFacebookId(memberInCurrentColab.getFacebookId());
+            member.setShortBio(memberInCurrentColab.getShortBio());
+            member.setCountry(memberInCurrentColab.getCountry());
+            SharedColabClient.registerInPartnerColab(member);
+        } catch (MemberNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Member register(String screenName, String password, String email, String firstName, String lastName,
+                                  String shortBio, String country, String fbIdString, String openId, String imageId,
+                                  ServiceContext liferayServiceContext)
             throws Exception {
 
         Long memberId = SharedColabClient.retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.getStringValue());
@@ -290,6 +313,20 @@ public final class LoginRegisterUtil {
         return null;
     }
 
+    private static void checkIfMemberAutoRegisteredNeedsLiferayCreation(String screenName, String password){
+        try {
+            Member member = MembersClient.findMemberByScreenNameNoRole(screenName);
+            if (member.getAutoRegisteredMemberStatus() == 1) {
+                User liferayUser = registerLiferayWithId(member.getId_(), member.getScreenName(), password, member.getEmailAddress(), member.getFirstName(), member.getLastName(), (member.getFacebookId() != null ? (member.getFacebookId().toString()) : ("0")));
+                if(liferayUser != null ) {
+                    member.setAutoRegisteredMemberStatus(2);
+                    MembersClient.updateMember(member);
+                }
+            }
+        }catch (MemberNotFoundException e){
+
+        }
+    }
     private static String getScreenNameFromLogin(String login) throws MemberNotFoundException {
         if (login.contains("@")) {
             Member member = MembersClient.findMemberByEmailAddress(login);
