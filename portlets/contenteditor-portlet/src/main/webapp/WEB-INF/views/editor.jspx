@@ -112,7 +112,7 @@
                         var node = $('#tree-view').tree('getNodeById', node_id);
 
                         if (node) {
-
+                            updateArticleURL(node.name, "");
                             //$('#tree-view').tree('selectNode', node);
                             newArticleAtFolderId(node.id, node.name);
                         }
@@ -143,7 +143,7 @@
                         var node = event.node;
                         if(node.kind == "article"){
                             $("#article-view").unmask();
-                            $("#article-view").mask()
+                            $("#article-view").mask();
                             loadArticleVersionContent(node.id, node.parent.name);
                         }else{
                             /*
@@ -171,6 +171,14 @@
 
                     saveArticle();
             });
+            $('#contentArticleTitle').bind('input', function() {
+                if ($("#folderName").html().indexOf("Wiki") !== -1) {
+                    updateArticleURL("Wiki", $('#contentArticleTitle').val().replace(/ /g,"+"));
+                    var input1 = $('#contentArticleTitle');
+                    input1.attr("value",$('#contentArticleTitle').val());
+                    $("#article-view").unmask()
+                }
+            });
         });
         function addVersionEntry(dateOfEdit, versionId){
             var cell = $('<li>');
@@ -187,6 +195,14 @@
             $('#contentArticleTitle').attr("value","");
             CKEDITOR.instances['articleVersionContent'].setData("");
             $('#contentArticleFolderId').focus();
+        }
+        function updateArticleURL(folderName, articleTitle) {
+            if(folderName == "Wiki") {
+                $("#articleURL").html("Atricle URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
+                        "'>~/web/guest/wiki/-/wiki/page/" + articleTitle + "</a>");
+            } else {
+                $("#articleURL").html("");
+            }
         }
         function loadArticleVersionContent(id, folderName){
             id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
@@ -210,6 +226,8 @@
 
                 var input1 = $('#contentArticleTitle');
                 input1.attr("value",data.title);
+
+                updateArticleURL(folderName, data.title.replace(/ /g,"+"));
 
                 ckEditor.setReadOnly(false);
                 $("#article-view").unmask()
@@ -307,6 +325,8 @@
                             Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
                         </div>
                         <div id="folderName">Parent folder: <!-- --></div>
+                        <br/>
+                        <div id="articleURL"><!-- Article URL:  --></div>
                         <div>
                             <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
                         </div>
