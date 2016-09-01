@@ -25,7 +25,7 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanReport() {
-        return ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.getBooleanValue()
+        return ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get()
                 || getCanAdminMessages();
     }
 
@@ -64,6 +64,6 @@ public class DiscussionPermissions {
     }
 
     public boolean getMustFilterContent() {
-        return ConfigurationAttributeKey.FILTER_PROFANITY.getBooleanValue();
+        return ConfigurationAttributeKey.FILTER_PROFANITY.get();
     }
 }

@@ -66,27 +66,27 @@ public class EXTServicePreAction extends Action {
         } catch (SystemException e) {
             _log.error("Could not retrieve contest types to populate menu items", e);
         }
-        vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.getStringValue());
-        vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.getStringValue());
-        vmVariables.put("_googleAnalyticsKey", ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.getStringValue());
+        vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.get());
+        vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
+        vmVariables.put("_googleAnalyticsKey", ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get());
 
-        vmVariables.put("betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.getBooleanValue());
-        vmVariables.put("_openGraphShareTitle", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.getStringValue());
-        vmVariables.put("_openGraphShareDescription", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.getStringValue());
+        vmVariables.put("betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());
+        vmVariables.put("_openGraphShareTitle", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get());
+        vmVariables.put("_openGraphShareDescription", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.get());
 
         vmVariables.put("isSharedColab",
-                ConfigurationAttributeKey.IS_SHARED_COLAB.getBooleanValue());
-        final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.getStringValue();
+                ConfigurationAttributeKey.IS_SHARED_COLAB.get());
+        final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
         final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
         vmVariables.put("partnerColabName",partnerColabName);
         vmVariables.put("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
         vmVariables.put("partnerColabLogo",partnerColabImgsAndClasses+ "PartnerLogo.png");
         
-        final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.getBooleanValue();
+        final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
         vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);
         if (mitHeaderBarShow) {
-            vmVariables.put("mitHeaderBarLinkText", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.getStringValue());
-            vmVariables.put("mitHeaderBarLinkUrl", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.getStringValue());
+            vmVariables.put("mitHeaderBarLinkText", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.get());
+            vmVariables.put("mitHeaderBarLinkUrl", ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.get());
         }
 
         String contestIdStr = req.getParameter("_collab_paramcontestId");

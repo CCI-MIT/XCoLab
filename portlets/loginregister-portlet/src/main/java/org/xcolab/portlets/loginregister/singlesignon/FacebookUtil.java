@@ -58,9 +58,9 @@ public final class FacebookUtil {
 
     public static String getAccessToken(PortletRequest request, String code) {
         UriBuilder uriBuilder = new UriBuilder(UriComponentsBuilder.fromHttpUrl(TOKEN_URL))
-                .queryParam("client_id", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.getStringValue())
+                .queryParam("client_id", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get())
                 .queryParam("redirect_uri", getAuthRedirectURL(request))
-                .queryParam("client_secret", ConfigurationAttributeKey.FACEBOOK_APPLICATION_SECRET.getStringValue())
+                .queryParam("client_secret", ConfigurationAttributeKey.FACEBOOK_APPLICATION_SECRET.get())
                 .queryParam("code", code);
         final String requestResult = RequestUtils.post(uriBuilder, null, String.class);
         //TODO: copied from liferay - this could be nicer

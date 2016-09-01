@@ -39,7 +39,10 @@ $p-Proposal__subscribe__capitalization: none !default;
 $p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
 $p-Proposal__box__offColor: $t-Color__primary__grey--light !default;
 
-$p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor;
+$p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor !default;
+
+$p-Proposal__propbox--red: $t-Color__alert !default;
+$p-Proposal__propbox--green: $t-Color__secondary--light !default;
 
 /* PROPOSALS ----------------------------------------------------------------------------- */
 
@@ -300,11 +303,11 @@ $p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor;
 }
 
 .propbox-red {
-  background-color: $t-Color__alert !important;
+  background-color: $p-Proposal__propbox--red !important;
 }
 
 .propbox-green {
-  background-color: $t-Color__secondary--light !important;
+  background-color: $p-Proposal__propbox--green !important;
 }
 
 /* right column */

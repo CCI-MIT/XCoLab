@@ -8,8 +8,8 @@ import java.util.List;
 public interface ContentArticleDao {
     ContentArticle get(Long contentArticleId) throws NotFoundException;
 
-    List<ContentArticle> getArticles();
-    List<ContentArticle> getArticlesInFolder(long folderId);
+    List<? extends ContentArticle> getArticles();
+    List<? extends ContentArticle> getArticlesInFolder(long folderId);
 
     boolean update(ContentArticle contentArticle);
 

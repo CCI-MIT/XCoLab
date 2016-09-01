@@ -35,7 +35,7 @@ public enum SubscriptionType {
             return "Discussion";
         } else {
             final long contestTypeId = ConfigurationAttributeKey
-                    .DEFAULT_CONTEST_TYPE_ID.getLongValue();
+                    .DEFAULT_CONTEST_TYPE_ID.get();
             ContestType contestType;
             try {
                 contestType = ContestTypeLocalServiceUtil

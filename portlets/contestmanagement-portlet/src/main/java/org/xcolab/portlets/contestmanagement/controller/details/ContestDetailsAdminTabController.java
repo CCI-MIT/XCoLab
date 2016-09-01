@@ -1,8 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
 
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -126,7 +124,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
         boolean success = true;
         try {
-            String contestUrl = ConfigurationAttributeKey.COLAB_URL.getStringValue()
+            String contestUrl = ConfigurationAttributeKey.COLAB_URL.get()
                     + "/web/guest/cms/-/contestmanagement/contestId/" + contestId;
             if (!tab.isEmpty()) {
                 contestUrl += "/tab/" + tab;
@@ -139,14 +137,14 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
 
-            final String emailRecipient = ConfigurationAttributeKey.ADMIN_EMAIL.getStringValue();
+            final String emailRecipient = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
             List<String> addressTo = new ArrayList<>();
             addressTo.add(emailRecipient);
 
             String subject = "<contest/> draft was submitted from the <contest/> management tool!";
 
-            ContestType contestType = ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
+            ContestType contestType = ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
             body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);
 

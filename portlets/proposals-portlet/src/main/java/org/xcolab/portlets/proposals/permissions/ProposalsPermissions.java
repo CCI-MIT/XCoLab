@@ -76,7 +76,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanReport() {
-        return ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.getBooleanValue()
+        return ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get()
                 || getCanAdminAll();
     }
 

@@ -33,7 +33,7 @@ public class EmailToAdminDispatcher {
     }
 
     public void sendMessage() {
-        String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.getStringValue();
+        String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         EmailClient.sendEmail(fromEmail, getRecipientAddresses(), subject, body, true, fromEmail);
     }
 

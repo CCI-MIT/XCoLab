@@ -1,10 +1,7 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -28,7 +25,6 @@ import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
 
 import java.sql.Timestamp;
 import java.util.Random;
@@ -56,7 +52,7 @@ public final class ContestCreatorUtil {
             contest.setPlanTemplateId(DEFAULT_CONTEST_TEMPLATE_ID);
             contest.setContestScheduleId(DEFAULT_CONTEST_SCHEDULE_ID);
             contest.setContestTypeId(
-                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.getLongValue());
+                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             ContestClient.updateContest(contest);
             ContestScheduleWrapper
                     .createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,

@@ -1,6 +1,5 @@
 package org.xcolab.client.admin;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.util.http.client.RestResource;
@@ -13,15 +12,14 @@ public class AdminClient {
     private static final RestResource<ConfigurationAttribute> configurationAttributeResource =
             new RestResource<>(adminService, "attributes", ConfigurationAttribute.TYPES);
 
-    public static ConfigurationAttribute getConfigurationAttribute(
-            ConfigurationAttributeKey attributeKey) {
+    public static ConfigurationAttribute getConfigurationAttribute(String name) {
 
         try {
-            return configurationAttributeResource.get(attributeKey.name())
-                    .cacheIdentifier("configurationAttribute_" + attributeKey.name())
+            return configurationAttributeResource.get(name)
+                    .cacheIdentifier("configurationAttribute_" + name)
                     .execute();
         } catch (EntityNotFoundException e) {
-            throw new ConfigurationAttributeNotFoundException(attributeKey);
+            throw new ConfigurationAttributeNotFoundException(name);
         }
     }
 }

@@ -40,7 +40,7 @@ public enum LoginRegisterActivityKeys {
     }
 
     public String getBody(User user) throws SystemException {
-        String colabName = ConfigurationAttributeKey.COLAB_NAME.getStringValue();
+        String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
         return String.format(body, getUserLink(user), colabName);
     }
 

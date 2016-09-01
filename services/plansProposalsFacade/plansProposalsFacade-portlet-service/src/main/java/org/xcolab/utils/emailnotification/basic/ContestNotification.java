@@ -109,7 +109,7 @@ public class ContestNotification extends EmailNotification {
                         return new TextNode("", "");
                     } else {
                         final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMATTER.withZone(
-                                DateTimeZone.forID(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.getStringValue()));
+                                DateTimeZone.forID(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get()));
                         return new TextNode(new DateTime(phaseDeadline).toString(dateTimeFormatterWithTimeZone), "");
                     }
                 case CONTEST_DEADLINE_SECTION_PLACEHOLDER:

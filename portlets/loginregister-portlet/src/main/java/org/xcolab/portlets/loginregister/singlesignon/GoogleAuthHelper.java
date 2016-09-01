@@ -54,8 +54,8 @@ public final class GoogleAuthHelper {
     public GoogleAuthHelper(String redirectURI) {
         this.redirectUri = redirectURI;
         flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
-                JSON_FACTORY, ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_ID.getStringValue(),
-                ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_SECRET.getStringValue(),
+                JSON_FACTORY, ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_ID.get(),
+                ConfigurationAttributeKey.GOOGLE_AUTH_CLIENT_SECRET.get(),
                 SCOPE).build();
 
         generateStateToken();
