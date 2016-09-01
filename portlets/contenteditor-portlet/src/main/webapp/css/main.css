@@ -326,4 +326,4 @@ span.ontology-term-label {
 #tree-view{width:350px}
 #saveArticle{cursor:pointer}
 #articleURL{overflow:hidden}
-#anchorArticleURL{display: block; width:0px;}
+#anchorArticleURL{display: block; width:0px; white-space: nowrap;}
