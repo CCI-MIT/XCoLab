@@ -79,8 +79,8 @@ public class SharedColabClient {
     }
 
     public static Member registerInPartnerColab(Member member) {
-        memberService.setServiceHost(ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.getStringValue());
-        memberService.setServicePort(ConfigurationAttributeKey.PARTNER_COLAB_PORT.getStringValue());
+        memberService.setServiceHost(ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get());
+        memberService.setServicePort(ConfigurationAttributeKey.PARTNER_COLAB_PORT.get());
         return memberResource.service("registerFromSharedColab",Member.class).post(member);
     }
 
