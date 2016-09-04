@@ -1,9 +1,8 @@
-package org.xcolab.helpers;
+package org.xcolab.client.proposals.helpers;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.xcolab.client.contest.pojo.ContestPhase;
+
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.ContestPhase;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * TODO: use new ProposalContestPhaseAttributeLocalServiceUtil methods!
  */
 public class ProposalContestPhaseAttributeHelper {
-    private final static Log _log = LogFactoryUtil.getLog(ProposalContestPhaseAttributeHelper.class);
+    //private final static Log _log = LogFactoryUtil.getLog(ProposalContestPhaseAttributeHelper.class);
 
     private final Long proposalId;
     private Long contestPhasePK;

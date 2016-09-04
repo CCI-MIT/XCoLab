@@ -1,10 +1,8 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.Proposal2Phase;
-import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.ProposalVote;
+import org.xcolab.client.proposals.pojo.*;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -25,6 +23,9 @@ public final class ProposalsClient {
 
     private static final RestResource<ProposalContestPhaseAttribute> proposalContestPhaseAttributeResource = new RestResource<>(proposalService,
             "proposalContestPhaseAttributes", ProposalContestPhaseAttribute.TYPES);
+
+    private static final RestResource<ProposalAttribute> proposalAttributeResource = new RestResource<>(proposalService,
+            "proposalAttributes", ProposalAttribute.TYPES);
 
 
     public static Proposal createProposal(Proposal proposal) {
@@ -63,6 +64,16 @@ public final class ProposalsClient {
                     .execute();
         } catch (EntityNotFoundException e) {
             throw new ProposalNotFoundException(proposalId);
+        }
+    }
+    public static Integer getNumberOfProposalsForJudge(Long userId,Long contestPhaseId) {
+        try {
+            return proposalResource.service("numberOfProposalsForJudge", Integer.class)
+                    .queryParam("userId", userId)
+                    .queryParam("contestPhaseId", contestPhaseId)
+                    .get();
+        } catch (EntityNotFoundException e) {
+            return 0;
         }
     }
 
@@ -121,4 +132,33 @@ public final class ProposalsClient {
                 .optionalQueryParam("userId", userId)
                 .execute();
     }
+
+    public static  ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {
+        return proposalAttributeResource.create(proposalAttribute).execute();
+    }
+
+
+
+    public static ProposalAttribute getProposalAttribute(long id_) throws ProposalAttributeNotFoundException {
+        try {
+            return proposalAttributeResource.get(id_)
+                    .cacheIdentifier("proposalAttributeId_" + id_)
+                    .execute();
+        } catch (EntityNotFoundException e) {
+            throw new ProposalAttributeNotFoundException(id_);
+        }
+    }
+
+    public static boolean updateProposalAttribute(ProposalAttribute proposalAttribute) {
+        return proposalAttributeResource.update(proposalAttribute, proposalAttribute.getId_())
+                .execute();
+    }
+    public static List<ProposalAttribute> getAllProposalAttributes(Long proposalId,Integer version) {
+        return proposalAttributeResource.list()
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("version", version)
+                .execute();
+    }
+
+
 }

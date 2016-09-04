@@ -72,7 +72,7 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
     }
 
     @Override
-    public List<ProposalAttribute> findByGiven(Long proposalId, String name, Long additionalId) {
+    public List<ProposalAttribute> findByGiven(Long proposalId, String name, Long additionalId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_ATTRIBUTE).getQuery();
 
@@ -84,6 +84,9 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
         }
         if (additionalId != null) {
             query.addConditions(PROPOSAL_ATTRIBUTE.ADDITIONAL_ID.eq(additionalId));
+        }
+        if (version != null) {
+            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.eq(version));
         }
         return query.fetchInto(ProposalAttribute.class);
     }

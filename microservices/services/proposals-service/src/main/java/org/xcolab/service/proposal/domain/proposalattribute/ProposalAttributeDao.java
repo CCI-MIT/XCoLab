@@ -10,6 +10,6 @@ public interface ProposalAttributeDao {
     ProposalAttribute create(ProposalAttribute proposalAttribute);
     ProposalAttribute get(Long id_) throws NotFoundException;
     boolean update(ProposalAttribute proposalAttribute);
-    List<ProposalAttribute> findByGiven(Long proposalId, String name, Long additionalId);
+    public List<ProposalAttribute> findByGiven(Long proposalId, String name, Long additionalId, Integer version);
     int delete(Long id_);
 }

@@ -1,5 +1,6 @@
 package org.xcolab.service.proposal.web;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.Proposal
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.List;
 
@@ -81,12 +83,30 @@ public class ProposalsController {
         return proposalDao.update(proposal);
     }
 
+    @RequestMapping(value = "/proposals/numberOfProposalsForJudge", method = RequestMethod.GET)
+    public Integer numberOfProposalsForJudge(@RequestParam long contestPhaseId, @RequestParam long userId)
+            throws NotFoundException {
+        PaginationHelper paginationHelper = new PaginationHelper(0, Integer.MAX_VALUE, null);
+
+        List<Proposal> proposals = proposalDao.findByGiven(paginationHelper, null, null, contestPhaseId, null);
+        int counter = 0;
+        for (Proposal p : proposals){
+            String judges = "";
+                judges = proposalContestPhaseAttributeDao.getByProposalIdContestPhaseIdName(p.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
+            if (StringUtils.containsIgnoreCase(judges, userId + "")) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
     @RequestMapping(value = "/proposal2Phases/{proposal2PhaseId}/getProposalCount", method = RequestMethod.GET)
     public Integer getProposalCountForActivePhase(@PathVariable Long proposal2PhaseId) throws NotFoundException {
 
         return proposal2PhaseDao.getProposalCountForActiveContestPhase(proposal2PhaseId);
 
     }
+
 
     @RequestMapping(value = "/proposal2Phases", method = {RequestMethod.GET})
     public Proposal2Phase getProposal2Phases(

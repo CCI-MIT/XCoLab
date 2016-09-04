@@ -1,17 +1,12 @@
-package org.xcolab.helpers;
-
+package org.xcolab.client.proposals.helpers;
 
 
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
-import org.xcolab.utils.EntityGroupingUtil;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 public class ProposalAttributeHelper {
     private final Proposal proposal;

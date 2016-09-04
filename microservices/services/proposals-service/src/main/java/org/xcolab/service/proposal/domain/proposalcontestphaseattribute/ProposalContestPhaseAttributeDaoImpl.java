@@ -53,6 +53,21 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
 
     }
 
+    public ProposalContestPhaseAttribute getByProposalIdContestPhaseIdName(Long proposalId, Long contestPhaseId, String name) throws NotFoundException {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(PROPOSAL_CONTEST_PHASE_ATTRIBUTE).getQuery();
+
+        if (proposalId != null) {
+            query.addConditions(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID.eq(proposalId));
+        }
+        if (contestPhaseId != null) {
+            query.addConditions(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.CONTEST_PHASE_ID.eq(contestPhaseId));
+        }
+        if (name != null) {
+            query.addConditions(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NAME.eq(name));
+        }
+        return query.fetchOne().into(ProposalContestPhaseAttribute.class);
+    }
     @Override
     public List<ProposalContestPhaseAttribute> findByGiven(Long proposalId, Long contestPhaseId, String name) {
         final SelectQuery<Record> query = dslContext.select()

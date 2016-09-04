@@ -54,9 +54,10 @@ public class ProposalAttributeController {
     public List<ProposalAttribute> getProposalAttributes(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) Long additionalId
+            @RequestParam(required = false) Long additionalId,
+            @RequestParam(required = false) Integer version
     ) {
-        return proposalAttributeDao.findByGiven(proposalId, name, additionalId);
+        return proposalAttributeDao.findByGiven(proposalId, name, additionalId, version);
     }
 
 
