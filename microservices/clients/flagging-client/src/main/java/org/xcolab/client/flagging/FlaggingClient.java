@@ -8,6 +8,7 @@ import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CachingStrategy;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
@@ -67,7 +68,8 @@ public final class FlaggingClient {
 
     public static Report getReport(long reportId) throws ReportNotFoundException {
         try {
-            return reportResource.get(reportId).withCache("reportId_" + reportId,
+            return reportResource.get(reportId)
+                    .withCache(CacheKeys.of(Report.class, reportId),
                     CachingStrategy.REQUEST).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ReportNotFoundException(reportId);
@@ -101,7 +103,8 @@ public final class FlaggingClient {
             throws ReportTargetNotFoundException {
         try {
             return reportTargetResource.get(reportTargetId)
-                    .withCache("id_" + reportTargetId, CachingStrategy.REQUEST)
+                    .withCache(CacheKeys.of(ReportTarget.class, reportTargetId),
+                            CachingStrategy.REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ReportTargetNotFoundException(reportTargetId);
@@ -113,7 +116,9 @@ public final class FlaggingClient {
         final ReportTarget reportTarget = reportTargetResource.list()
                 .queryParam("type", type.name())
                 .queryParam("reason", reason)
-                .withCache("type_" + type.name() + "reason_" + reason, CachingStrategy.REQUEST)
+                .withCache(CacheKeys.withClass(ReportTarget.class)
+                        .withParameter("type", type.name())
+                        .withParameter("reason", reason).asList(), CachingStrategy.REQUEST)
                 .executeWithResult().getFirstIfExists();
         if (reportTarget == null) {
             throw new ReportTargetNotFoundException(type, reason);

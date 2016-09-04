@@ -49,7 +49,7 @@ public class SharedColabClient {
     public static Long retrieveSharedId(String email, String screenName, String colabName) {
         sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get());
         sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.get());
-        ServiceQuery<Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
+        ServiceQuery<Long, Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
 
         if (email != null) {
             retrieveSharedId.optionalQueryParam("email", email);
@@ -79,8 +79,8 @@ public class SharedColabClient {
     }
 
     public static Member registerInPartnerColab(Member member) {
-        memberService.setServiceHost(ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.getStringValue());
-        memberService.setServicePort(ConfigurationAttributeKey.PARTNER_COLAB_PORT.getStringValue());
+        memberService.setServiceHost(ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get());
+        memberService.setServicePort(ConfigurationAttributeKey.PARTNER_COLAB_PORT.get());
         return memberResource.service("registerFromSharedColab",Member.class).post(member);
     }
 

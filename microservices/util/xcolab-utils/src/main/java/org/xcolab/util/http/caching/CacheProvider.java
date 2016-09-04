@@ -2,13 +2,13 @@ package org.xcolab.util.http.caching;
 
 public interface CacheProvider {
 
-    Object get(CachingStrategy cachingStrategy, String key);
+    <T> T get(CacheKey<?, T> key, CachingStrategy cachingStrategy);
 
-    boolean add(CachingStrategy cachingStrategy, String key, Object o);
+    <T> boolean add(CacheKey<?, T> key, CachingStrategy cachingStrategy, T value);
 
-    boolean replace(CachingStrategy cachingStrategy, String key, Object o);
+    <T> boolean replace(CacheKey<?, T> key, CachingStrategy cachingStrategy, T value);
 
-    boolean delete(CachingStrategy cachingStrategy, String key);
+    boolean delete(CacheKey<?, ?> key, CachingStrategy cachingStrategy);
 
     boolean isActive();
 }

@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
+import static org.ehcache.config.builders.CacheConfigurationBuilder.newCacheConfigurationBuilder;
+import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder;
+
 @Component
 public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
 
@@ -26,8 +29,7 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     public CacheProviderEhcacheImpl() {
         CacheManager newCacheManager;
         try {
-            final CacheManagerBuilder<CacheManager> cacheManagerBuilder = CacheManagerBuilder
-                    .newCacheManagerBuilder()
+            final CacheManagerBuilder<CacheManager> cacheManagerBuilder = newCacheManagerBuilder()
                     .withCache(CachingStrategy.REQUEST.name(), getTTLConfig(CachingStrategy.REQUEST))
                     .withCache(CachingStrategy.SHORT.name(), getTTLConfig(CachingStrategy.SHORT))
                     .withCache(CachingStrategy.MEDIUM.name(), getTTLConfig(CachingStrategy.MEDIUM))
@@ -45,7 +47,7 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
 
     private CacheConfigurationBuilder<String, Object> getConfigBuilder(
             CachingStrategy cachingStrategy) {
-        return CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, Object.class,
+        return newCacheConfigurationBuilder(String.class, Object.class,
                 ResourcePoolsBuilder.heap(cachingStrategy.getNumberOfEntries()));
     }
 
@@ -66,12 +68,13 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public Object get(CachingStrategy cachingStrategy, String key) {
+    public <T> T get(CacheKey<?, T> key, CachingStrategy cachingStrategy) {
         if (isActive()) {
             try {
-                return getCache(cachingStrategy).get(key);
+                //noinspection unchecked
+                return (T) getCache(cachingStrategy).get(key.stringKey());
             } catch (CacheLoadingException e) {
-                log.error("Error while loading cache {} for key {}: {}", cachingStrategy, key, e.toString());
+                log.error("Error while loading cache {} using {}: {}", cachingStrategy, key, e.toString());
                 return null;
             }
         }
@@ -80,10 +83,10 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public boolean add(CachingStrategy cachingStrategy, String key, Object o) {
+    public <T> boolean add(CacheKey<?, T> key, CachingStrategy cachingStrategy, T value) {
         if (isActive()) {
             try {
-                getCache(cachingStrategy).put(key, o);
+                getCache(cachingStrategy).put(key.stringKey(), value);
                 return true;
             } catch (CacheWritingException e) {
                 log.error("Could not add entry {} to cache {}: {}", key, cachingStrategy, e.toString());
@@ -94,15 +97,15 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public boolean replace(CachingStrategy cachingStrategy, String key, Object o) {
-        return add(cachingStrategy, key, o);
+    public <T> boolean replace(CacheKey<?, T> key, CachingStrategy cachingStrategy, T value) {
+        return add(key, cachingStrategy, value);
     }
 
     @Override
-    public boolean delete(CachingStrategy cachingStrategy, String key) {
+    public boolean delete(CacheKey<?, ?> key, CachingStrategy cachingStrategy) {
         if (isActive()) {
             try {
-                getCache(cachingStrategy).remove(key);
+                getCache(cachingStrategy).remove(key.stringKey());
             } catch (CacheWritingException e) {
                 log.error("Could not delete entry {} from cache : {}", key, cachingStrategy, e.toString());
                 return false;

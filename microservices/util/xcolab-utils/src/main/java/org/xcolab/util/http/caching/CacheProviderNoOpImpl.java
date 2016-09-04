@@ -3,22 +3,22 @@ package org.xcolab.util.http.caching;
 public class CacheProviderNoOpImpl implements CacheProvider {
 
     @Override
-    public Object get(CachingStrategy cachingStrategy, String key) {
+    public <T> T get(CacheKey<?, T> key, CachingStrategy cachingStrategy) {
         return null;
     }
 
     @Override
-    public boolean add(CachingStrategy cachingStrategy, String key, Object o) {
+    public <T> boolean add(CacheKey<?, T> key, CachingStrategy cachingStrategy, T value) {
         return false;
     }
 
     @Override
-    public boolean replace(CachingStrategy cachingStrategy, String key, Object o) {
+    public <T> boolean replace(CacheKey<?, T> key, CachingStrategy cachingStrategy, T value) {
         return false;
     }
 
     @Override
-    public boolean delete(CachingStrategy cachingStrategy, String key) {
+    public boolean delete(CacheKey<?, ?> key, CachingStrategy cachingStrategy) {
         return false;
     }
 

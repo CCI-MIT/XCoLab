@@ -8,6 +8,7 @@ import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CachingStrategy;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
@@ -71,11 +72,12 @@ public final class MembersClient {
 
     public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue) {
         try {
-            return memberResource.service("count", Integer.class)
+            return memberResource.<Member, Integer>service("count", Integer.class)
                     .optionalQueryParam("screenName", screenNameFilterValue)
                     .optionalQueryParam("category", categoryFilterValue)
-                    .withCache("members_count_category_" + categoryFilterValue
-                            + "_screenName_" + screenNameFilterValue, CachingStrategy.SHORT)
+                    .withCache(CacheKeys.withClass(Member.class)
+                            .withParameter("screenName", screenNameFilterValue)
+                            .withParameter("category", categoryFilterValue).asCount(), CachingStrategy.SHORT)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
@@ -101,7 +103,8 @@ public final class MembersClient {
     public static List<Role_> getMemberRoles(long memberId) {
         return memberResource.getSubRestResource(memberId, "roles", Role_.TYPES)
                 .list()
-                .withCache("memberId_" + memberId, CachingStrategy.REQUEST)
+                .withCache(CacheKeys.withClass(Role_.class)
+                        .withParameter("memberId", memberId).asList(), CachingStrategy.REQUEST)
                 .execute();
     }
 
@@ -109,15 +112,19 @@ public final class MembersClient {
         return memberResource
                 .getSubRestResource(memberId, "contestRoles", Role_.TYPES)
                 .list().queryParam("contestId", contestId)
-                .withCache("memberId_" + memberId + "_contestId_" + contestId,
+                .withCache(CacheKeys.withClass(Role_.class)
+                                .withParameter("memberId", memberId)
+                                .withParameter("contestId", contestId).asList(),
                         CachingStrategy.REQUEST)
                 .execute();
     }
 
     public static MemberCategory getMemberCategory(long roleId) {
         try {
-            return memberCategoryResource.get(roleId).withCache("roleId_" + roleId,
-                    CachingStrategy.MEDIUM).executeChecked();
+            return memberCategoryResource.get(roleId)
+                    .withCache(CacheKeys.withClass(MemberCategory.class)
+                                    .withParameter("roleId", roleId).build(),
+                            CachingStrategy.MEDIUM).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MemberCategoryNotFoundException("Category with role id " + roleId + " not found.");
         }
@@ -126,7 +133,9 @@ public final class MembersClient {
     public static MemberCategory getMemberCategory(String displayName) {
         MemberCategory memberCategory = memberCategoryResource.list()
                 .queryParam("displayName", displayName)
-                .withCache("displayName_" + displayName, CachingStrategy.MEDIUM)
+                .withCache(CacheKeys.withClass(MemberCategory.class)
+                                .withParameter("displayName", displayName).asSingletonList("ifExists"),
+                        CachingStrategy.MEDIUM)
                 .executeWithResult().getFirstIfExists();
         if (memberCategory == null) {
             throw new MemberCategoryNotFoundException("Category with name " + displayName + " not found.");
@@ -142,8 +151,10 @@ public final class MembersClient {
 
     public static Member getMember(long memberId) throws MemberNotFoundException {
         try {
-            return memberResource.get(memberId).withCache("memberId_" + memberId,
-                    CachingStrategy.REQUEST).executeChecked();
+            return memberResource.get(memberId)
+                    .withCache(CacheKeys.of(Member.class, memberId),
+                            CachingStrategy.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MemberNotFoundException("Member with id " + memberId + " not found.");
         }
@@ -151,7 +162,8 @@ public final class MembersClient {
 
     public static Member getMemberUnchecked(long memberId) {
         try {
-            return memberResource.get(memberId).withCache("memberId_" + memberId,
+            return memberResource.get(memberId)
+                    .withCache(CacheKeys.of(Member.class, memberId),
                     CachingStrategy.REQUEST).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new IllegalStateException("Member not found: " + memberId, e);
@@ -180,9 +192,8 @@ public final class MembersClient {
 
     public static Member findMemberByScreenNameNoRole(String screenName) throws MemberNotFoundException {
         try {
-            Member member = memberResource.service("findByScreenName", Member.class)
+            return memberResource.service("findByScreenName", Member.class)
                     .queryParam("screenName", screenName).getChecked();
-            return member;
         }catch (EntityNotFoundException ignored){
             throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
         }
@@ -210,9 +221,9 @@ public final class MembersClient {
     }
 
     public static boolean updateMember(Member member) {
-        //TODO: improve cache naming
-        final String cacheKey = "_" + Member.class.getSimpleName() + "_memberId_" + member.getId_();
-        return memberResource.update(member, member.getId_()).cacheIdentifier(cacheKey).execute();
+        return memberResource.update(member, member.getId_())
+                .cacheKey(CacheKeys.of(Member.class, member.getId_()))
+                .execute();
     }
 
     public static boolean deleteMember(long memberId) {

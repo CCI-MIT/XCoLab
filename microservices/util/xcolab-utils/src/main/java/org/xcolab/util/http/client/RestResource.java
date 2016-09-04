@@ -73,6 +73,6 @@ public class RestResource<T> extends ServiceResource implements HttpResource {
     }
 
     public CountQuery<T> count() {
-        return new CountQuery<>(this, entityType);
+        return new CountQuery<>(this);
     }
 }

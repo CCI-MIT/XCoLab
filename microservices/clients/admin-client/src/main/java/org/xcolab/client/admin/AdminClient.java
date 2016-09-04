@@ -2,6 +2,7 @@ package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CachingStrategy;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
@@ -17,7 +18,8 @@ public class AdminClient {
 
         try {
             return configurationAttributeResource.get(name)
-                    .withCache("configurationAttribute_" + name, CachingStrategy.REQUEST)
+                    .withCache(CacheKeys.of(ConfigurationAttribute.class, name),
+                            CachingStrategy.REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ConfigurationAttributeNotFoundException(name);
