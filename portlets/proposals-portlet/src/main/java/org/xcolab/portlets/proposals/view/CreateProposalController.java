@@ -21,6 +21,12 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.liferay.LoginRegisterUtil;
+import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -95,7 +101,9 @@ public class CreateProposalController extends BaseProposalsController {
         request.setAttribute("imageUploadServiceUrl",
                 ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.getStringValue());
         request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.getStringValue());
-        
+
+
+
         return "proposalDetails_edit";
     }
 }

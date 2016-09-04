@@ -4,9 +4,14 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.service.members.domain.loginlog.LoginLogDao;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.util.PBKDF2PasswordEncryptor;
 import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.SecureRandomUtil;
@@ -15,9 +20,9 @@ import org.xcolab.service.members.util.email.ConnectorEmmaAPI;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -25,13 +30,14 @@ public class MemberService {
     private final static int MAX_SCREEN_NAME_LENGTH = 26;
 
     private final MemberDao memberDao;
-
-
+    private final LoginLogDao loginLogDao;
     private final ConnectorEmmaAPI connectorEmmaAPI;
 
     @Autowired
-    public MemberService(MemberDao memberDao, ConnectorEmmaAPI connectorEmmaAPI) {
+    public MemberService(MemberDao memberDao, LoginLogDao loginLogDao,
+            ConnectorEmmaAPI connectorEmmaAPI) {
         this.memberDao = memberDao;
+        this.loginLogDao = loginLogDao;
         this.connectorEmmaAPI = connectorEmmaAPI;
     }
 
@@ -45,12 +51,11 @@ public class MemberService {
         return username;
     }
 
-    public String hashPassword(String password) throws NoSuchAlgorithmException {
+    public String hashPassword(String password) {
         return hashPassword(password, false);
     }
 
-    public String hashPassword(String password, boolean liferayCompatible)
-            throws NoSuchAlgorithmException {
+    public String hashPassword(String password, boolean liferayCompatible) {
         if (liferayCompatible) {
             SHA1PasswordEncryptor sha1PasswordEncryptor = new SHA1PasswordEncryptor();
             return "{SHA-1}" + sha1PasswordEncryptor.doEncrypt("SHA-1", password);
@@ -60,12 +65,13 @@ public class MemberService {
                 .doEncrypt(PBKDF2PasswordEncryptor.DEFAULT_ALGORITHM, password, "");
     }
 
-    public boolean validatePassword(String password, String hash)
-            throws NoSuchAlgorithmException {
+    public boolean validatePassword(String password, long memberId) throws NotFoundException {
+        return validatePassword(password,
+                memberDao.getMember(memberId).orElseThrow(NotFoundException::new).getHashedPassword());
+    }
+
+    public boolean validatePassword(String password, String hash) {
         SHA1PasswordEncryptor sha1PasswordEncryptor = new SHA1PasswordEncryptor();
-        if (hash.startsWith("{SHA-1}")) {
-            return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash.substring(7));
-        }
         if (hash.startsWith("PBKDF2_")) {
             PBKDF2PasswordEncryptor pbkdf2PasswordEncryptor = new PBKDF2PasswordEncryptor();
             final String unprefixedHash = hash.substring(7);
@@ -73,38 +79,74 @@ public class MemberService {
                     PBKDF2PasswordEncryptor.DEFAULT_ALGORITHM, password, unprefixedHash)
                     .equals(unprefixedHash);
         }
+        if (hash.startsWith("{SHA-1}")) {
+            return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash.substring(7));
+        }
         return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash);
     }
 
-    public Member register(String screenName, String password, String email, String firstName, String lastName,
-                           String shortBio, String country, Long facebookId, String openId, Long imageId, Long liferayUserId)
-            throws NoSuchAlgorithmException {
+    public boolean updatePassword(long memberId, String newPassword) {
+        final String hashedPassword = hashPassword(newPassword);
+        return memberDao.updatePassword(memberId, hashedPassword);
+    }
+
+    public Member register(String screenName, String password, String email, String firstName,
+            String lastName, String shortBio, String country, Long facebookId, String openId,
+            Long imageId, Long liferayUserId) {
         memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
                 shortBio, country, facebookId, openId, imageId, liferayUserId);
-        final Member member = memberDao.findOneByScreenName(screenName);
+        final Member member = memberDao.findOneByScreenName(screenName)
+                .orElseThrow(IllegalStateException::new);
 
         subscribeToNewsletter(member.getEmailAddress());
         return member;
     }
+    public Member registerWithHashedPassword(String screenName, String password, String email,
+            String firstName, String lastName, String shortBio, String country, Long facebookId,
+            String openId, Long imageId, Long liferayUserId) {
+        return memberDao.getMember(liferayUserId).orElseGet(() -> {
+            memberDao.createMember(screenName, password, email, firstName, lastName,
+                    shortBio, country, facebookId, openId, imageId, liferayUserId);
+            final Member member = memberDao.findOneByScreenName(screenName)
+                    .orElseThrow(IllegalStateException::new);
+            member.setAutoRegisteredMemberStatus(1);
+            memberDao.updateMember(member);
+            subscribeToNewsletter(member.getEmailAddress());
+            return member;
+        });
+    }
+    public boolean login(Member member, LoginBean loginBean) {
+        if (validatePassword(loginBean.getPassword(), member.getHashedPassword())) {
 
-    public boolean login(Member member, String password) {
-        try {
-            if (validatePassword(password, member.getHashedPassword())) {
-                //TODO: do login
-                return true;
-            }
-        } catch (NoSuchAlgorithmException ignored) {
+            createLoginLog(member.getId_(), loginBean.getIpAddress(), loginBean.getRedirectUrl());
+
+            //TODO: do login
+            return true;
         }
         return false;
     }
 
+    public LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUserId(memberId);
+        loginLog.setIpAddress(ipAddress);
+        loginLog.setEntryUrl(redirectUrl);
+
+        final Location location = TrackingClient.getLocationForIp(ipAddress);
+        if (location != null) {
+            loginLog.setCountry(location.getCountry());
+            loginLog.setCity(location.getCity());
+        }
+
+        return loginLogDao.create(loginLog);
+    }
+
     public boolean validateForgotPasswordToken(String passwordToken) throws NotFoundException {
-        Member member = memberDao.findOneByForgotPasswordHash(passwordToken);
+        Member member = memberDao.findOneByForgotPasswordHash(passwordToken).orElseThrow(
+                NotFoundException::new);
 
-        return member != null
-                && member.getForgotPasswordTokenExpireTime().getTime() >= Timestamp
+        return member.getForgotPasswordTokenExpireTime().getTime() >= Timestamp
                 .valueOf(LocalDateTime.now()).getTime();
-
     }
 
     public String createNewForgotPasswordToken(Long memberId) {
@@ -118,18 +160,10 @@ public class MemberService {
         return confirmationToken;
     }
 
-    public Long updateUserPasswordWithToken(String token, String newPassword) throws NoSuchAlgorithmException, NotFoundException {
-        Member member = memberDao.findOneByForgotPasswordHash(token);
-        if (member != null) {
-            member.setPasswordModifiedDate(Timestamp.valueOf(LocalDateTime.now()));
-            member.setHashedPassword(hashPassword(newPassword));
-            member.setForgotPasswordToken(null);
-            member.setForgotPasswordTokenExpireTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(-10)));
-            memberDao.updateMember(member);
-            return member.getId_();
-        } else {
-            throw new NotFoundException();
-        }
+    public Long updateUserPasswordWithToken(String token, String newPassword) throws NotFoundException {
+        Member member = memberDao.findOneByForgotPasswordHash(token).orElseThrow(NotFoundException::new);
+        updatePassword(member.getId_(), newPassword);
+        return member.getId_();
     }
 
     public boolean isSubscribedToNewsletter(long memberId) throws IOException, NotFoundException {

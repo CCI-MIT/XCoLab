@@ -3,6 +3,8 @@ package org.xcolab.client.members;
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
+import org.xcolab.client.members.pojo.LoginBean;
+import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
@@ -23,6 +25,9 @@ public final class MembersClient {
             new RestResource<>(memberService, "membercategories", MemberCategory.TYPES);
     private static final RestResource<Contact_> contactResource = new RestResource<>(memberService,
             "contacts", Contact_.TYPES);
+
+    private static final RestResource<LoginLog> loginLogResource = new RestResource<>(memberService,
+            "loginLogs", LoginLog.TYPES);
 
     private MembersClient() {
     }
@@ -168,6 +173,17 @@ public final class MembersClient {
         return member;
     }
 
+    public static Member findMemberByScreenNameNoRole(String screenName) throws MemberNotFoundException {
+        try {
+            Member member = memberResource.service("findByScreenName", Member.class)
+                    .queryParam("screenName", screenName).get();
+            return member;
+        }catch (EntityNotFoundException ignored){
+            throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
+        }
+
+    }
+
     public static Member findMemberByFacebookId(long facebookId) throws MemberNotFoundException {
         Member member = memberResource.list()
                 .queryParam("facebookId", facebookId)
@@ -240,18 +256,13 @@ public final class MembersClient {
                 .getUnchecked();
     }
 
+    //TODO: remove, needed for liferay
     public static String hashPassword(String password) {
-        return hashPassword(password, false);
-    }
-
-    public static String hashPassword(String password, boolean liferayCompatible) {
         return memberResource.service("hashPassword", String.class)
                 .queryParam("password", password)
-                .queryParam("liferayCompatible", liferayCompatible)
+                .queryParam("liferayCompatible", true)
                 .getUnchecked();
     }
-
-    // /members/createForgotPasswordToken
 
     public static boolean validatePassword(String password, long memberId) {
         return memberResource.service("validatePassword", Boolean.class)
@@ -260,12 +271,35 @@ public final class MembersClient {
                 .getUnchecked();
     }
 
+    public static boolean updatePassword(long memberId, String oldPassword, String newPassword) {
+        return memberResource.service(memberId, "updatePassword", Boolean.class)
+                .queryParam("oldPassword", oldPassword)
+                .queryParam("newPassword", newPassword)
+                .post();
+    }
+
     public static Member register(Member member) {
         return memberResource.create(member).execute();
     }
 
-    public static boolean login(long memberId, String password) {
-        return memberResource.service(memberId, "login", Boolean.class).post();
+    public static boolean login(long memberId, String password, String remoteIp, String redirectUrl) {
+        LoginBean loginBean = new LoginBean();
+        loginBean.setPassword(password);
+        loginBean.setIpAddress(remoteIp);
+        loginBean.setRedirectUrl(redirectUrl);
+        return memberResource.service(memberId, "login", Boolean.class)
+                .post(loginBean);
+    }
+
+    //TODO: this shouldn't be done manually
+    public static LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUserId(memberId);
+        loginLog.setIpAddress(ipAddress);
+        loginLog.setEntryUrl(redirectUrl.substring(0,Math.min(250, redirectUrl.length())));
+
+        return loginLogResource.create(loginLog)
+                .execute();
     }
 
     public static boolean subscribeToNewsletter(long memberId) {

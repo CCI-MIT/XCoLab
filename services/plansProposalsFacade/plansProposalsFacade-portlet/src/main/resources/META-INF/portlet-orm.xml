@@ -7,24 +7,6 @@
 			<access>PROPERTY</access>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
-	<mapped-superclass class="com.ext.portlet.model.impl.AnalyticsUserEventModelImpl">
-		<id-class class="com.ext.portlet.service.persistence.AnalyticsUserEventPK" />
-		<attributes>
-			<id name="userId" />
-			<id name="idString" />
-			<basic name="category" />
-			<basic name="action" />
-			<basic name="label" />
-			<basic name="value" />
-			<basic name="created">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
-		</attributes>
-	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.ContestModelImpl">
 		<attributes>
 			<id name="ContestPK" />
@@ -382,23 +364,6 @@
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.LoginLogModelImpl">
-		<attributes>
-			<id name="pk" />
-			<basic name="userId" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<basic name="ipAddress" />
-			<basic name="city" />
-			<basic name="country" />
-			<basic name="entryUrl" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.ext.portlet.model.impl.MessagingIgnoredRecipientsModelImpl">
@@ -993,51 +958,6 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.TrackedVisitModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="uuid">
-				<column name="UUID_" />
-			</basic>
-			<basic name="ip" />
-			<basic name="city" />
-			<basic name="country" />
-			<basic name="url" />
-			<basic name="browser" />
-			<basic name="headers" />
-			<basic name="referer" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.ext.portlet.model.impl.TrackedVisitor2UserModelImpl">
-		<attributes>
-			<id name="id">
-				<column name="ID_" />
-			</id>
-			<basic name="uuid">
-				<column name="UUID_" />
-			</basic>
-			<basic name="userId" />
-			<basic name="createDate">
-				<temporal>TIMESTAMP</temporal>
-			</basic>
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
-		</attributes>
-	</mapped-superclass>
-	<entity class="com.ext.portlet.model.impl.AnalyticsUserEventImpl" name="AnalyticsUserEvent">
-		<table name="xcolab_AnalyticsUserEvent" />
-		<attributes />
-	</entity>
 	<entity class="com.ext.portlet.model.impl.ContestImpl" name="Contest">
 		<table name="xcolab_Contest" />
 		<attributes />
@@ -1124,10 +1044,6 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.LandingPageImpl" name="LandingPage">
 		<table name="xcolab_LandingPage" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.LoginLogImpl" name="LoginLog">
-		<table name="xcolab_LoginLog" />
 		<attributes />
 	</entity>
 	<entity class="com.ext.portlet.model.impl.MessagingIgnoredRecipientsImpl" name="MessagingIgnoredRecipients">
@@ -1276,14 +1192,6 @@
 	</entity>
 	<entity class="com.ext.portlet.model.impl.ProposalVoteImpl" name="ProposalVote">
 		<table name="xcolab_ProposalVote" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.TrackedVisitImpl" name="TrackedVisit">
-		<table name="xcolab_TrackedVisit" />
-		<attributes />
-	</entity>
-	<entity class="com.ext.portlet.model.impl.TrackedVisitor2UserImpl" name="TrackedVisitor2User">
-		<table name="xcolab_TrackedVisitor2User" />
 		<attributes />
 	</entity>
 </entity-mappings>

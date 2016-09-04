@@ -2,7 +2,6 @@ package com.ext.portlet.service.base;
 
 import com.ext.portlet.model.ModelPosition;
 import com.ext.portlet.service.ModelPositionLocalService;
-import com.ext.portlet.service.persistence.AnalyticsUserEventPersistence;
 import com.ext.portlet.service.persistence.ContestDebatePersistence;
 import com.ext.portlet.service.persistence.ContestDiscussionPersistence;
 import com.ext.portlet.service.persistence.ContestEmailTemplatePersistence;
@@ -25,7 +24,6 @@ import com.ext.portlet.service.persistence.ImpactTemplateFocusAreaListPersistenc
 import com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistence;
 import com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence;
 import com.ext.portlet.service.persistence.LandingPagePersistence;
-import com.ext.portlet.service.persistence.LoginLogPersistence;
 import com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionPersistence;
 import com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence;
@@ -66,8 +64,6 @@ import com.ext.portlet.service.persistence.ProposalSupporterPersistence;
 import com.ext.portlet.service.persistence.ProposalUnversionedAttributePersistence;
 import com.ext.portlet.service.persistence.ProposalVersionPersistence;
 import com.ext.portlet.service.persistence.ProposalVotePersistence;
-import com.ext.portlet.service.persistence.TrackedVisitPersistence;
-import com.ext.portlet.service.persistence.TrackedVisitor2UserPersistence;
 import com.ext.portlet.service.persistence.Xcolab_UserFinder;
 
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -108,12 +104,6 @@ import javax.sql.DataSource;
 public abstract class ModelPositionLocalServiceBaseImpl
     extends BaseLocalServiceImpl implements ModelPositionLocalService,
         IdentifiableBean {
-    @BeanReference(type = com.ext.portlet.service.AnalyticsUserEventLocalService.class)
-    protected com.ext.portlet.service.AnalyticsUserEventLocalService analyticsUserEventLocalService;
-    @BeanReference(type = com.ext.portlet.service.AnalyticsUserEventService.class)
-    protected com.ext.portlet.service.AnalyticsUserEventService analyticsUserEventService;
-    @BeanReference(type = AnalyticsUserEventPersistence.class)
-    protected AnalyticsUserEventPersistence analyticsUserEventPersistence;
     @BeanReference(type = com.ext.portlet.service.ContestLocalService.class)
     protected com.ext.portlet.service.ContestLocalService contestLocalService;
     @BeanReference(type = com.ext.portlet.service.ContestService.class)
@@ -246,12 +236,6 @@ public abstract class ModelPositionLocalServiceBaseImpl
     protected com.ext.portlet.service.LandingPageService landingPageService;
     @BeanReference(type = LandingPagePersistence.class)
     protected LandingPagePersistence landingPagePersistence;
-    @BeanReference(type = com.ext.portlet.service.LoginLogLocalService.class)
-    protected com.ext.portlet.service.LoginLogLocalService loginLogLocalService;
-    @BeanReference(type = com.ext.portlet.service.LoginLogService.class)
-    protected com.ext.portlet.service.LoginLogService loginLogService;
-    @BeanReference(type = LoginLogPersistence.class)
-    protected LoginLogPersistence loginLogPersistence;
     @BeanReference(type = com.ext.portlet.service.MessagingIgnoredRecipientsLocalService.class)
     protected com.ext.portlet.service.MessagingIgnoredRecipientsLocalService messagingIgnoredRecipientsLocalService;
     @BeanReference(type = com.ext.portlet.service.MessagingIgnoredRecipientsService.class)
@@ -484,18 +468,6 @@ public abstract class ModelPositionLocalServiceBaseImpl
     protected com.ext.portlet.service.ProposalVoteService proposalVoteService;
     @BeanReference(type = ProposalVotePersistence.class)
     protected ProposalVotePersistence proposalVotePersistence;
-    @BeanReference(type = com.ext.portlet.service.TrackedVisitLocalService.class)
-    protected com.ext.portlet.service.TrackedVisitLocalService trackedVisitLocalService;
-    @BeanReference(type = com.ext.portlet.service.TrackedVisitService.class)
-    protected com.ext.portlet.service.TrackedVisitService trackedVisitService;
-    @BeanReference(type = TrackedVisitPersistence.class)
-    protected TrackedVisitPersistence trackedVisitPersistence;
-    @BeanReference(type = com.ext.portlet.service.TrackedVisitor2UserLocalService.class)
-    protected com.ext.portlet.service.TrackedVisitor2UserLocalService trackedVisitor2UserLocalService;
-    @BeanReference(type = com.ext.portlet.service.TrackedVisitor2UserService.class)
-    protected com.ext.portlet.service.TrackedVisitor2UserService trackedVisitor2UserService;
-    @BeanReference(type = TrackedVisitor2UserPersistence.class)
-    protected TrackedVisitor2UserPersistence trackedVisitor2UserPersistence;
     @BeanReference(type = com.ext.portlet.service.Xcolab_UserLocalService.class)
     protected com.ext.portlet.service.Xcolab_UserLocalService xcolab_UserLocalService;
     @BeanReference(type = com.ext.portlet.service.Xcolab_UserService.class)
@@ -737,63 +709,6 @@ public abstract class ModelPositionLocalServiceBaseImpl
     public ModelPosition updateModelPosition(ModelPosition modelPosition)
         throws SystemException {
         return modelPositionPersistence.update(modelPosition);
-    }
-
-    /**
-     * Returns the analytics user event local service.
-     *
-     * @return the analytics user event local service
-     */
-    public com.ext.portlet.service.AnalyticsUserEventLocalService getAnalyticsUserEventLocalService() {
-        return analyticsUserEventLocalService;
-    }
-
-    /**
-     * Sets the analytics user event local service.
-     *
-     * @param analyticsUserEventLocalService the analytics user event local service
-     */
-    public void setAnalyticsUserEventLocalService(
-        com.ext.portlet.service.AnalyticsUserEventLocalService analyticsUserEventLocalService) {
-        this.analyticsUserEventLocalService = analyticsUserEventLocalService;
-    }
-
-    /**
-     * Returns the analytics user event remote service.
-     *
-     * @return the analytics user event remote service
-     */
-    public com.ext.portlet.service.AnalyticsUserEventService getAnalyticsUserEventService() {
-        return analyticsUserEventService;
-    }
-
-    /**
-     * Sets the analytics user event remote service.
-     *
-     * @param analyticsUserEventService the analytics user event remote service
-     */
-    public void setAnalyticsUserEventService(
-        com.ext.portlet.service.AnalyticsUserEventService analyticsUserEventService) {
-        this.analyticsUserEventService = analyticsUserEventService;
-    }
-
-    /**
-     * Returns the analytics user event persistence.
-     *
-     * @return the analytics user event persistence
-     */
-    public AnalyticsUserEventPersistence getAnalyticsUserEventPersistence() {
-        return analyticsUserEventPersistence;
-    }
-
-    /**
-     * Sets the analytics user event persistence.
-     *
-     * @param analyticsUserEventPersistence the analytics user event persistence
-     */
-    public void setAnalyticsUserEventPersistence(
-        AnalyticsUserEventPersistence analyticsUserEventPersistence) {
-        this.analyticsUserEventPersistence = analyticsUserEventPersistence;
     }
 
     /**
@@ -2047,62 +1962,6 @@ public abstract class ModelPositionLocalServiceBaseImpl
     public void setLandingPagePersistence(
         LandingPagePersistence landingPagePersistence) {
         this.landingPagePersistence = landingPagePersistence;
-    }
-
-    /**
-     * Returns the login log local service.
-     *
-     * @return the login log local service
-     */
-    public com.ext.portlet.service.LoginLogLocalService getLoginLogLocalService() {
-        return loginLogLocalService;
-    }
-
-    /**
-     * Sets the login log local service.
-     *
-     * @param loginLogLocalService the login log local service
-     */
-    public void setLoginLogLocalService(
-        com.ext.portlet.service.LoginLogLocalService loginLogLocalService) {
-        this.loginLogLocalService = loginLogLocalService;
-    }
-
-    /**
-     * Returns the login log remote service.
-     *
-     * @return the login log remote service
-     */
-    public com.ext.portlet.service.LoginLogService getLoginLogService() {
-        return loginLogService;
-    }
-
-    /**
-     * Sets the login log remote service.
-     *
-     * @param loginLogService the login log remote service
-     */
-    public void setLoginLogService(
-        com.ext.portlet.service.LoginLogService loginLogService) {
-        this.loginLogService = loginLogService;
-    }
-
-    /**
-     * Returns the login log persistence.
-     *
-     * @return the login log persistence
-     */
-    public LoginLogPersistence getLoginLogPersistence() {
-        return loginLogPersistence;
-    }
-
-    /**
-     * Sets the login log persistence.
-     *
-     * @param loginLogPersistence the login log persistence
-     */
-    public void setLoginLogPersistence(LoginLogPersistence loginLogPersistence) {
-        this.loginLogPersistence = loginLogPersistence;
     }
 
     /**
@@ -4304,120 +4163,6 @@ public abstract class ModelPositionLocalServiceBaseImpl
     public void setProposalVotePersistence(
         ProposalVotePersistence proposalVotePersistence) {
         this.proposalVotePersistence = proposalVotePersistence;
-    }
-
-    /**
-     * Returns the tracked visit local service.
-     *
-     * @return the tracked visit local service
-     */
-    public com.ext.portlet.service.TrackedVisitLocalService getTrackedVisitLocalService() {
-        return trackedVisitLocalService;
-    }
-
-    /**
-     * Sets the tracked visit local service.
-     *
-     * @param trackedVisitLocalService the tracked visit local service
-     */
-    public void setTrackedVisitLocalService(
-        com.ext.portlet.service.TrackedVisitLocalService trackedVisitLocalService) {
-        this.trackedVisitLocalService = trackedVisitLocalService;
-    }
-
-    /**
-     * Returns the tracked visit remote service.
-     *
-     * @return the tracked visit remote service
-     */
-    public com.ext.portlet.service.TrackedVisitService getTrackedVisitService() {
-        return trackedVisitService;
-    }
-
-    /**
-     * Sets the tracked visit remote service.
-     *
-     * @param trackedVisitService the tracked visit remote service
-     */
-    public void setTrackedVisitService(
-        com.ext.portlet.service.TrackedVisitService trackedVisitService) {
-        this.trackedVisitService = trackedVisitService;
-    }
-
-    /**
-     * Returns the tracked visit persistence.
-     *
-     * @return the tracked visit persistence
-     */
-    public TrackedVisitPersistence getTrackedVisitPersistence() {
-        return trackedVisitPersistence;
-    }
-
-    /**
-     * Sets the tracked visit persistence.
-     *
-     * @param trackedVisitPersistence the tracked visit persistence
-     */
-    public void setTrackedVisitPersistence(
-        TrackedVisitPersistence trackedVisitPersistence) {
-        this.trackedVisitPersistence = trackedVisitPersistence;
-    }
-
-    /**
-     * Returns the tracked visitor2 user local service.
-     *
-     * @return the tracked visitor2 user local service
-     */
-    public com.ext.portlet.service.TrackedVisitor2UserLocalService getTrackedVisitor2UserLocalService() {
-        return trackedVisitor2UserLocalService;
-    }
-
-    /**
-     * Sets the tracked visitor2 user local service.
-     *
-     * @param trackedVisitor2UserLocalService the tracked visitor2 user local service
-     */
-    public void setTrackedVisitor2UserLocalService(
-        com.ext.portlet.service.TrackedVisitor2UserLocalService trackedVisitor2UserLocalService) {
-        this.trackedVisitor2UserLocalService = trackedVisitor2UserLocalService;
-    }
-
-    /**
-     * Returns the tracked visitor2 user remote service.
-     *
-     * @return the tracked visitor2 user remote service
-     */
-    public com.ext.portlet.service.TrackedVisitor2UserService getTrackedVisitor2UserService() {
-        return trackedVisitor2UserService;
-    }
-
-    /**
-     * Sets the tracked visitor2 user remote service.
-     *
-     * @param trackedVisitor2UserService the tracked visitor2 user remote service
-     */
-    public void setTrackedVisitor2UserService(
-        com.ext.portlet.service.TrackedVisitor2UserService trackedVisitor2UserService) {
-        this.trackedVisitor2UserService = trackedVisitor2UserService;
-    }
-
-    /**
-     * Returns the tracked visitor2 user persistence.
-     *
-     * @return the tracked visitor2 user persistence
-     */
-    public TrackedVisitor2UserPersistence getTrackedVisitor2UserPersistence() {
-        return trackedVisitor2UserPersistence;
-    }
-
-    /**
-     * Sets the tracked visitor2 user persistence.
-     *
-     * @param trackedVisitor2UserPersistence the tracked visitor2 user persistence
-     */
-    public void setTrackedVisitor2UserPersistence(
-        TrackedVisitor2UserPersistence trackedVisitor2UserPersistence) {
-        this.trackedVisitor2UserPersistence = trackedVisitor2UserPersistence;
     }
 
     /**

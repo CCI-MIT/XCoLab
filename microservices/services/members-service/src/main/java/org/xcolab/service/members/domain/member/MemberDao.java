@@ -13,19 +13,20 @@ public interface MemberDao {
     int countByGiven(String partialName, String roleName);
 
     Optional<Member> getMember(long memberId);
+    boolean updatePassword(long memberId, String hashedPassword);
 
     Integer getMemberMaterializedPoints(Long memberId);
 
     Integer getMemberActivityCount(Long memberId);
 
-    Member findOneByScreenName(String screenName);
-    Member findOneByEmail(String email);
+    Optional<Member> findOneByScreenName(String screenName);
+    Optional<Member> findOneByEmail(String email);
 
     boolean isScreenNameTaken(String screenName);
 
     boolean isEmailUsed(String email);
 
-    Member findOneByForgotPasswordHash(String newPasswordToken);
+    Optional<Member> findOneByForgotPasswordHash(String newPasswordToken);
 
     boolean updateMember(Member member);
     void createMember(String screenName, String password, String email,

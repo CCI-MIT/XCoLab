@@ -1,7 +1,12 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
-import com.ext.portlet.community.CommunityConstants;
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -16,18 +21,9 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.expando.model.ExpandoValue;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.MainViewController;
@@ -153,7 +149,7 @@ public class FacebookController {
                     ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
                 }*/
 
-                LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
+                MembersClient.createLoginLog(liferayUser.getUserId(), httpReq.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
             } catch (NoSuchUserException ignored) {
@@ -179,7 +175,7 @@ public class FacebookController {
 
                 updateUserAccountInformation(liferayUser, jsonObject);
 
-                LoginLogLocalServiceUtil.createLoginLog(liferayUser, httpReq.getRemoteAddr(), redirectUrl);
+                MembersClient.createLoginLog(liferayUser.getUserId(), httpReq.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
             } catch (NoSuchUserException ignored) {
@@ -285,31 +281,16 @@ public class FacebookController {
     }
 
     private void updateUserAccountInformation(User user, JSONObject jsonObject) throws SystemException {
-        try {
-            Member member = MembersClient.getMember(user.getUserId());
-            String country = member.getCountry();
+        Member member = MembersClient.getMemberUnchecked(user.getUserId());
+        String country = member.getCountry();
 
-            if (StringUtils.isEmpty(country)) {
-                try {
-                    member.setCountry(getCountry(jsonObject));
-                } catch (UserLocationNotResolvableException ignored) {
-                }
+        if (StringUtils.isEmpty(country)) {
+            try {
+                member.setCountry(getCountry(jsonObject));
+            } catch (UserLocationNotResolvableException ignored) {
             }
-
-            //TODO: do we need this?
-            ExpandoValue city = getExpandoValue(user, CommunityConstants.CITY);
-
-            if (Validator.isNull(city) || Validator.isNull(city.getString())) {
-                try {
-                    setExpandoValue(user, CommunityConstants.CITY, getCountry(jsonObject));
-
-                } catch (UserLocationNotResolvableException ignored) {
-                }
-            }
-            MembersClient.updateMember(member);
-        } catch (PortalException | MemberNotFoundException e) {
-            _log.error(e);
         }
+        MembersClient.updateMember(member);
     }
 
     private String getCountry(JSONObject response) throws UserLocationNotResolvableException {
@@ -341,24 +322,5 @@ public class FacebookController {
         }
 
         throw new UserLocationNotResolvableException("Could not retrieve country from Facebook locale");
-    }
-
-    private void setExpandoValue(User user, String valueName, Object data) throws SystemException, PortalException {
-        ExpandoValueLocalServiceUtil.addValue(
-                user.getCompanyId(),
-                User.class.getName(),
-                CommunityConstants.EXPANDO,
-                valueName,
-                user.getUserId(),
-                data);
-    }
-
-    private ExpandoValue getExpandoValue(User user, String valueName) throws SystemException {
-        return ExpandoValueLocalServiceUtil.getValue(
-                user.getCompanyId(),
-                User.class.getName(),
-                CommunityConstants.EXPANDO,
-                valueName,
-                user.getUserId());
     }
 }

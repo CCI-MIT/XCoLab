@@ -1,9 +1,20 @@
 package org.xcolab.portlets.loginregister;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
-import com.ext.portlet.community.CommunityConstants;
-import com.ext.utils.iptranslation.Location;
-import com.ext.utils.iptranslation.service.IpTranslationServiceUtil;
 import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -23,21 +34,7 @@ import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.activityEntry.member.MemberJoinedActivityEntry;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
@@ -48,6 +45,8 @@ import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
@@ -200,7 +199,7 @@ public class MainViewController {
 
     private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolvableException {
         try {
-            Location location = IpTranslationServiceUtil.getLocationForIp(ipAddr);
+            Location location = TrackingClient.getLocationForIp(ipAddr);
             if (com.liferay.portal.kernel.util.Validator.isNotNull(location)) {
                 return location.getCountry();
             }
@@ -319,7 +318,7 @@ public class MainViewController {
             final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                             newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                             newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, openId,
-                            newAccountBean.getImageId(), themeDisplay.getLocale(), serviceContext);
+                            newAccountBean.getImageId(), serviceContext);
 
             // SSO
             if (StringUtils.isNotBlank(fbIdString)) {
@@ -342,7 +341,7 @@ public class MainViewController {
                 }
             }
 
-            LoginRegisterUtil.login(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword());
+            LoginRegisterUtil.login(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);
 
             httpReq.getSession().setAttribute("collab_user_has_registered", true);
 
@@ -398,6 +397,7 @@ public class MainViewController {
         String screenName = request.getParameter("screenName");
         String bio = request.getParameter("bio");
         User loggedInUser = ((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
+        Member loggedInMember = MembersClient.getMemberUnchecked(loggedInUser.getUserId());
 
         if (!loggedInUser.getScreenName().equals(screenName)) {
             if (StringUtils.isNotEmpty(screenName) && SharedColabClient.isScreenNameUsed(screenName)
@@ -412,11 +412,8 @@ public class MainViewController {
         json.getJSONObject("bio").put("success", true);
         if (StringUtils.isNotEmpty(bio)) {
             if (bio.length() <= 2000) {
-                ExpandoValueLocalServiceUtil.addValue(DEFAULT_COMPANY_ID,
-                        User.class.getName(),
-                        CommunityConstants.EXPANDO,
-                        CommunityConstants.BIO, loggedInUser.getUserId(),
-                        HtmlUtil.cleanSome(bio, LinkUtils.getBaseUri(request)));
+                loggedInMember.setShortBio(HtmlUtil.cleanSome(bio, LinkUtils.getBaseUri(request)));
+                MembersClient.updateMember(loggedInMember);
             } else {
                 json.getJSONObject("bio").put("success", false);
             }

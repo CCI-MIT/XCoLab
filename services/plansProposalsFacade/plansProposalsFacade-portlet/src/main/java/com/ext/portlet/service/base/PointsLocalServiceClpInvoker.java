@@ -41,26 +41,26 @@ public class PointsLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName422;
-    private String[] _methodParameterTypes422;
-    private String _methodName423;
-    private String[] _methodParameterTypes423;
-    private String _methodName428;
-    private String[] _methodParameterTypes428;
-    private String _methodName429;
-    private String[] _methodParameterTypes429;
-    private String _methodName430;
-    private String[] _methodParameterTypes430;
-    private String _methodName431;
-    private String[] _methodParameterTypes431;
-    private String _methodName432;
-    private String[] _methodParameterTypes432;
-    private String _methodName433;
-    private String[] _methodParameterTypes433;
-    private String _methodName436;
-    private String[] _methodParameterTypes436;
-    private String _methodName437;
-    private String[] _methodParameterTypes437;
+    private String _methodName398;
+    private String[] _methodParameterTypes398;
+    private String _methodName399;
+    private String[] _methodParameterTypes399;
+    private String _methodName404;
+    private String[] _methodParameterTypes404;
+    private String _methodName405;
+    private String[] _methodParameterTypes405;
+    private String _methodName406;
+    private String[] _methodParameterTypes406;
+    private String _methodName407;
+    private String[] _methodParameterTypes407;
+    private String _methodName408;
+    private String[] _methodParameterTypes408;
+    private String _methodName409;
+    private String[] _methodParameterTypes409;
+    private String _methodName412;
+    private String[] _methodParameterTypes412;
+    private String _methodName413;
+    private String[] _methodParameterTypes413;
 
     public PointsLocalServiceClpInvoker() {
         _methodName0 = "addPoints";
@@ -139,45 +139,45 @@ public class PointsLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.Points" };
 
-        _methodName422 = "getBeanIdentifier";
+        _methodName398 = "getBeanIdentifier";
 
-        _methodParameterTypes422 = new String[] {  };
+        _methodParameterTypes398 = new String[] {  };
 
-        _methodName423 = "setBeanIdentifier";
+        _methodName399 = "setBeanIdentifier";
 
-        _methodParameterTypes423 = new String[] { "java.lang.String" };
+        _methodParameterTypes399 = new String[] { "java.lang.String" };
 
-        _methodName428 = "getUserMaterializedPoints";
+        _methodName404 = "getUserMaterializedPoints";
 
-        _methodParameterTypes428 = new String[] { "long" };
+        _methodParameterTypes404 = new String[] { "long" };
 
-        _methodName429 = "getUserHypotheticalPoints";
+        _methodName405 = "getUserHypotheticalPoints";
 
-        _methodParameterTypes429 = new String[] { "long" };
+        _methodParameterTypes405 = new String[] { "long" };
 
-        _methodName430 = "getProposalMaterializedPoints";
+        _methodName406 = "getProposalMaterializedPoints";
 
-        _methodParameterTypes430 = new String[] { "long" };
+        _methodParameterTypes406 = new String[] { "long" };
 
-        _methodName431 = "getProposalHypotheticalPoints";
+        _methodName407 = "getProposalHypotheticalPoints";
 
-        _methodParameterTypes431 = new String[] { "long" };
+        _methodParameterTypes407 = new String[] { "long" };
 
-        _methodName432 = "distributePoints";
+        _methodName408 = "distributePoints";
 
-        _methodParameterTypes432 = new String[] { "long" };
+        _methodParameterTypes408 = new String[] { "long" };
 
-        _methodName433 = "previewMaterializedPoints";
+        _methodName409 = "previewMaterializedPoints";
 
-        _methodParameterTypes433 = new String[] { "long" };
+        _methodParameterTypes409 = new String[] { "long" };
 
-        _methodName436 = "getLinkingProposals";
+        _methodName412 = "getLinkingProposals";
 
-        _methodParameterTypes436 = new String[] { "long" };
+        _methodParameterTypes412 = new String[] { "long" };
 
-        _methodName437 = "getLinkingProposalsForUser";
+        _methodName413 = "getLinkingProposalsForUser";
 
-        _methodParameterTypes437 = new String[] { "long" };
+        _methodParameterTypes413 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -269,57 +269,57 @@ public class PointsLocalServiceClpInvoker {
             return PointsLocalServiceUtil.updatePoints((com.ext.portlet.model.Points) arguments[0]);
         }
 
-        if (_methodName422.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes422, parameterTypes)) {
+        if (_methodName398.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
             return PointsLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName423.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes423, parameterTypes)) {
+        if (_methodName399.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
             PointsLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName428.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes428, parameterTypes)) {
+        if (_methodName404.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
             return PointsLocalServiceUtil.getUserMaterializedPoints(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName429.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes429, parameterTypes)) {
+        if (_methodName405.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
             return PointsLocalServiceUtil.getUserHypotheticalPoints(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName430.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes430, parameterTypes)) {
+        if (_methodName406.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes406, parameterTypes)) {
             return PointsLocalServiceUtil.getProposalMaterializedPoints(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName431.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes431, parameterTypes)) {
+        if (_methodName407.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes407, parameterTypes)) {
             return PointsLocalServiceUtil.getProposalHypotheticalPoints(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName432.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes432, parameterTypes)) {
+        if (_methodName408.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes408, parameterTypes)) {
             PointsLocalServiceUtil.distributePoints(((Long) arguments[0]).longValue());
 
             return null;
         }
 
-        if (_methodName433.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes433, parameterTypes)) {
+        if (_methodName409.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes409, parameterTypes)) {
             return PointsLocalServiceUtil.previewMaterializedPoints(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName436.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes436, parameterTypes)) {
+        if (_methodName412.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes412, parameterTypes)) {
             return PointsLocalServiceUtil.getLinkingProposals(((Long) arguments[0]).longValue());
         }
 
-        if (_methodName437.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes437, parameterTypes)) {
+        if (_methodName413.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes413, parameterTypes)) {
             return PointsLocalServiceUtil.getLinkingProposalsForUser(((Long) arguments[0]).longValue());
         }
 

@@ -1,19 +1,30 @@
 package org.xcolab.liferay;
 
-import com.ext.portlet.service.LoginLogLocalServiceUtil;
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.*;
-import com.liferay.portal.service.*;
+import com.liferay.portal.model.ClassName;
+import com.liferay.portal.model.Contact;
+import com.liferay.portal.model.Group;
+import com.liferay.portal.model.LayoutSet;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.service.ContactLocalServiceUtil;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.LayoutSetLocalServiceUtil;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
-import org.apache.commons.lang3.StringUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -22,15 +33,14 @@ import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.emailnotification.member.MemberRegistrationNotification;
 
-
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 
 //TODO: temporary class for liferay transition
@@ -44,13 +54,14 @@ public final class LoginRegisterUtil {
     private LoginRegisterUtil() {
     }
 
-    public static void updatePassword(String forgotPasswordToken, String newPassword) throws MemberNotFoundException, PortalException, SystemException {
+    public static void updatePassword(String forgotPasswordToken, String newPassword)
+            throws MemberNotFoundException, PortalException, SystemException {
         Long memberId = MembersClient.updateUserPassword(forgotPasswordToken, newPassword);
         if (memberId != null) {
             //TODO: remove, currently needed to update password for liferay
             final User liferayUser = UserLocalServiceUtil.getUser(memberId);
             liferayUser.setPassword
-                    (MembersClient.hashPassword(newPassword.trim(), true));
+                    (MembersClient.hashPassword(newPassword.trim()));
             UserLocalServiceUtil.updateUser(liferayUser);
         } else {
 
@@ -211,11 +222,32 @@ public final class LoginRegisterUtil {
 
     }
 
+
+    public static void registerMemberInSharedColab(Long memberId) {
+        try {
+            Member memberInCurrentColab = MembersClient.getMember(memberId);
+
+            org.xcolab.client.sharedcolab.pojo.Member member = new org.xcolab.client.sharedcolab.pojo.Member();
+            member.setId_(memberInCurrentColab.getId_());
+            member.setScreenName(memberInCurrentColab.getScreenName());
+            member.setEmailAddress(memberInCurrentColab.getEmailAddress());
+            member.setFirstName(memberInCurrentColab.getFirstName());
+            member.setHashedPassword(memberInCurrentColab.getHashedPassword());
+            member.setLastName(memberInCurrentColab.getLastName());
+            member.setOpenId(memberInCurrentColab.getOpenId());
+            member.setFacebookId(memberInCurrentColab.getFacebookId());
+            member.setShortBio(memberInCurrentColab.getShortBio());
+            member.setCountry(memberInCurrentColab.getCountry());
+            SharedColabClient.registerInPartnerColab(member);
+        } catch (MemberNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Member register(String screenName, String password, String email, String firstName, String lastName,
                                   String shortBio, String country, String fbIdString, String openId, String imageId,
-                                  Locale liferayLocale, ServiceContext liferayServiceContext)
+                                  ServiceContext liferayServiceContext)
             throws Exception {
-
 
         Long memberId = SharedColabClient.retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.getStringValue());
         User liferayUser = registerLiferayWithId(memberId, screenName, password, email, firstName, lastName, fbIdString);
@@ -236,7 +268,7 @@ public final class LoginRegisterUtil {
         member.setShortBio(shortBio);
         member.setCountry(country);
         MembersClient.register(member);
-        member = MembersClient.getMember(member.getId_());
+        member = MembersClient.getMemberUnchecked(member.getId_());
 
         if (imageId != null && !imageId.isEmpty()) {
 
@@ -248,7 +280,7 @@ public final class LoginRegisterUtil {
         }
         sendEmailNotificationToRegisteredUser(liferayServiceContext, member);
 
-        return MembersClient.getMember(liferayUser.getUserId());
+        return MembersClient.getMemberUnchecked(liferayUser.getUserId());
     }
 
     private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext,
@@ -267,15 +299,30 @@ public final class LoginRegisterUtil {
         if (StringUtils.isBlank(login)) {
             return null;
         }
+        HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
         final String screenName = getScreenNameFromLogin(login);
-        //TODO: liferay  throws a raw exception here
-        AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
-        User user = UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
-        LoginLogLocalServiceUtil.createLoginLog(user, PortalUtil.getHttpServletRequest(request).getRemoteAddr(), referer);
-
-        return user;
+        Member member = MembersClient.findMemberByScreenNameNoRole(screenName);
+        boolean loggedIn = MembersClient.login(member.getId_(), password, httpReq.getRemoteAddr(), referer);
+        if (loggedIn) {
+            //TODO: liferay  throws a raw exception here
+            checkIfMemberAutoRegisteredNeedsLiferayCreation(member, password);
+            AuthenticationServiceUtil.logUserIn(request, response, screenName, password);
+            return UserLocalServiceUtil.getUserByScreenName(LIFERAY_COMPANY_ID, login);
+        }
+        return null;
     }
 
+    private static void checkIfMemberAutoRegisteredNeedsLiferayCreation(Member member, String password){
+
+            if (member.getAutoRegisteredMemberStatus() == 1) {
+                User liferayUser = registerLiferayWithId(member.getId_(), member.getScreenName(), password, member.getEmailAddress(), member.getFirstName(), member.getLastName(), (member.getFacebookId() != null ? (member.getFacebookId().toString()) : ("0")));
+                if(liferayUser != null ) {
+                    member.setAutoRegisteredMemberStatus(2);
+                    MembersClient.updateMember(member);
+                }
+            }
+
+    }
     private static String getScreenNameFromLogin(String login) throws MemberNotFoundException {
         if (login.contains("@")) {
             Member member = MembersClient.findMemberByEmailAddress(login);

@@ -44,16 +44,19 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20160212</version>
 		</dependency>
         <dependency>
             <groupId>org.xcolab.microservices.clients</groupId>
             <artifactId>emails-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>tracking-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -95,7 +98,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>members_ColabSSO|members_Member|User_|Users_Roles|Role_|xcolab_Message|xcolab_MessageRecipientStatus|xcolab_MessagingUserPreferences|Contact_|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory|xcolab_ContestTeamMember|members_RoleGroupRoles|members_RoleGroup|xcolab_StaffMember</includes>
+							<includes>members_ColabSSO|members_Member|User_|Users_Roles|Role_|xcolab_Message|xcolab_MessageRecipientStatus|xcolab_MessagingUserPreferences|Contact_|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory|xcolab_ContestTeamMember|members_RoleGroupRoles|members_RoleGroup|xcolab_StaffMember|xcolab_LoginLog|xcolab_AnalyticsUserEvent</includes>
 						</database>
 					</generator>
 				</configuration>

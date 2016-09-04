@@ -1,5 +1,19 @@
 package org.xcolab.portlets.userprofile.view;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.SmartValidator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -15,19 +29,6 @@ import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.SmartValidator;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
@@ -290,18 +291,23 @@ public class UserProfileController {
 
         boolean changedUserPart = false;
         boolean validationError = false;
-        if (updatedUserBean.getPassword() != null && !updatedUserBean.getPassword().trim().isEmpty()) {
-            if (isPasswordMatchingExistingPassword(currentUserProfile, updatedUserBean.getCurrentPassword().trim())
-                    || (permissions.getCanAdmin() && !currentUserProfile.isViewingOwnProfile())) {
+        final Long memberId = currentUserProfile.getUserId();
+        if (StringUtils.isNotBlank(updatedUserBean.getPassword())) {
+            final boolean isAdminEditingOtherProfile =
+                    permissions.getCanAdmin() && !currentUserProfile.isViewingOwnProfile();
+            final String currentPassword = updatedUserBean.getCurrentPassword();
+            if (MembersClient.validatePassword(currentPassword.trim(), currentUserProfile.getUser().getUserId())
+                    || isAdminEditingOtherProfile) {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
-                    currentUserProfile.getUser().setHashedPassword(
-                            MembersClient.hashPassword(updatedUserBean.getPassword().trim()));
+                    final String newPassword = updatedUserBean.getPassword().trim();
+                    MembersClient.updatePassword(memberId, currentPassword, newPassword);
                     //TODO: remove, currently needed to update password for liferay
-                    final User liferayUser = UserLocalServiceUtil.getUser(currentUserProfile.getUserId());
+                    final User liferayUser = UserLocalServiceUtil.getUser(
+                            memberId);
                     liferayUser.setPassword
-                            (MembersClient.hashPassword(updatedUserBean.getPassword().trim(), true));
+                            (MembersClient.hashPassword(newPassword));
                     UserLocalServiceUtil.updateUser(liferayUser);
                     changedUserPart = true;
                 } else {
@@ -360,12 +366,12 @@ public class UserProfileController {
         changedUserPart = changedUserPart | updateUserProfile(currentUserProfile, updatedUserBean);
 
         if (validationError) {
-            response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
+            response.setRenderParameter("userId", memberId.toString());
             response.setRenderParameter("updateError", "true");
             updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
         } else if (changedUserPart) {
 
-            response.setRenderParameter("userId", currentUserProfile.getUserId().toString());
+            response.setRenderParameter("userId", memberId.toString());
             response.setRenderParameter("updateSuccess", "true");
 
             updatedUserBean.setImageId(currentUserProfile.getUser().getPortraitFileEntryId());
@@ -383,16 +389,12 @@ public class UserProfileController {
                 }
             }
         } else {
-            response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString());
+            response.sendRedirect("/web/guest/member/-/member/userId/" + memberId.toString());
             return;
         }
 
         SessionErrors.clear(request);
         SessionMessages.clear(request);
-    }
-
-    private boolean isPasswordMatchingExistingPassword(UserProfileWrapper currentUserProfile, String password) {
-        return MembersClient.validatePassword(password, currentUserProfile.getUser().getUserId());
     }
 
     private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean) {

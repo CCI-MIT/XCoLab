@@ -1,10 +1,13 @@
 package org.xcolab.service.members.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +28,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping("/members")
 public class MembersController {
 
     private final MemberService memberService;
@@ -41,7 +45,7 @@ public class MembersController {
         this.memberService = memberService;
     }
 
-    @RequestMapping(value = "/members", method = RequestMethod.GET)
+    @GetMapping
     public List<Member> listMembers(HttpServletResponse response,
                                     @RequestParam(required = false) Integer startRecord,
                                     @RequestParam(required = false) Integer limitRecord,
@@ -61,7 +65,16 @@ public class MembersController {
                 email, screenName, facebookId, openId);
     }
 
-    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
+    @GetMapping("findByScreenName")
+
+    public Member getMemberByScreenNameNoRole(@RequestParam String screenName) throws NotFoundException {
+        if (screenName == null) {
+            throw new NotFoundException("No message id given");
+        } else {
+            return memberDao.findOneByScreenName(screenName).orElseThrow(NotFoundException::new);
+        }
+    }
+    @GetMapping("{memberId}")
     public Member getMember(@PathVariable long memberId) throws NotFoundException {
         if (memberId == 0) {
             throw new NotFoundException("No message id given");
@@ -70,7 +83,16 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.DELETE)
+    @PutMapping(value = "{memberId}")
+    public boolean updateMember(@RequestBody Member member, @PathVariable Long memberId)
+            throws NotFoundException {
+        if (memberId == 0 || memberDao.getMember(memberId) == null) {
+            throw new NotFoundException("No member with id " + memberId);
+        }
+        return memberDao.updateMember(member);
+    }
+
+    @DeleteMapping("{memberId}")
     public boolean deleteMember(@PathVariable long memberId) throws NotFoundException {
         if (memberId == 0) {
             throw new NotFoundException("No message id given");
@@ -81,7 +103,7 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members/{memberId}/roles", method = RequestMethod.GET)
+    @GetMapping("{memberId}/roles")
     public List<Role_> getMemberRoles(@PathVariable Long memberId) {
         if (memberId == null) {
             return new ArrayList<>();
@@ -90,45 +112,34 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members/count", method = RequestMethod.GET)
+    @GetMapping("count")
     public Integer countMembers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
         return memberDao.countByGiven(screenName, category);
     }
 
-    @RequestMapping(value = "/members", method = RequestMethod.POST)
-    public Member register(@RequestBody Member member) throws NoSuchAlgorithmException {
+    @PostMapping
+    public Member register(@RequestBody Member member) {
         return memberService.register(member.getScreenName(), member.getHashedPassword(),
                 member.getEmailAddress(), member.getFirstName(), member.getLastName(),
                 member.getShortBio(), member.getCountry(), member.getFacebookId(),
                 member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
 
-    @RequestMapping(value = "/members/isUsed", method = RequestMethod.GET)
-    public boolean isUsed(
-            @RequestParam(required = false) String screenName,
-            @RequestParam(required = false) String email) {
-        boolean ret = false;
-        if (screenName != null) {
-            ret = memberDao.isScreenNameTaken(screenName);
-        }
-        if (email != null) {
-            ret = ret || memberDao.isEmailUsed(email);
-        }
-        return ret;
+    @PostMapping("registerFromSharedColab")
+    public Member registerFromSharedColab(@RequestBody Member member) throws NoSuchAlgorithmException {
+            return memberService.registerWithHashedPassword(member.getScreenName(), member.getHashedPassword(),
+                    member.getEmailAddress(), member.getFirstName(), member.getLastName(),
+                    member.getShortBio(), member.getCountry(), member.getFacebookId(),
+                    member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
 
-    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.PUT)
-    public boolean updateMember(@RequestBody Member member, @PathVariable Long memberId)
-            throws NotFoundException {
-        if (memberId == 0 || memberDao.getMember(memberId) == null) {
-            throw new NotFoundException("No member with id " + memberId);
-        }
-        return memberDao.updateMember(member);
-    }
 
-    @RequestMapping(value = "/members/{memberId}/activityCount", method = RequestMethod.GET)
+
+
+
+    @GetMapping("{memberId}/activityCount")
     public int getMemberActivityCount(@PathVariable Long memberId) {
         if (memberId == null) {
             return 0;
@@ -138,7 +149,7 @@ public class MembersController {
         }
     }
 
-    @RequestMapping(value = "/members/{memberId}/materializedPoints", method = RequestMethod.GET)
+    @GetMapping("{memberId}/materializedPoints")
     public int getMemberMaterializedPoints(@PathVariable Long memberId) {
         if (memberId == null) {
             return 0;
@@ -148,96 +159,22 @@ public class MembersController {
         }
     }
 
-
-    @RequestMapping(value = "/members/generateScreenName", method = RequestMethod.GET)
-    public String generateScreenName(@RequestParam String[] values) {
-        return memberService.generateScreenName(values);
-    }
-
-    @RequestMapping(value = "/members/hashPassword", method = RequestMethod.GET)
-    public String hashPassword(@RequestParam String password,
-                               @RequestParam(required = false) Boolean liferayCompatible)
-            throws NoSuchAlgorithmException {
-        return memberService
-                .hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
-    }
-
-    @RequestMapping(value = "/members/validatePassword", method = RequestMethod.GET)
-    public Boolean validatePassword(
-            @RequestParam String password,
-            @RequestParam(required = false) String hash,
-            @RequestParam(required = false) Long memberId)
-            throws NoSuchAlgorithmException, NotFoundException {
-
-        if (hash != null) {
-            return memberService.validatePassword(password, hash);
-        }
-
-        if (memberId != null) {
-            final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
-            return memberService
-                    .validatePassword(password, member.getHashedPassword());
-        }
-        throw new NotFoundException("The endpoint you requested is not available for the given attributes");
-    }
-
-    @RequestMapping(value = "/members/createForgotPasswordToken", method = RequestMethod.GET)
-    public String createForgotPasswordToken(
-            @RequestParam(required = false) Long memberId)
-            throws NoSuchAlgorithmException, NotFoundException {
-        if (memberId != null) {
-            return memberService.createNewForgotPasswordToken(memberId);
-        }
-        throw new NotFoundException(
-                "The endpoint you requested is not available for the given attributes");
-    }
-
-    @RequestMapping(value = "/members/updateForgottenPassword", method = RequestMethod.POST)
-    public Long updateForgottenPasswordByToken(
-            @RequestParam(required = false) String forgotPasswordToken,
-            @RequestParam(required = false) String password)
-            throws NoSuchAlgorithmException, NotFoundException {
-        if (forgotPasswordToken != null) {
-            return memberService.updateUserPasswordWithToken(forgotPasswordToken, password);
-        }
-        throw new NotFoundException(
-                "The endpoint you requested is not available for the given attributes");
-    }
-
-    @RequestMapping(value = "/members/validateForgotPasswordToken", method = RequestMethod.GET)
-    public boolean validateForgotPasswordToken(
-            @RequestParam(required = false) String passwordToken)
-            throws NoSuchAlgorithmException, NotFoundException {
-        if (passwordToken != null) {
-            return memberService.validateForgotPasswordToken(passwordToken);
-        }
-        throw new NotFoundException(
-                "The endpoint you requested is not available for the given attributes");
-    }
-
-    @RequestMapping(value = "/members/{memberId}/login", method = RequestMethod.POST)
-    public boolean login(@PathVariable long memberId, @RequestBody String password)
-            throws NoSuchAlgorithmException, NotFoundException {
-        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
-        return memberService.validatePassword(password, member.getHashedPassword());
-    }
-
-    @RequestMapping(value = "/members/{memberId}/subscribe", method = RequestMethod.PUT)
+    @PutMapping("{memberId}/subscribe")
     public boolean subscribe(@PathVariable long memberId) throws NotFoundException {
         return memberService.subscribeToNewsletter(memberId);
     }
 
-    @RequestMapping(value = "/members/{memberId}/unsubscribe", method = RequestMethod.PUT)
+    @PutMapping("{memberId}/unsubscribe")
     public boolean unsubscribe(@PathVariable long memberId) throws NotFoundException {
         return memberService.unsubscribeFromNewsletter(memberId);
     }
 
-    @RequestMapping(value = "/members/{memberId}/isSubscribed", method = RequestMethod.GET)
+    @GetMapping("{memberId}/isSubscribed")
     public boolean isSubscribed(@PathVariable long memberId) throws IOException, NotFoundException {
         return memberService.isSubscribedToNewsletter(memberId);
     }
 
-    @RequestMapping(value = "/members/{memberId}/contestRoles", method = RequestMethod.GET)
+    @GetMapping("{memberId}/contestRoles")
     public List<Role_> getMemberRoles(@PathVariable long memberId,
                                       @RequestParam long contestId) {
         return this.roleService.getMemberRolesInContest(memberId, contestId);

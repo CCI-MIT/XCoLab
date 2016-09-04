@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.liferay.LoginRegisterUtil;
+import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -33,6 +37,7 @@ public class SubscribeContestActionController {
             }
             else {
                 ContestLocalServiceUtil.subscribe(contestId, userId);
+
             }
             response.sendRedirect(ContestLocalServiceUtil.getContestLinkUrl(contestId));
         }
