@@ -37,19 +37,40 @@
                     </div>
                 </div>
             </c:if>
+            <portlet:actionURL var="supportProposalActionURL">
+                <portlet:param name="contestId" value="${contest.contestPK }" />
+                <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
+                <portlet:param name="proposalId" value="${proposal.proposalId }" />
+                <portlet:param name="action" value="supportProposalAction" />
+            </portlet:actionURL>
+
+            <c:choose>
+                <c:when test="${contest.isSharedContest}">
+                    <script>
+                        function handleOnClickAtSupportBtn(event){
+                            return showSharedContestAutoRegPopUp(function(ref){
+                                window.location = "${supportProposalActionURL}";
+                            },${contest.contestPK });
+                        }
+                    </script>
+                </c:when>
+                <c:otherwise>
+                    <script>
+                        function handleOnClickAtSupportBtn(){
+                            return deferUntilLogin();
+                        }
+                    </script>
+                </c:otherwise>
+            </c:choose>
+
             <div class="votebox-bottom">
                 <span>
                     <img src="${themeDisplay.pathThemeImages}/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
                     ${proposal.supportersCount}
                 </span> supporters
                 <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                    <portlet:actionURL var="supportProposalActionURL">
-                        <portlet:param name="contestId" value="${contest.contestPK }" />
-                        <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-                        <portlet:param name="proposalId" value="${proposal.proposalId }" />
-                        <portlet:param name="action" value="supportProposalAction" />
-                    </portlet:actionURL>
-                    <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+
+                    <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
                         <c:set var="supportText" value="Support ${contestType.proposalName}" />
                         ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : 'Retract support' }
                     </a>

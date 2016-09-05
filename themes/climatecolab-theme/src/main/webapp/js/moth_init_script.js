@@ -210,16 +210,41 @@ function showSharedColabLogin(fn) {
 		jQuery("#signInSSOForm_form input[name=redirect]").val(location.toString());
 	}
 }
-
-function showSharedContestAutoRegPopUp(fn, contestId, userId) {
+var sharedContestAutoRegContestId = null;
+var sharedContestAutoRegCallbackFunction = null;
+function showSharedContestAutoRegPopUp(fn, contestId) {
 
 	if (Liferay.ThemeDisplay.isSignedIn()) {
+		//if has cookie for contestId return true;
+		var sharedContestConfirm = $.cookie("sharedColab_"+contestId);
+		if(sharedContestConfirm === undefined) {
+			sharedContestConfirm = false;
+		}
+		if(sharedContestConfirm){
+			return true;
+		}
+
+		sharedContestAutoRegCallbackFunction = fn;
+		sharedContestAutoRegContestId = contestId;
 
 		jQuery('#popup_login').hide();
 		jQuery('#popup_SSO_autoreg').show();
-		return true;
+		return false;
+	}else{
+		return deferUntilLogin();
 	}
 }
+
+function handleOkForSharedColabAutoReg() {
+	$.cookie("sharedColab_"+sharedContestAutoRegContestId, "true");
+	if(sharedContestAutoRegCallbackFunction!=null){
+		sharedContestAutoRegCallbackFunction.call(null);
+	}
+}
+function handleNoForSharedColabAutoReg() {
+	jQuery('#popup_SSO_autoreg').hide();
+}
+
 
 function showForgotPasswordPopup() {
 	jQuery('#popup_login').hide();
