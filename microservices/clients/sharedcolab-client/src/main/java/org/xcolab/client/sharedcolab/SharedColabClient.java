@@ -33,7 +33,7 @@ public class SharedColabClient {
         sharedColabService.setServiceHost(location);
         sharedColabService.setServicePort(port);
         return sharedColabResource.service("isUsed",Boolean.class)
-                .queryParam("screenName", screenName).getUnchecked();
+                .queryParam("screenName", screenName).get();
     }
 
     public static boolean isEmailUsed(String email) {
@@ -43,13 +43,13 @@ public class SharedColabClient {
         sharedColabService.setServicePort(port);
         return sharedColabResource.service("isUsed", Boolean.class)
                 .queryParam("email", email)
-                .getUnchecked();
+                .get();
     }
 
     public static Long retrieveSharedId(String email, String screenName, String colabName) {
         sharedColabService.setServiceHost(ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get());
         sharedColabService.setServicePort(ConfigurationAttributeKey.SHARED_COLAB_PORT.get());
-        ServiceQuery<Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
+        ServiceQuery<Long, Long> retrieveSharedId = sharedColabResource.service("retrieveSharedId", Long.class);
 
         if (email != null) {
             retrieveSharedId.optionalQueryParam("email", email);
@@ -91,7 +91,7 @@ public class SharedColabClient {
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("memberId", memberId)
-                .getUnchecked();
+                .get();
     }
 
 }

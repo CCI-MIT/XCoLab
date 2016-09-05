@@ -38,7 +38,7 @@ public final class SearchClient {
             return searchResource.service("count", Integer.class)
                     .optionalQueryParam("sort", sort)
                     .optionalQueryParam("query", query)
-                    .get();
+                    .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }

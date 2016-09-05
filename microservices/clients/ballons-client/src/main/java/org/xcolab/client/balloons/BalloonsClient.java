@@ -22,7 +22,7 @@ public final class BalloonsClient {
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {
         try {
-            return balloonLinkResource.get(uuid).execute();
+            return balloonLinkResource.get(uuid).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonLink " + uuid + " does not exist");
@@ -51,7 +51,7 @@ public final class BalloonsClient {
     public static BalloonUserTracking getBalloonUserTracking(String uuid)
             throws BalloonUserTrackingNotFound {
         try {
-            return balloonUserTrackingResource.get(uuid).execute();
+            return balloonUserTrackingResource.get(uuid).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonUserTracking " + uuid + " does not exist");
@@ -79,7 +79,7 @@ public final class BalloonsClient {
 
     public static BalloonText getBalloonText(Long id) throws BalloonUserTrackingNotFound {
         try {
-            return balloonTextResource.get(id).execute();
+            return balloonTextResource.get(id).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new BalloonUserTrackingNotFound(
                     "BalloonText " + id + " does not exist");
