@@ -8,4 +8,5 @@ public interface ProposalSupporterDao {
 
     ProposalSupporter create(ProposalSupporter proposalSupporter);
     List<ProposalSupporter> findByGiven(Long proposalId, Long userId);
+    Integer countByProposalId(Long proposalId);
 }

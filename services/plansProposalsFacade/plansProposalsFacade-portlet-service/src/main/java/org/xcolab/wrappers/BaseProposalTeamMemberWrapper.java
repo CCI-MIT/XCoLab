@@ -1,14 +1,15 @@
 package org.xcolab.wrappers;
 
-import com.ext.portlet.model.Proposal;
-import com.liferay.portal.model.User;
+
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 public class BaseProposalTeamMemberWrapper {
     private final Proposal proposal;
-    private final User user;
+    private final Member user;
     private ProposalMemberType memberType;
     
-    public BaseProposalTeamMemberWrapper(Proposal proposal, User user) {
+    public BaseProposalTeamMemberWrapper(Proposal proposal, Member user) {
         super();
         this.proposal = proposal;
         this.user = user;

@@ -13,12 +13,16 @@ import org.xcolab.model.tables.pojos.*;
 
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
-import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDaoImpl;
+
 import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
+import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
+import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
+
 
 import java.util.List;
 
@@ -33,6 +37,12 @@ public class ProposalsController {
 
     @Autowired
     private ProposalVoteDao proposalVoteDao;
+
+    @Autowired
+    private ProposalSupporterDao proposalSupporterDao;
+
+    @Autowired
+    private ProposalVersionDao proposalVersionDao;
 
     @Autowired
     private ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
@@ -67,6 +77,7 @@ public class ProposalsController {
         }
         throw new NotFoundException();
     }
+
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.PUT)
     public boolean updateProposal(@RequestBody Proposal proposal, @PathVariable long proposalId)
@@ -106,9 +117,23 @@ public class ProposalsController {
         return proposal2PhaseDao.getProposalCountForActiveContestPhase(proposal2PhaseId);
 
     }
+    @RequestMapping(value = "/proposalSupporters", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ProposalSupporter> getProposalSupporters(
+            @RequestParam(required = false) Long proposalId
+    ) {
+        return proposalSupporterDao.findByGiven(proposalId, null);
+    }
+
+    @RequestMapping(value = "/proposalSupporters/count", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public Integer getProposalSupportersCount(
+            @RequestParam Long proposalId
+    ) {
+
+        return proposalSupporterDao.countByProposalId(proposalId);
+    }
 
 
-    @RequestMapping(value = "/proposal2Phases", method = {RequestMethod.GET})
+    @RequestMapping(value = "/proposal2Phases/getByContestPhaseIdProposalId", method = {RequestMethod.GET})
     public Proposal2Phase getProposal2Phases(
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId
@@ -119,6 +144,27 @@ public class ProposalsController {
         }
         return ret.get(0);
     }
+
+    //getByContestPhaseProposalIdName
+
+    @RequestMapping(value = "/proposalVersions", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ProposalVersion> getProposalVersions(
+            @RequestParam(required = false) Long proposalId
+    ) {
+        return proposalVersionDao.findByGiven(proposalId, null);
+    }
+
+    @RequestMapping(value = "/proposalVersions/getByProposalIdVersion", method = RequestMethod.GET)
+    public ProposalVersion getProposalVersion(@RequestParam("proposalId") Long proposalId,
+                                              @RequestParam("version") Integer version) throws NotFoundException {
+        if (proposalId == null || proposalId == 0) {
+            throw new NotFoundException("No proposalVersion Id given");
+        } else {
+
+            return proposalVersionDao.getByProposalIdVersion(proposalId, version);
+        }
+    }
+
 
     @RequestMapping(value = "/proposalVotes/count", method = {RequestMethod.GET, RequestMethod.HEAD})
     public Integer getProposalVotes(
@@ -136,6 +182,20 @@ public class ProposalsController {
             @RequestParam(required = false) String name
     ) {
         return proposalContestPhaseAttributeDao.findByGiven(contestPhaseId, proposalId, name);
+    }
+    @RequestMapping(value = "/proposalContestPhaseAttributes/getByContestPhaseProposalIdName", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public ProposalContestPhaseAttribute getProposalContestPhaseAttributesS(
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) String name
+    ) throws EntityNotFoundException {
+        List<ProposalContestPhaseAttribute> prop = proposalContestPhaseAttributeDao.findByGiven(contestPhaseId, proposalId, name);
+         if(prop!= null && prop.size()>=1) {
+             return prop.get(0);
+         }
+        else{
+             throw new EntityNotFoundException();
+         }
     }
     @RequestMapping(value = "/proposalContestPhaseAttributes", method = RequestMethod.POST)
     public ProposalContestPhaseAttribute createProposalContestPhaseAttribute(@RequestBody ProposalContestPhaseAttribute proposalContestPhaseAttribute) {

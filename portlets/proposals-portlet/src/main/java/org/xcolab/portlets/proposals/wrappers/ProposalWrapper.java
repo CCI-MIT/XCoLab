@@ -2,7 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.models.CollaboratoriumModelingService;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -12,9 +12,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portlet.expando.model.ExpandoBridge;
+
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 
@@ -22,10 +21,14 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
@@ -53,7 +56,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     private List<ProposalSectionWrapper> sections;
     private List<MembershipRequestWrapper> membershipRequests;
 
-    public ProposalWrapper(long proposalId) throws ProposalNotFoundException{
+    public ProposalWrapper(long proposalId) throws ProposalNotFoundException {
         this(ProposalsClient.getProposal(proposalId));
     }
 
@@ -94,17 +97,17 @@ public class ProposalWrapper extends BaseProposalWrapper {
         proposal.setGroupId(groupId);
     }
 
-    public void setCachedModel(boolean cachedModel) {
-        proposal.setCachedModel(cachedModel);
-    }
-
-    public ExpandoBridge getExpandoBridge() {
-        return proposal.getExpandoBridge();
-    }
-
-    public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        proposal.setExpandoBridgeAttributes(serviceContext);
-    }
+//    public void setCachedModel(boolean cachedModel) {
+//        proposal.setCachedModel(cachedModel);
+//    }
+//
+//    public ExpandoBridge getExpandoBridge() {
+//        return proposal.getExpandoBridge();
+//    }
+//
+//    public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+//        proposal.setExpandoBridgeAttributes(serviceContext);
+//    }
 
     public boolean isFeatured() {
         return getRibbonWrapper().getRibbon() > 0;
@@ -133,14 +136,9 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            try {
-                for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
-                    selectedJudges.add(judge.getUserId());
-                }
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            } catch (PortalException e) {
-                throw new IllegalStateException("Could not retrieve assigned judges");
+            for (Long judge : ContestClient.getJudgesForContest(contest.getContestPK())) {
+
+                selectedJudges.add(judge);
             }
         } else {
             String s = proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
@@ -155,13 +153,19 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return selectedJudges;
     }
 
-    public List<User> getSelectedJudgeUsers() throws SystemException, PortalException {
-        List<User> selectedJudges = new ArrayList<>();
+    public List<Member> getSelectedJudgeUsers() throws SystemException, PortalException {
+        List<Member> selectedJudges = new ArrayList<>();
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (User judge : ContestLocalServiceUtil.getJudgesForContest(contest)) {
-                selectedJudges.add(judge);
+            for (Long judgeId : ContestClient.getJudgesForContest(contest.getContestPK())) {
+
+                try {
+                    Member judge = MembersClient.getMember(judgeId);
+                    selectedJudges.add(judge);
+                } catch (MemberNotFoundException ignored) {
+
+                }
             }
         } else {
             String s = proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
@@ -169,7 +173,12 @@ public class ProposalWrapper extends BaseProposalWrapper {
                 return selectedJudges;
             }
             for (String element : s.split(";")) {
-                selectedJudges.add(UserLocalServiceUtil.getUser(Long.parseLong(element)));
+                try {
+                    Member judge = MembersClient.getMember(Long.parseLong(element));
+                    selectedJudges.add(judge);
+                } catch (MemberNotFoundException ignored) {
+
+                }
             }
         }
         return selectedJudges;
@@ -193,7 +202,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
             try {
                 org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
                 long votingPhasePK = new ContestWrapper(contestMicro).getVotingPhasePK();
-                return ProposalLocalServiceUtil.getVotesCount(proposal.getProposalId(), votingPhasePK);
+                return ProposalsClient.getproposalVotesCount(proposal.getProposalId(), votingPhasePK);
             } catch (ContestNotFoundException ignored) {
 
             }

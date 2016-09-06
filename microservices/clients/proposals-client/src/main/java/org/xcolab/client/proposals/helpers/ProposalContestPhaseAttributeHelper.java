@@ -1,19 +1,16 @@
 package org.xcolab.client.proposals.helpers;
 
 
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.pojo.ContestPhase;
+
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 
 import java.util.List;
 
-/**
- * Utility class to retrieve ProposalContestPhaseAttributes in various formats
- * TODO: use new ProposalContestPhaseAttributeLocalServiceUtil methods!
- */
+
 public class ProposalContestPhaseAttributeHelper {
-    //private final static Log _log = LogFactoryUtil.getLog(ProposalContestPhaseAttributeHelper.class);
 
     private final Long proposalId;
     private Long contestPhasePK;

@@ -44,4 +44,17 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
         }
         return query.fetchInto(ProposalVersion.class);
     }
+
+    public ProposalVersion getByProposalIdVersion(Long proposalId, Integer version) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(PROPOSAL_VERSION).getQuery();
+
+        if (proposalId != null) {
+            query.addConditions(PROPOSAL_VERSION.PROPOSAL_ID.eq(proposalId));
+        }
+        if (version != null) {
+            query.addConditions(PROPOSAL_VERSION.VERSION.eq(version));
+        }
+        return query.fetchOne().into(ProposalVersion.class);
+    }
 }

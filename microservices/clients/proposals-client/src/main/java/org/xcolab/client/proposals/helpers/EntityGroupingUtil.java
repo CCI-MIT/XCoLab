@@ -1,7 +1,6 @@
 package org.xcolab.client.proposals.helpers;
 
-import org.xcolab.client.proposals.pojo.ContestType;
-import org.xcolab.client.proposals.pojo.Proposal;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;

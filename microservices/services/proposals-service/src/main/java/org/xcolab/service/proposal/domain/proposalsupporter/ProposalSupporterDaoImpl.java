@@ -2,19 +2,22 @@ package org.xcolab.service.proposal.domain.proposalsupporter;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
-import org.xcolab.model.tables.records.ProposalSupporterRecord;
+
 
 import java.util.List;
+
+import static org.jooq.impl.DSL.countDistinct;
 
 import static org.xcolab.model.Tables.PROPOSAL_SUPPORTER;
 
 
 @Repository
-public class ProposalSupporterDaoImpl implements  ProposalSupporterDao {
+public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
 
     @Autowired
     private DSLContext dslContext;
@@ -50,5 +53,13 @@ public class ProposalSupporterDaoImpl implements  ProposalSupporterDao {
             query.addConditions(PROPOSAL_SUPPORTER.USER_ID.eq(userId));
         }
         return query.fetchInto(ProposalSupporter.class);
+    }
+
+    public Integer countByProposalId(Long proposalId) {
+        final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(PROPOSAL_SUPPORTER.USER_ID))
+                .from(PROPOSAL_SUPPORTER)
+                .where(PROPOSAL_SUPPORTER.PROPOSAL_ID.eq(proposalId)).getQuery();
+
+        return query.fetchOne().into(Integer.class);
     }
 }
