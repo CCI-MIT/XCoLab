@@ -1,10 +1,10 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+
 import org.apache.commons.lang3.StringUtils;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +15,16 @@ import javax.portlet.PortletRequest;
 
 public final class LinkUtils {
 
-    private LinkUtils() { }
+    private LinkUtils() {
+    }
 
     public static Proposal getProposalFromLinkUrl(String linkUrl) {
         List<Long> proposalIds = getProposalIdsFromLinksInText(linkUrl);
         if (!proposalIds.isEmpty()) {
             try {
-                return ProposalLocalServiceUtil.getProposal(proposalIds.get(0));
-            } catch (SystemException | PortalException ignored) { }
+                return ProposalsClient.getProposal(proposalIds.get(0));
+            } catch (ProposalNotFoundException ignored) {
+            }
         }
 
         return null;
@@ -37,7 +39,8 @@ public final class LinkUtils {
             try {
                 final long proposalId = Long.parseLong(m.group(2));
                 proposalIds.add(proposalId);
-            } catch (NumberFormatException ignored) { }
+            } catch (NumberFormatException ignored) {
+            }
         }
 
         proposalIds.addAll(getProposalIdsFromLegacyLinksInText(text));
@@ -62,7 +65,8 @@ public final class LinkUtils {
             try {
                 final long proposalId = Long.parseLong(m.group(3));
                 proposalIds.add(proposalId);
-            } catch (NumberFormatException ignored) { }
+            } catch (NumberFormatException ignored) {
+            }
         }
         return proposalIds;
     }

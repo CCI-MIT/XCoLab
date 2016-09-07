@@ -158,7 +158,7 @@ public class ContestWrapper extends BaseContestWrapper {
 
     public long getVotesCount() throws PortalException, SystemException {
         ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
-        return ProposalsClient.countProposalsInContestPhaseVotes(phase.getContestPhasePK());
+        return ProposalsClient.countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 
     public BaseContestPhaseWrapper getLastPhase() throws PortalException, SystemException {

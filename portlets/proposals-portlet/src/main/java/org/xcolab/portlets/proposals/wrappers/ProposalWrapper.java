@@ -25,7 +25,10 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.PlanSectionDefinition;
+import org.xcolab.client.proposals.pojo.PlanTemplate;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
@@ -202,7 +205,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
             try {
                 org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
                 long votingPhasePK = new ContestWrapper(contestMicro).getVotingPhasePK();
-                return ProposalsClient.getproposalVotesCount(proposal.getProposalId(), votingPhasePK);
+                return ProposalsClient.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
             } catch (ContestNotFoundException ignored) {
 
             }
@@ -215,11 +218,15 @@ public class ProposalWrapper extends BaseProposalWrapper {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
-                PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
-                if (planTemplate != null) {
-                    for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
-                        sections.add(new ProposalSectionWrapper(psd, this));
+                try {
+                    PlanTemplate planTemplate = ProposalsClient.getPlanTemplate(contest.getPlanTemplateId());
+                    if (planTemplate != null) {
+                        for (PlanSectionDefinition psd : ProposalsClient.getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
+                            sections.add(new ProposalSectionWrapper(psd, this));
+                        }
                     }
+                }catch (PlanTemplateNotFoundException ignored){
+
                 }
             }
         }
