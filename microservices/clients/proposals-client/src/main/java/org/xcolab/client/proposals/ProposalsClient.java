@@ -6,7 +6,7 @@ import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.ProposalVote;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CachingStrategy;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -63,7 +63,7 @@ public final class ProposalsClient {
                     .withCache(CacheKeys.withClass(Proposal.class)
                             .withParameter("proposalId", proposalId)
                             .withParameter("includeDeleted", includeDeleted).build(),
-                            CachingStrategy.REQUEST)
+                            CacheRetention.REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ProposalNotFoundException(proposalId);
@@ -113,7 +113,7 @@ public final class ProposalsClient {
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .withCache(CacheKeys.withClass(Proposal.class)
                             .withParameter("contestPhaseId", contestPhaseId)
-                            .asCount(), CachingStrategy.REQUEST)
+                            .asCount(), CacheRetention.REQUEST)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;

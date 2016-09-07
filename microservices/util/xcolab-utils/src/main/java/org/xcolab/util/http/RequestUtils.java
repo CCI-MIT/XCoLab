@@ -14,7 +14,7 @@ import org.xcolab.util.functions.Supplier;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheProvider;
 import org.xcolab.util.http.caching.CacheProviderNoOpImpl;
-import org.xcolab.util.http.caching.CachingStrategy;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.HeaderRequestInterceptor;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.RestTemplateErrorHandler;
@@ -49,15 +49,15 @@ public final class RequestUtils {
 
     public static <T> T getFirstFromList(UriBuilder uriBuilder,
                                          ParameterizedTypeReference<List<T>> typeReference) throws EntityNotFoundException {
-        return getFirstFromList(uriBuilder, typeReference, null, CachingStrategy.NONE);
+        return getFirstFromList(uriBuilder, typeReference, null, CacheRetention.NONE);
     }
 
     public static <T> T getFirstFromList(final UriBuilder uriBuilder,
             final ParameterizedTypeReference<List<T>> typeReference, CacheKey<T, T> cacheKey,
-            CachingStrategy cachingStrategy)
+            CacheRetention cacheRetention)
             throws EntityNotFoundException {
         uriBuilder.addRange(0, 1);
-        return getCached(cachingStrategy, cacheKey, new Supplier<T>() {
+        return getCached(cacheRetention, cacheKey, new Supplier<T>() {
                     @Override
                     public T get() {
                         final List<T> list = getList(uriBuilder, typeReference);
@@ -71,13 +71,13 @@ public final class RequestUtils {
 
     public static <R> List<R> getList(UriBuilder uriBuilder,
                                       ParameterizedTypeReference<List<R>> typeReference) {
-        return getList(uriBuilder, typeReference, null, CachingStrategy.NONE);
+        return getList(uriBuilder, typeReference, null, CacheRetention.NONE);
     }
 
     public static <T, R> List<R> getList(final UriBuilder uriBuilder,
             final ParameterizedTypeReference<List<R>> typeReference,
-            final CacheKey<T, List<R>> cacheKey, CachingStrategy cachingStrategy) {
-        return getCached(cachingStrategy, cacheKey, new Supplier<List<R>>() {
+            final CacheKey<T, List<R>> cacheKey, CacheRetention cacheRetention) {
+        return getCached(cacheRetention, cacheKey, new Supplier<List<R>>() {
             @Override
             public List<R> get() {
                 ResponseEntity<List<R>> response = restTemplate.exchange(uriBuilder.buildString(),
@@ -89,26 +89,26 @@ public final class RequestUtils {
 
     public static <T> T get(UriBuilder uriBuilder, Class<T> entityType)
             throws EntityNotFoundException {
-        return get(uriBuilder, entityType, null, CachingStrategy.NONE);
+        return get(uriBuilder, entityType, null, CacheRetention.NONE);
     }
 
     public static <T, R> R get(UriBuilder uriBuilder, Class<R> entityType,
-            CacheKey<T, R> cacheKey, CachingStrategy cachingStrategy)
+            CacheKey<T, R> cacheKey, CacheRetention cacheRetention)
             throws EntityNotFoundException {
         try {
-            return getUnchecked(uriBuilder, entityType, cacheKey, cachingStrategy);
+            return getUnchecked(uriBuilder, entityType, cacheKey, cacheRetention);
         } catch (UncheckedEntityNotFoundException e) {
             throw new EntityNotFoundException();
         }
     }
 
     public static <R> R getUnchecked(UriBuilder uriBuilder, Class<R> returnType) {
-        return getUnchecked(uriBuilder, returnType, null, CachingStrategy.NONE);
+        return getUnchecked(uriBuilder, returnType, null, CacheRetention.NONE);
     }
 
     public static <T, R> R getUnchecked(final UriBuilder uriBuilder, final Class<R> returnType,
-            CacheKey<T, R> cacheKey, CachingStrategy cachingStrategy) {
-        return getCached(cachingStrategy, cacheKey, new Supplier<R>() {
+            CacheKey<T, R> cacheKey, CacheRetention cacheRetention) {
+        return getCached(cacheRetention, cacheKey, new Supplier<R>() {
                     @Override
                     public R get() {
                         return restTemplate.getForObject(uriBuilder.buildString(), returnType);
@@ -117,12 +117,12 @@ public final class RequestUtils {
     }
 
     public static int getCount(UriBuilder uriBuilder) {
-        return getCount(uriBuilder, null, CachingStrategy.REQUEST);
+        return getCount(uriBuilder, null, CacheRetention.REQUEST);
     }
 
     public static int getCount(final UriBuilder uriBuilder,
-            final CacheKey<?, Integer> cacheKey, CachingStrategy cachingStrategy) {
-        return getCached(cachingStrategy, cacheKey, new Supplier<Integer>() {
+            final CacheKey<?, Integer> cacheKey, CacheRetention cacheRetention) {
+        return getCached(cacheRetention, cacheKey, new Supplier<Integer>() {
                     @Override
                     public Integer get() {
                         final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.buildString());
@@ -136,20 +136,20 @@ public final class RequestUtils {
                 });
     }
 
-    private static <T> T getCached(CachingStrategy cachingStrategy, CacheKey<?, T> cacheKey,
+    private static <T> T getCached(CacheRetention cacheRetention, CacheKey<?, T> cacheKey,
             Supplier<T> supplier) {
         T ret;
         final boolean cacheActive = cacheProvider.isActive() && cacheKey != null
-                && cachingStrategy != CachingStrategy.NONE;
+                && cacheRetention != CacheRetention.NONE;
         if (cacheActive) {
-            ret = cacheProvider.get(cacheKey, cachingStrategy);
+            ret = cacheProvider.get(cacheKey, cacheRetention);
             if (ret != null) {
                 return ret;
             }
         }
         ret = supplier.get();
         if (cacheActive) {
-            cacheProvider.add(cacheKey, cachingStrategy, ret);
+            cacheProvider.add(cacheKey, cacheRetention, ret);
         }
         return ret;
     }
@@ -166,7 +166,7 @@ public final class RequestUtils {
 
         final boolean cacheActive = cacheProvider.isActive() && cacheKey != null;
         if (cacheActive) {
-            cacheProvider.replace(cacheKey, CachingStrategy.REQUEST, entity);
+            cacheProvider.replace(cacheKey, CacheRetention.REQUEST, entity);
         }
 
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);

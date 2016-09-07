@@ -5,7 +5,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
-import org.xcolab.util.http.caching.CachingStrategy;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     private final UriBuilder uriBuilder;
     private final ParameterizedTypeReference<List<T>> typeReference;
     private CacheKey<T, List<T>> cacheKey;
-    private CachingStrategy cachingStrategy;
+    private CacheRetention cacheRetention;
 
     public ListQuery(RestResource<T> restResource,
             ParameterizedTypeReference<List<T>> typeReference) {
@@ -27,7 +27,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
         if (cacheKey == null) {
             return RequestUtils.getList(uriBuilder, typeReference);
         } else {
-            return RequestUtils.getList(uriBuilder, typeReference, cacheKey, cachingStrategy);
+            return RequestUtils.getList(uriBuilder, typeReference, cacheKey, cacheRetention);
         }
     }
 
@@ -42,9 +42,9 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     }
 
     @Override
-    public ListQuery<T> withCache(CacheKey<T, List<T>> cacheKey, CachingStrategy cachingStrategy) {
+    public ListQuery<T> withCache(CacheKey<T, List<T>> cacheKey, CacheRetention cacheRetention) {
         this.cacheKey = cacheKey;
-        this.cachingStrategy = cachingStrategy;
+        this.cacheRetention = cacheRetention;
         return this;
     }
 

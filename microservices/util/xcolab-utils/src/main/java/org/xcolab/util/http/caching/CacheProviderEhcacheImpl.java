@@ -30,12 +30,12 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
         CacheManager newCacheManager;
         try {
             final CacheManagerBuilder<CacheManager> cacheManagerBuilder = newCacheManagerBuilder()
-                    .withCache(CachingStrategy.REQUEST.name(), getTTLConfig(CachingStrategy.REQUEST))
-                    .withCache(CachingStrategy.SHORT.name(), getTTLConfig(CachingStrategy.SHORT))
-                    .withCache(CachingStrategy.MEDIUM.name(), getTTLConfig(CachingStrategy.MEDIUM))
-                    .withCache(CachingStrategy.LONG.name(), getTTLConfig(CachingStrategy.LONG))
-                    .withCache(CachingStrategy.RUNTIME.name(),
-                            getConfigBuilder(CachingStrategy.RUNTIME).build());
+                    .withCache(CacheRetention.REQUEST.name(), getTTLConfig(CacheRetention.REQUEST))
+                    .withCache(CacheRetention.SHORT.name(), getTTLConfig(CacheRetention.SHORT))
+                    .withCache(CacheRetention.MEDIUM.name(), getTTLConfig(CacheRetention.MEDIUM))
+                    .withCache(CacheRetention.LONG.name(), getTTLConfig(CacheRetention.LONG))
+                    .withCache(CacheRetention.RUNTIME.name(),
+                            getConfigBuilder(CacheRetention.RUNTIME).build());
 
             newCacheManager = cacheManagerBuilder.build(true);
         } catch (RuntimeException e) {
@@ -46,20 +46,20 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     private CacheConfigurationBuilder<String, Object> getConfigBuilder(
-            CachingStrategy cachingStrategy) {
+            CacheRetention cacheRetention) {
         return newCacheConfigurationBuilder(String.class, Object.class,
-                ResourcePoolsBuilder.heap(cachingStrategy.getNumberOfEntries()));
+                ResourcePoolsBuilder.heap(cacheRetention.getNumberOfEntries()));
     }
 
 
-    private CacheConfiguration<String, Object> getTTLConfig(CachingStrategy cachingStrategy) {
-        return getConfigBuilder(cachingStrategy)
-                .withExpiry(Expirations.timeToLiveExpiration(cachingStrategy.getDuration()))
+    private CacheConfiguration<String, Object> getTTLConfig(CacheRetention cacheRetention) {
+        return getConfigBuilder(cacheRetention)
+                .withExpiry(Expirations.timeToLiveExpiration(cacheRetention.getDuration()))
                 .build();
     }
 
-    private Cache<String, Object> getCache(CachingStrategy cachingStrategy) {
-        return cacheManager.getCache(cachingStrategy.name(), String.class, Object.class);
+    private Cache<String, Object> getCache(CacheRetention cacheRetention) {
+        return cacheManager.getCache(cacheRetention.name(), String.class, Object.class);
     }
 
     @Override
@@ -68,13 +68,13 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public <T> T get(CacheKey<?, T> key, CachingStrategy cachingStrategy) {
+    public <T> T get(CacheKey<?, T> key, CacheRetention cacheRetention) {
         if (isActive()) {
             try {
                 //noinspection unchecked
-                return (T) getCache(cachingStrategy).get(key.stringKey());
+                return (T) getCache(cacheRetention).get(key.stringKey());
             } catch (CacheLoadingException e) {
-                log.error("Error while loading cache {} using {}: {}", cachingStrategy, key, e.toString());
+                log.error("Error while loading cache {} using {}: {}", cacheRetention, key, e.toString());
                 return null;
             }
         }
@@ -83,13 +83,13 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public <T> boolean add(CacheKey<?, T> key, CachingStrategy cachingStrategy, T value) {
+    public <T> boolean add(CacheKey<?, T> key, CacheRetention cacheRetention, T value) {
         if (isActive()) {
             try {
-                getCache(cachingStrategy).put(key.stringKey(), value);
+                getCache(cacheRetention).put(key.stringKey(), value);
                 return true;
             } catch (CacheWritingException e) {
-                log.error("Could not add entry {} to cache {}: {}", key, cachingStrategy, e.toString());
+                log.error("Could not add entry {} to cache {}: {}", key, cacheRetention, e.toString());
                 return false;
             }
         }
@@ -97,17 +97,17 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public <T> boolean replace(CacheKey<?, T> key, CachingStrategy cachingStrategy, T value) {
-        return add(key, cachingStrategy, value);
+    public <T> boolean replace(CacheKey<?, T> key, CacheRetention cacheRetention, T value) {
+        return add(key, cacheRetention, value);
     }
 
     @Override
-    public boolean delete(CacheKey<?, ?> key, CachingStrategy cachingStrategy) {
+    public boolean delete(CacheKey<?, ?> key, CacheRetention cacheRetention) {
         if (isActive()) {
             try {
-                getCache(cachingStrategy).remove(key.stringKey());
+                getCache(cacheRetention).remove(key.stringKey());
             } catch (CacheWritingException e) {
-                log.error("Could not delete entry {} from cache : {}", key, cachingStrategy, e.toString());
+                log.error("Could not delete entry {} from cache : {}", key, cacheRetention, e.toString());
                 return false;
             }
         }

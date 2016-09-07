@@ -3,7 +3,7 @@ package org.xcolab.client.members;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CachingStrategy;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
@@ -47,7 +47,7 @@ public final class PermissionsClient {
                 .withCache(CacheKeys.withClass(Role_.class)
                         .withParameter("memberId", memberId)
                         .withParameter("roleGroupId", roleGroupId).asList(),
-                        CachingStrategy.REQUEST)
+                        CacheRetention.REQUEST)
                 .execute();
         for (Role_ role : roles) {
             if (memberHasRole(memberId, role.getRoleId())) {

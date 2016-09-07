@@ -9,7 +9,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CachingStrategy;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -70,7 +70,7 @@ public final class FlaggingClient {
         try {
             return reportResource.get(reportId)
                     .withCache(CacheKeys.of(Report.class, reportId),
-                    CachingStrategy.REQUEST).executeChecked();
+                    CacheRetention.REQUEST).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ReportNotFoundException(reportId);
         }
@@ -104,7 +104,7 @@ public final class FlaggingClient {
         try {
             return reportTargetResource.get(reportTargetId)
                     .withCache(CacheKeys.of(ReportTarget.class, reportTargetId),
-                            CachingStrategy.REQUEST)
+                            CacheRetention.REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ReportTargetNotFoundException(reportTargetId);
@@ -118,7 +118,7 @@ public final class FlaggingClient {
                 .queryParam("reason", reason)
                 .withCache(CacheKeys.withClass(ReportTarget.class)
                         .withParameter("type", type.name())
-                        .withParameter("reason", reason).asList(), CachingStrategy.REQUEST)
+                        .withParameter("reason", reason).asList(), CacheRetention.REQUEST)
                 .executeWithResult().getFirstIfExists();
         if (reportTarget == null) {
             throw new ReportTargetNotFoundException(type, reason);

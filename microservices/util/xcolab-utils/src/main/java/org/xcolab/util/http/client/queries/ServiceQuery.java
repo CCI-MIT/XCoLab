@@ -3,7 +3,7 @@ package org.xcolab.util.http.client.queries;
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
-import org.xcolab.util.http.caching.CachingStrategy;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -11,7 +11,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
     private final UriBuilder uriBuilder;
     private final Class<R> returnType;
     private CacheKey<T, R> cacheKey;
-    private CachingStrategy cachingStrategy;
+    private CacheRetention cacheRetention;
 
     public ServiceQuery(HttpResource httpResource, long id, String serviceName,
             Class<R> returnType) {
@@ -50,7 +50,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         if (cacheKey == null) {
             return RequestUtils.get(uriBuilder, returnType);
         } else {
-            return RequestUtils.get(uriBuilder, returnType, cacheKey, CachingStrategy.REQUEST);
+            return RequestUtils.get(uriBuilder, returnType, cacheKey, CacheRetention.REQUEST);
         }
     }
 
@@ -58,7 +58,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         if (cacheKey == null) {
             return RequestUtils.getUnchecked(uriBuilder, returnType);
         } else {
-            return RequestUtils.getUnchecked(uriBuilder, returnType, cacheKey, cachingStrategy);
+            return RequestUtils.getUnchecked(uriBuilder, returnType, cacheKey, cacheRetention);
         }
     }
 
@@ -79,9 +79,9 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
     }
 
     @Override
-    public ServiceQuery<T, R> withCache(CacheKey<T, R> cacheKey, CachingStrategy cachingStrategy) {
+    public ServiceQuery<T, R> withCache(CacheKey<T, R> cacheKey, CacheRetention cacheRetention) {
         this.cacheKey = cacheKey;
-        this.cachingStrategy = cachingStrategy;
+        this.cacheRetention = cacheRetention;
         return this;
     }
 

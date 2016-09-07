@@ -4,7 +4,7 @@ import org.ehcache.expiry.Duration;
 
 import java.util.concurrent.TimeUnit;
 
-public enum CachingStrategy {
+public enum CacheRetention {
     NONE(0, Duration.ZERO),
     REQUEST(100, Duration.of(3, TimeUnit.SECONDS)),
     SHORT(100L, Duration.of(30, TimeUnit.SECONDS)),
@@ -15,7 +15,7 @@ public enum CachingStrategy {
     private final long numberOfEntries;
     private final Duration duration;
 
-    CachingStrategy(long numberOfEntries, Duration duration) {
+    CacheRetention(long numberOfEntries, Duration duration) {
         this.numberOfEntries = numberOfEntries;
         this.duration = duration;
     }

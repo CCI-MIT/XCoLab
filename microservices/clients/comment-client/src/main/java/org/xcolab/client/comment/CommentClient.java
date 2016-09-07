@@ -9,7 +9,7 @@ import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CachingStrategy;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -84,7 +84,7 @@ public final class CommentClient {
                     .withCache(CacheKeys.withClass(Comment.class)
                             .withParameter("id", commentId)
                             .withParameter("includeDeleted", includeDeleted).build(),
-                            CachingStrategy.REQUEST)
+                            CacheRetention.REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CommentNotFoundException(commentId);
@@ -120,7 +120,7 @@ public final class CommentClient {
 
         try {
             return threadResource.get(threadId)
-                    .withCache(CacheKeys.of(CommentThread.class, threadId), CachingStrategy.REQUEST)
+                    .withCache(CacheKeys.of(CommentThread.class, threadId), CacheRetention.REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ThreadNotFoundException(threadId);
@@ -147,7 +147,7 @@ public final class CommentClient {
         return threadResource.<CommentThread, Date>service(threadId, "lastActivityDate", Date.class)
                 .withCache(CacheKeys.withClass(CommentThread.class)
                         .withParameter("threadId", threadId)
-                        .withParameter("date", "lastActivity").build(Date.class), CachingStrategy.REQUEST)
+                        .withParameter("date", "lastActivity").build(Date.class), CacheRetention.REQUEST)
                 .get();
     }
 
@@ -155,7 +155,7 @@ public final class CommentClient {
         return threadResource.<CommentThread, Long>service(threadId, "lastActivityAuthorId", Long.class)
                 .withCache(CacheKeys.withClass(CommentThread.class)
                         .withParameter("threadId", threadId)
-                        .withParameter("authorId", "lastActivity").build(Long.class), CachingStrategy.REQUEST)
+                        .withParameter("authorId", "lastActivity").build(Long.class), CacheRetention.REQUEST)
                 .get();
     }
 
@@ -172,7 +172,7 @@ public final class CommentClient {
     public static Category getCategory(long categoryId) throws CategoryNotFoundException {
         try {
             return categoryResource.get(categoryId)
-                    .withCache(CacheKeys.of(Category.class, categoryId), CachingStrategy.REQUEST)
+                    .withCache(CacheKeys.of(Category.class, categoryId), CacheRetention.REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryNotFoundException(categoryId);
@@ -193,7 +193,7 @@ public final class CommentClient {
             throws CategoryGroupNotFoundException {
         try {
             return categoryGroupResource.get(groupId)
-                    .withCache(CacheKeys.of(CategoryGroup.class, groupId), CachingStrategy.REQUEST)
+                    .withCache(CacheKeys.of(CategoryGroup.class, groupId), CacheRetention.REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryGroupNotFoundException(groupId);
