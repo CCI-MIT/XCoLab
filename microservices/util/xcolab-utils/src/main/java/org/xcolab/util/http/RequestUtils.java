@@ -47,28 +47,6 @@ public final class RequestUtils {
     }
 
 
-    public static <T> T getFirstFromList(UriBuilder uriBuilder,
-                                         ParameterizedTypeReference<List<T>> typeReference) throws EntityNotFoundException {
-        return getFirstFromList(uriBuilder, typeReference, null, CacheRetention.NONE);
-    }
-
-    public static <T> T getFirstFromList(final UriBuilder uriBuilder,
-            final ParameterizedTypeReference<List<T>> typeReference, CacheKey<T, T> cacheKey,
-            CacheRetention cacheRetention)
-            throws EntityNotFoundException {
-        uriBuilder.addRange(0, 1);
-        return getCached(cacheRetention, cacheKey, new Supplier<T>() {
-                    @Override
-                    public T get() {
-                        final List<T> list = getList(uriBuilder, typeReference);
-                        if (list.isEmpty()) {
-                            throw new UncheckedEntityNotFoundException();
-                        }
-                        return list.get(0);
-                    }
-                });
-    }
-
     public static <R> List<R> getList(UriBuilder uriBuilder,
                                       ParameterizedTypeReference<List<R>> typeReference) {
         return getList(uriBuilder, typeReference, null, CacheRetention.NONE);
