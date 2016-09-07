@@ -16,18 +16,36 @@ function filterContests() {
 	jQuery("#filterContestsForm").submit();
 }
 
+
 jQuery(function() {
-	jQuery("#contestFilterInput").change(filterContests).keypress(function (e) {
-		if (e.keyCode == 13) {
-			filterContests();
-			return false;
-		}
-	});
-	jQuery("#contestsFilterClear").click(function() {
-		jQuery("#contestFilterInput").val("");
-		jQuery("#filterContestsForm").submit();
-	});
+    //Try to initialize client-side code first time
+    initializeJavaScript();
+    //Try to initiliaze after timeout since portlet doesn't sometimes load
+    setTimeout(function(){
+        initializeJavaScript();
+    }, 10000);
 });
+
+function initializeJavaScript(){
+    initTooltips();
+    initializeTextEditors();
+
+    jQuery(".addpropform .helpTrigger").click(function() {
+        var trigger = jQuery(this);
+        trigger.parent().parent().find(".addprophelp").slideToggle("fast");
+    });
+
+    jQuery("#contestFilterInput").change(filterContests).keypress(function (e) {
+        if (e.keyCode == 13) {
+            filterContests();
+            return false;
+        }
+    });
+    jQuery("#contestsFilterClear").click(function() {
+        jQuery("#contestFilterInput").val("");
+        jQuery("#filterContestsForm").submit();
+    });
+}
 
 /**
  * Counts characters 
@@ -233,21 +251,6 @@ function disableDirtyCheck() {
 	}
 	delete window.onbeforeunload;
 }
-
-
-jQuery(function() {
-	jQuery(".addpropform .helpTrigger").click(function() {
-		var trigger = jQuery(this);
-		trigger.parent().parent().find(".addprophelp").slideToggle("fast");
-	});
-	
-	// tooltips
-	initTooltips();
-	
-	initializeTextEditors();
-});
-
-
 
 /* Request membership form logic */
 function clearContents(element) {
