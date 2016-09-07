@@ -42,3 +42,7 @@
 .staffmembers-list {
   line-height: 150%;
 }
+
+.descriptionContainer {
+  height: 50px;
+}

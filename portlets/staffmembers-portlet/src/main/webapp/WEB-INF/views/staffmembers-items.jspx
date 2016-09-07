@@ -19,23 +19,25 @@
         </c:choose>
 
         <li class="${liClass}">
-            <c:if test="${not empty staffMember.role}">
-                <strong class="staffmembers-role">${staffMember.role}</strong><br/>
-            </c:if>
-            <c:choose>
-                <c:when test="${displayUrl and not empty staffMember.url}">
-                    <a href="${staffMember.url}">
+            <div class="descriptionContainer">
+                <c:if test="${not empty staffMember.role}">
+                    <strong class="staffmembers-role">${staffMember.role}</strong><br/>
+                </c:if>
+                <c:choose>
+                    <c:when test="${displayUrl and not empty staffMember.url}">
+                        <a href="${staffMember.url}">
+                            ${staffMember.name}
+                        </a>
+                    </c:when>
+                    <c:otherwise>
                         ${staffMember.name}
-                    </a>
-                </c:when>
-                <c:otherwise>
-                    ${staffMember.name}
-                </c:otherwise>
-            </c:choose>
-            <br/>
-            <c:if test="${not empty staffMember.organization}">
-                <span class="staffmembers-organization">${staffMember.organization}</span><br/>
-            </c:if>
+                    </c:otherwise>
+                </c:choose>
+                <br/>
+                <c:if test="${not empty staffMember.organization}">
+                    <span class="staffmembers-organization">${staffMember.organization}</span><br/>
+                </c:if>
+            </div>
             <c:choose>
                 <c:when test="${displayPhoto and not empty staffMember.photoUrl}">
                     <img src="${staffMember.photoUrl}"/>
