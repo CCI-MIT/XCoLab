@@ -4,6 +4,7 @@
 
     <jsp:directive.include file="init.jspx"/>
     <!--@elvariable id="preferences" type="org.xcolab.portlets.contests.ContestPreferences"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
 
     <div>
         <h2> ${preferences.title} <span><a href="${preferences.allContestsUrl}">${preferences.allContestsTitle}</a></span></h2>
@@ -30,7 +31,13 @@
                 <c:if test="${preferences.showCounts}">
                     <div class="c-ContestBox__meta">
                         <div class="c-ContestBox__meta__count">
-                            <div class="prop"><strong>${contest.proposalsCount}</strong> proposals</div>
+                            <div class="prop"><strong>${contest.proposalsCount}</strong>
+                                <c:choose>
+                                    <c:when test="${contest.proposalsCount == 1}">
+                                        ${contestType.proposalNameLowercase}</c:when>
+                                    <c:otherwise> ${contestType.proposalNamePluralLowercase}</c:otherwise>
+                                </c:choose>
+                            </div>
                             <c:if test="${not contest.contestInVotingPhase}">
                                 <div class="comm"><strong> ${contest.totalCommentsCount}</strong> comments</div>
                             </c:if>

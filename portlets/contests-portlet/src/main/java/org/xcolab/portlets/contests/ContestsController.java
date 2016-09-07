@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -66,6 +67,9 @@ public class ContestsController {
 
         model.addAttribute("contests", contestWrappers);
         model.addAttribute("preferences", contestPreferences);
+        //TODO: allow setting on a per-contest/per portlet basis
+        model.addAttribute("contestType",
+                ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
         return "showContests";
     }
 }
