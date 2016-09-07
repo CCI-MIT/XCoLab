@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import java.util.Collections;
+import java.util.Comparator;
 
 @Controller
 @RequestMapping("view")
@@ -33,6 +35,13 @@ public class StaffMemberController {
         for (StaffMember staffMember : results) {
             staffMembers.add(new StaffMemberWrapper(staffMember));
         }
+
+        Collections.sort(staffMembers, new Comparator<StaffMemberWrapper>() {
+            @Override
+            public int compare(StaffMemberWrapper s1, StaffMemberWrapper s2) {
+                return s1.getSort().compareTo(s2.getSort());
+            }
+        });
 
         model.addAttribute("staffMembers", staffMembers);
 
