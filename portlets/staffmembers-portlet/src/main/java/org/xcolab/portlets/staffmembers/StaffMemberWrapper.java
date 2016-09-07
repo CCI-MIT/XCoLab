@@ -73,6 +73,14 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
+    public String getPhotoId() {
+        if(this.colabMember != null ){
+            return this.colabMember.getPortraitFileEntryId().toString();
+        } else {
+            return null;
+        }
+    }
+
     public String getUrl() {
         if (StringUtils.isBlank(staffMember.getUrl()) && colabMember != null) {
             return "/web/guest/member/-/member/userId/" + colabMember.getUserId();
