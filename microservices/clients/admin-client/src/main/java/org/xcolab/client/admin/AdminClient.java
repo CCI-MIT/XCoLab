@@ -5,6 +5,7 @@ import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -12,7 +13,7 @@ public class AdminClient {
 
     private static final RestService adminService = new RestService("admin-service");
     private static final RestResource<ConfigurationAttribute> configurationAttributeResource =
-            new RestResource<>(adminService, "attributes", ConfigurationAttribute.TYPES);
+            new RestResource1<>(adminService, "attributes", ConfigurationAttribute.TYPES);
 
     public static ConfigurationAttribute getConfigurationAttribute(String name) {
 

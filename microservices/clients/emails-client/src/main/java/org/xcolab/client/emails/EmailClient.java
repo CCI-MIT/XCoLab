@@ -3,13 +3,14 @@ package org.xcolab.client.emails;
 import org.xcolab.client.emails.pojo.Email;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.ServiceResource;
+import org.xcolab.util.http.client.ServiceResource1;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class EmailClient {
     private static final RestService emailService = new RestService("emails-service");
-    private static final ServiceResource emailResource = new ServiceResource(emailService, "emails");
+    private static final ServiceResource emailResource = new ServiceResource1(emailService, "emails");
 
     private EmailClient() {
     }

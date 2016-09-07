@@ -5,8 +5,10 @@ import org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException;
 import org.xcolab.client.sharedcolab.pojo.Member;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.ServiceResource;
+import org.xcolab.util.http.client.ServiceResource1;
 
 public class SharedColabClient {
 
@@ -18,10 +20,10 @@ public class SharedColabClient {
             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 
-    private static final RestResource<Member> partnerMemberResource = new RestResource<>(
+    private static final RestResource<Member> partnerMemberResource = new RestResource1<>(
             partnerMemberService, "members", Member.TYPES);
 
-    private static final ServiceResource sharedColabResource = new ServiceResource(
+    private static final ServiceResource sharedColabResource = new ServiceResource1(
             sharedColabService, "members");
 
     public static boolean isScreenNameUsed(String screenName) {
