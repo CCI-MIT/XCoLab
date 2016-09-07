@@ -46,13 +46,12 @@ public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
         StringBuilder result = new StringBuilder();
         if (containsPrefix(definition.getOutputName())) {
             result.append(cleanUpSchemeAndPrefix(definition.getOutputName()));
-            if (mode == Mode.DEFAULT) {
-                result.append("Table");
-            }
         } else {
-            result.append(StringUtils.toCamelCase(definition.getOutputName()));
+            result.append(definition.getOutputName());
         }
-        if (mode == Mode.RECORD) {
+        if (mode == Mode.DEFAULT) {
+            result.append("Table");
+        }else if (mode == Mode.RECORD) {
             result.append("Record");
         } else if (mode == Mode.DAO) {
             result.append("Dao");
