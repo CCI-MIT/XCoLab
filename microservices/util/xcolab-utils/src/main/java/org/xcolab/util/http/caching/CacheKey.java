@@ -21,7 +21,7 @@ public class CacheKey<T, R> {
         this.parameters = parameters;
     }
 
-    CacheKey(Class<T> elementType, Class<R> returnType, Map<String, String> parameters) {
+    private CacheKey(Class<T> elementType, Class<R> returnType, Map<String, String> parameters) {
         Assert.notNull(elementType, "Element type may not be null");
         Assert.notEmpty(parameters, "Parameters map may not be empty");
         this.elementType = elementType;
@@ -78,7 +78,7 @@ public class CacheKey<T, R> {
         }
 
         private <R> CacheKey<T, R> build(Class<R> returnType) {
-            return new CacheKey<>(elementType, parameters);
+            return new CacheKey<>(elementType, returnType, parameters);
         }
 
         public CacheKey<T, List<T>> asList() {
