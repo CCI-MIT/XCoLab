@@ -20,9 +20,6 @@
 
         <li class="${liClass}">
             <div class="descriptionContainer">
-                <c:if test="${not empty staffMember.role}">
-                    <strong class="staffmembers-role">${staffMember.role}</strong><br/>
-                </c:if>
                 <c:choose>
                     <c:when test="${displayUrl and not empty staffMember.url}">
                         <a href="${staffMember.url}">
@@ -34,6 +31,9 @@
                     </c:otherwise>
                 </c:choose>
                 <br/>
+                <c:if test="${not empty staffMember.role}">
+                    <strong class="staffmembers-role">${staffMember.role}</strong><br/>
+                </c:if>
                 <c:if test="${not empty staffMember.organization}">
                     <span class="staffmembers-organization">${staffMember.organization}</span><br/>
                 </c:if>
