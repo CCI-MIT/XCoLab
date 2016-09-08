@@ -24,7 +24,7 @@
     display: block;
     width: 200px;
     margin: 0;
-    margin-top: 1em;
+    margin-top: 2em;
     padding: 0;
   }
   li.clear-row {
@@ -41,4 +41,12 @@
 
 .staffmembers-list {
   line-height: 150%;
+}
+
+.descriptionContainer {
+  height: 50px;
+}
+
+.descriptionContainer .staffmembers-organization{
+  font-size: 9pt;
 }
