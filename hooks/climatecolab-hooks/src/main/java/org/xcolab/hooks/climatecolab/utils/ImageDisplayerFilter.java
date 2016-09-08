@@ -67,12 +67,15 @@ public class ImageDisplayerFilter implements Filter {
                 FileEntry fileEntry = FilesClient.getFileEntry(new Long(imageId));
                 String filePath = FilesClient.getFilePathFromFinalDestination(fileEntry, path);
                 if (filePath != null) {
-                    sendImageToResponse(request, response, filePath);
-                    return;
+                    //check if file exists
+                    File f = new File(filePath);
+                    if(f.exists() && !f.isDirectory()) {
+                        sendImageToResponse(request, response, filePath);
+                        return;
+                    }
                 }
-
-
             } catch (FileEntryNotFoundException ignored) {
+
             }
         }
 
@@ -88,7 +91,6 @@ public class ImageDisplayerFilter implements Filter {
             }
             sendImageToResponse(request, response, pathToFailOverImage);
             return;
-
         }
         try {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -124,7 +126,6 @@ public class ImageDisplayerFilter implements Filter {
             in.close();
             return;
         } catch (IOException ignored) {
-
         }
         try{
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
