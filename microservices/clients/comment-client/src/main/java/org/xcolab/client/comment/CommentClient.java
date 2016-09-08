@@ -3,6 +3,7 @@ package org.xcolab.client.comment;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
+import org.xcolab.client.comment.exceptions.LastActivityNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
@@ -144,19 +145,29 @@ public final class CommentClient {
     }
 
     public static Date getLastActivityDate(long threadId) {
-        return threadResource.<CommentThread, Date>service(threadId, "lastActivityDate", Date.class)
-                .withCache(CacheKeys.withClass(CommentThread.class)
-                        .withParameter("threadId", threadId)
-                        .withParameter("date", "lastActivity").build(Date.class), CacheRetention.REQUEST)
-                .get();
+        try {
+            return threadResource.<CommentThread, Date>service(threadId, "lastActivityDate", Date.class)
+                    .withCache(CacheKeys.withClass(CommentThread.class)
+                            .withParameter("threadId", threadId)
+                            .withParameter("date", "lastActivity")
+                            .build(Date.class), CacheRetention.REQUEST)
+                    .getChecked();
+        } catch (EntityNotFoundException e) {
+           throw new LastActivityNotFoundException(threadId);
+        }
     }
 
     public static long getLastActivityAuthorId(long threadId) {
-        return threadResource.<CommentThread, Long>service(threadId, "lastActivityAuthorId", Long.class)
-                .withCache(CacheKeys.withClass(CommentThread.class)
-                        .withParameter("threadId", threadId)
-                        .withParameter("authorId", "lastActivity").build(Long.class), CacheRetention.REQUEST)
-                .get();
+        try {
+            return threadResource.<CommentThread, Long>service(threadId, "lastActivityAuthorId", Long.class)
+                    .withCache(CacheKeys.withClass(CommentThread.class)
+                            .withParameter("threadId", threadId)
+                            .withParameter("author", "lastActivity")
+                            .build(Long.class), CacheRetention.REQUEST)
+                    .getChecked();
+        } catch (EntityNotFoundException e) {
+            throw new LastActivityNotFoundException(threadId);
+        }
     }
 
     //    Category methods
