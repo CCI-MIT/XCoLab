@@ -43,7 +43,7 @@
                     <img src="${staffMember.photoUrl}"/>
                 </c:when>
                 <c:when test="${displayPhoto and not empty staffMember.photoId}">
-                    <img src="http://climatecolab.org/image/user_male_portrait?img_id=${staffMember.photoId}"/>
+                    <img src="/image/user_male_portrait?img_id=${staffMember.photoId}"/>
                 </c:when>
                 <c:when test="${displayPhoto and empty staffMember.photoUrl}">
                     <img src="/image/user_male_portrait" />
