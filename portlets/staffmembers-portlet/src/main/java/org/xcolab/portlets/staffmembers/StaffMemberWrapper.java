@@ -57,6 +57,14 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
+    public Integer getSort() {
+        if(this.staffMember.getSort() != null){
+            return this.staffMember.getSort();
+        } else {
+            return 0;
+        }
+    }
+
     public String getPhotoUrl() {
         if (this.staffMember.getPhotoUrl() != null && !this.staffMember.getPhotoUrl().isEmpty()) {
             return this.staffMember.getPhotoUrl();
