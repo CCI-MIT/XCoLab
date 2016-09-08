@@ -81,9 +81,9 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
-    public String getPhotoId() {
+    public Long getPhotoId() {
         if(this.colabMember != null ){
-            return this.colabMember.getPortraitFileEntryId().toString();
+            return this.colabMember.getPortraitFileEntryId();
         } else {
             return null;
         }
