@@ -9,8 +9,8 @@ from dual
 where not exists (SELECT 1 FROM xcolab_StaffMember WHERE userId = @lukasId);
 
 set @klemensId = (select u.userId
-from xcolab.User_ u where screenName='kmang');
-delete from xcolab.xcolab_StaffMember
+from User_ u where screenName='kmang');
+delete from xcolab_StaffMember
 where userId=@klemensId;
 
 --COLAB-1372
