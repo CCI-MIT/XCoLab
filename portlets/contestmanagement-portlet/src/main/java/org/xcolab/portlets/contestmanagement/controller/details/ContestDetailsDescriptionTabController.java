@@ -1,16 +1,5 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
-
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +9,16 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ext.portlet.model.PlanTemplate;
+import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -32,7 +31,6 @@ import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.emailnotification.contest.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
@@ -47,10 +45,6 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.validation.Valid;
-
-/**
- * Created by Thomas on 2/6/2015.
- */
 
 @Controller
 @RequestMapping("view")

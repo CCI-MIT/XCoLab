@@ -5,27 +5,33 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.ContestPhaseType;
 import org.xcolab.model.tables.records.ContestPhaseRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-import static org.xcolab.model.Tables.CONTEST;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 
 @Repository
 public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ContestPhaseDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext, "DSLContext bean is required");
+        this.dslContext = dslContext;
+    }
 
-
+    @Override
     public ContestPhase create(ContestPhase contestPhase) {
 
-        ContestPhaseRecord ret = this.dslContext.insertInto(CONTEST_PHASE)
+        ContestPhaseRecord record = this.dslContext.insertInto(CONTEST_PHASE)
                 .set(CONTEST_PHASE.CONTEST_PK, contestPhase.getContestPK())
                 .set(CONTEST_PHASE.CONTEST_PHASE_TYPE, contestPhase.getContestPhaseType())
                 .set(CONTEST_PHASE.CONTEST_SCHEDULE_ID, contestPhase.getContestScheduleId())
@@ -43,16 +49,15 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .set(CONTEST_PHASE.AUTHOR_ID, contestPhase.getAuthorId())
                 .returning(CONTEST_PHASE.CONTEST_PHASE_PK)
                 .fetchOne();
-        if (ret != null) {
-            contestPhase.setContestPhasePK(ret.getValue(CONTEST_PHASE.CONTEST_PHASE_PK));
-            return contestPhase;
+        if (record == null) {
+            throw new IllegalStateException("Could not retrieve inserted id");
         } else {
-            return null;
+            contestPhase.setContestPhasePK(record.getValue(CONTEST_PHASE.CONTEST_PHASE_PK));
+            return contestPhase;
         }
-
     }
 
-
+    @Override
     public boolean update(ContestPhase contestPhase) {
         return dslContext.update(CONTEST_PHASE)
                 .set(CONTEST_PHASE.CONTEST_PK, contestPhase.getContestPK())
@@ -75,10 +80,11 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
 
-    public int delete(Long contestPhasePK) {
+    @Override
+    public boolean delete(Long contestPhasePK) {
         return dslContext.deleteFrom(CONTEST_PHASE)
                 .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
-                .execute();
+                .execute() > 0;
     }
     /*
     ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest
@@ -86,6 +92,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     ContestPhaseLocalServiceUtil.getPhasesForContest
     */
 
+    @Override
     public List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_PHASE).getQuery();
@@ -95,12 +102,13 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
         }
         if (contestScheduleId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
-            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(0l));
+            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(0L));
         }
         query.addOrderBy(CONTEST_PHASE.PHASE_START_DATE.asc());
         return query.fetchInto(ContestPhase.class);
     }
 
+    @Override
     public boolean isPhaseActive(ContestPhase contestPhase) {
         if (contestPhase.getPhaseActiveOverride() != null) {
             if(contestPhase.getPhaseActiveOverride()) {
@@ -123,17 +131,25 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
     //ContestPhaseLocalServiceUtil.getContestPhase
-    public ContestPhase get(Long contestPhasePK) throws NotFoundException {
+    @Override
+    public Optional<ContestPhase> get(Long contestPhasePK) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(CONTEST_PHASE)
                 .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ContestPhase with id " + contestPhasePK + " does not exist");
+            return Optional.empty();
         }
-        return record.into(ContestPhase.class);
+        return Optional.of(record.into(ContestPhase.class));
+    }
 
+    @Override
+    public boolean exists(Long contestPhasePK) {
+        return dslContext.selectCount()
+                .from(CONTEST_PHASE)
+                .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
+                .fetchOne().into(Integer.class) > 0;
     }
 
 }

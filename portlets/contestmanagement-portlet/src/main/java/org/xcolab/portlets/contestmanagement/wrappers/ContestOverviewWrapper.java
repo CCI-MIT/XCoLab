@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
@@ -23,9 +22,6 @@ import java.util.List;
 
 import javax.portlet.PortletRequest;
 
-/**
- * Created by Thomas on 3/3/2015.
- */
 public class ContestOverviewWrapper {
 
     private List<BaseContestWrapper> contestWrappers;

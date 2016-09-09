@@ -4,13 +4,16 @@ import org.xcolab.model.tables.pojos.ContestTeamMember;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContestTeamMemberDao {
-    int delete(Long id_);
+    boolean delete(Long id_);
 
     ContestTeamMember create(ContestTeamMember contestTeamMember);
 
-    ContestTeamMember get(Long id_) throws NotFoundException;
+    Optional<ContestTeamMember> get(Long id_) throws NotFoundException;
+
+    boolean exists(Long id_);
 
     boolean update(ContestTeamMember contestTeamMember);
 

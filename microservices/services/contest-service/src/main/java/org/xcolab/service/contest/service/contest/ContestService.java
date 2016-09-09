@@ -2,6 +2,7 @@ package org.xcolab.service.contest.service.contest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestPhaseType;
@@ -13,6 +14,8 @@ import org.xcolab.service.contest.service.ontology.OntologyService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ContestService {
@@ -25,10 +28,9 @@ public class ContestService {
 
     private final OntologyService ontologyService;
 
-
-
     @Autowired
-    public ContestService(ContestDao contestDao, ContestPhaseDao contestPhaseDao, ContestPhaseTypeDao contestPhaseTypeDao, OntologyService ontologyService) {
+    public ContestService(ContestDao contestDao, ContestPhaseDao contestPhaseDao,
+            ContestPhaseTypeDao contestPhaseTypeDao, OntologyService ontologyService) {
 
         this.contestDao = contestDao;
         this.contestPhaseDao = contestPhaseDao;
@@ -40,9 +42,7 @@ public class ContestService {
         return this.contestPhaseDao.findByGiven(contestId, null);
     }
 
-
-
-    public ContestPhase getActiveOrLastPhase(Long contestId){
+    public ContestPhase getActiveOrLastPhase(Long contestId) {
         ContestPhase lastPhase = null;
         for (ContestPhase phase : getAllContestPhases(contestId)) {
             if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) {
@@ -56,21 +56,16 @@ public class ContestService {
     }
 
     public List<ContestPhase> getVisiblePhases(Long contestId) {
-        List<ContestPhase> visiblePhases = new ArrayList<>();
-        for (ContestPhase phase : getAllContestPhases(contestId)) {
-            try {
-                ContestPhaseType phaseType = contestPhaseTypeDao.get(phase.getContestPhaseType());
-                if (!phaseType.getInvisible()) {
-                    visiblePhases.add(phase);
-                }
-            }catch (NotFoundException ignored){
-            }
-
-        }
-        return visiblePhases;
+        return getAllContestPhases(contestId).stream()
+                .filter(contestPhase -> {
+                    final Optional<ContestPhaseType> contestPhaseType = contestPhaseTypeDao
+                            .get(contestPhase.getContestPhaseType());
+                    return contestPhaseType.isPresent() && contestPhaseType.get().getInvisible();
+                })
+                .collect(Collectors.toList());
     }
 
-    public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId){
+    public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
         try {
             Contest contest = contestDao.get(contestId);
             long focusAreaId = contest.getFocusAreaId();
@@ -83,7 +78,7 @@ public class ContestService {
             return contestDao.findByGiven(null, null, null, null, contestTier, focusAreaOntologyTerms, null, null);
 
 
-        }catch (NotFoundException ignored){
+        } catch (NotFoundException ignored) {
             return new ArrayList<>();
         }
     }

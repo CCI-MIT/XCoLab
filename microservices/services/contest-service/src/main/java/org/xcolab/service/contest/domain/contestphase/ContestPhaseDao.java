@@ -5,6 +5,7 @@ import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContestPhaseDao {
 
@@ -12,11 +13,13 @@ public interface ContestPhaseDao {
 
     boolean update(ContestPhase contestPhase);
 
-    int delete(Long contestPhasePK);
+    boolean delete(Long contestPhasePK);
 
     List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId);
 
-    ContestPhase get(Long contestPhasePK) throws NotFoundException;
+    Optional<ContestPhase> get(Long contestPhasePK) throws NotFoundException;
+
+    boolean exists(Long contestPhasePK);
 
     boolean isPhaseActive(ContestPhase contestPhase);
 }

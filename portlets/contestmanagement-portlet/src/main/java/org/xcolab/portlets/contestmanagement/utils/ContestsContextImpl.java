@@ -1,22 +1,20 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import org.springframework.stereotype.Component;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.springframework.stereotype.Component;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabPermissions;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.wrappers.BaseContestWrapper;
 

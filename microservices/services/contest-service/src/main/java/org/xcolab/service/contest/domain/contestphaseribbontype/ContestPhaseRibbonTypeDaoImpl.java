@@ -5,30 +5,38 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE_RIBBON_TYPE;
 
 @Repository
 public class ContestPhaseRibbonTypeDaoImpl implements ContestPhaseRibbonTypeDao{
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ContestPhaseRibbonTypeDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext, "DSLContext bean is required");
+        this.dslContext = dslContext;
+    }
 
-    public ContestPhaseRibbonType get(Long id_) throws NotFoundException {
+    @Override
+    public Optional<ContestPhaseRibbonType> get(Long id_) throws NotFoundException {
 
-        final Record record =  this.dslContext.selectFrom(CONTEST_PHASE_RIBBON_TYPE)
+        final Record record =  dslContext.selectFrom(CONTEST_PHASE_RIBBON_TYPE)
                 .where(CONTEST_PHASE_RIBBON_TYPE.ID_.eq(id_))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ContestPhaseRibbonType with id " + id_ + " does not exist");
+            return Optional.empty();
         }
-        return record.into(ContestPhaseRibbonType.class);
-
+        return Optional.of(record.into(ContestPhaseRibbonType.class));
     }
 
     @Override

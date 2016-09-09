@@ -1,13 +1,12 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -16,7 +15,6 @@ import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.wrapper.TabWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
 
@@ -24,10 +22,10 @@ import java.util.List;
 
 import javax.portlet.PortletRequest;
 
-
 public abstract class ContestDetailsBaseTabController extends BaseTabController {
 
     private final static Log _log = LogFactoryUtil.getLog(ContestDetailsBaseTabController.class);
+
     private Contest contest;
     private BaseContestWrapper contestWrapper;
     protected TabWrapper tabWrapper;

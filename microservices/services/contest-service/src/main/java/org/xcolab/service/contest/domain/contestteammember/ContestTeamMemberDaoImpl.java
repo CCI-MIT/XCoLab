@@ -5,19 +5,29 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import org.xcolab.model.tables.pojos.ContestTeamMember;
 import org.xcolab.model.tables.records.ContestTeamMemberRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
 
 @Repository
 public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
-    @Autowired
-    private DSLContext dslContext;
 
+    private final DSLContext dslContext;
+
+    @Autowired
+    public ContestTeamMemberDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext, "DSLContext bean is required");
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public ContestTeamMember create(ContestTeamMember contestTeamMember) {
 
         ContestTeamMemberRecord ret = this.dslContext.insertInto(CONTEST_TEAM_MEMBER)
@@ -26,28 +36,36 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
                 .set(CONTEST_TEAM_MEMBER.ROLE_ID, contestTeamMember.getRoleId())
                 .returning(CONTEST_TEAM_MEMBER.ID_)
                 .fetchOne();
-        if (ret != null) {
-            contestTeamMember.setId_(ret.getValue(CONTEST_TEAM_MEMBER.ID_));
-            return contestTeamMember;
-        } else {
-            return null;
+        if (ret == null) {
+            throw new IllegalStateException("Could not retrieve inserted id");
         }
-
+        contestTeamMember.setId_(ret.getValue(CONTEST_TEAM_MEMBER.ID_));
+        return contestTeamMember;
     }
 
-    public ContestTeamMember get(Long id_) throws NotFoundException{
+    @Override
+    public Optional<ContestTeamMember> get(Long id_) throws NotFoundException{
 
         final Record record =  this.dslContext.selectFrom(CONTEST_TEAM_MEMBER)
                 .where(CONTEST_TEAM_MEMBER.ID_.eq(id_))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ContestTeamMember with id " + id_ + " does not exist");
+            return Optional.empty();
         }
-        return record.into(ContestTeamMember.class);
+        return Optional.of(record.into(ContestTeamMember.class));
 
     }
 
+    @Override
+    public boolean exists(Long id_) {
+        return dslContext.selectCount()
+                .from(CONTEST_TEAM_MEMBER)
+                .where(CONTEST_TEAM_MEMBER.ID_.eq(id_))
+                .fetchOne().into(Integer.class) > 0;
+    }
+
+    @Override
     public boolean update(ContestTeamMember contestTeamMember) {
         return dslContext.update(CONTEST_TEAM_MEMBER)
                 .set(CONTEST_TEAM_MEMBER.CONTEST_ID, contestTeamMember.getContestId())
@@ -69,9 +87,9 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public int delete(Long id_) {
+    public boolean delete(Long id_) {
         return dslContext.deleteFrom(CONTEST_TEAM_MEMBER)
                 .where(CONTEST_TEAM_MEMBER.ID_.eq(id_))
-                .execute();
+                .execute() > 0;
     }
 }

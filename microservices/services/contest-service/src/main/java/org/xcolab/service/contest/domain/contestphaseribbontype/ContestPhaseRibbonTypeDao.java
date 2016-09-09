@@ -4,8 +4,9 @@ import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContestPhaseRibbonTypeDao {
     List<ContestPhaseRibbonType> findByGiven();
-    ContestPhaseRibbonType get(Long id_) throws NotFoundException ;
+    Optional<ContestPhaseRibbonType> get(Long id_) throws NotFoundException ;
 }

@@ -4,16 +4,19 @@ import org.xcolab.model.tables.pojos.ContestSchedule;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContestScheduleDao {
 
     ContestSchedule create(ContestSchedule contestSchedule);
 
-    ContestSchedule get(Long id_) throws NotFoundException;
+    Optional<ContestSchedule> get(Long id_) throws NotFoundException;
+
+    boolean exists(Long id_);
 
     boolean update(ContestSchedule contestSchedule);
 
     List<ContestSchedule> findByGiven();
 
-    int delete(Long id_);
+    boolean delete(Long id_);
 }

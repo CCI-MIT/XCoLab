@@ -2,9 +2,25 @@ package org.xcolab.service.contest.web;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.model.tables.pojos.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
+import org.xcolab.model.tables.pojos.ContestPhaseType;
+import org.xcolab.model.tables.pojos.ContestSchedule;
+import org.xcolab.model.tables.pojos.ContestTeamMember;
+import org.xcolab.model.tables.pojos.ContestTeamMemberRole;
+import org.xcolab.model.tables.pojos.ContestType;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
@@ -16,13 +32,10 @@ import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class ContestController {
-
-    private static final int DEFAULT_PAGE_SIZE = 20;
 
     @Autowired
     private ContestService contestService;
@@ -74,12 +87,12 @@ public class ContestController {
         return contestService.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
     }
 
-    @RequestMapping(value = "/contests", method = RequestMethod.POST)
+    @PostMapping(value = "/contests")
     public Contest createContest(@RequestBody Contest contest) {
         return this.contestDao.create(contest);
     }
 
-    @RequestMapping(value = "/contests/{contestPK}", method = RequestMethod.PUT)
+    @PutMapping(value = "/contests/{contestPK}")
     public boolean updateContest(@RequestBody Contest contest,
                                  @PathVariable("contestPK") Long contestPK) throws NotFoundException {
 
@@ -90,8 +103,7 @@ public class ContestController {
         }
     }
 
-
-    @RequestMapping(value = "/contests/{contestId}/activePhase", method = RequestMethod.GET)
+    @GetMapping(value = "/contests/{contestId}/activePhase")
     public ContestPhase getActivePhaseForContest(@PathVariable long contestId) throws NotFoundException {
 
         ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
@@ -102,40 +114,32 @@ public class ContestController {
 
     }
 
-
-    @RequestMapping(value = "/contests/{contestId}", method = RequestMethod.GET)
+    @GetMapping(value = "/contests/{contestId}")
     public Contest getContest(@PathVariable long contestId) throws NotFoundException {
         return contestDao.get(contestId);
     }
 
-    @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET})
+    @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestPK,
                                                @RequestParam(required = false) Long contestScheduleId) {
         return contestPhaseDao.findByGiven(contestPK, contestScheduleId);
     }
 
-    @RequestMapping(value = "/contestTypes/{contestTypeId}", method = RequestMethod.GET)
-    public ContestType getContestType(@PathVariable("contestTypeId") Long contestTypeId) throws NotFoundException {
-        if (contestTypeId == null) {
-            throw new NotFoundException("No contestTypeId given");
-        } else {
-            return contestTypeDao.get(contestTypeId);
-        }
+    @GetMapping(value = "/contestTypes/{contestTypeId}")
+    public ContestType getContestType(@PathVariable long contestTypeId) throws NotFoundException {
+        return contestTypeDao.get(contestTypeId).orElseThrow(NotFoundException::new);
     }
 
     @RequestMapping(value = "/contestTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestType> getContestTypes(
-    ) {
+    public List<ContestType> getContestTypes() {
         return contestTypeDao.findByGiven();
     }
 
-    @RequestMapping(value = "/contestPhaseRibbonTypes/{contestPhaseRibbonTypeId}", method = RequestMethod.GET)
-    public ContestPhaseRibbonType getContestPhaseRibbonType(@PathVariable("contestPhaseRibbonTypeId") Long contestPhaseRibbonTypeId) throws NotFoundException {
-        if (contestPhaseRibbonTypeId == null || contestPhaseRibbonTypeId == 0) {
-            throw new NotFoundException("No contestPhaseRibbonTypeId given");
-        } else {
-            return contestPhaseRibbonTypeDao.get(contestPhaseRibbonTypeId);
-        }
+    @GetMapping(value = "/contestPhaseRibbonTypes/{contestPhaseRibbonTypeId}")
+    public ContestPhaseRibbonType getContestPhaseRibbonType(@PathVariable long contestPhaseRibbonTypeId)
+            throws NotFoundException {
+        return contestPhaseRibbonTypeDao.get(contestPhaseRibbonTypeId)
+                .orElseThrow(NotFoundException::new);
     }
 
     @RequestMapping(value = "/contestPhaseRibbonTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -144,21 +148,18 @@ public class ContestController {
         return contestPhaseRibbonTypeDao.findByGiven();
     }
 
-    @RequestMapping(value = "/contestTeamMembers", method = RequestMethod.POST)
+    @PostMapping(value = "/contestTeamMembers")
     public ContestTeamMember createContestTeamMember(@RequestBody ContestTeamMember contestTeamMember) {
         return this.contestTeamMemberDao.create(contestTeamMember);
     }
 
-    @RequestMapping(value = "/contestTeamMembers/{contestTeamMemberId}", method = RequestMethod.GET)
+    @GetMapping(value = "/contestTeamMembers/{contestTeamMemberId}")
     public ContestTeamMember getContestTeamMember(@PathVariable("contestTeamMemberId") Long contestTeamMemberId) throws NotFoundException {
-        if (contestTeamMemberId == null || contestTeamMemberId == 0) {
-            throw new NotFoundException("No contestTeamMemberId given");
-        } else {
-            return contestTeamMemberDao.get(contestTeamMemberId);
-        }
+        return contestTeamMemberDao.get(contestTeamMemberId)
+                .orElseThrow(NotFoundException::new);
     }
 
-    @RequestMapping(value = "/contestTeamMembers/{id_}", method = RequestMethod.PUT)
+    @PutMapping(value = "/contestTeamMembers/{id_}")
     public boolean updateContestTeamMember(@RequestBody ContestTeamMember contestTeamMember,
                                            @PathVariable("id_") Long id_) throws NotFoundException {
 
@@ -176,55 +177,43 @@ public class ContestController {
         return contestTeamMemberDao.findByGiven(contestId);
     }
 
-    @RequestMapping(value = "/contestTeamMembers/{id_}", method = RequestMethod.DELETE)
-    public String deleteContestTeamMember(@PathVariable("id_") Long id_)
+    @DeleteMapping(value = "/contestTeamMembers/{id_}")
+    public boolean deleteContestTeamMember(@PathVariable long id_)
             throws NotFoundException {
-
-        if (id_ == null || id_ == 0) {
+        if (contestTeamMemberDao.exists(id_)) {
+            return contestTeamMemberDao.delete(id_);
+        } else {
             throw new NotFoundException("No ContestTeamMember with id given");
-        } else {
-            ContestTeamMember contestTeamMember = this.contestTeamMemberDao.get(id_);
-            if (contestTeamMember != null) {
-                this.contestTeamMemberDao.delete(contestTeamMember.getId_());
-                return "ContestTeamMember deleted successfully";
-            } else {
-                throw new NotFoundException("No ContestTeamMember with id given");
-            }
         }
     }
 
-    @RequestMapping(value = "/contestTeamMemberRoles/{contestTeamMemberRoleId}", method = RequestMethod.GET)
-    public ContestTeamMemberRole getContestTeamMemberRole(@PathVariable("contestTeamMemberRoleId") Long contestTeamMemberRoleId) throws NotFoundException {
-        if (contestTeamMemberRoleId == null || contestTeamMemberRoleId == 0) {
-            throw new NotFoundException("No contestTeamMemberRoleId given");
-        } else {
-            return contestTeamMemberRoleDao.get(contestTeamMemberRoleId);
-        }
+    @GetMapping(value = "/contestTeamMemberRoles/{contestTeamMemberRoleId}")
+    public ContestTeamMemberRole getContestTeamMemberRole(@PathVariable long contestTeamMemberRoleId)
+            throws NotFoundException {
+        return contestTeamMemberRoleDao.get(contestTeamMemberRoleId)
+                .orElseThrow(NotFoundException::new);
     }
 
 
-    @RequestMapping(value = "/contestSchedules", method = RequestMethod.POST)
+    @PostMapping(value = "/contestSchedules")
     public ContestSchedule createContestSchedule(@RequestBody ContestSchedule contestSchedule) {
         return this.contestScheduleDao.create(contestSchedule);
     }
 
-    @RequestMapping(value = "/contestSchedules/{contestScheduleId}", method = RequestMethod.GET)
-    public ContestSchedule getContestSchedule(@PathVariable("contestScheduleId") Long contestScheduleId) throws NotFoundException {
-        if (contestScheduleId == null || contestScheduleId == 0) {
-            throw new NotFoundException("No contestScheduleId given");
-        } else {
-            return contestScheduleDao.get(contestScheduleId);
-        }
+    @GetMapping(value = "/contestSchedules/{contestScheduleId}")
+    public ContestSchedule getContestSchedule(@PathVariable long contestScheduleId)
+            throws NotFoundException {
+        return contestScheduleDao.get(contestScheduleId).orElseThrow(NotFoundException::new);
     }
 
-    @RequestMapping(value = "/contestSchedules/{id_}", method = RequestMethod.PUT)
+    @PutMapping(value = "/contestSchedules/{id_}")
     public boolean updateContestSchedule(@RequestBody ContestSchedule contestSchedule,
-                                         @PathVariable("id_") Long id_) throws NotFoundException {
+                                         @PathVariable long id_) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || contestScheduleDao.get(id_) == null) {
-            throw new NotFoundException("No ContestSchedule with id " + id_);
-        } else {
+        if (contestScheduleDao.exists(id_)) {
             return contestScheduleDao.update(contestSchedule);
+        } else {
+            throw new NotFoundException("No ContestSchedule with id " + id_);
         }
     }
 
@@ -233,75 +222,54 @@ public class ContestController {
         return contestScheduleDao.findByGiven();
     }
 
-    @RequestMapping(value = "/contestSchedules/{id_}", method = RequestMethod.DELETE)
-    public String deleteContestSchedule(@PathVariable("id_") Long id_)
+    @DeleteMapping(value = "/contestSchedules/{id_}")
+    public boolean deleteContestSchedule(@PathVariable long id_)
             throws NotFoundException {
+        if (contestScheduleDao.exists(id_)) {
+            return contestScheduleDao.delete(id_);
 
-        if (id_ == null || id_ == 0) {
-            throw new NotFoundException("No ContestSchedule with id given");
-        } else {
-            ContestSchedule contestSchedule = this.contestScheduleDao.get(id_);
-            if (contestSchedule != null) {
-                this.contestScheduleDao.delete(contestSchedule.getId_());
-                return "ContestSchedule deleted successfully";
-            } else {
-                throw new NotFoundException("No ContestSchedule with id given");
-            }
         }
+        throw new NotFoundException();
     }
 
-    @RequestMapping(value = "/contestPhases/{contestPhaseId}", method = RequestMethod.GET)
-    public ContestPhase getContestPhase(@PathVariable("contestPhaseId") Long contestPhaseId) throws NotFoundException {
-        if (contestPhaseId == null || contestPhaseId == 0) {
-            throw new NotFoundException("No contestPhaseId given");
-        } else {
-            return contestPhaseDao.get(contestPhaseId);
-        }
+    @GetMapping(value = "/contestPhases/{contestPhaseId}")
+    public ContestPhase getContestPhase(@PathVariable long contestPhaseId)
+            throws NotFoundException {
+        return contestPhaseDao.get(contestPhaseId).orElseThrow(NotFoundException::new);
     }
-    @RequestMapping(value = "/contestPhases", method = RequestMethod.POST)
+    @PostMapping(value = "/contestPhases")
     public ContestPhase createContestPhase(@RequestBody ContestPhase contestPhase) {
         return this.contestPhaseDao.create(contestPhase);
     }
-    @RequestMapping(value = "/contestPhases/{contestPhasePK}", method = RequestMethod.PUT)
-    public boolean updateContestPhase(@RequestBody ContestPhase contestPhase,
-                                      @PathVariable("contestPhasePK") Long contestPhasePK) throws NotFoundException {
+    @PutMapping(value = "/contestPhases/{contestPhasePK}")
+    public boolean updateContestPhase(@PathVariable long contestPhasePK,
+                                @RequestBody ContestPhase contestPhase) throws NotFoundException {
 
-        if (contestPhasePK == null || contestPhasePK == 0 || contestPhaseDao.get(contestPhasePK) == null) {
-            throw new NotFoundException("No ContestPhase with id " + contestPhasePK);
-        } else {
+        if (contestPhaseDao.exists(contestPhasePK)) {
             return contestPhaseDao.update(contestPhase);
+        } else {
+            throw new NotFoundException("No ContestPhase with id " + contestPhasePK);
         }
     }
-    @RequestMapping(value = "/contestPhases/{contestPhasePK}", method = RequestMethod.DELETE)
-    public String deleteContestPhase(@PathVariable("contestPhasePK") Long contestPhasePK)
+
+    @DeleteMapping(value = "/contestPhases/{contestPhasePK}")
+    public boolean deleteContestPhase(@PathVariable long contestPhasePK)
             throws NotFoundException {
-
-        if (contestPhasePK == null || contestPhasePK == 0) {
-            throw new NotFoundException("No ContestPhase with id given");
-        } else {
-            ContestPhase contestPhase = this.contestPhaseDao.get(contestPhasePK);
-            if (contestPhase != null) {
-                this.contestPhaseDao.delete(contestPhase.getContestPhasePK());
-                return "ContestPhase deleted successfully";
-            } else {
-                throw new NotFoundException("No ContestPhase with id given");
-            }
+        if (contestPhaseDao.exists(contestPhasePK)) {
+            return contestPhaseDao.delete(contestPhasePK);
         }
+        throw new NotFoundException();
     }
 
-    @RequestMapping(value = "/contestPhaseTypes/{contestPhaseTypeId}", method = RequestMethod.GET)
-    public ContestPhaseType getContestPhaseType(@PathVariable("contestPhaseTypeId") Long contestPhaseTypeId) throws NotFoundException {
-        if (contestPhaseTypeId == null || contestPhaseTypeId == 0) {
-            throw new NotFoundException("No contestPhaseTypeId given");
-        } else {
-            return contestPhaseTypeDao.get(contestPhaseTypeId);
-        }
+    @GetMapping(value = "/contestPhaseTypes/{contestPhaseTypeId}")
+    public ContestPhaseType getContestPhaseType(@PathVariable long contestPhaseTypeId)
+            throws NotFoundException {
+        return contestPhaseTypeDao.get(contestPhaseTypeId)
+                .orElseThrow(NotFoundException::new);
     }
     @RequestMapping(value = "/contestPhaseTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestPhaseType> getContestPhaseTypes(
-    ) {
+    public List<ContestPhaseType> getContestPhaseTypes() {
         return contestPhaseTypeDao.findByGiven();
     }
-
 
 }

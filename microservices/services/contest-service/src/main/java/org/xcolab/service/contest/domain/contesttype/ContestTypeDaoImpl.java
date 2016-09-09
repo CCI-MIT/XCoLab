@@ -5,31 +5,36 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import org.xcolab.model.tables.pojos.ContestType;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONTEST_TYPE;
 
 @Repository
 public class ContestTypeDaoImpl implements ContestTypeDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ContestTypeDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext, "DSLContext bean is required");
+        this.dslContext = dslContext;
+    }
 
     @Override
-    public ContestType get(Long id_) throws NotFoundException {
-
+    public Optional<ContestType> get(Long id_) {
         final Record record = this.dslContext.selectFrom(CONTEST_TYPE)
                 .where(CONTEST_TYPE.ID_.eq(id_))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ContestType with id " + id_ + " does not exist");
+            return Optional.empty();
         }
-        return record.into(ContestType.class);
-
+        return Optional.of(record.into(ContestType.class));
     }
 
     @Override
@@ -39,6 +44,5 @@ public class ContestTypeDaoImpl implements ContestTypeDao {
 
         return query.fetchInto(ContestType.class);
     }
-
 
 }

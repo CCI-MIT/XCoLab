@@ -8,9 +8,6 @@ import org.xcolab.interfaces.TabPermissions;
 
 import javax.portlet.PortletRequest;
 
-/**
- * Created by Thomas on 2/9/2015.
- */
 public enum ContestDetailsTabs implements TabEnum {
     DESCRIPTION("Homepage", "description", TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),

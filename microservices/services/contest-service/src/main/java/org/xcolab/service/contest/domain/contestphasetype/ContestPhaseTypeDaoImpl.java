@@ -5,11 +5,12 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ContestPhaseType;
 import org.xcolab.model.tables.records.ContestPhaseTypeRecord;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE_TYPE;
 
@@ -42,17 +43,16 @@ public class ContestPhaseTypeDaoImpl implements ContestPhaseTypeDao{
 
     }
     @Override
-    public ContestPhaseType get(Long id_) throws NotFoundException{
+    public Optional<ContestPhaseType> get(Long id_) {
 
         final Record record =  this.dslContext.selectFrom(CONTEST_PHASE_TYPE)
                 .where(CONTEST_PHASE_TYPE.ID_.eq(id_))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ContestPhaseType with id " + id_ + " does not exist");
+            return Optional.empty();
         }
-        return record.into(ContestPhaseType.class);
-
+        return Optional.of(record.into(ContestPhaseType.class));
     }
 
     @Override
