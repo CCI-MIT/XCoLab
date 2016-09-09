@@ -49,7 +49,7 @@ public final class TrackingClient {
         return locationResource.list()
                 .queryParam("ipAddress", ipAddress)
                 .withCache(CacheKeys.withClass(Location.class)
-                .withParameter("ipAddress", ipAddress).asList(), CacheRetention.MEDIUM)
+                .withParameter("ipAddress", ipAddress).asList(), CacheRetention.RUNTIME)
                 .executeWithResult().getOneIfExists();
     }
 }
