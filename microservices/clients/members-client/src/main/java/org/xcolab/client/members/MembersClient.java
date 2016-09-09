@@ -104,7 +104,7 @@ public final class MembersClient {
         return memberResource.getSubRestResource(memberId, "roles", Role_.TYPES)
                 .list()
                 .withCache(CacheKeys.withClass(Role_.class)
-                        .withParameter("memberId", memberId).asList(), CacheRetention.REQUEST)
+                        .withParameter("memberId", memberId).asList(), CacheRetention.MEDIUM)
                 .execute();
     }
 
@@ -115,15 +115,14 @@ public final class MembersClient {
                 .withCache(CacheKeys.withClass(Role_.class)
                                 .withParameter("memberId", memberId)
                                 .withParameter("contestId", contestId).asList(),
-                        CacheRetention.REQUEST)
+                        CacheRetention.SHORT)
                 .execute();
     }
 
     public static MemberCategory getMemberCategory(long roleId) {
         try {
             return memberCategoryResource.get(roleId)
-                    .withCache(CacheKeys.withClass(MemberCategory.class)
-                                    .withParameter("roleId", roleId).build(),
+                    .withCache(CacheKeys.of(MemberCategory.class, roleId),
                             CacheRetention.MEDIUM).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MemberCategoryNotFoundException("Category with role id " + roleId + " not found.");

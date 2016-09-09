@@ -183,7 +183,7 @@ public final class CommentClient {
     public static Category getCategory(long categoryId) throws CategoryNotFoundException {
         try {
             return categoryResource.get(categoryId)
-                    .withCache(CacheKeys.of(Category.class, categoryId), CacheRetention.REQUEST)
+                    .withCache(CacheKeys.of(Category.class, categoryId), CacheRetention.MEDIUM)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryNotFoundException(categoryId);
@@ -204,7 +204,7 @@ public final class CommentClient {
             throws CategoryGroupNotFoundException {
         try {
             return categoryGroupResource.get(groupId)
-                    .withCache(CacheKeys.of(CategoryGroup.class, groupId), CacheRetention.REQUEST)
+                    .withCache(CacheKeys.of(CategoryGroup.class, groupId), CacheRetention.LONG)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryGroupNotFoundException(groupId);

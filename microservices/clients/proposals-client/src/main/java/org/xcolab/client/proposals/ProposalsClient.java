@@ -37,7 +37,7 @@ public final class ProposalsClient {
         return listProposals(0, Integer.MAX_VALUE, contestId, null, null, null);
     }
     public static List<Proposal> getProposalsInContestPhase(Long contestPhaseId){
-        return listProposals(0, Integer.MAX_VALUE, null,true,contestPhaseId,null);
+        return listProposals(0, Integer.MAX_VALUE, null, true, contestPhaseId, null);
     }
 
     public static List<Proposal> listProposals(int start, int limit, Long contestId,

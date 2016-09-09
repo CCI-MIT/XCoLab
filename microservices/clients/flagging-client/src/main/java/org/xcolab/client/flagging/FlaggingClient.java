@@ -96,6 +96,8 @@ public final class FlaggingClient {
         return reportTargetResource.list()
                 .addRange(start, last)
                 .optionalQueryParam("type", targetType)
+                .withCache(CacheKeys.withClass(ReportTarget.class)
+                        .withParameter("type", targetType).asList(), CacheRetention.MEDIUM)
                 .execute();
     }
 

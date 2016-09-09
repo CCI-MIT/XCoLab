@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public enum CacheRetention {
     NONE(0, Duration.ZERO),
-    REQUEST(100, Duration.of(3, TimeUnit.SECONDS)),
+    REQUEST(500L, Duration.of(3, TimeUnit.SECONDS)),
     SHORT(100L, Duration.of(30, TimeUnit.SECONDS)),
     MEDIUM(100L, Duration.of(10, TimeUnit.MINUTES)),
     LONG(100L, Duration.of(1, TimeUnit.HOURS)),
