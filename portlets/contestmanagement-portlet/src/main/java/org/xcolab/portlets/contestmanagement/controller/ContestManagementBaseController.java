@@ -1,5 +1,9 @@
 package org.xcolab.portlets.contestmanagement.controller;
 
+import org.joda.time.DateTime;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -7,10 +11,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.joda.time.DateTime;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
@@ -18,9 +18,6 @@ import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
-/**
- * Created by Thomas on 2/19/2015.
- */
 @Controller
 @RequestMapping("view")
 public class ContestManagementBaseController {

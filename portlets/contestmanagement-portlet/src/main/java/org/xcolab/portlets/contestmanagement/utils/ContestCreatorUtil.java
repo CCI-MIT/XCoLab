@@ -23,7 +23,6 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.sql.Timestamp;
@@ -54,7 +53,7 @@ public final class ContestCreatorUtil {
             contest.setContestTypeId(
                     ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             ContestClient.updateContest(contest);
-            ContestScheduleWrapper
+            ContestScheduleLifecycleUtil
                     .createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
                             DEFAULT_CONTEST_SCHEDULE_ID);
             try{

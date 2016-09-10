@@ -10,7 +10,7 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
+import org.xcolab.portlets.contestmanagement.utils.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
 
@@ -181,9 +181,10 @@ public class ContestDescriptionBean implements Serializable {
             BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
             boolean contestHasProposals = contestWrapper.getTotalProposalsCount() > 0;
             if (contestHasProposals) {
-                ContestScheduleWrapper.changeContestScheduleForContest(contest, contestScheduleId);
+                ContestScheduleLifecycleUtil
+                        .changeContestScheduleForContest(contest, contestScheduleId);
             } else {
-                ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
+                ContestScheduleLifecycleUtil.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
                         contestScheduleId);
             }
             contest.setContestScheduleId(contestScheduleId);

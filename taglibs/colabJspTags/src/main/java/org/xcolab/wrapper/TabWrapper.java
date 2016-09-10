@@ -1,11 +1,9 @@
 package org.xcolab.wrapper;
 
 import com.ext.portlet.NoSuchContestDiscussionException;
-
 import com.ext.portlet.model.ContestDiscussion;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 
@@ -28,7 +26,7 @@ public class TabWrapper implements Serializable {
     private final PortletRequest request;
     private final TabPermissions permissions;
 
-    public TabWrapper(TabEnum tab, PortletRequest request, TabContext context) throws PortalException, SystemException{
+    public TabWrapper(TabEnum tab, PortletRequest request, TabContext context) {
         super();
         this.tab = tab;
         this.request = request;

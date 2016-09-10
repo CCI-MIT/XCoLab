@@ -1,16 +1,19 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.PortletRequest;
 import java.util.List;
+
+import javax.portlet.PortletRequest;
 
 
 public abstract class ContestManagerBaseTabController extends BaseTabController {
@@ -32,8 +35,7 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
             throws PortalException, SystemException;
 
     @Override
-    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
-            throws PortalException, SystemException {
+    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab) {
         String pageTitle = "Contest Management Tool";
         String pageSubTitle = tab.getDisplayName() + " - " + pageTitle;
         String pageDescription = "Contest details for " + pageTitle;

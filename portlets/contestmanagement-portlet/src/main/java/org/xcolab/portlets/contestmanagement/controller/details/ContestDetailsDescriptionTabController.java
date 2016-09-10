@@ -28,8 +28,8 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.emailnotification.contest.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
@@ -167,7 +167,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         Long existingContestScheduleId = contest.getContestScheduleId();
         Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
         scheduleTemplateSelectionItems =
-                ContestScheduleWrapper
+                ContestScheduleLifecycleUtil
                         .getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
         return scheduleTemplateSelectionItems;
     }
