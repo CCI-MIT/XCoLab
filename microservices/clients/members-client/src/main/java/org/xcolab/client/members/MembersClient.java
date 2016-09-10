@@ -11,6 +11,7 @@ import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -21,14 +22,14 @@ public final class MembersClient {
 
     private static final RestService memberService = new RestService("members-service");
 
-    private static final RestResource<Member> memberResource = new RestResource<>(memberService,
+    private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
             "members", Member.TYPES);
-    private static final RestResource<MemberCategory> memberCategoryResource =
-            new RestResource<>(memberService, "membercategories", MemberCategory.TYPES);
-    private static final RestResource<Contact_> contactResource = new RestResource<>(memberService,
+    private static final RestResource<MemberCategory, Long> memberCategoryResource =
+            new RestResource1<>(memberService, "membercategories", MemberCategory.TYPES);
+    private static final RestResource<Contact_, Long> contactResource = new RestResource1<>(memberService,
             "contacts", Contact_.TYPES);
 
-    private static final RestResource<LoginLog> loginLogResource = new RestResource<>(memberService,
+    private static final RestResource<LoginLog, Long> loginLogResource = new RestResource1<>(memberService,
             "loginLogs", LoginLog.TYPES);
 
     private MembersClient() {

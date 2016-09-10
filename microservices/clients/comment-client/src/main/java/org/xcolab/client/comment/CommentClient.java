@@ -12,6 +12,7 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -21,15 +22,15 @@ import java.util.List;
 public final class CommentClient {
 
     private static final RestService commentService = new RestService("comment-service");
-    private static final RestResource<Comment> commentResource = new RestResource<>(commentService,
+    private static final RestResource<Comment, Long> commentResource = new RestResource1<>(commentService,
             "comments", Comment.TYPES);
-    private static final RestResource<CommentThread> threadResource = new RestResource<>(
+    private static final RestResource<CommentThread, Long> threadResource = new RestResource1<>(
             commentService,
             "threads", CommentThread.TYPES);
-    private static final RestResource<Category> categoryResource = new RestResource<>(
+    private static final RestResource<Category, Long> categoryResource = new RestResource1<>(
             commentService,
             "categories", Category.TYPES);
-    private static final RestResource<CategoryGroup> categoryGroupResource = new RestResource<>(
+    private static final RestResource<CategoryGroup, Long> categoryGroupResource = new RestResource1<>(
             commentService,
             "groups", CategoryGroup.TYPES);
 

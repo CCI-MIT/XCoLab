@@ -7,6 +7,7 @@ import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -16,13 +17,13 @@ public final class ContentsClient {
 
     private static final RestService contentService = new RestService("contents-service");
 
-    private static final RestResource<ContentArticle> contentArticleResource =
-            new RestResource<>(contentService, "contentArticles", ContentArticle.TYPES);
-    private static final RestResource<ContentArticleVersion> contentArticleVersionResource =
-            new RestResource<>(contentService, "contentArticleVersions",
+    private static final RestResource<ContentArticle, Long> contentArticleResource =
+            new RestResource1<>(contentService, "contentArticles", ContentArticle.TYPES);
+    private static final RestResource<ContentArticleVersion, Long> contentArticleVersionResource =
+            new RestResource1<>(contentService, "contentArticleVersions",
                     ContentArticleVersion.TYPES);
-    private static final RestResource<ContentFolder> contentFolderResource =
-            new RestResource<>(contentService, "contentFolders", ContentFolder.TYPES);
+    private static final RestResource1<ContentFolder, Long> contentFolderResource =
+            new RestResource1<>(contentService, "contentFolders", ContentFolder.TYPES);
 
     private ContentsClient() {
     }

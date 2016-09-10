@@ -6,18 +6,19 @@ import org.xcolab.client.tracking.pojo.TrackedVisitor;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
 public final class TrackingClient {
 
     private static final RestService trackingService = new RestService("tracking-service");
 
-    private static final RestResource<TrackedVisit> trackedVisitResource = new RestResource<>(
+    private static final RestResource<TrackedVisit, Long> trackedVisitResource = new RestResource1<>(
             trackingService, "trackedVisits", TrackedVisit.TYPES);
-    private static final RestResource<TrackedVisitor> trackedVisitorResource = new RestResource<>(
+    private static final RestResource<TrackedVisitor, Long> trackedVisitorResource = new RestResource1<>(
             trackingService, "trackedVisitors", TrackedVisitor.TYPES);
 
-    private static final RestResource<Location> locationResource = new RestResource<>(
+    private static final RestResource<Location, Long> locationResource = new RestResource1<>(
             trackingService, "locations", Location.TYPES);
 
 

@@ -5,6 +5,7 @@ import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -13,11 +14,11 @@ import java.util.List;
 public final class BalloonsClient {
 
     private static final RestService balloonService = new RestService("balloons-service");
-    private static final RestResource<BalloonLink> balloonLinkResource = new RestResource<>(
+    private static final RestResource<BalloonLink, String> balloonLinkResource = new RestResource1<>(
             balloonService, "balloonLinks", BalloonLink.TYPES);
-    private static final RestResource<BalloonUserTracking> balloonUserTrackingResource =
-            new RestResource<>(balloonService, "balloonUserTrackings", BalloonUserTracking.TYPES);
-    private static final RestResource<BalloonText> balloonTextResource = new RestResource<>(
+    private static final RestResource<BalloonUserTracking, String> balloonUserTrackingResource =
+            new RestResource1<>(balloonService, "balloonUserTrackings", BalloonUserTracking.TYPES);
+    private static final RestResource<BalloonText, Long> balloonTextResource = new RestResource1<>(
             balloonService, "balloonTexts", BalloonText.TYPES);
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {

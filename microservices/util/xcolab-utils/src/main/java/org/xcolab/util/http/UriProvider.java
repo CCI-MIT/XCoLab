@@ -14,7 +14,7 @@ public class UriProvider {
         this.uriBuilder = new UriBuilder(UriComponentsBuilder.fromHttpUrl(httpUrl));
     }
 
-    public UriBuilder getUriBuilder() {
+    public UriBuilder cloneUriBuilder() {
         return uriBuilder.cloneBuilder();
     }
 }

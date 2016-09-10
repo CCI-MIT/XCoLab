@@ -3,17 +3,18 @@ package org.xcolab.client.members;
 import org.xcolab.client.members.pojo.AnalyticsUserEvent;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
 public final class AnalyticsClient {
 
     private static final RestService memberService = new RestService("members-service");
 
-    private static final RestResource<Member> memberResource =
-            new RestResource<>(memberService, "members", Member.TYPES);
+    private static final RestResource1<Member, Long> memberResource =
+            new RestResource1<>(memberService, "members", Member.TYPES);
 
-    private static final RestResource<AnalyticsUserEvent> analyticsUserEventResource =
-            new RestResource<>(memberService, "analyticsUserEvent", AnalyticsUserEvent.TYPES);
+    private static final RestResource<AnalyticsUserEvent, Long> analyticsUserEventResource =
+            new RestResource1<>(memberService, "analyticsUserEvent", AnalyticsUserEvent.TYPES);
 
     public static AnalyticsUserEvent create(long userId, String idString, String category,
             String action, String label, int value) {

@@ -4,6 +4,5 @@ import org.xcolab.util.http.UriBuilder;
 
 public interface HttpResource extends HttpEndpoint {
     UriBuilder getResourceUrl();
-    UriBuilder getResourceUrl(long resourceId);
-    UriBuilder getResourceUrl(String resourceId);
+    UriBuilder getResourceUrl(Object resourceId);
 }

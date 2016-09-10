@@ -16,7 +16,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     private CacheKey<T, List<T>> cacheKey;
     private CacheRetention cacheRetention;
 
-    public ListQuery(RestResource<T> restResource,
+    public ListQuery(RestResource<T, ?> restResource,
             ParameterizedTypeReference<List<T>> typeReference) {
         this.typeReference = typeReference;
         this.uriBuilder = restResource.getResourceUrl();

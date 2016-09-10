@@ -5,13 +5,14 @@ import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public final class FilteringClient {
 
     private static final RestService filteringService = new RestService("filtering-service");
-    private static final RestResource<FilteredEntry> filteredEntryResource = new RestResource<>(
+    private static final RestResource<FilteredEntry, String> filteredEntryResource = new RestResource1<>(
             filteringService, "filteredEntries", FilteredEntry.TYPES);
 
     public static FilteredEntry getFilteredEntryByUuid(String uuid)

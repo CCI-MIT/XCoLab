@@ -7,13 +7,14 @@ import org.xcolab.client.files.providers.PersistenceProvider;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public final class FilesClient {
 
     private static final RestService fileService = new RestService("files-service");
-    private static final RestResource<FileEntry> fileEntryResource = new RestResource<>(fileService,
+    private static final RestResource<FileEntry, Long> fileEntryResource = new RestResource1<>(fileService,
             "fileEntries", FileEntry.TYPES);
 
     private static final PersistenceProvider persistenceProvider =

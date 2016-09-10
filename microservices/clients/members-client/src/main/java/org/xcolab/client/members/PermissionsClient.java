@@ -4,7 +4,7 @@ import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
-import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public final class PermissionsClient {
 
     private static final RestService membersService = new RestService("members-service");
-    private static final RestResource<Object> roleGroupResource = new RestResource<>(membersService,
+    private static final RestResource1<Object, Long> roleGroupResource = new RestResource1<>(membersService,
             "roleGroups", new TypeProvider<>(null, null));
 
     private PermissionsClient() {

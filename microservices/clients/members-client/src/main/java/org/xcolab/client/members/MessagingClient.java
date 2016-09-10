@@ -9,7 +9,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.client.members.pojo.SendMessageBean;
-import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
@@ -20,9 +20,9 @@ import java.util.List;
 public final class MessagingClient {
 
     private static final RestService memberService = new RestService("members-service");
-    private static final RestResource<Member> memberResource = new RestResource<>(memberService,
+    private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
             "members", Member.TYPES);
-    private static final RestResource<Message> messageResource = new RestResource<>(memberService,
+    private static final RestResource1<Message, Long> messageResource = new RestResource1<>(memberService,
             "messages", Message.TYPES);
 
     private MessagingClient() { }

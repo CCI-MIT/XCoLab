@@ -13,6 +13,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -25,25 +26,25 @@ public class ContestClient {
 
     private static final RestService contestService = new RestService("contest-service");
 
-    private static final RestResource<Contest> contestResource = new RestResource<>(contestService,
+    private static final RestResource<Contest, Long> contestResource = new RestResource1<>(contestService,
             "contests", Contest.TYPES);
 
-    private static final RestResource<ContestPhase> contestPhasesResource = new RestResource<>(contestService,
+    private static final RestResource<ContestPhase, Long> contestPhasesResource = new RestResource1<>(contestService,
             "contestPhases", ContestPhase.TYPES);
 
-    private static final RestResource<ContestPhaseType> contestPhaseTypesResource = new RestResource<>(contestService,
+    private static final RestResource<ContestPhaseType, Long> contestPhaseTypesResource = new RestResource1<>(contestService,
             "contestPhaseTypes", ContestPhaseType.TYPES);
 
-    private static final RestResource<ContestType> contestTypeResource = new RestResource<>(contestService,
+    private static final RestResource<ContestType, Long> contestTypeResource = new RestResource1<>(contestService,
             "contestTypes", ContestType.TYPES);
 
-    private static final RestResource<ContestTeamMember> contestTeamMemberResource = new RestResource<>(contestService,
+    private static final RestResource<ContestTeamMember, Long> contestTeamMemberResource = new RestResource1<>(contestService,
             "contestTeamMembers", ContestTeamMember.TYPES);
 
-    private static final RestResource<ContestTeamMemberRole> contestTeamMemberRoleResource = new RestResource<>(contestService,
+    private static final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource = new RestResource1<>(contestService,
             "contestTeamMemberRoles", ContestTeamMemberRole.TYPES);
 
-    private static final RestResource<ContestSchedule> contestScheduleResource = new RestResource<>(contestService,
+    private static final RestResource<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
             "contestSchedules", ContestSchedule.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {

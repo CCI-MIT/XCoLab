@@ -8,6 +8,7 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -18,10 +19,10 @@ import java.util.List;
 public final class ActivitiesClient {
 
     private static final RestService activitiesService = new RestService("activities-service");
-    private static final RestResource<ActivityEntry> activityEntryResource =
-            new RestResource<>(activitiesService, "activityEntries", ActivityEntry.TYPES);
-    private static final RestResource<ActivitySubscription> activitySubscriptionResource =
-            new RestResource<>(activitiesService, "activitySubscriptions",
+    private static final RestResource<ActivityEntry, Long> activityEntryResource =
+            new RestResource1<>(activitiesService, "activityEntries", ActivityEntry.TYPES);
+    private static final RestResource<ActivitySubscription, Long> activitySubscriptionResource =
+            new RestResource1<>(activitiesService, "activitySubscriptions",
                     ActivitySubscription.TYPES);
 
     public static ActivityEntry createActivityEntry(ActivityEntry activityEntry) {
