@@ -13,7 +13,7 @@ import java.util.List;
 public final class PermissionsClient {
 
     private static final RestService membersService = new RestService("members-service");
-    private static final RestResource1<Object> roleGroupResource = new RestResource1<>(membersService,
+    private static final RestResource1<Object, Long> roleGroupResource = new RestResource1<>(membersService,
             "roleGroups", new TypeProvider<>(null, null));
 
     private PermissionsClient() {

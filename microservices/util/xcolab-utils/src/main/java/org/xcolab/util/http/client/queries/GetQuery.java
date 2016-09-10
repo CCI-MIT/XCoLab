@@ -7,18 +7,13 @@ import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-public class GetQuery<T> implements CacheableQuery<T, T> {
+public class GetQuery<T, IdT> implements CacheableQuery<T, T> {
     private final UriBuilder uriBuilder;
     private final Class<T> entityType;
     private CacheKey<T, T> cacheKey;
     private CacheRetention cacheRetention;
 
-    public GetQuery(RestResource<T> restResource, long id, Class<T> entityType) {
-        this.entityType = entityType;
-        this.uriBuilder = restResource.getResourceUrl(id);
-    }
-
-    public GetQuery(RestResource<T> restResource, String id, Class<T> entityType) {
+    public GetQuery(RestResource<T, IdT> restResource, IdT id, Class<T> entityType) {
         this.entityType = entityType;
         this.uriBuilder = restResource.getResourceUrl(id);
     }
@@ -41,20 +36,20 @@ public class GetQuery<T> implements CacheableQuery<T, T> {
     }
 
     @Override
-    public GetQuery<T> withCache(CacheKey<T, T> cacheKey, CacheRetention cacheRetention) {
+    public GetQuery<T, IdT> withCache(CacheKey<T, T> cacheKey, CacheRetention cacheRetention) {
         this.cacheKey = cacheKey;
         this.cacheRetention = cacheRetention;
         return this;
     }
 
     @Override
-    public GetQuery<T> queryParam(String name, Object value) {
+    public GetQuery<T, IdT> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
     @Override
-    public GetQuery<T> optionalQueryParam(String name, Object value) {
+    public GetQuery<T, IdT> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;
     }

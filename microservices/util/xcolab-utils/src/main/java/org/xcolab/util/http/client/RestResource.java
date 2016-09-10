@@ -7,21 +7,17 @@ import org.xcolab.util.http.client.queries.GetQuery;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.client.queries.UpdateQuery;
 
-public interface RestResource<T> extends ServiceResource {
+public interface RestResource<ResourceT, IdT> extends ServiceResource {
 
-    CreateQuery<T> create(T pojo);
+    CreateQuery<ResourceT> create(ResourceT pojo);
 
-    DeleteQuery<T> delete(long id);
+    DeleteQuery<ResourceT, IdT> delete(IdT id);
 
-    UpdateQuery<T> update(T pojo, long id);
+    UpdateQuery<ResourceT, IdT> update(ResourceT pojo, IdT id);
 
-    UpdateQuery<T> update(T pojo, String id);
+    GetQuery<ResourceT, IdT> get(IdT id);
 
-    GetQuery<T> get(long id);
+    ListQuery<ResourceT> list();
 
-    GetQuery<T> get(String id);
-
-    ListQuery<T> list();
-
-    CountQuery<T> count();
+    CountQuery<ResourceT> count();
 }

@@ -20,7 +20,7 @@ public class SharedColabClient {
             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 
-    private static final RestResource<Member> partnerMemberResource = new RestResource1<>(
+    private static final RestResource<Member, Long> partnerMemberResource = new RestResource1<>(
             partnerMemberService, "members", Member.TYPES);
 
     private static final ServiceResource sharedColabResource = new ServiceResource1(

@@ -20,11 +20,11 @@ import java.util.List;
 public final class FlaggingClient {
 
     private static final RestService flaggingService = new RestService("flagging-service");
-    private static final RestResource<Report> reportResource = new RestResource1<>(flaggingService,
+    private static final RestResource<Report, Long> reportResource = new RestResource1<>(flaggingService,
             "reports", Report.TYPES);
-    private static final RestResource<AggregatedReport> aggregatedReportResource = new RestResource1<>(
+    private static final RestResource<AggregatedReport, Long> aggregatedReportResource = new RestResource1<>(
             flaggingService, "aggregatedReports", AggregatedReport.TYPES);
-    private static final RestResource<ReportTarget> reportTargetResource = new RestResource1<>(
+    private static final RestResource<ReportTarget, Long> reportTargetResource = new RestResource1<>(
             flaggingService, "reportTargets", ReportTarget.TYPES);
 
     private FlaggingClient() {

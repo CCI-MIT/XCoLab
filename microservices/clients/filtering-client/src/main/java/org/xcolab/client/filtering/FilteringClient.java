@@ -12,7 +12,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 public final class FilteringClient {
 
     private static final RestService filteringService = new RestService("filtering-service");
-    private static final RestResource<FilteredEntry> filteredEntryResource = new RestResource1<>(
+    private static final RestResource<FilteredEntry, String> filteredEntryResource = new RestResource1<>(
             filteringService, "filteredEntries", FilteredEntry.TYPES);
 
     public static FilteredEntry getFilteredEntryByUuid(String uuid)

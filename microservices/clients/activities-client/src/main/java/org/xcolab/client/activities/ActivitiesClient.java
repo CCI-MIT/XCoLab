@@ -19,9 +19,9 @@ import java.util.List;
 public final class ActivitiesClient {
 
     private static final RestService activitiesService = new RestService("activities-service");
-    private static final RestResource<ActivityEntry> activityEntryResource =
+    private static final RestResource<ActivityEntry, Long> activityEntryResource =
             new RestResource1<>(activitiesService, "activityEntries", ActivityEntry.TYPES);
-    private static final RestResource<ActivitySubscription> activitySubscriptionResource =
+    private static final RestResource<ActivitySubscription, Long> activitySubscriptionResource =
             new RestResource1<>(activitiesService, "activitySubscriptions",
                     ActivitySubscription.TYPES);
 

@@ -10,7 +10,7 @@ import java.util.List;
 public class StaffMemberClient {
     private static final RestService memberService = new RestService("members-service");
 
-    private static final RestResource<StaffMember> staffMemberResource = new RestResource1<>(memberService,
+    private static final RestResource<StaffMember, Long> staffMemberResource = new RestResource1<>(memberService,
             "staffMembers", StaffMember.TYPES);
 
     public static List<StaffMember> getStaffMembersByCategoryId(long categoryId) {

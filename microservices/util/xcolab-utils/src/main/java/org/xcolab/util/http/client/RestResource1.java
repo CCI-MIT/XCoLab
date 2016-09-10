@@ -6,13 +6,13 @@ import org.xcolab.util.http.client.interfaces.AbstractRestResource;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 import org.xcolab.util.http.client.types.TypeProvider;
 
-public class RestResource1<T> extends AbstractRestResource<T> {
+public class RestResource1<ResourceT, IdT> extends AbstractRestResource<ResourceT, IdT> {
 
     private final HttpEndpoint serviceOrParent;
     private final String resourceName;
 
     public RestResource1(HttpEndpoint serviceOrParent, String resourceName,
-            TypeProvider<T> typeProvider) {
+            TypeProvider<ResourceT> typeProvider) {
         super(typeProvider);
         this.serviceOrParent = serviceOrParent;
         this.resourceName = resourceName;
@@ -23,7 +23,7 @@ public class RestResource1<T> extends AbstractRestResource<T> {
         return serviceOrParent.getBaseUrl();
     }
 
-    public <S> RestResource1<S> getSubRestResource(final long resourceId, String subResourceName,
+    public <S> RestResource1<S, Long> getSubRestResource(final long resourceId, String subResourceName,
             TypeProvider<S> typeProvider) {
         return new RestResource1<>(new HttpEndpoint() {
             private final UriProvider baseUrl
@@ -52,12 +52,7 @@ public class RestResource1<T> extends AbstractRestResource<T> {
     }
 
     @Override
-    public UriBuilder getResourceUrl(long resourceId) {
-        return getBaseUrl().cloneUriBuilder().path("/" + resourceName + "/" + resourceId);
-    }
-
-    @Override
-    public UriBuilder getResourceUrl(String resourceId) {
+    public UriBuilder getResourceUrl(Object resourceId) {
         return getBaseUrl().cloneUriBuilder().path("/" + resourceName + "/" + resourceId);
     }
 }

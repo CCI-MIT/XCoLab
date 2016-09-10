@@ -13,7 +13,7 @@ public final class SearchClient {
 
     private static final RestService searchService = new RestService("search-service");
 
-    private static final RestResource<SearchPojo> searchResource = new RestResource1<>(searchService,
+    private static final RestResource<SearchPojo, Long> searchResource = new RestResource1<>(searchService,
             "search", SearchPojo.TYPES);
 
     public static List<SearchPojo> search(Integer startRecord, Integer limitRecord, String filter, String query) {

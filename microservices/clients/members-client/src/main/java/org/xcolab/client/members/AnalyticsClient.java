@@ -10,10 +10,10 @@ public final class AnalyticsClient {
 
     private static final RestService memberService = new RestService("members-service");
 
-    private static final RestResource1<Member> memberResource =
+    private static final RestResource1<Member, Long> memberResource =
             new RestResource1<>(memberService, "members", Member.TYPES);
 
-    private static final RestResource<AnalyticsUserEvent> analyticsUserEventResource =
+    private static final RestResource<AnalyticsUserEvent, Long> analyticsUserEventResource =
             new RestResource1<>(memberService, "analyticsUserEvent", AnalyticsUserEvent.TYPES);
 
     public static AnalyticsUserEvent create(long userId, String idString, String category,

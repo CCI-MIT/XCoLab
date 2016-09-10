@@ -17,12 +17,12 @@ public final class ContentsClient {
 
     private static final RestService contentService = new RestService("contents-service");
 
-    private static final RestResource<ContentArticle> contentArticleResource =
+    private static final RestResource<ContentArticle, Long> contentArticleResource =
             new RestResource1<>(contentService, "contentArticles", ContentArticle.TYPES);
-    private static final RestResource<ContentArticleVersion> contentArticleVersionResource =
+    private static final RestResource<ContentArticleVersion, Long> contentArticleVersionResource =
             new RestResource1<>(contentService, "contentArticleVersions",
                     ContentArticleVersion.TYPES);
-    private static final RestResource1<ContentFolder> contentFolderResource =
+    private static final RestResource1<ContentFolder, Long> contentFolderResource =
             new RestResource1<>(contentService, "contentFolders", ContentFolder.TYPES);
 
     private ContentsClient() {

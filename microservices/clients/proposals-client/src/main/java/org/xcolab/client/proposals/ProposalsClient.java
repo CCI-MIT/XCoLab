@@ -17,16 +17,16 @@ import java.util.List;
 public final class ProposalsClient {
 
     private static final RestService proposalService = new RestService("proposals-service");
-    private static final RestResource<Proposal> proposalResource = new RestResource1<>(
+    private static final RestResource<Proposal, Long> proposalResource = new RestResource1<>(
             proposalService, "proposals", Proposal.TYPES);
 
-    private static final RestResource<Proposal2Phase> proposal2PhaseResource = new RestResource1<>(
+    private static final RestResource<Proposal2Phase, Long> proposal2PhaseResource = new RestResource1<>(
             proposalService, "proposal2Phases", Proposal2Phase.TYPES);
 
-    private static final RestResource<ProposalVote> proposalVoteResource = new RestResource1<>(proposalService,
+    private static final RestResource<ProposalVote, Long> proposalVoteResource = new RestResource1<>(proposalService,
             "proposalVotes", ProposalVote.TYPES);
 
-    private static final RestResource<ProposalContestPhaseAttribute> proposalContestPhaseAttributeResource = new RestResource1<>(proposalService,
+    private static final RestResource<ProposalContestPhaseAttribute, Long> proposalContestPhaseAttributeResource = new RestResource1<>(proposalService,
             "proposalContestPhaseAttributes", ProposalContestPhaseAttribute.TYPES);
 
 

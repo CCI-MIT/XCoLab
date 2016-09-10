@@ -20,9 +20,9 @@ import java.util.List;
 public final class MessagingClient {
 
     private static final RestService memberService = new RestService("members-service");
-    private static final RestResource1<Member> memberResource = new RestResource1<>(memberService,
+    private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
             "members", Member.TYPES);
-    private static final RestResource1<Message> messageResource = new RestResource1<>(memberService,
+    private static final RestResource1<Message, Long> messageResource = new RestResource1<>(memberService,
             "messages", Message.TYPES);
 
     private MessagingClient() { }

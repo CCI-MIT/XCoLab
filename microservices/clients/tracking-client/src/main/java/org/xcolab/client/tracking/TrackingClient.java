@@ -13,12 +13,12 @@ public final class TrackingClient {
 
     private static final RestService trackingService = new RestService("tracking-service");
 
-    private static final RestResource<TrackedVisit> trackedVisitResource = new RestResource1<>(
+    private static final RestResource<TrackedVisit, Long> trackedVisitResource = new RestResource1<>(
             trackingService, "trackedVisits", TrackedVisit.TYPES);
-    private static final RestResource<TrackedVisitor> trackedVisitorResource = new RestResource1<>(
+    private static final RestResource<TrackedVisitor, Long> trackedVisitorResource = new RestResource1<>(
             trackingService, "trackedVisitors", TrackedVisitor.TYPES);
 
-    private static final RestResource<Location> locationResource = new RestResource1<>(
+    private static final RestResource<Location, Long> locationResource = new RestResource1<>(
             trackingService, "locations", Location.TYPES);
 
 

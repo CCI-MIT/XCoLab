@@ -26,12 +26,7 @@ public class ServiceResource1 extends AbstractServiceResource {
     }
 
     @Override
-    public UriBuilder getResourceUrl(long resourceId) {
-        return getBaseUrl().cloneUriBuilder().path("/" + resourceName + "/" + resourceId);
-    }
-
-    @Override
-    public UriBuilder getResourceUrl(String resourceId) {
+    public UriBuilder getResourceUrl(Object resourceId) {
         return getBaseUrl().cloneUriBuilder().path("/" + resourceName + "/" + resourceId);
     }
 }

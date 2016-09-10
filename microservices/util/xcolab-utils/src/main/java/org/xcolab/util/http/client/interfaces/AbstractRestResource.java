@@ -13,7 +13,7 @@ import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
-public abstract class AbstractRestResource<T> extends AbstractServiceResource implements RestResource<T> {
+public abstract class AbstractRestResource<T, IdT> extends AbstractServiceResource implements RestResource<T, IdT> {
 
     private final Class<T> entityType;
     private final ParameterizedTypeReference<List<T>> typeReference;
@@ -29,27 +29,17 @@ public abstract class AbstractRestResource<T> extends AbstractServiceResource im
     }
 
     @Override
-    public DeleteQuery<T> delete(long id) {
+    public DeleteQuery<T, IdT> delete(IdT id) {
         return new DeleteQuery<>(this, id);
     }
 
     @Override
-    public UpdateQuery<T> update(T pojo, long id) {
+    public UpdateQuery<T, IdT> update(T pojo, IdT id) {
         return new UpdateQuery<>(this, id, pojo);
     }
 
     @Override
-    public UpdateQuery<T> update(T pojo, String id) {
-        return new UpdateQuery<>(this, id, pojo);
-    }
-
-    @Override
-    public GetQuery<T> get(long id) {
-        return new GetQuery<>(this, id, entityType);
-    }
-
-    @Override
-    public GetQuery<T> get(String id) {
+    public GetQuery<T, IdT> get(IdT id) {
         return new GetQuery<>(this, id, entityType);
     }
 

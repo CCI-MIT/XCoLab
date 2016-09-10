@@ -21,15 +21,15 @@ import java.util.List;
 public final class CommentClient {
 
     private static final RestService commentService = new RestService("comment-service");
-    private static final RestResource<Comment> commentResource = new RestResource1<>(commentService,
+    private static final RestResource<Comment, Long> commentResource = new RestResource1<>(commentService,
             "comments", Comment.TYPES);
-    private static final RestResource<CommentThread> threadResource = new RestResource1<>(
+    private static final RestResource<CommentThread, Long> threadResource = new RestResource1<>(
             commentService,
             "threads", CommentThread.TYPES);
-    private static final RestResource<Category> categoryResource = new RestResource1<>(
+    private static final RestResource<Category, Long> categoryResource = new RestResource1<>(
             commentService,
             "categories", Category.TYPES);
-    private static final RestResource<CategoryGroup> categoryGroupResource = new RestResource1<>(
+    private static final RestResource<CategoryGroup, Long> categoryGroupResource = new RestResource1<>(
             commentService,
             "groups", CategoryGroup.TYPES);
 

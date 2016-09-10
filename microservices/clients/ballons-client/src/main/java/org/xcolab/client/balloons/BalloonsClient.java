@@ -14,11 +14,11 @@ import java.util.List;
 public final class BalloonsClient {
 
     private static final RestService balloonService = new RestService("balloons-service");
-    private static final RestResource<BalloonLink> balloonLinkResource = new RestResource1<>(
+    private static final RestResource<BalloonLink, String> balloonLinkResource = new RestResource1<>(
             balloonService, "balloonLinks", BalloonLink.TYPES);
-    private static final RestResource<BalloonUserTracking> balloonUserTrackingResource =
+    private static final RestResource<BalloonUserTracking, String> balloonUserTrackingResource =
             new RestResource1<>(balloonService, "balloonUserTrackings", BalloonUserTracking.TYPES);
-    private static final RestResource<BalloonText> balloonTextResource = new RestResource1<>(
+    private static final RestResource<BalloonText, Long> balloonTextResource = new RestResource1<>(
             balloonService, "balloonTexts", BalloonText.TYPES);
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {

@@ -12,7 +12,7 @@ import java.util.List;
 public final class EmailTemplateClient {
 
     private static final RestService adminService = new RestService("admin-service");
-    private static final RestResource<ContestEmailTemplate> emailTemplatesResource =
+    private static final RestResource<ContestEmailTemplate, String> emailTemplatesResource =
             new RestResource1<>(adminService, "emailTemplates", ContestEmailTemplate.TYPES);
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {

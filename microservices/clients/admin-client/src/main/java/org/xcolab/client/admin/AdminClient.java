@@ -12,7 +12,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 public class AdminClient {
 
     private static final RestService adminService = new RestService("admin-service");
-    private static final RestResource<ConfigurationAttribute> configurationAttributeResource =
+    private static final RestResource<ConfigurationAttribute, String> configurationAttributeResource =
             new RestResource1<>(adminService, "attributes", ConfigurationAttribute.TYPES);
 
     public static ConfigurationAttribute getConfigurationAttribute(String name) {
