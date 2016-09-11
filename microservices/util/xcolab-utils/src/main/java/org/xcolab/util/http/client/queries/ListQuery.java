@@ -4,14 +4,17 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.caching.CacheKey;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 
 import java.util.List;
 
-public class ListQuery<T> {
+public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     private final UriBuilder uriBuilder;
     private final ParameterizedTypeReference<List<T>> typeReference;
-    private String cacheIdentifierValue;
+    private CacheKey<T, List<T>> cacheKey;
+    private CacheRetention cacheRetention;
 
     public ListQuery(RestResource<T> restResource,
             ParameterizedTypeReference<List<T>> typeReference) {
@@ -19,11 +22,12 @@ public class ListQuery<T> {
         this.uriBuilder = restResource.getResourceUrl();
     }
 
+    @Override
     public List<T> execute() {
-        if (cacheIdentifierValue == null) {
+        if (cacheKey == null) {
             return RequestUtils.getList(uriBuilder, typeReference);
         } else {
-            return RequestUtils.getList(uriBuilder, typeReference, cacheIdentifierValue);
+            return RequestUtils.getList(uriBuilder, typeReference, cacheKey, cacheRetention);
         }
     }
 
@@ -37,16 +41,20 @@ public class ListQuery<T> {
         return this;
     }
 
-    public ListQuery<T> cacheIdentifier(String cacheIdentifier) {
-        this.cacheIdentifierValue = cacheIdentifier;
+    @Override
+    public ListQuery<T> withCache(CacheKey<T, List<T>> cacheKey, CacheRetention cacheRetention) {
+        this.cacheKey = cacheKey;
+        this.cacheRetention = cacheRetention;
         return this;
     }
 
+    @Override
     public ListQuery<T> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
+    @Override
     public ListQuery<T> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

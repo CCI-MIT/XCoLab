@@ -2,36 +2,42 @@ package org.xcolab.util.http.client.queries;
 
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.caching.CacheKey;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 
-public class CountQuery<T> {
+public class CountQuery<T> implements CacheableQuery<T, Integer> {
     private final UriBuilder uriBuilder;
-    private final Class<T> entityType;
-    private String cacheIdentifierValue;
+    private CacheKey<T, Integer> cacheKey;
+    private CacheRetention cacheRetention;
 
-    public CountQuery(RestResource<T> restResource, Class<T> entityType) {
-        this.entityType = entityType;
+    public CountQuery(RestResource<T> restResource) {
         this.uriBuilder = restResource.getResourceUrl();
     }
 
-    public int execute() {
-        if (cacheIdentifierValue == null) {
+    @Override
+    public Integer execute() {
+        if (cacheKey == null) {
             return RequestUtils.getCount(uriBuilder);
         } else {
-            return RequestUtils.getCount(uriBuilder, entityType, cacheIdentifierValue);
+            return RequestUtils.getCount(uriBuilder, cacheKey, cacheRetention);
         }
     }
 
-    public CountQuery<T> cacheIdentifier(String cacheIdentifier) {
-        this.cacheIdentifierValue = cacheIdentifier;
+    @Override
+    public CountQuery<T> withCache(CacheKey<T, Integer> cacheKey, CacheRetention cacheRetention) {
+        this.cacheKey = cacheKey;
+        this.cacheRetention = cacheRetention;
         return this;
     }
 
+    @Override
     public CountQuery<T> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
+    @Override
     public CountQuery<T> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

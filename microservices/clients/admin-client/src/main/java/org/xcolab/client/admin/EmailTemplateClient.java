@@ -20,7 +20,7 @@ public final class EmailTemplateClient {
 
     public static ContestEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
         try {
-            return emailTemplatesResource.get(emailTemplateType).execute();
+            return emailTemplatesResource.get(emailTemplateType).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new EmailTemplateNotFoundException(emailTemplateType);
         }

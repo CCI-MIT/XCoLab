@@ -38,11 +38,31 @@
                     </c:otherwise>
                 </c:choose>
             </h2>
+
+            <c:choose>
+                <c:when test="${contest.isSharedContest}">
+                    <script>
+                        function handleOnClickAtSupportBtn(event){
+                            return showSharedContestAutoRegPopUp(function(ref){
+                                deferUntilLoginTargeted('${createProposalURL}')
+                            },${contest.contestPK });
+                        }
+                    </script>
+                </c:when>
+                <c:otherwise>
+                    <script>
+                        function handleOnClickAtSupportBtn(){
+                            return deferUntilLoginTargeted('${createProposalURL}');
+                        }
+                    </script>
+                </c:otherwise>
+            </c:choose>
+
             <div class="right">
                 <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
                     <c:set var="createProposalURL" value="${contest.newProposalLinkUrl}"/>
                     <a class="c-Button__primary large" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
-                       onclick="if(!deferUntilLoginTargeted('${createProposalURL}')) return false;">
+                       onclick="if(!handleOnClickAtSupportBtn()) return false;">
                         <span>CREATE</span> ${contestType.proposalName}
                     </a>
                 </c:if>

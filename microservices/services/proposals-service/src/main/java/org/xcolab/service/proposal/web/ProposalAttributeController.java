@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeService;
 
 import java.util.List;
 
@@ -13,6 +14,9 @@ public class ProposalAttributeController {
 
     @Autowired
     ProposalAttributeDao proposalAttributeDao;
+
+    @Autowired
+    ProposalAttributeService proposalAttributeService;
 
 
     /*
@@ -26,8 +30,8 @@ public class ProposalAttributeController {
     * */
 
     @RequestMapping(value = "/proposalAttributes", method = RequestMethod.POST)
-    public ProposalAttribute createProposalAttribute(@RequestBody ProposalAttribute proposalAttribute) {
-        return this.proposalAttributeDao.create(proposalAttribute);
+    public ProposalAttribute createProposalAttribute(@RequestBody ProposalAttribute proposalAttribute, @RequestParam Long authorId) {
+        return this.proposalAttributeService.setAttribute(proposalAttribute, authorId);
     }
 
     @RequestMapping(value = "/proposalAttributes/{proposalAttributeId}", method = RequestMethod.GET)

@@ -1,5 +1,6 @@
 package org.xcolab.service.members.service.member;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,6 @@ import org.xcolab.util.exceptions.ReferenceResolutionException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -130,7 +130,7 @@ public class MemberService {
         LoginLog loginLog = new LoginLog();
         loginLog.setUserId(memberId);
         loginLog.setIpAddress(ipAddress);
-        loginLog.setEntryUrl(redirectUrl);
+        loginLog.setEntryUrl(StringUtils.left(redirectUrl, 250));
 
         final Location location = TrackingClient.getLocationForIp(ipAddress);
         if (location != null) {

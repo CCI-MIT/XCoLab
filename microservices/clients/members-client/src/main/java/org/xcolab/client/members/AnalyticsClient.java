@@ -32,6 +32,6 @@ public final class AnalyticsClient {
         return memberResource
                 .getSubRestResource(memberId, "analyticsEvent", AnalyticsUserEvent.TYPES)
                 .service(idString, Boolean.class)
-                .getUnchecked();
+                .get();
     }
 }

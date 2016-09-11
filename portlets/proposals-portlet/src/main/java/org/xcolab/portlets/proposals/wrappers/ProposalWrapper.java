@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.MembershipRequest;
+
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
@@ -24,9 +24,11 @@ import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.MembershipRequestClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.MembershipRequest;
 import org.xcolab.client.proposals.pojo.PlanSectionDefinition;
 import org.xcolab.client.proposals.pojo.PlanTemplate;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -240,15 +242,11 @@ public class ProposalWrapper extends BaseProposalWrapper {
     public List<MembershipRequestWrapper> getMembershipRequests() {
         if (this.membershipRequests == null) {
             membershipRequests = new ArrayList<>();
-            try {
-                for (MembershipRequest m : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())) {
+                for (MembershipRequest m : MembershipRequestClient.getMembershipRequests(proposal.getProposalId())) {
                     if (m.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED) {
                         membershipRequests.add(new MembershipRequestWrapper(m));
                     }
                 }
-            } catch (SystemException | PortalException e) {
-                _log.warn(String.format("Could not retrieve membership requests for proposal %d", proposal.getProposalId()));
-            }
         }
         return this.membershipRequests;
     }
@@ -270,7 +268,14 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public void setModelRegion(String region, Long userId) throws PortalException, SystemException {
-        ProposalAttributeLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.REGION, region);
+        ProposalsClient.setProposalAttribute(createProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.REGION, region),userId);
+    }
+    private static ProposalAttribute createProposalAttribute(Long proposalId, String name, String stringValue){
+        ProposalAttribute proposalAttribute = new ProposalAttribute();
+        proposalAttribute.setProposalId(proposalId);
+        proposalAttribute.setName(name);
+        proposalAttribute.setStringValue(stringValue);
+        return proposalAttribute;
     }
 
     public Long getModelId() throws PortalException, SystemException {

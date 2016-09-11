@@ -65,6 +65,15 @@ public class MembersController {
                 email, screenName, facebookId, openId);
     }
 
+    @GetMapping("findByScreenName")
+
+    public Member getMemberByScreenNameNoRole(@RequestParam String screenName) throws NotFoundException {
+        if (screenName == null) {
+            throw new NotFoundException("No message id given");
+        } else {
+            return memberDao.findOneByScreenName(screenName).orElseThrow(NotFoundException::new);
+        }
+    }
     @GetMapping("{memberId}")
     public Member getMember(@PathVariable long memberId) throws NotFoundException {
         if (memberId == 0) {

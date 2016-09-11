@@ -1,17 +1,25 @@
 package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.*;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.ContestSchedule;
+import org.xcolab.client.contest.pojo.ContestTeamMember;
+import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
+import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.members.legacy.enums.MemberRole;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.util.http.RequestUtils;
-import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ContestClient {
 
@@ -41,8 +49,8 @@ public class ContestClient {
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
             return contestResource.get(contestId)
-                    .cacheIdentifier("contestId_" + contestId)
-                    .execute();
+                    .withCache(CacheKeys.of(Contest.class, contestId), CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
         }
@@ -101,7 +109,10 @@ public class ContestClient {
 
     public static Integer getProposalCount(Long contestId) {
         try {
-            return contestResource.service(contestId, "proposalCountForActivePhase", Integer.class).get();
+            return contestResource.<Proposal, Integer>service(contestId, "proposalCountForActivePhase", Integer.class)
+                    .withCache(CacheKeys.withClass(Proposal.class)
+                            .withParameter("contestId", contestId).asCount(), CacheRetention.MEDIUM)
+                    .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }
@@ -138,7 +149,7 @@ public class ContestClient {
         try {
             return contestResource.service(contestId, "getSubContestsByOntologySpaceId", List.class)
                     .optionalQueryParam("ontologySpaceId", ontologySpaceId)
-                    .get();
+                    .getChecked();
         } catch (EntityNotFoundException e) {
             return new ArrayList<>();
         }
@@ -171,11 +182,11 @@ public class ContestClient {
                 .execute();
     }
 
-    public static ContestSchedule getContestSchedule(long Id_) {
+    public static ContestSchedule getContestSchedule(long id) {
         try {
-            return contestScheduleResource.get(Id_)
-                    .cacheIdentifier("contestScheduleId_" + Id_)
-                    .execute();
+            return contestScheduleResource.get(id)
+                    .withCache(CacheKeys.of(ContestSchedule.class, id), CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             return null;
         }
@@ -233,7 +244,7 @@ public class ContestClient {
 
     public static ContestPhase getContestPhase(Long contestPhaseId) {
         try {
-            return contestPhasesResource.get(contestPhaseId).execute();
+            return contestPhasesResource.get(contestPhaseId).executeChecked();
         } catch (EntityNotFoundException ignored) {
             return null;
         }
@@ -241,7 +252,7 @@ public class ContestClient {
 
     public static ContestPhase getActivePhase(Long contestId) {
         try {
-            return contestResource.service(contestId, "activePhase", ContestPhase.class).get();
+            return contestResource.service(contestId, "activePhase", ContestPhase.class).getChecked();
         } catch (EntityNotFoundException ignored) {
             return null;
         }
@@ -250,7 +261,7 @@ public class ContestClient {
 
     public static ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {
         try {
-            return contestPhaseTypesResource.get(contestPhaseTypeId).execute();
+            return contestPhaseTypesResource.get(contestPhaseTypeId).executeChecked();
         } catch (EntityNotFoundException ignored) {
             return null;
         }
@@ -265,18 +276,20 @@ public class ContestClient {
         return null;
     }
 
-    public static ContestType getContestType(long Id_) {
+    public static ContestType getContestType(long id) {
         try {
-            return contestTypeResource.get(Id_)
-                    .cacheIdentifier("contestTypeId_" + Id_)
-                    .execute();
+            return contestTypeResource.get(id)
+                    .withCache(CacheKeys.of(ContestType.class, id), CacheRetention.RUNTIME)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             return null;
         }
     }
 
     public static List<ContestType> getAllContestTypes() {
-        return contestTypeResource.list().execute();
+        return contestTypeResource.list()
+                .withCache(CacheKeys.withClass(ContestType.class).asList(), CacheRetention.LONG)
+                .execute();
     }
 
     public static List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
@@ -336,11 +349,11 @@ public class ContestClient {
         contestTeamMemberResource.delete(contestTeamMemberId).execute();
     }
 
-    public static ContestTeamMemberRole getContestTeamMemberRole(long Id_) {
+    public static ContestTeamMemberRole getContestTeamMemberRole(long id) {
         try {
-            return contestTeamMemberRoleResource.get(Id_)
-                    .cacheIdentifier("contestTeamMemberRoleId_" + Id_)
-                    .execute();
+            return contestTeamMemberRoleResource.get(id)
+                    .withCache(CacheKeys.of(ContestTeamMemberRole.class, id), CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             return null;
         }

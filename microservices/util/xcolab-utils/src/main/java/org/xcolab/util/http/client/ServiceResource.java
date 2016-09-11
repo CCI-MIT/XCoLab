@@ -7,39 +7,39 @@ import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.client.queries.ServiceQuery;
 
 public class ServiceResource extends AbstractHttpResource implements HttpResource {
-    private final UriProvider baseUrl;
 
+    private final HttpEndpoint serviceOrParent;
     public ServiceResource(HttpEndpoint serviceOrParent, String resourceName) {
         super(resourceName);
-        this.baseUrl = serviceOrParent.getBaseUrl();
+        this.serviceOrParent = serviceOrParent;
     }
 
     @Override
     public UriProvider getBaseUrl() {
-        return baseUrl;
+        return serviceOrParent.getBaseUrl();
     }
 
-    public <O> ServiceQuery<O> service(long id, String serviceEndpoint, Class<O> returnType) {
+    public <T, R> ServiceQuery<T, R> service(long id, String serviceEndpoint, Class<R> returnType) {
         return new ServiceQuery<>(this, id, serviceEndpoint, returnType);
     }
 
-    public <O> ServiceQuery<O> service(String id, String serviceEndpoint, Class<O> returnType) {
+    public <T, R> ServiceQuery<T, R> service(String id, String serviceEndpoint, Class<R> returnType) {
         return new ServiceQuery<>(this, id, serviceEndpoint, returnType);
     }
 
-    public <O> ServiceQuery<O> service(String serviceEndpoint, Class<O> returnType) {
+    public <T, R> ServiceQuery<T, R> service(String serviceEndpoint, Class<R> returnType) {
         return new ServiceQuery<>(this, serviceEndpoint, returnType);
     }
 
-    public <O> ServiceQuery<O> query(long id, Class<O> returnType) {
+    public <T, R> ServiceQuery<T, R> query(long id, Class<R> returnType) {
         return new ServiceQuery<>(this, id, returnType);
     }
 
-    public <O> ServiceQuery<O> query(String id, Class<O> returnType) {
+    public <T, R> ServiceQuery<T, R> query(String id, Class<R> returnType) {
         return new ServiceQuery<>(this, id, returnType);
     }
 
-    public <O> ServiceQuery<O> query(Class<O> returnType) {
+    public <T, R> ServiceQuery<T, R> query(Class<R> returnType) {
         return new ServiceQuery<>(this, returnType);
     }
 

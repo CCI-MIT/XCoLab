@@ -1,17 +1,10 @@
 package org.xcolab.portlets.contests;
 
-
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
-import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.utils.IdListUtil;
+import org.xcolab.util.IdListUtil;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -25,7 +18,6 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
-import javax.xml.bind.DataBindingException;
 
 public class ContestPreferences {
     private List<Long> selectedContests;
@@ -63,7 +55,8 @@ public class ContestPreferences {
     
     public ContestPreferences(PortletRequest request) {
     	PortletPreferences prefs = request.getPreferences();
-        selectedContests = IdListUtil.getIdsFromString(prefs.getValue(SELECTED_CONTESTS_PREFERENCE, ""));
+        selectedContests = IdListUtil
+                .getIdsFromString(prefs.getValue(SELECTED_CONTESTS_PREFERENCE, ""));
         title = prefs.getValue(TITLE_PREFERENCE, "Featured contests");
         allContestsTitle = prefs.getValue(ALL_CONTESTS_TITLE, "see all contests");
         showCounts = Boolean.parseBoolean(prefs.getValue(SHOW_COUNTS, "true"));

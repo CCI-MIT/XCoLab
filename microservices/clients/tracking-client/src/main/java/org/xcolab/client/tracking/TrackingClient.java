@@ -3,6 +3,8 @@ package org.xcolab.client.tracking;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.client.tracking.pojo.TrackedVisit;
 import org.xcolab.client.tracking.pojo.TrackedVisitor;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 
@@ -46,6 +48,8 @@ public final class TrackingClient {
     public static Location getLocationForIp(String ipAddress) {
         return locationResource.list()
                 .queryParam("ipAddress", ipAddress)
+                .withCache(CacheKeys.withClass(Location.class)
+                .withParameter("ipAddress", ipAddress).asList(), CacheRetention.MEDIUM)
                 .executeWithResult().getOneIfExists();
     }
 }

@@ -2,64 +2,72 @@ package org.xcolab.util.http.client.queries;
 
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.caching.CacheKey;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-public class ServiceQuery<T> {
+public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
     private final UriBuilder uriBuilder;
-    private final Class<T> entityType;
-    private String cacheIdentifierValue;
+    private final Class<R> returnType;
+    private CacheKey<T, R> cacheKey;
+    private CacheRetention cacheRetention;
 
     public ServiceQuery(HttpResource httpResource, long id, String serviceName,
-            Class<T> entityType) {
-        this.entityType = entityType;
+            Class<R> returnType) {
+        this.returnType = returnType;
         this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
     }
 
     public ServiceQuery(HttpResource httpResource, String id, String serviceName,
-            Class<T> entityType) {
-        this.entityType = entityType;
+            Class<R> returnType) {
+        this.returnType = returnType;
         this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
     }
 
-    public ServiceQuery(HttpResource httpResource, long id, Class<T> entityType) {
-        this.entityType = entityType;
+    public ServiceQuery(HttpResource httpResource, long id, Class<R> returnType) {
+        this.returnType = returnType;
         this.uriBuilder = httpResource.getResourceUrl(id);
     }
 
     public ServiceQuery(HttpResource httpResource, String serviceNameOrId,
-            Class<T> entityType) {
-        this.entityType = entityType;
+            Class<R> returnType) {
+        this.returnType = returnType;
         this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceNameOrId);
     }
 
-    public ServiceQuery(HttpResource httpResource, Class<T> entityType) {
-        this.entityType = entityType;
+    public ServiceQuery(HttpResource httpResource, Class<R> returnType) {
+        this.returnType = returnType;
         this.uriBuilder = httpResource.getResourceUrl();
     }
 
-    public T get() throws EntityNotFoundException {
-        if (cacheIdentifierValue == null) {
-            return RequestUtils.get(uriBuilder, entityType);
+    @Override
+    public R execute() {
+        return get();
+    }
+
+    public R getChecked() throws EntityNotFoundException {
+        if (cacheKey == null) {
+            return RequestUtils.get(uriBuilder, returnType);
         } else {
-            return RequestUtils.get(uriBuilder, entityType, cacheIdentifierValue);
+            return RequestUtils.get(uriBuilder, returnType, cacheKey, CacheRetention.REQUEST);
         }
     }
 
-    public T getUnchecked() {
-        if (cacheIdentifierValue == null) {
-            return RequestUtils.getUnchecked(uriBuilder, entityType);
+    public R get() {
+        if (cacheKey == null) {
+            return RequestUtils.getUnchecked(uriBuilder, returnType);
         } else {
-            return RequestUtils.getUnchecked(uriBuilder, entityType, cacheIdentifierValue);
+            return RequestUtils.getUnchecked(uriBuilder, returnType, cacheKey, cacheRetention);
         }
     }
 
-    public T post() {
-        return RequestUtils.post(uriBuilder, null, entityType);
+    public R post() {
+        return RequestUtils.post(uriBuilder, null, returnType);
     }
 
-    public T post(Object pojo) {
-        return RequestUtils.post(uriBuilder, pojo, entityType);
+    public R post(Object pojo) {
+        return RequestUtils.post(uriBuilder, pojo, returnType);
     }
 
     public boolean put() {
@@ -70,22 +78,26 @@ public class ServiceQuery<T> {
         return RequestUtils.delete(uriBuilder);
     }
 
-    public ServiceQuery<T> cacheIdentifier(String cacheIdentifier) {
-        this.cacheIdentifierValue = cacheIdentifier;
+    @Override
+    public ServiceQuery<T, R> withCache(CacheKey<T, R> cacheKey, CacheRetention cacheRetention) {
+        this.cacheKey = cacheKey;
+        this.cacheRetention = cacheRetention;
         return this;
     }
 
-    public ServiceQuery<T> queryParam(String name, Object value) {
+    @Override
+    public ServiceQuery<T, R> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
-    public ServiceQuery<T> queryParam(String name, Object... values) {
+    public ServiceQuery<T, R> queryParam(String name, Object... values) {
         uriBuilder.queryParam(name, values);
         return this;
     }
 
-    public ServiceQuery<T> optionalQueryParam(String name, Object value) {
+    @Override
+    public ServiceQuery<T, R> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;
     }

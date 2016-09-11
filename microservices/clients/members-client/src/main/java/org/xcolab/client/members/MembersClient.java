@@ -8,6 +8,8 @@ import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
@@ -70,12 +72,13 @@ public final class MembersClient {
 
     public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue) {
         try {
-            return memberResource.service("count", Integer.class)
+            return memberResource.<Member, Integer>service("count", Integer.class)
                     .optionalQueryParam("screenName", screenNameFilterValue)
                     .optionalQueryParam("category", categoryFilterValue)
-                    .cacheIdentifier("members_count_category_" + categoryFilterValue
-                            + "_screenName_" + screenNameFilterValue)
-                    .get();
+                    .withCache(CacheKeys.withClass(Member.class)
+                            .withParameter("screenName", screenNameFilterValue)
+                            .withParameter("category", categoryFilterValue).asCount(), CacheRetention.SHORT)
+                    .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }
@@ -83,7 +86,7 @@ public final class MembersClient {
 
     public static Integer getMemberActivityCount(long memberId) {
         try {
-            return memberResource.service(memberId, "activityCount", Integer.class).get();
+            return memberResource.service(memberId, "activityCount", Integer.class).getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }
@@ -91,7 +94,7 @@ public final class MembersClient {
 
     public static Integer getMemberMaterializedPoints(long memberId) {
         try {
-            return memberResource.service(memberId, "materializedPoints", Integer.class).get();
+            return memberResource.service(memberId, "materializedPoints", Integer.class).getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }
@@ -100,7 +103,8 @@ public final class MembersClient {
     public static List<Role_> getMemberRoles(long memberId) {
         return memberResource.getSubRestResource(memberId, "roles", Role_.TYPES)
                 .list()
-                .cacheIdentifier("memberId_" + memberId)
+                .withCache(CacheKeys.withClass(Role_.class)
+                        .withParameter("memberId", memberId).asList(), CacheRetention.REQUEST)
                 .execute();
     }
 
@@ -108,13 +112,19 @@ public final class MembersClient {
         return memberResource
                 .getSubRestResource(memberId, "contestRoles", Role_.TYPES)
                 .list().queryParam("contestId", contestId)
-                .cacheIdentifier("memberId_" + memberId + "_contestId_" + contestId)
+                .withCache(CacheKeys.withClass(Role_.class)
+                                .withParameter("memberId", memberId)
+                                .withParameter("contestId", contestId).asList(),
+                        CacheRetention.REQUEST)
                 .execute();
     }
 
     public static MemberCategory getMemberCategory(long roleId) {
         try {
-            return memberCategoryResource.get(roleId).cacheIdentifier("roleId_" + roleId).execute();
+            return memberCategoryResource.get(roleId)
+                    .withCache(CacheKeys.withClass(MemberCategory.class)
+                                    .withParameter("roleId", roleId).build(),
+                            CacheRetention.MEDIUM).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MemberCategoryNotFoundException("Category with role id " + roleId + " not found.");
         }
@@ -123,7 +133,9 @@ public final class MembersClient {
     public static MemberCategory getMemberCategory(String displayName) {
         MemberCategory memberCategory = memberCategoryResource.list()
                 .queryParam("displayName", displayName)
-                .cacheIdentifier("displayName_" + displayName)
+                .withCache(CacheKeys.withClass(MemberCategory.class)
+                                .withParameter("displayName", displayName).asSingletonList("ifExists"),
+                        CacheRetention.MEDIUM)
                 .executeWithResult().getFirstIfExists();
         if (memberCategory == null) {
             throw new MemberCategoryNotFoundException("Category with name " + displayName + " not found.");
@@ -139,7 +151,10 @@ public final class MembersClient {
 
     public static Member getMember(long memberId) throws MemberNotFoundException {
         try {
-            return memberResource.get(memberId).cacheIdentifier("memberId_" + memberId).execute();
+            return memberResource.get(memberId)
+                    .withCache(CacheKeys.of(Member.class, memberId),
+                            CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MemberNotFoundException("Member with id " + memberId + " not found.");
         }
@@ -147,7 +162,9 @@ public final class MembersClient {
 
     public static Member getMemberUnchecked(long memberId) {
         try {
-            return memberResource.get(memberId).cacheIdentifier("memberId_" + memberId).execute();
+            return memberResource.get(memberId)
+                    .withCache(CacheKeys.of(Member.class, memberId),
+                    CacheRetention.REQUEST).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new IllegalStateException("Member not found: " + memberId, e);
         }
@@ -175,9 +192,8 @@ public final class MembersClient {
 
     public static Member findMemberByScreenNameNoRole(String screenName) throws MemberNotFoundException {
         try {
-            Member member = memberResource.service("findByScreenName", Member.class)
-                    .queryParam("screenName", screenName).get();
-            return member;
+            return memberResource.service("findByScreenName", Member.class)
+                    .queryParam("screenName", screenName).getChecked();
         }catch (EntityNotFoundException ignored){
             throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
         }
@@ -205,9 +221,9 @@ public final class MembersClient {
     }
 
     public static boolean updateMember(Member member) {
-        //TODO: improve cache naming
-        final String cacheKey = "_" + Member.class.getSimpleName() + "_memberId_" + member.getId_();
-        return memberResource.update(member, member.getId_()).cacheIdentifier(cacheKey).execute();
+        return memberResource.update(member, member.getId_())
+                .cacheKey(CacheKeys.of(Member.class, member.getId_()))
+                .execute();
     }
 
     public static boolean deleteMember(long memberId) {
@@ -215,19 +231,19 @@ public final class MembersClient {
     }
 
     public static Contact_ getContact(Long contactId) {
-        return contactResource.get(contactId).executeUnchecked();
+        return contactResource.get(contactId).execute();
     }
 
     public static boolean isScreenNameUsed(String screenName) {
         return memberResource.service("isUsed", Boolean.class)
                 .queryParam("screenName", screenName)
-                .getUnchecked();
+                .get();
     }
 
     public static boolean isEmailUsed(String email) {
         return memberResource.service("isUsed", Boolean.class)
                 .queryParam("email", email)
-                .getUnchecked();
+                .get();
     }
 
     public static Long updateUserPassword(String forgotPasswordToken, String password) {
@@ -240,20 +256,20 @@ public final class MembersClient {
     public static boolean isForgotPasswordTokenValid(String passwordToken) {
         return memberResource.service("validateForgotPasswordToken", Boolean.class)
                 .queryParam("passwordToken", passwordToken)
-                .getUnchecked();
+                .get();
     }
 
     public static String createForgotPasswordToken(Long memberId) {
         return memberResource.service("createForgotPasswordToken", String.class)
                 .queryParam("memberId", memberId)
                 //TODO: this should be posted!
-                .getUnchecked();
+                .get();
     }
 
     public static String generateScreenName(String lastName, String firstName) {
         return memberResource.service("generateScreenName", String.class)
                 .queryParam("values", firstName, lastName)
-                .getUnchecked();
+                .get();
     }
 
     //TODO: remove, needed for liferay
@@ -261,14 +277,14 @@ public final class MembersClient {
         return memberResource.service("hashPassword", String.class)
                 .queryParam("password", password)
                 .queryParam("liferayCompatible", true)
-                .getUnchecked();
+                .get();
     }
 
     public static boolean validatePassword(String password, long memberId) {
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("memberId", memberId)
-                .getUnchecked();
+                .get();
     }
 
     public static boolean updatePassword(long memberId, String oldPassword, String newPassword) {
@@ -311,6 +327,6 @@ public final class MembersClient {
     }
 
     public static boolean isSubscribedToNewsletter(long memberId) {
-        return memberResource.service(memberId, "isSubscribed", Boolean.class).getUnchecked();
+        return memberResource.service(memberId, "isSubscribed", Boolean.class).get();
     }
 }

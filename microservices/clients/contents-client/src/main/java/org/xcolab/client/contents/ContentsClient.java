@@ -4,6 +4,8 @@ import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -37,7 +39,10 @@ public final class ContentsClient {
                 .queryParam("folderId", folderId)
                 .queryParam("title", title)
                 .queryParam("sort", "-contentArticleVersion")
-                .cacheIdentifier("_latest_folderId_" + folderId + "_title_" + title)
+                .withCache(CacheKeys.withClass(ContentArticleVersion.class)
+                        .withParameter("folderId", folderId)
+                        .withParameter("title", title).asSingletonList("latest"),
+                        CacheRetention.REQUEST)
                 .executeWithResult().getFirstIfExists();
         if (contentArticleVersion == null) {
             throw new ContentNotFoundException("No ContentArticleVersion with title " + title
@@ -51,7 +56,9 @@ public final class ContentsClient {
         final ContentArticleVersion contentArticleVersion = contentArticleVersionResource.list()
                 .queryParam("contentArticleId", articleId)
                 .queryParam("sort", "-contentArticleVersion")
-                .cacheIdentifier("_latest_articleId_" + articleId)
+                .withCache(CacheKeys.withClass(ContentArticleVersion.class)
+                        .withParameter("articleId", articleId).asSingletonList("latest"),
+                        CacheRetention.REQUEST)
                 .executeWithResult().getFirstIfExists();
         if (contentArticleVersion == null) {
             throw new ContentNotFoundException(
@@ -86,7 +93,7 @@ public final class ContentsClient {
     public static ContentArticle getContentArticle(Long contentArticleId)
             throws ContentNotFoundException {
         try {
-            return contentArticleResource.get(contentArticleId).execute();
+            return contentArticleResource.get(contentArticleId).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentArticle " + contentArticleId + " does not exist");
@@ -105,7 +112,7 @@ public final class ContentsClient {
     public static ContentArticleVersion getContentArticleVersion(Long contentArticleVersionId)
             throws ContentNotFoundException {
         try {
-            return contentArticleVersionResource.get(contentArticleVersionId).execute();
+            return contentArticleVersionResource.get(contentArticleVersionId).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentArticleVersion " + contentArticleVersionId + " does not exist");
@@ -126,7 +133,7 @@ public final class ContentsClient {
     public static ContentFolder getContentFolder(long contentFolderId)
             throws ContentNotFoundException {
         try {
-            return contentFolderResource.get(contentFolderId).execute();
+            return contentFolderResource.get(contentFolderId).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentFolder " + contentFolderId + " does not exist");

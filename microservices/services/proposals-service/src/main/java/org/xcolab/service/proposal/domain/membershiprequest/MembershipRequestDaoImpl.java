@@ -5,8 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.Membershiprequest;
-import org.xcolab.model.tables.records.MembershiprequestRecord;
+import org.xcolab.model.tables.pojos.MembershipRequest;
+import org.xcolab.model.tables.records.MembershipRequestRecord;
+
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
     private DSLContext dslContext;
 
 
-    public Membershiprequest create(Membershiprequest membershipRequest) {
+    public MembershipRequest create(MembershipRequest membershipRequest) {
 
-        MembershiprequestRecord ret = this.dslContext.insertInto(MEMBERSHIP_REQUEST)
+        MembershipRequestRecord ret = this.dslContext.insertInto(MEMBERSHIP_REQUEST)
                 .set(MEMBERSHIP_REQUEST.MEMBERSHIP_REQUEST_ID, membershipRequest.getMembershipRequestId())
                 .set(MEMBERSHIP_REQUEST.COMPANY_ID, membershipRequest.getCompanyId())
                 .set(MEMBERSHIP_REQUEST.USER_ID, membershipRequest.getUserId())
@@ -44,7 +45,7 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
 
     }
 
-    public MembershipRequest get(Long membershipRequestId) throws NotFoundException{
+    public MembershipRequest get(Long membershipRequestId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(MEMBERSHIP_REQUEST)
                 .where(MEMBERSHIP_REQUEST.MEMBERSHIP_REQUEST_ID.eq(membershipRequestId))
@@ -58,7 +59,7 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
     }
 
     @Override
-    public List<Membershiprequest> findByGiven(String groupId, String statusId) {
+    public List<MembershipRequest> findByGiven(Long groupId, Integer statusId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBERSHIP_REQUEST).getQuery();
 
@@ -68,6 +69,6 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
         if (statusId != null) {
             query.addConditions(MEMBERSHIP_REQUEST.STATUS_ID.eq(statusId));
         }
-        return query.fetchInto(Membershiprequest.class);
+        return query.fetchInto(MembershipRequest.class);
     }
 }

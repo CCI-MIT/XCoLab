@@ -54,6 +54,10 @@ public class ContestWrapper extends BaseContestWrapper {
 
 
 
+    public boolean getIsSharedContest(){
+        return contest.getIsSharedContest();
+    }
+
     public String getContestDescription() {
         return contest.getContestDescription();
     }

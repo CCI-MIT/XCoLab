@@ -4,7 +4,7 @@ import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 
-public class DeleteQuery<T> {
+public class DeleteQuery<T> implements Query<T, Boolean> {
 
     private final UriBuilder uriBuilder;
 
@@ -12,15 +12,18 @@ public class DeleteQuery<T> {
         this.uriBuilder = restResource.getResourceUrl(id);
     }
 
-    public boolean execute() {
+    @Override
+    public Boolean execute() {
         return RequestUtils.delete(uriBuilder);
     }
 
+    @Override
     public DeleteQuery<T> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
+    @Override
     public DeleteQuery<T> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

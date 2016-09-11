@@ -29,7 +29,7 @@ public final class MessagingClient {
 
     public static Message getMessage(long messageId) throws MessageNotFoundException {
         try {
-            return messageResource.get(messageId).execute();
+            return messageResource.get(messageId).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MessageNotFoundException(messageId);
         }
@@ -151,7 +151,7 @@ public final class MessagingClient {
 
     public static MessagingUserPreferences getMessagingPreferencesForMember(long memberId) {
         return memberResource.service(memberId, "messagingPreferences", MessagingUserPreferences.class)
-                .getUnchecked();
+                .get();
     }
 
     public static MessagingUserPreferences createMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {
@@ -174,6 +174,6 @@ public final class MessagingClient {
 
     public static boolean canMemberSendMessage(long memberId) {
         return memberResource.service(memberId, "canSendMessage", Boolean.class)
-                .getUnchecked();
+                .get();
     }
 }

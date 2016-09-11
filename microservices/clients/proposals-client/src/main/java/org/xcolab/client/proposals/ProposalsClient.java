@@ -9,7 +9,17 @@ import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.*;
+import org.xcolab.client.proposals.pojo.PlanSectionDefinition;
+import org.xcolab.client.proposals.pojo.PlanTemplate;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.pojo.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.ProposalVersion;
+import org.xcolab.client.proposals.pojo.ProposalVote;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -80,23 +90,22 @@ public final class ProposalsClient {
         try {
             return proposalResource.get(proposalId)
                     .queryParam("includeDeleted", includeDeleted)
-                    .cacheIdentifier("proposalId_" + proposalId
-                            + "_includeDeleted_" + includeDeleted)
-                    .execute();
+                    .withCache(CacheKeys.withClass(Proposal.class)
+                            .withParameter("proposalId", proposalId)
+                            .withParameter("includeDeleted", includeDeleted).build(),
+                            CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ProposalNotFoundException(proposalId);
         }
     }
 
     public static Integer getNumberOfProposalsForJudge(Long userId, Long contestPhaseId) {
-        try {
             return proposalResource.service("numberOfProposalsForJudge", Integer.class)
                     .queryParam("userId", userId)
                     .queryParam("contestPhaseId", contestPhaseId)
                     .get();
-        } catch (EntityNotFoundException e) {
-            return 0;
-        }
+
     }
 
     public static boolean updateProposal(Proposal proposal) {
@@ -112,7 +121,7 @@ public final class ProposalsClient {
             return proposal2PhaseResource.service("getByContestPhaseIdProposalId", Proposal2Phase.class)
                     .queryParam("proposalId", proposalId)
                     .queryParam("contestPhaseId", contestPhaseId)
-                    .get();
+                    .getChecked();
         } catch (EntityNotFoundException ignored) {
             throw new Proposal2PhaseNotFoundException(proposalId);
         }
@@ -131,30 +140,24 @@ public final class ProposalsClient {
     }
 
     public static Integer getProposalSupportersCount(Long proposalId) {
-        try {
+
             return proposalSupporterResource.service("count", Integer.class)
                     .optionalQueryParam("proposalId", proposalId)
                     .get();
-        } catch (EntityNotFoundException ignored) {
-            return 0;
-        }
+
     }
 
     public static ProposalVersion getProposalVersionByProposalIdVersion(Long proposalId, Integer version) {
-        try {
             return proposalVersionResource.service("getByProposalIdVersion", ProposalVersion.class)
                     .queryParam("proposalId", proposalId)
                     .queryParam("version", version)
                     .get();
-        } catch (EntityNotFoundException ignored) {
-            return null;
-        }
     }
 
 
     public static Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
         try {
-            return proposal2PhaseResource.service(contestPhasePK, "getProposalCount", Integer.class).get();
+            return proposal2PhaseResource.service(contestPhasePK, "getProposalCount", Integer.class).getChecked();
         } catch (EntityNotFoundException ignored) {
             return 0;
         }
@@ -168,15 +171,12 @@ public final class ProposalsClient {
     }
 
     public static ProposalContestPhaseAttribute getAllProposalContestPhaseProposalAttributes(Long contestPhaseId, Long proposalId, String name) {
-        try {
             return proposalContestPhaseAttributeResource.service("getByContestPhaseProposalIdName", ProposalContestPhaseAttribute.class)
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("name", name)
                     .get();
-        } catch (EntityNotFoundException ignored) {
-            return null;
-        }
+
     }
 
     public static ProposalContestPhaseAttribute createProposalContestPhaseAttribute(ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
@@ -185,25 +185,22 @@ public final class ProposalsClient {
 
     public static Integer countProposalVotesInContestPhase(Long contestPhaseId) {
         try {
-            return proposalVoteResource.service("count", Integer.class)
+            return proposalVoteResource.<Proposal, Integer>service("count", Integer.class)
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
-                    .cacheIdentifier("proposalsInContestPhaseVotes" + contestPhaseId)
-                    .get();
+                    .withCache(CacheKeys.withClass(Proposal.class)
+                            .withParameter("contestPhaseId", contestPhaseId)
+                            .asCount(), CacheRetention.REQUEST)
+                    .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }
     }
 
     public static Integer countProposalVotesInContestPhaseProposalId(Long proposalId, Long contestPhaseId) {
-        try {
             return proposalVoteResource.service("count", Integer.class)
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .optionalQueryParam("proposalId", proposalId)
-                    .cacheIdentifier("proposalsInContestPhaseVotes_proposalId" + contestPhaseId + "_" + proposalId)
                     .get();
-        } catch (EntityNotFoundException e) {
-            return 0;
-        }
     }
 
     public static List<ProposalVote> getProposalVotes(Long contestPhaseId, Long proposalId, Long userId) {
@@ -220,15 +217,12 @@ public final class ProposalsClient {
 
 
     public static ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {
-        try {
             return proposalAttributeResource.service("getByProposalIdVersionAditionalId", ProposalAttribute.class)
                     .queryParam("proposalId", proposalId)
                     .queryParam("name", name)
                     .queryParam("additionalId", additionalId)
                     .get();
-        } catch (EntityNotFoundException ignored) {
-            return null;
-        }
+
     }
 
     public static List<ProposalVersion> getAllProposalVersions(Long proposalId) {
@@ -238,13 +232,9 @@ public final class ProposalsClient {
     }
 
     public static ProposalAttribute getProposalAttribute(long id_) throws ProposalAttributeNotFoundException {
-        try {
             return proposalAttributeResource.get(id_)
-                    .cacheIdentifier("proposalAttributeId_" + id_)
                     .execute();
-        } catch (EntityNotFoundException e) {
-            throw new ProposalAttributeNotFoundException(id_);
-        }
+
     }
 
     public static boolean updateProposalAttribute(ProposalAttribute proposalAttribute) {
@@ -258,6 +248,11 @@ public final class ProposalsClient {
         ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
         return ContestClient.getContest(contestPhase.getContestPhasePK());
 
+    }
+
+    public static  ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute, Long authorId) {
+        return proposalAttributeResource.create(proposalAttribute).queryParam("authorId", authorId)
+                .execute();
     }
 
     public static Long getLatestContestPhaseIdInProposal(Long proposalId) {
@@ -288,13 +283,9 @@ public final class ProposalsClient {
     }
 
     public static PlanTemplate getPlanTemplate(long Id_) throws PlanTemplateNotFoundException {
-        try {
             return planTemplateResource.get(Id_)
-                    .cacheIdentifier("planTemplateId_" + Id_)
                     .execute();
-        } catch (EntityNotFoundException e) {
-            throw new PlanTemplateNotFoundException(Id_);
-        }
+
     }
 
     public static List<PlanSectionDefinition> getPlanSectionDefinitionByPlanTemplateId(Long planTemplateId,Boolean weight) {

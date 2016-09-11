@@ -9,8 +9,12 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class CacheInjector {
+    private final CacheProvider injectedCacheProvider;
+
     @Autowired
-    private CacheProvider injectedCacheProvider;
+    public CacheInjector(CacheProvider injectedCacheProvider) {
+            this.injectedCacheProvider = injectedCacheProvider;
+    }
 
     @PostConstruct
     public void postConstruct() {

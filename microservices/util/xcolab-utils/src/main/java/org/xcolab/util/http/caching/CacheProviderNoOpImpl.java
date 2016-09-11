@@ -1,29 +1,25 @@
 package org.xcolab.util.http.caching;
 
-import org.apache.commons.lang3.concurrent.ConcurrentUtils;
-
-import java.util.concurrent.Future;
-
 public class CacheProviderNoOpImpl implements CacheProvider {
 
     @Override
-    public Object get(String key) {
+    public <T> T get(CacheKey<?, T> key, CacheRetention cacheRetention) {
         return null;
     }
 
     @Override
-    public Future<Boolean> add(String key, int exp, Object o) {
-        return ConcurrentUtils.constantFuture(false);
+    public <T> boolean add(CacheKey<?, T> key, CacheRetention cacheRetention, T value) {
+        return false;
     }
 
     @Override
-    public Future<Boolean> replace(String key, int exp, Object o) {
-        return ConcurrentUtils.constantFuture(false);
+    public <T> boolean replace(CacheKey<?, T> key, CacheRetention cacheRetention, T value) {
+        return false;
     }
 
     @Override
-    public Future<Boolean> delete(String key) {
-        return ConcurrentUtils.constantFuture(false);
+    public boolean delete(CacheKey<?, ?> key, CacheRetention cacheRetention) {
+        return false;
     }
 
     @Override

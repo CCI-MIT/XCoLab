@@ -8,7 +8,7 @@ mvn clean compile package install clean
 cd ../../..
 
 cd microservices/clients
-for D in *; do
+for D in *-client; do
     if [ -d "${D}" ]; then
         cd $D
 		pwd

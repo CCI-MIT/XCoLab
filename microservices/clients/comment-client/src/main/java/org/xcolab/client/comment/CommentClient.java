@@ -8,6 +8,8 @@ import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -64,7 +66,7 @@ public final class CommentClient {
         try {
             return commentResource.service("countProposalsInContestPhases", Integer.class)
                     .queryParam("contestPhaseId", contestPhaseId)
-                    .get();
+                    .getChecked();
         }catch(EntityNotFoundException ignored){
             return 0;
         }
@@ -79,8 +81,11 @@ public final class CommentClient {
         try {
             return commentResource.get(commentId)
                     .queryParam("includeDeleted", includeDeleted)
-                    .cacheIdentifier("commentId_" + commentId + "_includeDeleted_" + includeDeleted)
-                    .execute();
+                    .withCache(CacheKeys.withClass(Comment.class)
+                            .withParameter("id", commentId)
+                            .withParameter("includeDeleted", includeDeleted).build(),
+                            CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CommentNotFoundException(commentId);
         }
@@ -115,8 +120,8 @@ public final class CommentClient {
 
         try {
             return threadResource.get(threadId)
-                    .cacheIdentifier("threadId_" + threadId)
-                    .execute();
+                    .withCache(CacheKeys.of(CommentThread.class, threadId), CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ThreadNotFoundException(threadId);
         }
@@ -124,7 +129,7 @@ public final class CommentClient {
 
     public static Long getProposalIdForThread(long threadId) {
         try {
-            return threadResource.service(threadId, "getProposalIdForThread", Long.class).get();
+            return threadResource.service(threadId, "getProposalIdForThread", Long.class).getChecked();
         } catch (EntityNotFoundException e) {
             return null;
         }
@@ -139,15 +144,19 @@ public final class CommentClient {
     }
 
     public static Date getLastActivityDate(long threadId) {
-        return threadResource.service(threadId, "lastActivityDate", Date.class)
-                .cacheIdentifier("lastActivityDate_threadId_" + threadId)
-                .getUnchecked();
+        return threadResource.<CommentThread, Date>service(threadId, "lastActivityDate", Date.class)
+                .withCache(CacheKeys.withClass(CommentThread.class)
+                        .withParameter("threadId", threadId)
+                        .withParameter("date", "lastActivity").build(Date.class), CacheRetention.REQUEST)
+                .get();
     }
 
     public static long getLastActivityAuthorId(long threadId) {
-        return threadResource.service(threadId, "lastActivityAuthorId", Long.class)
-                .cacheIdentifier("lastActivityAuthorId_threadId_" + threadId)
-                .getUnchecked();
+        return threadResource.<CommentThread, Long>service(threadId, "lastActivityAuthorId", Long.class)
+                .withCache(CacheKeys.withClass(CommentThread.class)
+                        .withParameter("threadId", threadId)
+                        .withParameter("authorId", "lastActivity").build(Long.class), CacheRetention.REQUEST)
+                .get();
     }
 
     //    Category methods
@@ -163,8 +172,8 @@ public final class CommentClient {
     public static Category getCategory(long categoryId) throws CategoryNotFoundException {
         try {
             return categoryResource.get(categoryId)
-                    .cacheIdentifier("categoryId_" + categoryId)
-                    .execute();
+                    .withCache(CacheKeys.of(Category.class, categoryId), CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryNotFoundException(categoryId);
         }
@@ -184,8 +193,8 @@ public final class CommentClient {
             throws CategoryGroupNotFoundException {
         try {
             return categoryGroupResource.get(groupId)
-                    .cacheIdentifier("groupId" + groupId)
-                    .execute();
+                    .withCache(CacheKeys.of(CategoryGroup.class, groupId), CacheRetention.REQUEST)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryGroupNotFoundException(groupId);
         }
