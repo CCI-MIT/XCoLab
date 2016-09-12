@@ -31,7 +31,9 @@ function load(page, phaseId){
 
 
 function addVersionToTable(data, even){
-    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (data.version == getVersion() ? ' ui-datatable-highlighted' : '') + '"><td style="width: 200px;"><a href="' + proposalUrl + '/version/' + data.version + '">' + dateTimeFormatter.dateTime(data.date) + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="' + phaseUrl + '">' + data.contestPhase.name + '</a></em></td></tr>');
+    var dateObject = new Date(data.date);
+    var adjustedDateString = (dateObject.getMonth()+1)+"/"+dateObject.getDate()+"/"+dateObject.getFullYear()+" "+dateObject.getHours()+":"+dateObject.getMinutes()+" UTC"+(dateObject.getTimezoneOffset()/(-60));
+    $('#versions > div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (data.version == getVersion() ? ' ui-datatable-highlighted' : '') + '"><td style="width: 200px;"><a href="' + proposalUrl + '/version/' + data.version + '">' + /*dateTimeFormatter.dateTime(data.date)*/ adjustedDateString + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="' + phaseUrl + '">' + data.contestPhase.name + '</a></em></td></tr>');
 }
 
 function addPagination(prev,next,currentPage,totalPages){
