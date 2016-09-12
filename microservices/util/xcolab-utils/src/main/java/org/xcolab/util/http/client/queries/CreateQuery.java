@@ -4,31 +4,37 @@ import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 
-public class CreateQuery<T> implements Query<T, T> {
+public class CreateQuery<ElementT> implements Query<ElementT, ElementT> {
 
     private final UriBuilder uriBuilder;
-    private final T pojo;
-    private final Class<T> entityType;
+    private final ElementT pojo;
+    private final Class<ElementT> entityType;
 
-    public CreateQuery(RestResource<T> restResource, T pojo, Class<T> entityType) {
+    public CreateQuery(RestResource<ElementT> restResource, ElementT pojo, Class<ElementT> entityType) {
         this.pojo = pojo;
         this.entityType = entityType;
         this.uriBuilder = restResource.getResourceUrl();
     }
 
     @Override
-    public T execute() {
+    public ElementT execute() {
         return RequestUtils.post(uriBuilder, pojo, entityType);
     }
 
     @Override
-    public CreateQuery<T> queryParam(String name, Object value) {
+    public CreateQuery<ElementT> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
     @Override
-    public CreateQuery<T> optionalQueryParam(String name, Object value) {
+    public CreateQuery<ElementT> queryParam(String name, Object... value) {
+        uriBuilder.queryParam(name, value);
+        return this;
+    }
+
+    @Override
+    public CreateQuery<ElementT> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;
     }

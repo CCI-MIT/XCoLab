@@ -55,6 +55,12 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     }
 
     @Override
+    public ListQuery<T> queryParam(String name, Object... value) {
+        uriBuilder.queryParam(name, value);
+        return this;
+    }
+
+    @Override
     public ListQuery<T> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

@@ -54,6 +54,12 @@ public class GetQuery<T> implements CacheableQuery<T, T> {
     }
 
     @Override
+    public GetQuery<T> queryParam(String name, Object... value) {
+        uriBuilder.queryParam(name, value);
+        return this;
+    }
+
+    @Override
     public GetQuery<T> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

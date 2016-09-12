@@ -1,10 +1,12 @@
 package org.xcolab.util.http.client.queries;
 
-public interface Query<T, R> {
+public interface Query<ElementT, ReturnT> {
 
-    Query<T, R> queryParam(String name, Object value);
+    Query<ElementT, ReturnT> queryParam(String name, Object value);
 
-    Query<T, R> optionalQueryParam(String name, Object value);
+    Query<ElementT, ReturnT> queryParam(String name, Object... value);
 
-    R execute();
+    Query<ElementT, ReturnT> optionalQueryParam(String name, Object value);
+
+    ReturnT execute();
 }
