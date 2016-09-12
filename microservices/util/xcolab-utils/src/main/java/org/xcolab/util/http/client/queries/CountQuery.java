@@ -38,6 +38,12 @@ public class CountQuery<ElementT> implements CacheableQuery<ElementT, Integer> {
     }
 
     @Override
+    public CountQuery<ElementT> queryParam(String name, Object... value) {
+        uriBuilder.queryParam(name, value);
+        return this;
+    }
+
+    @Override
     public CountQuery<ElementT> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

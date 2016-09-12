@@ -24,6 +24,12 @@ public class DeleteQuery<ElementT, IdT> implements Query<ElementT, Boolean> {
     }
 
     @Override
+    public DeleteQuery<ElementT, IdT> queryParam(String name, Object... value) {
+        uriBuilder.queryParam(name, value);
+        return this;
+    }
+
+    @Override
     public DeleteQuery<ElementT, IdT> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

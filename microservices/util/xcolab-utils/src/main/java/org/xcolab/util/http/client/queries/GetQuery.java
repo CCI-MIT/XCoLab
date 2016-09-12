@@ -7,19 +7,19 @@ import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-public class GetQuery<T, IdT> implements CacheableQuery<T, T> {
+public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, ElementT> {
     private final UriBuilder uriBuilder;
-    private final Class<T> entityType;
-    private CacheKey<T, T> cacheKey;
+    private final Class<ElementT> entityType;
+    private CacheKey<ElementT, ElementT> cacheKey;
     private CacheRetention cacheRetention;
 
-    public GetQuery(RestResource<T, IdT> restResource, IdT id, Class<T> entityType) {
+    public GetQuery(RestResource<ElementT, IdT> restResource, IdT id, Class<ElementT> entityType) {
         this.entityType = entityType;
         this.uriBuilder = restResource.getResourceUrl(id);
     }
 
     @Override
-    public T execute() {
+    public ElementT execute() {
         if (cacheKey == null) {
             return RequestUtils.getUnchecked(uriBuilder, entityType);
         } else {
@@ -27,7 +27,7 @@ public class GetQuery<T, IdT> implements CacheableQuery<T, T> {
         }
     }
 
-    public T executeChecked() throws EntityNotFoundException {
+    public ElementT executeChecked() throws EntityNotFoundException {
         if (cacheKey == null) {
             return RequestUtils.get(uriBuilder, entityType);
         } else {
@@ -36,20 +36,26 @@ public class GetQuery<T, IdT> implements CacheableQuery<T, T> {
     }
 
     @Override
-    public GetQuery<T, IdT> withCache(CacheKey<T, T> cacheKey, CacheRetention cacheRetention) {
+    public GetQuery<ElementT, IdT> withCache(CacheKey<ElementT, ElementT> cacheKey, CacheRetention cacheRetention) {
         this.cacheKey = cacheKey;
         this.cacheRetention = cacheRetention;
         return this;
     }
 
     @Override
-    public GetQuery<T, IdT> queryParam(String name, Object value) {
+    public GetQuery<ElementT, IdT> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
     @Override
-    public GetQuery<T, IdT> optionalQueryParam(String name, Object value) {
+    public GetQuery<ElementT, IdT> queryParam(String name, Object... value) {
+        uriBuilder.queryParam(name, value);
+        return this;
+    }
+
+    @Override
+    public GetQuery<ElementT, IdT> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;
     }

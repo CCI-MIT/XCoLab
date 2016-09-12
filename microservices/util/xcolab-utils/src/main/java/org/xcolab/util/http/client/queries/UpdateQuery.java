@@ -5,13 +5,13 @@ import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.client.RestResource;
 
-public class UpdateQuery<T, IdT> implements Query<T, Boolean> {
+public class UpdateQuery<ElementT, IdT> implements Query<ElementT, Boolean> {
 
     private final UriBuilder uriBuilder;
-    private final T pojo;
-    private CacheKey<T, T> cacheKey;
+    private final ElementT pojo;
+    private CacheKey<ElementT, ElementT> cacheKey;
 
-    public UpdateQuery(RestResource<T, IdT> restResource, IdT id, T pojo) {
+    public UpdateQuery(RestResource<ElementT, IdT> restResource, IdT id, ElementT pojo) {
         this.pojo = pojo;
         this.uriBuilder = restResource.getResourceUrl(id);
     }
@@ -25,19 +25,25 @@ public class UpdateQuery<T, IdT> implements Query<T, Boolean> {
         }
     }
 
-    public UpdateQuery<T, IdT> cacheKey(CacheKey<T, T> cacheKey) {
+    public UpdateQuery<ElementT, IdT> cacheKey(CacheKey<ElementT, ElementT> cacheKey) {
         this.cacheKey = cacheKey;
         return this;
     }
 
     @Override
-    public UpdateQuery<T, IdT> queryParam(String name, Object value) {
+    public UpdateQuery<ElementT, IdT> queryParam(String name, Object value) {
         uriBuilder.queryParam(name, value);
         return this;
     }
 
     @Override
-    public UpdateQuery<T, IdT> optionalQueryParam(String name, Object value) {
+    public UpdateQuery<ElementT, IdT> queryParam(String name, Object... value) {
+        uriBuilder.queryParam(name, value);
+        return this;
+    }
+
+    @Override
+    public UpdateQuery<ElementT, IdT> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;
     }
