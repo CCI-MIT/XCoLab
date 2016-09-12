@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
+
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -19,13 +19,19 @@ import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.helpers.Tuple;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class BaseContestWrapper {
 
@@ -446,12 +452,12 @@ public class BaseContestWrapper {
         return contestTeamMembersByRole;
     }
 
-    public boolean getHasUserRoleInContest(User userInQuestion, String role) {
+    public boolean getHasUserRoleInContest(long memberId, String role) {
 
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
             if (c.getRoleName().equalsIgnoreCase(role)) {
                 for (Member user : c.getUsers()) {
-                    if (user.equals(userInQuestion)) {
+                    if (user.getUserId() == memberId) {
                         return true;
                     }
                 }
