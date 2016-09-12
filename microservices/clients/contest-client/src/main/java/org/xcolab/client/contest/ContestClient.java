@@ -72,12 +72,12 @@ public class ContestClient {
         c.setProposalVoteConfirmationTemplateString("");
         c.setVoteQuestionTemplateString("");
         c.setVoteTemplateString("");
-        c.setFocusAreaId(0l);
-        c.setContestTier(0l);
-        c.setContestLogoId(0l);
+        c.setFocusAreaId(0L);
+        c.setContestTier(0L);
+        c.setContestLogoId(0L);
         c.setFeatured_(false);
         c.setPlansOpenByDefault(false);
-        c.setSponsorLogoId(0l);
+        c.setSponsorLogoId(0L);
         c.setSponsorLink("");
         c.setSponsorText("");
         c.setFlag(0);
@@ -87,14 +87,14 @@ public class ContestClient {
         c.setResourcesUrl("");
         c.setUsePermissions(false);
         c.setContestCreationStatus("");
-        c.setDefaultModelId(0l);
+        c.setDefaultModelId(0L);
         c.setOtherModels("");
         c.setPoints(0.0);
-        c.setDefaultParentPointType(0l);
+        c.setDefaultParentPointType(0L);
         c.setPointDistributionStrategy("");
         c.setEmailTemplateUrl("");
         c.setHideRibbons(false);
-        c.setResourceArticleId(0l);
+        c.setResourceArticleId(0L);
         return createContest(c);
     }
 
@@ -143,8 +143,8 @@ public class ContestClient {
 
     public static List<Contest> findContestsTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTerms) {
         return contestResource.list()
-                .optionalQueryParam("contestTier", contestTier)
-                .optionalQueryParam("focusAreaOntologyTerms", focusAreaOntologyTerms)
+                .queryParam("contestTier", contestTier)
+                .queryParam("focusAreaOntologyTerms", focusAreaOntologyTerms.toArray())
                 .execute();
     }
 

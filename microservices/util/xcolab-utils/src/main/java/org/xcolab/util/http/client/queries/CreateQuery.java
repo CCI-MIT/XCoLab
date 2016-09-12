@@ -28,6 +28,12 @@ public class CreateQuery<ElementT> implements Query<ElementT, ElementT> {
     }
 
     @Override
+    public CreateQuery<ElementT> queryParam(String name, Object... value) {
+        uriBuilder.queryParam(name, value);
+        return this;
+    }
+
+    @Override
     public CreateQuery<ElementT> optionalQueryParam(String name, Object value) {
         uriBuilder.optionalQueryParam(name, value);
         return this;

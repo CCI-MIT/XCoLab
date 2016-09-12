@@ -73,7 +73,9 @@
 
                         <c:forEach var="sourceMoveHistory" items="${sourceMoveHistories}">
                             <c:choose>
-                                <c:when test="${sourceMoveHistory.moveType.name() == 'COPY' and sourceMoveHistory.sourceContestPhase.contestPhasePK == contestPhase.contestPhasePK}">
+                                <c:when test="${sourceMoveHistory.moveType.name() == 'COPY'
+                                            and (sourceMoveHistory.sourceContestPhaseId == 0
+                                                    or sourceMoveHistory.sourceContestPhaseId == contestPhase.contestPhasePK)}">
                                     <div>
                                         This ${contestType.proposalName} was reopen in <collab:contestLink contest="${sourceMoveHistory.sourceContest}"/>
                                         <c:if test="${proposalsPermissions.canAdminAll}">

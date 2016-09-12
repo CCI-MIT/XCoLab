@@ -1,13 +1,14 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import org.joda.time.DateTime;
+
 import com.ext.portlet.model.ProposalMoveHistory;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.joda.time.DateTime;
-import org.xcolab.client.contest.ContestClient;
+
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
@@ -28,7 +29,7 @@ public class MoveHistoryWrapper {
         return new ProposalWrapper(wrapped.getSourceProposalId());
     }
 
-    public ContestWrapper getSourceContest() throws PortalException, SystemException {
+    public ContestWrapper getSourceContest() {
         try {
             return new ContestWrapper(wrapped.getSourceContestId());
         }catch (ContestNotFoundException ignored){
@@ -36,28 +37,32 @@ public class MoveHistoryWrapper {
         }
     }
 
-    public BaseContestPhaseWrapper getSourceContestPhase() throws PortalException, SystemException {
+    public BaseContestPhaseWrapper getSourceContestPhase() {
         return new BaseContestPhaseWrapper(wrapped.getSourcePhaseId());
+    }
+
+    public long getSourceContestPhaseId() {
+        return wrapped.getSourcePhaseId();
     }
 
     public ProposalWrapper getTargetProposal() throws PortalException, SystemException {
         return new ProposalWrapper(wrapped.getTargetProposalId());
     }
 
-    public ContestWrapper getTargetContest() throws PortalException, SystemException {
-       try{
+    public ContestWrapper getTargetContest() {
+       try {
            return new ContestWrapper(wrapped.getTargetContestId());
-       }catch (ContestNotFoundException ignored){
+       } catch (ContestNotFoundException ignored) {
            return null;
        }
     }
 
-    public BaseContestPhaseWrapper getTargetContestPhase() throws PortalException, SystemException {
+    public BaseContestPhaseWrapper getTargetContestPhase() {
         return new BaseContestPhaseWrapper(wrapped.getTargetPhaseId());
     }
 
-    public User getMovingUser() throws SystemException, PortalException {
-        return UserLocalServiceUtil.getUser(wrapped.getMovingUserId());
+    public Member getMovingUser() {
+        return MembersClient.getMemberUnchecked(wrapped.getMovingUserId());
     }
 
     public MoveType getMoveType() {
