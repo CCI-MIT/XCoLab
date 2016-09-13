@@ -34,6 +34,7 @@ import org.xcolab.client.proposals.pojo.PlanTemplate;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
@@ -280,15 +281,18 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public Long getModelId() throws PortalException, SystemException {
         Long modelId = 0L;
-        try {
-            modelId = ContestLocalServiceUtil.getDefaultModelId(contest.getContestPK());
-        } catch (PortalException | SystemException ignored) {
-        }
+            modelId = contest.getDefaultModelId();
+
         return modelId;
     }
 
     public void setScenarioId(Long scenarioId, Long isConsolidatedScenario, Long userId) throws PortalException, SystemException {
-        ProposalAttributeLocalServiceUtil.setAttribute(userId, proposal.getProposalId(), ProposalAttributeKeys.SCENARIO_ID, isConsolidatedScenario, scenarioId);
+        ProposalAttribute proposalAttribute = new ProposalAttribute();
+        proposalAttribute.setProposalId(proposal.getProposalId());
+        proposalAttribute.setName(ProposalAttributeKeys.SCENARIO_ID);
+        proposalAttribute.setNumericValue(isConsolidatedScenario);
+        proposalAttribute.setAdditionalId(scenarioId);
+        ProposalsClient.setProposalAttribute(proposalAttribute,userId);
     }
 
     public Long getScenarioId() throws PortalException, SystemException {
@@ -306,7 +310,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public Map<Long, List<ProposalWrapper>> getSubProposalPerModel() throws PortalException, SystemException {
         Map<Long, List<ProposalWrapper>> subProposalPerModel = new HashMap<>();
-        List<Proposal> subProposals = ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+        List<Proposal> subProposals = ProposalsClient.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
 
         for (Proposal subProposal : subProposals) {
             ProposalWrapper subProposalWrapper = new ProposalWrapper(subProposal);
@@ -344,7 +348,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public List<Scenario> getSubProposalScenarios() throws SystemException, PortalException, IOException {
         List<Scenario> subProposalScenarios = new ArrayList<>();
-        List<Proposal> subProposals = ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+        List<Proposal> subProposals = ProposalsClient.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
         for (Proposal subProposal : subProposals) {
             Scenario scenarioForSubProposal = getScenarioByProposalId(subProposal.getProposalId());
             subProposalScenarios.add(scenarioForSubProposal);
@@ -429,11 +433,11 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public boolean getAllJudgesReviewFinished() {
-        try {
+
             if (!getSelectedJudges().isEmpty()) {
                 for (long userId : getSelectedJudges()) {
-                    List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil
-                            .getJudgeRatingsForProposalAndUser(
+                    List<ProposalRating> proposalRatings = ProposalsClient
+                    .getProposalRatingsByProposalUserContestPhase(
                                     userId, proposal.getProposalId(),
                                     contestPhase.getContestPhasePK());
                     ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId,
@@ -444,33 +448,33 @@ public class ProposalWrapper extends BaseProposalWrapper {
                 }
             }
             return true;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     public boolean getJudgeReviewFinishedStatusUserId(long userId) {
-        try {
-            List<ProposalRating> proposalRatings = ProposalRatingLocalServiceUtil
-                    .getJudgeRatingsForProposalAndUser(
+
+            List<ProposalRating> proposalRatings = ProposalsClient
+                    .getProposalRatingsByProposalUserContestPhase(
                             userId, proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
             return wrapper.isReviewComplete();
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     public ProposalWrapper getBaseProposal() throws PortalException, SystemException {
-        if (baseProposal == null) {
-            long baseProposalId = proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_ID, 0);
-            long baseProposalContestId = proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0);
-            if (baseProposalId > 0 && baseProposalContestId > 0) {
-                Proposal p = ProposalLocalServiceUtil.getProposal(baseProposalId);
-                baseProposal = new ProposalWrapper(p);
+        try {
+            if (baseProposal == null) {
+                long baseProposalId = proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_ID, 0);
+                long baseProposalContestId = proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0);
+                if (baseProposalId > 0 && baseProposalContestId > 0) {
+                    Proposal p = ProposalsClient.getProposal(baseProposalId);
+                    baseProposal = new ProposalWrapper(p);
+                }
             }
+            return baseProposal;
+        }catch (ProposalNotFoundException ignored){
+            return null;
         }
-        return baseProposal;
     }
 
     public List<ProposalRatingWrapper> getRatings() {

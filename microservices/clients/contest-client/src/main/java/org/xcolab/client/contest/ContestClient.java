@@ -359,4 +359,7 @@ public class ContestClient {
         }
     }
 
+    public static String getContestPhaseName(ContestPhase ck){
+        return getContestPhaseType(ck.getContestPhaseType()).getName();
+    }
 }
