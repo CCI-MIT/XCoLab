@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.discussion;
 
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -12,7 +11,12 @@ import com.liferay.portal.model.User;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -99,11 +103,11 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     public boolean getCanAdminMessage(Comment comment) {
         if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
             try {
-                Proposal proposal = ProposalLocalServiceUtil.fetchProposal(proposalId);
+                Proposal proposal = ProposalsClient.getProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
                 return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
-            } catch (SystemException ignored) {
+            } catch (ProposalNotFoundException ignored) {
             }
         }
         return comment.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
@@ -114,11 +118,11 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
         boolean isUserAllowed = false;
         try {
-            Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+            Proposal proposal = ProposalsClient.getProposal(proposalId);
             isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId)
                     || isUserProposalAuthorOrTeamMember(user, proposal)
                     || getCanAdminAll();
-        } catch (SystemException | PortalException ignored) {
+        } catch (ProposalNotFoundException ignored) {
         }
         return isUserAllowed;
     }
@@ -126,10 +130,10 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal, Long contestPhaseId) {
 
         try {
-            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+            ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
 
-            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(proposalWrapper.getContest().getContestPK());
+            Contest contestMicro = ContestClient.getContest(proposalWrapper.getContest().getContestPK());
             ContestWrapper contestWrapper = new ContestWrapper(contestMicro);
 
             boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(

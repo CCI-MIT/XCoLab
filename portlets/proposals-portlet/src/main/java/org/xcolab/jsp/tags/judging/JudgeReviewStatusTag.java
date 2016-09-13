@@ -1,11 +1,6 @@
 package org.xcolab.jsp.tags.judging;
 
 
-
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
@@ -24,7 +19,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 public class JudgeReviewStatusTag extends BodyTagSupport {
-    
+
     private long userId;
 
     private long proposalId;
@@ -69,15 +64,14 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
             }
             pageContext.setAttribute("judgeReviewStatus", judgeWrapper.getJudgeReviewStatus());
         } catch (ProposalNotFoundException e) {
-            throw new IllegalArgumentException("Could not load proposal " +proposalId
+            throw new IllegalArgumentException("Could not load proposal " + proposalId
                     + " and contest phase " + contestPhaseId);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+
         } catch (MemberNotFoundException e) {
             throw new IllegalArgumentException("User does not exist: " + id);
         }
-        return EVAL_BODY_INCLUDE; 
+        return EVAL_BODY_INCLUDE;
     }
-    
-    
+
+
 }

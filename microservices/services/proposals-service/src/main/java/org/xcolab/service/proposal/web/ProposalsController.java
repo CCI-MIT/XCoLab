@@ -117,6 +117,17 @@ public class ProposalsController {
     }
 
 
+    @RequestMapping(value = "/proposals/{proposalId}/isUserMember", method = RequestMethod.GET)
+    public Proposal getProposal(@PathVariable long proposalId,
+                                @RequestParam long userId)
+            throws NotFoundException {
+        final Proposal proposal = proposalDao.get(proposalId);
+        if (proposal.getVisible()) {
+            return proposal;
+        }
+        throw new NotFoundException();
+    }
+
     @RequestMapping(value = "/proposalVersions", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalVersion> getProposalVersions(
             @RequestParam(required = false) Long proposalId
