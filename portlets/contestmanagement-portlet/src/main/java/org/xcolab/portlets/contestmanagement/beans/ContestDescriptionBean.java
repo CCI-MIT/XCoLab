@@ -1,22 +1,24 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 
+import org.hibernate.validator.constraints.Length;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.hibernate.validator.constraints.Length;
+
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.portlets.contestmanagement.utils.ContestScheduleLifecycleUtil;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
-import org.xcolab.wrappers.BaseContestWrapper;
+
+import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 
 public class ContestDescriptionBean implements Serializable {
     private static final Log _log = LogFactoryUtil.getLog(ContestDescriptionBean.class);
@@ -178,18 +180,7 @@ public class ContestDescriptionBean implements Serializable {
         boolean noScheduleSelected = contestScheduleId.equals(0L);
 
         if (!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
-            BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
-            boolean contestHasProposals = contestWrapper.getTotalProposalsCount() > 0;
-            if (contestHasProposals) {
-                ContestScheduleLifecycleUtil
-                        .changeContestScheduleForContest(contest, contestScheduleId);
-            } else {
-                ContestScheduleLifecycleUtil.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
-                        contestScheduleId);
-            }
-            contest.setContestScheduleId(contestScheduleId);
-            ContestClient.updateContest(contest);
-
+            ContestScheduleUtil.changeScheduleForContest(contest, contestScheduleId);
         }
     }
 }

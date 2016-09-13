@@ -60,7 +60,7 @@ public class ContestService {
                 .filter(contestPhase -> {
                     final Optional<ContestPhaseType> contestPhaseType = contestPhaseTypeDao
                             .get(contestPhase.getContestPhaseType());
-                    return contestPhaseType.isPresent() && contestPhaseType.get().getInvisible();
+                    return contestPhaseType.isPresent() && !contestPhaseType.get().getInvisible();
                 })
                 .collect(Collectors.toList());
     }

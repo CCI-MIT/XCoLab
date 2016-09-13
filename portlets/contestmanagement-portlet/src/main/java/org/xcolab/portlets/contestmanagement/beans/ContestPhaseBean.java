@@ -1,10 +1,11 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.springframework.format.annotation.DateTimeFormat;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
@@ -12,7 +13,6 @@ import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -20,21 +20,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * Created by Thomas on 2/20/2015.
- */
+import javax.validation.constraints.NotNull;
+
 public class ContestPhaseBean implements Serializable {
-    public static final Long CREATE_PHASE_CONTEST_PK = -1L;
+
+    public static final Long CREATE_CONTEST_PHASE_PK = -1L;
+    public static final Long DEFAULT_CONTEST_SCHEDULE = -1L;
+
+    private final static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
     private Long contestSchedulePK;
     private Long contestPhasePK;
     private Long contestPK;
     private Long contestPhaseType;
-    private Long contestPhaseTypeOld = 0l;
+    private Long contestPhaseTypeOld = 0L;
     private Long contestScheduleId;
-    private final static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-
     @DateTimeFormat(pattern = "MM/dd/yyyy hh:mm")
     @NotNull(message = "Phase start date must not be empty.")
     private Date phaseStartDate;
@@ -61,7 +63,7 @@ public class ContestPhaseBean implements Serializable {
         this.contestPhasePK = contestPhase.getContestPhasePK();
         this.contestPK = contestPhase.getContestPK();
         this.contestPhaseType = contestPhase.getContestPhaseType();
-        if(contestPhase.getContestPhaseType()!=null) {
+        if (contestPhase.getContestPhaseType() != null) {
             this.contestPhaseTypeOld = contestPhase.getContestPhaseType();
         }
         this.contestScheduleId = contestPhase.getContestScheduleId();
@@ -73,7 +75,6 @@ public class ContestPhaseBean implements Serializable {
         }
 
         this.contestPhaseAutopromote = contestPhase.getContestPhaseAutopromote();
-
 
         this.contestPhaseDescriptionOverride = contestPhase.getContestPhaseDescriptionOverride();
         if (contestPhase.getPhaseActiveOverride() != null) {
@@ -87,15 +88,19 @@ public class ContestPhaseBean implements Serializable {
             this.contestPhaseTypeObj = ContestClient.getContestPhaseType(contestPhaseType);
         }
 
-
         try {
             this.contestPhaseHasProposalAssociations = false;
-            List<Contest> contestsUsingThisContestPhase = ContestClient.getContestsByContestScheduleId(this.contestScheduleId);
+            List<Contest> contestsUsingThisContestPhase = ContestClient
+                    .getContestsByContestScheduleId(this.contestScheduleId);
             for (Contest contest : contestsUsingThisContestPhase) {
-                List<ContestPhase> contestPhases = ContestClient.getPhasesForContestScheduleIdAndContest(this.contestScheduleId, contest.getContestPK());
+                List<ContestPhase> contestPhases = ContestClient
+                        .getPhasesForContestScheduleIdAndContest(this.contestScheduleId,
+                                contest.getContestPK());
                 for (ContestPhase contestPhase1 : contestPhases) {
-                    if (contestPhase1.getContestPhaseType() == this.contestPhaseType) {
-                        List<Proposal2Phase> proposal2PhaseList = Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhase1.getContestPhasePK());
+                    if (Objects
+                            .equals(contestPhase1.getContestPhaseType(), this.contestPhaseType)) {
+                        List<Proposal2Phase> proposal2PhaseList = Proposal2PhaseLocalServiceUtil
+                                .getByContestPhaseId(contestPhase1.getContestPhasePK());
                         if (!proposal2PhaseList.isEmpty()) {
                             this.contestPhaseHasProposalAssociations = true;
                             break;
@@ -108,7 +113,7 @@ public class ContestPhaseBean implements Serializable {
     }
 
     public ContestPhaseBean(ContestPhaseTypeValue contestPhaseType, Date phaseStartDate,
-                            Date phaseEndDate, String contestPhaseAutopromote, Boolean fellowScreeningActive) {
+            Date phaseEndDate, String contestPhaseAutopromote, Boolean fellowScreeningActive) {
         this.phaseStartDate = phaseStartDate;
         this.phaseEndDate = phaseEndDate;
         this.fellowScreeningActive = fellowScreeningActive;
@@ -229,7 +234,8 @@ public class ContestPhaseBean implements Serializable {
     public boolean getHasBuffer() {
         boolean isPhaseBufferEndDateAfterPhaseEndDate = false;
         if (this.phaseBufferEndDated != null) {
-            isPhaseBufferEndDateAfterPhaseEndDate = (this.phaseBufferEndDated.after(this.phaseEndDate));
+            isPhaseBufferEndDateAfterPhaseEndDate = (this.phaseBufferEndDated
+                    .after(this.phaseEndDate));
         }
         return isPhaseBufferEndDateAfterPhaseEndDate;
     }
@@ -259,14 +265,12 @@ public class ContestPhaseBean implements Serializable {
     }
 
     public void persist() {
-        if (contestPhasePK.equals(CREATE_PHASE_CONTEST_PK)) {
+        if (contestPhasePK.equals(CREATE_CONTEST_PHASE_PK)) {
             createNewContestPhase();
         }
 
         if (contestPhaseDeleted) {
-            ContestPhase contestPhase = ContestClient
-                    .getContestPhase(contestPhasePK);
-            ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
+            ContestClient.deleteContestPhase(contestPhasePK);
         } else {
             ContestClient.updateContestPhase(getContestPhase());
         }
@@ -302,8 +306,12 @@ public class ContestPhaseBean implements Serializable {
         contestPhase.setContestPhaseType(contestPhaseType);
         contestPhase.setContestScheduleId(contestScheduleId);
         contestPhase.setPhaseStartDate(new Timestamp(phaseStartDate.getTime()));
-        contestPhase.setPhaseEndDate(new Timestamp(phaseEndDate.getTime()));
-        if(phaseBufferEndDated!=null) {
+        if (phaseEndDate != null) {
+            contestPhase.setPhaseEndDate(new Timestamp(phaseEndDate.getTime()));
+        } else {
+            contestPhase.setPhaseEndDate(null);
+        }
+        if (phaseBufferEndDated != null) {
             contestPhase.setPhaseBufferEndDated(new Timestamp(phaseBufferEndDated.getTime()));
         }
         contestPhase.setFellowScreeningActive(fellowScreeningActive);

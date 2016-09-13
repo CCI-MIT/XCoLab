@@ -26,7 +26,7 @@ public class ContestClient {
 
     private static final RestService contestService = new RestService("contest-service");
 
-    private static final RestResource<Contest, Long> contestResource = new RestResource1<>(contestService,
+    private static final RestResource1<Contest, Long> contestResource = new RestResource1<>(contestService,
             "contests", Contest.TYPES);
 
     private static final RestResource<ContestPhase, Long> contestPhasesResource = new RestResource1<>(contestService,
@@ -188,13 +188,9 @@ public class ContestClient {
     }
 
     public static ContestSchedule getContestSchedule(long id) {
-        try {
-            return contestScheduleResource.get(id)
-                    .withCache(CacheKeys.of(ContestSchedule.class, id), CacheRetention.REQUEST)
-                    .executeChecked();
-        } catch (EntityNotFoundException e) {
-            return null;
-        }
+        return contestScheduleResource.get(id)
+                .withCache(CacheKeys.of(ContestSchedule.class, id), CacheRetention.REQUEST)
+                .execute();
     }
 
     public static List<ContestSchedule> getAllContestSchedules() {
@@ -202,18 +198,14 @@ public class ContestClient {
     }
 
 
-    public static List<ContestPhase> getVisibleContestPhases(Long contestPK) {
-        List<ContestPhase> allPhases = getAllContestPhases(contestPK);
-
-        List<ContestPhase> visiblePhases = new ArrayList<>();
-        for (ContestPhase phase : allPhases) {
-            ContestPhaseType phaseType = getContestPhaseType(phase.getContestPhaseType());
-            if (!phaseType.getInvisible()) {
-                visiblePhases.add(phase);
-            }
-        }
-
-        return visiblePhases;
+    public static List<ContestPhase> getVisibleContestPhases(Long contestId) {
+        return contestResource.getSubRestResource(contestId, "visiblePhases", ContestPhase.TYPES)
+                .list()
+                .withCache(CacheKeys.withClass(ContestPhase.class)
+                    .withParameter("contestId", contestId)
+                    .withParameter("visible", true).asList(),
+                        CacheRetention.MEDIUM)
+                .execute();
     }
 
     public static void deleteContestPhase(Long contestPhasePK) {
@@ -230,7 +222,9 @@ public class ContestClient {
     }
 
     public static List<ContestPhase> getAllContestPhases(Long contestPK) {
-        return contestPhasesResource.list().queryParam("contestPK", contestPK).execute();
+        return contestPhasesResource.list()
+                .queryParam("contestPK", contestPK)
+                .execute();
     }
 
     public static List<ContestPhase> getPhasesForContestScheduleId(Long contestScheduleId) {
@@ -246,33 +240,27 @@ public class ContestClient {
                 .execute();
     }
 
+    public static List<ContestPhase> getTemplatePhasesForContestScheduleId(Long contestScheduleId) {
+        return contestPhasesResource.list()
+                .queryParam("contestPK", ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
+                .queryParam("contestScheduleId", contestScheduleId)
+                .execute();
+    }
+
 
     public static ContestPhase getContestPhase(Long contestPhaseId) {
-        try {
-            return contestPhasesResource.get(contestPhaseId).executeChecked();
-        } catch (EntityNotFoundException ignored) {
-            return null;
-        }
+        return contestPhasesResource.get(contestPhaseId).execute();
     }
 
     public static ContestPhase getActivePhase(Long contestId) {
-        try {
-            return contestResource.service(contestId, "activePhase", ContestPhase.class).getChecked();
-        } catch (EntityNotFoundException ignored) {
-            return null;
-        }
+        return contestResource.service(contestId, "activePhase", ContestPhase.class).get();
     }
 
-
     public static ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {
-        try {
-            return contestPhaseTypesResource.get(contestPhaseTypeId)
-                    .withCache(CacheKeys.of(ContestPhaseType.class, contestPhaseTypeId),
-                            CacheRetention.MEDIUM)
-                    .executeChecked();
-        } catch (EntityNotFoundException ignored) {
-            return null;
-        }
+        return contestPhaseTypesResource.get(contestPhaseTypeId)
+                .withCache(CacheKeys.of(ContestPhaseType.class, contestPhaseTypeId),
+                        CacheRetention.MEDIUM)
+                .execute();
     }
 
     public static List<ContestPhaseType> getAllContestPhaseTypes() {
@@ -285,13 +273,9 @@ public class ContestClient {
     }
 
     public static ContestType getContestType(long id) {
-        try {
-            return contestTypeResource.get(id)
-                    .withCache(CacheKeys.of(ContestType.class, id), CacheRetention.RUNTIME)
-                    .executeChecked();
-        } catch (EntityNotFoundException e) {
-            return null;
-        }
+        return contestTypeResource.get(id)
+                .withCache(CacheKeys.of(ContestType.class, id), CacheRetention.RUNTIME)
+                .execute();
     }
 
     public static List<ContestType> getAllContestTypes() {
@@ -360,13 +344,9 @@ public class ContestClient {
     }
 
     public static ContestTeamMemberRole getContestTeamMemberRole(long id) {
-        try {
-            return contestTeamMemberRoleResource.get(id)
-                    .withCache(CacheKeys.of(ContestTeamMemberRole.class, id), CacheRetention.LONG)
-                    .executeChecked();
-        } catch (EntityNotFoundException e) {
-            return null;
-        }
+        return contestTeamMemberRoleResource.get(id)
+                .withCache(CacheKeys.of(ContestTeamMemberRole.class, id), CacheRetention.LONG)
+                .execute();
     }
 
 }

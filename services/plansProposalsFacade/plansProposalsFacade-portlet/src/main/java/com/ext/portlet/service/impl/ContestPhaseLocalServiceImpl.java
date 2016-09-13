@@ -1,9 +1,12 @@
 package com.ext.portlet.service.impl;
 
+import com.ext.utils.promotion.AutoPromoteHelper;
+import com.ext.utils.promotion.PhasePromotionHelper;
+import org.apache.commons.lang3.StringUtils;
+
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposal2PhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.contests.ContestStatus;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -20,8 +23,6 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ContestPhaseLocalServiceBaseImpl;
 import com.ext.portlet.service.persistence.Proposal2PhasePK;
-import com.ext.utils.promotion.AutoPromoteHelper;
-import com.ext.utils.promotion.PhasePromotionHelper;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -41,12 +42,11 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import com.liferay.util.portlet.PortletProps;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.enums.ColabConstants;
+
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.utils.Clock;
 import org.xcolab.utils.ClockImpl;
 
-import javax.mail.internet.AddressException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +54,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.mail.internet.AddressException;
 
 /**
  * The implementation of the contest phase local service.
@@ -184,7 +186,7 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
     @Override
     public List<ContestPhase> getPhasesForContestScheduleId(long contestScheduleId) throws SystemException {
-        return contestPhasePersistence.findByContestScheduleId(contestScheduleId, ColabConstants.DEFAULT_CONTEST_SCHEDULE_ID);
+        return contestPhasePersistence.findByContestScheduleId(contestScheduleId, org.xcolab.client.contest.pojo.ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
     }
 
     @Override

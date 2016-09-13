@@ -1,14 +1,15 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -69,15 +70,9 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
-        try {
-            setPageAttributes(request, model, tab);
-            model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
-            return TAB_VIEW;
-        } catch (SystemException | PortalException e) {
-            _log.warn("Exception while rendering CMS overview tab", e);
-            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
-        }
-        return NOT_FOUND_TAB_VIEW;
+        setPageAttributes(request, model, tab);
+        model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
+        return TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateContestOverview")

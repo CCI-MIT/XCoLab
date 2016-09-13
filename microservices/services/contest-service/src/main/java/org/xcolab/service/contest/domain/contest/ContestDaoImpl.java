@@ -1,18 +1,18 @@
 package org.xcolab.service.contest.domain.contest;
 
-import static org.xcolab.model.Tables.CONTEST;
-
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.records.ContestRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
+
+import static org.xcolab.model.Tables.CONTEST;
 
 @Repository
 public class ContestDaoImpl implements ContestDao {
@@ -169,7 +169,7 @@ public class ContestDaoImpl implements ContestDao {
             query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
         }
 
-        if (focusAreaOntologyTerms != null && focusAreaOntologyTerms.size() > 0) {
+        if (focusAreaOntologyTerms != null && !focusAreaOntologyTerms.isEmpty()) {
             query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
         }
 

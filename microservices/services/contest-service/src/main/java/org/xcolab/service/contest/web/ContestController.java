@@ -119,6 +119,11 @@ public class ContestController {
         return contestDao.get(contestId);
     }
 
+    @GetMapping("/contests/{contestId}/visiblePhases")
+    public List<ContestPhase> getVisiblePhases(@PathVariable Long contestId) {
+        return contestService.getVisiblePhases(contestId);
+    }
+
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestPK,
                                                @RequestParam(required = false) Long contestScheduleId) {

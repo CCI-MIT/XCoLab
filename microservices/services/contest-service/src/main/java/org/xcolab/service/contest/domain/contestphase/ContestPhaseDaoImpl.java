@@ -3,6 +3,7 @@ package org.xcolab.service.contest.domain.contestphase;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -44,8 +45,8 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .set(CONTEST_PHASE.PHASE_END_DATE, contestPhase.getPhaseEndDate())
                 .set(CONTEST_PHASE.PHASE_BUFFER_END_DATED, contestPhase.getPhaseBufferEndDated())
                 .set(CONTEST_PHASE.NEXT_STATUS, contestPhase.getNextStatus())
-                .set(CONTEST_PHASE.CREATED, contestPhase.getCreated())
-                .set(CONTEST_PHASE.UPDATED, contestPhase.getUpdated())
+                .set(CONTEST_PHASE.CREATED, DSL.currentTimestamp())
+                .set(CONTEST_PHASE.UPDATED, DSL.currentTimestamp())
                 .set(CONTEST_PHASE.AUTHOR_ID, contestPhase.getAuthorId())
                 .returning(CONTEST_PHASE.CONTEST_PHASE_PK)
                 .fetchOne();
@@ -72,8 +73,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .set(CONTEST_PHASE.PHASE_END_DATE, contestPhase.getPhaseEndDate())
                 .set(CONTEST_PHASE.PHASE_BUFFER_END_DATED, contestPhase.getPhaseBufferEndDated())
                 .set(CONTEST_PHASE.NEXT_STATUS, contestPhase.getNextStatus())
-                .set(CONTEST_PHASE.CREATED, contestPhase.getCreated())
-                .set(CONTEST_PHASE.UPDATED, contestPhase.getUpdated())
+                .set(CONTEST_PHASE.UPDATED, DSL.currentTimestamp())
                 .set(CONTEST_PHASE.AUTHOR_ID, contestPhase.getAuthorId())
                 .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhase.getContestPhasePK()))
                 .execute() > 0;

@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-
-
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.ContestLocalServiceUtil;

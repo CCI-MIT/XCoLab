@@ -1,17 +1,15 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
@@ -23,13 +21,13 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.sql.Timestamp;
 import java.util.Random;
 
 public final class ContestCreatorUtil {
-    private static final Log _log = LogFactoryUtil.getLog(ContestCreatorUtil.class);
 
     public static final String SEED_CONTEST_SCHEDULE_NAME = "Seed Contest Schedule";
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on contest %s";
@@ -42,28 +40,26 @@ public final class ContestCreatorUtil {
 
     public static Contest createNewContest(String contestShortName)  {
 
-            Contest contest = ContestClient.createContest(10144L, contestShortName);
-            contest.setContestYear(new Long(DateTime.now().getYear()));
-            contest.setContestPrivate(true);
-            contest.setShow_in_tile_view(true);
-            contest.setShow_in_list_view(true);
-            contest.setShow_in_outline_view(true);
-            contest.setPlanTemplateId(DEFAULT_CONTEST_TEMPLATE_ID);
-            contest.setContestScheduleId(DEFAULT_CONTEST_SCHEDULE_ID);
-            contest.setContestTypeId(
-                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-            ContestClient.updateContest(contest);
-            ContestScheduleLifecycleUtil
-                    .createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
-                            DEFAULT_CONTEST_SCHEDULE_ID);
-            try{
-                setGroupAndDiscussionForContest(contest);
-            }catch (PortalException| SystemException ignored){
+        Contest contest = ContestClient.createContest(10144L, contestShortName);
+        contest.setContestYear((long) DateTime.now().getYear());
+        contest.setContestPrivate(true);
+        contest.setShow_in_tile_view(true);
+        contest.setShow_in_list_view(true);
+        contest.setShow_in_outline_view(true);
+        contest.setPlanTemplateId(DEFAULT_CONTEST_TEMPLATE_ID);
+        contest.setContestScheduleId(DEFAULT_CONTEST_SCHEDULE_ID);
+        contest.setContestTypeId(
+                ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+        ContestClient.updateContest(contest);
+        ContestScheduleChangeHelper changeHelper = new ContestScheduleChangeHelper(contest, DEFAULT_CONTEST_SCHEDULE_ID);
+        changeHelper.changeScheduleForBlankContest();
+        try {
+            setGroupAndDiscussionForContest(contest);
+        } catch (PortalException| SystemException ignored){
 
-            }
+        }
 
-            return contest;
-
+        return contest;
     }
 
     private static void setGroupAndDiscussionForContest(Contest c) throws PortalException, SystemException {

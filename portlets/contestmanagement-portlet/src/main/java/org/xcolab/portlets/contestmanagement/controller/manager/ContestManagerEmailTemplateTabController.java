@@ -1,9 +1,5 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +7,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
@@ -53,28 +54,22 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
             return NO_PERMISSION_TAB_VIEW;
         }
 
-        try {
-            String templateType = elementId != null ? elementId : getFirstTemplateName();
-            model.addAttribute("templateType", templateType);
-            if (!StringUtils.isBlank(templateType)) {
-                model.addAttribute("emailTemplateWrapper",
-                        new EmailTemplateWrapper(templateType));
-            }
-            final List<ContestEmailTemplate> emailTemplates = EmailTemplateClient
-                    .listAllContestEmailTemplates();
-            List <LabelStringValue> templateSelectionItems = new ArrayList<>();
-            for (ContestEmailTemplate emailTemplate : emailTemplates) {
-                templateSelectionItems.add(new LabelStringValue(emailTemplate.getType_(),
-                        emailTemplate.getType_()));
-            }
-            model.addAttribute("templateSelectionItems", templateSelectionItems);
-            setPageAttributes(request, model, tab);
-            return TAB_VIEW;
-        } catch (SystemException | PortalException e) {
-            _log.warn("Exception while rendering CMS email templates tab", e);
-            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
+        String templateType = elementId != null ? elementId : getFirstTemplateName();
+        model.addAttribute("templateType", templateType);
+        if (!StringUtils.isBlank(templateType)) {
+            model.addAttribute("emailTemplateWrapper",
+                    new EmailTemplateWrapper(templateType));
         }
-        return NOT_FOUND_TAB_VIEW;
+        final List<ContestEmailTemplate> emailTemplates = EmailTemplateClient
+                .listAllContestEmailTemplates();
+        List <LabelStringValue> templateSelectionItems = new ArrayList<>();
+        for (ContestEmailTemplate emailTemplate : emailTemplates) {
+            templateSelectionItems.add(new LabelStringValue(emailTemplate.getType_(),
+                    emailTemplate.getType_()));
+        }
+        model.addAttribute("templateSelectionItems", templateSelectionItems);
+        setPageAttributes(request, model, tab);
+        return TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateEmailTemplate")

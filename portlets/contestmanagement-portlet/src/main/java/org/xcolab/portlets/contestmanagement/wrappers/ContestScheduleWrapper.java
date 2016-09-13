@@ -7,17 +7,16 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.enums.ColabConstants;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
-import org.xcolab.portlets.contestmanagement.utils.ContestScheduleLifecycleUtil;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+
+import static org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean.CREATE_CONTEST_PHASE_PK;
 
 public class ContestScheduleWrapper {
 
@@ -34,57 +33,52 @@ public class ContestScheduleWrapper {
     }
 
     public ContestScheduleWrapper(Long scheduleId) {
-        initContestSchedule(scheduleId);
-        initContestPhases(scheduleId);
-        initContestsUsingSelectedSchedule(scheduleId);
+        contestSchedule = loadContestSchedule(scheduleId);
+        schedulePhases = loadContestPhases(scheduleId);
+        contestsUsingSelectedSchedule = loadContestsUsingSchedule(scheduleId);
     }
 
-    private void initContestPhases(Long scheduleId) {
-        schedulePhases = new ArrayList<>();
-        List<ContestPhase> contestPhases =
-                ContestClient.getPhasesForContestScheduleIdAndContest(scheduleId,
-                        ColabConstants.DEFAULT_CONTEST_SCHEDULE_ID);
-        for (ContestPhase contestPhase : contestPhases) {
-            schedulePhases.add(new ContestPhaseBean(contestPhase));
-        }
-        addDummySchedulePhase();
-    }
-
-    private void initContestSchedule(Long scheduleId) {
+    private ContestSchedule loadContestSchedule(Long scheduleId) {
 
         if (scheduleId != null) {
-            contestSchedule = ContestClient.getContestSchedule(scheduleId);
+            return ContestClient.getContestSchedule(scheduleId);
         } else {
             List<ContestSchedule> contestScheduleList = ContestClient.getAllContestSchedules();
-            contestSchedule = contestScheduleList.get(0);
+            return contestScheduleList.get(0);
         }
-
     }
 
-    private void addDummySchedulePhase() {
+    private List<ContestPhaseBean> loadContestPhases(Long scheduleId) {
+        List<ContestPhaseBean> schedulePhaseBeans = new ArrayList<>();
+        List<ContestPhase> contestPhases =
+                ContestClient.getTemplatePhasesForContestScheduleId(scheduleId);
+        for (ContestPhase contestPhase : contestPhases) {
+            schedulePhaseBeans.add(new ContestPhaseBean(contestPhase));
+        }
+        schedulePhaseBeans.add(createDummyContestPhaseBean());
+        return schedulePhaseBeans;
+    }
+
+    private ContestPhaseBean createDummyContestPhaseBean() {
 
         ContestPhase dummyContestPhase = new ContestPhase();
         ContestPhaseBean dummyContestPhaseBean = new ContestPhaseBean(dummyContestPhase);
-        dummyContestPhaseBean.setContestPK(ColabConstants.DEFAULT_CONTEST_SCHEDULE_ID);
+        dummyContestPhaseBean.setContestPK(ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
         dummyContestPhaseBean.setContestScheduleId(getScheduleId());
-        dummyContestPhaseBean.setContestPhasePK(ContestPhaseBean.CREATE_PHASE_CONTEST_PK);
-        dummyContestPhaseBean.setContestSchedulePK(ContestPhaseBean.CREATE_PHASE_CONTEST_PK);
+        dummyContestPhaseBean.setContestPhasePK(ContestPhaseBean.CREATE_CONTEST_PHASE_PK);
+        dummyContestPhaseBean.setContestSchedulePK(ContestPhaseBean.DEFAULT_CONTEST_SCHEDULE);
         dummyContestPhaseBean
                 .setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
-        dummyContestPhase = ContestClient
-                .createContestPhase(dummyContestPhase);
-        schedulePhases.add(dummyContestPhaseBean);
-        ContestClient.deleteContestPhase(dummyContestPhase.getContestPhasePK());
-
+        return dummyContestPhaseBean;
     }
 
-    private void initContestsUsingSelectedSchedule(Long scheduleId) {
-        List<Contest> contestsUsingSelectedScheduleList = ContestClient
-                .getContestsByContestScheduleId(scheduleId);
-        contestsUsingSelectedSchedule = new ArrayList<>();
-        for (Contest contest : contestsUsingSelectedScheduleList) {
-            contestsUsingSelectedSchedule.add(new BaseContestWrapper(contest));
+    private List<BaseContestWrapper> loadContestsUsingSchedule(long scheduleId) {
+        List<BaseContestWrapper> wrappedContestsUsingSchedule = new ArrayList<>();
+        List<Contest> contestsUsingSchedule = ContestClient.getContestsByContestScheduleId(scheduleId);
+        for (Contest contest : contestsUsingSchedule) {
+            wrappedContestsUsingSchedule.add(new BaseContestWrapper(contest));
         }
+        return wrappedContestsUsingSchedule;
     }
 
     public List<BaseContestWrapper> getContestsUsingSelectedSchedule() {
@@ -96,8 +90,8 @@ public class ContestScheduleWrapper {
     }
 
     public void setScheduleId(Long contestScheduleId) {
-        initContestSchedule(contestScheduleId);
-        initContestsUsingSelectedSchedule(contestScheduleId);
+        contestSchedule = loadContestSchedule(contestScheduleId);
+        contestsUsingSelectedSchedule = loadContestsUsingSchedule(contestScheduleId);
     }
 
     public String getScheduleName() {
@@ -128,138 +122,56 @@ public class ContestScheduleWrapper {
         removeEmptyContestPhases();
         if (createNew) {
             createNewScheduleFromExistingSchedule();
-        } else {
-            persistUpdatedSchedule();
         }
+        persistUpdatedSchedule();
     }
 
     private void removeEmptyContestPhases() {
-        List<ContestPhaseBean> emptyContestPhases = new ArrayList<>();
-        for (ContestPhaseBean contestPhaseBean : schedulePhases) {
+        for (Iterator<ContestPhaseBean> iterator = schedulePhases.iterator(); iterator.hasNext(); ) {
+            final ContestPhaseBean contestPhaseBean = iterator.next();
             boolean contestPhaseIsEmpty = (contestPhaseBean.getContestPhasePK() == null);
             if (contestPhaseIsEmpty) {
-                emptyContestPhases.add(contestPhaseBean);
+                iterator.remove();
             }
-        }
-        for (ContestPhaseBean emptyContestPhaseBean : emptyContestPhases) {
-            schedulePhases.remove(emptyContestPhaseBean);
         }
     }
 
     private void createNewScheduleFromExistingSchedule() {
-        Long existingContestScheduleId = contestSchedule.getId_();
-
         ContestSchedule newContestSchedule = new ContestSchedule();
         newContestSchedule.setBaseScheduleId(contestSchedule.getBaseScheduleId());
         newContestSchedule.setDescription(contestSchedule.getDescription());
         newContestSchedule.setName(contestSchedule.getName());
         newContestSchedule.setStatus(contestSchedule.getStatus());
         newContestSchedule = ContestClient.createContestSchedule(newContestSchedule);
-
-        contestSchedule.setId_(existingContestScheduleId);
-        ContestScheduleLifecycleUtil.duplicateContestPhasesFromExistingScheduleToNewSchedule(existingContestScheduleId,
-                newContestSchedule.getId_());
         contestSchedule = newContestSchedule;
-    }
 
-    private void persistUpdatedSchedule() {
-
-        createNewSchedulesPhases();
-        makeSureThatAllContestsUsingScheduleIdHaveCorrectContestPhases(contestSchedule.getId_());
-        updateContestsUsingSchedule(contestSchedule.getId_());
-        ContestClient.updateContestSchedule(contestSchedule);
-
-        persistChangesToSchedulePhases();
-
-    }
-
-    private void createNewSchedulesPhases() {
         for (ContestPhaseBean contestPhaseBean : schedulePhases) {
-            Boolean isNewSchedulePhase = contestPhaseBean.getContestPhaseTypeOld().equals(0L);
-            if (isNewSchedulePhase) {
-                contestPhaseBean.persist();
-            }
+            contestPhaseBean.setContestPhasePK(CREATE_CONTEST_PHASE_PK);
+            contestPhaseBean.setContestScheduleId(contestSchedule.getId_());
         }
     }
 
-    private void persistChangesToSchedulePhases() {
+    private void persistUpdatedSchedule() {
+        updateScheduleContestPhases();
+        updateContestsUsingSchedule(contestSchedule.getId_());
+
+        ContestClient.updateContestSchedule(contestSchedule);
+    }
+
+    private void updateScheduleContestPhases() {
         for (ContestPhaseBean contestPhaseBean : schedulePhases) {
             contestPhaseBean.persist();
         }
     }
 
-    private void updateContestsUsingSchedule(Long contestScheduleId) {
+    private void updateContestsUsingSchedule(long contestScheduleId) {
 
         List<Contest> contestsUsingScheduleId = ContestClient
                 .getContestsByContestScheduleId(contestScheduleId);
         for (Contest contest : contestsUsingScheduleId) {
-            updateContestPhasesOfContestAccordingToUpdatedContestSchedule(contest);
+            ContestScheduleChangeHelper changeHelper = new ContestScheduleChangeHelper(contest, contestScheduleId);
+            changeHelper.updateContestPhasesOfContestAccordingToContestSchedule();
         }
-
-    }
-
-    private void makeSureThatAllContestsUsingScheduleIdHaveCorrectContestPhases(
-            Long contestScheduleId) {
-
-        List<Contest> contestsUsingScheduleId = ContestClient
-                .getContestsByContestScheduleId(contestScheduleId);
-        for (Contest contest : contestsUsingScheduleId) {
-            createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(contest,
-                    contestScheduleId);
-        }
-
-    }
-
-    private void createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(Contest contest,
-            Long contestScheduleId) {
-
-        List<ContestPhase> existingContestPhasesForContest = ContestClient
-                .getAllContestPhases(contest.getContestPK());
-        for (ContestPhaseBean contestPhaseOfContestSchedule : schedulePhases) {
-            Long contestPhaseType = contestPhaseOfContestSchedule.getContestPhaseType();
-            if (!ContestScheduleLifecycleUtil.isContestPhaseTypeInContestPhaseList(existingContestPhasesForContest,
-                    contestPhaseType, contestScheduleId)) {
-                ContestScheduleLifecycleUtil.createContestPhaseFromExistingContestPhaseWithContestId(
-                        contestPhaseOfContestSchedule, contest.getContestPK());
-            }
-        }
-
-    }
-
-    private void updateContestPhasesOfContestAccordingToUpdatedContestSchedule(Contest contest) {
-
-        List<ContestPhase> existingPhasesOfContest = ContestClient
-                .getAllContestPhases(contest.getContestPK());
-        Map<Long, Long> phaseTypeIdToPhaseIdMapForExistingContestPhases = new LinkedHashMap<>();
-        ContestScheduleLifecycleUtil.populatePhaseTypeIdToPhaseIdMap(contest,
-                phaseTypeIdToPhaseIdMapForExistingContestPhases);
-
-        List<ContestPhase> newPhasesForContest = new ArrayList<>();
-        for (ContestPhaseBean schedulePhase : schedulePhases) {
-
-            Long phaseTypeIdOfSchedulePhase = schedulePhase.getContestPhaseTypeOld();
-            Long phaseIdOfExistingPhaseWithSchedulePhaseType = phaseTypeIdToPhaseIdMapForExistingContestPhases
-                    .get(phaseTypeIdOfSchedulePhase);
-
-            if (phaseIdOfExistingPhaseWithSchedulePhaseType == null) {
-                ContestScheduleLifecycleUtil.removeContestPhases(newPhasesForContest);
-                throw new InternalException("Can't map new contestPhaseTypeId: "
-                        + phaseTypeIdOfSchedulePhase
-                        + " to any of the existing contestPhaseTypeIds.");
-            }
-            if (!schedulePhase.isContestPhaseDeleted()) {
-
-                ContestPhase existingPhase = ContestClient
-                        .getContestPhase(phaseIdOfExistingPhaseWithSchedulePhaseType);
-                ContestScheduleLifecycleUtil
-                        .updateExistingContestPhaseAccordingToContestSchedulePhase(existingPhase,
-                        schedulePhase.getContestPhase());
-                existingPhasesOfContest.remove(existingPhase);
-
-            }
-        }
-
-        ContestScheduleLifecycleUtil.removeRemainingUnusedContestPhases(existingPhasesOfContest);
 
     }
 }

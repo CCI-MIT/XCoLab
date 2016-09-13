@@ -7,7 +7,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
-import org.xcolab.enums.ColabConstants;
 
 /**
  * The implementation of the contest schedule local service.
@@ -37,7 +36,8 @@ public class ContestScheduleLocalServiceImpl
         DynamicQuery queryPhasesForContestScheduleIdNotEqualDefaultScheduleContestId =
                 DynamicQueryFactoryUtil.forClass(ContestPhase.class, PortletClassLoaderUtil.getClassLoader())
                         .add(PropertyFactoryUtil.forName("contestScheduleId").eq(contestScheduleId))
-                        .add(PropertyFactoryUtil.forName("primaryKey.ContestPhasePK").ne(ColabConstants.DEFAULT_CONTEST_SCHEDULE_ID));
+                        .add(PropertyFactoryUtil.forName("primaryKey.ContestPhasePK").ne(
+                                org.xcolab.client.contest.pojo.ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID));
 
         return contestPhasePersistence.findWithDynamicQuery(queryPhasesForContestScheduleIdNotEqualDefaultScheduleContestId).size() > 0;
     }

@@ -16,8 +16,8 @@ import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
-import org.xcolab.portlets.contestmanagement.utils.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.wrapper.TabWrapper;
@@ -109,10 +109,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
         }
 
         if (result.hasErrors()) {
-            model.addAttribute("elementSelectIdWrapper",
-                    new ElementSelectIdWrapper(updateContestScheduleWrapper.getScheduleId(),
-                            ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems()));
-            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestSchedule");
+//            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestSchedule");
             return;
         }
 
