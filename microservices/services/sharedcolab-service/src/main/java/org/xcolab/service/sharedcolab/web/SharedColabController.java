@@ -50,8 +50,8 @@ public class SharedColabController {
         if (!ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get().equals("localhost")) {
             throw new SharedColabInactiveException(
                     String.format("sharedcolab-service at localhost is inactive - use %s:%s",
-                            ConfigurationAttributeKey.SHARED_COLAB_LOCATION,
-                            ConfigurationAttributeKey.SHARED_COLAB_PORT));
+                            ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get(),
+                            ConfigurationAttributeKey.SHARED_COLAB_PORT.get()));
         }
     }
 
