@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.records.ContestRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.util.List;
 
@@ -153,7 +155,9 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId) {
+    public List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
+            Long contestYear, Boolean active, Boolean featured, Long contestTier,
+            List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();
 
@@ -186,7 +190,21 @@ public class ContestDaoImpl implements ContestDao {
         if (featured != null) {
             query.addConditions(CONTEST.FEATURED_.eq(featured));
         }
-        query.addOrderBy(CONTEST.CREATED.desc());
+        for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
+            switch (sortColumn.getColumnName()) {
+                case "createDate":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTEST.CREATED.asc() : CONTEST.CREATED.desc());
+                    break;
+                case "weight":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTEST.WEIGHT.asc() : CONTEST.WEIGHT.desc());
+                    break;
+
+                default:
+            }
+        }
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Contest.class);
     }
 

@@ -11,6 +11,7 @@ import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.ontology.OntologyService;
+import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,8 @@ public class ContestService {
                 return new ArrayList<>();
             }
             List<Long> focusAreaOntologyTerms = ontologyService.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId,ontologySpaceId );
-            return contestDao.findByGiven(null, null, null, null, contestTier, focusAreaOntologyTerms, null, null);
+            return contestDao.findByGiven(PaginationHelper.EVERYTHING, null, null, null, null, contestTier,
+                    focusAreaOntologyTerms, null, null);
 
 
         } catch (NotFoundException ignored) {
