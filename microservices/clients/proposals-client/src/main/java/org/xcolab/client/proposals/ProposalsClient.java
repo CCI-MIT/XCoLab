@@ -164,6 +164,16 @@ public final class ProposalsClient {
 
     }
 
+    public static Boolean isMemberProposalSupporter(Long proposalId, Long memberId) {
+
+        return proposalSupporterResource.service("isMemberProposalSupporter", Boolean.class)
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("memberId", memberId)
+                .get();
+
+    }
+
+
     public static ProposalVersion getProposalVersionByProposalIdVersion(Long proposalId, Integer version) {
         return proposalVersionResource.service("getByProposalIdVersion", ProposalVersion.class)
                 .queryParam("proposalId", proposalId)
@@ -216,6 +226,13 @@ public final class ProposalsClient {
     public static Integer countProposalVotesInContestPhaseProposalId(Long proposalId, Long contestPhaseId) {
         return proposalVoteResource.service("count", Integer.class)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("proposalId", proposalId)
+                .get();
+    }
+    public static Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
+        return proposalVoteResource.service("hasUserVoted", Boolean.class)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("memberId", memberId)
                 .optionalQueryParam("proposalId", proposalId)
                 .get();
     }

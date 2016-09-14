@@ -156,5 +156,13 @@ public class ProposalsController {
         return proposalVoteDao.countByGiven(contestPhaseId, proposalId, userId);
     }
 
+    @RequestMapping(value = "/proposalVotes/hasUserVoted", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public Boolean hasUserVoted(
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId
+    ) {
+        return proposalVoteDao.countByGiven(contestPhaseId, proposalId, userId) == 0;
+    }
 
 }

@@ -34,4 +34,19 @@ public class ProposalSupporterController {
         return proposalSupporterDao.countByProposalId(proposalId);
     }
 
+
+    @RequestMapping(value = "/proposalSupporters/isMemberProposalSupporter", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public Boolean getProposalSupportersCount(
+            @RequestParam Long proposalId,
+            @RequestParam Long memberId
+    ) {
+        List<ProposalSupporter> ret = proposalSupporterDao.findByGiven(proposalId, memberId);
+
+        if(ret != null && ret.size() ==1 ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

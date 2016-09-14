@@ -156,11 +156,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         boolean isAuthor = false;
         boolean isMember = false;
 
-        try {
             isAuthor = proposal.getAuthorId() == user.getUserId();
-            isMember = ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId());
-        } catch (PortalException | SystemException ignored) {
-        }
+            isMember = MembersClient.isUserInGroup(user.getUserId(), proposal.getProposalId());
+
 
         return isAuthor || isMember;
     }

@@ -329,4 +329,9 @@ public final class MembersClient {
     public static boolean isSubscribedToNewsletter(long memberId) {
         return memberResource.service(memberId, "isSubscribed", Boolean.class).get();
     }
+    public static boolean isUserInGroup(Long memberId, Long groupId){
+        return memberResource.service(memberId, "isMemberInGroup",Boolean.class)
+                .queryParam("groupId", groupId)
+                .get();
+    }
 }
