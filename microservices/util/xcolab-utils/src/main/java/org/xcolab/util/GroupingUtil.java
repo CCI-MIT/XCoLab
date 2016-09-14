@@ -9,6 +9,9 @@ import java.util.Map;
 
 public final class GroupingUtil {
 
+    private GroupingUtil() {
+    }
+
     public static <K, V> Map<K, List<V>> groupByWithDuplicates(List<V> list, Function<V, K> keyExtractor) {
         Map<K, List<V>> groupedEntities = new LinkedHashMap<>();
         for (V value : list) {

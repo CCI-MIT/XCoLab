@@ -22,11 +22,11 @@ public class ServiceResource1 extends AbstractServiceResource {
 
     @Override
     public UriBuilder getResourceUrl() {
-        return getBaseUrl().cloneUriBuilder().path("/" + resourceName);
+        return getBaseUrl().cloneUriBuilder().resource(resourceName);
     }
 
     @Override
     public UriBuilder getResourceUrl(Object resourceId) {
-        return getBaseUrl().cloneUriBuilder().path("/" + resourceName + "/" + resourceId);
+        return getBaseUrl().cloneUriBuilder().resource(resourceName, resourceId);
     }
 }

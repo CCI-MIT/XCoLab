@@ -22,7 +22,6 @@ import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -104,11 +103,12 @@ public class MembersController {
     }
 
     @GetMapping("{memberId}/roles")
-    public List<Role_> getMemberRoles(@PathVariable Long memberId) {
-        if (memberId == null) {
-            return new ArrayList<>();
-        } else {
+    public List<Role_> getMemberRoles(@PathVariable long memberId,
+            @RequestParam(required =  false) Long contestId) {
+        if (contestId == null) {
             return this.roleService.getMemberRoles(memberId);
+        } else {
+            return roleService.getMemberRolesInContest(memberId, contestId);
         }
     }
 
@@ -172,11 +172,5 @@ public class MembersController {
     @GetMapping("{memberId}/isSubscribed")
     public boolean isSubscribed(@PathVariable long memberId) throws IOException, NotFoundException {
         return memberService.isSubscribedToNewsletter(memberId);
-    }
-
-    @GetMapping("{memberId}/contestRoles")
-    public List<Role_> getMemberRoles(@PathVariable long memberId,
-                                      @RequestParam long contestId) {
-        return this.roleService.getMemberRolesInContest(memberId, contestId);
     }
 }

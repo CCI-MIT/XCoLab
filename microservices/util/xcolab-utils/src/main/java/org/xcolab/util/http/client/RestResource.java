@@ -20,4 +20,6 @@ public interface RestResource<ResourceT, IdT> extends ServiceResource {
     ListQuery<ResourceT> list();
 
     CountQuery<ResourceT> count();
+
+    QueryId<ResourceT, IdT> id(IdT id);
 }

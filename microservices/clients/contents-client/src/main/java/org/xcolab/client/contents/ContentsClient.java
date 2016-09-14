@@ -152,7 +152,7 @@ public final class ContentsClient {
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
         return contentFolderResource
-                .getSubRestResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)
+                .nestedResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)
                 .list()
                 .execute();
     }

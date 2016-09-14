@@ -18,41 +18,24 @@ public class RestResource1<ResourceT, IdT> extends AbstractRestResource<Resource
         this.resourceName = resourceName;
     }
 
+    public <ResourceT2, IdT2> RestResource<ResourceT2, IdT2> nestedResource(final IdT resourceId, String subResourceName,
+            TypeProvider<ResourceT2> typeProvider) {
+        return new RestResource2<ResourceT, IdT, ResourceT2, IdT2>(this, subResourceName, typeProvider)
+                .resolveParent(id(resourceId));
+    }
+
     @Override
     public UriProvider getBaseUrl() {
         return serviceOrParent.getBaseUrl();
     }
 
-    public <S> RestResource1<S, Long> getSubRestResource(final long resourceId, String subResourceName,
-            TypeProvider<S> typeProvider) {
-        return new RestResource1<>(new HttpEndpoint() {
-            private final UriProvider baseUrl
-                    = new UriProvider(RestResource1.this.getResourceUrl(resourceId));
-            @Override
-            public UriProvider getBaseUrl() {
-                return baseUrl;
-            }
-        }, subResourceName, typeProvider);
-    }
-
-    public ServiceResource getSubServiceResource(final long resourceId, String subResourceName) {
-        return new ServiceResource1(new HttpEndpoint() {
-            private final UriProvider baseUrl
-                    = new UriProvider(RestResource1.this.getResourceUrl(resourceId));
-            @Override
-            public UriProvider getBaseUrl() {
-                return baseUrl;
-            }
-        }, subResourceName);
-    }
-
     @Override
     public UriBuilder getResourceUrl() {
-        return getBaseUrl().cloneUriBuilder().path("/" + resourceName);
+        return getBaseUrl().cloneUriBuilder().resource(resourceName);
     }
 
     @Override
     public UriBuilder getResourceUrl(Object resourceId) {
-        return getBaseUrl().cloneUriBuilder().path("/" + resourceName + "/" + resourceId);
+        return getBaseUrl().cloneUriBuilder().resource(resourceName, resourceId);
     }
 }

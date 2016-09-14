@@ -9,7 +9,10 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.client.members.pojo.SendMessageBean;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
@@ -24,6 +27,12 @@ public final class MessagingClient {
             "members", Member.TYPES);
     private static final RestResource1<Message, Long> messageResource = new RestResource1<>(memberService,
             "messages", Message.TYPES);
+
+    private static final RestResource2L<Member, MessagingUserPreferences> messagePreferencesResource
+            = new RestResource2L<>(memberResource, "messagingPreferences", MessagingUserPreferences.TYPES);
+
+    private static final RestResource2L<Message, Member> messageRecipientResource =
+            new RestResource2L<>(messageResource, "recipients", Member.TYPES);
 
     private MessagingClient() { }
 
@@ -100,8 +109,11 @@ public final class MessagingClient {
     }
 
     public static List<Member> getMessageRecipients(long messageId) {
-        return messageResource.getSubRestResource(messageId, "recipients", Member.TYPES)
+        return messageRecipientResource.resolveParent(messageResource.id(messageId))
                 .list()
+                .withCache(CacheKeys.withClass(Member.class)
+                        .withParameter("messageId", messageId)
+                        .withParameter("type", "recipients").asList(), CacheRetention.MEDIUM)
                 .execute();
     }
 
@@ -134,7 +146,7 @@ public final class MessagingClient {
     }
 
     public static void setArchived(long messageId, long memberId, boolean isArchived) {
-        messageResource.getSubServiceResource(messageId, "recipients")
+        messageRecipientResource.resolveParent(messageResource.id(messageId))
                 .query(memberId, Void.class)
                 .queryParam("memberId", memberId)
                 .queryParam("isArchived", isArchived)
@@ -142,7 +154,7 @@ public final class MessagingClient {
     }
 
     public static void setOpened(long messageId, long memberId, boolean isOpened) {
-        messageResource.getSubServiceResource(messageId, "recipients")
+        messageRecipientResource.resolveParent(messageResource.id(messageId))
                 .query(memberId, Void.class)
                 .queryParam("memberId", memberId)
                 .queryParam("isOpened", isOpened)
@@ -155,8 +167,7 @@ public final class MessagingClient {
     }
 
     public static MessagingUserPreferences createMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {
-        return memberResource
-                .getSubRestResource(messagingUserPreferences.getUserId(), "messagingPreferences", MessagingUserPreferences.TYPES)
+        return messagePreferencesResource.resolveParent(memberResource.id(messagingUserPreferences.getUserId()))
                 .create(messagingUserPreferences)
                 .execute();
     }
@@ -166,8 +177,7 @@ public final class MessagingClient {
             createMessagingPreferences(messagingUserPreferences);
             return true;
         }
-        return memberResource
-                .getSubRestResource(messagingUserPreferences.getUserId(), "messagingPreferences", MessagingUserPreferences.TYPES)
+        return messagePreferencesResource.resolveParent(memberResource.id(messagingUserPreferences.getUserId()))
                 .update(messagingUserPreferences, messagingUserPreferences.getMessagingPreferencesId())
                 .execute();
     }

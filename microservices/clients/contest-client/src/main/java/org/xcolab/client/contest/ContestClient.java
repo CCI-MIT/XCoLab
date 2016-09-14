@@ -14,6 +14,7 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -28,6 +29,9 @@ public class ContestClient {
 
     private static final RestResource1<Contest, Long> contestResource = new RestResource1<>(contestService,
             "contests", Contest.TYPES);
+
+    private static final RestResource2L<Contest, ContestPhase> visiblePhasesResource =
+            new RestResource2L<>(contestResource, "visiblePhases", ContestPhase.TYPES);
 
     private static final RestResource<ContestPhase, Long> contestPhasesResource = new RestResource1<>(contestService,
             "contestPhases", ContestPhase.TYPES);
@@ -197,8 +201,7 @@ public class ContestClient {
     }
 
     public static boolean isContestScheduleUsed(long contestScheduleId) {
-        return contestScheduleResource.getSubServiceResource(contestScheduleId, "isUsed")
-                .query(Boolean.class)
+        return contestScheduleResource.service(contestScheduleId, "isUsed", Boolean.class)
                 .get();
     }
 
@@ -208,7 +211,7 @@ public class ContestClient {
 
 
     public static List<ContestPhase> getVisibleContestPhases(Long contestId) {
-        return contestResource.getSubRestResource(contestId, "visiblePhases", ContestPhase.TYPES)
+        return visiblePhasesResource.resolveParent(contestResource.id(contestId))
                 .list()
                 .withCache(CacheKeys.withClass(ContestPhase.class)
                     .withParameter("contestId", contestId)
