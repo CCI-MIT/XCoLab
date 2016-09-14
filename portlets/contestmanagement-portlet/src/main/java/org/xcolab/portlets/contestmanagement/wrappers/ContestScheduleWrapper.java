@@ -9,7 +9,7 @@ import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
-import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
@@ -169,8 +169,7 @@ public class ContestScheduleWrapper {
         List<Contest> contestsUsingScheduleId = ContestClient
                 .getContestsByContestScheduleId(contestScheduleId);
         for (Contest contest : contestsUsingScheduleId) {
-            ContestScheduleChangeHelper changeHelper = new ContestScheduleChangeHelper(contest, contestScheduleId);
-            changeHelper.updateContestPhasesOfContestAccordingToContestSchedule();
+            ContestScheduleUtil.changeScheduleForContest(contest, contestScheduleId);
         }
 
     }
