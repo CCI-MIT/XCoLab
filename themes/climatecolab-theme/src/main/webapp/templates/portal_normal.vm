@@ -84,6 +84,19 @@
     <!-- Polling service -->
     <script type="text/javascript" src="$javascript_folder/messageNotification.js"></script>
 
+    <!-- Pingdom RUM -->
+    <script>
+        var _prum = [['id', '57d9ac3c9910816789039083'],
+            ['mark', 'firstbyte', (new Date()).getTime()]];
+        (function() {
+            var s = document.getElementsByTagName('script')[0]
+                    , p = document.createElement('script');
+            p.async = 'async';
+            p.src = '//rum-static.pingdom.net/prum.min.js';
+            s.parentNode.insertBefore(p, s);
+        })();
+    </script>
+
 </head>
 
 
