@@ -33,6 +33,7 @@ public final class RequestUtils {
     private static final RestTemplate restTemplate;
 
     private static String servicesPort;
+    private static Boolean cacheActive;
 
     private static CacheProvider cacheProvider = new CacheProviderNoOpImpl();
 
@@ -117,7 +118,8 @@ public final class RequestUtils {
     private static <T> T getCached(CacheRetention cacheRetention, CacheKey<?, T> cacheKey,
             Supplier<T> supplier) {
         T ret;
-        final boolean cacheActive = cacheProvider.isActive() && cacheKey != null
+        final boolean cacheActive = RequestUtils.getCacheActive()
+                && cacheProvider.isActive() && cacheKey != null
                 && cacheRetention != CacheRetention.NONE;
         if (cacheActive) {
             ret = cacheProvider.get(cacheKey, cacheRetention);
@@ -142,7 +144,8 @@ public final class RequestUtils {
 
     public static <T> boolean put(UriBuilder uriBuilder, T entity, CacheKey<T, T> cacheKey) {
 
-        final boolean cacheActive = cacheProvider.isActive() && cacheKey != null;
+        final boolean cacheActive = RequestUtils.getCacheActive()
+                && cacheProvider.isActive() && cacheKey != null;
         if (cacheActive) {
             cacheProvider.replace(cacheKey, CacheRetention.REQUEST, entity);
         }
@@ -168,23 +171,31 @@ public final class RequestUtils {
 
     public static String getServicesPort() {
 
-        if (servicesPort != null) {
-            return servicesPort;
-        } else {
+        if (servicesPort == null) {
+            readProperties();
+        }
+        return servicesPort;
+    }
+
+    public static boolean getCacheActive() {
+        if (cacheActive == null) {
+            readProperties();
+        }
+        return cacheActive;
+    }
+
+    private static void readProperties() {
+        final String propertiesPath = System.getProperty("user.home") + File.separator
+                + ".xcolab.application.properties";
+
+        try (InputStream inputStream = new FileInputStream(propertiesPath)) {
             Properties prop = new Properties();
-            String servicesPort = "";
-
-            final String propertiesPath = System.getProperty("user.home") + File.separator
-                    + ".xcolab.application.properties";
-
-            try (InputStream inputStream = new FileInputStream(propertiesPath)) {
-                prop.load(inputStream);
-                servicesPort = prop.getProperty("services.port");
-                RequestUtils.servicesPort = servicesPort;
-            } catch (IOException e) {
-                RequestUtils.servicesPort = "8080";
-            }
-            return servicesPort;
+            prop.load(inputStream);
+            servicesPort = prop.getProperty("services.port");
+            cacheActive = Boolean.valueOf(prop.getProperty("cache.active", "true"));
+        } catch (IOException e) {
+            servicesPort = "8080";
+            cacheActive = true;
         }
     }
 }
