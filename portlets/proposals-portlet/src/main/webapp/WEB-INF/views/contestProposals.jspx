@@ -47,7 +47,10 @@
                     <script>
                         function handleOnClickAtSupportBtn(event){
                             return showSharedContestAutoRegPopUp(function(ref){
-                                deferUntilLoginTargeted('${createProposalURL}')
+                                if(deferUntilLoginTargeted()){
+                                    window.location = "${createProposalURL}";
+                                }
+
                             },${contest.contestPK });
                         }
                     </script>
