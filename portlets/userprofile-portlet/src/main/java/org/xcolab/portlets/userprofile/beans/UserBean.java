@@ -107,7 +107,8 @@ public class UserBean implements Serializable {
     }
 
     public String getCountryName() {
-        return CountryUtil.getCountryForCode(countryCode);
+        //return CountryUtil.getCountryForCode(countryCode);
+        return countryCode;
     }
 
     public String getShortBio() {
