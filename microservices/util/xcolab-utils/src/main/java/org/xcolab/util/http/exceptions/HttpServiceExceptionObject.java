@@ -7,7 +7,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HttpServiceExceptionObject {
 
-    private Date timestamp;
+    private long timestamp;
     private int status;
     private String error;
     private String exception;
@@ -16,11 +16,11 @@ public class HttpServiceExceptionObject {
     private String trace;
 
     public Date getTimestamp() {
-        return timestamp;
+        return new Date(timestamp);
     }
 
     public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = timestamp.getTime();
     }
 
     public int getStatus() {

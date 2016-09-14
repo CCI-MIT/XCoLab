@@ -161,7 +161,10 @@ public class ContestClient {
     }
 
     public static List<Contest> getAllContests() {
-        return contestResource.list().execute();
+        return contestResource.list()
+                .addRange(0, Integer.MAX_VALUE)
+                .queryParam("sort", "weight")
+                .execute();
     }
 
     public static List<Contest> getContestsByPlanTemplateId(Long planTemplateId) {

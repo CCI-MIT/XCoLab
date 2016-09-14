@@ -31,6 +31,7 @@ import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMember
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
+import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
@@ -67,6 +68,9 @@ public class ContestController {
 
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContests(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String sort,
             @RequestParam(required = false) String contestUrlName,
             @RequestParam(required = false) Long contestYear,
             @RequestParam(required = false) Boolean active,
@@ -75,7 +79,10 @@ public class ContestController {
             @RequestParam(required = false) Long contestScheduleId,
             @RequestParam(required = false) Long planTemplateId,
             @RequestParam(required = false) List<Long> focusAreaOntologyTerms) {
-        return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId, planTemplateId);
+        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
+                sort);
+        return contestDao.findByGiven(paginationHelper, contestUrlName, contestYear, active, featured, contestTier,
+                focusAreaOntologyTerms, contestScheduleId, planTemplateId);
     }
 
 
