@@ -6,8 +6,18 @@ jQuery(function() {
 
     // tooltips
     initTooltips();
+    selectCountry();
+
 });
 
+function selectCountry() {
+    var userCountry = $("#userCountry").html()
+    $("#countryCode > option").each(function () {
+        if(userCountry == $(this).html()){
+            $(this).prop('selected', true);
+        }
+    });
+}
 function clearSendMessageForm() {
     jQuery(".c-Message__popup, .c-Message__input, .c-Message__popup textarea").val('');
 }

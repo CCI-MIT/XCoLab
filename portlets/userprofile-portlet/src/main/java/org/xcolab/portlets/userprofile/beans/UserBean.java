@@ -60,7 +60,6 @@ public class UserBean implements Serializable {
     private String shortBio;
 
     @NotBlank(message = "please select your country from the list")
-    @Length(max = 300)
     private String countryCode;
 
     private long userId;
@@ -107,7 +106,8 @@ public class UserBean implements Serializable {
     }
 
     public String getCountryName() {
-        return CountryUtil.getCountryForCode(countryCode);
+        //return CountryUtil.getCountryForCode(countryCode);
+        return countryCode;
     }
 
     public String getShortBio() {

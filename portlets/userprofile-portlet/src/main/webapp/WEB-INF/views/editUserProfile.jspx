@@ -102,7 +102,9 @@
 							<th class="b m required-field">
 								Country
 							</th>
-							<td> <jsp:include page="./countrySelect.jspx"/></td>
+							<td>
+								<jsp:include page="./countrySelect.jspx"/>
+							</td>
 						</tr>
 
 						<!--
@@ -117,6 +119,7 @@
 					</table>
 
 				</div>
+				<div id="userCountry" style="display: none;">${userBean.countryName}</div>
 				<div class="clearfix"><!--  --></div>
 			</div>
 

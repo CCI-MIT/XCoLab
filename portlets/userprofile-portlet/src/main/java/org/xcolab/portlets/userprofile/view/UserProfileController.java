@@ -359,7 +359,18 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getId_());
+                _log.warn("Last name change failed for userId: " + currentUserProfile.getUser().getId_());
+            }
+        }
+
+        if(updatedUserBean.getCountryName() != null) {
+            validator.validate(updatedUserBean, result);
+            if (!result.hasErrors() && !updatedUserBean.getCountryName().isEmpty()) {
+                 currentUserProfile.getUser().setCountry(HtmlUtil.cleanAll(updatedUserBean.getCountryName()));
+                changedUserPart = true;
+            } else {
+                validationError = true;
+                _log.warn("Country name change failed for userId: " + currentUserProfile.getUser().getId_());
             }
         }
 
@@ -424,8 +435,8 @@ public class UserProfileController {
                 existingCountry = CountryUtil.getCodeForCounty(existingCountry);
             }
         }
-
-        if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)) {
+        if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)
+                && !StringUtils.isEmpty(updatedUserBean.getCountryCode())) {
             member.setCountry(CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
             changedMember = true;
         }
