@@ -44,11 +44,16 @@
                             ${phase.phaseStatusDescription }
                         </c:if>
 						<c:if test="${not empty phase.phaseStartDate }">
-							<fmt:setLocale value="en_US" />
-							<fmt:setTimeZone value="${defaultTimeZoneId}" />
-							<fmt:formatDate value="${phase.phaseStartDate}" type="date" dateStyle="SHORT" pattern="MM/dd/yy zz" />
+							<span class="dateInfo">
+								<fmt:setLocale value="en_US" />
+								<fmt:setTimeZone value="${defaultTimeZoneId}" />
+								<fmt:formatDate value="${phase.phaseStartDate}" type="date" dateStyle="SHORT" pattern="MM/dd/yy hh:ss zz" />
+							</span>
 							<c:if test="${not empty phase.phaseEndDate }">
-								- <fmt:formatDate value="${phase.phaseEndDate}" type="date" dateStyle="SHORT" pattern="MM/dd/yy zz" />
+								-
+								<span class="dateInfo">
+									<fmt:formatDate value="${phase.phaseEndDate}" type="date" dateStyle="SHORT" pattern="MM/dd/yy hh:ss zz" />
+								</span>
 							</c:if>
 						</c:if>
 						<div class="c-Tooltip__arrow"><!--  --></div>
