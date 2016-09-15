@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalRating;
+
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -33,9 +31,14 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
@@ -80,7 +83,7 @@ public class JudgeProposalActionController {
         Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         long proposalId = proposal.getProposalId();
-        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(proposalAdvancingBean.getContestPhaseId());
+        ContestPhase contestPhase = ContestClient.getContestPhase(proposalAdvancingBean.getContestPhaseId());
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
@@ -144,7 +147,7 @@ public class JudgeProposalActionController {
         if (permissions.getCanAdminAll() && !isUndecided && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
             ContestPhaseLocalServiceUtil.forcePromotionOfProposalInPhase(proposal, contestPhase);
         }
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/ADVANCING");
+        response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/ADVANCING");
     }
 
     @ResourceMapping("getJudgingCsv")
@@ -197,7 +200,7 @@ public class JudgeProposalActionController {
 
         final Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
-        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
+        ContestPhase contestPhase = ContestClient.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         User liferayUser = proposalsContext.getUser(request);
         Member member = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -226,8 +229,8 @@ public class JudgeProposalActionController {
         this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), liferayUser.getUserId(), isPublicRating);
 
 
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest,
-                proposal.getWrapped(), contestPhase));
+        response.sendRedirect(proposal.getWrapped().getProposalLinkUrl(contest,
+                 contestPhase.getContestPhasePK()));
     }
 
     @RequestMapping(params = {"action=saveScreening"})
@@ -281,7 +284,7 @@ public class JudgeProposalActionController {
                 );
 
                 //save fellow action comment
-                ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), ContestPhaseLocalServiceUtil.fetchContestPhase(contestPhaseId));
+                ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), ContestClient.getContestPhase(contestPhaseId));
 
                 if (fellowProposalScreeningBean.getFellowScreeningAction()
                         == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()
@@ -301,8 +304,8 @@ public class JudgeProposalActionController {
                     contestPhaseId);
 
             this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId(), false);
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
-                    proposalsContext.getProposal(request), proposalsContext.getContestPhase(request)) + "/tab/SCREENING");
+            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request),
+                     proposalsContext.getContestPhase(request).getContestPhasePK()) + "/tab/SCREENING");
         } catch (Exception e) {
             //TODO: do we still want this?
             List<Long> recipientIds = new ArrayList<>();
@@ -341,11 +344,11 @@ public class JudgeProposalActionController {
                     existingRating.setRatingValueId(newRatingValueId);
                     //convention: save comment in first type
                     if (!commentAdded) {
-                        existingRating.setComment(ratingBean.getComment());
+                        existingRating.setComment_(ratingBean.getComment());
                         existingRating.setCommentEnabled(true);
                         commentAdded = true;
                     } else {
-                        existingRating.setComment(null);
+                        existingRating.setComment_(null);
                         existingRating.setCommentEnabled(false);
                     }
                     ProposalRatingLocalServiceUtil.updateRating(existingRating);

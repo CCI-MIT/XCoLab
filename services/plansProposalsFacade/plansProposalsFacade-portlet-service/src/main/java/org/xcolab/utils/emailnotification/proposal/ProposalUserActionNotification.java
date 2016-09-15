@@ -2,7 +2,7 @@ package org.xcolab.utils.emailnotification.proposal;
 
 import com.ext.portlet.ProposalAttributeKeys;
 
-import com.ext.portlet.model.Proposal;
+
 import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -12,6 +12,7 @@ import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 
 public class ProposalUserActionNotification extends ProposalNotification {

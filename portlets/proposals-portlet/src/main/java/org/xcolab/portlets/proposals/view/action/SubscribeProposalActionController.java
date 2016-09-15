@@ -34,7 +34,7 @@ public class SubscribeProposalActionController {
             else {
                 ProposalLocalServiceUtil.subscribe(proposalId, userId);
             }
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId));
+            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)));
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to subscribe proposal");

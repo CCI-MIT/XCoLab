@@ -1,16 +1,16 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalRating;
+
 import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
@@ -26,7 +26,7 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
     }
 
     public ProposalJudgeWrapper(Proposal proposal, int version, Contest contest,
-            ContestPhase contestPhase, Proposal2Phase proposal2Phase, Member currentUser) {
+                                ContestPhase contestPhase, Proposal2Phase proposal2Phase, Member currentUser) {
         super(proposal, version, contest, contestPhase, proposal2Phase);
         this.currentUser = currentUser;
         setProposalRatings(proposal.getProposalId(), contestPhase);

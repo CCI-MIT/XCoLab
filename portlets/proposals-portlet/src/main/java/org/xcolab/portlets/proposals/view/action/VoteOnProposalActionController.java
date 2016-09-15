@@ -2,8 +2,6 @@ package org.xcolab.portlets.proposals.view.action;
 
 
 import com.ext.portlet.NoSuchProposalVoteException;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalVote;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
@@ -28,7 +26,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -115,7 +117,7 @@ public class VoteOnProposalActionController {
         }
         // Redirect to prevent page-refreshing from influencing the vote
         final String arguments = hasVoted ? "/voted" : "";
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + arguments);
+        response.sendRedirect(proposal.getProposalLinkUrl(contest) + arguments);
     }
 
     private boolean validateVote(User user, Member member, Proposal proposal, Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
@@ -177,7 +179,7 @@ public class VoteOnProposalActionController {
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
                 vote.persist();
-                ProposalWrapper proposal = new ProposalWrapper(ProposalLocalServiceUtil.fetchProposal(proposalId));
+                ProposalWrapper proposal = new ProposalWrapper(ProposalsClient.getProposal(proposalId));
                 model.addAttribute("proposal", proposal);
                 success = true;
             } else {
@@ -185,7 +187,7 @@ public class VoteOnProposalActionController {
             }
         } catch (NoSuchProposalVoteException e) {
             model.addAttribute("error", "NoSuchProposalVote");
-        } catch (SystemException e) {
+        } catch (ProposalNotFoundException | SystemException e) {
             throw new DatabaseAccessException(e);
         }
         model.addAttribute("success", success);

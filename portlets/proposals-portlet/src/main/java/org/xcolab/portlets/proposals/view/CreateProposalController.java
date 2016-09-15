@@ -1,10 +1,7 @@
 
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -21,9 +18,15 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.liferay.SharedColabUtil;
@@ -58,7 +61,7 @@ public class CreateProposalController extends BaseProposalsController {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         long userId = themeDisplay.getUserId();
         
-        Proposal proposal = ProposalLocalServiceUtil.createProposal(0);
+        Proposal proposal = new Proposal();
         proposal.setVisible(true);
         proposal.setAuthorId(themeDisplay.getUserId());
 
@@ -67,19 +70,20 @@ public class CreateProposalController extends BaseProposalsController {
 
         ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
-        	Contest baseContest = ContestLocalServiceUtil.getContest(baseContestId);
-        	ProposalWrapper baseProposalWrapper = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(baseProposalId), 
-        			baseProposalVersion, baseContest, ContestLocalServiceUtil.getActiveOrLastPhase(baseContest), null);
-
-
-        	model.addAttribute("baseProposal", baseProposalWrapper);
             try {
-                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(baseContest.getContestPK());
-                model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
-            }catch (ContestNotFoundException ignored){
+                Contest baseContest = ContestClient.getContest(baseContestId);
+                ProposalWrapper baseProposalWrapper = new ProposalWrapper(ProposalsClient.getProposal(baseProposalId),
+                        baseProposalVersion, baseContest, ContestClient.getActivePhase(baseContest.getContestPK()), null);
 
+
+                model.addAttribute("baseProposal", baseProposalWrapper);
+
+                model.addAttribute("baseContest", new ContestWrapper(baseContest));
+
+                model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper));
+            }catch (ContestNotFoundException | ProposalNotFoundException ignored){
+                
             }
-        	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper));
         }
         else {
         	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped));
@@ -88,7 +92,7 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposal", proposalWrapped);
 
         model.addAttribute("isEditingProposal", true);
-        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
+        ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
         final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();
         setSeoTexts(request, seoText, null, null);
 

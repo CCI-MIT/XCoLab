@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.dao.orm.Criterion;
@@ -34,10 +33,12 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -109,7 +110,7 @@ public class ProposalRequestMembershipActionController {
             }
 
         SessionMessages.add(request, "membershipRequestSent");
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/tab/TEAM");
+        response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/TEAM");
     }
 
     @RequestMapping(params = {"action=inviteMember"})

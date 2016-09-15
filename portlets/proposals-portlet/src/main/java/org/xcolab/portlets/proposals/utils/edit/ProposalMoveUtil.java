@@ -1,6 +1,8 @@
 package org.xcolab.portlets.proposals.utils.edit;
 
 import com.ext.portlet.NoSuchProposal2PhaseException;
+
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -43,7 +45,7 @@ public final class ProposalMoveUtil {
                         themeDisplay.getUserId());
                 for (Proposal2Phase p2p : Proposal2PhaseLocalServiceUtil
                         .getByProposalId(proposalWrapper.getProposalId())) {
-                    if (ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK()
+                    if (ContestClient.getContestPhase(p2p.getContestPhaseId()).getContestPK()
                             != updateProposalSectionsBean.getBaseProposalContestId()) {
                         continue;
                     }
@@ -55,7 +57,7 @@ public final class ProposalMoveUtil {
                     }
 
                     if (updateProposalSectionsBean.getMoveFromContestPhaseId() != null) {
-                        if (!ContestPhaseLocalServiceUtil.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate()
+                        if (!ContestClient.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate()
                                 .before(
                                         ContestPhaseLocalServiceUtil
                                                 .getContestPhase(updateProposalSectionsBean.getMoveFromContestPhaseId())

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -147,7 +148,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     private boolean isActiveContestPhaseOpenForEdit(Contest contest) throws PortalException, SystemException {
         ContestPhase activeContestPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
         Long contestPhaseTypeId = activeContestPhase.getContestPhaseType();
-        return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
+        return ContestClient.getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
     private List<ProposalRatingsWrapper> getAverageRatingsForPastPhases(Long contestId, Proposal proposal)

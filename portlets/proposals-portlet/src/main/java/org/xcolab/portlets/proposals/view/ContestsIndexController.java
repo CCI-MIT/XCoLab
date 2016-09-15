@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
+
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
 import com.ext.portlet.model.OntologySpace;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
@@ -72,9 +73,13 @@ public class ContestsIndexController extends BaseProposalsController {
         ContestType contestType = preferences.getContestType();
 
         if (contestType.getSuggestionContestId() > 0) {
-            Contest c = ContestLocalServiceUtil.getContest(contestType.getSuggestionContestId());
-            String link = ContestLocalServiceUtil.getContestLinkUrl(c);
-            model.addAttribute("suggestionContestLink", link);
+            try {
+                Contest c = ContestClient.getContest(contestType.getSuggestionContestId());
+                String link = c.getContestLinkUrl();
+                model.addAttribute("suggestionContestLink", link);
+            }catch (ContestNotFoundException ignored){
+
+            }
         }
 
         if (viewType == null) {
@@ -100,14 +105,14 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
         List<ContestWrapper> contests = new ArrayList<>();
-        List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContestsByContestType(contestType.getId()) :
-        	ContestLocalServiceUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId());
+        List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContestsByContestType(contestType.getId_()) :
+        	ContestLocalServiceUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
         List<Contest> priorContests = ContestLocalServiceUtil.getContestsByActivePrivateType(false, false,
-                contestType.getId());
+                contestType.getId_());
 
         if (contestsToWrap.size() == 1) {
             final Contest contest = contestsToWrap.get(0);
-            final String contestLinkUrl = ContestLocalServiceUtil.getContestLinkUrl(contest);
+            final String contestLinkUrl = (contest).getContestLinkUrl();
             try {
                 PortalUtil.getHttpServletResponse(response).sendRedirect(contestLinkUrl);
                 return "contestsIndex"; //won't be shown, but avoid null pointer exception during redirection
@@ -117,7 +122,7 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         for (Contest contest: contestsToWrap) {
-        	if (! contest.isContestPrivate()) {
+        	if (! contest.getContestPrivate()) {
                 try {
                     org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
                     contests.add(new ContestWrapper(contestMicro));//contest

@@ -1,10 +1,11 @@
 package org.xcolab.portlets.proposals.utils;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Contest;
+
+
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
@@ -20,6 +21,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -85,9 +90,13 @@ public class ProposalPickerFilter {
                 if (!terms.isEmpty()) {
                     List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
                     for (long filterExceptionContestId : filterExceptionContestIds) {
-                        final Contest filterExceptionContest = ContestLocalServiceUtil.fetchContest(filterExceptionContestId);
-                        if (!contests.contains(filterExceptionContest)) {
-                            contests.add(filterExceptionContest);
+                        try {
+                            final Contest filterExceptionContest = ContestClient.getContest(filterExceptionContestId);
+                            if (!contests.contains(filterExceptionContest)) {
+                                contests.add(filterExceptionContest);
+                            }
+                        }catch (ContestNotFoundException ignored){
+
                         }
                     }
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){

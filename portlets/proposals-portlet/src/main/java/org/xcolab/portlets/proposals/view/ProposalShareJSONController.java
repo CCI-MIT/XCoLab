@@ -1,9 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -21,8 +18,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
 import java.io.IOException;
@@ -121,11 +123,11 @@ public class ProposalShareJSONController {
         String proposalUrl = themeDisplay.getPortalURL();
 
         if (phase == null || phase.getContestPhasePK() <= 0) {
-			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
+			proposalUrl += proposal.getProposalLinkUrl(contest);
 		} else {
-			proposalUrl += ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, phase);
+			proposalUrl += proposal.getProposalLinkUrl(contest, phase.getContestPhasePK());
 		}
-        ContestType contestType = ContestTypeLocalServiceUtil.getContestType(contest);
+        ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
 		body += String.format("<p><a href='%s'>Link to %s</a></p>", proposalUrl, contestType.getProposalName());
 
 		// Send the message

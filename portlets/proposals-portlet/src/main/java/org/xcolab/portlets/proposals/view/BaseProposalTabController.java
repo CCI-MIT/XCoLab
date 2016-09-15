@@ -1,8 +1,8 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
+
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -64,7 +67,7 @@ public class BaseProposalTabController extends BaseProposalsController {
         String pageDescription = proposalWrapped.getPitch();
         
         if (pageSubTitle == null || StringUtils.isBlank(pageSubTitle)) {
-            final ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposalWrapped.getProposalId());
+            final ContestType contestType = ProposalsClient.getContestTypeFromProposalId(proposalWrapped.getProposalId());
             pageSubTitle = contestType.getProposalName() + " for " + contestWrapped.getContestShortName();
         }
 

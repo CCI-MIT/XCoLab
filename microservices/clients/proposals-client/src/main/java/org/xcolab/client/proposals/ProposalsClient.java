@@ -5,6 +5,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
@@ -12,6 +13,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalRatingValueNotFoundException;
 import org.xcolab.client.proposals.pojo.PlanSectionDefinition;
 import org.xcolab.client.proposals.pojo.PlanTemplate;
+import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
@@ -68,6 +70,9 @@ public final class ProposalsClient {
 
     private static final RestResource<ProposalRatingType> proposalRatingTypeResource = new RestResource<>(proposalService,
             "proposalRatingTypes", ProposalRatingType.TYPES);
+
+    private static final RestResource<PointsDistributionConfiguration> pointsDistributionConfigurationResource = new RestResource<>(proposalService,
+            "pointsDistributionConfigurations", PointsDistributionConfiguration.TYPES);
 
 
     public static Proposal createProposal(Proposal proposal) {
@@ -181,6 +186,12 @@ public final class ProposalsClient {
                 .get();
     }
 
+    public static ProposalVersion getProposalVersionByProposal(Long proposalId) {
+        return proposalVersionResource.service("getByProposalIdVersion", ProposalVersion.class)
+                .queryParam("proposalId", proposalId)
+                .get();
+    }
+
 
     public static Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
         try {
@@ -229,6 +240,7 @@ public final class ProposalsClient {
                 .optionalQueryParam("proposalId", proposalId)
                 .get();
     }
+
     public static Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
         return proposalVoteResource.service("hasUserVoted", Boolean.class)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
@@ -284,6 +296,15 @@ public final class ProposalsClient {
 
     }
 
+    public static ContestType getContestTypeFromProposalId(Long proposalId) {
+        try {
+            Contest contest = getCurrentContestForProposal(proposalId);
+            return ContestClient.getContestType(contest.getContestTypeId());
+        } catch (ContestNotFoundException ignored) {
+            return null;
+        }
+    }
+
     public static ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute, Long authorId) {
         return proposalAttributeResource.create(proposalAttribute).queryParam("authorId", authorId)
                 .execute();
@@ -307,6 +328,11 @@ public final class ProposalsClient {
             return newestVersionContestPhaseId;
         }
         return null;
+    }
+
+    public static ContestPhase getLatestContestPhaseInContest(Long proposalId) {
+        Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
+        return ContestClient.getContestPhase(contestPhaseId);
     }
 
     public static List<ProposalAttribute> getAllProposalAttributes(Long proposalId, Integer version) {
@@ -344,8 +370,26 @@ public final class ProposalsClient {
     }
 
     public static ProposalRatingType getProposalRatingType(long id) {
-            return proposalRatingTypeResource.get(id)
-                    .execute();
+        return proposalRatingTypeResource.get(id)
+                .execute();
 
     }
+
+    public static PointsDistributionConfiguration createPointsDistributionConfiguration(PointsDistributionConfiguration pointsDistributionConfiguration) {
+        return pointsDistributionConfigurationResource.create(pointsDistributionConfiguration).execute();
+    }
+
+
+    public static List<PointsDistributionConfiguration> getPointsDistributionByProposalIdPointTypeId(Long proposalId, Long pointTypeId) {
+        return pointsDistributionConfigurationResource.list()
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("pointTypeId", pointTypeId)
+                .execute();
+    }
+
+    public static Boolean deletePointsDistributionConfigurationByProposalId(Long proposalId) {
+        return pointsDistributionConfigurationResource.service("removeByProposalId", Boolean.class)
+                .queryParam("proposalId", proposalId).execute();
+    }
+
 }

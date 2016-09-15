@@ -2,14 +2,17 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
+
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalVersion;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
@@ -57,7 +60,7 @@ public class ProposalsPreferencesController {
     private static final Log _log = LogFactoryUtil.getLog(ProposalsPreferencesController.class);
 
     private static List<ContestPhase> getPhasesByContest(Contest c, final int sortModifier) {
-        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(c);
+        List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(c.getContestPK());
 
         //sort the phases by startdate
         Collections.sort(contestPhases, new Comparator<ContestPhase>() {
@@ -89,9 +92,9 @@ public class ProposalsPreferencesController {
 
             for (ContestPhase cp: contestPhases) {
                 if (!contestPhaseTypeMap.containsKey(cp.getContestPhaseType())) {
-                    contestPhaseTypeMap.put(cp.getContestPhaseType(), ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(cp.getContestPhaseType()));
+                    contestPhaseTypeMap.put(cp.getContestPhaseType(), ContestClient.getContestPhaseType(cp.getContestPhaseType()));
                 }
-                List<Proposal> proposals = ProposalLocalServiceUtil.getProposalsInContestPhase(cp.getContestPhasePK());
+                List<Proposal> proposals = ProposalsClient.getProposalsInContestPhase(cp.getContestPhasePK());
                 List<ProposalWrapper> wrappers = new ArrayList<>();
                 for (Proposal p : proposals) {
                     wrappers.add(new ProposalWrapper(p));
@@ -105,7 +108,7 @@ public class ProposalsPreferencesController {
         model.addAttribute("contestPhaseType", contestPhaseTypeMap);
         model.addAttribute("contestPhases", contestPhasesMap);
         model.addAttribute("proposals", proposalsMap);
-        model.addAttribute("contestTypes", ContestTypeLocalServiceUtil.getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+        model.addAttribute("contestTypes", ContestClient.getAllContestTypes());
 
         return "preferences";
     }
@@ -115,8 +118,8 @@ public class ProposalsPreferencesController {
     public void releaseJudgingMails(ActionRequest request) throws PortalException, SystemException, com.liferay.util.mail.MailEngineException, javax.mail.internet.AddressException, UnsupportedEncodingException {
         Integer[] phaseIds = { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };
         for (Integer phaseId : phaseIds) {
-            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
-            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(phaseId)) {
+            ContestPhase contestPhase = ContestClient.getContestPhase(phaseId.longValue());
+            for (Proposal proposal : ProposalsClient.getProposalsInContestPhase(phaseId.longValue())) {
                 ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(proposal, contestPhase, request);
             }
         }
@@ -146,7 +149,8 @@ public class ProposalsPreferencesController {
         StringBuilder message = new StringBuilder();
 
         for (Contest c : activeContests) {
-            if (ContestLocalServiceUtil.getActiveOrLastPhase(c) == null || ContestLocalServiceUtil.getActiveOrLastPhase(c).getContestPhaseType() != 17L) {
+            ContestPhase activePhase = ContestClient.getActivePhase(c.getContestPK());
+            if (activePhase == null || activePhase.getContestPhaseType() != 17L) {
                 message.append("<br/>\nSkipped contest: ").append(c.getContestShortName()).append("<br/><br/>\n");
                 continue;
             }
@@ -199,7 +203,8 @@ public class ProposalsPreferencesController {
         StringBuilder message = new StringBuilder();
 
         for (Contest c : activeContests) {
-            if (ContestLocalServiceUtil.getActiveOrLastPhase(c) == null || ContestLocalServiceUtil.getActiveOrLastPhase(c).getContestPhaseType() != 17L) {
+            ContestPhase activePhase = ContestClient.getActivePhase(c.getContestPK());
+            if (activePhase == null || activePhase.getContestPhaseType() != 17L) {
                 message.append("<br/>\nSkipped contest: ").append(c.getContestShortName()).append("<br/><br/>\n");
                 continue;
             }
@@ -207,7 +212,7 @@ public class ProposalsPreferencesController {
             message.append("<br/><br/>\nCONTEST: ").append(c.getContestShortName()).append("<br/><br/>\n");
 
             //identify the winners selection phase (= contains all finalist) and the finalist selection (= contains all semi-finalist) phase
-            List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(c);
+            List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(c.getContestPK());
             ContestPhase winnersAwarded = null;
             ContestPhase winnersSelection = null;
             ContestPhase finalistSelection = null;
@@ -258,8 +263,8 @@ public class ProposalsPreferencesController {
         StringBuilder message = new StringBuilder();
         if (!proposalsToBeMoved.isEmpty() && moveToContestPhaseId > 0 && moveFromContestId > 0) {
             try {
-                Contest moveFromContest = ContestLocalServiceUtil.fetchContest(moveFromContestId);
-                ContestPhase moveToContestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(moveToContestPhaseId);
+                Contest moveFromContest = ContestClient.getContest(moveFromContestId);
+                ContestPhase moveToContestPhase = ContestClient.getContestPhase(moveToContestPhaseId);
 
                 assert moveFromContest != null;
                 assert moveToContestPhase != null;
@@ -273,7 +278,7 @@ public class ProposalsPreferencesController {
                     ContestPhase lastPhaseContainingProposal = null;
                     //traverse phases, later phases are first.
                     for (ContestPhase cp: contestPhases) {
-                        List<Proposal> proposalsInThisPhase = ProposalLocalServiceUtil.getProposalsInContestPhase(cp.getContestPhasePK());
+                        List<Proposal> proposalsInThisPhase = ProposalsClient.getProposalsInContestPhase(cp.getContestPhasePK());
                         if (proposalsInThisPhase.contains(proposal)) {
                             //found the last phase
                             lastPhaseContainingProposal = cp;
@@ -297,7 +302,7 @@ public class ProposalsPreferencesController {
                             throw new SystemException("Proposal not found");
                         }
 
-                        Proposal2Phase oldP2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
+                        Proposal2Phase oldP2p = ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
 
                         assert oldP2p != null;
 

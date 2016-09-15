@@ -7,6 +7,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.MembershipRequestConstants;
 import com.liferay.portal.model.User;
 
+
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.proposals.MembershipRequestClient;

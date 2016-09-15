@@ -36,7 +36,7 @@ public class ToggleProposalOpenController {
             final long userId = proposalsContext.getUser(request).getUserId();
             ProposalAttributeLocalServiceUtil.setAttribute(userId, proposalId,
                     ProposalAttributeKeys.OPEN, planOpen ? 1 : 0);
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId));
+            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)));
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to change proposal open attribute");

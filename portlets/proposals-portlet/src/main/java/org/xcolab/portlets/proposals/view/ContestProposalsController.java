@@ -1,13 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -21,8 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
@@ -63,17 +65,22 @@ public class ContestProposalsController extends BaseProposalsController {
         List<ProposalWrapper> proposals = new ArrayList<>();
 
         for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-            Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-            ProposalWrapper proposalWrapper;
 
-            if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGE.getRoleId(), u.getUserId())) {
-                proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
+            try {
+                Proposal2Phase p2p = ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                ProposalWrapper proposalWrapper;
 
-            } else {
-                proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
+                if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGE.getRoleId(), u.getUserId())) {
+                    proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
+
+                } else {
+                    proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
+                }
+
+                proposals.add(proposalWrapper);
+            }catch (ProposalNotFoundException ignored){
+
             }
-
-            proposals.add(proposalWrapper);
         }
 
         model.addAttribute("sortFilterPage", sortFilterPage);
@@ -92,7 +99,7 @@ public class ContestProposalsController extends BaseProposalsController {
     public void redirectOldContestDiscussionUrl(ActionRequest request, ActionResponse response, Model model,
             @RequestParam Long contestId) throws SystemException, PortalException, IOException {
 
-        String contestUrl = ContestLocalServiceUtil.getContestLinkUrl(proposalsContext.getContest(request));
+        String contestUrl = (proposalsContext.getContest(request)).getContestLinkUrl();
         response.sendRedirect(contestUrl + "/discussion");
     }
 
@@ -104,7 +111,7 @@ public class ContestProposalsController extends BaseProposalsController {
         if (phaseId != null && phaseId > 0) {
             redirectUrl = ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl(proposalsContext.getContestPhase(request));
         } else {
-            redirectUrl = ContestLocalServiceUtil.getContestLinkUrl(proposalsContext.getContest(request));
+            redirectUrl = proposalsContext.getContest(request).getContestLinkUrl();
         }
         response.sendRedirect(redirectUrl);
     }
@@ -119,23 +126,27 @@ public class ContestProposalsController extends BaseProposalsController {
             Model model, ActionRequest request, ActionResponse response)
             throws PortalException, SystemException, IOException {
 
-        Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
-        Contest contest = ContestLocalServiceUtil.getContest(contestId);
+        try {
+            Proposal proposal = ProposalsClient.getProposal(proposalId);
+            Contest contest = ContestClient.getContest(contestId);
 
-        String redirectUrl;
-        if (phaseId != null && phaseId > 0) {
-            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(phaseId);
-            redirectUrl = ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase);
-        } else {
-            redirectUrl = ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
+            String redirectUrl;
+            if (phaseId != null && phaseId > 0) {
+                ContestPhase contestPhase = ContestClient.getContestPhase(phaseId);
+                redirectUrl = proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK());
+            } else {
+                redirectUrl = proposal.getProposalLinkUrl(contest);
+            }
+            if (version != null && version > 0) {
+                redirectUrl += "/version/" + version;
+            }
+            if (StringUtils.isNotBlank(tab)) {
+                redirectUrl += "/tab/" + tab;
+            }
+            response.sendRedirect(redirectUrl);
+        }catch (ProposalNotFoundException | ContestNotFoundException ignored){
+
         }
-        if (version != null && version > 0) {
-            redirectUrl += "/version/" + version;
-        }
-        if (StringUtils.isNotBlank(tab)) {
-            redirectUrl += "/tab/" + tab;
-        }
-        response.sendRedirect(redirectUrl);
     }
 
 }

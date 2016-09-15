@@ -1,9 +1,7 @@
 package org.xcolab.portlets.proposals.discussion;
 
 
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -74,9 +72,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 phaseId = Long.parseLong(contestPhaseIdParameter);
             } else if (proposalId != null && proposalId > 0) {
-                phaseId = Proposal2PhaseLocalServiceUtil.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
+                phaseId = ProposalsClient.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
             }
-        } catch (NumberFormatException | SystemException | PortalException ignored) {
+        } catch (NumberFormatException  ignored) {
         }
         return phaseId;
     }
@@ -133,8 +131,8 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
 
-            Contest contestMicro = ContestClient.getContest(proposalWrapper.getContest().getContestPK());
-            ContestWrapper contestWrapper = new ContestWrapper(contestMicro);
+
+            ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
 
             boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
                     MembersClient.getMemberUnchecked(user.getUserId()));
@@ -142,8 +140,6 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             boolean isAdvisor = contestWrapper.isUserAmongAdvisors(user);
 
             return isFellow || isJudge || isAdvisor;
-        } catch (ContestNotFoundException ignored) {
-            throw new DatabaseAccessException(ignored);
         } catch (SystemException e) {
             throw new DatabaseAccessException(e);
         } catch (PortalException e) {

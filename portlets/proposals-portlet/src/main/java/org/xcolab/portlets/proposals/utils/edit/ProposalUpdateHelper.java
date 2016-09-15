@@ -2,7 +2,6 @@ package org.xcolab.portlets.proposals.utils.edit;
 
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.Proposal2Phase;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -13,6 +12,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.apache.commons.lang.StringUtils;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -122,9 +124,13 @@ public class ProposalUpdateHelper {
 
         if (p2p != null && p2p.getVersionTo() != -1) {
             // we are in a completed phase - need to adjust the end version
-            final Proposal updatedProposal = ProposalLocalServiceUtil.fetchProposal(proposalWrapper.getProposalId());
-            p2p.setVersionTo(updatedProposal.getCurrentVersion());
-            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+            try {
+                final Proposal updatedProposal = ProposalsClient.getProposal(proposalWrapper.getProposalId());
+                p2p.setVersionTo(updatedProposal.getCurrentVersion());
+                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+            }catch (ProposalNotFoundException ignored){
+
+            }
         }
 
         if (updateProposalReferences) {

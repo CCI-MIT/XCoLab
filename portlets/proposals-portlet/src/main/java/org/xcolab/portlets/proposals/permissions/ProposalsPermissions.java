@@ -2,10 +2,7 @@ package org.xcolab.portlets.proposals.permissions;
 
 import com.ext.portlet.contests.ContestStatus;
 
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -19,6 +16,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -152,7 +150,7 @@ public class ProposalsPermissions {
 
     public boolean getIsTeamMember() throws SystemException, PortalException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId())
+                && MembersClient.isUserInGroup(proposal.getProposalId(), user.getUserId())
                 && !user.isDefaultUser();
     }
 
@@ -162,7 +160,7 @@ public class ProposalsPermissions {
 
     private boolean isProposalOpen() throws SystemException, PortalException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
+                && proposal.isOpen();
     }
 
     /**
@@ -265,9 +263,15 @@ public class ProposalsPermissions {
     }
 
     private boolean wasProposalMovedElsewhere() throws SystemException, PortalException {
-        final long currentContestId = Proposal2PhaseLocalServiceUtil
-                .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
-        return currentContestId != contestPhase.getContestPK();
+
+        try {
+            final long currentContestId = ProposalsClient
+                    .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
+            return currentContestId != contestPhase.getContestPK();
+        }catch(ContestNotFoundException ignored){
+            return false;
+        }
+
     }
 
     public User getUser() {

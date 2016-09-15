@@ -14,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
 import java.io.IOException;
@@ -40,39 +43,44 @@ public class ContestModelController extends BaseProposalsController {
     	if (refreshModels) {
     		ModelRunnerServiceUtil.refreshModels();
     	}
+		Long modelId = 0l;
     	Long contestPK = proposalsContext.getContest(request).getContestPK();
-    	Long modelId = ContestLocalServiceUtil.getDefaultModelId(contestPK);
-    	Map<Long, String> modelIdsWithNames;
-    	if (modelId != null) {
-        	modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
-        	model.addAttribute("availableModels", modelIdsWithNames);
-    	}    
-    	else {
-    		modelIdsWithNames = new HashMap<>();
-    	}
+		try{
+			Contest contest = ContestClient.getContest(contestPK);
+			modelId = contest.getDefaultModelId();
+			Map<Long, String> modelIdsWithNames;
+			if (modelId != null) {
+				modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
+				model.addAttribute("availableModels", modelIdsWithNames);
+			}
+			else {
+				modelIdsWithNames = new HashMap<>();
+			}
 
-        for (Cookie cookie: request.getCookies()) {
-            if (cookie.getName().equals(COOKIE_PREFERRED_MODEL)) {
-            	try {
-            		JsonElement element = new JsonParser().parse(URLDecoder.decode(cookie.getValue()));
-            		JsonObject object = element.getAsJsonObject();
-            		if (object.has(String.valueOf(proposalsContext.getContest(request).getContestPK()))) {
-            			
-            			long preferredModelId = object.get(String.valueOf(contestPK)).getAsLong();
-            			if (modelIdsWithNames.containsKey(preferredModelId)) {
-            				modelId = preferredModelId;
-            			}
-            			
-            		}
-            				
-            	}
-            	catch (JsonSyntaxException e) {
-					//ignored
-            	}
-            } 
-        }
-    	
-    	
+			for (Cookie cookie: request.getCookies()) {
+				if (cookie.getName().equals(COOKIE_PREFERRED_MODEL)) {
+					try {
+						JsonElement element = new JsonParser().parse(URLDecoder.decode(cookie.getValue()));
+						JsonObject object = element.getAsJsonObject();
+						if (object.has(String.valueOf(proposalsContext.getContest(request).getContestPK()))) {
+
+							long preferredModelId = object.get(String.valueOf(contestPK)).getAsLong();
+							if (modelIdsWithNames.containsKey(preferredModelId)) {
+								modelId = preferredModelId;
+							}
+
+						}
+
+					}
+					catch (JsonSyntaxException e) {
+						//ignored
+					}
+				}
+			}
+		}catch (ContestNotFoundException ignored){
+
+		}
+
     	model.addAttribute("modelId", modelId);
         return "contestModel";
         

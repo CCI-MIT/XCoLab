@@ -2,12 +2,8 @@ package org.xcolab.portlets.proposals.wrappers;
 
 
 
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.service.ContestLocalServiceUtil;
+
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -20,6 +16,8 @@ import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
@@ -286,11 +284,11 @@ public class ContestWrapper extends BaseContestWrapper {
      */
     public boolean getJudgeStatus() {
         try {
-            com.ext.portlet.model.Contest contestLiferay = ContestLocalServiceUtil.getContest(contest.getContestPK());
-            com.ext.portlet.model.ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contestLiferay);
-            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
-                Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contestLiferay, contestPhase, p2p)).getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
+
+            ContestPhase contestPhase = ContestClient.getActivePhase(contest.getContestPK());
+            for (Proposal proposal : ProposalsClient.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+                Proposal2Phase p2p = ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
                     return false;
                 }
             }
@@ -307,11 +305,11 @@ public class ContestWrapper extends BaseContestWrapper {
      */
     public boolean getScreeningStatus() {
         try {
-            com.ext.portlet.model.Contest contestLiferay = ContestLocalServiceUtil.getContest(contest.getContestPK());
-            com.ext.portlet.model.ContestPhase contestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(contestLiferay);
+            Contest contestLiferay = ContestClient.getContest(contest.getContestPK());
+            ContestPhase contestPhase = ContestClient.getActivePhase(contestLiferay.getContestPK());
 
-            for (Proposal proposal : ProposalLocalServiceUtil.getProposalsInContestPhase(contestPhase.getPrimaryKey())) {
-                Proposal2Phase p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+            for (Proposal proposal : ProposalsClient.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+                Proposal2Phase p2p = ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
                 if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contestLiferay, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
                     return false;
                 }

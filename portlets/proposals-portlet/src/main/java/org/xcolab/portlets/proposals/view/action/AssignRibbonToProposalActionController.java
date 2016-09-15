@@ -45,8 +45,8 @@ public class AssignRibbonToProposalActionController {
                         ProposalContestPhaseAttributeKeys.RIBBON);   
             }
 
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
-                    proposalsContext.getProposal(request), proposalsContext.getContestPhase(request)) + "/tab/ADMIN");
+            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request),
+                     proposalsContext.getContestPhase(request).getContestPhasePK()) + "/tab/ADMIN");
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to assign ribbon");

@@ -17,6 +17,7 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 
@@ -70,11 +71,9 @@ public class ContestNotification extends EmailNotification {
     }
 
     private Date getActivePhaseDeadline() {
-        try {
-            return ContestPhaseLocalServiceUtil.getActivePhaseForContest(getLiferayContestFromContest(contest)).getPhaseEndDate();
-        } catch (SystemException | PortalException e) {
-            return null;
-        }
+
+            return ContestClient.getActivePhase(contest.getContestPK()).getPhaseEndDate();
+
     }
 
     private String getOtherContestLink(String linkText) {

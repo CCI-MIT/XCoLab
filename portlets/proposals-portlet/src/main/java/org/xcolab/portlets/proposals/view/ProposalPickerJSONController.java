@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -189,7 +189,7 @@ public class ProposalPickerJSONController {
 					StringEscapeUtils.unescapeXml(wrappedProposal.getName()), MAX_CHARS_FOR_NAMES));
 			o.put("contestName", StringUtils.abbreviate(wrappedProposal
 					.getContest().getContestShortName(), MAX_CHARS_FOR_NAMES));
-			o.put("linkUrl", ProposalLocalServiceUtil.getProposalLinkUrl(wrappedProposal.getContest(), wrappedProposal.getWrapped()));
+			o.put("linkUrl", wrappedProposal.getWrapped().getProposalLinkUrl(wrappedProposal.getContest()));
 			o.put("contestId", wrappedProposal.getContest().getContestPK());
 			if (StringUtils.isNotBlank(wrappedProposal.getTeam())) {
 				o.put("team", wrappedProposal.getTeam());
