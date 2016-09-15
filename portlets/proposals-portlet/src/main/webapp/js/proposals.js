@@ -29,7 +29,7 @@ jQuery(function() {
 function initializeJavaScript(){
     initTooltips();
     initializeTextEditors();
-
+    evaluateTime();
     jQuery(".addpropform .helpTrigger").click(function() {
         var trigger = jQuery(this);
         trigger.parent().parent().find(".addprophelp").slideToggle("fast");
@@ -44,6 +44,15 @@ function initializeJavaScript(){
     jQuery("#contestsFilterClear").click(function() {
         jQuery("#contestFilterInput").val("");
         jQuery("#filterContestsForm").submit();
+    });
+}
+
+function evaluateTime() {
+    $(".dateInfo").each(function() {
+        var adjustedDate = new Date(Date.parse($(this).html()));
+        //add +1 to month since the enumeration starts with 0
+        $(this).html((adjustedDate.getMonth()+1)+"/"+adjustedDate.getDate()+"/"+adjustedDate.getFullYear()+" UTC"+(adjustedDate.getTimezoneOffset()/(-60)));
+        $(this).removeClass("dateInfo");
     });
 }
 
