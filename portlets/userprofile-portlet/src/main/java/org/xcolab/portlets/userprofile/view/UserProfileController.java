@@ -363,11 +363,10 @@ public class UserProfileController {
             }
         }
 
-        if(updatedUserBean.getCountryName() != null
-                && !updatedUserBean.getCountryName().equals(currentUserProfile.getUserBean().getCountryName())) {
+        if(updatedUserBean.getCountryName() != null) {
             validator.validate(updatedUserBean, result);
-            if (!result.hasErrors()) {
-                currentUserProfile.getUser().setCountry(HtmlUtil.cleanAll(updatedUserBean.getCountryName()));
+            if (!result.hasErrors() && !updatedUserBean.getCountryName().isEmpty()) {
+                 currentUserProfile.getUser().setCountry(HtmlUtil.cleanAll(updatedUserBean.getCountryName()));
                 changedUserPart = true;
             } else {
                 validationError = true;
@@ -436,8 +435,8 @@ public class UserProfileController {
                 existingCountry = CountryUtil.getCodeForCounty(existingCountry);
             }
         }
-
-        if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)) {
+        if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)
+                && !StringUtils.isEmpty(updatedUserBean.getCountryCode())) {
             member.setCountry(CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
             changedMember = true;
         }
