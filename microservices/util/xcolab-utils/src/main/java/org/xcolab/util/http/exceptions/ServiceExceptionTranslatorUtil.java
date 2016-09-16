@@ -30,7 +30,7 @@ public final class ServiceExceptionTranslatorUtil {
         final HttpServiceExceptionObject exceptionObject = getExceptionObject(exception, path);
         switch (exception.getStatusCode()) {
             case NOT_FOUND:
-                throw new UncheckedEntityNotFoundException();
+                throw new UncheckedEntityNotFoundException(exceptionObject);
             case BAD_REQUEST:
                 throw new Http400BadRequestException(exceptionObject);
             case TOO_MANY_REQUESTS:
