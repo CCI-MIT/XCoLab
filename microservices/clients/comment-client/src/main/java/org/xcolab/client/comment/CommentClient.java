@@ -64,12 +64,12 @@ public final class CommentClient {
                 .execute();
     }
 
-    public static int countCommentsByProposalsInContestPhase(long contestPhaseId) {
+    public static int countCommentsInContestPhase(long contestPhaseId) {
         try {
-            return commentResource.service("countProposalsInContestPhases", Integer.class)
+            return commentResource.service("countCommentsInContestPhase", Integer.class)
                     .queryParam("contestPhaseId", contestPhaseId)
                     .getChecked();
-        }catch(EntityNotFoundException ignored){
+        } catch(EntityNotFoundException ignored) {
             return 0;
         }
     }

@@ -115,15 +115,12 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public int countProposalCommentsByContestPhase(Long contestPhaseId) {
-        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
+        return dslContext.selectCount()
                 .from(COMMENT)
                 .join(PROPOSAL).on(PROPOSAL.DISCUSSION_ID.eq(COMMENT.THREAD_ID))
                 .join(PROPOSAL_2_PHASE).on(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID))
-                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
-                .getQuery();
-            query.addConditions(COMMENT.DELETED_DATE.isNull());
-        return query.fetchOne().into(Integer.class);
+                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId)
+                        .and(COMMENT.DELETED_DATE.isNull()))
+                .fetchOne().into(Integer.class);
     }
-
-
 }

@@ -1,7 +1,12 @@
 package org.xcolab.service.comments.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,17 +34,23 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class CommentController {
 
-    @Autowired
-    private CommentDao commentDao;
+    private final CommentDao commentDao;
+    private final CategoryGroupDao groupDao;
+    private final CategoryDao categoryDao;
+    private final ThreadDao threadDao;
 
     @Autowired
-    private CategoryGroupDao groupDao;
-
-    @Autowired
-    private CategoryDao categoryDao;
-
-    @Autowired
-    private ThreadDao threadDao;
+    public CommentController(CategoryGroupDao groupDao, ThreadDao threadDao, CommentDao commentDao,
+            CategoryDao categoryDao) {
+        Assert.notNull(groupDao, "GroupDao bean is required");
+        Assert.notNull(threadDao, "ThreadDao bean is required");
+        Assert.notNull(commentDao, "CommentDao bean is required");
+        Assert.notNull(categoryDao, "CategoryDao bean is required");
+        this.groupDao = groupDao;
+        this.threadDao = threadDao;
+        this.commentDao = commentDao;
+        this.categoryDao = categoryDao;
+    }
 
     @RequestMapping(value = "/comments", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Comment> listComments(HttpServletResponse response,
@@ -52,17 +63,17 @@ public class CommentController {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                    Integer.toString(commentDao.countByGiven(authorId, threadId)));
+                Integer.toString(commentDao.countByGiven(authorId, threadId)));
 
         return commentDao.findByGiven(paginationHelper, authorId, threadId, includeDeleted);
     }
 
-    @RequestMapping(value = "/comments/countProposalsInContestPhases", method = {RequestMethod.GET})
-    public Integer countProposalsInContestPhases(@RequestParam Long contestPhaseId){
+    @GetMapping("/comments/countCommentsInContestPhase")
+    public Integer countCommentsInContestPhase(@RequestParam Long contestPhaseId) {
         return commentDao.countProposalCommentsByContestPhase(contestPhaseId);
     }
 
-    @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.GET)
+    @GetMapping("/comments/{commentId}")
     public Comment getComment(@PathVariable Long commentId,
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
             throws NotFoundException {
@@ -74,20 +85,20 @@ public class CommentController {
         }
     }
 
-    @RequestMapping(value = "/comments", method = RequestMethod.POST)
+    @PostMapping("/comments")
     public Comment createComment(@RequestBody Comment comment) {
         comment.setCreateDate(new Timestamp(new Date().getTime()));
         return commentDao.create(comment);
     }
 
-    @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/comments/{commentId}")
     public boolean deleteComment(@PathVariable Long commentId) throws NotFoundException {
         Comment comment = commentDao.get(commentId);
         comment.setDeletedDate(new Timestamp(new Date().getTime()));
         return commentDao.update(comment);
     }
 
-    @RequestMapping(value = "/comments/{commentId}", method = RequestMethod.PUT)
+    @PutMapping("/comments/{commentId}")
     public boolean updateComment(@RequestBody Comment comment, @PathVariable Long commentId)
             throws NotFoundException {
         commentDao.get(commentId);
@@ -104,13 +115,9 @@ public class CommentController {
         return groupDao.findByGiven(paginationHelper);
     }
 
-    @RequestMapping(value = "/groups/{groupId}", method = RequestMethod.GET)
+    @GetMapping("/groups/{groupId}")
     public CategoryGroup getGroup(@PathVariable Long groupId) throws NotFoundException {
-        if (groupId == 0) {
-            throw new NotFoundException("No group id given");
-        } else {
-            return groupDao.get(groupId);
-        }
+        return groupDao.get(groupId);
     }
 
     @RequestMapping(value = "/categories", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -125,22 +132,18 @@ public class CommentController {
         return categoryDao.findByGiven(paginationHelper, groupId, authorId);
     }
 
-    @RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.GET)
+    @GetMapping("/categories/{categoryId}")
     public Category getCategory(@PathVariable Long categoryId) throws NotFoundException {
-        if (categoryId == 0) {
-            throw new NotFoundException("No category id given");
-        } else {
-            return categoryDao.get(categoryId);
-        }
+        return categoryDao.get(categoryId);
     }
 
-    @RequestMapping(value = "/categories", method = RequestMethod.POST)
+    @PostMapping("/categories")
     public Category createCategory(@RequestBody Category category) {
         category.setCreateDate(new Timestamp(new Date().getTime()));
         return categoryDao.create(category);
     }
 
-    @RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.PUT)
+    @PutMapping("/categories/{categoryId}")
     public boolean updateCategory(@RequestBody Category category, @PathVariable Long categoryId)
             throws NotFoundException {
         if (categoryDao.get(categoryId) != null) {
@@ -163,31 +166,23 @@ public class CommentController {
         return threadDao.findByGiven(paginationHelper, authorId, categoryId, groupId);
     }
 
-    @RequestMapping(value = "/threads/{threadId}", method = RequestMethod.GET)
+    @GetMapping("/threads/{threadId}")
     public Thread getThread(@PathVariable Long threadId) throws NotFoundException {
-        if (threadId == 0) {
-            throw new NotFoundException("No category id given");
-        } else {
-            return threadDao.get(threadId);
-        }
+        return threadDao.get(threadId);
     }
 
-    @RequestMapping(value = "/threads/{threadId}/getProposalIdForThread", method = RequestMethod.GET)
+    @GetMapping("/threads/{threadId}/getProposalIdForThread")
     public Long getProposalIdForThread(@PathVariable Long threadId) throws NotFoundException {
-        if (threadId == 0) {
-            throw new NotFoundException("No thread found for id given");
-        } else {
-            return threadDao.getProposalIdForThread(threadId);
-        }
+        return threadDao.getProposalIdForThread(threadId);
     }
 
-    @RequestMapping(value = "/threads", method = RequestMethod.POST)
+    @PostMapping("/threads")
     public Thread createThread(@RequestBody Thread thread) {
         thread.setCreateDate(new Timestamp(new Date().getTime()));
         return threadDao.create(thread);
     }
 
-    @RequestMapping(value = "/threads/{threadId}", method = RequestMethod.PUT)
+    @PutMapping("/threads/{threadId}")
     public boolean updateThread(@RequestBody Thread category, @PathVariable Long threadId)
             throws NotFoundException {
         if (threadDao.get(threadId) != null) {
@@ -197,24 +192,14 @@ public class CommentController {
         }
     }
 
-    @RequestMapping(value = "/threads/{threadId}/lastActivityDate", method = RequestMethod.GET)
+    @GetMapping("/threads/{threadId}/lastActivityDate")
     public Date getLastActivityDate(@PathVariable long threadId) throws NotFoundException {
-        if (threadId == 0) {
-            throw new NotFoundException("No category id given");
-        } else {
-            final Timestamp timestamp = threadDao.lastActivityDate(threadId);
-//            return timestamp.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//            return timestamp.toLocalDateTime();
-            return new Date(timestamp.getTime());
-        }
+        final Timestamp timestamp = threadDao.lastActivityDate(threadId);
+        return new Date(timestamp.getTime());
     }
 
-    @RequestMapping(value = "/threads/{threadId}/lastActivityAuthorId", method = RequestMethod.GET)
+    @GetMapping("/threads/{threadId}/lastActivityAuthorId")
     public long getLastActivityAuthor(@PathVariable long threadId) throws NotFoundException {
-        if (threadId == 0) {
-            throw new NotFoundException("No category id given");
-        } else {
-            return threadDao.lastActivityAuthor(threadId);
-        }
+        return threadDao.lastActivityAuthor(threadId);
     }
 }

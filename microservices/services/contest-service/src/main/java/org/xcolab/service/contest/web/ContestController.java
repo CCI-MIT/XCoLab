@@ -101,9 +101,9 @@ public class ContestController {
 
     @PutMapping(value = "/contests/{contestPK}")
     public boolean updateContest(@RequestBody Contest contest,
-                                 @PathVariable("contestPK") Long contestPK) throws NotFoundException {
+                                 @PathVariable long contestPK) throws NotFoundException {
 
-        if (contestPK == null || contestPK == 0 || contestDao.get(contestPK) == null) {
+        if (contestDao.get(contestPK) == null) {
             throw new NotFoundException("No Contest with id " + contestPK);
         } else {
             return contestDao.update(contest);
@@ -121,7 +121,7 @@ public class ContestController {
 
     }
 
-    @GetMapping(value = "/contests/{contestId}")
+    @GetMapping("/contests/{contestId}")
     public Contest getContest(@PathVariable long contestId) throws NotFoundException {
         return contestDao.get(contestId);
     }
