@@ -3,6 +3,7 @@ package org.xcolab.service.contest.domain.contest;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -208,5 +209,10 @@ public class ContestDaoImpl implements ContestDao {
         return query.fetchInto(Contest.class);
     }
 
-
+    @Override
+    public boolean existsWithScheduleId(long contestScheduleId) {
+        return dslContext.fetchExists(DSL.select()
+                .from(CONTEST)
+                .where(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId)));
+    }
 }

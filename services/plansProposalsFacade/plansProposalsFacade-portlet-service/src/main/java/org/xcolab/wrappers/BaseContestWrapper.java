@@ -22,6 +22,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.helpers.Tuple;
 import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -326,16 +327,16 @@ public class BaseContestWrapper {
     }
 
     public long getProposalsCount() {
-        ContestPhase cp = ContestClient.getActivePhase(contest.getContestPK());
-        if(cp!=null) {
-
-            return ProposalsClient.getProposalCountForActiveContestPhase(cp.getContestPhasePK());
-
-        }else{
-
-            return 0l;
-
+        try {
+            ContestPhase cp = ContestClient.getActivePhase(contest.getContestPK());
+            if (cp != null) {
+                return ProposalsClient
+                        .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
+            }
+        } catch (UncheckedEntityNotFoundException e) {
+            //fall through - return 0
         }
+        return 0L;
     }
 
         /*public long getTotalProposalsCount() {

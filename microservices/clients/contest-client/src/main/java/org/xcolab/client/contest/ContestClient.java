@@ -44,7 +44,7 @@ public class ContestClient {
     private static final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource = new RestResource1<>(contestService,
             "contestTeamMemberRoles", ContestTeamMemberRole.TYPES);
 
-    private static final RestResource<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
+    private static final RestResource1<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
             "contestSchedules", ContestSchedule.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
@@ -194,6 +194,12 @@ public class ContestClient {
         return contestScheduleResource.get(id)
                 .withCache(CacheKeys.of(ContestSchedule.class, id), CacheRetention.REQUEST)
                 .execute();
+    }
+
+    public static boolean isContestScheduleUsed(long contestScheduleId) {
+        return contestScheduleResource.getSubServiceResource(contestScheduleId, "isUsed")
+                .query(Boolean.class)
+                .get();
     }
 
     public static List<ContestSchedule> getAllContestSchedules() {

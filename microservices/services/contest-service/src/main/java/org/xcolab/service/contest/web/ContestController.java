@@ -218,6 +218,11 @@ public class ContestController {
         return contestScheduleDao.get(contestScheduleId).orElseThrow(NotFoundException::new);
     }
 
+    @GetMapping(value = "/contestSchedules/{contestScheduleId}/isUsed")
+    public boolean isContestScheduleUsed(@PathVariable long contestScheduleId) {
+        return contestDao.existsWithScheduleId(contestScheduleId);
+    }
+
     @PutMapping(value = "/contestSchedules/{id_}")
     public boolean updateContestSchedule(@RequestBody ContestSchedule contestSchedule,
                                          @PathVariable long id_) throws NotFoundException {
