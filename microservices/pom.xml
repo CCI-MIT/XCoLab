@@ -20,12 +20,12 @@
         <java.version>1.7</java.version>
         <spring.version>4.3.2.RELEASE</spring.version>
         <spring-boot.version>1.4.0.RELEASE</spring-boot.version>
-        <spring-cloud.version>1.1.5.RELEASE</spring-cloud.version>
+        <spring-cloud.version>1.1.6.RELEASE</spring-cloud.version>
 
         <!-- Database -->
         <jooq.version>3.8.4</jooq.version>
         <mysql-connector.version>5.1.39</mysql-connector.version>
-        <HikariCP.version>2.4.7</HikariCP.version>
+        <HikariCP.version>2.5.0</HikariCP.version>
         <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
 
         <!-- Core -->
@@ -34,7 +34,7 @@
         <junit.version>4.12</junit.version>
 
         <!-- Service communication -->
-        <ehcache.version>3.1.1</ehcache.version>
+        <ehcache.version>3.1.2</ehcache.version>
         <httpclient.version>4.5.2</httpclient.version>
         <jackson-databind.version>2.8.2</jackson-databind.version>
 
