@@ -2,10 +2,12 @@ package org.xcolab.service.contest.domain.contest;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.records.ContestRecord;
@@ -20,9 +22,15 @@ import static org.xcolab.model.Tables.CONTEST;
 @Repository
 public class ContestDaoImpl implements ContestDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ContestDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext, "DSLContext bean is required");
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public Contest create(Contest contest) {
 
         ContestRecord ret = this.dslContext.insertInto(CONTEST)
@@ -141,6 +149,15 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
                 .where(CONTEST.CONTEST_PK.eq(contest.getContestPK()))
                 .execute() > 0;
+    }
+
+    @Override
+    public boolean isShared(long contestId) {
+        final Record1<Boolean> record = dslContext.select(CONTEST.IS_SHARED_CONTEST)
+                .from(CONTEST)
+                .where(CONTEST.CONTEST_PK.eq(contestId))
+                .fetchOne();
+        return record != null && record.into(Boolean.class);
     }
 
     @Override

@@ -138,6 +138,15 @@ public class ContestClient {
         return contest;
     }
 
+    public static boolean isContestShared(long contestId) {
+        return contestResource.<Contest, Boolean>service(contestId, "isShared", Boolean.class)
+                .withCache(CacheKeys.withClass(Contest.class)
+                        .withParameter("contestId", contestId)
+                        .withParameter("service", "isShared")
+                        .build(Boolean.class), CacheRetention.LONG)
+                .get();
+    }
+
     public static List<Contest> findContestsByActiveFeatured(Boolean active, Boolean featured) {
         return contestResource.list()
                 .optionalQueryParam("active", active)

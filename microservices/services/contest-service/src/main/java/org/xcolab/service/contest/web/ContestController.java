@@ -126,6 +126,11 @@ public class ContestController {
         return contestDao.get(contestId);
     }
 
+    @GetMapping("/contests/{contestId}/isShared")
+    public boolean isContestShared(@PathVariable long contestId) {
+        return contestDao.isShared(contestId);
+    }
+
     @GetMapping("/contests/{contestId}/visiblePhases")
     public List<ContestPhase> getVisiblePhases(@PathVariable Long contestId) {
         return contestService.getVisiblePhases(contestId);
@@ -254,10 +259,12 @@ public class ContestController {
             throws NotFoundException {
         return contestPhaseDao.get(contestPhaseId).orElseThrow(NotFoundException::new);
     }
+
     @PostMapping(value = "/contestPhases")
     public ContestPhase createContestPhase(@RequestBody ContestPhase contestPhase) {
         return this.contestPhaseDao.create(contestPhase);
     }
+
     @PutMapping(value = "/contestPhases/{contestPhasePK}")
     public boolean updateContestPhase(@PathVariable long contestPhasePK,
                                 @RequestBody ContestPhase contestPhase) throws NotFoundException {

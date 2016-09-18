@@ -4,9 +4,12 @@ import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.JoinType;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.CommentTable;
 import org.xcolab.model.tables.pojos.Thread;
@@ -17,6 +20,7 @@ import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import static org.xcolab.model.Tables.CATEGORY;
 import static org.xcolab.model.Tables.COMMENT;
@@ -26,8 +30,13 @@ import static org.xcolab.model.Tables.PROPOSAL;
 @Repository
 public class ThreadDaoImpl implements ThreadDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ThreadDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext, "DSLContext bean is required");
+        this.dslContext = dslContext;
+    }
 
     @Override
     public List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorId,
@@ -110,6 +119,25 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
+    public boolean exists(long threadId) {
+        return dslContext.fetchExists(DSL.select()
+                .from(THREAD)
+                .where(THREAD.THREAD_ID.eq(threadId)));
+    }
+
+    @Override
+    public Optional<Long> getSharedColabThreadId(long threadId) {
+        final Record1<Long> record = dslContext.select(THREAD.SHARED_COLAB_THREAD_ID)
+                .from(THREAD)
+                .where(THREAD.THREAD_ID.eq(threadId))
+                .fetchOne();
+        if (record == null) {
+            return Optional.empty();
+        }
+        return Optional.of(record.into(Long.class));
+    }
+
+    @Override
     public boolean update(Thread thread) {
         return dslContext.update(THREAD)
                 .set(THREAD.CREATE_DATE, thread.getCreateDate())
@@ -183,16 +211,15 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public Long getProposalIdForThread(long threadId){
+    public Optional<Long> getProposalIdForThread(long threadId){
         Record record = dslContext
                 .select(PROPOSAL.PROPOSAL_ID)
                 .from(THREAD)
                 .innerJoin(PROPOSAL).on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
                 .where(THREAD.THREAD_ID.eq(threadId)).fetchOne();
-        if ( record == null ){
-            return 0L;
-        }else{
-            return  record.into(Long.class);
+        if (record == null) {
+            return Optional.empty();
         }
+        return Optional.of(record.into(Long.class));
     }
 }

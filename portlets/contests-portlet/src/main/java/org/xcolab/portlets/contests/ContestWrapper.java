@@ -31,7 +31,8 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
 
         Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
         ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
-        contestComments += CommentClient.countCommentsInContestPhase(phase.getContestPhasePK());
+        contestComments += CommentClient.countCommentsInContestPhase(
+                phase.getContestPhasePK(), phase.getContestPK());
 
         return contestComments;
     }

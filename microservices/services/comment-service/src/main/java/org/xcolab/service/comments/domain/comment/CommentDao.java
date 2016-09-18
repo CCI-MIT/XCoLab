@@ -9,10 +9,16 @@ import java.util.List;
 public interface CommentDao {
 
     int countByGiven(Long authorId, Long threadId);
+
     List<Comment> findByGiven(PaginationHelper paginationHelper, Long authorId, Long threadId,boolean includeDeleted);
 
     Comment get(long commentId) throws NotFoundException;
+
+    boolean exists(long commentId);
+
     boolean update(Comment comment);
+
     Comment create(Comment comment);
+
     int countProposalCommentsByContestPhase(Long contestPhaseId);
 }
