@@ -1,10 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
 
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.FocusAreaOntologyTerm;
-import com.ext.portlet.model.OntologySpace;
-import com.ext.portlet.model.OntologyTerm;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;

@@ -1,15 +1,11 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.NoSuchProposalMoveHistoryException;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.model.ProposalMoveHistory;
-import com.ext.portlet.service.ContestLocalServiceUtil;
+
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalMoveHistoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -25,7 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
@@ -88,76 +89,81 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         final Proposal proposal =  proposalsContext.getProposal(request);
         final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
-        final Contest baseContest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
+        try {
+            final Contest baseContest = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
 
-        if (voted) {
-            setVotingDeadline(model, baseContest);
-        }
-
-        if (isMove) {
-        	// get base proposal from base contest
-        	ContestPhase baseContestPhase = ContestLocalServiceUtil.getActiveOrLastPhase(baseContest);
-
-        	ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
-                    baseContest, baseContestPhase, null);
-        	model.addAttribute("baseProposal", baseProposalWrapped);
-
-            try{
-                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(baseContest.getContestPK());
-                model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
-            }catch (ContestNotFoundException ignored){
-
+            if (voted) {
+                setVotingDeadline(model, baseContest);
             }
 
-        	model.addAttribute("isMove", true);
+            if (isMove) {
+                // get base proposal from base contest
+                ContestPhase baseContestPhase = ContestClient.getActivePhase(baseContest.getContestPK());
 
-        	UpdateProposalDetailsBean updateProposalDetailsBean = new UpdateProposalDetailsBean(
-                    proposalWrapped, baseProposalWrapped, true, MoveType.valueOf(moveType));
-            updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
-        	// find sections that can't be mapped without user interaction
+                ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
+                        baseContest, baseContestPhase, null);
+                model.addAttribute("baseProposal", baseProposalWrapped);
 
-            Set<Long> newContestSections = new HashSet<>();
+                try{
+                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(baseContest.getContestPK());
+                    model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
+                }catch (ContestNotFoundException ignored){
 
-        	for (ProposalSectionWrapper section: proposalWrapped.getSections()) {
-        		newContestSections.add(section.getSectionDefinitionId());
-        	}
+                }
 
-            boolean hasNotMappedSections = false;
-            for (ProposalSectionWrapper section: baseProposalWrapped.getSections()) {
-        		if (section.getContent() != null && !section.getContent().trim().isEmpty()) {
-        			// we have non empty section in base proposal, check if such
-        			// section exists in target contest
-        			if (!newContestSections.contains(section.getSectionDefinitionId())) {
-        				hasNotMappedSections = true;
-        			}
-        		}
+                model.addAttribute("isMove", true);
 
-        	}
+                UpdateProposalDetailsBean updateProposalDetailsBean = new UpdateProposalDetailsBean(
+                        proposalWrapped, baseProposalWrapped, true, MoveType.valueOf(moveType));
+                updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
+                // find sections that can't be mapped without user interaction
 
-        	updateProposalDetailsBean.setMoveToContestId(baseContestPhase.getContestPhasePK());
-        	model.addAttribute("updateProposalSectionsBean", updateProposalDetailsBean);
-        	model.addAttribute("hasNotMappedSections", hasNotMappedSections);
-        } else {
-            model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(
-                    proposalWrapped));
+                Set<Long> newContestSections = new HashSet<>();
+
+                for (ProposalSectionWrapper section: proposalWrapped.getSections()) {
+                    newContestSections.add(section.getSectionDefinitionId());
+                }
+
+                boolean hasNotMappedSections = false;
+                for (ProposalSectionWrapper section: baseProposalWrapped.getSections()) {
+                    if (section.getContent() != null && !section.getContent().trim().isEmpty()) {
+                        // we have non empty section in base proposal, check if such
+                        // section exists in target contest
+                        if (!newContestSections.contains(section.getSectionDefinitionId())) {
+                            hasNotMappedSections = true;
+                        }
+                    }
+
+                }
+
+                updateProposalDetailsBean.setMoveToContestId(baseContestPhase.getContestPhasePK());
+                model.addAttribute("updateProposalSectionsBean", updateProposalDetailsBean);
+                model.addAttribute("hasNotMappedSections", hasNotMappedSections);
+            } else {
+                model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(
+                        proposalWrapped));
+            }
+
+
+            if (editValidated || isMove) {
+                request.setAttribute("imageUploadServiceUrl",
+                        ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
+                request.setAttribute("imageUploadHelpText",
+                        ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
+
+                model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
+
+                return "proposalDetails_edit";
+            }
+
+            setJudgeProposalBean(model, request);
+            setLinkedProposals(model, proposal);
+            final Contest contest = proposalsContext.getContest(request);
+            populateMoveHistory(model, proposal, contest);
+        }catch (ContestNotFoundException ignored){
+
         }
 
-
-        if (editValidated || isMove) {
-            request.setAttribute("imageUploadServiceUrl",
-                    ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
-            request.setAttribute("imageUploadHelpText",
-                    ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
-
-            model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
-
-            return "proposalDetails_edit";
-        }
-
-        setJudgeProposalBean(model, request);
-        setLinkedProposals(model, proposal);
-        final Contest contest = proposalsContext.getContest(request);
-        populateMoveHistory(model, proposal, contest);
 
         return "proposalDetails";
     }
@@ -190,12 +196,12 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
-            contestTypeProposalWrappersByContestTypeId.put(contestType.getId(),
+        for (ContestType contestType : ContestClient.getActiveContestTypes()) {
+            contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
                     new ContestTypeProposalWrapper(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
             for (Proposal p : proposalsInContestType) {
-                contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
+                contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
                         .getProposals().add(new BaseProposalWrapper(p));
             }
         }
@@ -225,7 +231,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     }
 
     private Date getVotingDeadline(Contest contest) throws SystemException, PortalException {
-        List<ContestPhase> contestPhases = ContestLocalServiceUtil.getAllPhases(contest);
+        List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contest.getContestPK());
         try {
             return getActiveVotingPhase(contestPhases).getPhaseEndDate();
         }

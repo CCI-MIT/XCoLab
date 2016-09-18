@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MembershipRequestDao {
 
-    List<MembershipRequest> findByGiven(Long groupId, Integer statusId);
+    List<MembershipRequest> findByGiven(Long groupId, Integer statusId, Long userId);
     MembershipRequest create(MembershipRequest membershipRequest);
     MembershipRequest get(Long membershipRequestId) throws NotFoundException;
 }

@@ -85,7 +85,7 @@ public class ProposalReferenceLocalServiceImpl
     public void populateTableWithProposal(Proposal proposal) throws PortalException, SystemException {
         final List<ProposalReference> existingReferences = getByProposalId(proposal.getProposalId());
         for (ProposalReference existingReference : existingReferences) {
-            deleteProposalReference(existingReference);
+                deleteProposalReference(existingReference);
         }
         populateTableWithProposal(proposal, new HashSet<Long>());
     }

@@ -1,11 +1,11 @@
-package org.xcolab.client.proposals.helpers;
+package org.xcolab.service.proposal.helper;
+
 
 
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.proposals.ProposalsClient;
-
-import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.model.tables.pojos.Proposal;
 
 import java.util.List;
 

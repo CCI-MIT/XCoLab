@@ -3,11 +3,17 @@ package org.xcolab.client.contest;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestTeamMember;
 import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.ImpactIteration;
+import org.xcolab.client.contest.pojo.ImpactTemplateSeries;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
+import org.xcolab.client.proposals.pojo.PlanTemplate;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -45,6 +51,16 @@ public class ContestClient {
 
     private static final RestResource<ContestSchedule> contestScheduleResource = new RestResource<>(contestService,
             "contestSchedules", ContestSchedule.TYPES);
+
+    private static final RestResource<ImpactIteration> impactIterationResource = new RestResource<>(contestService,
+            "impactIterations", ImpactIteration.TYPES);
+
+    private static final RestResource<ImpactTemplateSeries> impactTemplateSeriesResource = new RestResource<>(contestService,
+            "impactTemplateSeries", ImpactTemplateSeries.TYPES);
+
+    private static final RestResource<ContestPhaseRibbonType> contestPhaseRibbonTypeResource = new RestResource<>(contestService,
+            "contestPhaseRibbonTypes", ContestPhaseRibbonType.TYPES);
+
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
@@ -155,6 +171,14 @@ public class ContestClient {
         }
     }
 
+    public static void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId){
+        ontestPhasesResource.service(proposalId, "forcePropomotionOfProposalInContestPhaseId",Boolean.class)
+                .queryParam("contestPhaseId", contestPhaseId)
+                .get();
+        //TODO: NEEDS TO MIGRATE A TON OF THINGS.
+
+    }
+
     public static List<Contest> getAllContests() {
         return contestResource.list().execute();
     }
@@ -170,6 +194,13 @@ public class ContestClient {
         return contestResource
                 .list()
                 .queryParam("contestScheduleId", contestScheduleId)
+                .execute();
+    }
+
+    public static List<Contest> getContestsByContestSTypeId(Long contestTypeId) {
+        return contestResource
+                .list()
+                .queryParam("contestTypeId", contestTypeId)
                 .execute();
     }
 
@@ -292,6 +323,23 @@ public class ContestClient {
                 .execute();
     }
 
+    public static List<ContestType> getActiveContestTypes() {
+        final List<ContestType> contestTypes = getAllContestTypes();
+        List<ContestType> activeContestTypes = new ArrayList<>();
+        for (ContestType contestType : contestTypes) {
+            if (countContestsByContestType(contestType.getId_()) > 0) {
+                activeContestTypes.add(contestType);
+            }
+        }
+        return activeContestTypes;
+    }
+
+    public static Integer countContestsByContestType(Long contestTypeId) {
+        return contestResource.service("countByContestType", Integer.class)
+                .queryParam("contestTypeId", contestTypeId)
+                .get();
+    }
+
     public static List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
         Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
         List<Long> members = teamRoleToUsersMap.get(roleId);
@@ -301,6 +349,7 @@ public class ContestClient {
             return members;
         }
     }
+
     public static List<Long> getAdvisorsForContest(Long contestId) {
         return getRoleForContestTeam(contestId, MemberRole.ADVISOR.getRoleId());
 
@@ -359,7 +408,37 @@ public class ContestClient {
         }
     }
 
-    public static String getContestPhaseName(ContestPhase ck){
+    public static String getContestPhaseName(ContestPhase ck) {
         return getContestPhaseType(ck.getContestPhaseType()).getName();
+    }
+
+    public static List<ImpactIteration> getContestImpactIterations(Contest contest) {
+        ImpactTemplateSeries impactSeries = getContestImpactTemplateSeries(contest);
+        return getContestImpactIterations(impactSeries.getIterationId());
+    }
+
+    public static List<ImpactIteration> getContestImpactIterations(Long iterationId) {
+        return impactIterationResource.list()
+                .optionalQueryParam("iterationId", iterationId)
+                .execute();
+    }
+
+    public static ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest)  {
+        try{
+            PlanTemplate planTemplate = ProposalsClient.getPlanTemplate(contest.getPlanTemplateId());
+            return getImpactTemplateSeries(planTemplate.getImpactSeriesTemplateId());
+        }catch (PlanTemplateNotFoundException ignored){
+
+        }
+        return null;
+    }
+    public static ImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
+            return impactTemplateSeriesResource.get(seriesId)
+                    .execute();
+    }
+    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
+            return contestPhaseRibbonTypeResource.get(id_)
+                    .execute();
+
     }
 }

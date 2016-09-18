@@ -1,6 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Proposal;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;

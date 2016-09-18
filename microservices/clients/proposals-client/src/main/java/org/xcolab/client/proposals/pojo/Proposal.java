@@ -260,7 +260,7 @@ public class Proposal implements Serializable {
         final ContestPhase contestPhase = ContestClient.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
-            visibleAttributeValue = ProposalsClient.getAllProposalContestPhaseProposalAttributes(this.getProposalId(),
+            visibleAttributeValue = ProposalsClient.getProposalContestPhaseAttribute(this.getProposalId(),
                     contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE).getNumericValue();
         }
         return !this.getVisible() || visibleAttributeValue == 0;

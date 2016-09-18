@@ -24,10 +24,54 @@ public class MembershipRequestClient {
         return membershipRequestResource.create(membershipRequest).execute();
     }
 
+    private static MembershipRequest createMembershipRequest(Long proposalId, Long userId, String comment, Integer status){
+        try{
+            Long groupId = ProposalsClient.getProposal(proposalId).getGroupId();
+
+            MembershipRequest membershipRequest = new MembershipRequest();
+            membershipRequest.setComments(comment == null? "":comment);
+            membershipRequest.setUserId(userId);
+            membershipRequest.setGroupId(groupId);
+            membershipRequest.setCompanyId(10112l);
+            membershipRequest = createMembershipRequest(membershipRequest);
+            return membershipRequest;
+        }catch (ProposalNotFoundException ignored){
+
+        }
+        return null;
+    }
+    public void approveMembershipRequest(){
+
+    }
+    public static Boolean hasUserRequestedMembership(Long proposalId, Long userId){
+        try{
+            Long groupId = ProposalsClient.getProposal(proposalId).getGroupId();
+            List<MembershipRequest> userRequests = getMembershipRequestsByUser(groupId, userId);
+            if(userRequests != null && userRequests.size()>0){
+                return true;
+            }
+        }catch (ProposalNotFoundException ignored){
+
+        }
+        return false;
+    }
+    public static MembershipRequest addInvitedMembershipRequest(Long proposalId, Long userId, String comment){
+        return createMembershipRequest(proposalId,userId,comment,MembershipRequestStatus.STATUS_PENDING_INVITED);
+    }
+    public static MembershipRequest addRequestedMembershipRequest(Long proposalId, Long userId, String comment){
+        return createMembershipRequest(proposalId,userId,comment,MembershipRequestStatus.STATUS_PENDING_REQUESTED);
+    }
 
     public static MembershipRequest getMembershipRequest(long MembershipRequestId) throws MembershipRequestNotFoundException {
             return membershipRequestResource.get(MembershipRequestId)
                     .execute();
+    }
+
+    public static List<MembershipRequest> getMembershipRequestsByUser(Long groupId, Long userId) {
+        return membershipRequestResource.list()
+                .optionalQueryParam("groupId", groupId)
+                .optionalQueryParam("userId", userId)
+                .execute();
     }
 
     public static List<MembershipRequest> getMembershipRequestsByStatus(Long groupId, Integer statusId) {

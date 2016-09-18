@@ -2,10 +2,10 @@ package org.xcolab.portlets.proposals.utils.edit;
 
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
+;
+
+
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -15,6 +15,7 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -60,8 +61,8 @@ public class ProposalUpdateHelper {
                 case PROPOSAL_LIST_TEXT_REFERENCE:
                 case DROPDOWN_MENU:
                     if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                        ProposalAttributeLocalServiceUtil
-                                .setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                        ProposalsClient
+                                .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                         HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
                         if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
@@ -75,7 +76,7 @@ public class ProposalUpdateHelper {
                     if (StringUtils.isNumeric(newSectionValue)) {
                         long newNumericVal = Long.parseLong(newSectionValue);
                         if (newNumericVal != section.getNumericValue()) {
-                            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(),
+                            ProposalsClient.setProposalAttribute(themeDisplay.getUserId(),
                                     proposalWrapper.getProposalId(), ProposalAttributeKeys.SECTION,
                                     section.getSectionDefinitionId(), newNumericVal);
                         }
@@ -87,15 +88,15 @@ public class ProposalUpdateHelper {
                     if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
                         final long newNumericValue = Long.parseLong(newSectionValue);
                         if (section.getNumericValue() != newNumericValue) {
-                            ProposalAttributeLocalServiceUtil
-                                    .setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                            ProposalsClient
+                                    .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                                             ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                             newNumericValue);
                             updateProposalReferences = true;
                         }
                     } else if (StringUtils.isBlank(newSectionValue)) {
-                        ProposalAttributeLocalServiceUtil
-                                .setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                        ProposalsClient
+                                .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
                     }
                     break;
@@ -127,14 +128,14 @@ public class ProposalUpdateHelper {
             try {
                 final Proposal updatedProposal = ProposalsClient.getProposal(proposalWrapper.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
-                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+                ProposalsClient.updateProposal2Phase(p2p);
             }catch (ProposalNotFoundException ignored){
 
             }
         }
 
         if (updateProposalReferences) {
-            ProposalReferenceLocalServiceUtil.populateTableWithProposal(proposalWrapper.getWrapped());
+            ProposalsClient.populateTableWithProposal(proposalWrapper.getWrapped().getProposalId());
         }
 
         doAnalytics(request, filledAll);

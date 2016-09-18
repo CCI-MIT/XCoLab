@@ -1,17 +1,24 @@
-package org.xcolab.client.proposals.helpers;
+package org.xcolab.service.proposal.helper;
 
 
-import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalAttribute;
 
 
-import java.util.*;
+import org.xcolab.model.tables.pojos.Proposal;
+import org.xcolab.model.tables.pojos.ProposalAttribute;
+import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ProposalAttributeHelper {
     private final Proposal proposal;
     private final int version;
     private Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId;
+
+    private ProposalAttributeDao proposalAttributeDao;
 
     public ProposalAttributeHelper(Proposal proposal, int version) {
         this.proposal = proposal;
@@ -24,8 +31,8 @@ public class ProposalAttributeHelper {
 
     //initialization is expensive --> be lazy
     private void init() {
-            List<ProposalAttribute> attributes = ProposalsClient
-                    .getAllProposalAttributes(proposal.getProposalId(), version);
+            List<ProposalAttribute> attributes = proposalAttributeDao
+                    .findByGiven(proposal.getProposalId(),null, null, version);
             if (attributesByNameAndAdditionalId == null) {
                 attributesByNameAndAdditionalId = new HashMap<>();
                 for (ProposalAttribute attribute : attributes) {

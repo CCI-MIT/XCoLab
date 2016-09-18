@@ -2,11 +2,6 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalRating;
 import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
 import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
@@ -22,7 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
@@ -106,7 +107,8 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         final long discussionThreadId = createDiscussionThread(request, " results discussion", true);
         proposal.setResultsDiscussionId(discussionThreadId);
-        proposal.persist();
+
+        ProposalsClient.updateProposal(proposal);
         return discussionThreadId;
     }
 
@@ -128,7 +130,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
         Contest contest = proposalsContext.getContest(request);
-        ContestPhase activeContestPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
+        ContestPhase activeContestPhase = ContestClient.getActivePhase(contest.getContestPK());
         List<ContestPhase> allContestPhasesForCurrentContest = ContestPhaseLocalServiceUtil.getPhasesForContest(contest);
 
         for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
@@ -159,7 +161,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         for (ContestPhase contestPhase : contestPhases) {
             boolean isPhasePastScreeningPhase =
-                    contestPhase.isFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
+                    contestPhase.getFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
             if (isPhasePastScreeningPhase) {
 
                 List<ProposalRating> judgeRatingsForProposal = ProposalRatingLocalServiceUtil

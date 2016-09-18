@@ -79,6 +79,12 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
                 .where(POINTS_DISTRIBUTION_CONFIGURATION.PROPOSAL_ID.eq(proposalId))
                 .execute();
     }
+    @Override
+    public int delete(Long id_) {
+        return dslContext.deleteFrom(POINTS_DISTRIBUTION_CONFIGURATION)
+                .where(POINTS_DISTRIBUTION_CONFIGURATION.ID_.eq(id_))
+                .execute();
+    }
 
     @Override
     public PointsDistributionConfiguration get(Long id_) throws NotFoundException {

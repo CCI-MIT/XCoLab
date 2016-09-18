@@ -1,4 +1,4 @@
-package org.xcolab.client.proposals.helpers;
+package org.xcolab.service.proposal.helper;
 
 public class Tuple<X, Y> {
 

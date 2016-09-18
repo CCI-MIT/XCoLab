@@ -1,8 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
 
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -10,8 +9,6 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,8 +19,11 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -56,9 +56,9 @@ public class ProposalShareJSONController {
                 continue;
             }
             try {
-                User user = UserLocalServiceUtil.getUserByScreenName(companyId, recipient);
+                Member user = MembersClient.findMemberByScreenName(recipient);
                 recipientIds.add(user.getUserId());
-            } catch (PortalException | SystemException e) {
+            } catch (MemberNotFoundException  e) {
                 unresolvedRecipients.add(recipient);
             }
         }

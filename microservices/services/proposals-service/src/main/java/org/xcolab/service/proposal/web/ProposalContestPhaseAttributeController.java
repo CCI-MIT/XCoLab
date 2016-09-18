@@ -1,6 +1,7 @@
 package org.xcolab.service.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
+import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
@@ -44,4 +46,17 @@ public class ProposalContestPhaseAttributeController {
     public ProposalContestPhaseAttribute createProposalContestPhaseAttribute(@RequestBody ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return this.proposalContestPhaseAttributeDao.create(proposalContestPhaseAttribute);
     }
+
+    @RequestMapping(value = "/proposalContestPhaseAttributes/{id_}", method = RequestMethod.PUT)
+    public boolean updateProposalContestPhaseAttribute(@RequestBody ProposalContestPhaseAttribute proposalContestPhaseAttribute,
+                                                       @PathVariable("id_") Long id_) throws NotFoundException {
+
+        if (id_ == null || id_ == 0 || proposalContestPhaseAttributeDao.get(id_) == null) {
+            throw new NotFoundException("No ProposalContestPhaseAttribute with id " + id_);
+        } else {
+            return proposalContestPhaseAttributeDao.update(proposalContestPhaseAttribute);
+        }
+    }
+
+
 }

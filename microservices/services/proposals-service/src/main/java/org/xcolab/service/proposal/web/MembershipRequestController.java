@@ -36,9 +36,10 @@ public class MembershipRequestController {
     @RequestMapping(value = "/membershipRequests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<MembershipRequest> getMembershipRequests(
             @RequestParam(required = false) Long groupId,
-            @RequestParam(required = false) Integer statusId
+            @RequestParam(required = false) Integer statusId,
+            @RequestParam(required = false) Long userId
     ) {
-        return membershipRequestDao.findByGiven(groupId, statusId);
+        return membershipRequestDao.findByGiven(groupId, statusId, userId);
     }
 
 

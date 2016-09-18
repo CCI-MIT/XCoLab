@@ -11,4 +11,5 @@ public interface PointsDistributionConfigurationDao {
     PointsDistributionConfiguration create(PointsDistributionConfiguration pointsDistributionConfiguration);
     PointsDistributionConfiguration get(Long id_) throws NotFoundException;
     boolean update(PointsDistributionConfiguration pointsDistributionConfiguration);
+    int delete(Long id_);
 }

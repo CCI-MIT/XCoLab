@@ -1,6 +1,7 @@
 package org.xcolab.service.proposal.web;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +35,17 @@ public class ProposalRatingController {
         return proposalRatingDao.findByGiven(proposalId, contestPhaseId, userId);
     }
 
+    @RequestMapping(value = "/proposalRatings/findByProposalIdJudgeTypeJudgeIdContestPhaseId", method = {RequestMethod.GET})
+    public List<ProposalRating> getProposalRatings(
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Integer judgeType
+    ) {
+        return proposalRatingDao.findByProposalIdJudgeTypeJudgeIdContestPhaseId(proposalId,judgeType, contestPhaseId, userId );
+    }
+
+
     @RequestMapping(value = "/proposalRatingValues/{proposalRatingValueId}", method = RequestMethod.GET)
     public ProposalRatingValue getProposalRatingValue(@PathVariable("proposalRatingValueId") Long proposalRatingValueId) throws NotFoundException {
         if (proposalRatingValueId == null || proposalRatingValueId == 0) {
@@ -51,4 +63,22 @@ public class ProposalRatingController {
             return proposalRatingTypeDao.get(proposalRatingTypeId);
         }
     }
+
+    @RequestMapping(value = "/proposalRatings", method = RequestMethod.POST)
+    public ProposalRating createProposalRating(@RequestBody ProposalRating proposalRating) {
+        return this.proposalRatingDao.create(proposalRating);
+    }
+
+    @RequestMapping(value = "/proposalRatings/{id_}", method = RequestMethod.PUT)
+    public boolean updateProposalRating(@RequestBody ProposalRating proposalRating,
+                                        @PathVariable("id_") Long id_) throws NotFoundException {
+
+        if (id_ == null || id_ == 0 || proposalRatingDao.get(id_) == null) {
+            throw new NotFoundException("No ProposalRating with id " + id_);
+        } else {
+            return proposalRatingDao.update(proposalRating);
+        }
+    }
+
+    // findByProposalIdJudgeTypeJudgeIdContestPhaseId
 }

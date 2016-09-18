@@ -141,4 +141,5 @@ public class ProposalDaoImpl implements ProposalDao {
         return record.into(Proposal.class);
 
     }
+
 }

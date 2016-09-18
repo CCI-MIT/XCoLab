@@ -1,15 +1,10 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-
-import com.ext.portlet.model.PointType;
-
-import com.ext.portlet.service.PointTypeLocalServiceUtil;
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,7 +72,7 @@ public class AssignPointsActionController {
         ProposalsClient.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
 
         try {
-            PointType contestRootPointType = PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
+            org.xcolab.client.proposals.pojo.PointType contestRootPointType = ProposalsClient.getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype
             this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));

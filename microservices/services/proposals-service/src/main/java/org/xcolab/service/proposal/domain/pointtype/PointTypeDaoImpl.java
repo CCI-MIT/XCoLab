@@ -84,6 +84,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
         if (parentPointTypeId != null) {
             query.addConditions(POINT_TYPE.PARENT_POINT_TYPE_ID.eq(parentPointTypeId));
         }
+        query.addOrderBy(POINT_TYPE.SORT.asc());
 
         return query.fetchInto(PointType.class);
     }

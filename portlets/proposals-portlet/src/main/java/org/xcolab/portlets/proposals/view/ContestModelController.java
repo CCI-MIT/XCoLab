@@ -1,6 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
+
 import com.ext.portlet.service.ModelRunnerServiceUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

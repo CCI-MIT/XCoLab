@@ -4,6 +4,7 @@ package org.xcolab.service.contest.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.PlanTemplate;
 import org.xcolab.model.tables.pojos.*;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
@@ -13,6 +14,8 @@ import org.xcolab.service.contest.domain.contestschedule.ContestScheduleDao;
 import org.xcolab.service.contest.domain.contestteammember.ContestTeamMemberDao;
 import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMemberRoleDao;
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
+import org.xcolab.service.contest.domain.impactiteration.ImpactIterationDao;
+import org.xcolab.service.contest.domain.impacttemplateseries.ImpactTemplateSeriesDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 
@@ -52,6 +55,12 @@ public class ContestController {
     private ContestPhaseTypeDao contestPhaseTypeDao;
 
 
+    @Autowired
+    private ImpactTemplateSeriesDao impactTemplateSeriesDao;
+
+    @Autowired
+    private ImpactIterationDao impactIterationDao;
+
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContests(
             @RequestParam(required = false) String contestUrlName,
@@ -61,8 +70,10 @@ public class ContestController {
             @RequestParam(required = false) Long contestTier,
             @RequestParam(required = false) Long contestScheduleId,
             @RequestParam(required = false) Long planTemplateId,
-            @RequestParam(required = false) List<Long> focusAreaOntologyTerms) {
-        return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId, planTemplateId);
+            @RequestParam(required = false) List<Long> focusAreaOntologyTerms,
+            @RequestParam(required = false) Long contestTypeId
+    ) {
+        return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId, planTemplateId, contestTypeId);
     }
 
 
@@ -88,6 +99,14 @@ public class ContestController {
         } else {
             return contestDao.update(contest);
         }
+    }
+
+    @RequestMapping(value = "/contests/countByContestType", method = RequestMethod.PUT)
+    public Integer countByContestType(@RequestBody Contest contest,
+                                      @PathVariable("contestTypeId") Long contestTypeId) throws NotFoundException {
+
+
+        return contestDao.countByGiven(null, null, null, null, null, null, null, null, contestTypeId);
     }
 
 
@@ -258,10 +277,12 @@ public class ContestController {
             return contestPhaseDao.get(contestPhaseId);
         }
     }
+
     @RequestMapping(value = "/contestPhases", method = RequestMethod.POST)
     public ContestPhase createContestPhase(@RequestBody ContestPhase contestPhase) {
         return this.contestPhaseDao.create(contestPhase);
     }
+
     @RequestMapping(value = "/contestPhases/{contestPhasePK}", method = RequestMethod.PUT)
     public boolean updateContestPhase(@RequestBody ContestPhase contestPhase,
                                       @PathVariable("contestPhasePK") Long contestPhasePK) throws NotFoundException {
@@ -272,6 +293,7 @@ public class ContestController {
             return contestPhaseDao.update(contestPhase);
         }
     }
+
     @RequestMapping(value = "/contestPhases/{contestPhasePK}", method = RequestMethod.DELETE)
     public String deleteContestPhase(@PathVariable("contestPhasePK") Long contestPhasePK)
             throws NotFoundException {
@@ -297,11 +319,27 @@ public class ContestController {
             return contestPhaseTypeDao.get(contestPhaseTypeId);
         }
     }
+
     @RequestMapping(value = "/contestPhaseTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestPhaseType> getContestPhaseTypes(
     ) {
         return contestPhaseTypeDao.findByGiven();
     }
 
+    @RequestMapping(value = "/impactTemplateSeries/{impactTemplateSeriesId}", method = RequestMethod.GET)
+    public ImpactTemplateSeries getImpactTemplateSeries(@PathVariable("impactTemplateSeriesId") Long impactTemplateSeriesId) throws NotFoundException {
+        if (impactTemplateSeriesId == null || impactTemplateSeriesId == 0) {
+            throw new NotFoundException("No impactTemplateSeriesId given");
+        } else {
+            return impactTemplateSeriesDao.get(impactTemplateSeriesId);
+        }
+    }
+
+    @RequestMapping(value = "/impactIterations", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ImpactIteration> getImpactIterations(
+            @RequestParam(required = false) Long iterationId
+    ) {
+        return impactIterationDao.findByGiven(iterationId);
+    }
 
 }

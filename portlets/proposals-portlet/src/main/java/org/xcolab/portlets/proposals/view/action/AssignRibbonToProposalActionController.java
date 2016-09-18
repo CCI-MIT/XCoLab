@@ -1,10 +1,12 @@
 package org.xcolab.portlets.proposals.view.action;
 
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
+
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
+
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +36,13 @@ public class AssignRibbonToProposalActionController {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
             long contestId = proposalsContext.getContest(request).getContestPK();
-            
-            try {
-                ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(ribbon);
-                ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposalId, contestPhaseId, 
-                        ProposalContestPhaseAttributeKeys.RIBBON, ribbon);   
-            }
-            catch (NoSuchContestPhaseRibbonTypeException e) {
-                ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId, 
-                        ProposalContestPhaseAttributeKeys.RIBBON);   
+
+            if(ContestClient.getContestPhaseRibbonType(ribbon)==null) {
+                ProposalsClient.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
+                        ProposalContestPhaseAttributeKeys.RIBBON, ribbon);
+            }else{
+                ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId,
+                    ProposalContestPhaseAttributeKeys.RIBBON);
             }
 
             response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request),

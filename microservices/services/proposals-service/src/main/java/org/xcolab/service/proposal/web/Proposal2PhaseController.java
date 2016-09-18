@@ -2,6 +2,7 @@ package org.xcolab.service.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,4 +38,17 @@ public class Proposal2PhaseController {
         }
         return ret.get(0);
     }
+
+    @RequestMapping(value = "/proposal2Phase/updateProposal2Phase", method = RequestMethod.POST)
+    public boolean updateProposal2Phase(@RequestBody Proposal2Phase proposal2Phase) throws NotFoundException {
+
+            return proposal2PhaseDao.update(proposal2Phase);
+    }
+
+    @RequestMapping(value = "/proposal2Phase/deleteProposal", method = RequestMethod.POST)
+    public boolean deleteProposal2Phase(@RequestBody Proposal2Phase proposal2Phase) throws NotFoundException {
+
+        return proposal2PhaseDao.delete(proposal2Phase.getProposalId(), proposal2Phase.getContestPhaseId())>0;
+    }
+
 }

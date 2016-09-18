@@ -15,5 +15,7 @@ public interface ProposalContestPhaseAttributeDao {
 
     ProposalContestPhaseAttribute create(ProposalContestPhaseAttribute proposalContestPhaseAttribute);
 
-    public ProposalContestPhaseAttribute getByProposalIdContestPhaseIdName(Long proposalId, Long contestPhaseId, String name) throws NotFoundException;
+    ProposalContestPhaseAttribute getByProposalIdContestPhaseIdName(Long proposalId, Long contestPhaseId, String name) throws NotFoundException;
+
+    boolean update(ProposalContestPhaseAttribute proposalContestPhaseAttribute);
 }

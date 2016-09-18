@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.*;
 
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
@@ -79,7 +80,7 @@ public class ProposalsController {
     }
 
     @RequestMapping(value = "/proposals/{proposalId}/contestIntegrationRelevantSubproposal", method = RequestMethod.GET)
-    public List<Proposal> listProposals(@PathVariable long proposalId){
+    public List<Proposal> listProposals(@PathVariable long proposalId) {
         return proposalService.getContestIntegrationRelevantSubproposals(proposalId);
     }
 
@@ -115,6 +116,7 @@ public class ProposalsController {
         }
         return counter;
     }
+
 
 
     @RequestMapping(value = "/proposals/{proposalId}/isUserMember", method = RequestMethod.GET)

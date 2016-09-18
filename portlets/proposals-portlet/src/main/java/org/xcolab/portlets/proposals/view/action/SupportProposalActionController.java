@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -41,7 +44,7 @@ public class SupportProposalActionController {
             long userId = proposalsContext.getUser(request).getUserId();
             long proposalId = proposalsContext.getProposal(request).getProposalId();
 
-            if (ProposalLocalServiceUtil.isSupporter(proposalId, userId)) {
+            if (ProposalsClient.isMemberProposalSupporter(proposalId, userId)) {
                 ProposalLocalServiceUtil.removeSupporter(proposalId, userId);
             }
             else {
@@ -55,10 +58,14 @@ public class SupportProposalActionController {
             			SUPPORT_ANALYTICS_LABEL,
             			analyticsValue);
                 }
-                Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposalId);
-                SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
+                try {
+                    Contest contest = ProposalsClient.getLatestContestInProposal(proposalId);
+                    SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
+                }catch (ContestNotFoundException ignore){
+
+                }
             }
-            String proposalLinkUrl = ProposalLocalServiceUtil.getProposalLinkUrl(proposalId);
+            String proposalLinkUrl = proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request));
             if (!StringUtils.isBlank(forwardToTab)) {
                 proposalLinkUrl += "/tab/" + forwardToTab;
             }

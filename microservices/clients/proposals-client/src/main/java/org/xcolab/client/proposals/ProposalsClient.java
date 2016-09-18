@@ -1,18 +1,19 @@
 package org.xcolab.client.proposals;
 
-import org.w3c.dom.Entity;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.proposals.enums.ProposalJudgeType;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.exceptions.ProposalRatingValueNotFoundException;
 import org.xcolab.client.proposals.pojo.PlanSectionDefinition;
 import org.xcolab.client.proposals.pojo.PlanTemplate;
+import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
@@ -21,9 +22,11 @@ import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.client.proposals.pojo.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.ProposalRatingValue;
+import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.client.proposals.pojo.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.ProposalVote;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -74,6 +77,8 @@ public final class ProposalsClient {
     private static final RestResource<PointsDistributionConfiguration> pointsDistributionConfigurationResource = new RestResource<>(proposalService,
             "pointsDistributionConfigurations", PointsDistributionConfiguration.TYPES);
 
+    private static final RestResource<PointType> pointTypeResource = new RestResource<>(proposalService,
+            "pointTypes", PointType.TYPES);
 
     public static Proposal createProposal(Proposal proposal) {
         return proposalResource.create(proposal).execute();
@@ -98,6 +103,17 @@ public final class ProposalsClient {
                 .optionalQueryParam("ribbon", ribbon)
                 .execute();
     }
+
+    public static List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId) {
+        return proposalResource.list()
+                .addRange(0, Integer.MAX_VALUE)
+                .optionalQueryParam("visible", true)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .execute();
+    }
+
+
+
 
     public static Proposal getProposal(long proposalId) throws ProposalNotFoundException {
         return getProposal(proposalId, false);
@@ -194,6 +210,7 @@ public final class ProposalsClient {
 
 
     public static Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
+
         try {
             return proposal2PhaseResource.service(contestPhasePK, "getProposalCount", Integer.class).getChecked();
         } catch (EntityNotFoundException ignored) {
@@ -208,19 +225,66 @@ public final class ProposalsClient {
                 .execute();
     }
 
-    public static ProposalContestPhaseAttribute getAllProposalContestPhaseProposalAttributes(Long contestPhaseId, Long proposalId, String name) {
+    public static ProposalContestPhaseAttribute getProposalContestPhaseAttribute(Long contestPhaseId, Long proposalId, String name) {
         return proposalContestPhaseAttributeResource.service("getByContestPhaseProposalIdName", ProposalContestPhaseAttribute.class)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("name", name)
                 .get();
+    }
+
+    public static Boolean isProposalContestPhaseAttributeSetAndTrue(Long proposalId, long contestPhaseId, String name) {
+        ProposalContestPhaseAttribute proposalAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+        if (proposalAttribute != null) {
+            return proposalAttribute.getStringValue().equals("true");
+        } else {
+            return false;
+        }
 
     }
 
     public static ProposalContestPhaseAttribute createProposalContestPhaseAttribute(ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return proposalContestPhaseAttributeResource.create(proposalContestPhaseAttribute).execute();
     }
+    public static boolean persistSelectedJudgesAttribute(Long proposalId, Long contestPhaseId,java.util.List<java.lang.Long> selectedJudges ){
+        ProposalContestPhaseAttribute judges = getProposalContestPhaseAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
 
+        StringBuilder attributeValue = new StringBuilder("");
+        if (selectedJudges != null) {
+            for (Long userId : selectedJudges) {
+                attributeValue.append(userId).append(";");
+            }
+        }
+        judges.setStringValue(attributeValue.toString().replaceAll(";$", ""));
+
+        updateProposalContestPhaseAttribute(judges);
+        return true;
+    }
+    public static ProposalContestPhaseAttribute persistProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId,String name, Long aditionalId,Long numericValue, String stringValue){
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+        if(proposalContestPhaseAttribute== null){
+            proposalContestPhaseAttribute.setAdditionalId(aditionalId);
+            proposalContestPhaseAttribute.setNumericValue(numericValue);
+            proposalContestPhaseAttribute.setStringValue(stringValue);
+            updateProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+            return proposalContestPhaseAttribute;
+        }else {
+            proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();
+            proposalContestPhaseAttribute.setProposalId(proposalId);
+            proposalContestPhaseAttribute.setName(name);
+            proposalContestPhaseAttribute.setAdditionalId(aditionalId);
+            proposalContestPhaseAttribute.setNumericValue(numericValue);
+            proposalContestPhaseAttribute.setStringValue(stringValue);
+            proposalContestPhaseAttribute = createProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+            return proposalContestPhaseAttribute;
+        }
+    }
+
+
+    public static boolean updateProposalContestPhaseAttribute(ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
+        return proposalContestPhaseAttributeResource.update(proposalContestPhaseAttribute, proposalContestPhaseAttribute.getId_())
+                .execute();
+    }
     public static Integer countProposalVotesInContestPhase(Long contestPhaseId) {
         try {
             return proposalVoteResource.<Proposal, Integer>service("count", Integer.class)
@@ -261,6 +325,9 @@ public final class ProposalsClient {
         return proposalAttributeResource.create(proposalAttribute).execute();
     }
 
+    public static ProposalAttribute getImpactProposalAttributes(Long proposalId){
+
+    }
 
     public static ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {
         return proposalAttributeResource.service("getByProposalIdVersionAditionalId", ProposalAttribute.class)
@@ -268,8 +335,8 @@ public final class ProposalsClient {
                 .queryParam("name", name)
                 .queryParam("additionalId", additionalId)
                 .get();
-
     }
+
 
     public static List<ProposalVersion> getAllProposalVersions(Long proposalId) {
         return proposalVersionResource.list()
@@ -305,9 +372,33 @@ public final class ProposalsClient {
         }
     }
 
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,  Long aditionalId, Long numericValue) {
+        ProposalAttribute proposalAttribute = createProposalAttribute( userId,  proposalId,  name,   aditionalId);
+        proposalAttribute.setNumericValue(numericValue);
+        return setProposalAttribute(proposalAttribute, userId);
+
+    }
+    private static ProposalAttribute createProposalAttribute(Long userId, Long proposalId, String name,  Long aditionalId){
+        ProposalAttribute proposalAttribute = new ProposalAttribute();
+        proposalAttribute.setProposalId(proposalId);
+        proposalAttribute.setName(name);
+        proposalAttribute.setAdditionalId(aditionalId);
+        return proposalAttribute;
+    }
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,  Long aditionalId, String stringValue) {
+        ProposalAttribute proposalAttribute = createProposalAttribute( userId,  proposalId,  name,   aditionalId);
+        proposalAttribute.setStringValue(stringValue);
+        return setProposalAttribute(proposalAttribute, userId);
+
+    }
+
     public static ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute, Long authorId) {
         return proposalAttributeResource.create(proposalAttribute).queryParam("authorId", authorId)
                 .execute();
+    }
+
+    public static Contest getLatestContestInProposal(Long proposalId) throws ContestNotFoundException {
+        return ContestClient.getContest(getLatestContestPhaseInContest(proposalId).getContestPK());
     }
 
     public static Long getLatestContestPhaseIdInProposal(Long proposalId) {
@@ -364,6 +455,60 @@ public final class ProposalsClient {
                 .execute();
     }
 
+
+    public static List<ProposalRating> getFellowRatingsForProposal(long proposalId, long contestPhaseId) {
+        return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.FELLOW.getId());
+    }
+
+
+    public static List<ProposalRating> getJudgeRatingsForProposal(long proposalId, long contestPhaseId) {
+        return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.JUDGE.getId());
+    }
+
+    protected static List<ProposalRating> getRatingsForProposal(long proposalId, long contestPhaseId, int judgeType) {
+        try {
+            return proposalRatingResource.service("findByProposalIdJudgeTypeJudgeIdContestPhaseId", List.class)
+                    .queryParam("proposalId", proposalId)
+                    .queryParam("judgeType", judgeType)
+                    .queryParam("contestPhaseId", contestPhaseId).getChecked();
+        } catch (EntityNotFoundException ignored) {
+
+        }
+        return null;
+    }
+
+
+    public static List<ProposalRating> getJudgeRatingsForProposalAndUser(long userId, long proposalId, long contestPhaseId) {
+        return getRatingsForProposalAndUser(proposalId, ProposalJudgeType.JUDGE.getId(), userId, contestPhaseId);
+    }
+
+    public static List<ProposalRating> getFellowRatingForProposalAndUser(long userId, long proposalId, long contestPhaseId) {
+        return getRatingsForProposalAndUser(proposalId, ProposalJudgeType.FELLOW.getId(), userId, contestPhaseId);
+    }
+
+    protected static List<ProposalRating> getRatingsForProposalAndUser(long proposalId, int judgeType, long userId, long contestPhaseId) {
+        try {
+            return proposalRatingResource.service("findByProposalIdJudgeTypeJudgeIdContestPhaseId", List.class)
+                    .queryParam("proposalId", proposalId)
+                    .queryParam("judgeType", judgeType)
+                    .queryParam("userId", userId)
+                    .queryParam("contestPhaseId", contestPhaseId).getChecked();
+        } catch (EntityNotFoundException ignored) {
+
+        }
+        return null;
+    }
+
+    public static ProposalRating createProposalRating(ProposalRating proposalRating) {
+        return proposalRatingResource.create(proposalRating).execute();
+    }
+
+
+    public static boolean updateProposalRating(ProposalRating proposalRating) {
+        return proposalRatingResource.update(proposalRating, proposalRating.getId_())
+                .execute();
+    }
+
     public static ProposalRatingValue getProposalRatingValue(long id) {
         return proposalRatingValueResource.get(id)
                 .execute();
@@ -392,4 +537,36 @@ public final class ProposalsClient {
                 .queryParam("proposalId", proposalId).execute();
     }
 
+    public static PointType getPointType(long Id_) {
+        return pointTypeResource.get(Id_)
+                .execute();
+
+    }
+
+    public static List<PointType> getChildrenOfPointType(Long parentPointTypeId) {
+        return pointTypeResource.list()
+                .optionalQueryParam("parentPointTypeId", parentPointTypeId)
+                .execute();
+    }
+
+    public static void updateProposal2Phase(Proposal2Phase proposal2Phase) {
+         proposal2PhaseResource.service("updateProposal2Phase", Boolean.class).post(proposal2Phase);
+    }
+
+    public static void deleteProposal2Phase(Proposal2Phase proposal2Phase) {
+        proposal2PhaseResource.service("deleteProposal2Phase", Boolean.class)
+                .post(proposal2Phase);
+    }
+
+    private static final RestResource<ProposalReference> proposalReferenceResource = new RestResource<>(proposalService,
+            "proposalReference", ProposalReference.TYPES);
+
+
+
+    public static void populateTableWithProposal(long proposalId) {
+             proposalReferenceResource.service("populateTableWithProposal", Boolean.class)
+                    .queryParam("proposalId",proposalId)
+                    .get();
+
+    }
 }

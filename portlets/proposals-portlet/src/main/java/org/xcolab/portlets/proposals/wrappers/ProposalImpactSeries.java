@@ -4,16 +4,16 @@ import com.ext.portlet.NoSuchImpactDefaultSeriesDataException;
 import com.ext.portlet.NoSuchImpactDefaultSeriesException;
 import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.ProposalImpactAttributeKeys;
-import com.ext.portlet.model.Contest;
+
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.ImpactDefaultSeries;
 import com.ext.portlet.model.ImpactDefaultSeriesData;
-import com.ext.portlet.model.ImpactIteration;
+
 import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
-import com.ext.portlet.service.ContestLocalServiceUtil;
+
 import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
 import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -27,6 +27,10 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ImpactIteration;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.MemberRoleChoiceAlgorithm;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalImpactValueFilterAlgorithm;
@@ -73,7 +77,7 @@ public class ProposalImpactSeries {
         this.proposalWrapper = new ProposalWrapper(proposal);
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
-        this.impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+        this.impactIterations = ContestClient.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_BAU_KEY);
         Boolean invertSeriesSign = false;

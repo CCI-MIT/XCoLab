@@ -1,8 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.Proposal;
+
+
 import com.ext.portlet.service.PointTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -15,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.PointType;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.PointsTarget;
 import org.xcolab.points.ReceiverLimitationStrategy;
@@ -46,7 +49,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         Contest contest = proposalsContext.getContest(request);
 
-        PointType contestParentPointType = PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
+        PointType contestParentPointType = ProposalsClient.getPointType(contest.getDefaultParentPointType());
 
         if (contestParentPointType == null) {
             //there is no point scheme set for this contest, forward to description tab

@@ -59,7 +59,7 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
     }
 
     @Override
-    public List<MembershipRequest> findByGiven(Long groupId, Integer statusId) {
+    public List<MembershipRequest> findByGiven(Long groupId, Integer statusId, Long userId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBERSHIP_REQUEST).getQuery();
 
@@ -68,6 +68,9 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
         }
         if (statusId != null) {
             query.addConditions(MEMBERSHIP_REQUEST.STATUS_ID.eq(statusId));
+        }
+        if (userId != null) {
+            query.addConditions(MEMBERSHIP_REQUEST.USER_ID.eq(userId));
         }
         return query.fetchInto(MembershipRequest.class);
     }

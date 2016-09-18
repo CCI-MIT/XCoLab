@@ -12,6 +12,8 @@ import org.xcolab.service.proposal.exceptions.NotFoundException;
 import java.util.List;
 
 import static org.xcolab.model.Tables.PROPOSAL_RATING;
+import static org.xcolab.model.Tables.PROPOSAL_RATING_TYPE;
+import static org.xcolab.model.Tables.PROPOSAL_RATING_VALUE;
 
 @Repository
 public class ProposalRatingDaoImpl implements ProposalRatingDao {
@@ -100,6 +102,24 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
         return record.into(ProposalRating.class);
 
     }
+    public List<ProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(Long proposalId, Integer judgeType, Long contestPhaseId, Long userId) {
+
+        final SelectQuery<Record> query = dslContext.select()
+                .from(PROPOSAL_RATING).getQuery();
+        query.addJoin(PROPOSAL_RATING_VALUE);
+        query.addJoin(PROPOSAL_RATING_TYPE);
+        query.addConditions(PROPOSAL_RATING.PROPOSAL_ID.eq(proposalId));
+        query.addConditions(PROPOSAL_RATING.RATING_VALUE_ID.eq(PROPOSAL_RATING_VALUE.ID_));
+        query.addConditions(PROPOSAL_RATING_VALUE.RATING_TYPE_ID.eq(PROPOSAL_RATING_TYPE.ID_));
+        query.addConditions(PROPOSAL_RATING_TYPE.JUDGE_TYPE.eq(judgeType));
+        query.addConditions(PROPOSAL_RATING.CONTEST_PHASE_ID.eq(contestPhaseId));
+        if (userId != null) {
+            query.addConditions(PROPOSAL_RATING.USER_ID.eq(userId));
+            query.addOrderBy(PROPOSAL_RATING.USER_ID.asc());
+        }
+        return query.fetchInto(ProposalRating.class);
+    }
+
 
     @Override
     public List<ProposalRating> findByGiven(Long proposalId, Long contestPhaseId, Long userId) {

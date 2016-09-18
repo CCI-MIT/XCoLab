@@ -4,6 +4,7 @@ import static org.xcolab.model.Tables.CONTEST;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -153,7 +154,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId) {
+    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();
 
@@ -173,6 +174,9 @@ public class ContestDaoImpl implements ContestDao {
             query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
         }
 
+        if (contestTypeId != null ) {
+            query.addConditions(CONTEST.CONTEST_TYPE_ID.eq(contestTypeId));
+        }
 
         if (contestUrlName != null) {
             query.addConditions(CONTEST.CONTEST_URL_NAME.eq(contestUrlName));
@@ -190,5 +194,45 @@ public class ContestDaoImpl implements ContestDao {
         return query.fetchInto(Contest.class);
     }
 
+    @Override
+    public Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId) {
+        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
+                .from(CONTEST).getQuery();
+
+        if (contestTier != null) {
+            query.addConditions(CONTEST.CONTEST_TIER.eq(contestTier));
+        }
+
+        if (contestScheduleId != null) {
+            query.addConditions(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
+        }
+
+        if (planTemplateId != null) {
+            query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
+        }
+
+        if (focusAreaOntologyTerms != null && focusAreaOntologyTerms.size() > 0) {
+            query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
+        }
+
+        if (contestTypeId != null ) {
+            query.addConditions(CONTEST.CONTEST_TYPE_ID.eq(contestTypeId));
+        }
+
+        if (contestUrlName != null) {
+            query.addConditions(CONTEST.CONTEST_URL_NAME.eq(contestUrlName));
+        }
+        if (contestYear != null) {
+            query.addConditions(CONTEST.CONTEST_YEAR.eq(contestYear));
+        }
+        if (active != null) {
+            query.addConditions(CONTEST.CONTEST_ACTIVE.eq(active));
+        }
+        if (featured != null) {
+            query.addConditions(CONTEST.FEATURED_.eq(featured));
+        }
+        query.addOrderBy(CONTEST.CREATED.desc());
+        return query.fetchOne(0, Integer.class);
+    }
 
 }

@@ -91,4 +91,16 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
                 .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_.eq(id_))
                 .execute();
     }
+    @Override
+    public boolean update(ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
+        return dslContext.update(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
+                .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ADDITIONAL_ID, proposalContestPhaseAttribute.getAdditionalId())
+                .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NUMERIC_VALUE, proposalContestPhaseAttribute.getNumericValue())
+                .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.STRING_VALUE, proposalContestPhaseAttribute.getStringValue())
+                .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.REAL_VALUE, proposalContestPhaseAttribute.getRealValue())
+                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_.eq(proposalContestPhaseAttribute.getId_()))
+                .execute() > 0;
+    }
+
+
 }

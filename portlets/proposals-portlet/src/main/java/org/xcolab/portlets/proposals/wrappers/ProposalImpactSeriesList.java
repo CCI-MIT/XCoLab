@@ -1,14 +1,18 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Contest;
+
+
+
 import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,8 +63,8 @@ public class ProposalImpactSeriesList {
         ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR = Collections.unmodifiableMap(ontologyRegionTermToYearToValueFactor);
     }
 
-    public ProposalImpactSeriesList(Proposal proposal) throws SystemException, PortalException {
-        this (ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId()), proposal);
+    public ProposalImpactSeriesList(Proposal proposal) throws ContestNotFoundException, PortalException, SystemException {
+        this (ProposalsClient.getLatestContestInProposal(proposal.getProposalId()), proposal);
     }
 
     public ProposalImpactSeriesList(Contest contest, Proposal proposal)

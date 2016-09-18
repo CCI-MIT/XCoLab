@@ -1,12 +1,20 @@
 package org.xcolab.service.proposal.service.proposal;
 
+import com.sun.tools.corba.se.idl.constExpr.Not;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.UsersGroupsClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.PlanSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
@@ -17,6 +25,7 @@ import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,5 +96,22 @@ public class ProposalService {
         Long contestPhaseId = ProposalsClient.getLatestContestPhaseIdInProposal(proposalId);
         ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
         return contestPhase.getContestPhasePK();
+    }
+    public List<Member> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
+
+        try {
+            Proposal proposal = proposalDao.get(proposalId);
+            ArrayList<Member> members = new ArrayList<>();
+            for (UsersGroups user : UsersGroupsClient.getUserGroupsByUserIdGroupId(null, proposal.getProposalId())) {
+                try{
+                    members.add(MembersClient.getMember(user.getUserId()));
+                }catch (MemberNotFoundException ignored){
+
+                }
+            }
+            return members;
+        }catch (NotFoundException ignored){
+            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found");
+        }
     }
 }
