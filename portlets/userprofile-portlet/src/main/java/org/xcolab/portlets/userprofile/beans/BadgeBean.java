@@ -15,8 +15,8 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -29,7 +29,7 @@ import java.util.List;
 public class BadgeBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private final static Log _log = LogFactoryUtil.getLog(BadgeBean.class);
+    private final static Logger _log = LoggerFactory.getLogger(BadgeBean.class);
     private final long userID;
     private final List<Badge> badges;
 
@@ -59,9 +59,8 @@ public class BadgeBean implements Serializable {
                         badges.add(new Badge(proposalRibbon, badgeText, p, proposalTitle, contest));
                     }
                 } catch (SystemException | PortalException e) {
-                    _log.warn("Could nod add badge to user profile view for userId: " + userID
-                            + " and proposalId: " + p
-                            .getProposalId(), e);
+                    _log.warn("Could not add badge to user profile view for userId: {} and proposalId: {}",
+                            p.getProposalId(), e);
                 }
             }
         } catch (SystemException e) {

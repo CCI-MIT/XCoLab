@@ -1,6 +1,8 @@
 package org.xcolab.portlets.userprofile.view;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +20,6 @@ import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -68,7 +68,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class UserProfileController {
 
-    private final static Log _log = LogFactoryUtil.getLog(UserProfileController.class);
+    private final static Logger _log = LoggerFactory.getLogger(UserProfileController.class);
 
     @Autowired
     private SmartValidator validator;
@@ -90,9 +90,8 @@ public class UserProfileController {
             prettyMapString.append(
                     String.format("%s = %s, ", entry.getKey(), Arrays.asList(entry.getValue()).toString()));
         }
-        _log.error(String.format(
-                "No mapping found - using default render handler for request mode %s, lifecycle %s, parameters %s",
-                request.getPortletMode().toString(), lifecycle, prettyMapString.append("}")));
+        _log.error("No mapping found - using default render handler for request mode {}, lifecycle {}, parameters {}",
+                request.getPortletMode().toString(), lifecycle, prettyMapString.append("}"));
         return "showProfileNotInitialized";
     }
 
@@ -112,7 +111,7 @@ public class UserProfileController {
                     ConfigurationAttributeKey.IS_POINTS_ACTIVE.get());
             return "showUserProfile";
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for {}", userId);
         }
         return "showProfileNotInitialized";
     }
@@ -143,7 +142,7 @@ public class UserProfileController {
                 return "editUserProfile";
             }
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
@@ -160,7 +159,7 @@ public class UserProfileController {
             currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
             return "showUserSubscriptions";
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         }
     }
@@ -187,7 +186,7 @@ public class UserProfileController {
                 return "showUserSubscriptionsManage";
             }
         } catch (PortalException | MemberNotFoundException e) {
-            _log.warn("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         } catch (SystemException e) {
             throw new DatabaseAccessException(e);
@@ -265,7 +264,7 @@ public class UserProfileController {
             populateUserWrapper(new UserProfileWrapper(userId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         }
         return "showUserProfile";
@@ -280,7 +279,7 @@ public class UserProfileController {
 
         if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())) {
             throw new UserProfileAuthorizationException(String.format(
-                    "User %s does not have the permissions to update the profile of user %d",
+                    "User %s does not have the permissions to update the profile of user {}",
                     request.getRemoteUser(), updatedUserBean.getUserId()));
         }
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(), request);
@@ -313,14 +312,14 @@ public class UserProfileController {
                 } else {
                     validationError = true;
                     response.setRenderParameter("passwordError", "true");
-                    _log.warn("CompareStrings password failed for userId: " + currentUserProfile.getUser().getId_());
+                    _log.warn("CompareStrings password failed for userId: {}", currentUserProfile.getUser().getId_());
                 }
             } else {
                 result.addError(
                         new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
                 validationError = true;
                 response.setRenderParameter("passwordError", "true");
-                _log.warn("Current password wrong for userId: " + currentUserProfile.getUser().getId_());
+                _log.warn("Current password wrong for userId: {}", currentUserProfile.getUser().getId_());
             }
         }
 
@@ -336,7 +335,7 @@ public class UserProfileController {
             } else {
                 validationError = true;
                 response.setRenderParameter("emailError", "true");
-                _log.warn("Email change failed for userId: " + currentUserProfile.getUser().getId_());
+                _log.warn("Email change failed for userId: {}", currentUserProfile.getUser().getId_());
             }
         }
 
@@ -348,7 +347,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: " + currentUserProfile.getUser().getId_());
+                _log.warn("First name change failed for userId: {}", currentUserProfile.getUser().getId_());
             }
         }
         if (updatedUserBean.getLastName() != null
@@ -359,7 +358,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Last name change failed for userId: " + currentUserProfile.getUser().getId_());
+                _log.warn("Last name change failed for userId: {}", currentUserProfile.getUser().getId_());
             }
         }
 
@@ -370,7 +369,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Country name change failed for userId: " + currentUserProfile.getUser().getId_());
+                _log.warn("Country name change failed for userId: {}", currentUserProfile.getUser().getId_());
             }
         }
 
@@ -394,9 +393,8 @@ public class UserProfileController {
                 try {
                     sendUpdatedEmail(currentUserProfile.getUser());
                 } catch (MailEngineException | AddressException e) {
-                    _log.warn("Sending eMail confirmation after email change failed for userId: " + currentUserProfile
-                            .getUser().getId_());
-                    _log.warn(e);
+                    _log.warn("Sending eMail confirmation after email change failed for userId: {}",
+                            currentUserProfile.getUser().getId_(), e);
                 }
             }
         } else {
