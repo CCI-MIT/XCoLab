@@ -6,6 +6,7 @@ import org.xcolab.service.utils.PaginationHelper;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public interface ThreadDao {
 
@@ -13,11 +14,18 @@ public interface ThreadDao {
             Long groupId);
 
     Thread get(long threadId) throws NotFoundException;
+
+    boolean exists(long threadId);
+
+    Optional<Long> getSharedColabThreadId(long threadId);
+
     boolean update(Thread thread);
+
     Thread create(Thread thread);
 
     Timestamp lastActivityDate(long threadId) throws NotFoundException;
+
     long lastActivityAuthor(long threadId) throws NotFoundException;
 
-    Long getProposalIdForThread(long threadId);
+    Optional<Long> getProposalIdForThread(long threadId);
 }
