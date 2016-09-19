@@ -135,20 +135,40 @@ public class ContestMassActionMethods {
 
     public static void deleteContest(List<Long> contestList, Object deletePhasesObj, PortletRequest request)
             throws PortalException, SystemException, MassActionRequiresConfirmationException {
+        System.out.println("deleteContest called");
+        System.out.println("with contests: " +contestList.toString());
         Boolean deletePhases = (Boolean) deletePhasesObj;
+        System.out.println("delete phases: " + deletePhases);
+        Boolean showContestPhaseDeleteConfirmation = false;
+        for (Long contestId : contestList) {
+            System.out.println("ContestId: " + contestId.toString());
+            if (deletePhases) {
+                deleteContestAndPhases(contestId);
+            } else {
+                showContestPhaseDeleteConfirmation = true;
+            }
+        }
+        if (showContestPhaseDeleteConfirmation) {
+            throw new MassActionRequiresConfirmationException();
+        }
+    }
+
+    public static void deleteContestwithPhases(List<Long> contestList, Object deletePhasesObj, PortletRequest request)
+            throws PortalException, SystemException, MassActionRequiresConfirmationException {
+        System.out.println("deleteContestWithPhases called");
+        System.out.println("with contests: " +contestList.toString());
+        Boolean deletePhases = (Boolean) deletePhasesObj;
+        System.out.println("delete phases: " + deletePhases);
         Boolean showContestPhaseDeleteConfirmation = false;
         for (Long contestId : contestList) {
             List<ContestPhase> contestPhases =
                     ContestClient.getAllContestPhases(contestId);
             if (!contestPhases.isEmpty()) {
-                if (deletePhases) {
-                    deleteContestAndPhases(contestId);
-                } else {
-                    showContestPhaseDeleteConfirmation = true;
-                }
+                deleteContestAndPhases(contestId);
             } else {
                 ContestLocalServiceUtil.deleteContest(contestId);
             }
+            showContestPhaseDeleteConfirmation = true;
         }
         if (showContestPhaseDeleteConfirmation) {
             throw new MassActionRequiresConfirmationException();
