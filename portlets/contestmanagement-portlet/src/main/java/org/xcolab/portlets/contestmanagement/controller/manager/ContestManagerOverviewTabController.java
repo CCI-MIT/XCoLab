@@ -79,6 +79,8 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     public void updateContestOverviewTabController(ActionRequest request, Model model,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
             ActionResponse response) throws IOException {
+        System.out.println("updateContestOverviewWrapper: " + updateContestOverviewWrapper.getSelectedMassAction());
+        System.out.println("!tabWrapper.getCanEdit() :" + !tabWrapper.getCanEdit());
         if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
@@ -86,6 +88,8 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         try {
             try {
                 updateContestOverviewWrapper.executeMassAction(request, response);
+                System.out.println("updateContestOverviewWrapper.getSelectedMassActionTitle(): " + updateContestOverviewWrapper.getSelectedMassActionTitle());
+                //both get here
                 String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
                 SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionTitle);
                 SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());

@@ -46,6 +46,7 @@ public class ContestManagerConfirmMassActionController {
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
             ActionResponse response) {
         try {
+            System.out.println("request: " + request.toString());
             massActionConfirmationWrapper.invokeMassActionForSelectedContests();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request,
                     massActionConfirmationWrapper.getSelectedMassActionTitle());

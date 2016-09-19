@@ -110,12 +110,18 @@ public class MassActionConfirmationWrapper {
                 contestToBeDeleted.add(contestId.longValue());
             }
         }
+        System.out.println("massActionId: " + massActionId);
+        System.out.println("ContestMassActions.DELETE.ordinal() :" + ContestMassActions.DELETE.ordinal());
+        System.out.println("ContestMassActions.DELETE_WITH_PHASES.ordinal() :" + ContestMassActions.DELETE_WITH_PHASES.ordinal());
         if (massActionId == ContestMassActions.DELETE.ordinal()) {
+            final boolean deletePhases = false;
+            ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, deletePhases, null);
+        } else if (massActionId == ContestMassActions.DELETE_WITH_PHASES.ordinal()){
             final boolean deletePhases = true;
             ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, deletePhases, null);
         } else {
             throw new IllegalArgumentException(
-                    "No action defined for mass action id: " + massActionId);
+                        "No action defined for mass action id: " + massActionId);
         }
     }
 
