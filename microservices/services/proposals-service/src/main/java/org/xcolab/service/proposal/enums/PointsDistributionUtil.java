@@ -16,6 +16,7 @@ import com.liferay.portal.model.User;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
@@ -34,10 +35,12 @@ public class PointsDistributionUtil {
 
     public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId) {
         List<PointsTarget> targets = new ArrayList<>();
-        List<Member> members = proposalService.getProposalMembers(proposalId);
-        for (Member u : members) {
-            targets.add(PointsTarget.forUser(u.getUserId(), 1.0d / members.size()));
-        }
+        try{
+            List<Member> members = proposalService.getProposalMembers(proposalId);
+            for (Member u : members) {
+                targets.add(PointsTarget.forUser(u.getUserId(), 1.0d / members.size()));
+            }
+        } catch(ProposalNotFoundException ignored)  {}
         return targets;
     }
 
