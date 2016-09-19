@@ -14,6 +14,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.PointType;
+import org.xcolab.model.tables.pojos.Proposal;
+import org.xcolab.model.tables.pojos.ProposalAttribute;
+import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.service.proposal.service.proposal.ProposalService;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,18 +29,19 @@ import java.util.List;
 import java.util.Set;
 
 public class PointsDistributionUtil {
-    public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId)
-            throws SystemException, PortalException {
+
+    private static ProposalService proposalService;
+
+    public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId) {
         List<PointsTarget> targets = new ArrayList<>();
-        List<User> members = ProposalLocalServiceUtil.getMembers(proposalId);
-        for (User u : members) {
+        List<Member> members = proposalService.getProposalMembers(proposalId);
+        for (Member u : members) {
             targets.add(PointsTarget.forUser(u.getUserId(), 1.0d / members.size()));
         }
         return targets;
     }
 
-    public static List<PointsTarget> distributeEquallyAmongProposals(Collection<Long> proposalIds)
-            throws SystemException, PortalException {
+    public static List<PointsTarget> distributeEquallyAmongProposals(Collection<Long> proposalIds) {
         List<PointsTarget> targets = new ArrayList<>();
         for (Long proposalId : proposalIds) {
             targets.add(PointsTarget.forProposal(proposalId, 1.0d / proposalIds.size()));
@@ -40,7 +49,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) throws PortalException, SystemException {
+    public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
             ProposalReference reference = ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(proposal.getProposalId(), subProposalId);

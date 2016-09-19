@@ -80,7 +80,7 @@ public class ContestService {
                 return new ArrayList<>();
             }
             List<Long> focusAreaOntologyTerms = ontologyService.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId,ontologySpaceId );
-            return contestDao.findByGiven(null, null, null, null, contestTier, focusAreaOntologyTerms, null, null);
+            return contestDao.findByGiven(null, null, null, null, contestTier, focusAreaOntologyTerms, null, null, null);
 
 
         }catch (NotFoundException ignored){

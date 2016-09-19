@@ -326,7 +326,7 @@ public final class ProposalsClient {
     }
 
     public static ProposalAttribute getImpactProposalAttributes(Long proposalId){
-
+            proposalAttributeResource
     }
 
     public static ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {

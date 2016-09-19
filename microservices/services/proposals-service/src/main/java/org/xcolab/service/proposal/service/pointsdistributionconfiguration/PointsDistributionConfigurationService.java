@@ -10,7 +10,7 @@ import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.service.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
 import org.xcolab.service.proposal.domain.pointtype.PointTypeDao;
-import org.xcolab.service.proposal.enums.ReceiverLimitationStrategy;
+
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.service.proposal.util.EntityGroupingUtil;
@@ -41,7 +41,7 @@ public class PointsDistributionConfigurationService {
 
     public void verifyDistributionConfigurationsForProposalId(long proposalId) {
         Map<Long, List<PointsDistributionConfiguration>> pdcsByPointTypeId = new HashMap<>();
-        for (org.xcolab.model.tables.pojos.PointsDistributionConfiguration pdc : pointsDistributionConfigurationDao.findByGiven(proposalId, null)) {
+        for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationDao.findByGiven(proposalId, null)) {
             List<PointsDistributionConfiguration> pdcs = EntityGroupingUtil.getInnerListOrCreate(pdc.getPointTypeId(), pdcsByPointTypeId);
             pdcs.add(pdc);
         }

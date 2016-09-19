@@ -172,7 +172,7 @@ public class ContestClient {
     }
 
     public static void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId){
-        ontestPhasesResource.service(proposalId, "forcePropomotionOfProposalInContestPhaseId",Boolean.class)
+        contestPhasesResource.service(proposalId, "forcePropomotionOfProposalInContestPhaseId",Boolean.class)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .get();
         //TODO: NEEDS TO MIGRATE A TON OF THINGS.

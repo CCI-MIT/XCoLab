@@ -9,8 +9,11 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.model.tables.pojos.PointType;
+import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.utils.IdListUtil;
 
@@ -23,11 +26,11 @@ public enum ReceiverLimitationStrategy {
 	ANY_USER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
 		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws SystemException {
+		public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) {
 			// check if there is any configuration, if there is create appropriate targets
 			List<PointsTarget> targets = new ArrayList<>();
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
+				for (PointsDistributionConfiguration pdc: ProposalsClient.getPointsDistributionByProposalIdPointTypeId((proposal.getProposalId(), pointType.getId_())) {
 					if (pdc.getTargetUserId() > 0) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -45,7 +48,7 @@ public enum ReceiverLimitationStrategy {
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
+				PointType pointType, DistributionStrategy distributionStrategy) {
 			List<PointsTarget> targets = new ArrayList<>();
 			
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
@@ -66,7 +69,7 @@ public enum ReceiverLimitationStrategy {
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
+				PointType pointType, DistributionStrategy distributionStrategy)  {
 			List<PointsTarget> targets = new ArrayList<>();
 
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
