@@ -3,7 +3,6 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
-
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
@@ -15,12 +14,11 @@ import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrappers.BaseContestWrapper;
 
+import javax.portlet.PortletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.portlet.PortletRequest;
 
 public class ContestOverviewWrapper {
 
@@ -181,6 +179,7 @@ public class ContestOverviewWrapper {
             invokeSetModelSettingsMethod(massActionMethod, request);
         } else {
             Boolean executeSetAction = (selectedMassAction > 0);
+            //HERE THE MAGIC HAPPENS
             massActionMethod.invoke(null, selectedContestIds, executeSetAction, request);
         }
     }
