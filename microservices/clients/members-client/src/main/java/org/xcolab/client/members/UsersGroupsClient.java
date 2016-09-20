@@ -17,6 +17,13 @@ public class UsersGroupsClient {
         return usersGroupsResource.create(usersGroups).execute();
     }
 
+    public static void deleteUsersGroups(Long userId, Long groupId) {
+         usersGroupsResource.service("deleteUsersGroups",Boolean.class)
+                .queryParam("userId", userId)
+                .queryParam("groupId", groupId)
+                .delete();
+    }
+
 
     public static List<UsersGroups> getUserGroupsByUserIdGroupId(Long userId, Long groupId) {
         return usersGroupsResource.list()

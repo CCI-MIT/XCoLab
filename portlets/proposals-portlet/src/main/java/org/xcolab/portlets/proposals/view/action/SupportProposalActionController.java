@@ -14,6 +14,7 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -45,11 +46,11 @@ public class SupportProposalActionController {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
 
             if (ProposalsClient.isMemberProposalSupporter(proposalId, userId)) {
-                ProposalLocalServiceUtil.removeSupporter(proposalId, userId);
+                ProposalsClient.removeProposalSupporter(proposalId, userId);
             }
             else {
-                ProposalLocalServiceUtil.addSupporter(proposalId, userId);
-                int supportedCount = ProposalLocalServiceUtil.getUserSupportedProposalsCount(userId);
+                ProposalsClient.addProposalSupporter(proposalId, userId);
+                int supportedCount = ProposalsClient.getProposalSupportersCount(userId);
                 if (supportedCount > 0) {
                     int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(supportedCount);
                     AnalyticsUtil.publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue,

@@ -76,7 +76,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalRating|xcolab_ProposalVote|xcolab_ProposalSupporter|xcolab_ProposalVersion|xcolab_PointType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_OntologySpace|xcolab_ContestPhase|xcolab_ContestPhaseRibbonType|xcolab_PlanTemplate|xcolab_PlanSectionDefinition|xcolab_PlanTemplateSection|MembershipRequest|xcolab_ProposalReference|xcolab_ProposalRatingValue|xcolab_ProposalRatingType|xcolab_PointsDistributionConfiguration</includes>
+                            <includes>xcolab_ProposalUnversionedAttribute|xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalRating|xcolab_ProposalVote|xcolab_ProposalSupporter|xcolab_ProposalVersion|xcolab_PointType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_OntologySpace|xcolab_ContestPhase|xcolab_ContestPhaseRibbonType|xcolab_PlanTemplate|xcolab_PlanSectionDefinition|xcolab_PlanTemplateSection|MembershipRequest|xcolab_ProposalReference|xcolab_ProposalRatingValue|xcolab_ProposalRatingType|xcolab_PointsDistributionConfiguration</includes>
                         </database>
                     </generator>
                 </configuration>

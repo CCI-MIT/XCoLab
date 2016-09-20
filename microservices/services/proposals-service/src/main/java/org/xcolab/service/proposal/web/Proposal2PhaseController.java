@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.proposal.service.proposal2phase.Proposal2PhaseService;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class Proposal2PhaseController {
 
     @Autowired
     private Proposal2PhaseDao proposal2PhaseDao;
+
+    @Autowired
+    Proposal2PhaseService proposal2PhaseService;
 
     @RequestMapping(value = "/proposal2Phases/{proposal2PhaseId}/getProposalCount", method = RequestMethod.GET)
     public Integer getProposalCountForActivePhase(@PathVariable Long proposal2PhaseId) throws NotFoundException {
@@ -50,5 +54,16 @@ public class Proposal2PhaseController {
 
         return proposal2PhaseDao.delete(proposal2Phase.getProposalId(), proposal2Phase.getContestPhaseId())>0;
     }
+
+
+    @RequestMapping(value = "/proposal2Phase/promoteProposal", method = RequestMethod.GET)
+    public boolean promoteProposal(@RequestParam Long proposalId,
+                                        @RequestParam Long activePhaseForContest,
+                                        @RequestParam Long currentProposalContestPhase) throws NotFoundException {
+
+         proposal2PhaseService.promoteProposal(proposalId,activePhaseForContest, currentProposalContestPhase);
+        return true;
+    }
+
 
 }

@@ -54,6 +54,31 @@ public class ProposalAttributeController {
         }
     }
 
+    @RequestMapping(value = "/proposalAttributes/{id_}", method = RequestMethod.DELETE)
+    public String deleteProposalAttribute(@PathVariable("id_") Long id_)
+            throws NotFoundException {
+
+        if (id_ == null || id_ == 0) {
+            throw new NotFoundException("No ProposalAttribute with id given");
+        } else {
+            ProposalAttribute proposalAttribute = this.proposalAttributeDao.get(id_);
+            if (proposalAttribute != null) {
+                this.proposalAttributeDao.delete(proposalAttribute.getId_());
+                return "ProposalAttribute deleted successfully";
+            } else {
+                throw new NotFoundException("No ProposalAttribute with id given");
+            }
+        }
+    }
+
+
+    @RequestMapping(value = "/proposalAttributes/getImpactProposalAttributes", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ProposalAttribute> getImpactProposalAttributes(
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Integer version) {
+        return this.proposalAttributeDao.findByProposalIdVersionAndImpact(proposalId,version);
+    }
+
     @RequestMapping(value = "/proposalAttributes", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalAttribute> getProposalAttributes(
             @RequestParam(required = false) Long proposalId,

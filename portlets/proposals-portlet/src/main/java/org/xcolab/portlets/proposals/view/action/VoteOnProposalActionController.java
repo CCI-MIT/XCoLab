@@ -2,7 +2,7 @@ package org.xcolab.portlets.proposals.view.action;
 
 
 import com.ext.portlet.NoSuchProposalVoteException;
-import com.ext.portlet.model.ProposalVote;
+
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
@@ -31,6 +31,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalVote;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -39,6 +40,7 @@ import org.xcolab.utils.emailnotification.proposal.ProposalVoteNotification;
 import org.xcolab.utils.emailnotification.proposal.ProposalVoteValidityConfirmation;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -124,11 +126,10 @@ public class VoteOnProposalActionController {
         List<User> usersWithSharedIP = Xcolab_UserLocalServiceUtil.findUsersByLoginIP(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
         if (!usersWithSharedIP.isEmpty()) {
-            final ProposalVote vote = ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposal.getProposalId(), user.getUserId());
+            final ProposalVote vote = ProposalsClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), user.getUserId());
             int recentVotesFromSharedIP = 0;
             for (User otherUser : usersWithSharedIP) {
-                try {
-                    final ProposalVote otherVote = ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
+                    final ProposalVote otherVote = ProposalsClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
                     //check if vote is less than 12 hours old
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
                         recentVotesFromSharedIP++;
@@ -138,16 +139,14 @@ public class VoteOnProposalActionController {
                         vote.setIsValid(false);
                         break;
                     }
-                } catch (NoSuchProposalVoteException ignored) {
-                    //the user has not voted for this proposal -> ignore
-                }
+
             }
-            if (vote.isIsValid() && recentVotesFromSharedIP > 7) {
+            if (vote.getIsValid() && recentVotesFromSharedIP > 7) {
                 vote.setIsValid(false);
                 sendConfirmationMail(vote, proposal, contest, member, serviceContext);
             }
-            vote.persist();
-            return vote.isIsValid();
+            ProposalsClient.updateProposalVote(vote);
+            return vote.getIsValid();
         }
         return true;
     }
@@ -155,7 +154,7 @@ public class VoteOnProposalActionController {
     private void sendConfirmationMail(ProposalVote vote, Proposal proposal, Contest contest, Member member, ServiceContext serviceContext) throws PortalException, SystemException {
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         vote.setConfirmationToken(confirmationToken);
-        vote.setConfirmationEmailSendDate(new Date());
+        vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
         try {
                 org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
             new ProposalVoteValidityConfirmation(proposal, contestMicro, member, serviceContext,
@@ -174,20 +173,18 @@ public class VoteOnProposalActionController {
                               @RequestParam String confirmationToken) {
         boolean success = false;
         try {
-            ProposalVote vote = ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposalId, userId);
+            ProposalVote vote = ProposalsClient.getProposalVoteByProposalIdUserId(proposalId, userId);
             if (!vote.getConfirmationToken().isEmpty()
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
-                vote.persist();
+                ProposalsClient.updateProposalVote(vote);
                 ProposalWrapper proposal = new ProposalWrapper(ProposalsClient.getProposal(proposalId));
                 model.addAttribute("proposal", proposal);
                 success = true;
             } else {
                 model.addAttribute("error", "TokenError");
             }
-        } catch (NoSuchProposalVoteException e) {
-            model.addAttribute("error", "NoSuchProposalVote");
-        } catch (ProposalNotFoundException | SystemException e) {
+        } catch (ProposalNotFoundException  e) {
             throw new DatabaseAccessException(e);
         }
         model.addAttribute("success", success);

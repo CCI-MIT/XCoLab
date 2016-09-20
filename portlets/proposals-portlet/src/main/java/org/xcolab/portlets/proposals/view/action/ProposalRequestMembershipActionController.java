@@ -215,10 +215,10 @@ public class ProposalRequestMembershipActionController {
             comment = "no comments";
         }
         if (approve.equalsIgnoreCase("APPROVE")) {
-            ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
+            MembershipRequestClient.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
             sendMessage(proposalsContext.getUser(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
         } else if (approve.equalsIgnoreCase("DENY")) {
-            ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
+            MembershipRequestClient.denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
             sendMessage(proposalsContext.getUser(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
         }
         response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/ADMIN");
@@ -238,7 +238,7 @@ public class ProposalRequestMembershipActionController {
         }
 
         List<Long> contributorIds = new ArrayList<>();
-        for (User contributor : ProposalsClient.getProposalMembers(proposalId)) {
+        for (Member contributor : ProposalsClient.getProposalMembers(proposalId)) {
             contributorIds.add(contributor.getUserId());
         }
 

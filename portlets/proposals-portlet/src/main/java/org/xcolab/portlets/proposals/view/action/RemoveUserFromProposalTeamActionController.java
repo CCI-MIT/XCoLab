@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
@@ -87,7 +88,7 @@ public class RemoveUserFromProposalTeamActionController {
             }
         }
 
-        ProposalLocalServiceUtil.removeUserFromTeam(proposalId,memberUserId);
+        ProposalsClient.removeUserFromProposalTeam(proposalId,memberUserId);
         response.sendRedirect(proposal.getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
     }
 }

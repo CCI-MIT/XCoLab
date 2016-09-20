@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -29,14 +30,14 @@ public class SubscribeContestActionController {
         if (proposalsContext.getPermissions(request).getCanSubscribeContest()) {
             long contestId = proposalsContext.getContest(request).getContestPK();
             long userId = proposalsContext.getUser(request).getUserId();
-            if (ContestLocalServiceUtil.isSubscribed(contestId, userId)) {
-                ContestLocalServiceUtil.unsubscribe(contestId, userId);   
+            if (ContestClient.isMemberSubscribedToContest(contestId, userId)) {
+                ContestClient.unsubscribeMemberFromContest(contestId, userId);
             }
             else {
-                ContestLocalServiceUtil.subscribe(contestId, userId);
+                ContestClient.subscribeMemberToContest(contestId, userId);
 
             }
-            response.sendRedirect(ContestLocalServiceUtil.getContestLinkUrl(contestId));
+            response.sendRedirect(proposalsContext.getContest(request).getContestLinkUrl());
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to subscribe contest");

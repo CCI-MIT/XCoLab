@@ -27,11 +27,18 @@ import java.util.regex.Pattern;
 @Service
 public class ProposalReferenceService {
 
-    private ProposalReferenceDao proposalReferenceDao;
+    private final ProposalReferenceDao proposalReferenceDao;
 
-    private ProposalDao proposalDao;
+    private final ProposalDao proposalDao;
 
-    private PlanSectionDefinitionDao planSectionDefinitionDao;
+    private final PlanSectionDefinitionDao planSectionDefinitionDao;
+
+
+    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao,ProposalDao proposalDao, PlanSectionDefinitionDao planSectionDefinitionDao ){
+        this.proposalReferenceDao = proposalReferenceDao;
+        this.proposalDao = proposalDao;
+        this.planSectionDefinitionDao = planSectionDefinitionDao;
+    }
 
     public void populateTableWithProposal(Proposal proposal)  {
         final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getProposalId());

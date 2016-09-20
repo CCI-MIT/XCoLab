@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
@@ -24,7 +25,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
             throws PortalException, SystemException {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADMIN);
-        model.addAttribute("availableRibbons", ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE));
+        model.addAttribute("availableRibbons", ContestClient.getAllContestPhaseRibbonType());
         
         return "proposalAdmin";
     }

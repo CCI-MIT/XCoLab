@@ -97,12 +97,27 @@ public class ProposalService {
         ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
         return contestPhase.getContestPhasePK();
     }
+
+    public void removeProposalTeamMember(Long proposalId, Long userId) throws ProposalNotFoundException {
+        try {
+            Proposal proposal = proposalDao.get(proposalId);
+
+            List<UsersGroups> usersGroupses = UsersGroupsClient.getUserGroupsByUserIdGroupId(userId, proposal.getGroupId());
+            if(usersGroupses != null && usersGroupses.size() > 0) {
+                UsersGroupsClient.deleteUsersGroups(userId,proposal.getGroupId());
+            }
+
+
+        }catch (NotFoundException ignored){
+            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found");
+        }
+    }
     public List<Member> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
 
         try {
             Proposal proposal = proposalDao.get(proposalId);
             ArrayList<Member> members = new ArrayList<>();
-            for (UsersGroups user : UsersGroupsClient.getUserGroupsByUserIdGroupId(null, proposal.getProposalId())) {
+            for (UsersGroups user : UsersGroupsClient.getUserGroupsByUserIdGroupId(null, proposal.getGroupId())) {
                 try{
                     members.add(MembersClient.getMember(user.getUserId()));
                 }catch (MemberNotFoundException ignored){

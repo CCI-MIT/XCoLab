@@ -5,7 +5,7 @@ import com.ext.portlet.NoSuchImpactDefaultSeriesException;
 import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.ProposalImpactAttributeKeys;
 
-import com.ext.portlet.model.FocusArea;
+
 import com.ext.portlet.model.ImpactDefaultSeries;
 import com.ext.portlet.model.ImpactDefaultSeriesData;
 
@@ -29,6 +29,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.ImpactIteration;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.MemberRoleChoiceAlgorithm;
@@ -189,7 +190,7 @@ public class ProposalImpactSeries {
         JSONObject returnObject = JSONFactoryUtil.createJSONObject();
         JSONObject serieses = JSONFactoryUtil.createJSONObject();
 
-        returnObject.put("focusAreaId", getFocusArea().getId());
+        returnObject.put("focusAreaId", getFocusArea().getId_());
 
         if (Validator.isNotNull(getSeriesAuthor()) && Validator.isNotNull(getUpdatedDate())) {
             // Author info

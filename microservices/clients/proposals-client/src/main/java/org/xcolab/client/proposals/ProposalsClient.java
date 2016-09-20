@@ -1,11 +1,18 @@
 package org.xcolab.client.proposals;
 
 
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
+import org.xcolab.client.activities.activityEntry.proposal.ProposalSupporterRemovedActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalJudgeType;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -24,8 +31,10 @@ import org.xcolab.client.proposals.pojo.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.ProposalRatingValue;
 import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.client.proposals.pojo.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.ProposalVote;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -33,6 +42,9 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public final class ProposalsClient {
@@ -80,6 +92,9 @@ public final class ProposalsClient {
     private static final RestResource<PointType> pointTypeResource = new RestResource<>(proposalService,
             "pointTypes", PointType.TYPES);
 
+    private static final RestResource<ProposalUnversionedAttribute> proposalUnversionedAttributeResource = new RestResource<>(proposalService,
+            "proposalUnversionedAttributes", ProposalUnversionedAttribute.TYPES);
+
     public static Proposal createProposal(Proposal proposal) {
         return proposalResource.create(proposal).execute();
     }
@@ -90,6 +105,17 @@ public final class ProposalsClient {
 
     public static List<Proposal> getProposalsInContestPhase(Long contestPhaseId) {
         return listProposals(0, Integer.MAX_VALUE, null, true, contestPhaseId, null);
+    }
+
+    public static List<Member> getProposalMembers(Long proposalId) {
+        return proposalResource.service(proposalId, "allMembers", List.class)
+                .get();
+    }
+
+    public static void removeUserFromProposalTeam(Long proposalId, Long memberUserId) {
+        proposalResource.service(proposalId, "removeUserFromProposalTeam", Boolean.class)
+                .queryParam("memberUserId", memberUserId)
+                .get();
     }
 
 
@@ -111,8 +137,6 @@ public final class ProposalsClient {
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .execute();
     }
-
-
 
 
     public static Proposal getProposal(long proposalId) throws ProposalNotFoundException {
@@ -246,7 +270,8 @@ public final class ProposalsClient {
     public static ProposalContestPhaseAttribute createProposalContestPhaseAttribute(ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return proposalContestPhaseAttributeResource.create(proposalContestPhaseAttribute).execute();
     }
-    public static boolean persistSelectedJudgesAttribute(Long proposalId, Long contestPhaseId,java.util.List<java.lang.Long> selectedJudges ){
+
+    public static boolean persistSelectedJudgesAttribute(Long proposalId, Long contestPhaseId, java.util.List<java.lang.Long> selectedJudges) {
         ProposalContestPhaseAttribute judges = getProposalContestPhaseAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
 
         StringBuilder attributeValue = new StringBuilder("");
@@ -260,15 +285,16 @@ public final class ProposalsClient {
         updateProposalContestPhaseAttribute(judges);
         return true;
     }
-    public static ProposalContestPhaseAttribute persistProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId,String name, Long aditionalId,Long numericValue, String stringValue){
+
+    public static ProposalContestPhaseAttribute persistProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
         ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
-        if(proposalContestPhaseAttribute== null){
+        if (proposalContestPhaseAttribute == null) {
             proposalContestPhaseAttribute.setAdditionalId(aditionalId);
             proposalContestPhaseAttribute.setNumericValue(numericValue);
             proposalContestPhaseAttribute.setStringValue(stringValue);
             updateProposalContestPhaseAttribute(proposalContestPhaseAttribute);
             return proposalContestPhaseAttribute;
-        }else {
+        } else {
             proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();
             proposalContestPhaseAttribute.setProposalId(proposalId);
             proposalContestPhaseAttribute.setName(name);
@@ -285,6 +311,7 @@ public final class ProposalsClient {
         return proposalContestPhaseAttributeResource.update(proposalContestPhaseAttribute, proposalContestPhaseAttribute.getId_())
                 .execute();
     }
+
     public static Integer countProposalVotesInContestPhase(Long contestPhaseId) {
         try {
             return proposalVoteResource.<Proposal, Integer>service("count", Integer.class)
@@ -321,12 +348,26 @@ public final class ProposalsClient {
                 .execute();
     }
 
+    public static boolean updateProposalVote(ProposalVote proposalVote) {
+        return proposalVoteResource.service("updateVote",Boolean.class)
+                .post(proposalVote);
+    }
+
+
+    public static ProposalVote getProposalVoteByProposalIdUserId( Long proposalId, Long userId) {
+        return proposalVoteResource.service("getProposalVoteByProposalIdUserId", ProposalVote.class)
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("userId", userId)
+                .get();
+    }
+
+
     public static ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {
         return proposalAttributeResource.create(proposalAttribute).execute();
     }
 
-    public static ProposalAttribute getImpactProposalAttributes(Long proposalId){
-            proposalAttributeResource
+    public static ProposalAttribute getImpactProposalAttributes(Long proposalId) {
+        return null;
     }
 
     public static ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {
@@ -347,8 +388,29 @@ public final class ProposalsClient {
     public static ProposalAttribute getProposalAttribute(long id_) throws ProposalAttributeNotFoundException {
         return proposalAttributeResource.get(id_)
                 .execute();
-
     }
+
+    public static  Boolean deleteProposalAttribute(Long id_) {
+        return pointsDistributionConfigurationResource.delete(id_).execute();
+    }
+
+    public static List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {
+        return pointsDistributionConfigurationResource.service("getImpactProposalAttributes",List.class)
+                .queryParam("proposalId", proposal.getProposalId())
+                .queryParam("currentVersion", proposal.getCurrentVersion())
+                .get();
+    }
+
+    public static List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal, FocusArea focusArea)  {
+        List<ProposalAttribute> filteredProposalAttributes = new ArrayList<>();
+        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
+            if (attribute.getAdditionalId() == focusArea.getId_()) {
+                filteredProposalAttributes.add(attribute);
+            }
+        }
+        return filteredProposalAttributes;
+    }
+
 
     public static boolean updateProposalAttribute(ProposalAttribute proposalAttribute) {
         return proposalAttributeResource.update(proposalAttribute, proposalAttribute.getId_())
@@ -372,21 +434,23 @@ public final class ProposalsClient {
         }
     }
 
-    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,  Long aditionalId, Long numericValue) {
-        ProposalAttribute proposalAttribute = createProposalAttribute( userId,  proposalId,  name,   aditionalId);
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name, Long aditionalId, Long numericValue) {
+        ProposalAttribute proposalAttribute = createProposalAttribute(userId, proposalId, name, aditionalId);
         proposalAttribute.setNumericValue(numericValue);
         return setProposalAttribute(proposalAttribute, userId);
 
     }
-    private static ProposalAttribute createProposalAttribute(Long userId, Long proposalId, String name,  Long aditionalId){
+
+    private static ProposalAttribute createProposalAttribute(Long userId, Long proposalId, String name, Long aditionalId) {
         ProposalAttribute proposalAttribute = new ProposalAttribute();
         proposalAttribute.setProposalId(proposalId);
         proposalAttribute.setName(name);
         proposalAttribute.setAdditionalId(aditionalId);
         return proposalAttribute;
     }
-    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,  Long aditionalId, String stringValue) {
-        ProposalAttribute proposalAttribute = createProposalAttribute( userId,  proposalId,  name,   aditionalId);
+
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name, Long aditionalId, String stringValue) {
+        ProposalAttribute proposalAttribute = createProposalAttribute(userId, proposalId, name, aditionalId);
         proposalAttribute.setStringValue(stringValue);
         return setProposalAttribute(proposalAttribute, userId);
 
@@ -550,7 +614,7 @@ public final class ProposalsClient {
     }
 
     public static void updateProposal2Phase(Proposal2Phase proposal2Phase) {
-         proposal2PhaseResource.service("updateProposal2Phase", Boolean.class).post(proposal2Phase);
+        proposal2PhaseResource.service("updateProposal2Phase", Boolean.class).post(proposal2Phase);
     }
 
     public static void deleteProposal2Phase(Proposal2Phase proposal2Phase) {
@@ -558,15 +622,128 @@ public final class ProposalsClient {
                 .post(proposal2Phase);
     }
 
+    public static void promoteProposal(Long proposalId, Long activePhaseForContest, Long currentProposalContestPhase) {
+        proposal2PhaseResource.service("promoteProposal", Boolean.class)
+                .queryParam("proposalId", proposalId)
+                .queryParam("activePhaseForContest", activePhaseForContest)
+                .queryParam("currentProposalContestPhase", currentProposalContestPhase)
+                .get();
+    }
+
     private static final RestResource<ProposalReference> proposalReferenceResource = new RestResource<>(proposalService,
             "proposalReference", ProposalReference.TYPES);
 
 
-
     public static void populateTableWithProposal(long proposalId) {
-             proposalReferenceResource.service("populateTableWithProposal", Boolean.class)
-                    .queryParam("proposalId",proposalId)
-                    .get();
+        proposalReferenceResource.service("populateTableWithProposal", Boolean.class)
+                .queryParam("proposalId", proposalId)
+                .get();
 
     }
+
+    public static ProposalSupporter createProposalSupporter(ProposalSupporter proposalSupporter) {
+        return proposalSupporterResource.create(proposalSupporter).execute();
+    }
+
+    public static Boolean deleteProposalSupporter(Long proposalId, Long memberId) {
+        return pointsDistributionConfigurationResource.service("deleteProposalSupporter", Boolean.class)
+                .queryParam("proposalId", proposalId)
+                .queryParam("memberId", memberId)
+                .delete();
+    }
+
+    public static boolean isMemberSubscribedToProposal(long proposalId, long userId) {
+        return ActivitiesClient.isSubscribedToActivity(userId,
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "");
+    }
+
+    public static void subscribeMemberToProposal(long proposalId, long userId) {
+
+        subscribeMemberToProposal(proposalId, userId, false);
+    }
+
+    private static void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
+        ActivitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+    }
+
+    public static void unsubscribeMemberFromProposal(long proposalId, long userId) {
+        unsubscribeMemberFromProposal(proposalId, userId, false);
+    }
+
+    private static void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+    }
+
+    public static void addProposalSupporter(long proposalId, long userId) {
+        addProposalSupporter(proposalId, userId, true);
+    }
+
+    public static void addProposalSupporter(long proposalId, long userId, boolean publishActivity) {
+        ProposalSupporter supporter = new ProposalSupporter();
+        supporter.setProposalId(proposalId);
+        supporter.setUserId(userId);
+        supporter.setCreateDate(new Timestamp(new Date().getTime()));
+        createProposalSupporter(supporter);
+
+        if (publishActivity) {
+            ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+                    new ProposalSupporterAddedActivityEntry());
+        }
+    }
+
+    public static void removeProposalSupporter(long proposalId, long userId) {
+        deleteProposalSupporter(proposalId, userId);
+        ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+                new ProposalSupporterRemovedActivityEntry());
+    }
+
+    public static ProposalUnversionedAttribute createProposalUnversionedAttribute(ProposalUnversionedAttribute proposalUnversionedAttribute) {
+        return proposalUnversionedAttributeResource.create(proposalUnversionedAttribute).execute();
+    }
+
+    public static ProposalUnversionedAttribute getProposalUnversionedAttribute(Long proposalId, String name) {
+        return proposalUnversionedAttributeResource.service("getByProposalIdName", ProposalUnversionedAttribute.class)
+                .queryParam("proposalId",proposalId)
+                .queryParam("name",name)
+                .get();
+
+    }
+    public static boolean updateProposalUnversionedAttribute(ProposalUnversionedAttribute proposalUnversionedAttribute) {
+        return proposalUnversionedAttributeResource.update(proposalUnversionedAttribute, proposalUnversionedAttribute.getId_())
+                .execute();
+    }
+
+    public static  Boolean deleteProposalUnversionedAttribute(Long id_) {
+        return pointsDistributionConfigurationResource.delete(id_).execute();
+    }
+    public static List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(Long proposalId) {
+        return proposalUnversionedAttributeResource.list()
+                .optionalQueryParam("proposalId", proposalId)
+                .execute();
+    }
+    public static void createOrUpdateProposalUnversionedAttribute(long authorId,
+                                                                  String attributeValue,
+                                                                  String attributeName,
+                                                                  Long proposalId) {
+        ProposalUnversionedAttribute pua = null;
+        pua = getProposalUnversionedAttribute(proposalId,attributeName.toString());
+        if (pua == null) {
+            pua = new ProposalUnversionedAttribute();
+            pua.setCreateAuthorId(authorId);
+            pua.setCreateDate(new Timestamp(new Date().getTime()));
+            pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
+            pua.setName(attributeName);
+            pua.setStringValue(attributeValue);
+            pua.setProposalId(proposalId);
+            createProposalUnversionedAttribute(pua);
+        } else {
+            pua.setCreateAuthorId(authorId);
+            pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
+            pua.setStringValue(attributeValue);
+            updateProposalUnversionedAttribute(pua);
+        }
+    }
+
+
+
 }

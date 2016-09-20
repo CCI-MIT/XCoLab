@@ -2,10 +2,10 @@ package org.xcolab.portlets.proposals.view;
 
 
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
+
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
+
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -19,9 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.OntologySpace;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
@@ -102,9 +107,9 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
         List<ContestWrapper> contests = new ArrayList<>();
-        List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContestsByContestType(contestType.getId_()) :
-        	ContestLocalServiceUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
-        List<Contest> priorContests = ContestLocalServiceUtil.getContestsByActivePrivateType(false, false,
+        List<Contest> contestsToWrap = showAllContests ? ContestClient.getContestsByContestTypeId(contestType.getId_()) :
+        	ContestClient.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
+        List<Contest> priorContests = ContestClient.getContestsByActivePrivateType(false, false,
                 contestType.getId_());
 
         if (contestsToWrap.size() == 1) {
@@ -151,32 +156,32 @@ public class ContestsIndexController extends BaseProposalsController {
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
         
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
-        	List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE);
-        	List<OntologyTerm> ontologyTermsRaw = OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE);
-        	List<FocusArea> focusAreasRaw = FocusAreaLocalServiceUtil.getFocusAreas(0, Integer.MAX_VALUE);
-        	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTerms(0, Integer.MAX_VALUE);
+        	List<OntologySpace> ontologySpacesRaw = OntologyClient.getAllOntologySpaces();
+        	List<OntologyTerm> ontologyTermsRaw = OntologyClient.getAllOntologyTerms();
+        	List<FocusArea> focusAreasRaw = OntologyClient.getAllFocusAreas();
+        	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClient.getAllFocusAreaOntologyTerms();
         	
         	Map<Long, FocusAreaWrapper> focusAreas = new TreeMap<>();
         	Map<Long, OntologySpaceWrapper> ontologySpaces = new HashMap<>();
         	Map<Long, OntologyTermWrapper> ontologyTerms = new TreeMap<>();
         	
         	for (FocusArea area: focusAreasRaw) {
-        		focusAreas.put(area.getId(), new FocusAreaWrapper(area));
+        		focusAreas.put(area.getId_(), new FocusAreaWrapper(area));
         	}
         	
         	for (OntologySpace space: ontologySpacesRaw) {
-        		ontologySpaces.put(space.getId(), new OntologySpaceWrapper(space));
+        		ontologySpaces.put(space.getId_(), new OntologySpaceWrapper(space));
         	}
         	
         	for (OntologyTerm term: ontologyTermsRaw) {
         		OntologyTermWrapper termWrapped = new OntologyTermWrapper(term);
         		ontologySpaces.get(term.getOntologySpaceId()).addTerm(termWrapped);
-        		ontologyTerms.put(term.getId(), termWrapped);
+        		ontologyTerms.put(term.getId_(), termWrapped);
         	}
 
         	for (OntologyTerm term: ontologyTermsRaw) {
         		if (term.getParentId() > 0) {
-        			ontologyTerms.get(term.getId()).setParent(ontologyTerms.get(term.getParentId()));
+        			ontologyTerms.get(term.getId_()).setParent(ontologyTerms.get(term.getParentId()));
         		}
         	}
         	
@@ -185,7 +190,7 @@ public class ContestsIndexController extends BaseProposalsController {
         	}
 
             List<ContestWrapper> otherContests = new ArrayList<>();
-            for (Contest contest: ContestLocalServiceUtil.getContestsByActivePrivate(!showActiveContests, false)) {
+            for (Contest contest: ContestClient.getContestsByActivePrivate(!showActiveContests, false)) {
                 try {
                     org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
                     otherContests.add(new ContestWrapper(contestMicro));//contest

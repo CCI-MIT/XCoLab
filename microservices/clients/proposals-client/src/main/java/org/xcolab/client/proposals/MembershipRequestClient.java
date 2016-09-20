@@ -1,16 +1,22 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.activityEntry.proposal.ProposalMemberAddedActivityEntry;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.proposals.enums.MembershipRequestStatus;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MembershipRequestClient {
@@ -22,6 +28,10 @@ public class MembershipRequestClient {
 
     public static MembershipRequest createMembershipRequest(MembershipRequest membershipRequest) {
         return membershipRequestResource.create(membershipRequest).execute();
+    }
+    public static boolean updateMembershipRequest(MembershipRequest membershipRequest) {
+        return membershipRequestResource.update(membershipRequest, membershipRequest.getMembershipRequestId())
+                .execute();
     }
 
     private static MembershipRequest createMembershipRequest(Long proposalId, Long userId, String comment, Integer status){
@@ -55,6 +65,47 @@ public class MembershipRequestClient {
         }
         return false;
     }
+
+    public static void denyMembershipRequest(long proposalId, long userId, long membershipRequestId, String reply, long updateAuthorId) {
+        if (hasUserRequestedMembership(proposalId, userId)) {
+            try {
+                MembershipRequest membershipRequest = getMembershipRequest(membershipRequestId);
+                membershipRequest.setStatusId(MembershipRequestStatus.STATUS_DENIED);
+                membershipRequest.setReplierUserId(updateAuthorId);
+                membershipRequest.setReplyComments(reply);
+                membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
+                updateMembershipRequest(membershipRequest);
+            }catch (MembershipRequestNotFoundException ignored){
+
+            }
+        }
+    }
+
+    public static void approveMembershipRequest(long proposalId, Long userId, MembershipRequest request, String reply, Long updateAuthorId) {
+
+        if (hasUserRequestedMembership(proposalId, userId)) {
+            try {
+                MembershipRequest membershipRequest = getMembershipRequest(request.getMembershipRequestId());
+                membershipRequest.setStatusId(MembershipRequestStatus.STATUS_APPROVED);
+                membershipRequest.setReplierUserId(updateAuthorId);
+                membershipRequest.setReplyComments(reply);
+                membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
+                updateMembershipRequest(membershipRequest);
+            }catch (MembershipRequestNotFoundException ignored){
+
+            }
+
+            ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                    new ProposalMemberAddedActivityEntry());
+
+            if (!ActivitiesClient.isSubscribedToActivity(userId,
+                    ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
+                ActivitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+
+            }
+        }
+    }
+
     public static MembershipRequest addInvitedMembershipRequest(Long proposalId, Long userId, String comment){
         return createMembershipRequest(proposalId,userId,comment,MembershipRequestStatus.STATUS_PENDING_INVITED);
     }

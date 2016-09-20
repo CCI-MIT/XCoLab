@@ -75,13 +75,11 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     }
 
     @Override
-    public List<OntologySpace> findByGiven(Integer order) {
+    public List<OntologySpace> findByGiven() {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ONTOLOGY_SPACE).getQuery();
 
-        if (order != null) {
-            query.addConditions(ONTOLOGY_SPACE.ORDER_.eq(order));
-        }
+
         return query.fetchInto(OntologySpace.class);
     }
 

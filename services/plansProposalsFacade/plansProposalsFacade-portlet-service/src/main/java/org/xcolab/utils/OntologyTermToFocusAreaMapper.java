@@ -1,15 +1,17 @@
 package org.xcolab.utils;
 
 import com.ext.portlet.NoSuchOntologySpaceException;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologySpace;
-import com.ext.portlet.model.OntologyTerm;
+
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.OntologySpace;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
@@ -29,13 +31,10 @@ public class OntologyTermToFocusAreaMapper {
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
      */
     public FocusArea getFocusAreaMatchingTermsExactly() {
-        try {
             return applyFilterToFocusAreasMatchingExactly(
-                    FocusAreaLocalServiceUtil.getFocusAreas(QueryUtil.ALL_POS, QueryUtil.ALL_POS),
+                    ContestClient.getAllFocusAreas(),
                     true);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     /**
@@ -56,7 +55,7 @@ public class OntologyTermToFocusAreaMapper {
      * @throws PortalException
      */
     public FocusArea getFocusAreaMatchingTermsPartially() throws SystemException, PortalException {
-        return applyFilterToFocusAreasMatchingExactly(FocusAreaLocalServiceUtil.getFocusAreas(QueryUtil.ALL_POS, QueryUtil.ALL_POS), false);
+        return applyFilterToFocusAreasMatchingExactly(ContestClient.getAllFocusAreas(), false);
     }
 
     /**
@@ -78,7 +77,7 @@ public class OntologyTermToFocusAreaMapper {
             boolean focusAreaMatchesTerms = true;
             for (OntologyTerm toBeMatchedTerm : toBeMatchedTerms) {
                 OntologyTerm focusAreaOntologyTerm = getTermWithSpaceId(focusArea, toBeMatchedTerm.getOntologySpaceId());
-                if (focusAreaOntologyTerm.getId() != toBeMatchedTerm.getId()) {
+                if (focusAreaOntologyTerm.getId_() != toBeMatchedTerm.getId_()) {
                     focusAreaMatchesTerms = false;
                     break;
                 }
@@ -94,7 +93,7 @@ public class OntologyTermToFocusAreaMapper {
 
     private OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) {
         try {
-            OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
+            OntologySpace space = ContestClient.(spaceId);
             return FocusAreaLocalServiceUtil
                     .getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
         } catch (SystemException e) {

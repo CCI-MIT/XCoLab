@@ -1,5 +1,6 @@
 package org.xcolab.client.contest;
 
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
@@ -9,13 +10,18 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestTeamMember;
 import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.ImpactIteration;
+import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
+import org.xcolab.client.contest.pojo.ImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.ImpactTemplateSeries;
+import org.xcolab.client.contest.pojo.OntologySpace;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.pojo.PlanTemplate;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -60,6 +66,15 @@ public class ContestClient {
 
     private static final RestResource<ContestPhaseRibbonType> contestPhaseRibbonTypeResource = new RestResource<>(contestService,
             "contestPhaseRibbonTypes", ContestPhaseRibbonType.TYPES);
+
+    private static final RestResource<ImpactTemplateMaxFocusArea> impactTemplateMaxFocusAreaResource = new RestResource<>(contestService,
+            "impactTemplateMaxFocusAreas", ImpactTemplateMaxFocusArea.TYPES);
+
+    private static final RestResource<ImpactTemplateFocusAreaList> impactTemplateFocusAreaListResource = new RestResource<>(contestService,
+            "impactTemplateFocusAreaLists", ImpactTemplateFocusAreaList.TYPES);
+
+    private static final RestResource<FocusArea> focusAreaResource = new RestResource<>(contestService,
+            "focusAreas", FocusArea.TYPES);
 
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
@@ -171,8 +186,8 @@ public class ContestClient {
         }
     }
 
-    public static void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId){
-        contestPhasesResource.service(proposalId, "forcePropomotionOfProposalInContestPhaseId",Boolean.class)
+    public static void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
+        contestPhasesResource.service(proposalId, "forcePropomotionOfProposalInContestPhaseId", Boolean.class)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .get();
         //TODO: NEEDS TO MIGRATE A TON OF THINGS.
@@ -197,7 +212,25 @@ public class ContestClient {
                 .execute();
     }
 
-    public static List<Contest> getContestsByContestSTypeId(Long contestTypeId) {
+    public static List<Contest> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) {
+        return contestResource
+                .list()
+                .queryParam("active", contestActive)
+                .queryParam("contestPrivate", contestPrivate)
+                .execute();
+    }
+
+
+    public static List<Contest> getContestsByActivePrivateType(boolean contestActive, boolean contestPrivate, Long contestTypeId) {
+        return contestResource
+                .list()
+                .queryParam("active", contestActive)
+                .queryParam("contestPrivate", contestPrivate)
+                .queryParam("contestTypeId", contestTypeId)
+                .execute();
+    }
+
+    public static List<Contest> getContestsByContestTypeId(Long contestTypeId) {
         return contestResource
                 .list()
                 .queryParam("contestTypeId", contestTypeId)
@@ -423,22 +456,76 @@ public class ContestClient {
                 .execute();
     }
 
-    public static ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest)  {
-        try{
+    public static ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest) {
+        try {
             PlanTemplate planTemplate = ProposalsClient.getPlanTemplate(contest.getPlanTemplateId());
             return getImpactTemplateSeries(planTemplate.getImpactSeriesTemplateId());
-        }catch (PlanTemplateNotFoundException ignored){
+        } catch (PlanTemplateNotFoundException ignored) {
 
         }
         return null;
     }
-    public static ImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
-            return impactTemplateSeriesResource.get(seriesId)
-                    .execute();
-    }
-    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
-            return contestPhaseRibbonTypeResource.get(id_)
-                    .execute();
 
+    public static ImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
+        return impactTemplateSeriesResource.get(seriesId)
+                .execute();
+    }
+
+    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
+        return contestPhaseRibbonTypeResource.get(id_)
+                .execute();
+    }
+
+    public static List<ContestPhaseRibbonType> getAllContestPhaseRibbonType() {
+        return contestPhaseRibbonTypeResource.list()
+                .execute();
+    }
+
+    public static boolean isMemberSubscribedToContest(long contestPK, long userId) {
+        return ActivitiesClient.isSubscribedToActivity(userId, ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK, 0, "");
+    }
+
+    public static void subscribeMemberToContest(long contestPK, long userId) {
+        ActivitiesClient.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+    }
+
+    public static void unsubscribeMemberFromContest(long contestPK, long userId) {
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+    }
+
+    public static ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) {
+        try {
+            PlanTemplate planTemplate = ProposalsClient.getPlanTemplate(contest.getPlanTemplateId());
+            return getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
+        } catch (PlanTemplateNotFoundException ignored) {
+
+        }
+        return null;
+    }
+
+    public static ImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(long focusAreaListId) {
+        return impactTemplateFocusAreaListResource.get(focusAreaListId)
+                .execute();
+    }
+
+    public static List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) {
+        ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
+        return getImpactTemplateMaxFocusArea(focusAreaList.getFocusAreaListId());
+    }
+
+    public static List<ImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusArea(Long focusAreaListId) {
+        return impactTemplateMaxFocusAreaResource.list()
+                .optionalQueryParam("focusAreaListId", focusAreaListId)
+                .execute();
+    }
+
+    public static FocusArea getFocusArea(long Id_) {
+        return focusAreaResource.get(Id_)
+                .execute();
+
+    }
+
+    public static List<FocusArea> getAllFocusAreas() {
+        return focusAreaResource.list().execute();
     }
 }

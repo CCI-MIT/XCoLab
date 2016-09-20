@@ -11,4 +11,6 @@ public interface ProposalVersionDao {
     ProposalVersion create(ProposalVersion proposalVersion);
 
     ProposalVersion getByProposalIdVersion(Long proposalId, Integer version);
+
+    int countByGiven(Long proposalId);
 }

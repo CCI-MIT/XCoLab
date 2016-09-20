@@ -154,10 +154,13 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId) {
+    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();
 
+        if(contestPrivate != null){
+            query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
+        }
         if (contestTier != null) {
             query.addConditions(CONTEST.CONTEST_TIER.eq(contestTier));
         }
@@ -195,9 +198,13 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId) {
+    public Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(CONTEST).getQuery();
+
+        if(contestPrivate != null){
+            query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
+        }
 
         if (contestTier != null) {
             query.addConditions(CONTEST.CONTEST_TIER.eq(contestTier));

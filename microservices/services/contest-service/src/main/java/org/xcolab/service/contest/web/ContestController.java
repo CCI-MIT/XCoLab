@@ -71,9 +71,10 @@ public class ContestController {
             @RequestParam(required = false) Long contestScheduleId,
             @RequestParam(required = false) Long planTemplateId,
             @RequestParam(required = false) List<Long> focusAreaOntologyTerms,
-            @RequestParam(required = false) Long contestTypeId
+            @RequestParam(required = false) Long contestTypeId,
+            @RequestParam(required = false) Boolean contestPrivate
     ) {
-        return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId, planTemplateId, contestTypeId);
+        return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId, planTemplateId, contestTypeId,contestPrivate);
     }
 
 
@@ -106,7 +107,7 @@ public class ContestController {
                                       @PathVariable("contestTypeId") Long contestTypeId) throws NotFoundException {
 
 
-        return contestDao.countByGiven(null, null, null, null, null, null, null, null, contestTypeId);
+        return contestDao.countByGiven(null, null, null, null, null, null, null, null, contestTypeId, null);
     }
 
 

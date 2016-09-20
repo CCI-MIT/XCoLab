@@ -128,11 +128,11 @@ public class ProposalRevertActionController {
                 // we are in a completed phase - need to adjust the end version
                 final Proposal updatedProposal = ProposalsClient.getProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
-                Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
+                ProposalsClient.updateProposal2Phase(p2p);
             }
             // extra check to reset dependencies from the old versions
             if (updateProposalReferences) {
-                ProposalReferenceLocalServiceUtil.populateTableWithProposal(oldProposalVersionToBeBecomeCurrent.getWrapped());
+                ProposalsClient.populateTableWithProposal(oldProposalVersionToBeBecomeCurrent.getWrapped().getProposalId());
             }
         }catch (ProposalNotFoundException ignored){
 

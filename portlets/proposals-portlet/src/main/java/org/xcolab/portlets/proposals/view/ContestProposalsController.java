@@ -22,6 +22,7 @@ import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
@@ -64,7 +65,7 @@ public class ContestProposalsController extends BaseProposalsController {
         Member u = request.getRemoteUser() != null ? MembersClient.getMemberUnchecked(Long.parseLong(request.getRemoteUser())) : null;
         List<ProposalWrapper> proposals = new ArrayList<>();
 
-        for (Proposal proposal : ProposalLocalServiceUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+        for (Proposal proposal : ProposalsClient.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
 
             try {
                 Proposal2Phase p2p = ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
@@ -78,7 +79,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 }
 
                 proposals.add(proposalWrapper);
-            }catch (ProposalNotFoundException ignored){
+            }catch ( Proposal2PhaseNotFoundException ignored){
 
             }
         }
@@ -109,7 +110,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         String redirectUrl;
         if (phaseId != null && phaseId > 0) {
-            redirectUrl = ContestPhaseLocalServiceUtil.getContestPhaseLinkUrl(proposalsContext.getContestPhase(request));
+            redirectUrl = proposalsContext.getContestPhase(request).getContestPhaseLinkUrl();
         } else {
             redirectUrl = proposalsContext.getContest(request).getContestLinkUrl();
         }

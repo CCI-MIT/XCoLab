@@ -42,6 +42,13 @@ public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
 
     }
 
+    public int delete(Long proposalId, Long userId) {
+        return dslContext.deleteFrom(PROPOSAL_SUPPORTER)
+                .where(PROPOSAL_SUPPORTER.PROPOSAL_ID.eq(proposalId))
+                .and(PROPOSAL_SUPPORTER.USER_ID.eq(userId))
+                .execute();
+    }
+
     public List<ProposalSupporter> findByGiven(Long proposalId, Long userId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_SUPPORTER).getQuery();

@@ -46,4 +46,13 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
         }
         return query.fetchInto(FocusAreaOntologyTerm.class);
     }
+
+    @Override
+    public List<FocusArea> findByGiven() {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(FOCUS_AREA).getQuery();
+
+
+        return query.fetchInto(FocusArea.class);
+    }
 }

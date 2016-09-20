@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.*;
 import org.xcolab.model.tables.pojos.*;
 
+import org.xcolab.model.tables.pojos.Proposal;
+import org.xcolab.model.tables.pojos.ProposalVersion;
+import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 
@@ -118,14 +123,26 @@ public class ProposalsController {
     }
 
 
-
-    @RequestMapping(value = "/proposals/{proposalId}/isUserMember", method = RequestMethod.GET)
-    public Proposal getProposal(@PathVariable long proposalId,
-                                @RequestParam long userId)
+    @RequestMapping(value = "/proposals/{proposalId}/removeUserFromProposalTeam", method = RequestMethod.GET)
+    public Boolean removeUserFromProposalTeam(@PathVariable Long proposalId, @RequestParam Long memberUserId)
             throws NotFoundException {
-        final Proposal proposal = proposalDao.get(proposalId);
-        if (proposal.getVisible()) {
-            return proposal;
+
+        try {
+            proposalService.removeProposalTeamMember(proposalId, memberUserId);
+            return true;
+        } catch (ProposalNotFoundException ignored) {
+        }
+        throw new NotFoundException();
+    }
+
+    @RequestMapping(value = "/proposals/{proposalId}/allMembers", method = RequestMethod.GET)
+    public List<Member> getProposalMembers(@PathVariable Long proposalId)
+            throws NotFoundException {
+
+        try {
+            return proposalService.getProposalMembers(proposalId);
+        } catch (ProposalNotFoundException ignored) {
+
         }
         throw new NotFoundException();
     }
@@ -167,4 +184,25 @@ public class ProposalsController {
         return proposalVoteDao.countByGiven(contestPhaseId, proposalId, userId) == 0;
     }
 
+    @RequestMapping(value = "/proposalVotes/updateVote", method = RequestMethod.PUT)
+    public boolean updateProposalVote(@RequestBody ProposalVote proposalVote) throws NotFoundException {
+
+            return proposalVoteDao.update(proposalVote);
+
+    }
+
+    @RequestMapping(value = "/proposalVotes/getProposalVoteByProposalIdUserId", method = {RequestMethod.GET})
+    public ProposalVote getProposalVoteByProposalIdUserId(
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId
+    ) throws NotFoundException {
+        List<ProposalVote> votesForUser = proposalVoteDao.findByGiven(null, proposalId, userId);
+        if (votesForUser != null && votesForUser.size() > 0) {
+            return votesForUser.get(0);
+        } else {
+            throw new NotFoundException("Proposal vote not found");
+        }
+
+    }
 }

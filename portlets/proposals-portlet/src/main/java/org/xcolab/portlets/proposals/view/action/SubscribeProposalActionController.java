@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -28,11 +29,11 @@ public class SubscribeProposalActionController {
         if (proposalsContext.getPermissions(request).getCanSubscribeProposal()) {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long userId = proposalsContext.getUser(request).getUserId();
-            if (ProposalLocalServiceUtil.isSubscribed(proposalId, userId)) {
-                ProposalLocalServiceUtil.unsubscribe(proposalId, userId);
+            if (ProposalsClient.isMemberSubscribedToProposal(proposalId, userId)) {
+                ProposalsClient.unsubscribeMemberFromProposal(proposalId, userId);
             }
             else {
-                ProposalLocalServiceUtil.subscribe(proposalId, userId);
+                ProposalsClient.subscribeMemberToProposal(proposalId, userId);
             }
             response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)));
         }
