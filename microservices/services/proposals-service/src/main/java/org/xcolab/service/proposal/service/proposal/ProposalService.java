@@ -126,4 +126,18 @@ public class ProposalService {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found");
         }
     }
+
+    public Boolean isUserAMember(long proposalId, long userId){
+        try{
+            List<Member> members = getProposalMembers(proposalId);
+            for(Member member : members) {
+                if(member.getId_() == userId){
+                    return true;
+                }
+            }
+            return false;
+        } catch (ProposalNotFoundException ignored) {
+            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found")
+        }
+    }
 }
