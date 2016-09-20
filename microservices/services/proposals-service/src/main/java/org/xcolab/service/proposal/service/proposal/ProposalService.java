@@ -49,15 +49,21 @@ public class ProposalService {
     }
 
     public ProposalReference getReferenceByProposalIdAndSubProposalId(long proposalId, long subProposalId) {
-        List<Proposal> subProposals = this.getSubproposals(proposalId, true, true);
         ProposalReference ref = null;
         try{
             ref = proposalReferenceDao.get(proposalId,subProposalId);
         } catch (NotFoundException ignored) {}
-
         return ref;
     }
 
+    public ProposalAttribute getProposalAttribute(long sectionAttributeId) {
+
+        ProposalAttribute attribute = null;
+        try{
+            attribute = proposalAttributeDao.get(sectionAttributeId);
+        } catch(NotFoundException ignored) {}
+        return attribute;
+    }
 
     public List<Proposal> getContestIntegrationRelevantSubproposals(long proposalId) {
         final boolean onlyWithContestIntegrationRelevance = true;

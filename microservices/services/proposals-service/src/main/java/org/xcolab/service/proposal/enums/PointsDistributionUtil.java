@@ -57,7 +57,8 @@ public class PointsDistributionUtil {
         for (long subProposalId : subProposalIds) {
             ProposalReference reference = proposalService.getReferenceByProposalIdAndSubProposalId(proposal.getProposalId(), subProposalId);
             //ProposalReference reference = ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(proposal.getProposalId(), subProposalId);
-            final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
+            final ProposalAttribute referenceSectionProposalAttribute = proposalService.getProposalAttribute(reference.getSectionAttributeId());
+            //final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
             final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
             try {
                 PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
