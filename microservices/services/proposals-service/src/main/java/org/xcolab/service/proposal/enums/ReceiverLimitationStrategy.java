@@ -7,7 +7,8 @@ import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
-import org.xcolab.utils.IdListUtil;
+import org.xcolab.service.proposal.util.ContestTier;
+import org.xcolab.service.proposal.util.IdListUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -137,13 +138,16 @@ public enum ReceiverLimitationStrategy {
     }),
     BASIC_SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
+        @Autowired
+        ProposalService proposalService;
+
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
+                                                  PointType pointType, DistributionStrategy distributionStrategy) {
+            List<Proposal> subProposals = proposalService.getSubproposals(proposal.getProposalId(), false);
             Set<Long> subProposalIds = new HashSet<>();
             for (Proposal subProposal : subProposals) {
-                final Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(subProposal.getProposalId());
+                final Contest latestProposalContest = proposalService.getLatestProposalContest(subProposal.getProposalId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
                     subProposalIds.add(subProposal.getProposalId());
@@ -172,7 +176,7 @@ public enum ReceiverLimitationStrategy {
 		targetsPickerAlgorithm = algorithm;
 	}
 	
-	public List<PointsTarget> getTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
+	public List<PointsTarget> getTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy)  {
 		return targetsPickerAlgorithm.getPointTargets(proposal, pointType, distributionStrategy);
 		
 	}
@@ -182,7 +186,7 @@ public enum ReceiverLimitationStrategy {
 	}
 
 	public interface ReceiverLimitationTargetsPickerAlgorithm {
-		List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException;
+		List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy);
 	}
 
 	public enum Type {
