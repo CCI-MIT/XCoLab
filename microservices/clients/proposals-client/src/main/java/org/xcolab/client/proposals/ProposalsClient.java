@@ -325,9 +325,11 @@ public final class ProposalsClient {
         return proposalAttributeResource.create(proposalAttribute).execute();
     }
 
+    /*
     public static ProposalAttribute getImpactProposalAttributes(Long proposalId){
             proposalAttributeResource
     }
+    */
 
     public static ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {
         return proposalAttributeResource.service("getByProposalIdVersionAditionalId", ProposalAttribute.class)
