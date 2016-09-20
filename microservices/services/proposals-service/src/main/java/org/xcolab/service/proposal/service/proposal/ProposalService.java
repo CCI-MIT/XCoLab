@@ -15,6 +15,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.PlanSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
@@ -63,6 +64,10 @@ public class ProposalService {
             attribute = proposalAttributeDao.get(sectionAttributeId);
         } catch(NotFoundException ignored) {}
         return attribute;
+    }
+
+    public PointsDistributionConfiguration getByPlanSectionDefinitionId(long sectionDefinitonId){
+
     }
 
     public List<Proposal> getContestIntegrationRelevantSubproposals(long proposalId) {

@@ -22,6 +22,8 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
+import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
+import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +34,7 @@ import java.util.Set;
 public class PointsDistributionUtil {
 
     private static ProposalService proposalService;
+    private static PointsDistributionConfigurationService pointsDistributionConfigurationService;
 
     public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId) {
         List<PointsTarget> targets = new ArrayList<>();
@@ -61,7 +64,8 @@ public class PointsDistributionUtil {
             //final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
             final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
             try {
-                PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
+                PointsDistributionConfiguration pdc = pointsDistributionConfigurationService.getPointsDistributionConfigurationByPlanSectionDefinitionId(planSectionDefinitionId);
+                //PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
                 targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
             } catch (NoSuchPointsDistributionConfigurationException ignored) { }
         }

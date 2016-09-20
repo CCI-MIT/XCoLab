@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.service.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
@@ -37,6 +38,14 @@ public class PointsDistributionConfigurationService {
         this.pointsDistributionConfigurationDao = pointsDistributionConfigurationDao;
         this.pointTypeDao = pointTypeDao;
         this.proposalService = proposalService;
+    }
+
+    public PointsDistributionConfiguration getPointsDistributionConfigurationByPlanSectionDefinitionId(long planSectionDefinitionId){
+        PointsDistributionConfiguration config = null;
+        try{
+            pointsDistributionConfigurationDao.get(planSectionDefinitionId);
+        } catch(NotFoundException ignored) {}
+        return config;
     }
 
     public void verifyDistributionConfigurationsForProposalId(long proposalId) {
