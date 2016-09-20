@@ -3,6 +3,7 @@ package org.xcolab.service.proposal.service.proposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
@@ -89,7 +90,7 @@ public class ProposalService {
                 Proposal p = proposalDao.get(subProposalId);
                 if (p != null) {
                     if (!includeProposalsInSameContest) {
-                        if (getLatestProposalContest(proposalId).equals(getLatestProposalContest(subProposalId))) {
+                        if (getLatestProposalContestId(proposalId).equals(getLatestProposalContestId(subProposalId))) {
                             continue;
                         }
                     }
@@ -97,18 +98,27 @@ public class ProposalService {
                         proposals.add(p);
                     }
                 }
-            } catch (NotFoundException | ContestNotFoundException ignored) {
+            } catch (NotFoundException ignored) {
 
             }
         }
         return proposals;
     }
 
-    private Long getLatestProposalContest(Long proposalId) throws ContestNotFoundException {
+    public Long getLatestProposalContestId(Long proposalId)  {
         Long contestPhaseId = ProposalsClient.getLatestContestPhaseIdInProposal(proposalId);
         ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
         return contestPhase.getContestPhasePK();
     }
+
+    public Contest getLatestProposalContest(Long proposalId)  {
+        Contest contest = null;
+        try {
+            contest = ProposalsClient.getLatestContestInProposal(proposalId);
+        } catch(ContestNotFoundException ignored) { }
+        return contest;
+    }
+
     public List<Member> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
 
         try {

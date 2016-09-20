@@ -7,12 +7,13 @@ import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
-
+import org.xcolab.utils.IdListUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 public enum ReceiverLimitationStrategy {
 
@@ -69,14 +70,19 @@ public enum ReceiverLimitationStrategy {
 	}),
 	ANY_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
+        @Autowired
+        PointsDistributionConfigurationService pointsDistributionConfigurationService;
+        @Autowired
+        ProposalService proposalService;
+
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
 				PointType pointType, DistributionStrategy distributionStrategy)  {
 			List<PointsTarget> targets = new ArrayList<>();
 
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
-					if (pdc.getTargetUserId() > 0 && ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
+				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId_())) {
+					if (pdc.getTargetUserId() > 0 && proposalService.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
 						target.setPercentage(pdc.getPercentage());
@@ -95,10 +101,13 @@ public enum ReceiverLimitationStrategy {
 	}),
     SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
+        @Autowired
+        ProposalService proposalService;
+
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
+                                                  PointType pointType, DistributionStrategy distributionStrategy)  {
+            List<Proposal> subProposals = proposalService.getSubproposals(proposal.getProposalId(), false); //not sure though
             Set<Long> subProposalIds = new HashSet<>(IdListUtil.PROPOSALS.toIdList(subProposals));
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         }
@@ -106,13 +115,16 @@ public enum ReceiverLimitationStrategy {
     }),
     REGIONAL_SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
+        @Autowired
+        ProposalService proposalService;
+
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
+                                                  PointType pointType, DistributionStrategy distributionStrategy) {
+            List<Proposal> subProposals = proposalService.getSubproposals(proposal.getProposalId(), false);
             Set<Long> subProposalIds = new HashSet<>();
             for (Proposal subProposal : subProposals) {
-                final Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(subProposal.getProposalId());
+                final Contest latestProposalContest = proposalService.getLatestProposalContest(subProposal.getProposalId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.REGION_AGGREGATE) {
                     subProposalIds.add(subProposal.getProposalId());
