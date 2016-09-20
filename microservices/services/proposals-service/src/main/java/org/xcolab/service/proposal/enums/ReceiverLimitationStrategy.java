@@ -6,6 +6,7 @@ import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
+import org.xcolab.service.proposal.service.proposal.ProposalService;
 
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public enum ReceiverLimitationStrategy {
 
 		@Autowired
 		PointsDistributionConfigurationService pointsDistributionConfigurationService;
+		@Autowired
+		ProposalService proposalService;
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
@@ -52,7 +55,7 @@ public enum ReceiverLimitationStrategy {
 			
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId_())) {
-					if (pdc.getTargetUserId() > 0 && !ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
+					if (pdc.getTargetUserId() > 0 && !proposalService.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
 						target.setPercentage(pdc.getPercentage());
