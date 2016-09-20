@@ -145,9 +145,7 @@ public class ProposalService {
                     return true;
                 }
             }
-            return false;
-        } catch (ProposalNotFoundException ignored) {
-            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found")
-        }
+        } catch (ProposalNotFoundException ignored) { }
+        return false;
     }
 }
