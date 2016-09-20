@@ -1,20 +1,14 @@
 package org.xcolab.service.proposal.enums;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
+import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
+import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.utils.IdListUtil;
 
 import java.util.ArrayList;
@@ -23,14 +17,19 @@ import java.util.List;
 import java.util.Set;
 
 public enum ReceiverLimitationStrategy {
+
 	ANY_USER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
+
+		@Autowired
+		PointsDistributionConfigurationService pointsDistributionConfigurationService;
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) {
 			// check if there is any configuration, if there is create appropriate targets
 			List<PointsTarget> targets = new ArrayList<>();
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: ProposalsClient.getPointsDistributionByProposalIdPointTypeId((proposal.getProposalId(), pointType.getId_())) {
+
+				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId_())) {
 					if (pdc.getTargetUserId() > 0) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());

@@ -1,39 +1,16 @@
 package org.xcolab.service.proposal.enums;
 
-import com.ext.portlet.NoSuchPointsDistributionConfigurationException;
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.model.ProposalReference;
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.PointType;
+import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
-import org.xcolab.client.proposals.pojo.ProposalReference;
-import org.xcolab.service.proposal.exceptions.NotFoundException;
-import org.xcolab.service.proposal.service.proposal.ProposalService;
-import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
-import com.ext.portlet.NoSuch_PointsDistributionConfigurationException;
+import org.xcolab.service.proposal.service.proposal.ProposalService;
 
-
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PointsDistributionUtil {
 
@@ -67,11 +44,10 @@ public class PointsDistributionUtil {
             final ProposalAttribute referenceSectionProposalAttribute = proposalService.getProposalAttribute(reference.getSectionAttributeId());
             //final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
             final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
-            try {
-                PointsDistributionConfiguration pdc = pointsDistributionConfigurationService.getPointsDistributionConfiguration(planSectionDefinitionId);
+            PointsDistributionConfiguration pdc = pointsDistributionConfigurationService.getPointsDistributionConfiguration(planSectionDefinitionId);
                 //PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
-                targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
-            } catch (NoSuch_PointsDistributionConfigurationException ignored) { }
+            targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
+
         }
         return targets;
     }
@@ -90,7 +66,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, Proposal parentProposals, PointType pointType, Set<Long> proposalIds) throws SystemException, PortalException {
+    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, Proposal parentProposals, PointType pointType, Set<Long> proposalIds) {
         switch (distributionStrategy) {
             case USER_DEFINED:
                 return distributeUserDefinedAmongProposals(parentProposals, pointType, proposalIds);

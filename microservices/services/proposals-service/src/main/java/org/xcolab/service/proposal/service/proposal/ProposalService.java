@@ -1,10 +1,7 @@
 package org.xcolab.service.proposal.service.proposal;
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.ContestPhase;
@@ -15,18 +12,16 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.model.tables.pojos.PlanSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
-import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.service.proposal.domain.plansectiondefinition.PlanSectionDefinitionDao;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,10 +59,6 @@ public class ProposalService {
             attribute = proposalAttributeDao.get(sectionAttributeId);
         } catch(NotFoundException ignored) {}
         return attribute;
-    }
-
-    public PointsDistributionConfiguration getByPlanSectionDefinitionId(long sectionDefinitonId){
-
     }
 
     public List<Proposal> getContestIntegrationRelevantSubproposals(long proposalId) {
