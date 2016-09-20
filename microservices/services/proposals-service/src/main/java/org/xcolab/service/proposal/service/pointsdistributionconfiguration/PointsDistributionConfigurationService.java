@@ -8,7 +8,6 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.PointType;
-import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.service.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
 import org.xcolab.service.proposal.domain.pointtype.PointTypeDao;
 
@@ -40,12 +39,17 @@ public class PointsDistributionConfigurationService {
         this.proposalService = proposalService;
     }
 
-    public PointsDistributionConfiguration getPointsDistributionConfigurationByPlanSectionDefinitionId(long planSectionDefinitionId){
+    public PointsDistributionConfiguration getPointsDistributionConfiguration(long planSectionDefinitionId){
         PointsDistributionConfiguration config = null;
         try{
+            //Not sure about ID though
             pointsDistributionConfigurationDao.get(planSectionDefinitionId);
         } catch(NotFoundException ignored) {}
         return config;
+    }
+
+    public List<PointsDistributionConfiguration> getPointsDistributionConfiguration(long proposalId, long pointTypeId) {
+            return pointsDistributionConfigurationDao.findByGiven(proposalId, pointTypeId);
     }
 
     public void verifyDistributionConfigurationsForProposalId(long proposalId) {

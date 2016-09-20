@@ -1,6 +1,6 @@
 package org.xcolab.service.proposal.domain.pointsdistributionconfiguration;
 
-import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
 import java.util.List;

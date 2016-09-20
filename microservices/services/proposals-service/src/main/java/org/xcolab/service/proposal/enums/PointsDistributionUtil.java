@@ -21,9 +21,13 @@ import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.ProposalReference;
+import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
+import com.ext.portlet.NoSuch_PointsDistributionConfigurationException;
+
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,17 +68,18 @@ public class PointsDistributionUtil {
             //final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
             final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
             try {
-                PointsDistributionConfiguration pdc = pointsDistributionConfigurationService.getPointsDistributionConfigurationByPlanSectionDefinitionId(planSectionDefinitionId);
+                PointsDistributionConfiguration pdc = pointsDistributionConfigurationService.getPointsDistributionConfiguration(planSectionDefinitionId);
                 //PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
                 targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
-            } catch (NoSuchPointsDistributionConfigurationException ignored) { }
+            } catch (NoSuch_PointsDistributionConfigurationException ignored) { }
         }
         return targets;
     }
 
-    public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) throws SystemException {
+    public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) {
         List<PointsTarget> targets = new ArrayList<>();
-        for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
+        //for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
+        for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId_())) {
             if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
                 PointsTarget target = new PointsTarget();
                 target.setProposalId(pdc.getTargetSubProposalId());
