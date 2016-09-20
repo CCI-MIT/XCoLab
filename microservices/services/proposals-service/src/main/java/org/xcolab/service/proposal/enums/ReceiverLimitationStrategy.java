@@ -8,7 +8,6 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.service.proposal.util.ContestTier;
-import org.xcolab.service.proposal.util.IdListUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -108,8 +107,11 @@ public enum ReceiverLimitationStrategy {
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
                                                   PointType pointType, DistributionStrategy distributionStrategy)  {
-            List<Proposal> subProposals = proposalService.getSubproposals(proposal.getProposalId(), false); //not sure though
-            Set<Long> subProposalIds = new HashSet<>(IdListUtil.PROPOSALS.toIdList(subProposals));
+            List<Proposal> subProposals = proposalService.getSubproposals(proposal.getProposalId(), false);
+            Set<Long> subProposalIds = new HashSet<>();
+            for(Proposal subProposal : subProposals) {
+                subProposalIds.add(subProposal.getProposalId());
+            }
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         }
 
