@@ -20,7 +20,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
-import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
 
 import java.util.ArrayList;

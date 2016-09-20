@@ -1,6 +1,6 @@
 package org.xcolab.service.proposal.domain.proposalreference;
 
-import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
 import java.util.List;

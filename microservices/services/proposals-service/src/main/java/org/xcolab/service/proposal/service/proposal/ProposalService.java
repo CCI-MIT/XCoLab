@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.PlanSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
-import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.client.proposals.pojo.ProposalReference;
 import org.xcolab.service.proposal.domain.plansectiondefinition.PlanSectionDefinitionDao;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
