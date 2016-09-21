@@ -74,8 +74,6 @@ public final class ProposalsClient {
     private static final RestResource<PlanTemplate> planTemplateResource = new RestResource<>(proposalService,
             "planTemplates", PlanTemplate.TYPES);
 
-    private static final RestResource<PlanSectionDefinition> planSectionDefinitionResource = new RestResource<>(proposalService,
-            "planSectionDefinitions", PlanSectionDefinition.TYPES);
 
     private static final RestResource<ProposalRating> proposalRatingResource = new RestResource<>(proposalService,
             "proposalRatings", ProposalRating.TYPES);
@@ -95,6 +93,10 @@ public final class ProposalsClient {
     private static final RestResource<ProposalUnversionedAttribute> proposalUnversionedAttributeResource = new RestResource<>(proposalService,
             "proposalUnversionedAttributes", ProposalUnversionedAttribute.TYPES);
 
+    private static final RestResource<PlanSectionDefinition> planSectionDefinitionResource = new RestResource<>(proposalService,
+            "planSectionDefinitions", PlanSectionDefinition.TYPES);
+
+
     public static Proposal createProposal(Proposal proposal) {
         return proposalResource.create(proposal).execute();
     }
@@ -105,6 +107,16 @@ public final class ProposalsClient {
 
     public static List<Proposal> getProposalsInContestPhase(Long contestPhaseId) {
         return listProposals(0, Integer.MAX_VALUE, null, true, contestPhaseId, null);
+    }
+
+    public static List<Proposal> getAllProposals() {
+        return listProposals(0, Integer.MAX_VALUE, null, true, null, null);
+    }
+
+    public static List<Proposal> getProposalsInContest(Long contestPK) {
+        ContestPhase cp = ContestClient.getActivePhase(contestPK);
+
+        return listProposals(0, Integer.MAX_VALUE, null, true, cp.getContestPhasePK(), null);
     }
 
     public static List<Member> getProposalMembers(Long proposalId) {
@@ -198,6 +210,12 @@ public final class ProposalsClient {
     public static List<ProposalSupporter> getProposalSupporters(Long proposalId) {
         return proposalSupporterResource.list()
                 .optionalQueryParam("proposalId", proposalId)
+                .execute();
+    }
+
+    public static List<ProposalSupporter> getProposalSupportersByUserId(Long userId) {
+        return proposalSupporterResource.list()
+                .optionalQueryParam("userId", userId)
                 .execute();
     }
 
@@ -437,6 +455,14 @@ public final class ProposalsClient {
     public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name, Long aditionalId, Long numericValue) {
         ProposalAttribute proposalAttribute = createProposalAttribute(userId, proposalId, name, aditionalId);
         proposalAttribute.setNumericValue(numericValue);
+        return setProposalAttribute(proposalAttribute, userId);
+
+    }
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name, Long aditionalId, String stringValue, Long numericValue, Double doubleValue) {
+        ProposalAttribute proposalAttribute = createProposalAttribute(userId, proposalId, name, aditionalId);
+        proposalAttribute.setStringValue(stringValue);
+        proposalAttribute.setNumericValue(numericValue);
+        proposalAttribute.setRealValue(doubleValue);
         return setProposalAttribute(proposalAttribute, userId);
 
     }
@@ -742,6 +768,10 @@ public final class ProposalsClient {
             pua.setStringValue(attributeValue);
             updateProposalUnversionedAttribute(pua);
         }
+    }
+    public static PlanSectionDefinition getPlanSectionDefinition(long id_)  {
+            return planSectionDefinitionResource.get(id_)
+                    .execute();
     }
 
 

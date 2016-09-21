@@ -20,7 +20,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.proposals.helpers.ProposalContestPhaseAttributeHelper;
+
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
@@ -28,6 +28,7 @@ import org.xcolab.client.proposals.pojo.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
+
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 

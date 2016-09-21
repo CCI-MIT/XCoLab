@@ -2,11 +2,14 @@ package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.OntologySpace;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OntologyClient {
@@ -25,6 +28,12 @@ public class OntologyClient {
     private static final RestResource<FocusAreaOntologyTerm> focusAreaOntologyTermResource = new RestResource<>(contestService,
             "focusAreaOntologyTerms", FocusAreaOntologyTerm.TYPES);
 
+    private static final RestResource<ImpactDefaultSeries> impactDefaultSeriesResource = new RestResource<>(contestService,
+            "impactDefaultSeriesDatas", ImpactDefaultSeries.TYPES);
+
+    private static final RestResource<ImpactDefaultSeriesData> impactDefaultSeriesDataResource = new RestResource<>(contestService,
+            "impactDefaultSeriesDatas", ImpactDefaultSeriesData.TYPES);
+
     public static List<OntologySpace> getAllOntologySpaces() {
         return ontologySpaceResource.list().execute();
     }
@@ -42,13 +51,81 @@ public class OntologyClient {
         return focusAreaOntologyTermResource.list()
                 .execute();
     }
+    public static List<FocusAreaOntologyTerm> getFocusAreaOntologyTermsByFocusArea(Long focusAreaId) {
+        return focusAreaOntologyTermResource.list()
+                .queryParam("focusAreaId", focusAreaId)
+                .execute();
+    }
 
     public static OntologyTerm getOntologyTerm(long Id_)  {
             return ontologyTermResource.get(Id_)
                     .execute();
     }
+    public static List<OntologyTerm> getOntologyTermsByName(String name) {
+        return ontologyTermResource.list()
+                .optionalQueryParam("name", name)
+                .execute();
+    }
+
+
     public static FocusArea getFocusArea(long Id_) {
             return focusAreaResource.get(Id_)
                     .execute();
     }
+    public static OntologySpace getOntologySpace(long id_) {
+        return ontologySpaceResource.get(id_)
+                .execute();
+
+    }
+    public static OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(FocusArea focusArea, OntologySpace ontologySpace) {
+        for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
+            if (term.getOntologySpaceId() == ontologySpace.getId_()) {
+                return term;
+            }
+        }
+
+        return null;
+    }
+    public static List<OntologyTerm> getOntologyTermsForFocusArea(FocusArea focusArea) {
+        List<OntologyTerm> ret = new ArrayList<>();
+        for (FocusAreaOntologyTerm faot: getFocusAreaOntologyTermsByFocusArea(focusArea.getId_())) {
+                ret.add(getOntologyTerm(faot.getOntologyTermId()));
+        }
+        return ret;
+    }
+    public static ImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(Long focusAreaId, String name) {
+        List<ImpactDefaultSeries> allImpactDefaultSeriesWithFocusAreaName = impactDefaultSeriesResource.list()
+                .optionalQueryParam("focusAreaId", focusAreaId)
+                .optionalQueryParam("name", name)
+                .execute();
+        if(allImpactDefaultSeriesWithFocusAreaName != null && allImpactDefaultSeriesWithFocusAreaName.size()>0){
+            return allImpactDefaultSeriesWithFocusAreaName.get(0);
+        }else {
+            return null;
+        }
+    }
+    public static List<ImpactDefaultSeries> getAllmpactDefaultSeriesByFocusArea(Long focusAreaId) {
+        return  impactDefaultSeriesResource.list()
+                .optionalQueryParam("focusAreaId", focusAreaId)
+                .execute();
+    }
+
+    public static List<ImpactDefaultSeriesData> getImpactDefaultSeriesDataBySeries(Long seriesId) {
+        return impactDefaultSeriesDataResource.list()
+                .optionalQueryParam("seriesId", seriesId)
+                .execute();
+    }
+    public static ImpactDefaultSeriesData getImpactDefaultSeriesDataBySeriesIdAndYear(Long seriesId, Integer year) {
+        List<ImpactDefaultSeriesData>  ret =
+         impactDefaultSeriesDataResource.list()
+                .optionalQueryParam("seriesId", seriesId)
+                .optionalQueryParam("year",year)
+                .execute();
+        if (ret != null && ret.size() > 0){
+            return ret.get(0);
+        }else{
+            return null;
+        }
+    }
+
 }

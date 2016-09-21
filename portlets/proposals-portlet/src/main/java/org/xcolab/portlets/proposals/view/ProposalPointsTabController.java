@@ -2,9 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 
 
-import com.ext.portlet.service.PointTypeLocalServiceUtil;
-import com.ext.portlet.service.PointsLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -58,13 +56,13 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
         PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
 
-        List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
+        List<Proposal> subProposals = ProposalsClient.getSubproposals(proposal.getProposalId(), false);
         List<ProposalWrapper> subProposalsWrapped = new ArrayList<>();
         for (Proposal p: subProposals) {
             subProposalsWrapped.add(new ProposalWrapper(p));
         }
         //TODO: make this flexible
-        PointType pointType = PointTypeLocalServiceUtil.getPointType(9L);
+        PointType pointType = ProposalsClient.getPointType(9L);
         DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 
@@ -74,7 +72,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             regionalPercentages.add(new PointsTargetProposalWrapper(target, 93));
         }
 
-        pointType = PointTypeLocalServiceUtil.getPointType(4L);
+        pointType = ProposalsClient.getPointType(4L);
         distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 

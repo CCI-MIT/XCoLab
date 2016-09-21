@@ -2,13 +2,12 @@ package org.xcolab.utils;
 
 import com.ext.portlet.NoSuchOntologySpaceException;
 
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologySpace;
 import org.xcolab.client.contest.pojo.OntologyTerm;
@@ -32,7 +31,7 @@ public class OntologyTermToFocusAreaMapper {
      */
     public FocusArea getFocusAreaMatchingTermsExactly() {
             return applyFilterToFocusAreasMatchingExactly(
-                    ContestClient.getAllFocusAreas(),
+                    OntologyClient.getAllFocusAreas(),
                     true);
 
     }
@@ -55,7 +54,7 @@ public class OntologyTermToFocusAreaMapper {
      * @throws PortalException
      */
     public FocusArea getFocusAreaMatchingTermsPartially() throws SystemException, PortalException {
-        return applyFilterToFocusAreasMatchingExactly(ContestClient.getAllFocusAreas(), false);
+        return applyFilterToFocusAreasMatchingExactly(OntologyClient.getAllFocusAreas(), false);
     }
 
     /**
@@ -92,29 +91,14 @@ public class OntologyTermToFocusAreaMapper {
     }
 
     private OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) {
-        try {
-            OntologySpace space = ContestClient.(spaceId);
-            return FocusAreaLocalServiceUtil
+            OntologySpace space = OntologyClient.getOntologySpace(spaceId);
+            return OntologyClient
                     .getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (NoSuchOntologySpaceException e) {
-            throw ReferenceResolutionException.toObject(OntologySpace.class, spaceId).build();
-        } catch (PortalException e) {
-            //TODO: which exception should this throw?
-            throw new InternalException("Ontology term not found: focus area "
-                    + focusArea.getId() + " and ontology space " + spaceId);
-        }
+
     }
 
     private boolean isFocusAreaOntologyTermCountMatching(FocusArea focusArea, int ontologyTermCount) {
-        try {
-            return FocusAreaLocalServiceUtil.getTerms(focusArea).size() == ontologyTermCount;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw ReferenceResolutionException.toObject(OntologyTerm.class, "list")
-                    .fromObject(FocusArea.class, focusArea.getId());
-        }
+            return OntologyClient.getOntologyTermsForFocusArea(focusArea).size() == ontologyTermCount;
+
     }
 }

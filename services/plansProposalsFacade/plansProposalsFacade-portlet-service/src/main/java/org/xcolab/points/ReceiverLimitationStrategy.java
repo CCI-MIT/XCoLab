@@ -1,13 +1,15 @@
 package org.xcolab.points;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.PointType;
+import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.utils.IdListUtil;
 
@@ -24,7 +26,7 @@ public enum ReceiverLimitationStrategy {
 			// check if there is any configuration, if there is create appropriate targets
 			List<PointsTarget> targets = new ArrayList<>();
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
+				for (PointsDistributionConfiguration pdc: ProposalsClient.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -42,7 +44,7 @@ public enum ReceiverLimitationStrategy {
 
 		@Override
 		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
+												  PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
 			List<PointsTarget> targets = new ArrayList<>();
 			
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
@@ -90,7 +92,7 @@ public enum ReceiverLimitationStrategy {
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
                                                   PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
+            List<Proposal> subProposals = ProposalsClient.getSubproposals(proposal.getProposalId(), false);
             Set<Long> subProposalIds = new HashSet<>(IdListUtil.PROPOSALS.toIdList(subProposals));
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         }

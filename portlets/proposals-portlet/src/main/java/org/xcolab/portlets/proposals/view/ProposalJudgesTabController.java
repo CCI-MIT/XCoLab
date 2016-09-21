@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
@@ -92,11 +93,11 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
 
-        List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(
+        List<ProposalRating> fellowRatingsUnWrapped = ProposalsClient.getFellowRatingsForProposal(
                 proposal.getProposalId(), contestPhase.getContestPhasePK());
         List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
-        List<ProposalRating> judgesRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(
+        List<ProposalRating> judgesRatingsUnWrapped = ProposalsClient.getJudgeRatingsForProposal(
                 proposal.getProposalId(), contestPhase.getContestPhasePK());
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ){

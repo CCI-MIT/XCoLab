@@ -40,4 +40,13 @@ public class PlanTemplateController {
     ) {
         return planSectionDefinitionDao.findByGiven(planTemplateId, weight);
     }
+
+    @RequestMapping(value = "/planSectionDefinitions/{planSectionDefinitionId}", method = RequestMethod.GET)
+    public PlanSectionDefinition getPlanSectionDefinition(@PathVariable("planSectionDefinitionId") Long planSectionDefinitionId) throws NotFoundException {
+        if (planSectionDefinitionId == null || planSectionDefinitionId == 0) {
+            throw new NotFoundException("No planSectionDefinitionId given");
+        } else {
+            return planSectionDefinitionDao.get(planSectionDefinitionId);
+        }
+    }
 }

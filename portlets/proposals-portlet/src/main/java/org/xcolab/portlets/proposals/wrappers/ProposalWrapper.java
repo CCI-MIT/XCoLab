@@ -39,7 +39,6 @@ import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
 import java.io.IOException;

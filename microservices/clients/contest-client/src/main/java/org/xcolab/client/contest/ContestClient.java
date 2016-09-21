@@ -73,8 +73,8 @@ public class ContestClient {
     private static final RestResource<ImpactTemplateFocusAreaList> impactTemplateFocusAreaListResource = new RestResource<>(contestService,
             "impactTemplateFocusAreaLists", ImpactTemplateFocusAreaList.TYPES);
 
-    private static final RestResource<FocusArea> focusAreaResource = new RestResource<>(contestService,
-            "focusAreas", FocusArea.TYPES);
+
+
 
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
@@ -519,13 +519,8 @@ public class ContestClient {
                 .execute();
     }
 
-    public static FocusArea getFocusArea(long Id_) {
-        return focusAreaResource.get(Id_)
-                .execute();
 
-    }
 
-    public static List<FocusArea> getAllFocusAreas() {
-        return focusAreaResource.list().execute();
-    }
+
+
 }

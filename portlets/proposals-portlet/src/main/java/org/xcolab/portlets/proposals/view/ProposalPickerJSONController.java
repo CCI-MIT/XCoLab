@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Proposal;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilter;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;

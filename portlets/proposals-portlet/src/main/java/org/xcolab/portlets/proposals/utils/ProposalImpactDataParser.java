@@ -1,11 +1,7 @@
 package org.xcolab.portlets.proposals.utils;
 
 import com.ext.portlet.ProposalImpactAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -13,6 +9,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.lang.StringUtils;
+import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
@@ -248,7 +249,7 @@ public class ProposalImpactDataParser {
             name = excelTermToOntologyTermNameMap.get(name);
         }
 
-        List<OntologyTerm> ontologyTerms = OntologyTermLocalServiceUtil.findByOntologyTermName(name);
+        List<OntologyTerm> ontologyTerms = OntologyClient.getOntologyTermsByName(name);
         if (Validator.isNull(ontologyTerms) || ontologyTerms.isEmpty()) {
             throw new ProposalImpactDataParserException("Could not match ontology term with name '" + name + "'");
         }

@@ -2,14 +2,13 @@ package org.xcolab.portlets.proposals.utils;
 
 
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.ImpactTemplateMaxFocusArea;
@@ -53,7 +52,7 @@ public class ProposalImpactUtil {
         List<ImpactTemplateMaxFocusArea> impactFocusAreas = ContestClient.getContestImpactFocusAreas(contest);
 
         for (ImpactTemplateMaxFocusArea impactFocusArea : impactFocusAreas) {
-            FocusArea focusArea = ContestClient.getFocusArea(impactFocusArea.getFocusAreaId());
+            FocusArea focusArea = OntologyClient.getFocusArea(impactFocusArea.getFocusAreaId());
 
             // Only consider focus areas where we did not have a filled out impact series
             if (Validator.isNull(impactSeriesAvailableMap.get(focusArea.getId_()))) {
@@ -82,7 +81,7 @@ public class ProposalImpactUtil {
 
         List<FocusArea> focusAreasToBeSearched = new ArrayList<>();
         for (ImpactTemplateMaxFocusArea impactFocusArea : impactFocusAreas) {
-            focusAreasToBeSearched.add(ContestClient.getFocusArea(impactFocusArea.getFocusAreaId()));
+            focusAreasToBeSearched.add(OntologyClient.getFocusArea(impactFocusArea.getFocusAreaId()));
         }
 
         OntologyTermToFocusAreaMapper termMapper = new OntologyTermToFocusAreaMapper(matchingOntologyTerms);
@@ -111,7 +110,7 @@ public class ProposalImpactUtil {
     }
 
     private static OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) throws SystemException, PortalException {
-        OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
-        return FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
+        OntologySpace space = OntologyClient.getOntologySpace(spaceId);
+        return OntologyClient.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
     }
 }

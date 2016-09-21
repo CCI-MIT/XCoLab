@@ -21,9 +21,10 @@ public class ProposalSupporterController {
 
     @RequestMapping(value = "/proposalSupporters", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalSupporter> getProposalSupporters(
-            @RequestParam(required = false) Long proposalId
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId
     ) {
-        return proposalSupporterDao.findByGiven(proposalId, null);
+        return proposalSupporterDao.findByGiven(proposalId, userId);
     }
 
 

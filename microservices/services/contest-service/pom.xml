@@ -62,7 +62,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_ImpactTemplateMaxFocusArea|xcolab_ImpactTemplateFocusAreaList|xcolab_ImpactDefaultSeries|xcolab_ImpactTemplateSeries|xcolab_ImpactIteration|xcolab_ContestTeamMemberRole|xcolab_Contest|xcolab_ContestPhase|xcolab_ContestPhaseType|xcolab_ContestPhaseRibbonType|xcolab_ContestSchedule|xcolab_ContestTeamMember|xcolab_ContestType|xcolab_OntologyTerm|xcolab_OntologySpace|xcolab_FocusAreaOntologyTerm|xcolab_FocusArea</includes>
+                            <includes>xcolab_ImpactDefaultSeriesData|xcolab_ImpactTemplateMaxFocusArea|xcolab_ImpactTemplateFocusAreaList|xcolab_ImpactDefaultSeries|xcolab_ImpactTemplateSeries|xcolab_ImpactIteration|xcolab_ContestTeamMemberRole|xcolab_Contest|xcolab_ContestPhase|xcolab_ContestPhaseType|xcolab_ContestPhaseRibbonType|xcolab_ContestSchedule|xcolab_ContestTeamMember|xcolab_ContestType|xcolab_OntologyTerm|xcolab_OntologySpace|xcolab_FocusAreaOntologyTerm|xcolab_FocusArea</includes>
                         </database>
                     </generator>
                 </configuration>

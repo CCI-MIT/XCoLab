@@ -10,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -352,5 +353,19 @@ public class PlanSectionDefinition implements Serializable {
 
         sb.append(")");
         return sb.toString();
+    }
+
+    public List<Long> getAdditionalIdsAsList() {
+        List<Long> longIds = new ArrayList<>();
+        final String stringOfStringIds = this.getAdditionalIds();
+        if (stringOfStringIds != null) {
+            String[] stringIds = stringOfStringIds.split(",");
+            for (String stringId : stringIds) {
+                if (!stringId.isEmpty()) {
+                    longIds.add(Long.parseLong(stringId));
+                }
+            }
+        }
+        return longIds;
     }
 }
