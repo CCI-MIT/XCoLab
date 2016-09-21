@@ -5,6 +5,7 @@ import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
 
@@ -15,6 +16,9 @@ public final class PermissionsClient {
     private static final RestService membersService = new RestService("members-service");
     private static final RestResource1<Object, Long> roleGroupResource = new RestResource1<>(membersService,
             "roleGroups", new TypeProvider<>(null, null));
+
+    private static final RestResource2L<Object, Role_> roleGroupRoleResource =
+            new RestResource2L<>(roleGroupResource, "roles", Role_.TYPES);
 
     private PermissionsClient() {
     }
@@ -40,21 +44,23 @@ public final class PermissionsClient {
     }
 
     public static boolean hasRoleGroup(long memberId, long roleGroupId) {
-        //TODO: think about structure
-        final List<Role_> roles = roleGroupResource
-                        .getSubRestResource(roleGroupId, "roles", Role_.TYPES)
-                .list()
-                .withCache(CacheKeys.withClass(Role_.class)
-                        .withParameter("memberId", memberId)
-                        .withParameter("roleGroupId", roleGroupId).asList(),
-                        CacheRetention.REQUEST)
-                .execute();
+        final List<Role_> roles = getRoleGroupRoles(roleGroupId);
         for (Role_ role : roles) {
             if (memberHasRole(memberId, role.getRoleId())) {
                 return true;
             }
         }
         return canAdminAll(memberId);
+    }
+
+    private static List<Role_> getRoleGroupRoles(long roleGroupId) {
+        //TODO: think about structure
+        return roleGroupRoleResource.resolveParent(roleGroupResource.id(roleGroupId))
+                .list()
+                .withCache(CacheKeys.withClass(Role_.class)
+                                .withParameter("roleGroupId", roleGroupId).asList(),
+                        CacheRetention.RUNTIME)
+                .execute();
     }
 
     private static boolean memberHasRole(Long memberId, long roleIdToTest) {

@@ -2,6 +2,7 @@ package org.xcolab.util.http.client.interfaces;
 
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.util.http.client.QueryId;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.queries.CountQuery;
 import org.xcolab.util.http.client.queries.CreateQuery;
@@ -13,43 +14,48 @@ import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
-public abstract class AbstractRestResource<T, IdT> extends AbstractServiceResource implements RestResource<T, IdT> {
+public abstract class AbstractRestResource<ResourceT, IdT> extends AbstractServiceResource implements RestResource<ResourceT, IdT> {
 
-    private final Class<T> entityType;
-    private final ParameterizedTypeReference<List<T>> typeReference;
+    private final Class<ResourceT> entityType;
+    private final ParameterizedTypeReference<List<ResourceT>> typeReference;
 
-    public AbstractRestResource(TypeProvider<T> typeProvider) {
+    public AbstractRestResource(TypeProvider<ResourceT> typeProvider) {
         this.entityType = typeProvider.getEntityType();
         this.typeReference = typeProvider.getTypeReference();
     }
 
     @Override
-    public CreateQuery<T> create(T pojo) {
+    public CreateQuery<ResourceT> create(ResourceT pojo) {
         return new CreateQuery<>(this, pojo, entityType);
     }
 
     @Override
-    public DeleteQuery<T, IdT> delete(IdT id) {
+    public DeleteQuery<ResourceT, IdT> delete(IdT id) {
         return new DeleteQuery<>(this, id);
     }
 
     @Override
-    public UpdateQuery<T, IdT> update(T pojo, IdT id) {
+    public UpdateQuery<ResourceT, IdT> update(ResourceT pojo, IdT id) {
         return new UpdateQuery<>(this, id, pojo);
     }
 
     @Override
-    public GetQuery<T, IdT> get(IdT id) {
+    public GetQuery<ResourceT, IdT> get(IdT id) {
         return new GetQuery<>(this, id, entityType);
     }
 
     @Override
-    public ListQuery<T> list() {
+    public ListQuery<ResourceT> list() {
         return new ListQuery<>(this, typeReference);
     }
 
     @Override
-    public CountQuery<T> count() {
+    public CountQuery<ResourceT> count() {
         return new CountQuery<>(this);
+    }
+
+    @Override
+    public QueryId<ResourceT, IdT> id(IdT id) {
+        return new QueryId<>(this, id);
     }
 }

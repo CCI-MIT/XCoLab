@@ -104,7 +104,6 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
 
 .p-ContestProposals__header__team { //.contest-detail .moreinfo
   display: $p-ContestProposals__header__team__display;
-  max-width: 640px;
   padding: 10px 16px;
   position: relative;
   min-height: 37px;
@@ -129,6 +128,7 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
 .p-ContestProposals__header__buttons {
   display: inline-block;
   width: 280px;
+  float: right;
 }
 
 .p-ContestProposals__header__detailButton { //a.detailbutton

@@ -6,6 +6,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,9 +28,10 @@ public class ContestScheduleChangeHelper {
     }
 
     public void changeScheduleForStartedContest() {
-        updateContestPhasesWithProposalsToNewScheduleId();
-        createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(schedulePhases);
-        updateContestPhasesOfContestAccordingToContestSchedule();
+        throw new IllegalScheduleChangeException(contest, newScheduleId);
+//        updateContestPhasesWithProposalsToNewScheduleId();
+//        createMissingContestPhasesIfContestDoesNotHaveSamePhasesAsSchedule(schedulePhases);
+//        updateContestPhasesOfContestAccordingToContestSchedule();
     }
 
     public void changeScheduleForBlankContest() {
@@ -145,6 +147,14 @@ public class ContestScheduleChangeHelper {
         List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contestId);
         for (ContestPhase contestPhase : contestPhases) {
             ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
+        }
+    }
+
+    public static class IllegalScheduleChangeException extends UnsupportedOperationException {
+        public IllegalScheduleChangeException(Contest contest, long scheduleId) {
+            super("Can't edit schedule " + scheduleId + " because contest "
+                    + contest.getContestPK() + " already has "
+                    + new BaseContestWrapper(contest).getProposalsCount() + " proposals");
         }
     }
 }

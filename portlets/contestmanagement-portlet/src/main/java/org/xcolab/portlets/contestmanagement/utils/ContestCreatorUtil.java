@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -16,20 +15,16 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.enums.ContestPhasePromoteType;
-import org.xcolab.enums.ContestPhaseTypeValue;
-import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
-import java.sql.Timestamp;
 import java.util.Random;
 
 public final class ContestCreatorUtil {
 
-    public static final String SEED_CONTEST_SCHEDULE_NAME = "Seed Contest Schedule";
+    private static final String SEED_CONTEST_SCHEDULE_NAME = "Seed Contest Schedule";
+
     public static final String DEFAULT_GROUP_DESCRIPTION = "Group working on contest %s";
     //TODO: remove hard coded defaults
     public final static long DEFAULT_CONTEST_SCHEDULE_ID = 601L;
@@ -85,50 +80,10 @@ public final class ContestCreatorUtil {
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() {
         try {
             if (ContestScheduleLocalServiceUtil.getContestSchedulesCount() == 0) {
-                ContestSchedule contestSchedule = new ContestSchedule();
-                contestSchedule.setName(SEED_CONTEST_SCHEDULE_NAME);
-                contestSchedule = ContestClient.createContestSchedule(contestSchedule);
-
-                createContestPhaseForSeedSchedule(
-                        new ContestPhaseBean(ContestPhaseTypeValue.PROPOSAL_CREATION,
-                                DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a")
-                                        .parseDateTime("1/1/2016 12:00:00 AM").toDate(),
-                                null, ContestPhasePromoteType.DEFAULT.getValue(), false),
-                        contestSchedule.getId_());
+                ContestScheduleLifecycleUtil.createProposalCreationOnlySchedule(SEED_CONTEST_SCHEDULE_NAME);
             }
         } catch (SystemException e) {
             throw new DatabaseAccessException(e);
         }
-    }
-
-    private static void createContestPhaseForSeedSchedule(ContestPhaseBean contestPhaseBean,
-            long contestScheduleId) {
-
-            ContestPhase contestPhase = new ContestPhase();
-
-            contestPhase.setContestPK(0L);
-            contestPhase.setContestScheduleId(contestScheduleId);
-            contestPhase.setContestPhaseType(contestPhaseBean.getContestPhaseType());
-            contestPhase.setPhaseStartDate(new Timestamp(contestPhaseBean.getPhaseStartDate().getTime()));
-
-            if (contestPhaseBean.getPhaseEndDate() != null) {
-                contestPhase.setPhaseEndDate(new Timestamp(contestPhaseBean.getPhaseEndDate().getTime()));
-            }
-
-            contestPhase.setContestPhaseAutopromote(contestPhaseBean.getContestPhaseAutopromote());
-            contestPhase.setFellowScreeningActive(contestPhaseBean.getFellowScreeningActive());
-            contestPhase = ContestClient.createContestPhase(contestPhase);
-
-    }
-
-    public static ContestSchedule createNewSchedule() {
-
-            ContestSchedule newContestSchedule = new ContestSchedule();
-
-            newContestSchedule.setName("New contest schedule");
-
-            newContestSchedule = ContestClient.createContestSchedule(newContestSchedule);
-            return newContestSchedule;
-
     }
 }

@@ -14,6 +14,7 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -28,6 +29,9 @@ public class ContestClient {
 
     private static final RestResource1<Contest, Long> contestResource = new RestResource1<>(contestService,
             "contests", Contest.TYPES);
+
+    private static final RestResource2L<Contest, ContestPhase> visiblePhasesResource =
+            new RestResource2L<>(contestResource, "visiblePhases", ContestPhase.TYPES);
 
     private static final RestResource<ContestPhase, Long> contestPhasesResource = new RestResource1<>(contestService,
             "contestPhases", ContestPhase.TYPES);
@@ -44,7 +48,7 @@ public class ContestClient {
     private static final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource = new RestResource1<>(contestService,
             "contestTeamMemberRoles", ContestTeamMemberRole.TYPES);
 
-    private static final RestResource<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
+    private static final RestResource1<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
             "contestSchedules", ContestSchedule.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
@@ -134,6 +138,15 @@ public class ContestClient {
         return contest;
     }
 
+    public static boolean isContestShared(long contestId) {
+        return contestResource.<Contest, Boolean>service(contestId, "isShared", Boolean.class)
+                .withCache(CacheKeys.withClass(Contest.class)
+                        .withParameter("contestId", contestId)
+                        .withParameter("service", "isShared")
+                        .build(Boolean.class), CacheRetention.LONG)
+                .get();
+    }
+
     public static List<Contest> findContestsByActiveFeatured(Boolean active, Boolean featured) {
         return contestResource.list()
                 .optionalQueryParam("active", active)
@@ -196,13 +209,18 @@ public class ContestClient {
                 .execute();
     }
 
+    public static boolean isContestScheduleUsed(long contestScheduleId) {
+        return contestScheduleResource.service(contestScheduleId, "isUsed", Boolean.class)
+                .get();
+    }
+
     public static List<ContestSchedule> getAllContestSchedules() {
         return contestScheduleResource.list().execute();
     }
 
 
     public static List<ContestPhase> getVisibleContestPhases(Long contestId) {
-        return contestResource.getSubRestResource(contestId, "visiblePhases", ContestPhase.TYPES)
+        return visiblePhasesResource.resolveParent(contestResource.id(contestId))
                 .list()
                 .withCache(CacheKeys.withClass(ContestPhase.class)
                     .withParameter("contestId", contestId)

@@ -9,9 +9,16 @@ import java.util.List;
 public interface ContestDao {
 
     Contest create(Contest contest);
+
     boolean update(Contest contest);
+
     Contest get(Long contestId) throws NotFoundException;
+
+    boolean isShared(long contestId);
+
     List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
             Long contestYear, Boolean active, Boolean featured, Long contestTier,
             List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId);
+
+    boolean existsWithScheduleId(long contestScheduleId);
 }

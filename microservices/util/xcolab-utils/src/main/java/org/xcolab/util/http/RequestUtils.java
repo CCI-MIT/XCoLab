@@ -77,7 +77,7 @@ public final class RequestUtils {
         try {
             return getUnchecked(uriBuilder, entityType, cacheKey, cacheRetention);
         } catch (UncheckedEntityNotFoundException e) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException(e.getLocalizedMessage());
         }
     }
 

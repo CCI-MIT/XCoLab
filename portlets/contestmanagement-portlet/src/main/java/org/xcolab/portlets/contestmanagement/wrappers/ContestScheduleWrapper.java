@@ -9,6 +9,7 @@ import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper.IllegalScheduleChangeException;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.wrappers.BaseContestWrapper;
 
@@ -122,6 +123,15 @@ public class ContestScheduleWrapper {
         removeEmptyContestPhases();
         if (createNew) {
             createNewScheduleFromExistingSchedule();
+        } else {
+            //TODO: once we improve the algorithm we don't have to fail here anymore
+            List<Contest> contestsUsingScheduleId = ContestClient
+                    .getContestsByContestScheduleId(getScheduleId());
+            for (Contest contest : contestsUsingScheduleId) {
+                if (!ContestScheduleUtil.isBlankContest(contest)) {
+                    throw new IllegalScheduleChangeException(contest, getScheduleId());
+                }
+            }
         }
         persistUpdatedSchedule();
     }

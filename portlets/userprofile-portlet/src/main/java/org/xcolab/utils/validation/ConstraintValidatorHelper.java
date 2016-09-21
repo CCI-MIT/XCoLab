@@ -1,7 +1,7 @@
 package org.xcolab.utils.validation;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 public abstract class ConstraintValidatorHelper {
 
-    private static final Log _log = LogFactoryUtil.getLog(ConstraintValidatorHelper.class);
+    private static final Logger _log = LoggerFactory.getLogger(ConstraintValidatorHelper.class);
 
     public static <T> T getPropertyValue(Class<T> requiredType, String propertyName, Object instance) {
         if (requiredType == null) {

@@ -101,9 +101,9 @@ public class ContestController {
 
     @PutMapping(value = "/contests/{contestPK}")
     public boolean updateContest(@RequestBody Contest contest,
-                                 @PathVariable("contestPK") Long contestPK) throws NotFoundException {
+                                 @PathVariable long contestPK) throws NotFoundException {
 
-        if (contestPK == null || contestPK == 0 || contestDao.get(contestPK) == null) {
+        if (contestDao.get(contestPK) == null) {
             throw new NotFoundException("No Contest with id " + contestPK);
         } else {
             return contestDao.update(contest);
@@ -121,9 +121,14 @@ public class ContestController {
 
     }
 
-    @GetMapping(value = "/contests/{contestId}")
+    @GetMapping("/contests/{contestId}")
     public Contest getContest(@PathVariable long contestId) throws NotFoundException {
         return contestDao.get(contestId);
+    }
+
+    @GetMapping("/contests/{contestId}/isShared")
+    public boolean isContestShared(@PathVariable long contestId) {
+        return contestDao.isShared(contestId);
     }
 
     @GetMapping("/contests/{contestId}/visiblePhases")
@@ -218,6 +223,11 @@ public class ContestController {
         return contestScheduleDao.get(contestScheduleId).orElseThrow(NotFoundException::new);
     }
 
+    @GetMapping(value = "/contestSchedules/{contestScheduleId}/isUsed")
+    public boolean isContestScheduleUsed(@PathVariable long contestScheduleId) {
+        return contestDao.existsWithScheduleId(contestScheduleId);
+    }
+
     @PutMapping(value = "/contestSchedules/{id_}")
     public boolean updateContestSchedule(@RequestBody ContestSchedule contestSchedule,
                                          @PathVariable long id_) throws NotFoundException {
@@ -249,10 +259,12 @@ public class ContestController {
             throws NotFoundException {
         return contestPhaseDao.get(contestPhaseId).orElseThrow(NotFoundException::new);
     }
+
     @PostMapping(value = "/contestPhases")
     public ContestPhase createContestPhase(@RequestBody ContestPhase contestPhase) {
         return this.contestPhaseDao.create(contestPhase);
     }
+
     @PutMapping(value = "/contestPhases/{contestPhasePK}")
     public boolean updateContestPhase(@PathVariable long contestPhasePK,
                                 @RequestBody ContestPhase contestPhase) throws NotFoundException {

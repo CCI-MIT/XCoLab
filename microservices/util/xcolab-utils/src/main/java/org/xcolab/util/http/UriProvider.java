@@ -6,10 +6,6 @@ public class UriProvider {
 
     private final UriBuilder uriBuilder;
 
-    public UriProvider(UriBuilder uriBuilder) {
-        this.uriBuilder = uriBuilder;
-    }
-
     public UriProvider(String httpUrl) {
         this.uriBuilder = new UriBuilder(UriComponentsBuilder.fromHttpUrl(httpUrl));
     }

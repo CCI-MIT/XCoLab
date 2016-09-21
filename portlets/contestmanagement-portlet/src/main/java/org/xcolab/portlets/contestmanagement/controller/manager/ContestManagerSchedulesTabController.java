@@ -15,8 +15,8 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper.IllegalScheduleChangeException;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
@@ -82,7 +82,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
-        ContestSchedule newContestSchedule = ContestCreatorUtil.createNewSchedule();
+        ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
         SetRenderParameterUtil
                 .setSuccessRenderRedirectManagerTab(response, tab.getName(), newContestSchedule.getId_());
     }
@@ -112,16 +112,19 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
 //            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestSchedule");
             return;
         }
-
-        updateContestScheduleWrapper.persist();
-        SetRenderParameterUtil.addActionSuccessMessageToSession(request);
-        SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(),
-                updateContestScheduleWrapper.getScheduleId());
+        try {
+            updateContestScheduleWrapper.persist();
+            SetRenderParameterUtil.addActionSuccessMessageToSession(request);
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(),
+                    updateContestScheduleWrapper.getScheduleId());
+        } catch (IllegalScheduleChangeException e) {
+            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestSchedule");
+        }
     }
 
     @RequestMapping(params = {"action=updateContestSchedule", "error=true"})
     public String reportError(PortletRequest request, Model model) {
-        return TAB_VIEW;
+        return "common/notSupported";
     }
 
     private Long getFirstScheduleId() {

@@ -12,6 +12,7 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -24,6 +25,10 @@ public final class MembersClient {
 
     private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
             "members", Member.TYPES);
+
+    private static final RestResource2L<Member, Role_> memberRoleResource =
+            new RestResource2L<>(memberResource, "roles", Role_.TYPES);
+
     private static final RestResource<MemberCategory, Long> memberCategoryResource =
             new RestResource1<>(memberService, "membercategories", MemberCategory.TYPES);
     private static final RestResource<Contact_, Long> contactResource = new RestResource1<>(memberService,
@@ -102,7 +107,7 @@ public final class MembersClient {
     }
 
     public static List<Role_> getMemberRoles(long memberId) {
-        return memberResource.getSubRestResource(memberId, "roles", Role_.TYPES)
+        return memberRoleResource.resolveParent(memberResource.id(memberId))
                 .list()
                 .withCache(CacheKeys.withClass(Role_.class)
                         .withParameter("memberId", memberId).asList(), CacheRetention.MEDIUM)
@@ -110,9 +115,9 @@ public final class MembersClient {
     }
 
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
-        return memberResource
-                .getSubRestResource(memberId, "contestRoles", Role_.TYPES)
-                .list().queryParam("contestId", contestId)
+        return memberRoleResource.resolveParent(memberResource.id(memberId))
+                .list()
+                .queryParam("contestId", contestId)
                 .withCache(CacheKeys.withClass(Role_.class)
                                 .withParameter("memberId", memberId)
                                 .withParameter("contestId", contestId).asList(),

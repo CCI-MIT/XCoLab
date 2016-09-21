@@ -20,6 +20,16 @@ public class UriBuilder {
         return this;
     }
 
+    public UriBuilder resource(String resourceName) {
+        uriComponentsBuilder.path("/" + resourceName);
+        return this;
+    }
+
+    public UriBuilder resource(String resourceName, Object id) {
+        uriComponentsBuilder.path("/" + resourceName + "/" + id.toString());
+        return this;
+    }
+
     public UriBuilder addRange(int startRecord, int limitRecord) {
         uriComponentsBuilder
                 .queryParam("startRecord", startRecord)

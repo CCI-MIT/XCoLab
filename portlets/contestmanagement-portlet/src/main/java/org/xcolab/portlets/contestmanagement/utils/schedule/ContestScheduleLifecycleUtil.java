@@ -1,5 +1,6 @@
 package org.xcolab.portlets.contestmanagement.utils.schedule;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,10 +14,13 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestSchedule;
+import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -26,25 +30,21 @@ import java.util.Objects;
 public final class ContestScheduleLifecycleUtil {
 
     private final static Logger _log = LoggerFactory.getLogger(ContestScheduleLifecycleUtil.class);
+    private static final String NEW_CONTEST_SCHEDULE_NAME = "New contest schedule";
 
     private ContestScheduleLifecycleUtil() {
 
     }
 
     public static void deleteContestSchedule(Long scheduleId) {
-        try {
-            boolean isContestScheduleUsed = ContestScheduleLocalServiceUtil
-                    .isContestScheduleUsed(scheduleId);
-            if (!isContestScheduleUsed) {
-                removeContestSchedulePhases(scheduleId);
-                removeContestPhasesOfContestsThatAreUsingSchedule(scheduleId);
-                removeContestSchedule(scheduleId);
-            } else {
-                throw new IllegalArgumentException(
-                        "Contest schedule used by contests and can not be deleted!");
-            }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+        boolean isContestScheduleUsed = ContestClient.isContestScheduleUsed(scheduleId);
+        if (!isContestScheduleUsed) {
+            removeContestSchedulePhases(scheduleId);
+            removeContestPhasesOfContestsThatAreUsingSchedule(scheduleId);
+            removeContestSchedule(scheduleId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Contest schedule used by contests and can not be deleted!");
         }
     }
 
@@ -160,6 +160,28 @@ public final class ContestScheduleLifecycleUtil {
             }
         }
         return true;
+    }
+
+    public static ContestSchedule createNewSchedule() {
+        return createProposalCreationOnlySchedule(NEW_CONTEST_SCHEDULE_NAME);
+    }
+
+    public static ContestSchedule createProposalCreationOnlySchedule(String name) {
+        ContestSchedule newContestSchedule = new ContestSchedule();
+        newContestSchedule.setName(name);
+
+        newContestSchedule = ContestClient.createContestSchedule(newContestSchedule);
+
+        ContestPhase contestPhase = new ContestPhase();
+        contestPhase.setContestPK(0L);
+        contestPhase.setContestScheduleId(newContestSchedule.getId_());
+        contestPhase.setContestPhaseType(ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId());
+        contestPhase.setPhaseStartDate(new Timestamp(DateTime.now().getMillis()));
+        contestPhase.setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
+        contestPhase.setFellowScreeningActive(false);
+        ContestClient.createContestPhase(contestPhase);
+
+        return newContestSchedule;
     }
 
     //TODO: if we want to support changing the schedule of an active contest,
