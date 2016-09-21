@@ -305,15 +305,6 @@ public class ContestClient {
                 .execute();
     }
 
-    public static List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
-        Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
-        List<Long> members = teamRoleToUsersMap.get(roleId);
-        if (members == null) {
-            return new ArrayList<>();
-        } else {
-            return members;
-        }
-    }
     public static List<Long> getAdvisorsForContest(Long contestId) {
         return getRoleForContestTeam(contestId, MemberRole.ADVISOR.getRoleId());
 
@@ -332,7 +323,17 @@ public class ContestClient {
 
     }
 
-    public static Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
+    private static List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
+        Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
+        List<Long> members = teamRoleToUsersMap.get(roleId);
+        if (members == null) {
+            return new ArrayList<>();
+        } else {
+            return members;
+        }
+    }
+
+    private static Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
         Map<Long, List<Long>> teamRoleToUsersMap = new TreeMap<>();
         for (ContestTeamMember ctm : getTeamMembers(contestId)) {
             List<Long> roleUsers = teamRoleToUsersMap.get(ctm.getRoleId());
@@ -351,8 +352,6 @@ public class ContestClient {
     public static List<ContestTeamMember> getTeamMembers(Long contestId) {
         return contestTeamMemberResource.list()
                 .optionalQueryParam("contestId", contestId)
-                .withCache(CacheKeys.withClass(ContestTeamMember.class)
-                        .withParameter("contestId", contestId).asList(), CacheRetention.MEDIUM)
                 .execute();
     }
 
