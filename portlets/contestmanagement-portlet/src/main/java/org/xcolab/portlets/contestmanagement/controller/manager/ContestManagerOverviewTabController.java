@@ -1,16 +1,14 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
@@ -20,17 +18,11 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import javax.portlet.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 
 @Controller
 @RequestMapping("view")
@@ -79,8 +71,6 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     public void updateContestOverviewTabController(ActionRequest request, Model model,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
             ActionResponse response) throws IOException {
-        System.out.println("updateContestOverviewWrapper: " + updateContestOverviewWrapper.getSelectedMassAction());
-        System.out.println("!tabWrapper.getCanEdit() :" + !tabWrapper.getCanEdit());
         if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
@@ -88,8 +78,6 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
         try {
             try {
                 updateContestOverviewWrapper.executeMassAction(request, response);
-                System.out.println("updateContestOverviewWrapper.getSelectedMassActionTitle(): " + updateContestOverviewWrapper.getSelectedMassActionTitle());
-                //both get here
                 String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
                 SetRenderParameterUtil.addActionSuccessMessageToSession(request, massActionTitle);
                 SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName());

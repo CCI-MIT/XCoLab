@@ -8,20 +8,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.MassActionConfirmationWrapper;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
 
 @Controller
 @RequestMapping("view")
@@ -46,7 +44,6 @@ public class ContestManagerConfirmMassActionController {
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
             ActionResponse response) {
         try {
-            System.out.println("request: " + request.toString());
             massActionConfirmationWrapper.invokeMassActionForSelectedContests();
             SetRenderParameterUtil.addActionSuccessMessageToSession(request,
                     massActionConfirmationWrapper.getSelectedMassActionTitle());
