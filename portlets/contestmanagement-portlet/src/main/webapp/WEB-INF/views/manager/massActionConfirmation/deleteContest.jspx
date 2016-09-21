@@ -8,7 +8,7 @@
 
     <jsp:directive.include file="../../init.jspx"/>
 
-    <portlet:actionURL var="confirmDeleteContestWithPhasesURL">
+    <portlet:actionURL var="confirmDeleteContestURL">
         <portlet:param name="action" value="confirmMassActionExecution"/>
     </portlet:actionURL>
 
@@ -18,8 +18,8 @@
                 <div class="proposal-title"><h1>Mass Action Confirmation</h1>
                     <span class="floatLeft clearLeft">
                     <h3>
-                    The following contest(s) have associated contest phases.<br/>
-                    Please select the contest(s) where you wish to delete the contest phases too!
+                    The following contest(s) have associated contest phases, which will preserve<br/>
+                    Please confirm the contest(s) that you want to delete!
                     </h3>
                 </span>
                 </div>
@@ -29,11 +29,11 @@
 
     <div id="content">
 
-        <form:form action="${confirmDeleteContestWithPhasesURL }" modelAttribute="massActionConfirmationWrapper"
+        <form:form action="${confirmDeleteContestURL }" modelAttribute="massActionConfirmationWrapper"
                    id="editForm" method="post">
             <div class="cmsDetailsBox">
                 <div class="outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s) and phases</a>
+                    <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s)</a>
                     <a class="c-Button__secondary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/manager">DISCARD &amp; go back to overview</a>
                 </div>
             </div>

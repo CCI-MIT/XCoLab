@@ -180,7 +180,8 @@ public class ContestOverviewWrapper {
         } else {
             Boolean executeSetAction = (selectedMassAction > 0);
             //HERE THE MAGIC HAPPENS
-            massActionMethod.invoke(null, selectedContestIds, executeSetAction, request);
+            Boolean actionConfirmed=false;
+            massActionMethod.invoke(null, selectedContestIds, actionConfirmed, request);
         }
     }
 

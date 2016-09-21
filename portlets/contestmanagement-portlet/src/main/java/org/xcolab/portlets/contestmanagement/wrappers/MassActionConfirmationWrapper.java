@@ -1,8 +1,5 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.NoSuchContestException;
-
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -110,15 +107,12 @@ public class MassActionConfirmationWrapper {
                 contestToBeDeleted.add(contestId.longValue());
             }
         }
-        System.out.println("massActionId: " + massActionId);
-        System.out.println("ContestMassActions.DELETE.ordinal() :" + ContestMassActions.DELETE.ordinal());
-        System.out.println("ContestMassActions.DELETE_WITH_PHASES.ordinal() :" + ContestMassActions.DELETE_WITH_PHASES.ordinal());
         if (massActionId == ContestMassActions.DELETE.ordinal()) {
-            final boolean deletePhases = false;
-            ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, deletePhases, null);
+            final boolean actionConfirmed = true;
+            ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, actionConfirmed, null);
         } else if (massActionId == ContestMassActions.DELETE_WITH_PHASES.ordinal()){
-            final boolean deletePhases = true;
-            ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, deletePhases, null);
+            final boolean actionConfirmed = true;
+            ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, actionConfirmed, null);
         } else {
             throw new IllegalArgumentException(
                         "No action defined for mass action id: " + massActionId);
