@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FindBugs-IDEA">
+    <hiddenBugCategory>
+      <category name="I18N" />
+      <category name="NOISE" />
+    </hiddenBugCategory>
+    <plugins>
+      <plugin id="com.h3xstream.findsecbugs" enabled="true" bundled="true" />
+    </plugins>
+  </component>
+</project>
