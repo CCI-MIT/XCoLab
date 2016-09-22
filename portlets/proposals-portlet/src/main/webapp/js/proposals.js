@@ -50,8 +50,9 @@ function initializeJavaScript(){
 function evaluateTime() {
     $(".dateInfo").each(function() {
         var adjustedDate = new Date(Date.parse($(this).html()));
+        var timeZoneIdentifier = String(String(new Date).split("(")[1]).split(")")[0];  //get the timezone abbreviation
         //add +1 to month since the enumeration starts with 0
-        $(this).html((adjustedDate.getMonth()+1)+"/"+adjustedDate.getDate()+"/"+adjustedDate.getFullYear()+" UTC"+(adjustedDate.getTimezoneOffset()/(-60)));
+        $(this).html((adjustedDate.getMonth()+1)+"/"+adjustedDate.getDate()+"/"+adjustedDate.getFullYear()+" "+timeZoneIdentifier);
         $(this).removeClass("dateInfo");
     });
 }
