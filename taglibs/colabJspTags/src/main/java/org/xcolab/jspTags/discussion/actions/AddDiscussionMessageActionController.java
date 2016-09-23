@@ -13,7 +13,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.xcolab.activityEntry.discussion.DiscussionAddCommentActivityEntry;
 import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
 import org.xcolab.analytics.AnalyticsUtil;
@@ -26,19 +25,15 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
-import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.liferay.SharedColabUtil;
-import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.utils.LinkUtils;
-
-import java.io.IOException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.Cookie;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -65,9 +60,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             checkPermissions(request, "User isn't allowed to add comment", 0L);
             long userId = themeDisplay.getUser().getUserId();
 
-            final String body = HtmlUtil
-                    .cleanSome(newMessage.getDescription(), LinkUtils.getBaseUri(request));
-
+            // Since linebreaks are escaped by HtmlUtil
+             String body = newMessage.getDescription().replaceAll("\\r\\n|\\r|\\n", "</br>");
+            //final String body = HtmlUtil.cleanSome(newMessage.getDescription(), LinkUtils.getBaseUri(request));
             Comment comment = new Comment();
             comment.setContent(body);
             comment.setAuthorId(userId);
