@@ -24,10 +24,11 @@
         <!--@elvariable id="shareUrl" type="java.lang.String"-->
         <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.flagging.pojo.ReportTarget>"-->
 
-		<link href="/climatecolab-hook/css/jquery.modal.min.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
-		<script src="/climatecolab-hook/js/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
+		<!-- Includes for profanity filter-->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.css" rel="stylesheet" type="text/css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
 
+		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 		<c:if test="${discussionPermissions.mustFilterContent}">
 		<script>
 			function getMustFilterContent(){
