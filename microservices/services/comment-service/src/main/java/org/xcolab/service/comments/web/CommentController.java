@@ -65,6 +65,7 @@ public class CommentController {
         this.categoryDao = categoryDao;
     }
 
+    //TODO: move /comments endpoint to "/threads/{threadId}/comments"
     @RequestMapping(value = "/comments", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Comment> listComments(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
@@ -81,6 +82,7 @@ public class CommentController {
         return commentDao.findByGiven(paginationHelper, authorId, threadId, includeDeleted);
     }
 
+    //TODO: move to contestPhase endpoint in contest-service
     @GetMapping("/comments/countCommentsInContestPhase")
     public Integer countCommentsInContestPhase(@RequestParam long contestPhaseId,
             @RequestParam long contestId) {
@@ -215,13 +217,17 @@ public class CommentController {
     }
 
     @GetMapping("/threads/{threadId}/lastActivityDate")
-    public Date getLastActivityDate(@PathVariable long threadId) throws NotFoundException {
-        final Timestamp timestamp = threadDao.lastActivityDate(threadId);
-        return new Date(timestamp.getTime());
+    public Date getLastActivityDate(@PathVariable long threadId) {
+        return threadDao.getLastComment(threadId)
+                .map(Comment::getCreateDate)
+                .map(timestamp -> new Date(timestamp.getTime()))
+                .orElse(new Date(0));
     }
 
     @GetMapping("/threads/{threadId}/lastActivityAuthorId")
     public long getLastActivityAuthor(@PathVariable long threadId) throws NotFoundException {
-        return threadDao.lastActivityAuthor(threadId);
+        return threadDao.getLastComment(threadId)
+                .map(Comment::getAuthorId)
+                .orElseThrow(NotFoundException::new);
     }
 }
