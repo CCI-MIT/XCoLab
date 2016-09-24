@@ -18,9 +18,12 @@ import java.util.List;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_PHASE_RIBBON_TYPE;
+import static org.xcolab.model.Tables.POINTS;
 import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
+
+import static org.jooq.impl.DSL.sum;
 
 @Repository
 public class ProposalDaoImpl implements ProposalDao {
@@ -30,7 +33,7 @@ public class ProposalDaoImpl implements ProposalDao {
 
     @Override
     public List<Proposal> findByGiven(PaginationHelper paginationHelper, Long contestId,
-            Boolean visible, Long contestPhaseId, Integer ribbon) {
+                                      Boolean visible, Long contestPhaseId, Integer ribbon) {
         final SelectQuery<Record> query = dslContext.select(PROPOSAL.fields())
                 .from(PROPOSAL)
                 .getQuery();
@@ -52,8 +55,8 @@ public class ProposalDaoImpl implements ProposalDao {
             query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
                     ribbonAttribute.NAME.eq(
                             ProposalContestPhaseAttributeKeys.RIBBON)
-                    .and(CONTEST_PHASE_RIBBON_TYPE.ID_
-                            .eq(ribbonAttribute.NUMERIC_VALUE)));
+                            .and(CONTEST_PHASE_RIBBON_TYPE.ID_
+                                    .eq(ribbonAttribute.NUMERIC_VALUE)));
         }
 
         if (contestPhaseId != null) {
@@ -128,6 +131,17 @@ public class ProposalDaoImpl implements ProposalDao {
                 .execute() > 0;
     }
 
+    public Proposal getByGroupId(Long groupId) throws NotFoundException {
+
+        final Record record = this.dslContext.selectFrom(PROPOSAL)
+                .where(PROPOSAL.GROUP_ID.eq(groupId)).fetchOne();
+
+        if (record == null) {
+            throw new NotFoundException("Proposal with groupid " + groupId + " does not exist");
+        }
+        return record.into(Proposal.class);
+
+    }
 
     @Override
     public Proposal get(Long proposalId) throws NotFoundException {
@@ -140,6 +154,11 @@ public class ProposalDaoImpl implements ProposalDao {
         }
         return record.into(Proposal.class);
 
+    }
+
+    public Integer getProposalMaterializedPoints(Long proposalId) {
+
+        return dslContext.select(sum(POINTS.MATERIALIZED_POINTS)).from(POINTS).where(POINTS.PROPOSAL_ID.eq(proposalId)).fetchOne(0, Integer.class);
     }
 
 }

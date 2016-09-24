@@ -1,13 +1,13 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 
-import com.ext.portlet.service.PointTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.ReceiverLimitationStrategy;
+
 
 import java.util.ArrayList;
 import java.util.List;

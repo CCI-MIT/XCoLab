@@ -89,6 +89,33 @@ public class ProposalsController {
         return proposalService.getContestIntegrationRelevantSubproposals(proposalId);
     }
 
+    @RequestMapping(value = "/proposals/{proposalId}/getLatestContestPhaseIdInProposal", method = RequestMethod.GET)
+    public Long getLatestContestPhaseIdInProposal(@PathVariable long proposalId) {
+        return proposalService.getLatestContestPhaseIdInProposal(proposalId);
+    }
+
+
+    @RequestMapping(value = "/proposals/{proposalId}/getSubproposals", method = RequestMethod.GET)
+    public List<Proposal> listProposals(@PathVariable long proposalId, @RequestParam Boolean includeProposalsInSameContest) {
+        return proposalService.getSubproposals(proposalId, includeProposalsInSameContest);
+    }
+
+    @RequestMapping(value = "/proposals/getMemberProposals", method = RequestMethod.GET)
+    public List<Proposal> getMemberProposals(@RequestParam long userId) {
+        return proposalService.getMemberProposals(userId);
+    }
+
+
+
+    @RequestMapping(value = "/proposals/{proposalId}/materializedPoints", method = RequestMethod.GET)
+    public Integer getMaterializedPoints(@PathVariable long proposalId) {
+        return proposalDao.getProposalMaterializedPoints(proposalId);
+    }
+
+    @RequestMapping(value = "/proposals/createProposal", method = RequestMethod.POST)
+    public Proposal createProposal(@RequestParam long authorId, @RequestParam long contestPhaseId,  @RequestParam boolean publishActivity) {
+        return proposalService.create(authorId, contestPhaseId, publishActivity);
+    }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.PUT)
     public boolean updateProposal(@RequestBody Proposal proposal, @PathVariable long proposalId)
@@ -122,8 +149,13 @@ public class ProposalsController {
         return counter;
     }
 
+    @RequestMapping(value = "/proposals/{proposalId}/isUserInProposalTeam", method = RequestMethod.GET)
+    public Boolean isUserOnTeam(@PathVariable Long proposalId, @RequestParam Long memberUserId)
+            throws NotFoundException {
+            return proposalService.isUserAMember(proposalId, memberUserId);
+    }
 
-    @RequestMapping(value = "/proposals/{proposalId}/removeUserFromProposalTeam", method = RequestMethod.GET)
+    @RequestMapping(value = "/proposals/{proposalId}/removeUserFromProposalTeam", method = RequestMethod.DELETE)
     public Boolean removeUserFromProposalTeam(@PathVariable Long proposalId, @RequestParam Long memberUserId)
             throws NotFoundException {
 

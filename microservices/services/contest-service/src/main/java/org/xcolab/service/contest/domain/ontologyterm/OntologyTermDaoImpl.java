@@ -32,12 +32,15 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
     }
 
     @Override
-    public List<OntologyTerm> findByGiven(String name) {
+    public List<OntologyTerm> findByGiven(String name, Long parentId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ONTOLOGY_TERM).getQuery();
 
         if(name != null){
             query.addConditions(ONTOLOGY_TERM.NAME.eq(name));
+        }
+        if(parentId != null){
+            query.addConditions(ONTOLOGY_TERM.PARENT_ID.eq(parentId));
         }
         return query.fetchInto(OntologyTerm.class);
     }

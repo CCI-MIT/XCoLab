@@ -3,8 +3,7 @@ package org.xcolab.service.contest.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.pojo.PlanTemplate;
+
 import org.xcolab.model.tables.pojos.*;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
@@ -16,16 +15,19 @@ import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMember
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.domain.impactiteration.ImpactIterationDao;
 import org.xcolab.service.contest.domain.impacttemplateseries.ImpactTemplateSeriesDao;
+import org.xcolab.service.contest.domain.plantemplate.PlanTemplateDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
 public class ContestController {
 
     private static final int DEFAULT_PAGE_SIZE = 20;
+
+
 
     @Autowired
     private ContestService contestService;
@@ -76,6 +78,13 @@ public class ContestController {
     ) {
         return contestDao.findByGiven(contestUrlName, contestYear, active, featured, contestTier, focusAreaOntologyTerms, contestScheduleId, planTemplateId, contestTypeId,contestPrivate);
     }
+
+    @RequestMapping(value = "/contests/getContestMatchingOntologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Contest> getContestMatchingOntologyTerms(
+            @RequestParam(required = false) List<Long> focusAreaOntologyTerms){
+        return contestService.getContestsMatchingOntologyTerms(focusAreaOntologyTerms);
+    }
+
 
 
     @RequestMapping(value = "/contests/{contestId}/subContestsByOntologySpaceId", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -342,5 +351,7 @@ public class ContestController {
     ) {
         return impactIterationDao.findByGiven(iterationId);
     }
+
+
 
 }

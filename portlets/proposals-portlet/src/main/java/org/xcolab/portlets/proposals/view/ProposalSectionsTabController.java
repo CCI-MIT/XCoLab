@@ -1,13 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.NoSuchProposalMoveHistoryException;
 
-import com.ext.portlet.model.ProposalMoveHistory;
-
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalMoveHistoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -17,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -27,6 +19,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalMoveHistory;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
@@ -169,8 +162,8 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     }
 
     private void populateMoveHistory(Model model, Proposal proposal, Contest contest)
-            throws NoSuchProposalMoveHistoryException, SystemException {
-        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveHistoryLocalServiceUtil
+            throws  SystemException {
+        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalsClient
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         List<MoveHistoryWrapper> sourceMoveHistories = new ArrayList<>();
 
@@ -179,19 +172,17 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
-        try {
-            ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveHistoryLocalServiceUtil
+
+            ProposalMoveHistory targetMoveHistoryRaw = ProposalsClient
                     .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
             MoveHistoryWrapper targetMoveHistory = new MoveHistoryWrapper(targetMoveHistoryRaw);
             model.addAttribute("targetMoveHistory", targetMoveHistory);
-        } catch (NoSuchProposalMoveHistoryException ignored) {
-            //Proposal wasn't moved here - attribute remains unset
-        }
+
     }
 
     private void setLinkedProposals(Model model, Proposal proposal)
             throws PortalException, SystemException {
-        List<Proposal> linkedProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), true);
+        List<Proposal> linkedProposals = ProposalsClient.getSubproposals(proposal.getProposalId(), true);
         Map<ContestType, List<Proposal>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
@@ -247,7 +238,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             if (phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() ||
                     phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId() ||
                     phase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId()) {
-                if (ContestPhaseLocalServiceUtil.getPhaseActive(phase)) {
+                if (phase.getPhaseActive()) {
                     return phase;
                 }
             }

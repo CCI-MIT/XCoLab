@@ -2,35 +2,28 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.ProposalAttributeKeys;
-
 import com.ext.portlet.models.CollaboratoriumModelingService;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-
-import edu.mit.cci.roma.client.Scenario;
-import edu.mit.cci.roma.client.Simulation;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.PlanTemplate;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.MembershipRequestClient;
 import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.MembershipRequest;
-import org.xcolab.client.proposals.pojo.PlanSectionDefinition;
-import org.xcolab.client.proposals.pojo.PlanTemplate;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
@@ -47,6 +40,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
 
 public class ProposalWrapper extends BaseProposalWrapper {
 
@@ -220,16 +216,12 @@ public class ProposalWrapper extends BaseProposalWrapper {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
-                try {
-                    PlanTemplate planTemplate = ProposalsClient.getPlanTemplate(contest.getPlanTemplateId());
+                    PlanTemplate planTemplate = ContestClient.getPlanTemplate(contest.getPlanTemplateId());
                     if (planTemplate != null) {
-                        for (PlanSectionDefinition psd : ProposalsClient.getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
+                        for (PlanSectionDefinition psd : ContestClient.getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
                             sections.add(new ProposalSectionWrapper(psd, this));
                         }
                     }
-                }catch (PlanTemplateNotFoundException ignored){
-
-                }
             }
         }
         return sections;

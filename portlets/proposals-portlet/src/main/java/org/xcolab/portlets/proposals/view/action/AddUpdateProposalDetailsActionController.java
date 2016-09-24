@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -13,8 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.activityEntry.proposal.ProposalAttributeUpdateActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalCreatedActivityEntry;
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
@@ -100,11 +98,11 @@ public class AddUpdateProposalDetailsActionController {
             ProposalCreationUtil.sendAuthorNotification(themeDisplay, proposalWrapper, contestPhase);
 
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
-                    new ProposalCreatedActivityEntry());
+                    ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
         }else{
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
-                    new ProposalAttributeUpdateActivityEntry());
+                    ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
         

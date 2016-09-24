@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -16,6 +16,8 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
@@ -185,6 +187,6 @@ public class ContestMassActionMethods {
     private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK)
             throws PortalException, SystemException {
         ContestPhase activeContestPhase = ContestClient.getActivePhase(contestPK);
-        return ProposalLocalServiceUtil.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
+        return ProposalsClient.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
     }
 }

@@ -20,16 +20,6 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     private DSLContext dslContext;
 
 
-    /*
-
-    ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposalId, userId)
-	ProposalVoteLocalServiceUtil.hasUserVoted(contestPhaseId, userId)
-	ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposal.getProposalId(), user.getUserId())
-	LIST
-	ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE)
-
-    *
-    * */
 
 
     public ProposalVote create(ProposalVote proposalVote) {

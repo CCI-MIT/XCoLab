@@ -1,7 +1,8 @@
 package com.ext.utils.subscriptions;
 
+import org.xcolab.activityEntry.ProposalActivitySubType;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.activityEntry.proposal.ProposalBaseActivityEntry;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,15 +19,15 @@ public class ActivitySubscriptionConstraint {
             new HashMap<>();
 
     static {
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId()+ "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId()+ "_" + ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
     }
 

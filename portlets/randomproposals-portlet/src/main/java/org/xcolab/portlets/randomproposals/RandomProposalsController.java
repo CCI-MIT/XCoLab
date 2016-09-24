@@ -1,13 +1,13 @@
 package org.xcolab.portlets.randomproposals;
 
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+
+import com.ext.portlet.NoSuchContestException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.ArrayList;
@@ -45,8 +45,8 @@ public class RandomProposalsController {
             for (int i = 0; i < proposals.size() && i < preferences.getFeedSize(); ++i) {
                 try {
                     ret.add(new ProposalWrapper(
-                            ProposalLocalServiceUtil.getProposal(proposals.get(i).getProposalId())));
-                } catch (PortalException | SystemException e) {
+                            ProposalsClient.getProposal(proposals.get(i).getProposalId())));
+                } catch (ProposalNotFoundException | NoSuchContestException e) {
                     //ignored for now, will be removed after LR
                 }
             }

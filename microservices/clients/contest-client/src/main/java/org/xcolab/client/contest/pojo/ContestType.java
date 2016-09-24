@@ -365,4 +365,9 @@ public class ContestType implements Serializable {
                 ", " + rulesPageUrl +
                 ")";
     }
+    @JsonIgnore
+    public String getLabelName() {
+        return String.format("%d - %s with %s",
+                this.getId_(), this.getContestName(), this.getProposalNamePlural());
+    }
 }

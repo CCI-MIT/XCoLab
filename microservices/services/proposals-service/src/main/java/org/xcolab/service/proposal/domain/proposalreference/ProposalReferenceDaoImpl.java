@@ -21,12 +21,15 @@ public class ProposalReferenceDaoImpl implements ProposalReferenceDao {
     private DSLContext dslContext;
 
     @Override
-    public List<ProposalReference> findByGiven(Long proposalId) {
+    public List<ProposalReference> findByGiven(Long proposalId, Long subProposalId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_REFERENCE).getQuery();
 
         if (proposalId != null) {
             query.addConditions(PROPOSAL_REFERENCE.PROPOSAL_ID.eq(proposalId));
+        }
+        if (subProposalId != null) {
+            query.addConditions(PROPOSAL_REFERENCE.SUB_PROPOSAL_ID.eq(subProposalId));
         }
         return query.fetchInto(ProposalReference.class);
     }

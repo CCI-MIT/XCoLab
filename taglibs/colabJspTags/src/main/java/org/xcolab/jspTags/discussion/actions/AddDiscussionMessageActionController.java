@@ -14,9 +14,9 @@ import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.activityEntry.discussion.DiscussionAddCommentActivityEntry;
-import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
+
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
@@ -26,7 +26,7 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
-import org.xcolab.client.sharedcolab.SharedColabClient;
+
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
@@ -85,7 +85,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     if (proposalIdForThread != null && proposalIdForThread != 0L) {
                         ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(),
                                 comment.getCommentId() + "",
-                                new DiscussionAddProposalCommentActivityEntry());
+                                ActivityProvidersType.DiscussionAddProposalCommentActivityEntry.getType());
                         Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposalIdForThread);
                         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(),userId);
                     }
@@ -93,7 +93,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     ActivityEntryHelper.createActivityEntry(userId,
                             commentThread.getCategory().getCategoryId(),
                             comment.getCommentId() + "",
-                            new DiscussionAddCommentActivityEntry());
+                            ActivityProvidersType.DiscussionAddCommentActivityEntry.getType());
                 }
             }
             if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {

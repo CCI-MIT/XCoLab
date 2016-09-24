@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
-import org.xcolab.points.ReceiverLimitationStrategy;
+
 import org.xcolab.utils.EntityGroupingUtil;
 
 import java.util.Date;
@@ -103,10 +103,10 @@ public class PointsDistributionConfigurationLocalServiceImpl
 
 
             PointType pointType = pointTypeLocalService.getPointType(pointTypeId);
-            if (ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy())
+            /*if (ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy())
                     .equals(ReceiverLimitationStrategy.ANY_TEAM_MEMBER)) {
                 verifyTeamMemberships(proposalId, pointTypeId, pdcs);
-            }
+            }*/
 
             double sum = 0;
             for (PointsDistributionConfiguration pdc : pdcs) {

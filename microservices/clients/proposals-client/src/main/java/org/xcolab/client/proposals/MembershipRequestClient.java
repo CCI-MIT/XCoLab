@@ -1,18 +1,17 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.activityEntry.proposal.ProposalMemberAddedActivityEntry;
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.proposals.enums.MembershipRequestStatus;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -96,7 +95,7 @@ public class MembershipRequestClient {
             }
 
             ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
-                    new ProposalMemberAddedActivityEntry());
+                    ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
 
             if (!ActivitiesClient.isSubscribedToActivity(userId,
                     ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {

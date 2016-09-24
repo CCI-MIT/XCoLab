@@ -121,7 +121,7 @@ public class JudgeProposalActionController {
 
         // save judge decision
 
-        ProposalsClient.persistProposalContestPhaseAttribute(proposalId,
+        ProposalsClient.setProposalContestPhaseAttribute(proposalId,
                 contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
                 0l, new Long(proposalAdvancingBean.getAdvanceDecision()), null);
 
@@ -135,14 +135,14 @@ public class JudgeProposalActionController {
         //freeze the advancement
         if (!isUndecided && request.getParameter("isFreeze") != null
                 && request.getParameter("isFreeze").equals("true")) {
-            ProposalsClient.persistProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
+            ProposalsClient.setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
                     ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0l,null, "true");
         }
 
         //unfreeze the advancement
         if (permissions.getCanAdminAll() && request.getParameter("isUnfreeze") != null
                 && request.getParameter("isUnfreeze").equals("true")) {
-            ProposalsClient.persistProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
+            ProposalsClient.setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
                     ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0l, null,"false");
         }
 
@@ -383,7 +383,7 @@ public class JudgeProposalActionController {
 
             // save fellow action
             if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction())) {
-                ProposalsClient.persistProposalContestPhaseAttribute(
+                ProposalsClient.setProposalContestPhaseAttribute(
                         proposalId,
                         contestPhaseId,
                         ProposalContestPhaseAttributeKeys.FELLOW_ACTION,

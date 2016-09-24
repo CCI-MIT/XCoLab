@@ -3,8 +3,7 @@ package org.xcolab.portlets.proposals.utils;
 import com.ext.portlet.ProposalAttributeKeys;
 
 
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
+
 
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
@@ -22,8 +21,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -87,8 +90,13 @@ public class ProposalPickerFilter {
 
                 List<OntologyTerm> terms = getOntologyTermsFromSectionAndContest(sectionFocusAreaId, contestFocusAreaId);
 
+
                 if (!terms.isEmpty()) {
-                    List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
+                    List<Long> otIds = new ArrayList<>();
+                    for(OntologyTerm ot : terms){
+                        otIds.add(ot.getId_());
+                    }
+                    List<Contest> contests = ContestClient.getContestMatchingOntologyTerms(otIds);
                     for (long filterExceptionContestId : filterExceptionContestIds) {
                         try {
                             final Contest filterExceptionContest = ContestClient.getContest(filterExceptionContestId);
@@ -102,11 +110,11 @@ public class ProposalPickerFilter {
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
                         try {
-                            if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) {
+                            if (!contests.contains(ProposalsClient.getCurrentContestForProposal(p.getProposalId()))) {
                                 removedProposals.add(p.getProposalId());
                                 i.remove();
                             }
-                        } catch (SystemException | PortalException e){
+                        } catch (ContestNotFoundException  e){
                             removedProposals.add(p.getProposalId());
                             i.remove();
                         }
@@ -137,11 +145,10 @@ public class ProposalPickerFilter {
                     if (filterExceptionContestIds.contains(contest.getContestPK())) {
                         continue;
                     }
-                    try {
-                        FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-                        List<OntologyTerm> contestTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
+                        FocusArea focusArea = OntologyClient.getFocusArea(contest.getFocusAreaId());
+                        List<OntologyTerm> contestTerms = OntologyClient.getOntologyTermsForFocusArea(focusArea);
                         for (OntologyTerm requiredTerm : requiredTerms) {
-                            List<OntologyTerm> requiredDescendantTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(requiredTerm);
+                            List<OntologyTerm> requiredDescendantTerms = OntologyClient.getAllOntologyTermDescendant(requiredTerm.getId_());
                             requiredDescendantTerms.add(requiredTerm);
                             if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
                                 removedContests.add(contest.getContestPK());
@@ -149,10 +156,7 @@ public class ProposalPickerFilter {
                                 break;
                             }
                         }
-                    } catch (SystemException | PortalException e){
-                        removedContests.add(contest.getContestPK());
-                        i.remove();
-                    }
+
                 }
             } catch (SystemException e) {
                 throw new DatabaseAccessException(e);
@@ -173,9 +177,9 @@ public class ProposalPickerFilter {
             }
             List<OntologyTerm> terms = new ArrayList<>();
 
-            FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
+            FocusArea focusArea = OntologyClient.getFocusArea(focusAreaId);
             addTermsInFocusArea(terms, focusArea);
-            FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(localContestFocusAreaId);
+            FocusArea contestFocusArea = OntologyClient.getFocusArea(localContestFocusAreaId);
             addTermsInFocusArea(terms, contestFocusArea);
 
             return terms;
@@ -183,7 +187,7 @@ public class ProposalPickerFilter {
 
         private void addTermsInFocusArea(List<OntologyTerm> terms, FocusArea focusArea) throws PortalException, SystemException {
             if (focusArea != null) {
-                final List<OntologyTerm> focusAreaTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
+                final List<OntologyTerm> focusAreaTerms = OntologyClient.getOntologyTermsForFocusArea(focusArea);
                 removeRootTerms(focusAreaTerms);
                 _log.debug(String.format("Added %d non-root contest terms", focusAreaTerms.size()));
                 terms.addAll(focusAreaTerms);
@@ -194,7 +198,7 @@ public class ProposalPickerFilter {
             for (Iterator<OntologyTerm> i = terms.iterator(); i.hasNext();){
                 OntologyTerm o = i.next();
 
-                if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) {
+                if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId_())) {
                     i.remove();
                 }
             }
@@ -309,7 +313,7 @@ public class ProposalPickerFilter {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
-            try{
+
                 final Set<Long> allowedContestTiers = getAllowedTiers((Long) additionalFilterCriterion);
 
                 if (!allowedContestTiers.isEmpty()) {
@@ -317,7 +321,7 @@ public class ProposalPickerFilter {
                     for (Long tier : allowedContestTiers) {
                         ContestTier contestTier = ContestTier.getContestTierByTierType(tier);
                         if (contestTier != null) {
-                            tierFilteredContests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType()));
+                            tierFilteredContests.addAll(ContestClient.getContestsMatchingTier(contestTier.getTierType()));
                         } else {
                             _log.error(String.format("Could not find contest tier %d. Tier ignored in filtering.", tier));
                         }
@@ -334,11 +338,7 @@ public class ProposalPickerFilter {
                         }
                     }
                 }
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            } catch (PortalException e) {
-                throw new InternalException(e);
-            }
+
             return removedProposals;
         }
 

@@ -7,12 +7,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -83,12 +84,12 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         }
 
         List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
-        final List<Proposal> linkingProposals = PointsLocalServiceUtil.getLinkingProposals(proposal.getProposalId());
+        final List<Proposal> linkingProposals = ProposalsClient.getLinkingProposals(proposal.getProposalId());
         for (Proposal p : linkingProposals) {
             linkingProposalsWrapped.add(new ProposalWrapper(p));
         }
 
-        List<User> members = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
+        List<Member> members = ProposalsClient.getProposalMembers(proposal.getProposalId());
 
         //this bean will be filled with the user input
         AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getProposalId());
@@ -103,7 +104,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("regionalPercentages", regionalPercentages);
         model.addAttribute("basicPercentages", basicPercentages);
         model.addAttribute("members", members);
-        model.addAttribute("totalPoints", PointsLocalServiceUtil.getProposalMaterializedPoints(proposal.getProposalId()));
+        model.addAttribute("totalPoints", ProposalsClient.getProposalMaterializedPoints(proposal.getProposalId()));
         model.addAttribute("proposal", proposal);
         model.addAttribute("contest", contest);
         model.addAttribute("linkingProposals", linkingProposalsWrapped);

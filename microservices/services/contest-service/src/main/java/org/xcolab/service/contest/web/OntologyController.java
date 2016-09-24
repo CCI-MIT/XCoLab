@@ -4,6 +4,7 @@ import com.netflix.discovery.converters.Auto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +29,9 @@ import org.xcolab.service.contest.domain.impacttemplatemaxfocusarea.ImpactTempla
 import org.xcolab.service.contest.domain.ontologyspace.OntologySpaceDao;
 import org.xcolab.service.contest.domain.ontologyterm.OntologyTermDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.contest.service.ontology.OntologyService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -58,10 +61,19 @@ public class OntologyController {
     @Autowired
     private ImpactDefaultSeriesDataDao impactDefaultSeriesDataDao;
 
+    @Autowired
+    private OntologyService ontologyService;
+
+    @RequestMapping(value = "/ontologyTerms/getAllOntologyTermDescendant", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<OntologyTerm> getOntologyTerms(@RequestParam Long ontologyTermId) throws  NotFoundException {
+        OntologyTerm ontologyTerm = ontologyTermDao.get(ontologyTermId);
+        return ontologyService.getAllOntologyTermDescendantTerms(ontologyTerm);
+    }
+
 
     @RequestMapping(value = "/ontologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<OntologyTerm> getOntologyTerms(@RequestParam String name) {
-        return ontologyTermDao.findByGiven(name);
+        return ontologyTermDao.findByGiven(name,null);
     }
 
 
@@ -89,6 +101,11 @@ public class OntologyController {
         return focusAreaDao.findByGiven();
     }
 
+    @RequestMapping(value = "/focusAreas", method = RequestMethod.POST)
+    public FocusArea createFocusArea(@RequestBody FocusArea focusArea) {
+        return this.focusAreaDao.create(focusArea);
+    }
+
 
     @RequestMapping(value = "/ontologySpaces", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<OntologySpace> getOntologySpaces(
@@ -102,6 +119,12 @@ public class OntologyController {
     ) {
         return focusAreaOntologyTermDao.findByGiven(focusAreaId,ontologTermId);
     }
+    @RequestMapping(value = "/focusAreaOntologyTerms", method = RequestMethod.POST)
+    public FocusAreaOntologyTerm createFocusAreaOntologyTerm(@RequestBody FocusAreaOntologyTerm focusAreaOntologyTerm) {
+        return this.focusAreaOntologyTermDao.create(focusAreaOntologyTerm);
+    }
+
+
     @RequestMapping(value = "/impactTemplateMaxFocusAreas", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusAreas(
             @RequestParam(required = false) Long focusAreaListId

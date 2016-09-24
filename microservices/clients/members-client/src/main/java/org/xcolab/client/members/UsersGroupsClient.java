@@ -32,4 +32,16 @@ public class UsersGroupsClient {
                 .execute();
     }
 
+    public static boolean isUserInGroups(Long userId, Long groupId) {
+        List<UsersGroups> list =  usersGroupsResource.list()
+                .optionalQueryParam("userId", userId)
+                .optionalQueryParam("groupId", groupId)
+                .execute();
+        if(list != null && list.size() >0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

@@ -39,7 +39,7 @@ public class AssignRibbonToProposalActionController {
 
             if(ContestClient.getContestPhaseRibbonType(ribbon)==null) {
                 ProposalsClient.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
-                        ProposalContestPhaseAttributeKeys.RIBBON, ribbon);
+                        ProposalContestPhaseAttributeKeys.RIBBON,null,new Long(ribbon),null);
             }else{
                 ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId,
                     ProposalContestPhaseAttributeKeys.RIBBON);

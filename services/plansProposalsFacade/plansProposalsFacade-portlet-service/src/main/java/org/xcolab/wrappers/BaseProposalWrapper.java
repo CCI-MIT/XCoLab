@@ -29,6 +29,7 @@ import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
 
+import org.xcolab.helpers.ProposalContestPhaseAttributeHelper;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 

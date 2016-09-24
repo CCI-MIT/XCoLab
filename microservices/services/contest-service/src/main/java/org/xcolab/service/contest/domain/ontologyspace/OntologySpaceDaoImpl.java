@@ -21,18 +21,6 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     private DSLContext dslContext;
 
 
-    /*
-    OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
-	OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
-	OntologySpaceLocalServiceUtil.deleteOntologySpace(spaceId);
-	OntologySpaceLocalServiceUtil.createSpace(newSpace, newSpaceDescription);
-	LIST
-	OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE)
-	OntologySpaceLocalServiceUtil.getTopTerms(space)
-	
-    *
-    * */
-
     public OntologySpace create(OntologySpace ontologySpace) {
 
         OntologySpaceRecord ret = this.dslContext.insertInto(ONTOLOGY_SPACE)

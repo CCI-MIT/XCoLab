@@ -218,13 +218,9 @@ public class ProposalsContextImpl implements ProposalsContext {
                             userAgent);
                 }
             } else if (StringUtils.isNotBlank(contestUrlName) && contestYear > 0) {
-                try {
-                    contest = ContestLocalServiceUtil
-                            .getByContestUrlNameContestYear(contestUrlName, contestYear);
-                } catch (NoSuchContestException e) {
-                    handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, referralUrl,
-                            userAgent);
-                }
+                    contest = ContestClient
+                            .getContestByContestUrlNameContestYear(contestUrlName, contestYear);
+
             }
 
             ContestPhase contestPhase = null;

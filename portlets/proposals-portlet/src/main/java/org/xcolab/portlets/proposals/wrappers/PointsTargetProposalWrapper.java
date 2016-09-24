@@ -2,6 +2,8 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.points.PointsTarget;
 
 /**
@@ -20,7 +22,11 @@ public class PointsTargetProposalWrapper {
     }
 
     public ProposalWrapper getProposal() throws PortalException, SystemException {
-        return new ProposalWrapper(target.getProposalId());
+        try {
+            return new ProposalWrapper(target.getProposalId());
+        }catch (ProposalNotFoundException ignored){
+            return null;
+        }
     }
 
     public double getPercentage() {

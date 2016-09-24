@@ -10,17 +10,15 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestTeamMember;
 import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.ImpactIteration;
 import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.ImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.ImpactTemplateSeries;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
-import org.xcolab.client.proposals.pojo.PlanTemplate;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.PlanTemplate;
+import org.xcolab.client.contest.pojo.PlanTemplateSection;
 import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -73,9 +71,15 @@ public class ContestClient {
     private static final RestResource<ImpactTemplateFocusAreaList> impactTemplateFocusAreaListResource = new RestResource<>(contestService,
             "impactTemplateFocusAreaLists", ImpactTemplateFocusAreaList.TYPES);
 
+    private static final RestResource<PlanTemplate> planTemplateResource = new RestResource<>(contestService,
+            "planTemplates", PlanTemplate.TYPES);
+
+    private static final RestResource<PlanSectionDefinition> planSectionDefinitionResource = new RestResource<>(contestService,
+            "planSectionDefinition", PlanSectionDefinition.TYPES);
 
 
-
+    private static final RestResource<PlanTemplateSection> planTemplateSectionResource = new RestResource<>(contestService,
+            "planTemplateSections", PlanTemplateSection.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
@@ -85,6 +89,17 @@ public class ContestClient {
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
         }
+    }
+
+    public static Contest getContestByContestUrlNameContestYear(String contestUrlName, Long contestYear) {
+        List<Contest> list = contestResource.list()
+                .queryParam("contestUrlName", contestUrlName)
+                .queryParam("contestYear", contestYear)
+                .execute();
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
     }
 
     public static Contest createContest(Long userId, String name) {
@@ -132,6 +147,9 @@ public class ContestClient {
         return contestResource.create(contest).execute();
     }
 
+    public static List<Contest> getContestsMatchingTier(Long contestTier) {
+        return contestResource.list().queryParam("contestTier", contestTier).execute();
+    }
 
     public static boolean updateContest(Contest contest) {
         return contestResource.update(contest, contest.getContestPK())
@@ -173,6 +191,12 @@ public class ContestClient {
                 .optionalQueryParam("contestTier", contestTier)
                 .optionalQueryParam("focusAreaOntologyTerms", focusAreaOntologyTerms)
                 .execute();
+    }
+
+    public static List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
+        return contestResource.service("getContestMatchingOntologyTerms", List.class)
+                .queryParam("ontologyTermIds", ontologyTermIds)
+                .get();
     }
 
     public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
@@ -275,6 +299,18 @@ public class ContestClient {
         return visiblePhases;
     }
 
+    public static Integer getPointsAccessibleForActivePhaseOfContest(Contest contest) {
+        //check if the phase, the contest is currently in, allows for editing
+        ContestPhase activePhase = getActivePhase(contest.getContestPK());
+        if (activePhase != null) {
+            ContestPhaseType cpType = getContestPhaseType(activePhase.getContestPhaseType());
+            if (cpType != null) {
+                return cpType.getPointsAccessible();
+            }
+        }
+        return null;
+    }
+
     public static void deleteContestPhase(Long contestPhasePK) {
         contestPhasesResource.delete(contestPhasePK).execute();
     }
@@ -373,6 +409,13 @@ public class ContestClient {
                 .get();
     }
 
+    public static List<Contest> getContestsByContestType(Long contestTypeId) {
+        return contestResource.list()
+                .queryParam("contestTypeId", contestTypeId)
+                .execute();
+    }
+
+
     public static List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
         Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
         List<Long> members = teamRoleToUsersMap.get(roleId);
@@ -457,13 +500,10 @@ public class ContestClient {
     }
 
     public static ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest) {
-        try {
-            PlanTemplate planTemplate = ProposalsClient.getPlanTemplate(contest.getPlanTemplateId());
-            return getImpactTemplateSeries(planTemplate.getImpactSeriesTemplateId());
-        } catch (PlanTemplateNotFoundException ignored) {
 
-        }
-        return null;
+        PlanTemplate planTemplate = getPlanTemplate(contest.getPlanTemplateId());
+        return getImpactTemplateSeries(planTemplate.getImpactSeriesTemplateId());
+
     }
 
     public static ImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
@@ -494,13 +534,8 @@ public class ContestClient {
     }
 
     public static ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) {
-        try {
-            PlanTemplate planTemplate = ProposalsClient.getPlanTemplate(contest.getPlanTemplateId());
-            return getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
-        } catch (PlanTemplateNotFoundException ignored) {
-
-        }
-        return null;
+        PlanTemplate planTemplate = getPlanTemplate(contest.getPlanTemplateId());
+        return getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
     }
 
     public static ImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(long focusAreaListId) {
@@ -519,8 +554,83 @@ public class ContestClient {
                 .execute();
     }
 
+    public static PlanTemplate getPlanTemplate(long Id_) {
+        return planTemplateResource.get(Id_)
+                .execute();
+    }
+
+    public static List<PlanTemplate> getPlanTemplates() {
+        return planTemplateResource.list()
+                .execute();
+    }
 
 
+    public static PlanTemplate createPlanTemplate(PlanTemplate planTemplate) {
+        return planTemplateResource.create(planTemplate).execute();
+    }
+
+
+    public static boolean updatePlanTemplate(PlanTemplate planTemplate) {
+        return planTemplateResource.update(planTemplate, planTemplate.getId_())
+                .execute();
+    }
+
+
+    public static PlanSectionDefinition getPlanSectionDefinition(long Id_) {
+        return planSectionDefinitionResource.get(Id_)
+                .execute();
+
+
+    }
+
+    public static boolean updatePlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
+        return planSectionDefinitionResource.update(planSectionDefinition, planSectionDefinition.getId_())
+                .execute();
+    }
+
+
+    public static PlanSectionDefinition createPlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
+        return planSectionDefinitionResource.create(planSectionDefinition).execute();
+    }
+
+    public static List<PlanSectionDefinition> getPlanSectionDefinitionByPlanTemplateId(Long planTemplateId, Boolean weight) {
+
+        return planSectionDefinitionResource.list()
+                .optionalQueryParam("planTemplateId", planTemplateId)
+                .optionalQueryParam("weight", ((weight == null) ? (false) : weight))
+                .execute();
+    }
+
+    public static Boolean deletePlanSectionDefinition(Long id_) {
+        return planSectionDefinitionResource.delete(id_).execute();
+    }
+
+
+    public static Boolean deletePlanTemplateSection(Long planTemplateId, Long planSectionDefinitionId) {
+        return planTemplateSectionResource.service("deletePlanTemplateSection", Boolean.class)
+                .queryParam("planTemplateId", planTemplateId)
+                .queryParam("planSectionDefinitionId", planSectionDefinitionId)
+                .delete();
+    }
+
+
+    public static List<PlanTemplateSection> getPlanTemplateSectionByPlanTemplateId(Long planTemplateId) {
+        return planTemplateSectionResource.list()
+                .optionalQueryParam("planTemplateId", planTemplateId)
+                .execute();
+    }
+
+    public static boolean updatePlanTemplateSection(PlanTemplateSection planTemplateSection) {
+        return planTemplateSectionResource.update(planTemplateSection, planTemplateSection.getPlanTemplateId())
+                .execute();
+    }
+
+
+    public static List<PlanTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(Long planSectionId) {
+        return planTemplateSectionResource.list()
+                .optionalQueryParam("planSectionId", planSectionId)
+                .execute();
+    }
 
 
 }

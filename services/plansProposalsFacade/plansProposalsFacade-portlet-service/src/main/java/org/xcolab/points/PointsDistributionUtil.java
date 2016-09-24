@@ -1,18 +1,13 @@
 package org.xcolab.points;
 
-import com.ext.portlet.NoSuchPointsDistributionConfigurationException;
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.model.ProposalReference;
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
+import org.xcolab.client.proposals.pojo.PointType;
+import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.ProposalReference;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,17 +17,17 @@ import java.util.Set;
 
 public class PointsDistributionUtil {
     public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId)
-            throws SystemException, PortalException {
+             {
         List<PointsTarget> targets = new ArrayList<>();
-        List<User> members = ProposalLocalServiceUtil.getMembers(proposalId);
-        for (User u : members) {
+        List<Member> members = ProposalsClient.getProposalMembers(proposalId);
+        for (Member u : members) {
             targets.add(PointsTarget.forUser(u.getUserId(), 1.0d / members.size()));
         }
         return targets;
     }
 
     public static List<PointsTarget> distributeEquallyAmongProposals(Collection<Long> proposalIds)
-            throws SystemException, PortalException {
+             {
         List<PointsTarget> targets = new ArrayList<>();
         for (Long proposalId : proposalIds) {
             targets.add(PointsTarget.forProposal(proposalId, 1.0d / proposalIds.size()));
@@ -40,23 +35,25 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) throws PortalException, SystemException {
+    public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
-            ProposalReference reference = ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(proposal.getProposalId(), subProposalId);
-            final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
-            final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
             try {
-                PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
+                ProposalReference reference = ProposalsClient.getProposalReferenceByProposalIdSubProposalId(proposal.getProposalId(), subProposalId);
+                final ProposalAttribute referenceSectionProposalAttribute = ProposalsClient.getProposalAttribute(reference.getSectionAttributeId());
+                final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
+
+                PointsDistributionConfiguration pdc = ProposalsClient.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(planSectionDefinitionId);
                 targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
-            } catch (NoSuchPointsDistributionConfigurationException ignored) { }
+            } catch (ProposalAttributeNotFoundException  ignored) {
+            }
         }
         return targets;
     }
 
-    public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) throws SystemException {
+    public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
-        for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
+        for (PointsDistributionConfiguration pdc : ProposalsClient.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
             if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
                 PointsTarget target = new PointsTarget();
                 target.setProposalId(pdc.getTargetSubProposalId());
@@ -67,7 +64,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, Proposal parentProposals, PointType pointType, Set<Long> proposalIds) throws SystemException, PortalException {
+    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, Proposal parentProposals, PointType pointType, Set<Long> proposalIds) {
         switch (distributionStrategy) {
             case USER_DEFINED:
                 return distributeUserDefinedAmongProposals(parentProposals, pointType, proposalIds);

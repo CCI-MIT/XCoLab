@@ -24,6 +24,7 @@ import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.ImpactIteration;
 import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
@@ -164,7 +165,7 @@ public class ProposalImpactSeries {
         return seriesTypeToEditableMap.get(seriesType);
     }
 
-    public void persistWithAuthor(User author) throws SystemException, PortalException {
+    public void persistWithAuthor(Member author) throws SystemException, PortalException {
         // Persist all editable attributes
         for (Map.Entry<String, Boolean> entry: seriesTypeToEditableMap.entrySet()) {
             final String seriesType = entry.getKey();

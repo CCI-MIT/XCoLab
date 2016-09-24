@@ -21,36 +21,6 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
     @Autowired
     private DSLContext dslContext;
 
-    /*
-    *
-
-    ProposalRatingLocalServiceUtil.deleteProposalRating(proposalRating);
-	ProposalRatingLocalServiceUtil.updateRating(existingRating);
-	ProposalRatingLocalServiceUtil.addRating(
-                            proposalId,
-                            contestPhaseId,
-                            currentUserId,
-                            newRatingValueId,
-                            comment,
-                            "",
-                            isPublicRating
-                    );
-   LIST
-    ProposalRatingLocalServiceUtil
-                        .getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
-    ProposalRatingLocalServiceUtil.getJudgeRatingsForProposalAndUser(
-                currentUser.getUserId(),
-                proposal.getProposalId(),
-                contestPhase.getContestPhasePK());
-	ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(
-                proposal.getProposalId(), contestPhase.getContestPhasePK());
-    ProposalRatingLocalServiceUtil.getFellowRatingForProposalAndUser(
-                    currentUser.getUserId(),
-                    proposal.getProposalId(),
-                    contestPhase.getContestPhasePK());
-
-    *
-    * */
     @Override
     public ProposalRating create(ProposalRating proposalRating) {
 

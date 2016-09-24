@@ -41,7 +41,9 @@ public final class MembersClient {
                 .queryParam("sort", "screenName")
                 .execute();
     }
-
+    public static List<Member> listAllMembers(){
+        return listMembers(null,null,null,true,0,Integer.MAX_VALUE);
+    }
     public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstMember, int lastMember) {
 

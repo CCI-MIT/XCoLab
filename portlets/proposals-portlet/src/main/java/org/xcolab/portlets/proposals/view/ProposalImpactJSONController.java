@@ -23,6 +23,9 @@ import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
@@ -137,7 +140,12 @@ public class ProposalImpactJSONController {
         JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
         try {
             ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), focusArea, requestJson);
-            impactSeries.persistWithAuthor(proposalsContext.getUser(request));
+            try {
+                Member member = MembersClient.getMember(proposalsContext.getUser(request).getUserId());
+                impactSeries.persistWithAuthor(member);
+            }catch (MemberNotFoundException ignored){
+
+            }
         } catch (SystemException e) {
             _log.warn(e.getMessage(), e);
             responseJSON.put("success", false);
@@ -201,7 +209,12 @@ public class ProposalImpactJSONController {
         try {
             ProposalImpactDataParser dataParser = new ProposalImpactDataParser(requestJson.getString("data"), proposal, contest);
             ProposalImpactSeriesList impactSeriesList = dataParser.parse();
-            impactSeriesList.persistImpactSeriesesWithAuthor(proposalsContext.getUser(request));
+            try {
+                Member member = MembersClient.getMember(proposalsContext.getUser(request).getUserId());
+                impactSeriesList.persistImpactSeriesesWithAuthor(member);
+            }catch (MemberNotFoundException ignored){
+
+            }
 
             responseJSON.put("success", true);
         } catch(ProposalImpactDataParserException e) {

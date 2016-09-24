@@ -22,13 +22,6 @@ public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
     @Autowired
     private DSLContext dslContext;
 
-    /*
-
-    ProposalSupporterLocalService
-	ProposalSupporterLocalServiceUtil.getProposals(userId)
-	ProposalSupporterLocalServiceUtil.getProposalSupporters(0, Integer.MAX_VALUE)
-
-    * */
     public ProposalSupporter create(ProposalSupporter proposalSupporter) {
 
         this.dslContext.insertInto(PROPOSAL_SUPPORTER)

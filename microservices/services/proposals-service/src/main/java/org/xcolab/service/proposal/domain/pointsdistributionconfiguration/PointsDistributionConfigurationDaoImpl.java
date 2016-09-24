@@ -99,4 +99,18 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
         return record.into(PointsDistributionConfiguration.class);
 
     }
+
+    @Override
+    public PointsDistributionConfiguration getByPlanSectionDefinitionId(Long targetPlanSectionDefinitionId) throws NotFoundException {
+
+        final Record record = this.dslContext.selectFrom(POINTS_DISTRIBUTION_CONFIGURATION)
+                .where(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PLAN_SECTION_DEFINITION_ID.eq(targetPlanSectionDefinitionId))
+                .fetchOne();
+
+        if (record == null) {
+            throw new NotFoundException("PointsDistributionConfiguration with targetPlanSectionDefinitionId " + targetPlanSectionDefinitionId + " does not exist");
+        }
+        return record.into(PointsDistributionConfiguration.class);
+
+    }
 }

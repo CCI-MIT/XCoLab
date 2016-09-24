@@ -99,6 +99,7 @@ public class ProposalReferenceLocalServiceImpl
             deleteProposalReference(existingReference);
         }
         processedProposals.add(proposal.getProposalId());
+        /*
         for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal).getAttributesByName(ProposalAttributeKeys.SECTION)) {
             PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
 
@@ -136,7 +137,7 @@ public class ProposalReferenceLocalServiceImpl
                 addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId());
                 populateTableWithProposal(proposalLocalService.fetchProposal(subProposalId), processedProposals);
             }
-        }
+        }*/
     }
 
     private void addProposalReference(long proposalId, long subProposalId, long sectionAttributeId) throws SystemException {

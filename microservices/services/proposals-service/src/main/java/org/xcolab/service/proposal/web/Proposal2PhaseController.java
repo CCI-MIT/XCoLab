@@ -31,6 +31,11 @@ public class Proposal2PhaseController {
 
     }
 
+    @RequestMapping(value = "/proposal2Phases", method = RequestMethod.POST)
+    public Proposal2Phase createProposal2Phase(@RequestBody Proposal2Phase proposal2Phase) {
+        return this.proposal2PhaseDao.create(proposal2Phase);
+    }
+
     @RequestMapping(value = "/proposal2Phases/getByContestPhaseIdProposalId", method = {RequestMethod.GET})
     public Proposal2Phase getProposal2Phases(
             @RequestParam(required = false) Long contestPhaseId,

@@ -4,12 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 
-import org.xcolab.model.tables.pojos.PlanSectionDefinition;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.PlanSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
 
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalReference;
-import org.xcolab.service.proposal.domain.plansectiondefinition.PlanSectionDefinitionDao;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.enums.PlanSectionTypeKeys;
@@ -31,17 +31,15 @@ public class ProposalReferenceService {
 
     private final ProposalDao proposalDao;
 
-    private final PlanSectionDefinitionDao planSectionDefinitionDao;
 
 
-    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao,ProposalDao proposalDao, PlanSectionDefinitionDao planSectionDefinitionDao ){
+    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao,ProposalDao proposalDao){
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalDao = proposalDao;
-        this.planSectionDefinitionDao = planSectionDefinitionDao;
     }
 
     public void populateTableWithProposal(Proposal proposal)  {
-        final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getProposalId());
+        final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getProposalId(),null);
         for (ProposalReference existingReference : existingReferences) {
             proposalReferenceDao.delete(existingReference.getProposalId(), existingReference.getSubProposalId());
         }
@@ -51,15 +49,14 @@ public class ProposalReferenceService {
         if (processedProposals.contains(proposal.getProposalId())) {
             return;
         }
-        final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getProposalId());
+        final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getProposalId(),null);
         for (ProposalReference existingReference : existingReferences) {
             proposalReferenceDao.delete(existingReference.getProposalId(), existingReference.getSubProposalId());
         }
         processedProposals.add(proposal.getProposalId());
         for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal).getAttributesByName(ProposalAttributeKeys.SECTION)) {
 
-            try {
-                PlanSectionDefinition psd = planSectionDefinitionDao.get(attribute.getAdditionalId());
+                PlanSectionDefinition psd = ContestClient.getPlanSectionDefinition(attribute.getAdditionalId());
 
                 if (StringUtils.isBlank(psd.getType_())) {
                     continue;
@@ -100,9 +97,7 @@ public class ProposalReferenceService {
 
                     }
                 }
-            }catch (NotFoundException ignored){
 
-            }
         }
     }
     public static List<Long> getProposalIdsFromLinksInText(String text) {

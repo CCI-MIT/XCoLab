@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
+import org.xcolab.service.activities.activityEntry.provider.ActivityEntryContentProvider;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
+import org.xcolab.service.activities.enums.ActivityProvidersImpl;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.activities.service.ActivitiesService;
 import org.xcolab.service.activities.utils.Utils;
@@ -34,9 +37,20 @@ public class ActivitiesController {
     private ActivitiesService activitiesService;
 
     @RequestMapping(value = "/activityEntries", method = RequestMethod.POST)
-    public ActivityEntry createActivity(@RequestBody ActivityEntry activityEntry) {
+    public ActivityEntry createActivity(@RequestBody ActivityEntry activityEntry, @RequestParam Integer providerType) {
         java.util.Date date = new java.util.Date();
         activityEntry.setCreateDate(new Timestamp(date.getTime()));
+
+        ActivityEntryContentProvider provider = ActivityProvidersImpl.getActivityEntryContentProviderByType(providerType);
+        provider.setActivityEntry(activityEntry);
+
+        activityEntry.setPrimaryType(provider.getPrimaryType());
+        activityEntry.setSecondaryType(provider.getSecondaryType());
+
+        activityEntry.setActivityEntryBody(provider.getBody());
+        activityEntry.setActivityEntryTitle(provider.getTitle());
+        activityEntry.setActivityEntryName(provider.getName());
+
         return this.activityEntryDao.create(activityEntry);
     }
 

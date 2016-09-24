@@ -3,7 +3,8 @@ package org.xcolab.service.contest.domain.impacttemplatefocusarealist;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
+
+import org.xcolab.model.tables.pojos.ImpactTemplateFocusAreaList;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.IMPACT_TEMPLATE_FOCUS_AREA_LIST;
