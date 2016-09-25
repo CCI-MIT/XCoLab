@@ -1,5 +1,7 @@
 package org.xcolab.util.http.client;
 
+import org.springframework.util.Assert;
+
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
@@ -14,6 +16,7 @@ public class RestService implements HttpEndpoint {
     private final UriProvider uriProvider;
 
     public RestService(String serviceName) {
+        Assert.notNull(serviceName, "Service name is required");
         this.serviceName = serviceName;
         uriProvider = getBaseUrl(DEFAULT_HOST_NAME, DEFAULT_PORT);
     }
@@ -25,5 +28,22 @@ public class RestService implements HttpEndpoint {
 
     public UriProvider getBaseUrl(String hostName, String port) {
         return new UriProvider(SCHEMA + hostName + ":" + port + "/" + serviceName);
+    }
+
+    @Override
+    public int hashCode() {
+        return serviceName.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof RestService)) {
+            return false;
+        }
+        final RestService other = (RestService) obj;
+        return serviceName.equals(other.serviceName);
     }
 }

@@ -1,27 +1,20 @@
 package org.xcolab.util.attributes.basic;
 
+import org.xcolab.util.attributes.AbstractAttributeGetter;
 import org.xcolab.util.attributes.Attribute;
-import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.attributes.AttributeProvider;
 
 /**
  * A getter for long values from {@link Attribute}s.
  */
-public class LongAttribute implements AttributeGetter<Long> {
-
-    private final AttributeProvider<? extends Attribute> attributeProvider;
+public class LongAttribute extends AbstractAttributeGetter<Long> {
 
     public LongAttribute(AttributeProvider<? extends Attribute> attributeProvider) {
-        this.attributeProvider = attributeProvider;
+        super(attributeProvider, LongAttribute.class.getSimpleName());
     }
 
     @Override
-    public Long get() {
-        return attributeProvider.get().getNumericValue();
-    }
-
-    @Override
-    public Long get(long additionalId) {
-        return attributeProvider.get(additionalId).getNumericValue();
+    protected Long extractValue(Attribute attribute) {
+        return attribute.getNumericValue();
     }
 }
