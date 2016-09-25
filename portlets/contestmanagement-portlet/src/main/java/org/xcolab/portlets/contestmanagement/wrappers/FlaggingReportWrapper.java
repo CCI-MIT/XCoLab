@@ -7,7 +7,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -80,7 +80,7 @@ public class FlaggingReportWrapper {
 
     private Comment getTargetComment() {
         try {
-            return CommentClient.getComment(report.getTargetId(), true);
+            return CommentClientUtil.getComment(report.getTargetId(), true);
         } catch (CommentNotFoundException e) {
             return null;
         }

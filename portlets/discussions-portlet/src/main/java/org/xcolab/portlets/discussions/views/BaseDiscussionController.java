@@ -3,7 +3,7 @@ package org.xcolab.portlets.discussions.views;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -21,7 +21,7 @@ public abstract class BaseDiscussionController {
         DiscussionPreferences preferences = new DiscussionPreferences(request);
 
         try {
-            return CommentClient.getCategoryGroup(preferences.getCategoryGroupId());
+            return CategoryClientUtil.getCategoryGroup(preferences.getCategoryGroupId());
         } catch (CategoryGroupNotFoundException e) {
             throw ReferenceResolutionException
                     .toObject(CategoryGroup.class, preferences.getCategoryGroupId()).build();

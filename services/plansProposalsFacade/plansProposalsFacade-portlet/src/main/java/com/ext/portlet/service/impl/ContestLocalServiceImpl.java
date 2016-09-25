@@ -60,8 +60,9 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
@@ -174,7 +175,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         thread.setTitle(c.getContestName() + " discussion");
         thread.setAuthorId(c.getAuthorId());
         thread.setIsQuiet(false);
-        long discussionId = CommentClient.createThread(thread).getThreadId();
+        long discussionId = ThreadClientUtil.createThread(thread).getThreadId();
         c.setGroupId(group.getGroupId());
         c.setDiscussionGroupId(discussionId);
         store(c);
@@ -371,7 +372,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
     @Override
     public long getCommentsCount(Contest contest) {
-        return CommentClient.countComments(contest.getDiscussionGroupId());
+        return CommentClientUtil.countComments(contest.getDiscussionGroupId());
     }
 
     @Override

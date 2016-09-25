@@ -11,8 +11,8 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
@@ -71,7 +71,7 @@ public final class ContestCreatorUtil {
         thread.setTitle(c.getContestName() + " discussion");
         thread.setAuthorId(c.getAuthorId());
         thread.setIsQuiet(false);
-        long discussionId = CommentClient.createThread(thread).getThreadId();
+        long discussionId = ThreadClientUtil.createThread(thread).getThreadId();
         c.setGroupId(group.getGroupId());
         c.setDiscussionGroupId(discussionId);
         ContestClient.updateContest(c);

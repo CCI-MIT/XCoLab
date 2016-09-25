@@ -15,7 +15,7 @@ import org.apache.commons.collections.comparators.ComparatorChain;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.emails.EmailClient;
@@ -185,7 +185,7 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = new Long(socialActivity.getExtraData());
-                        Comment comment = CommentClient.getComment(commentId);
+                        Comment comment = CommentClientUtil.getComment(commentId);
                         bodyWithComment.append(comment.getContent());
                         bodyWithComment.append("</div></div>");
                         body.append("<div style='margin-left: 10px'>").append(bodyWithComment.toString()).append("</div><br/><br/>");

@@ -5,7 +5,7 @@ import com.ext.portlet.contests.ContestStatus;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -29,9 +29,9 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
 
     public long getTotalCommentsCount() {
 
-        Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
+        Integer contestComments = CommentClientUtil.countComments(contest.getDiscussionGroupId());
         ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
-        contestComments += CommentClient.countCommentsInContestPhase(
+        contestComments += CommentClientUtil.countCommentsInContestPhase(
                 phase.getContestPhasePK(), phase.getContestPK());
 
         return contestComments;

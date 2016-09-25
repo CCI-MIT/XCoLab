@@ -72,8 +72,9 @@ import org.xcolab.activityEntry.proposal.ProposalVoteRetractActivityEntry;
 import org.xcolab.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.enums.MembershipRequestStatus;
@@ -280,7 +281,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         commentThread.setCategoryId(null);
         commentThread.setTitle(title);
         commentThread.setIsQuiet(isQuiet);
-        commentThread = CommentClient.createThread(commentThread);
+        commentThread = ThreadClientUtil.createThread(commentThread);
         return commentThread;
     }
 
@@ -726,7 +727,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             Proposal proposal = getProposal(proposalId);
             final long discussionId = proposal.getDiscussionId();
             if (discussionId > 0) {
-                return CommentClient.countComments(discussionId);
+                return CommentClientUtil.countComments(discussionId);
             }
         } catch (SystemException e) {
             throw new DatabaseAccessException(e);
@@ -748,7 +749,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             Proposal proposal = getProposal(proposalId);
             final long fellowDiscussionId = proposal.getFellowDiscussionId();
             if (fellowDiscussionId > 0) {
-                return CommentClient.countComments(fellowDiscussionId);
+                return CommentClientUtil.countComments(fellowDiscussionId);
             }
         } catch (SystemException e) {
             throw new DatabaseAccessException(e);

@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -361,7 +361,7 @@ public class BaseContestWrapper {
         }*/
 
     public long getCommentsCount() {
-        Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
+        Integer contestComments = CommentClientUtil.countComments(contest.getDiscussionGroupId());
         //TODO: get each proposal comment count.
         return contestComments;
     }

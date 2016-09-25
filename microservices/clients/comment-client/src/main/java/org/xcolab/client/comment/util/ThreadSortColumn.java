@@ -1,4 +1,4 @@
-package org.xcolab.client.comment;
+package org.xcolab.client.comment.util;
 
 public enum ThreadSortColumn {
     TITLE("title"),

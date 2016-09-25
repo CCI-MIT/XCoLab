@@ -1,5 +1,7 @@
 package org.xcolab.activityEntry.discussion;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.community.CommunityUtil;
 import com.ext.portlet.model.Contest;
@@ -10,11 +12,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 import org.xcolab.client.activities.contentProviders.ActivityEntryContentProvider;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
@@ -22,6 +22,9 @@ import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CategoryClientUtil;
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -54,18 +57,18 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
         if (!this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())) {
 
             try {
-                category = CommentClient.getCategory(activityEntry.getClassPrimaryKey());
-                comment = CommentClient
+                category = CategoryClientUtil.getCategory(activityEntry.getClassPrimaryKey());
+                comment = CommentClientUtil
                         .getComment(Long.parseLong(activityEntry.getExtraData()));
-                thread = CommentClient.getThread(comment.getThreadId());
-                category = CommentClient.getCategory(thread.getCategoryId());
+                thread = ThreadClientUtil.getThread(comment.getThreadId());
+                category = CategoryClientUtil.getCategory(thread.getCategoryId());
             } catch (CategoryNotFoundException | ThreadNotFoundException | CommentNotFoundException e) {
                 _log.warn("Could not initialize discussion from " + activityEntry);
             }
         } else {
             try {
-                thread = CommentClient.getThread(activityEntry.getClassPrimaryKey());
-                final Long proposalId = CommentClient.getProposalIdForThread(thread.getThreadId());
+                thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
+                final Long proposalId = ThreadClientUtil.getProposalIdForThread(thread.getThreadId());
 
                 if (proposalId != null) {
 

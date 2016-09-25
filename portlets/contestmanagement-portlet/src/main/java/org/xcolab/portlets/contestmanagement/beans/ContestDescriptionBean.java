@@ -6,9 +6,9 @@ import org.hibernate.validator.constraints.Length;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -74,12 +74,12 @@ public class ContestDescriptionBean implements Serializable {
         updateContestSchedule(contest, scheduleTemplateId);
 
         try {
-            final CommentThread thread = CommentClient.getThread(contest.getDiscussionGroupId());
+            final CommentThread thread = ThreadClientUtil.getThread(contest.getDiscussionGroupId());
             ContestType contestType =
                     ContestClient.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getContestShortName()));
-            CommentClient.updateThread(thread);
+            ThreadClientUtil.updateThread(thread);
         } catch (ThreadNotFoundException e) {
             _log.warn("No thread (id = " + contest.getDiscussionGroupId() + ") exists for contest "
                     + contest.getContestPK());

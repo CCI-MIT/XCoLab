@@ -3,19 +3,25 @@ package org.xcolab.jspTags.discussion;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.comment.CategoryClient;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CategoryClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
@@ -31,18 +37,33 @@ public class LoadThreadStartTag extends BodyTagSupport {
     private long threadId;
     private long categoryId;
     private long categoryGroupId;
+    private Long sharedColabId;
 
     @Override
     public int doStartTag() throws JspException {
         try {
             PortletRequest portletRequest = getPortletRequest(pageContext);
 
+            ThreadClient threadClient;
+            CategoryClient categoryClient;
+            if (sharedColabId != null && sharedColabId > 0) {
+                // TODO COLAB-1387: move initialization to shared utility
+                RestService sharedCommentService = new RefreshingRestService("comment-service",
+                        ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                        ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                threadClient = new ThreadClient(sharedCommentService);
+                categoryClient = new CategoryClient(sharedCommentService);
+            } else {
+                threadClient = ThreadClientUtil.getThreadClient();
+                categoryClient = CategoryClientUtil.getCategoryClient();
+            }
+
             String shareTitle = null;
             String shareUrl = null;
 
             if (categoryId > 0) {
                 try {
-                    Category category = CommentClient.getCategory(categoryId);
+                    Category category = categoryClient.getCategory(categoryId);
                     shareTitle = category.getName();
                     //TODO: url
                     shareUrl = "";
@@ -54,7 +75,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
             if (categoryGroupId > 0) {
                 try {
-                    CategoryGroup categoryGroup = CommentClient.getCategoryGroup(categoryGroupId);
+                    CategoryGroup categoryGroup = categoryClient.getCategoryGroup(categoryGroupId);
                     if (shareTitle == null) {
                         shareTitle = categoryGroup.getDescription();
                     }
@@ -68,7 +89,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
                 }
             }
 
-            CommentThread thread = CommentClient.getThread(threadId);
+            CommentThread thread = threadClient.getThread(threadId);
 
             DiscussionPermissions discussionPermissions = (DiscussionPermissions)
                     portletRequest.getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
@@ -127,5 +148,13 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Long getSharedColabId() {
+        return sharedColabId;
+    }
+
+    public void setSharedColabId(Long sharedColabId) {
+        this.sharedColabId = sharedColabId;
     }
 }

@@ -22,8 +22,8 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
 
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
@@ -199,7 +199,7 @@ public class BaseProposalWrapper {
             commentThread.setAuthorId(proposal.getAuthorId());
             commentThread.setIsQuiet(true);
             commentThread.setTitle(proposal.getProposalId() + "_fellowReview");
-            commentThread = CommentClient.createThread(commentThread);
+            commentThread = ThreadClientUtil.createThread(commentThread);
             fellowDiscussionId =  commentThread.getThreadId();
             proposal.setFellowDiscussionId(fellowDiscussionId);
             try {

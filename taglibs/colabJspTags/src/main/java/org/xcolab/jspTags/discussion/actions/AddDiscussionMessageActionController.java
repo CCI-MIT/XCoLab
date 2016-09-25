@@ -1,5 +1,8 @@
 package org.xcolab.jspTags.discussion.actions;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -11,17 +14,17 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.activityEntry.discussion.DiscussionAddCommentActivityEntry;
 import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
@@ -30,10 +33,11 @@ import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.liferay.SharedColabUtil;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.Cookie;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -67,15 +71,15 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             comment.setContent(body);
             comment.setAuthorId(userId);
             comment.setThreadId(threadId);
-            comment = CommentClient.createComment(comment);
-            CommentThread commentThread = CommentClient.getThread(threadId);
+            comment = CommentClientUtil.createComment(comment);
+            CommentThread commentThread = ThreadClientUtil.getThread(threadId);
 
             updateAnalyticsAndActivities(commentThread, comment, userId, request);
 
             if (!commentThread.getIsQuiet()) {
 
                 if (commentThread.getCategory() == null) {
-                    final Long proposalIdForThread = CommentClient
+                    final Long proposalIdForThread = ThreadClientUtil
                             .getProposalIdForThread(commentThread.getThreadId());
                     if (proposalIdForThread != null && proposalIdForThread != 0L) {
                         ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(),
@@ -133,7 +137,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
         indexer.reindex(userId);
 
-        int commentCount = CommentClient.countCommentsByAuthor(userId);
+        int commentCount = CommentClientUtil.countCommentsByAuthor(userId);
         if (commentCount > 0) {
             int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(commentCount);
             AnalyticsUtil.publishEvent(request, userId, COMMENT_ANALYTICS_KEY + analyticsValue,

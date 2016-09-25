@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -87,6 +87,6 @@ public class BaseProposalTabController extends BaseProposalsController {
                         + proposalsContext.getProposalWrapped(request).getName()
                         + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return CommentClient.createThread(thread).getThreadId();
+        return ThreadClientUtil.createThread(thread).getThreadId();
     }
 }
