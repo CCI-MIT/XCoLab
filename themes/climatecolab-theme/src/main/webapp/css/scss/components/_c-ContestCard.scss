@@ -9,7 +9,7 @@ $c-ContestCard__meta__flag__background--color: $t-Color__secondary !default;
 $c-ContestCard__meta__flag__background--grey: $t-Color__grey--light !default;
 $c-ContestCard__meta__flag__fontWeight: $b-Typography__fontWeight !default;
 
-$c-ContestCard__text__height: 114px !default;
+$c-ContestCard__text__height: 104px !default;
 $c-ContestCard__text__title__textColor: $t-Color__primary !default;
 $c-ContestCard__text__title__textColor--hover: $b-Typography__textColor__a--isHover !default;
 
@@ -98,7 +98,7 @@ $c-ContestCard__border__bottom: null !default;
 
 .c-ContestCard__meta__flag--grey { //.contest-flag-grey {
   display: inline-block;
-  margin: 3px;
+  margin: 8px;
   padding: 2px;
   border-radius: 3px;
   height: 20px;
