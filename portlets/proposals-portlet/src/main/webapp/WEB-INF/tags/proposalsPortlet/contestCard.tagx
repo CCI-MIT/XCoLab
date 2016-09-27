@@ -13,64 +13,60 @@
             </h3>
             ${contest.contestName }
         </div>
+        <c:if test="${contest.flag ge 0}">
+            <c:choose>
+                <c:when test="${not empty contest.flagText and contest.flag == 1}">
+                    <div class="c-ContestCard__meta__flag--grey"> ${contest.flagText} </div>
+                </c:when>
+                <c:when test="${not empty contest.flagText and contest.flag == 2}">
+                    <div class="c-ContestCard__meta__flag--grey"> ${contest.flagText} </div>
+                </c:when>
+                <c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
+                    <div class="c-ContestCard__meta__flag--grey" style="font-size: 13px;"> Winners to be announced </div>
+                </c:when>
+                <c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
+                    <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
+                </c:when>
+                <c:when test='${not empty contest.activePhase.status}'>
+                    <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
+                </c:when>
+            </c:choose>
+        </c:if>
         <div class="c-ContestCard__image">
         	<a href="${contest.contestUrl}">
-            	<img src="http://climatecolab.org/image/contest?img_id=${contest.contestLogoId}" width="151" height="151" alt="${contest.contestShortName }" />
+            	<img src="http://climatecolab.org/image/contest?img_id=${contest.contestLogoId}" alt="${contest.contestShortName }" />
             </a>
         </div>
-        <div class="c-ContestCard__meta">
-            <div class="c-ContestCard__meta__count">
-                <div class="prop"><strong>${contest.proposalsCount}</strong>
-                    <c:choose>
-                        <c:when test="${contest.proposalsCount == 1}">
-                            ${contestType.proposalName}</c:when>
-                        <c:otherwise> ${contestType.proposalNamePlural}</c:otherwise>
-                    </c:choose>
-                </div>
-
+        <div class="c-ContestCard__meta__count">
+            <div class="prop"><strong>${contest.proposalsCount}</strong>
                 <c:choose>
-
-                    <c:when test="${not empty contest.activePhase and contest.activePhase.canVote }">
-                        <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong>
-                            <c:choose>
-                                <c:when test="${contest.votesCount == 1}"> vote</c:when>
-                                <c:otherwise> votes</c:otherwise>
-                            </c:choose>
-
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.totalCommentsCount}</strong>
-                            <c:choose>
-                                <c:when test="${contest.totalCommentsCount == 1}"> comment</c:when>
-                                <c:otherwise> comments</c:otherwise>
-                            </c:choose>
-
-                        </div>
-                    </c:otherwise>
+                    <c:when test="${contest.proposalsCount == 1}">
+                        ${contestType.proposalName}</c:when>
+                    <c:otherwise> ${contestType.proposalNamePlural}</c:otherwise>
                 </c:choose>
-
             </div>
 
-            <c:if test="${contest.flag ge 0}">
-                <c:choose>
-                    <c:when test="${not empty contest.flagText and contest.flag == 1}">
-                        <div class="c-ContestCard__meta__flag--color"> ${contest.flagText} </div>
-                    </c:when>
-                    <c:when test="${not empty contest.flagText and contest.flag == 2}">
-                        <div class="c-ContestCard__meta__flag--grey"> ${contest.flagText} </div>
-                    </c:when>
-                    <c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
-                        <div class="c-ContestCard__meta__flag--grey" style="font-size: 13px;"> Winners to be announced </div>
-                    </c:when>
-                    <c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
-                        <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
-                    </c:when>
-                    <c:when test='${not empty contest.activePhase.status}'>
-                        <div class="c-ContestCard__meta__flag--color"> ${contest.activePhase.name} </div>
-                    </c:when>
-                </c:choose>
-            </c:if>
+            <c:choose>
+                <c:when test="${not empty contest.activePhase and contest.activePhase.canVote }">
+                    <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong>
+                        <c:choose>
+                            <c:when test="${contest.votesCount == 1}"> vote</c:when>
+                            <c:otherwise> votes</c:otherwise>
+                        </c:choose>
+
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.totalCommentsCount}</strong>
+                        <c:choose>
+                            <c:when test="${contest.totalCommentsCount == 1}"> comment</c:when>
+                            <c:otherwise> comments</c:otherwise>
+                        </c:choose>
+
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
         </div>
-     </div> <!-- /contestbox -->
+     </div>
 </jsp:root>
