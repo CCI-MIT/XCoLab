@@ -55,6 +55,8 @@ $c-ContestCard__border__bottom: null !default;
   img {
     height: 200px;
     width: 200px;
+    border-top: $c-ContestCard__border;
+    border-bottom: $c-ContestCard__border;
   }
 }
 
