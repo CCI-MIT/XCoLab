@@ -114,8 +114,8 @@ public class OntologyController {
     }
 
     @RequestMapping(value = "/focusAreaOntologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<FocusAreaOntologyTerm> getFocusAreaOntologyTerms(@RequestParam Long focusAreaId,
-                                                                 @RequestParam Long ontologTermId
+    public List<FocusAreaOntologyTerm> getFocusAreaOntologyTerms(@RequestParam(required = false) Long focusAreaId,
+                                                                 @RequestParam(required = false) Long ontologTermId
     ) {
         return focusAreaOntologyTermDao.findByGiven(focusAreaId,ontologTermId);
     }
@@ -150,7 +150,7 @@ public class OntologyController {
         }
     }
 
-    @RequestMapping(value = "/impactDefaultSeriesDatas", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = "/impactDefaultSeries", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ImpactDefaultSeries> getImpactDefaultSeries(
             @RequestParam(required = false) Long focusAreaId,
             @RequestParam(required = false) String name

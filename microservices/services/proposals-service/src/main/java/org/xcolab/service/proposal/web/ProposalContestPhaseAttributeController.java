@@ -26,20 +26,20 @@ public class ProposalContestPhaseAttributeController {
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) String name
     ) {
-        return proposalContestPhaseAttributeDao.findByGiven(contestPhaseId, proposalId, name);
+        return proposalContestPhaseAttributeDao.findByGiven(proposalId, contestPhaseId, name);
     }
     @RequestMapping(value = "/proposalContestPhaseAttributes/getByContestPhaseProposalIdName", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public ProposalContestPhaseAttribute getProposalContestPhaseAttributesS(
+    public ProposalContestPhaseAttribute getProposalContestPhaseAttributesByContestPhase(
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) String name
-    ) throws EntityNotFoundException {
-        List<ProposalContestPhaseAttribute> prop = proposalContestPhaseAttributeDao.findByGiven(contestPhaseId, proposalId, name);
+    ) throws NotFoundException {
+        List<ProposalContestPhaseAttribute> prop = proposalContestPhaseAttributeDao.findByGiven(proposalId, contestPhaseId , name);
         if(prop!= null && prop.size()>=1) {
             return prop.get(0);
         }
         else{
-            throw new EntityNotFoundException();
+            throw new NotFoundException();
         }
     }
     @RequestMapping(value = "/proposalContestPhaseAttributes", method = RequestMethod.POST)

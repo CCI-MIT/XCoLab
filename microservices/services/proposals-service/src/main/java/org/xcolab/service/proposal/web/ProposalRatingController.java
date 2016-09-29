@@ -1,5 +1,6 @@
 package org.xcolab.service.proposal.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +21,11 @@ import java.util.List;
 @RestController
 public class ProposalRatingController {
 
+    @Autowired
     private ProposalRatingDao proposalRatingDao;
-
+    @Autowired
     private ProposalRatingValueDao proposalRatingValueDao;
-
+    @Autowired
     private ProposalRatingTypeDao proposalRatingTypeDao;
 
     @RequestMapping(value = "/proposalRatings", method = {RequestMethod.GET, RequestMethod.HEAD})

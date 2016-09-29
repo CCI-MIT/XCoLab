@@ -25,7 +25,7 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
     public List<PlanSectionDefinition> findByGiven(Long planTemplateId, Boolean weight) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PLAN_SECTION_DEFINITION)
-                .join(PLAN_TEMPLATE_SECTION).on(PLAN_TEMPLATE_SECTION.PLAN_TEMPLATE_ID.eq(planTemplateId))
+                .join(PLAN_TEMPLATE_SECTION).on(PLAN_TEMPLATE_SECTION.PLAN_SECTION_ID.eq(PLAN_SECTION_DEFINITION.ID_))
                 .getQuery();
 
         if (planTemplateId != null) {

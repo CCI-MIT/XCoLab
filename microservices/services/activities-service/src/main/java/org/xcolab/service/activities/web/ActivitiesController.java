@@ -36,9 +36,18 @@ public class ActivitiesController {
     @Autowired
     private ActivitiesService activitiesService;
 
-    @RequestMapping(value = "/activityEntries", method = RequestMethod.POST)
-    public ActivityEntry createActivity(@RequestBody ActivityEntry activityEntry, @RequestParam Integer providerType) {
+    @RequestMapping(value = "/activityEntries/createActivityEntry", method = RequestMethod.POST)
+    public ActivityEntry createActivity(@RequestParam Long memberId,
+                                        @RequestParam Long classPrimaryKey,
+                                        @RequestParam String extraData,
+                                        @RequestParam Integer providerType) {
         java.util.Date date = new java.util.Date();
+
+        ActivityEntry activityEntry = new ActivityEntry();
+        activityEntry.setMemberId(memberId);
+        activityEntry.setClassPrimaryKey(classPrimaryKey);
+        activityEntry.setExtraData(extraData);
+
         activityEntry.setCreateDate(new Timestamp(date.getTime()));
 
         ActivityEntryContentProvider provider = ActivityProvidersImpl.getActivityEntryContentProviderByType(providerType);

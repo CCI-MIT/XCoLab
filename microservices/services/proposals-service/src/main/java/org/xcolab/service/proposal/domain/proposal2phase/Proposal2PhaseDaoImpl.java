@@ -71,7 +71,13 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
         if (contestPhaseId != null) {
             query.addConditions(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId));
         }
-        return query.fetchInto(Proposal2Phase.class);
+
+        Result<Record> records = query.fetch();
+        if(records != null && records.size()> 0){
+            return records.into(Proposal2Phase.class);
+        }else{
+            return null;
+        }
     }
 
     public Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {

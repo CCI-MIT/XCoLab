@@ -4,6 +4,7 @@
 package org.xcolab.client.contest.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -75,6 +76,10 @@ public class OntologyTerm implements Serializable {
         return this.id_;
     }
 
+    @JsonIgnore
+    public Long getId() {
+        return this.id_;
+    }
     public void setId_(Long id_) {
         this.id_ = id_;
     }

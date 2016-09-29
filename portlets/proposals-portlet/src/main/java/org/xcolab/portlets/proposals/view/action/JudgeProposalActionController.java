@@ -204,7 +204,7 @@ public class JudgeProposalActionController {
             }
             for (Proposal proposal : stillActiveProposals) {
                     ProposalContestPhaseAttribute fellowActionAttribute = ProposalsClient.
-                            getProposalContestPhaseAttribute(judgingPhase.getContestPhasePK(), proposal.getProposalId(),
+                            getProposalContestPhaseAttribute( proposal.getProposalId(),judgingPhase.getContestPhasePK(),
                                     ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
                     JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
 

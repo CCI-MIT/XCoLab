@@ -333,9 +333,8 @@ public class ProposalsContextImpl implements ProposalsContext {
 
                 }
                 if (contestPhase != null) {
-                    org.xcolab.client.contest.pojo.ContestPhase contestPhaseMicro = ContestClient.getContestPhase(contestPhase.getContestPhasePK());
                     request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,
-                            new BaseContestPhaseWrapper(contestPhaseMicro));//contestPhase
+                            new BaseContestPhaseWrapper(contestPhase));//contestPhase
 
                     contestType = ContestClient
                             .getContestType(contest.getContestTypeId());

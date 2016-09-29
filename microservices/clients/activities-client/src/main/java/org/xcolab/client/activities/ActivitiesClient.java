@@ -24,10 +24,16 @@ public final class ActivitiesClient {
             new RestResource<>(activitiesService, "activitySubscriptions",
                     ActivitySubscription.TYPES);
 
-    public static ActivityEntry createActivityEntry(ActivityEntry activityEntry, Integer providerType) {
-        return activityEntryResource.create(activityEntry)
+    public static ActivityEntry createActivityEntry(Long memberId,
+                                                    Long classPrimaryKey,
+                                                    String extraData,
+                                                    Integer providerType) {
+        return activityEntryResource.service("createActivityEntry", ActivityEntry.class)
                 .queryParam("providerType", providerType)
-                .execute();
+                .queryParam("memberId", memberId)
+                .queryParam("classPrimaryKey",classPrimaryKey)
+                .queryParam("extraData",extraData)
+                .post();
     }
 
     public static ActivityEntry getActivityEntry(Long activityEntryId)

@@ -1,10 +1,13 @@
 package org.xcolab.util.http.client;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.AbstractHttpResource;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.client.queries.ServiceQuery;
+
+import java.util.List;
 
 public class ServiceResource extends AbstractHttpResource implements HttpResource {
 
@@ -29,6 +32,18 @@ public class ServiceResource extends AbstractHttpResource implements HttpResourc
 
     public <T, R> ServiceQuery<T, R> service(String serviceEndpoint, Class<R> returnType) {
         return new ServiceQuery<>(this, serviceEndpoint, returnType);
+    }
+    //
+    public <T, R> ServiceQuery<T, R> service(long id, String serviceEndpoint, ParameterizedTypeReference<List<T>> typeReference) {
+        return new ServiceQuery<>(this, id, serviceEndpoint, typeReference);
+    }
+
+    public <T, R> ServiceQuery<T, R> service(String id, String serviceEndpoint, ParameterizedTypeReference<List<T>> typeReference) {
+        return new ServiceQuery<>(this, id, serviceEndpoint, typeReference);
+    }
+
+    public <T, R> ServiceQuery<T, R> service(String serviceEndpoint, ParameterizedTypeReference<List<T>> typeReference) {
+        return new ServiceQuery<>(this, serviceEndpoint, typeReference);
     }
 
     public <T, R> ServiceQuery<T, R> query(long id, Class<R> returnType) {

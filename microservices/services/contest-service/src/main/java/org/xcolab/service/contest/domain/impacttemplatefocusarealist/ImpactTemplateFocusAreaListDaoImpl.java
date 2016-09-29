@@ -4,12 +4,14 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ImpactTemplateFocusAreaList;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.IMPACT_TEMPLATE_FOCUS_AREA_LIST;
 
 
+@Repository
 public class ImpactTemplateFocusAreaListDaoImpl implements ImpactTemplateFocusAreaListDao {
 
     @Autowired

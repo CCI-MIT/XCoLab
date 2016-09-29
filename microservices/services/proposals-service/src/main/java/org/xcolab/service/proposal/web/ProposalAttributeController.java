@@ -19,18 +19,28 @@ public class ProposalAttributeController {
     ProposalAttributeService proposalAttributeService;
 
 
-    /*
-    ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
-                    baseProposalId);
-    ProposalAttributeLocalServiceUtil.getImpactProposalAttributes
-    ProposalAttributeLocalServiceUtil.removeAttribute(proposalsContext.getUser(request).getUserId(), proposalAttribute);
-    ProposalAttributeLocalServiceUtil.getAttributes(visibleProposal.getProposalId(), targetVersion);
-    ProposalAttributeLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L)
 
-    * */
+    @RequestMapping(value = "/proposalAttributes/setProposalAttribute", method = RequestMethod.POST)
+    public ProposalAttribute createProposalAttribute(
+        @RequestParam Long proposalId,
+        @RequestParam String name,
+        @RequestParam String stringValue,
+        @RequestParam Long numericValue,
+        @RequestParam Double realValue,
+        @RequestParam Long additionalId,
+        @RequestParam Integer version,
+        @RequestParam Integer versionWhenCreated,
+        @RequestParam Long authorId){
 
-    @RequestMapping(value = "/proposalAttributes", method = RequestMethod.POST)
-    public ProposalAttribute createProposalAttribute(@RequestBody ProposalAttribute proposalAttribute, @RequestParam Long authorId) {
+        ProposalAttribute proposalAttribute = new ProposalAttribute();
+        proposalAttribute.setProposalId(proposalId);
+        proposalAttribute.setName(name);
+        proposalAttribute.setStringValue(stringValue);
+        proposalAttribute.setNumericValue(numericValue);
+        proposalAttribute.setRealValue(realValue);
+        proposalAttribute.setAdditionalId(additionalId);
+        proposalAttribute.setVersion(version);
+        proposalAttribute.setVersionWhenCreated(versionWhenCreated);
         return this.proposalAttributeService.setAttribute(proposalAttribute, authorId);
     }
 

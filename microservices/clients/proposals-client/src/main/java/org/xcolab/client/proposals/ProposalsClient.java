@@ -40,6 +40,7 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.sql.Timestamp;
@@ -92,7 +93,7 @@ public final class ProposalsClient {
 
 
     private static final RestResource<ProposalMoveHistory> proposalMoveHistoryResource = new RestResource<>(proposalService,
-            "proposalMoveHistorys", ProposalMoveHistory.TYPES);
+            "proposalMoveHistories", ProposalMoveHistory.TYPES);
 
 
     public static Proposal createProposal(Proposal proposal) {
@@ -119,8 +120,8 @@ public final class ProposalsClient {
     }
 
     public static List<Member> getProposalMembers(Long proposalId) {
-        return proposalResource.service(proposalId, "allMembers", List.class)
-                .get();
+        return proposalResource.service(proposalId, "allMembers", Member.TYPES.getTypeReference())
+                .getList();
     }
 
     public static void removeUserFromProposalTeam(Long proposalId, Long memberUserId) {
@@ -203,9 +204,9 @@ public final class ProposalsClient {
 
 
     public static List<Proposal> getMemberProposals(Long userId ) {
-        return proposalResource.service("getMemberProposals", List.class)
+        return proposalResource.service("getMemberProposals", Proposal.TYPES.getTypeReference())
                 .queryParam("userId", userId)
-                .get();
+                .getList();
     }
 
     public static List<Proposal> getSubproposals(Long proposalId, Boolean includeProposalsInSameContest) {
@@ -345,12 +346,16 @@ public final class ProposalsClient {
                 .execute();
     }
 
-    public static ProposalContestPhaseAttribute getProposalContestPhaseAttribute(Long contestPhaseId, Long proposalId, String name) {
-        return proposalContestPhaseAttributeResource.service("getByContestPhaseProposalIdName", ProposalContestPhaseAttribute.class)
-                .optionalQueryParam("contestPhaseId", contestPhaseId)
-                .optionalQueryParam("proposalId", proposalId)
-                .optionalQueryParam("name", name)
-                .get();
+    public static ProposalContestPhaseAttribute getProposalContestPhaseAttribute(Long proposalId,Long contestPhaseId, String name) {
+        try {
+            return proposalContestPhaseAttributeResource.service("getByContestPhaseProposalIdName", ProposalContestPhaseAttribute.class)
+                    .optionalQueryParam("contestPhaseId", contestPhaseId)
+                    .optionalQueryParam("proposalId", proposalId)
+                    .optionalQueryParam("name", name)
+                    .getChecked();
+        }catch (EntityNotFoundException ignored){
+            return null;
+        }
     }
 
     public static Boolean isProposalContestPhaseAttributeSetAndTrue(Long proposalId, long contestPhaseId, String name) {
@@ -467,11 +472,19 @@ public final class ProposalsClient {
     }
 
     public static ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {
-        return proposalAttributeResource.service("getByProposalIdVersionAditionalId", ProposalAttribute.class)
+        ListQuery<ProposalAttribute> listQ = proposalAttributeResource.list()
                 .queryParam("proposalId", proposalId)
-                .queryParam("name", name)
-                .queryParam("additionalId", additionalId)
-                .get();
+                .queryParam("name", name);
+        if(additionalId!= null && additionalId != 0){
+            listQ = listQ.queryParam("additionalId", additionalId);
+        }
+        List<ProposalAttribute> list = listQ.execute();
+        if(list!=null && list.size()>0 ){
+            return list.get(0);
+        }else{
+            return null;
+        }
+
     }
 
 
@@ -491,10 +504,10 @@ public final class ProposalsClient {
     }
 
     public static List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {
-        return proposalAttributeResource.service("getImpactProposalAttributes", List.class)
+        return proposalAttributeResource.service("getImpactProposalAttributes", ProposalAttribute.TYPES.getTypeReference())
                 .queryParam("proposalId", proposal.getProposalId())
                 .queryParam("currentVersion", proposal.getCurrentVersion())
-                .get();
+                .getList();
     }
 
     public static List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal, FocusArea focusArea) {
@@ -518,7 +531,7 @@ public final class ProposalsClient {
 
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
         ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
-        return ContestClient.getContest(contestPhase.getContestPhasePK());
+        return ContestClient.getContest(contestPhase.getContestPK());
 
     }
 
@@ -563,8 +576,17 @@ public final class ProposalsClient {
     }
 
     public static ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute, Long authorId) {
-        return proposalAttributeResource.create(proposalAttribute).queryParam("authorId", authorId)
-                .execute();
+        return proposalAttributeResource.service("setProposalAttribute", ProposalAttribute.class)
+                .queryParam("proposalId", proposalAttribute.getProposalId())
+                .queryParam("name", proposalAttribute.getName())
+                .queryParam("stringValue", proposalAttribute.getStringValue())
+                .queryParam("numericValue", proposalAttribute.getNumericValue())
+                .queryParam("realValue", proposalAttribute.getRealValue())
+                .queryParam("additionalId", proposalAttribute.getAdditionalId())
+                .queryParam("version", proposalAttribute.getVersion())
+                .queryParam("versionWhenCreated", proposalAttribute.getVersionWhenCreated())
+                .queryParam("authorId", authorId)
+                .post();
     }
 
     public static Contest getLatestContestInProposal(Long proposalId) throws ContestNotFoundException {
@@ -609,15 +631,12 @@ public final class ProposalsClient {
     }
 
     protected static List<ProposalRating> getRatingsForProposal(long proposalId, long contestPhaseId, int judgeType) {
-        try {
-            return proposalRatingResource.service("findByProposalIdJudgeTypeJudgeIdContestPhaseId", List.class)
+
+            return proposalRatingResource.service("findByProposalIdJudgeTypeJudgeIdContestPhaseId", ProposalRating.TYPES.getTypeReference())
                     .queryParam("proposalId", proposalId)
                     .queryParam("judgeType", judgeType)
-                    .queryParam("contestPhaseId", contestPhaseId).getChecked();
-        } catch (EntityNotFoundException ignored) {
+                    .queryParam("contestPhaseId", contestPhaseId).getList();
 
-        }
-        return null;
     }
 
 
@@ -630,16 +649,12 @@ public final class ProposalsClient {
     }
 
     protected static List<ProposalRating> getRatingsForProposalAndUser(long proposalId, int judgeType, long userId, long contestPhaseId) {
-        try {
-            return proposalRatingResource.service("findByProposalIdJudgeTypeJudgeIdContestPhaseId", List.class)
+            return proposalRatingResource.service("findByProposalIdJudgeTypeJudgeIdContestPhaseId", ProposalRating.TYPES.getTypeReference())
                     .queryParam("proposalId", proposalId)
                     .queryParam("judgeType", judgeType)
                     .queryParam("userId", userId)
-                    .queryParam("contestPhaseId", contestPhaseId).getChecked();
-        } catch (EntityNotFoundException ignored) {
+                    .queryParam("contestPhaseId", contestPhaseId).getList();
 
-        }
-        return null;
     }
 
     public static ProposalRating createProposalRating(ProposalRating proposalRating) {

@@ -388,7 +388,7 @@ public class BaseProposalWrapper {
         if (members == null) {
             members = new ArrayList<>();
             boolean hasOwner = false;
-            for (UsersGroups user : UsersGroupsClient.getUserGroupsByUserIdGroupId(null, proposal.getProposalId())) {
+            for (UsersGroups user : UsersGroupsClient.getUserGroupsByUserIdGroupId(null, proposal.getGroupId())) {
 
                 try {
                     Member member = MembersClient.getMember(user.getUserId());

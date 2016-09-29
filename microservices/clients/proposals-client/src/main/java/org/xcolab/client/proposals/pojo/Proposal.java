@@ -222,7 +222,11 @@ public class Proposal implements Serializable {
     @JsonIgnore
     public boolean isOpen(){
         ProposalAttribute attribute = ProposalsClient.getProposalAttribute(this.getProposalId(), ProposalAttributeKeys.OPEN, 0l);
-        return attribute.getNumericValue() > 0;
+        if(attribute!= null) {
+            return attribute.getNumericValue() > 0;
+        }else{
+            return false;
+        }
     }
 
     @JsonIgnore
@@ -260,8 +264,11 @@ public class Proposal implements Serializable {
         final ContestPhase contestPhase = ContestClient.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
-            visibleAttributeValue = ProposalsClient.getProposalContestPhaseAttribute(this.getProposalId(),
-                    contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE).getNumericValue();
+            ProposalContestPhaseAttribute pcpa = ProposalsClient.getProposalContestPhaseAttribute(this.getProposalId(),
+                    contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
+            if(pcpa!=null) {
+                visibleAttributeValue = pcpa.getNumericValue();
+            }
         }
         return !this.getVisible() || visibleAttributeValue == 0;
 

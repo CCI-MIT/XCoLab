@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.xcolab.client.activities.enums.ActivityProvidersType;
+import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
@@ -36,9 +38,10 @@ public class ProposalSupporterController {
         return proposalSupporterDao.countByProposalId(proposalId);
     }
 
-    @RequestMapping(value = "/proposalSupporter", method = RequestMethod.POST)
+    @RequestMapping(value = "/proposalSupporters", method = RequestMethod.POST)
     public ProposalSupporter createProposalSupporter(@RequestBody ProposalSupporter proposalSupporter) {
         return this.proposalSupporterDao.create(proposalSupporter);
+
     }
 
     @RequestMapping(value = "/proposalSupporters/isMemberProposalSupporter", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -55,11 +58,12 @@ public class ProposalSupporterController {
         }
     }
 
-    @RequestMapping(value = "/proposalSupporter/deleteProposalSupporter", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/proposalSupporters/deleteProposalSupporter", method = RequestMethod.DELETE)
     public Boolean deleteProposalSupporter(@RequestParam("proposalId") Long proposalId,
-                                           @RequestParam("memberId") Long memberId)
-            throws NotFoundException {
+                                           @RequestParam("memberId") Long memberId) {
         this.proposalSupporterDao.delete(proposalId, memberId);
+        ActivityEntryHelper.createActivityEntry(memberId, proposalId, null,
+                ActivityProvidersType.ProposalSupporterRemovedActivityEntry.getType());
         return true;
 
     }

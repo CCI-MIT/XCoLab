@@ -73,14 +73,14 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         boolean editValidated = false;
         final ProposalsPermissions proposalsPermissions = proposalsContext.getPermissions(request);
-        if (edit && proposalsPermissions.getCanEdit()){
+        if (edit && proposalsPermissions.getCanEdit()) {
             editValidated = true;
         }
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
         model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
 
-        final Proposal proposal =  proposalsContext.getProposal(request);
+        final Proposal proposal = proposalsContext.getProposal(request);
         final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
         try {
             final Contest baseContest = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
@@ -97,10 +97,10 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                         baseContest, baseContestPhase, null);
                 model.addAttribute("baseProposal", baseProposalWrapped);
 
-                try{
+                try {
                     org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(baseContest.getContestPK());
                     model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
-                }catch (ContestNotFoundException ignored){
+                } catch (ContestNotFoundException ignored) {
 
                 }
 
@@ -113,12 +113,12 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
                 Set<Long> newContestSections = new HashSet<>();
 
-                for (ProposalSectionWrapper section: proposalWrapped.getSections()) {
+                for (ProposalSectionWrapper section : proposalWrapped.getSections()) {
                     newContestSections.add(section.getSectionDefinitionId());
                 }
 
                 boolean hasNotMappedSections = false;
-                for (ProposalSectionWrapper section: baseProposalWrapped.getSections()) {
+                for (ProposalSectionWrapper section : baseProposalWrapped.getSections()) {
                     if (section.getContent() != null && !section.getContent().trim().isEmpty()) {
                         // we have non empty section in base proposal, check if such
                         // section exists in target contest
@@ -144,7 +144,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 request.setAttribute("imageUploadHelpText",
                         ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
 
-                model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
+                model.addAttribute("mustFilterContent", ConfigurationAttributeKey.FILTER_PROFANITY.get());
 
                 return "proposalDetails_edit";
             }
@@ -153,7 +153,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             setLinkedProposals(model, proposal);
             final Contest contest = proposalsContext.getContest(request);
             populateMoveHistory(model, proposal, contest);
-        }catch (ContestNotFoundException ignored){
+        } catch (ContestNotFoundException ignored) {
 
         }
 
@@ -162,7 +162,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     }
 
     private void populateMoveHistory(Model model, Proposal proposal, Contest contest)
-            throws  SystemException {
+            throws SystemException {
         List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalsClient
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         List<MoveHistoryWrapper> sourceMoveHistories = new ArrayList<>();
@@ -173,10 +173,12 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
 
-            ProposalMoveHistory targetMoveHistoryRaw = ProposalsClient
-                    .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
+        ProposalMoveHistory targetMoveHistoryRaw = ProposalsClient
+                .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
+        if (targetMoveHistoryRaw != null) {
             MoveHistoryWrapper targetMoveHistory = new MoveHistoryWrapper(targetMoveHistoryRaw);
             model.addAttribute("targetMoveHistory", targetMoveHistory);
+        }
 
     }
 
@@ -228,7 +230,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
         // No active proposal creation phase could be found -
         // should never be the case unless an admin is creating a proposal in a non-creation phase
-        catch(SystemException exception) {
+        catch (SystemException exception) {
             return null;
         }
     }

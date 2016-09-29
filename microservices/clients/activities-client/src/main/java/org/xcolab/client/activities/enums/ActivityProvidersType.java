@@ -23,8 +23,8 @@ public enum ActivityProvidersType {
 
     Integer activityProvidersType;
 
-    ActivityProvidersType(Integer activityProvidersType){
-        activityProvidersType = activityProvidersType;
+    ActivityProvidersType(Integer activityProvidersTypez){
+        activityProvidersType = activityProvidersTypez;
     }
 
 

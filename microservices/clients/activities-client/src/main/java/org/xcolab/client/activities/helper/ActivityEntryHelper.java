@@ -13,13 +13,10 @@ public class ActivityEntryHelper {
                                            String extraData,
                                            Integer providerType) {
 
-        ActivityEntry activityEntry = new ActivityEntry();
-        activityEntry.setMemberId(memberId);
-        activityEntry.setClassPrimaryKey(classPrimaryKey);
-        activityEntry.setExtraData(extraData);
 
 
-        ActivitiesClient.createActivityEntry(activityEntry, providerType);
+        ActivitiesClient.createActivityEntry(memberId, classPrimaryKey, extraData, providerType);
+
 
     }
 }

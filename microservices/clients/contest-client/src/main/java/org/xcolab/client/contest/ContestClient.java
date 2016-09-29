@@ -75,7 +75,7 @@ public class ContestClient {
             "planTemplates", PlanTemplate.TYPES);
 
     private static final RestResource<PlanSectionDefinition> planSectionDefinitionResource = new RestResource<>(contestService,
-            "planSectionDefinition", PlanSectionDefinition.TYPES);
+            "planSectionDefinitions", PlanSectionDefinition.TYPES);
 
 
     private static final RestResource<PlanTemplateSection> planTemplateSectionResource = new RestResource<>(contestService,
@@ -194,20 +194,16 @@ public class ContestClient {
     }
 
     public static List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
-        return contestResource.service("getContestMatchingOntologyTerms", List.class)
+        return contestResource.service("getContestMatchingOntologyTerms", Contest.TYPES.getTypeReference())
                 .queryParam("ontologyTermIds", ontologyTermIds)
-                .get();
+                .getList();
     }
 
     public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
-
-        try {
-            return contestResource.service(contestId, "getSubContestsByOntologySpaceId", List.class)
+            return contestResource.service(contestId, "getSubContestsByOntologySpaceId", Contest.TYPES.getTypeReference())
                     .optionalQueryParam("ontologySpaceId", ontologySpaceId)
-                    .getChecked();
-        } catch (EntityNotFoundException e) {
-            return new ArrayList<>();
-        }
+                    .getList();
+
     }
 
     public static void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {

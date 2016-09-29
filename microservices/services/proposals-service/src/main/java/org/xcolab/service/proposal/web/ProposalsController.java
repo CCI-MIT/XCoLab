@@ -204,7 +204,7 @@ public class ProposalsController {
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long userId
     ) {
-        return proposalVoteDao.countByGiven(contestPhaseId, proposalId, userId);
+        return proposalVoteDao.countByGiven(proposalId,contestPhaseId, userId);
     }
 
     @RequestMapping(value = "/proposalVotes/hasUserVoted", method = {RequestMethod.GET, RequestMethod.HEAD})

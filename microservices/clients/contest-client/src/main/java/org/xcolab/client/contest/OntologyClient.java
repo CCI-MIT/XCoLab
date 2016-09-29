@@ -82,9 +82,9 @@ public class OntologyClient {
         return null;
     }
     public static List<OntologyTerm> getAllOntologyTermDescendant(Long ontologyTermId) {
-        return ontologyTermResource.service("getAllOntologyTermDescendant", List.class)
+        return ontologyTermResource.service("getAllOntologyTermDescendant", OntologyTerm.TYPES.getTypeReference())
                 .queryParam("ontologyTermId", ontologyTermId)
-                .execute();
+                .getList();
     }
 
     public static OntologyTerm getOntologyTerm(long Id_) {
