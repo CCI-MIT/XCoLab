@@ -99,10 +99,11 @@ $c-CollectionCard__border__bottom: null !default;
 }
 
 .c-CollectionCard__text__title {
-   margin-bottom: 8px;
    font-size: 15px;
    color: $c-CollectionCard__text__title__textColor;
    padding: 8px;
+   padding-top: 0px;
+   text-align: center;
 
    a:hover {
      color: $c-CollectionCard__text__title__textColor--hover;
@@ -111,9 +112,11 @@ $c-CollectionCard__border__bottom: null !default;
  }
 
 .c-CollectionCard__text__parent__title {
-  font-size: 12px;
+  font-size: 13px;
   color: black;
   padding: 8px;
+  margin-top: 50px;
+  text-align: center;
 }
 
 .c-CollectionCard__meta__info {

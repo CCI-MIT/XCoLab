@@ -22,13 +22,15 @@
                     <span>workspaces</span>
                 </div>
                 <div class="c-CollectionCard__text__parent__title">
-                    Mitigation
+                    <strong>
+                        Mitigation
+                    </strong>
                 </div>
 
                 <div class="c-CollectionCard__text__title">
-                    <h3>
+                    <a>
                         Title
-                    </h3>
+                    </a>
                 </div>
 
                 <!--
