@@ -67,6 +67,7 @@ public class ProposalService {
             proposal.setVisible(true);
             proposal.setAuthorId(authorId);
             proposal.setCreateDate(new Timestamp(new Date().getTime()));
+            proposal.setCurrentVersion(1);
 
             ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
             final Contest contest = ContestClient.getContest(contestPhase.getContestPK());
@@ -111,6 +112,7 @@ public class ProposalService {
             Group_ group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
             proposal.setGroupId(group.getGroupId());
 
+            proposalDao.update(proposal);
 
             if (contestPhaseId > 0) {
                 // associate proposal with phase

@@ -5,8 +5,7 @@ import com.ext.portlet.ProposalAttributeKeys;
 ;
 
 
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -112,8 +111,7 @@ public class ProposalUpdateHelper {
                         }
                     }
                     if (!section.getStringValue().equals(cleanedReferences.toString())) {
-                        ProposalAttributeLocalServiceUtil
-                                .setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                        ProposalsClient.setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                         cleanedReferences.toString());
                         updateProposalReferences = true;
@@ -145,39 +143,39 @@ public class ProposalUpdateHelper {
         boolean filledAll = true;
 
         if (!StringUtils.equals(updateProposalSectionsBean.getName(), proposalWrapper.getName())) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
-                    ProposalAttributeKeys.NAME, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
+            ProposalsClient.setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                    ProposalAttributeKeys.NAME,0l, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
         } else {
             filledAll = false;
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getPitch(), proposalWrapper.getPitch())) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
-                    ProposalAttributeKeys.PITCH, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(),
+            ProposalsClient.setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                    ProposalAttributeKeys.PITCH, 0l, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(),
                             LinkUtils.getBaseUri(request)));
         } else {
             filledAll = false;
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getDescription(), proposalWrapper.getDescription())) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
-                    ProposalAttributeKeys.DESCRIPTION, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(),
+            ProposalsClient.setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                    ProposalAttributeKeys.DESCRIPTION,0l, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(),
                             LinkUtils.getBaseUri(request)));
         } else {
             filledAll = false;
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getTeam(), proposalWrapper.getTeam())) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
-                    ProposalAttributeKeys.TEAM, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
+            ProposalsClient.setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                    ProposalAttributeKeys.TEAM,0l, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
         } else {
             filledAll = false;
         }
 
         if (updateProposalSectionsBean.getImageId() > 0
                 && updateProposalSectionsBean.getImageId() != proposalWrapper.getImageId()) {
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
-                    ProposalAttributeKeys.IMAGE_ID, updateProposalSectionsBean.getImageId());
+            ProposalsClient.setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                    ProposalAttributeKeys.IMAGE_ID, 0l,updateProposalSectionsBean.getImageId());
         } else {
             filledAll = false;
         }

@@ -41,6 +41,19 @@ public class ProposalAttributeController {
         proposalAttribute.setAdditionalId(additionalId);
         proposalAttribute.setVersion(version);
         proposalAttribute.setVersionWhenCreated(versionWhenCreated);
+
+        if(proposalAttribute.getAdditionalId() == null){
+            proposalAttribute.setAdditionalId(0l);
+        }
+        if(proposalAttribute.getStringValue() == null){
+            proposalAttribute.setStringValue("");
+        }
+        if(proposalAttribute.getRealValue() == null){
+            proposalAttribute.setRealValue(0.0);
+        }
+        if(proposalAttribute.getNumericValue() == null){
+            proposalAttribute.setNumericValue(0l);
+        }
         return this.proposalAttributeService.setAttribute(proposalAttribute, authorId);
     }
 
