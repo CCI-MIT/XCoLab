@@ -6,26 +6,48 @@
 
 	<jsp:directive.attribute name="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper" required="true" rtexprvalue="true" description="Contest" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
-    <div class="c-ContestCard" style="right:6px; bottom:6px;">
-        <div class="c-ContestCard" style="right:3px; bottom:3px;">
-            <div class="c-ContestCard" >
-                <div class="c-ContestCard__text">
-                    <h3 class="c-ContestCard__text__title">
-
-                    </h3>
-
+    <div class="c-CollectionCard--background-container" >
+        <div class="c-CollectionCard--background-container" style="right:3px; bottom:3px;">
+            <div class="c-CollectionCard" style="right:3px; bottom:3px;">
+                <div class="c-CollectionCard__separator" style="margin-top: 70px;">
+                    <div class="c-CollectionCard__circle" style="margin-left: 25px;">
+                        15
+                    </div>
+                    <div class="c-CollectionCard__circle">
+                        15
+                    </div>
+                </div>
+                <div class="c-CollectionCard__meta__info">
+                    <span style="margin-left: 21px;">contests</span>
+                    <span>workspaces</span>
+                </div>
+                <div class="c-CollectionCard__text__parent__title">
+                    Mitigation
                 </div>
 
-                <div class="c-ContestCard__image">
+                <div class="c-CollectionCard__text__title">
+                    <h3>
+                        Title
+                    </h3>
+                </div>
+
+                <!--
+                <div class="c-CollectionCard__image">
                     <a href="http://climatecolab.org/documents/10136/0/CoLab+connected+earth+complete.png/c05abc14-8fd5-4a26-a85d-460004572ca0?t=1380920779000?t=1380920779719">
                         <img src="http://climatecolab.org/documents/10136/0/CoLab+connected+earth+complete.png/c05abc14-8fd5-4a26-a85d-460004572ca0?t=1380920779000?t=1380920779719" alt="test" />
                     </a>
                 </div>
-                <div class="c-ContestCard__meta__count">
-                    <div class="prop"><strong>555</strong>
-                    </div>
+-->
+                <div class="c-CollectionCard__separator">_
 
                 </div>
+                <div class="c-CollectionCard__text">
+                    Blablabla BlablablaBl abl a blaBl  abla blaBlabl ablaBlablab laBlablabla Blablabla BlablablaBl abl a blaBl  abla
+                    blaBlabl ablaBlablab laBlablabla Blablabla BlablablaBl abl a blaBl  abla blaBlabl ablaBlablab laBlablabla
+                    Blablabla BlablablaBl abl a blaBl  abla blaBlabl ablaBlablab laBlablabla
+                    Blablabla BlablablaBl abl a blaBl  abla blaBlabl ablaBlab
+                </div>
+
              </div>
         </div>
     </div>
