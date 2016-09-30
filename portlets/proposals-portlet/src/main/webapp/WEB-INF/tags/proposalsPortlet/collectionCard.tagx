@@ -32,16 +32,8 @@
                         Title
                     </a>
                 </div>
-
-                <!--
-                <div class="c-CollectionCard__image">
-                    <a href="http://climatecolab.org/documents/10136/0/CoLab+connected+earth+complete.png/c05abc14-8fd5-4a26-a85d-460004572ca0?t=1380920779000?t=1380920779719">
-                        <img src="http://climatecolab.org/documents/10136/0/CoLab+connected+earth+complete.png/c05abc14-8fd5-4a26-a85d-460004572ca0?t=1380920779000?t=1380920779719" alt="test" />
-                    </a>
-                </div>
--->
-                <div class="c-CollectionCard__separator">_
-
+                <div class="c-CollectionCard__separator">
+                    <jsp:text/>
                 </div>
                 <div class="c-CollectionCard__text">
                     Blablabla BlablablaBl abl a blaBl  abla blaBlabl ablaBlablab laBlablabla Blablabla BlablablaBl abl a blaBl  abla

@@ -1,14 +1,3 @@
-$c-CollectionCard__meta__flag__capitalization: $b-Typography__capitalization--none !default;
-$c-CollectionCard__meta__flag__padding: 0 15px !default;
-$c-CollectionCard__meta__flag__textColor: white !default;
-$c-CollectionCard__meta__flag__height: 30px !default;
-$c-CollectionCard__meta__flag__fontSize: 15px !default;
-$c-CollectionCard__meta__flag__marginTop: 0 !default;
-$c-CollectionCard__meta__flag__isGradient: true !default;
-$c-CollectionCard__meta__flag__background--color: $t-Color__secondary !default;
-$c-CollectionCard__meta__flag__background--grey: $t-Color__grey--light !default;
-$c-CollectionCard__meta__flag__fontWeight: $b-Typography__fontWeight !default;
-
 $c-CollectionCard__text__height: 104px !default;
 $c-CollectionCard__text__title__textColor: $t-Color__primary !default;
 $c-CollectionCard__text__title__textColor--hover: $b-Typography__textColor__a--isHover !default;
@@ -129,19 +118,4 @@ $c-CollectionCard__border__bottom: null !default;
   }
 }
 
-.c-CollectionCard__meta__flag--grey {
-  display: inline-block;
-  margin: 8px;
-  padding: 2px;
-  border-radius: 3px;
-  height: 20px;
-  line-height: 20px;
-  font-size: 12px;
-  color: $c-CollectionCard__meta__flag__textColor;
-  text-align: center;
-  float: left;
-  text-transform: $c-CollectionCard__meta__flag__capitalization;
-  background: $c-CollectionCard__meta__flag__background--grey;
-
-}
 
