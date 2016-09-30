@@ -1,0 +1,32 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0" >
+
+    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+
+	<jsp:directive.attribute name="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper" required="true" rtexprvalue="true" description="Contest" />
+    <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
+    <div class="c-ContestCard" style="right:6px; bottom:6px;">
+        <div class="c-ContestCard" style="right:3px; bottom:3px;">
+            <div class="c-ContestCard" >
+                <div class="c-ContestCard__text">
+                    <h3 class="c-ContestCard__text__title">
+
+                    </h3>
+
+                </div>
+
+                <div class="c-ContestCard__image">
+                    <a href="http://climatecolab.org/documents/10136/0/CoLab+connected+earth+complete.png/c05abc14-8fd5-4a26-a85d-460004572ca0?t=1380920779000?t=1380920779719">
+                        <img src="http://climatecolab.org/documents/10136/0/CoLab+connected+earth+complete.png/c05abc14-8fd5-4a26-a85d-460004572ca0?t=1380920779000?t=1380920779719" alt="test" />
+                    </a>
+                </div>
+                <div class="c-ContestCard__meta__count">
+                    <div class="prop"><strong>555</strong>
+                    </div>
+
+                </div>
+             </div>
+        </div>
+    </div>
+</jsp:root>
