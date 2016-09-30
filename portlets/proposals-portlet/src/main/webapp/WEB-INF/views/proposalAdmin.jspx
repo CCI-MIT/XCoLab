@@ -184,7 +184,7 @@
                         <form action="${replyToMembershipRequest }" method="post" style="padding: 10px 0; ${count lt fn:length(proposal.membershipRequests) ? 'border-bottom: 1px solid gray;' :''}">
                             <proposalsPortlet:userLinkSimple userId="${request.requestUser.userId}" text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})" />
                             <div>${request.membershipRequest.comments }</div>
-                            <input type="hidden" name="requestId" value="${request.membershipRequest.primaryKey}" />
+                            <input type="hidden" name="requestId" value="${request.membershipRequest.membershipRequestId}" />
                             <div style="margin-top: 10px;">
                                 <textarea name="comment" class="membership-request-comment-admin" onfocus="clearContents(this);">Optional response</textarea>
                                 <div class="allow-deny-membership-box">

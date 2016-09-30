@@ -118,7 +118,7 @@ public class BaseProposalWrapper {
         return null;
     }
 
-    public long getProposalId() {
+    public Long getProposalId() {
         return proposal.getProposalId();
     }
 

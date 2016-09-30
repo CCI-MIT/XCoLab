@@ -30,6 +30,7 @@ public class ProposalAttributeService {
 
     private final ProposalDao proposalDao;
 
+
     private final ProposalVersionDao proposalVersionDao;
 
     @Autowired
@@ -57,7 +58,7 @@ public class ProposalAttributeService {
             // create new one for new proposal version
             for (ProposalAttribute attribute : currentProposalAttributes) {
                 ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
-                if (!updateAlgorithm.hasBeenUpdated(proposalAttribute.getName(), proposalAttribute.getAdditionalId(), proposalAttribute.getNumericValue(), proposalAttribute.getRealValue())) {
+                if (!updateAlgorithm.hasBeenUpdated(proposalAttribute.getName(), zeroIfNull(proposalAttribute.getAdditionalId()), zeroIfNull(proposalAttribute.getNumericValue()), zeroIfNull(proposalAttribute.getRealValue()))) {
                     // clone the attribute and set its version to the new value
                     attribute.setVersion(newVersion);
                     proposalAttributeDao.update(attribute);
@@ -67,7 +68,7 @@ public class ProposalAttributeService {
             }
 
             // set new value for provided attribute
-            ProposalAttribute attribute = proposalAttribute;//setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
+            ProposalAttribute attribute = proposalAttributeDao.create(proposalAttribute);//setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
 
             proposal.setCurrentVersion(newVersion);
             Timestamp updatedDate = new Timestamp((new Date()).getTime());
@@ -92,6 +93,20 @@ public class ProposalAttributeService {
             return attribute;
         }catch (NotFoundException ignored){
             return null;
+        }
+    }
+    private static Double zeroIfNull(Double val){
+        if(val == null){
+            return 0.0;
+        }else{
+            return val;
+        }
+    }
+    private static Long zeroIfNull(Long val){
+        if(val == null){
+            return 0l;
+        }else{
+            return val;
         }
     }
     private void createProposalVersionDescription(long authorId, long proposalId, int version, String updateType,

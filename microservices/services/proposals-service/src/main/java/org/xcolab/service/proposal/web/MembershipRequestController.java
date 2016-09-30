@@ -33,6 +33,19 @@ public class MembershipRequestController {
         }
     }
 
+    @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.PUT)
+    public boolean updateMembershipRequest(@RequestBody MembershipRequest membershipRequest,
+                                           @PathVariable("membershipRequestId") Long membershipRequestId) throws NotFoundException {
+
+        if (membershipRequestId == null || membershipRequestId == 0 || membershipRequestDao.get(membershipRequestId) == null) {
+            throw new NotFoundException("No MembershipRequest with id " + membershipRequestId);
+        } else {
+            return membershipRequestDao.update(membershipRequest);
+        }
+    }
+
+
+
     @RequestMapping(value = "/membershipRequests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<MembershipRequest> getMembershipRequests(
             @RequestParam(required = false) Long groupId,

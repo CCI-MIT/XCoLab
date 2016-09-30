@@ -37,13 +37,13 @@ public class AssignRibbonToProposalActionController {
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
             long contestId = proposalsContext.getContest(request).getContestPK();
 
-            if(ContestClient.getContestPhaseRibbonType(ribbon)==null) {
+
                 ProposalsClient.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
                         ProposalContestPhaseAttributeKeys.RIBBON,null,new Long(ribbon),null);
-            }else{
-                ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId,
-                    ProposalContestPhaseAttributeKeys.RIBBON);
-            }
+
+            //    ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId,
+            //        ProposalContestPhaseAttributeKeys.RIBBON);
+
 
             response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request),
                      proposalsContext.getContestPhase(request).getContestPhasePK()) + "/tab/ADMIN");

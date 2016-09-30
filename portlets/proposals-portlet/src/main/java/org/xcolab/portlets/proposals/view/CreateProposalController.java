@@ -55,6 +55,8 @@ public class CreateProposalController extends BaseProposalsController {
         long userId = themeDisplay.getUserId();
         
         Proposal proposal = new Proposal();
+        proposal.setProposalId(0l);
+        proposal.setCurrentVersion(0);
         proposal.setVisible(true);
         proposal.setAuthorId(themeDisplay.getUserId());
 

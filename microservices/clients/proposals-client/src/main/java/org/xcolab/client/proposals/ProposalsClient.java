@@ -389,7 +389,7 @@ public final class ProposalsClient {
 
     public static ProposalContestPhaseAttribute setProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
         ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
-        if (proposalContestPhaseAttribute == null) {
+        if (proposalContestPhaseAttribute != null) {
             proposalContestPhaseAttribute.setAdditionalId(aditionalId);
             proposalContestPhaseAttribute.setNumericValue(numericValue);
             proposalContestPhaseAttribute.setStringValue(stringValue);
@@ -402,6 +402,7 @@ public final class ProposalsClient {
             proposalContestPhaseAttribute.setAdditionalId(aditionalId);
             proposalContestPhaseAttribute.setNumericValue(numericValue);
             proposalContestPhaseAttribute.setStringValue(stringValue);
+            proposalContestPhaseAttribute.setContestPhaseId(contestPhaseId);
             proposalContestPhaseAttribute = createProposalContestPhaseAttribute(proposalContestPhaseAttribute);
             return proposalContestPhaseAttribute;
         }

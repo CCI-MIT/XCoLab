@@ -261,6 +261,9 @@ public class Proposal implements Serializable {
     }
     @JsonIgnore
     public boolean isDeleted(){
+        if(this.proposalid == 0){
+            return false;
+        }
         final ContestPhase contestPhase = ContestClient.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
@@ -276,6 +279,9 @@ public class Proposal implements Serializable {
     @JsonIgnore
     public boolean isVisibleInContest( long contestId) {
         try{
+            if(this.proposalid == 0){
+                return true;
+            }
             final Contest currentContest = ProposalsClient.getCurrentContestForProposal(this.getProposalId());
             return !isDeleted() && currentContest.getContestPK() == contestId;
         }catch (ContestNotFoundException ignored){

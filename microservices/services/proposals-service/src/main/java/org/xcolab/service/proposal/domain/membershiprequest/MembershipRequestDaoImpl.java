@@ -45,6 +45,18 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
 
     }
 
+    public boolean update(MembershipRequest membershipRequest) {
+        return dslContext.update(MEMBERSHIP_REQUEST)
+                .set(MEMBERSHIP_REQUEST.REPLY_COMMENTS, membershipRequest.getReplyComments())
+                .set(MEMBERSHIP_REQUEST.REPLY_DATE, membershipRequest.getReplyDate())
+                .set(MEMBERSHIP_REQUEST.REPLIER_USER_ID, membershipRequest.getReplierUserId())
+                .set(MEMBERSHIP_REQUEST.STATUS_ID, membershipRequest.getStatusId())
+                .where(MEMBERSHIP_REQUEST.MEMBERSHIP_REQUEST_ID.eq(membershipRequest.getMembershipRequestId()))
+                .execute() > 0;
+    }
+
+
+
     public MembershipRequest get(Long membershipRequestId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(MEMBERSHIP_REQUEST)

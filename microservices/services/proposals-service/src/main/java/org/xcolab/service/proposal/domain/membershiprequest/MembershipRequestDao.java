@@ -10,4 +10,5 @@ public interface MembershipRequestDao {
     List<MembershipRequest> findByGiven(Long groupId, Integer statusId, Long userId);
     MembershipRequest create(MembershipRequest membershipRequest);
     MembershipRequest get(Long membershipRequestId) throws NotFoundException;
+    boolean update(MembershipRequest membershipRequest);
 }
