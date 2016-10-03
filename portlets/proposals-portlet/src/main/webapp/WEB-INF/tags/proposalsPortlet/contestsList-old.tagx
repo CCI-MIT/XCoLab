@@ -1,0 +1,109 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+		  xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+		  xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+
+
+	<liferay-theme:defineObjects />
+
+	<!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+	
+	<jsp:directive.attribute name="contests" type="java.util.ArrayList" required="true" rtexprvalue="true" description="Contests to be shown" />
+	<jsp:directive.attribute name="featured" type="java.lang.Boolean" required="true" rtexprvalue="true" description="whether the contests are featured" />
+
+	<c:forEach var="contest" items="${contests }">
+		<c:if test="${contest.showInListView}">
+			<tr class="c-Table__row ${featured ? 'featured' : ''}">
+				<td class="c-Table__cell">
+					<div class="contestFlag">
+						<c:if test="${not empty contest.flagText }">
+							<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
+							<c:if test="${not empty contest.flagTooltip}">
+								<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
+							</c:if>
+						</c:if>
+						<collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
+						${contest.contestName}
+					</div>
+				</td>
+				<td class="c-Table__cell odd">
+					${contest.proposalsCount}
+				</td>
+				<td class="c-Table__cell">
+					<c:choose>
+						<c:when test="${contest.activePhase.canVote }">
+							${contest.votesCount}
+						</c:when>
+						<c:otherwise>
+							${contest.totalCommentsCount}
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td class="c-Table__cell odd">
+					<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what }" />
+				</td>
+				<td class="c-Table__cell">
+					<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where }" />
+				</td>
+				<td class="c-Table__cell odd">
+					<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who }"/>
+				</td>
+				<td class="c-Table__cell">
+					<proposalsPortlet:ontologyTermLink ontologyTerms="${contest.how }"/>
+				</td>
+
+				<c:if test="${proposalsPermissions.canJudgeActions}">
+					<td class="c-Table__cell odd">
+                            <span class="fieldWithTooltip">
+                                <c:choose>
+									<c:when test="${not contest.judgeStatus}">
+										<img src="${themeDisplay.pathThemeImages}/icon_question-x.png"/>
+									</c:when>
+									<c:otherwise>
+										<img src="${themeDisplay.pathThemeImages}/icon_question-chk.png"/>
+									</c:otherwise>
+								</c:choose>
+                            </span>
+
+						<div class="c-Tooltip">
+							<c:choose>
+								<c:when test="${not contest.judgeStatus}">
+									Judge's decision incomplete.
+								</c:when>
+								<c:otherwise>
+									Judge's decision completed.
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</td>
+
+					<c:if test="${proposalsPermissions.canFellowActions}">
+						<td class="c-Table__cell">
+							<span class="fieldWithTooltip">
+								<c:choose>
+									<c:when test="${contest.screeningStatus}">
+										<img src="${themeDisplay.pathThemeImages}/icon_question-chk.png"/>
+									</c:when>
+									<c:otherwise>
+										<img src="${themeDisplay.pathThemeImages}/icon_question-x.png"/>
+									</c:otherwise>
+								</c:choose>
+							</span>
+							<div class="c-Tooltip">
+								<c:choose>
+									<c:when test="${contest.screeningStatus}">
+										Fellow screening completed.
+									</c:when>
+									<c:otherwise>
+										Fellow screening incomplete.
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</td>
+					</c:if>
+				</c:if>
+			</tr>
+		</c:if>
+	</c:forEach>
+</jsp:root>
