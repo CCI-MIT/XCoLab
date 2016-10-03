@@ -1,6 +1,8 @@
 package org.xcolab.liferay;
 
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -24,7 +26,6 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 
-import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -64,7 +65,6 @@ public final class LoginRegisterUtil {
                     (MembersClient.hashPassword(newPassword.trim()));
             UserLocalServiceUtil.updateUser(liferayUser);
         } else {
-
             throw new MemberNotFoundException("Member with forgotPasswordToken: " + forgotPasswordToken + " was not found");
         }
     }

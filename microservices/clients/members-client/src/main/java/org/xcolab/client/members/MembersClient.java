@@ -259,9 +259,13 @@ public final class MembersClient {
     }
 
     public static boolean isForgotPasswordTokenValid(String passwordToken) {
-        return memberResource.service("validateForgotPasswordToken", Boolean.class)
-                .queryParam("passwordToken", passwordToken)
-                .get();
+        try {
+            return memberResource.service("validateForgotPasswordToken", Boolean.class)
+                    .queryParam("passwordToken", passwordToken)
+                    .getChecked();
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
     }
 
     public static String createForgotPasswordToken(Long memberId) {
