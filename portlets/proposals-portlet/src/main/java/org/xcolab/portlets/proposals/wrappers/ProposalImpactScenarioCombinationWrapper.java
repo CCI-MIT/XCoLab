@@ -1,6 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -13,6 +13,7 @@ import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.log4j.Logger;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.io.IOException;
 import java.util.Arrays;

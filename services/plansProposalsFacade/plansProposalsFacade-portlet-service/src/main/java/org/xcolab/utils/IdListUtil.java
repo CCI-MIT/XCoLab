@@ -1,8 +1,6 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -10,6 +8,13 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang.StringUtils;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +34,12 @@ public final class IdListUtil {
      */
     public final static IdListObjectConverter<Contest> CONTESTS = new IdListObjectConverter<Contest>() {
         @Override
-        public Contest getObject(long id) throws SystemException {
-            return ContestLocalServiceUtil.fetchContest(id);
+        public Contest getObject(long id) {
+            try {
+                return ContestClient.getContest(id);
+            }catch (ContestNotFoundException ignored){
+                return null;
+            }
         }
 
         @Override
@@ -44,8 +53,12 @@ public final class IdListUtil {
      */
     public final static IdListObjectConverter<Proposal> PROPOSALS = new IdListObjectConverter<Proposal>() {
         @Override
-        public Proposal getObject(long id) throws SystemException {
-            return ProposalLocalServiceUtil.fetchProposal(id);
+        public Proposal getObject(long id) {
+            try{
+                return ProposalsClient.getProposal(id);
+            }catch (ProposalNotFoundException ignored){
+                return null;
+            }
         }
 
         @Override
@@ -60,12 +73,12 @@ public final class IdListUtil {
     public final static IdListObjectConverter<ContestType> CONTEST_TYPES = new IdListObjectConverter<ContestType>() {
         @Override
         public ContestType getObject(long id) throws SystemException {
-            return ContestTypeLocalServiceUtil.fetchContestType(id);
+            return ContestClient.getContestType(id);
         }
 
         @Override
         public long getId(ContestType object) {
-            return object.getId();
+            return object.getId_();
         }
     };
 

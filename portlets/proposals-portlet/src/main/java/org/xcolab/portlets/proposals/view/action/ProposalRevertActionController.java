@@ -2,8 +2,7 @@ package org.xcolab.portlets.proposals.view.action;
 
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
+
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -17,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
@@ -120,15 +123,19 @@ public class ProposalRevertActionController {
         //this code was on the proposal add/update controller, if the user could edit and save , he might just want to revert
         // and leave it like that , so this code must be executed as well.
         final Proposal2Phase p2p = proposalsContext.getProposal2Phase(request);
-        if (p2p != null && p2p.getVersionTo() != -1) {
-            // we are in a completed phase - need to adjust the end version
-            final Proposal updatedProposal = ProposalLocalServiceUtil.fetchProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
-            p2p.setVersionTo(updatedProposal.getCurrentVersion());
-            Proposal2PhaseLocalServiceUtil.updateProposal2Phase(p2p);
-        }
-        // extra check to reset dependencies from the old versions
-        if (updateProposalReferences) {
-            ProposalReferenceLocalServiceUtil.populateTableWithProposal(oldProposalVersionToBeBecomeCurrent.getWrapped());
+        try {
+            if (p2p != null && p2p.getVersionTo() != -1) {
+                // we are in a completed phase - need to adjust the end version
+                final Proposal updatedProposal = ProposalsClient.getProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
+                p2p.setVersionTo(updatedProposal.getCurrentVersion());
+                ProposalsClient.updateProposal2Phase(p2p);
+            }
+            // extra check to reset dependencies from the old versions
+            if (updateProposalReferences) {
+                ProposalsClient.populateTableWithProposal(oldProposalVersionToBeBecomeCurrent.getWrapped().getProposalId());
+            }
+        }catch (ProposalNotFoundException ignored){
+
         }
     }
 

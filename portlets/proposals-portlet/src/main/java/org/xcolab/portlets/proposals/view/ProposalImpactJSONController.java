@@ -1,11 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.model.ProposalUnversionedAttribute;
+;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -24,6 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -94,8 +100,8 @@ public class ProposalImpactJSONController {
 
         try {
             Contest contest = proposalsContext.getContest(request);
-            OntologyTerm sectorOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(sectorTermId);
-            OntologyTerm regionOntologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId);
+            OntologyTerm sectorOntologyTerm = OntologyClient.getOntologyTerm(sectorTermId);
+            OntologyTerm regionOntologyTerm = OntologyClient.getOntologyTerm(regionTermId);
 
             // ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
             FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
@@ -128,13 +134,18 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
+        FocusArea focusArea = OntologyClient.getFocusArea(focusAreaId);
         Contest contest = proposalsContext.getContest(request);
 
         JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
         try {
             ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), focusArea, requestJson);
-            impactSeries.persistWithAuthor(proposalsContext.getUser(request));
+            try {
+                Member member = MembersClient.getMember(proposalsContext.getUser(request).getUserId());
+                impactSeries.persistWithAuthor(member);
+            }catch (MemberNotFoundException ignored){
+
+            }
         } catch (SystemException e) {
             _log.warn(e.getMessage(), e);
             responseJSON.put("success", false);
@@ -164,11 +175,11 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
+        FocusArea focusArea = OntologyClient.getFocusArea(focusAreaId);
         Proposal proposal = proposalsContext.getProposal(request);
 
-        for (ProposalAttribute proposalAttribute : ProposalAttributeLocalServiceUtil.getImpactProposalAttributes(proposal, focusArea)) {
-            ProposalAttributeLocalServiceUtil.removeAttribute(proposalsContext.getUser(request).getUserId(), proposalAttribute);
+        for (ProposalAttribute proposalAttribute : ProposalsClient.getImpactProposalAttributes(proposal, focusArea)) {
+            ProposalsClient.deleteProposalAttribute(proposalAttribute.getId_());
         }
 
         responseJSON.put("success", true);
@@ -198,7 +209,12 @@ public class ProposalImpactJSONController {
         try {
             ProposalImpactDataParser dataParser = new ProposalImpactDataParser(requestJson.getString("data"), proposal, contest);
             ProposalImpactSeriesList impactSeriesList = dataParser.parse();
-            impactSeriesList.persistImpactSeriesesWithAuthor(proposalsContext.getUser(request));
+            try {
+                Member member = MembersClient.getMember(proposalsContext.getUser(request).getUserId());
+                impactSeriesList.persistImpactSeriesesWithAuthor(member);
+            }catch (MemberNotFoundException ignored){
+
+            }
 
             responseJSON.put("success", true);
         } catch(ProposalImpactDataParserException e) {
@@ -231,21 +247,21 @@ public class ProposalImpactJSONController {
         }
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
-                getAttributes(proposal.getProposalId());
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalsClient.
+                getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
 
         if (impactAuthorComment != null || impactIAFComment != null) {
             if(impactAuthorComment != null) {
 
-                ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
+                ProposalsClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
                         HtmlUtil.cleanAll(impactAuthorComment),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
-                        proposal, unversionedAttributes);
+                        proposal.getProposalId());
             }
             if (impactIAFComment != null) {
-                ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                ProposalsClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
-                        proposal, unversionedAttributes);
+                        proposal.getProposalId());
             }
         }
 
@@ -267,7 +283,7 @@ public class ProposalImpactJSONController {
             @Override
             public int compare(OntologyTerm o1, OntologyTerm o2) {
                 if (o1.getOrder_() == o2.getOrder_()) {
-                    return (int)(o1.getId() - o2.getId());
+                    return (int)(o1.getId_() - o2.getId_());
                 } else {
                     return (int)(o1.getOrder_() - o2.getOrder_());
                 }
@@ -276,7 +292,7 @@ public class ProposalImpactJSONController {
         });
         for (OntologyTerm term: terms) {
             JSONObject termJson = JSONFactoryUtil.createJSONObject();
-            termJson.put("id", term.getId());
+            termJson.put("id", term.getId_());
             termJson.put("name", term.getName());
             array.put(termJson);
         }

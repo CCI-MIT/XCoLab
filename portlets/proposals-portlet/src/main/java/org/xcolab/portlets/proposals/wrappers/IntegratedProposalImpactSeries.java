@@ -1,13 +1,16 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.utils.SectorTypes;
 
@@ -111,22 +114,26 @@ public class IntegratedProposalImpactSeries {
         Map<String, ProposalImpactSeriesValues> sectorsProposalAggregatedSeriesValues;
 
         for (Proposal referencedSubProposal : referencedSubProposals) {
+            try {
 
-            ProposalImpactSeriesList impactSeriesList = new ProposalImpactSeriesList(referencedSubProposal);
+                ProposalImpactSeriesList impactSeriesList = new ProposalImpactSeriesList(referencedSubProposal);
 
-            aggregatedSeriesValues = global ?
-                     impactSeriesList.getAggregatedSeriesValues(Arrays.asList(REFERENCE_SERIES_TYPES)) :
-                     impactSeriesList.getAggregatedSeriesValues(Arrays.asList(REFERENCE_SERIES_TYPES), regionOntologyTerm);
+                aggregatedSeriesValues = global ?
+                        impactSeriesList.getAggregatedSeriesValues(Arrays.asList(REFERENCE_SERIES_TYPES)) :
+                        impactSeriesList.getAggregatedSeriesValues(Arrays.asList(REFERENCE_SERIES_TYPES), regionOntologyTerm);
 
-            addUpProposalImpactDefaultSeriesValues(aggregatedSeriesValues);
+                addUpProposalImpactDefaultSeriesValues(aggregatedSeriesValues);
 
-            addUpProposalImpactAggregatedSeriesValues(aggregatedSeriesValues);
+                addUpProposalImpactAggregatedSeriesValues(aggregatedSeriesValues);
 
-            sectorsProposalAggregatedSeriesValues = global ?
-                    impactSeriesList.getAggregatedWeightedSeriesValuesBySectorOntologyTermIds(sectorOntologyTermIds) :
-                    impactSeriesList.getAggregatedSeriesValuesByRegionAndSectorOntologyTermIds(regionOntologyTerm.getId(), sectorOntologyTermIds);
+                sectorsProposalAggregatedSeriesValues = global ?
+                        impactSeriesList.getAggregatedWeightedSeriesValuesBySectorOntologyTermIds(sectorOntologyTermIds) :
+                        impactSeriesList.getAggregatedSeriesValuesByRegionAndSectorOntologyTermIds(regionOntologyTerm.getId_(), sectorOntologyTermIds);
 
-            addUpProposalImpactSectorSeriesValues(sectorsProposalAggregatedSeriesValues);
+                addUpProposalImpactSectorSeriesValues(sectorsProposalAggregatedSeriesValues);
+            }catch (ContestNotFoundException cnf){
+
+            }
         }
     }
 
@@ -165,12 +172,16 @@ public class IntegratedProposalImpactSeries {
     public static void getSubProposalsOnContestTier(List<Proposal> proposals, Set<Proposal> subProposalsOnContestTier, Long contestTierId) throws SystemException, PortalException {
         if (proposals.size() > 0) {
             for (Proposal proposal : proposals) {
-                Contest contestOfProposal = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
-                if (contestTierId == contestOfProposal.getContestTier()) {
-                    subProposalsOnContestTier.addAll(proposals);
-                } else {
-                    List<Proposal> subProposals = ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
-                    getSubProposalsOnContestTier(subProposals, subProposalsOnContestTier, contestTierId);
+                try {
+                    Contest contestOfProposal = ProposalsClient.getLatestContestInProposal(proposal.getProposalId());
+                    if (contestTierId == contestOfProposal.getContestTier()) {
+                        subProposalsOnContestTier.addAll(proposals);
+                    } else {
+                        List<Proposal> subProposals = ProposalsClient.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+                        getSubProposalsOnContestTier(subProposals, subProposalsOnContestTier, contestTierId);
+                    }
+                }catch (ContestNotFoundException ignored){
+
                 }
             }
         }

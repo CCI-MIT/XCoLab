@@ -1,9 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.wrappers.BaseContestPhaseWrapper;
+
 
 import java.io.IOException;
 
@@ -41,10 +43,10 @@ public class DeleteProposalActionController {
 
 
             proposal.setVisible(!delete);
-            ProposalLocalServiceUtil.updateProposal(proposal);
+            ProposalsClient.updateProposal(proposal);
 
             response.sendRedirect(
-                    ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/ADMIN");
+                    proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/ADMIN");
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to delete proposal ");

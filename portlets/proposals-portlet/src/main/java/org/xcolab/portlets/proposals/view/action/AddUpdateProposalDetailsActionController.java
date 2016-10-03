@@ -1,10 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -16,13 +12,17 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.activityEntry.proposal.ProposalAttributeUpdateActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalCreatedActivityEntry;
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
@@ -98,11 +98,11 @@ public class AddUpdateProposalDetailsActionController {
             ProposalCreationUtil.sendAuthorNotification(themeDisplay, proposalWrapper, contestPhase);
 
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
-                    new ProposalCreatedActivityEntry());
+                    ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
         }else{
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
-                    new ProposalAttributeUpdateActivityEntry());
+                    ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
         
@@ -128,8 +128,9 @@ public class AddUpdateProposalDetailsActionController {
             BindingResult result) throws PortalException, SystemException {
         ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
 
-        Proposal proposal = ProposalLocalServiceUtil.createProposal(0);
+        Proposal proposal = new Proposal();
         proposal.setAuthorId(proposalsContext.getUser(request).getUserId());
+        proposal = ProposalsClient.createProposal(proposal);
 
         if (proposalWrapped == null) {
             proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request),

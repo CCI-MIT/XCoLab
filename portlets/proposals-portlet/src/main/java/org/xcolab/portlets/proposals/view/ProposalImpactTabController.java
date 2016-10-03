@@ -1,11 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ImpactIteration;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalUnversionedAttribute;
+
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -25,6 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ImpactIteration;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
@@ -78,8 +80,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("canCommentAsAIF", userCanCommentAsAIF);
         }
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
-                getAttributes(proposalWrapper.getProposalId());
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalsClient.
+                getProposalUnversionedAttributesByProposalId(proposalWrapper.getProposalId());
         if ( unversionedAttributes != null && ! unversionedAttributes.isEmpty()) {
             for (ProposalUnversionedAttribute pua : unversionedAttributes) {
                 if (pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT
@@ -114,7 +116,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (showDataTable) {
             IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest);
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
-            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+            List<ImpactIteration> impactIterations = ContestClient.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         }
 
@@ -187,7 +189,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException {
 
         List<Proposal> subProposals =
-                ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposalWrapper.getProposalId());
+                ProposalsClient.getContestIntegrationRelevantSubproposals(proposalWrapper.getProposalId());
         ProposalImpactScenarioCombinationWrapper proposalImpactScenarioCombinationWrapper =
                 new ProposalImpactScenarioCombinationWrapper(subProposals);
         boolean isConsolidationPossible =
@@ -248,16 +250,9 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabBasic(PortletRequest request, Model model)
             throws PortalException, SystemException {
 
-        try {
-            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
-            model.addAttribute("impactIterations", impactIterations);
-        } catch (PortalException e) {
-            _log.warn("Using default impact tab view since no impact iteration are associated with the contest: " + contest.getContestPK());
-            return "proposalImpactError";
-        }
 
         try {
-            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+            List<ImpactIteration> impactIterations = ContestClient.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
 
             ProposalImpactSeriesList proposalImpactSeriesList =

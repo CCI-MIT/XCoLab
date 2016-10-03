@@ -16,4 +16,8 @@ public interface ServiceResource extends HttpResource {
     <T, R> ServiceQuery<T, R> query(String id, Class<R> returnType);
 
     <T, R> ServiceQuery<T, R> query(Class<R> returnType);
+    <T, R> ServiceQuery<T, R> service(long id, String serviceEndpoint, ParameterizedTypeReference<List<T>> typeReference);
+	<T, R> ServiceQuery<T, R> service(String id, String serviceEndpoint, ParameterizedTypeReference<List<T>> typeReference);
+	<T, R> ServiceQuery<T, R> service(String serviceEndpoint, ParameterizedTypeReference<List<T>> typeReference);
+
 }

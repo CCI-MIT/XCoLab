@@ -3,23 +3,25 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.enums.Plurality;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.IdListUtil;
@@ -31,6 +33,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
 
 public class ProposalSectionWrapper {
 
@@ -170,14 +174,14 @@ public class ProposalSectionWrapper {
     }
 
     public PlanSectionTypeKeys getType() {
-        if (StringUtils.isBlank(definition.getType())) {
+        if (StringUtils.isBlank(definition.getType_())) {
             return PlanSectionTypeKeys.TEXT;
         }
-        return PlanSectionTypeKeys.valueOf(definition.getType());
+        return PlanSectionTypeKeys.valueOf(definition.getType_());
     }
 
     public Long getSectionDefinitionId() {
-        return definition.getId();
+        return definition.getId_();
     }
 
     public boolean isLocked() {
@@ -200,12 +204,12 @@ public class ProposalSectionWrapper {
         return OntologyTermLocalServiceUtil.getOntologyTerm(attr.getNumericValue());
     }
 
-    public ProposalWrapper getNumericValueAsProposal() throws SystemException, PortalException {
+    public ProposalWrapper getNumericValueAsProposal() throws ProposalNotFoundException {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
         }
-        return new ProposalWrapper(ProposalLocalServiceUtil.getProposal(attr.getNumericValue()));
+        return new ProposalWrapper(ProposalsClient.getProposal(attr.getNumericValue()));
     }
 
     public ProposalWrapper[] getStringValueAsProposalArray() throws SystemException, PortalException {
@@ -218,10 +222,10 @@ public class ProposalSectionWrapper {
         ProposalWrapper[] ret = new ProposalWrapper[props.length];
         for (int i = 0; i < props.length; i++) {
             try {
-                ret[i] = new ProposalWrapper(ProposalLocalServiceUtil.getProposal(Long.parseLong(props[i])));
+                ret[i] = new ProposalWrapper(ProposalsClient.getProposal(Long.parseLong(props[i])));
             } catch (NumberFormatException e) {
                 _log.error(String.format("Could not parse proposalId %s as a number", props[i]));
-            } catch (SystemException | PortalException e) {
+            } catch (ProposalNotFoundException e) {
                 _log.error(String.format("Could not retrieve proposal with id %s", props[i]), e);
             }
         }
@@ -278,7 +282,7 @@ public class ProposalSectionWrapper {
         return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "or");
     }
 
-    private ProposalAttribute getSectionAttribute() throws SystemException, PortalException {
-        return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", definition.getId());
+    private ProposalAttribute getSectionAttribute() {
+        return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", definition.getId_());
     }
 }

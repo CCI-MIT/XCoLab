@@ -1,15 +1,21 @@
 package org.xcolab.portlets.proposals.permissions;
 
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.MembershipRequestConstants;
 import com.liferay.portal.model.User;
+
+
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.proposals.MembershipRequestClient;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.MembershipRequest;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.MembershipRequestStatus;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 /**
  * Helper class to decide whether a certain user should see things in the UI
@@ -36,7 +42,7 @@ public class ProposalsDisplayPermissions {
 
     private boolean hasVotedOnThisProposal() throws SystemException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalLocalServiceUtil.hasUserVoted(
+                && ProposalsClient.hasUserVoted(
                     proposal.getProposalId(), contestPhase.getContestPhasePK(), user.getUserId());
     }
 
@@ -46,7 +52,8 @@ public class ProposalsDisplayPermissions {
 
     boolean isSubscribedToContest() throws PortalException, SystemException {
         return contestPhase != null
-                && ContestLocalServiceUtil.isSubscribed(contestPhase.getContestPK(), user.getUserId());
+                &&
+        ActivitiesClient.isSubscribedToActivity(user.getUserId(), ActivityEntryType.CONTEST.getPrimaryTypeId(),contestPhase.getContestPK(),0,"");
     }
 
     public boolean getCanSeeUnsubscribeProposalButton() throws PortalException, SystemException {
@@ -55,7 +62,7 @@ public class ProposalsDisplayPermissions {
 
     boolean isSubscribedToProposal() throws PortalException, SystemException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalLocalServiceUtil.isSubscribed(proposal.getProposalId(), user.getUserId());
+                && ProposalsClient.isMemberProposalSupporter(proposal.getProposalId(), user.getUserId());
     }
 
     public boolean getCanSeeUnsubscribeContestButton() throws PortalException, SystemException {
@@ -72,7 +79,7 @@ public class ProposalsDisplayPermissions {
 
     boolean isSupporter() throws PortalException, SystemException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalLocalServiceUtil.isSupporter(proposal.getProposalId(), user.getUserId());
+                && ProposalsClient.isMemberProposalSupporter(proposal.getProposalId(), user.getUserId());
     }
 
     public boolean getCanSeeUnsupportButton() throws PortalException, SystemException {
@@ -86,7 +93,7 @@ public class ProposalsDisplayPermissions {
     }
 
     public boolean getUserHasOpenMembershipRequest() throws PortalException, SystemException {
-        for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposal.getProposalId())){
+        for (MembershipRequest mr : MembershipRequestClient.getMembershipRequests(proposal.getProposalId())){
             if (mr.getUserId() == user.getUserId() && ((mr.getStatusId() == MembershipRequestConstants.STATUS_PENDING)
                     ||mr.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED)) {
                 return true;

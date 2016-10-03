@@ -1,10 +1,13 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.service.PointTypeLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.ReceiverLimitationStrategy;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ public class PointTypeWrapper {
     public PointTypeWrapper(PointType pointType, double parentPercentageOfTotal) throws SystemException {
         this.percentageOfTotal = parentPercentageOfTotal * pointType.getPercentageOfParent();
         this.pointType = pointType;
-        List<PointType> unwrappedChildren = PointTypeLocalServiceUtil.getChildrenOfPointType(pointType.getId());
+        List<PointType> unwrappedChildren = ProposalsClient.getChildrenOfPointType(pointType.getId_());
         this.children = new ArrayList<PointTypeWrapper>();
         for (PointType child: unwrappedChildren) {
             this.children.add(new PointTypeWrapper(child, this.percentageOfTotal));
@@ -34,7 +37,7 @@ public class PointTypeWrapper {
     }
 
     public Long getId() {
-        return pointType.getId();
+        return pointType.getId_();
     }
 
     public PointType getPointType() {

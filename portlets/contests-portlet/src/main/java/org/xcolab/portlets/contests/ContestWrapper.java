@@ -58,7 +58,7 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
 
     public long getVotesCount() {
         ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
-        return ProposalsClient.countProposalsInContestPhaseVotes(phase.getContestPhasePK());
+        return ProposalsClient.countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 }
 

@@ -4,20 +4,9 @@ import com.ext.portlet.NoSuchImpactDefaultSeriesDataException;
 import com.ext.portlet.NoSuchImpactDefaultSeriesException;
 import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.ProposalImpactAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.ImpactDefaultSeries;
-import com.ext.portlet.model.ImpactDefaultSeriesData;
-import com.ext.portlet.model.ImpactIteration;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.model.ProposalVersion;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
+
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -27,6 +16,19 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.ImpactIteration;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.enums.MemberRoleChoiceAlgorithm;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalImpactValueFilterAlgorithm;
@@ -73,9 +75,9 @@ public class ProposalImpactSeries {
         this.proposalWrapper = new ProposalWrapper(proposal);
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
-        this.impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+        this.impactIterations = ContestClient.getContestImpactIterations(contest);
         // Retrieve static serieses
-        bauSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_BAU_KEY);
+        bauSeries = OntologyClient.getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
         Boolean invertSeriesSign = false;
         addSeriesWithType(bauSeries, false, invertSeriesSign);
 
@@ -94,8 +96,8 @@ public class ProposalImpactSeries {
     public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea, JSONObject json) throws PortalException, SystemException {
         this(contest, proposal, focusArea, false);
 
-        for (ImpactDefaultSeries defaultSeries : ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea(focusArea)) {
-            if (!defaultSeries.isEditable()) {
+        for (ImpactDefaultSeries defaultSeries : OntologyClient.getAllmpactDefaultSeriesByFocusArea(focusArea.getId_())) {
+            if (!defaultSeries.getEditable()) {
                 continue;
             }
 
@@ -132,8 +134,7 @@ public class ProposalImpactSeries {
     }
 
     public void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable, boolean invertSeriesSign) throws SystemException {
-        List<ImpactDefaultSeriesData> seriesDataList = ImpactDefaultSeriesDataLocalServiceUtil.
-                getDefaultSeriesDataBySeriesId(defaultSeries.getSeriesId());
+        List<ImpactDefaultSeriesData> seriesDataList = OntologyClient.getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
         if(invertSeriesSign){
             for (ImpactDefaultSeriesData seriesData : seriesDataList) {
                 if(Validator.isNotNull(seriesData.getValue())) {
@@ -164,7 +165,7 @@ public class ProposalImpactSeries {
         return seriesTypeToEditableMap.get(seriesType);
     }
 
-    public void persistWithAuthor(User author) throws SystemException, PortalException {
+    public void persistWithAuthor(Member author) throws SystemException, PortalException {
         // Persist all editable attributes
         for (Map.Entry<String, Boolean> entry: seriesTypeToEditableMap.entrySet()) {
             final String seriesType = entry.getKey();
@@ -173,8 +174,8 @@ public class ProposalImpactSeries {
                 ProposalImpactSeriesValues seriesValues = this.seriesTypeToSeriesMap.get(seriesType);
                 for (ImpactIteration iteration : impactIterations) {
                     double filteredValue = ProposalImpactValueFilterAlgorithm.filterValueForImpactSeriesType(seriesValues.getValueForYear(iteration.getYear()), seriesType);
-                    ProposalAttributeLocalServiceUtil.setAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
-                            focusArea.getId(), "", iteration.getYear(), filteredValue);
+                    ProposalsClient.setProposalAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
+                            focusArea.getId_(), "", new Long(iteration.getYear()), filteredValue);
                 }
 
             }
@@ -185,7 +186,7 @@ public class ProposalImpactSeries {
         JSONObject returnObject = JSONFactoryUtil.createJSONObject();
         JSONObject serieses = JSONFactoryUtil.createJSONObject();
 
-        returnObject.put("focusAreaId", getFocusArea().getId());
+        returnObject.put("focusAreaId", getFocusArea().getId_());
 
         if (Validator.isNotNull(getSeriesAuthor()) && Validator.isNotNull(getUpdatedDate())) {
             // Author info
@@ -208,12 +209,12 @@ public class ProposalImpactSeries {
             String seriesType = entry.getKey();
             final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
 
-            ImpactDefaultSeries defaultSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, seriesType);
+            ImpactDefaultSeries defaultSeries = OntologyClient.getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), seriesType);
 
             JSONObject series = JSONFactoryUtil.createJSONObject();
             series.put("name", defaultSeries.getName());
             series.put("description", defaultSeries.getDescription());
-            series.put("editable", defaultSeries.isEditable());
+            series.put("editable", defaultSeries.getEditable());
             series.put("values", seriesValues.toJSONArrayWithIteration(impactIterations));
             serieses.put(defaultSeries.getName(), series);
         }
@@ -247,33 +248,33 @@ public class ProposalImpactSeries {
     private void loadEditableData() throws SystemException, NoSuchProposalVersionException {
         // Get default serieses
         List<ImpactDefaultSeries> impactDefaultSerieses =
-                ImpactDefaultSeriesLocalServiceUtil.getAllImpactDefaultSeriesWithFocusArea(focusArea);
+                OntologyClient.getAllmpactDefaultSeriesByFocusArea(focusArea.getId_());
 
         // TODO create query to filter by additionalId?
         List<ProposalAttribute> impactProposalAttributes =
-                ProposalAttributeLocalServiceUtil.getImpactProposalAttributes(proposal);
+                ProposalsClient.getImpactProposalAttributes(proposal);
 
         for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
 
             // Look for already entered data
-            if (defaultSeries.isEditable()) {
+            if (defaultSeries.getEditable()) {
 
                 // TODO write a separate finder for the proposal attribute that is being searched
                 boolean foundEnteredData = false;
                 for (ProposalAttribute attribute : impactProposalAttributes) {
-                    if (attribute.getName().equals(defaultSeries.getName()) && attribute.getAdditionalId() == focusArea.getId()) {
+                    if (attribute.getName().equals(defaultSeries.getName()) && attribute.getAdditionalId() == focusArea.getId_()) {
                         foundEnteredData = true;
-                        addSeriesValueWithType(attribute.getName(), (int) attribute.getNumericValue(), attribute.getRealValue());
+                        addSeriesValueWithType(attribute.getName(), (int) attribute.getNumericValue().intValue(), attribute.getRealValue());
 
                         // Set author and modification date
-                        this.lastModifiedVersion = ProposalVersionLocalServiceUtil.getByProposalIdVersion(proposal.getProposalId(), attribute.getVersionWhenCreated());
+                        this.lastModifiedVersion = ProposalsClient.getProposalVersionByProposalIdVersion(proposal.getProposalId(), attribute.getVersionWhenCreated());
                     }
                 }
 
                 // Use default data if not entered
                 if (!foundEnteredData) {
                     List<ImpactDefaultSeriesData> defaultSeriesDataList =
-                            ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesId(defaultSeries.getSeriesId());
+                            OntologyClient.getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
                     addSeriesWithType(defaultSeries.getName(), defaultSeriesDataList, true);
                 }
             }
@@ -289,7 +290,7 @@ public class ProposalImpactSeries {
             int currentYear = impactIteration.getYear();
 
             double bauValue =
-                    ImpactDefaultSeriesDataLocalServiceUtil.getDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
+                    OntologyClient.getImpactDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
                             currentYear).getValue();
 
             double reductionRate = seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_REDUCTION).getValueForYear(currentYear);

@@ -1,15 +1,14 @@
 package org.xcolab.jsp.tags.judging;
 
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -20,7 +19,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 public class JudgeReviewStatusTag extends BodyTagSupport {
-    
+
     private long userId;
 
     private long proposalId;
@@ -55,8 +54,8 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         try {
             Member judge = MembersClient.getMember(userId);
-            Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
-            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+            Proposal proposal = ProposalsClient.getProposal(proposalId);
+            ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
             ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(new ProposalWrapper(proposal, contestPhase), judge);
 
             PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
@@ -64,16 +63,15 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
                 throw new JspException("Can't find portlet request");
             }
             pageContext.setAttribute("judgeReviewStatus", judgeWrapper.getJudgeReviewStatus());
-        } catch (PortalException e) {
-            throw new IllegalArgumentException("Could not load proposal " +proposalId
+        } catch (ProposalNotFoundException e) {
+            throw new IllegalArgumentException("Could not load proposal " + proposalId
                     + " and contest phase " + contestPhaseId);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+
         } catch (MemberNotFoundException e) {
             throw new IllegalArgumentException("User does not exist: " + id);
         }
-        return EVAL_BODY_INCLUDE; 
+        return EVAL_BODY_INCLUDE;
     }
-    
-    
+
+
 }

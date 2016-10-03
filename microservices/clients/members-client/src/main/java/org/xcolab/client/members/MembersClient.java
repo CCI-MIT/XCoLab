@@ -47,7 +47,9 @@ public final class MembersClient {
                 .queryParam("sort", "screenName")
                 .execute();
     }
-
+    public static List<Member> listAllMembers(){
+        return listMembers(null,null,null,true,0,Integer.MAX_VALUE);
+    }
     public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
                                           boolean ascOrder, int firstMember, int lastMember) {
 
@@ -333,5 +335,10 @@ public final class MembersClient {
 
     public static boolean isSubscribedToNewsletter(long memberId) {
         return memberResource.service(memberId, "isSubscribed", Boolean.class).get();
+    }
+    public static boolean isUserInGroup(Long memberId, Long groupId){
+        return memberResource.service(memberId, "isMemberInGroup",Boolean.class)
+                .queryParam("groupId", groupId)
+                .get();
     }
 }

@@ -53,6 +53,21 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
 
     }
 
+    public ProposalContestPhaseAttribute getByProposalIdContestPhaseIdName(Long proposalId, Long contestPhaseId, String name) throws NotFoundException {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(PROPOSAL_CONTEST_PHASE_ATTRIBUTE).getQuery();
+
+        if (proposalId != null) {
+            query.addConditions(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID.eq(proposalId));
+        }
+        if (contestPhaseId != null) {
+            query.addConditions(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.CONTEST_PHASE_ID.eq(contestPhaseId));
+        }
+        if (name != null) {
+            query.addConditions(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NAME.eq(name));
+        }
+        return query.fetchOne().into(ProposalContestPhaseAttribute.class);
+    }
     @Override
     public List<ProposalContestPhaseAttribute> findByGiven(Long proposalId, Long contestPhaseId, String name) {
         final SelectQuery<Record> query = dslContext.select()
@@ -76,4 +91,16 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
                 .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_.eq(id_))
                 .execute();
     }
+    @Override
+    public boolean update(ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
+        return dslContext.update(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
+                .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ADDITIONAL_ID, proposalContestPhaseAttribute.getAdditionalId())
+                .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NUMERIC_VALUE, proposalContestPhaseAttribute.getNumericValue())
+                .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.STRING_VALUE, proposalContestPhaseAttribute.getStringValue())
+                .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.REAL_VALUE, proposalContestPhaseAttribute.getRealValue())
+                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_.eq(proposalContestPhaseAttribute.getId_()))
+                .execute() > 0;
+    }
+
+
 }

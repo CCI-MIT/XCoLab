@@ -1,16 +1,19 @@
 package org.xcolab.utils.judging;
 
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
+
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.ProposalRatingType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,9 +30,9 @@ public class ProposalReview {
     private String proposalUrl;
 
     private Map<ProposalRatingType, Double> ratingAverages;
-    private Map<User, String> reviews;
-    private Set<User> reviewers;
-    private final Map<User, Map<ProposalRatingType, Double> > userRatings;
+    private Map<Member, String> reviews;
+    private Set<Member> reviewers;
+    private final Map<Member, Map<ProposalRatingType, Double> > userRatings;
 
     public ProposalReview(Proposal proposal, ContestPhase contestPhase, String proposalUrl) {
         this.proposal = proposal;
@@ -41,10 +44,10 @@ public class ProposalReview {
         this.ratingAverages = new HashMap<>();
     }
 
-    public void addReview(User judge, String comment) {
+    public void addReview(Member judge, String comment) {
         this.reviews.put(judge, comment);
     }
-    public String getReview(User user) {
+    public String getReview(Member user) {
         return reviews.get(user);
     }
 
@@ -80,7 +83,7 @@ public class ProposalReview {
         return avg;
     }
 
-    public void addUserRating(User user, final ProposalRatingType ratingType, final double rating) {
+    public void addUserRating(Member user, final ProposalRatingType ratingType, final double rating) {
         Map<ProposalRatingType, Double> ratings;
         if(this.userRatings.get(user) == null){
             ratings = new HashMap<>();
@@ -91,11 +94,11 @@ public class ProposalReview {
         ratings.put(ratingType, rating);
     }
 
-    public Map<ProposalRatingType, Double> getUserRatings(User user) {
+    public Map<ProposalRatingType, Double> getUserRatings(Member user) {
         return this.userRatings.get(user);
     }
 
-    public Double getUserRating(User user, ProposalRatingType ratingType) {
+    public Double getUserRating(Member user, ProposalRatingType ratingType) {
         if(this.userRatings.get(user) != null) {
             return this.userRatings.get(user).get(ratingType);
         }
@@ -104,7 +107,7 @@ public class ProposalReview {
         }
     }
 
-    public Double getUserRatingAverage(User user){
+    public Double getUserRatingAverage(Member user){
 
         if(userRatings.get(user) != null) {
             double sum = 0;
@@ -127,19 +130,19 @@ public class ProposalReview {
     }
 
 
-    public Map<User, String> getReviews() {
+    public Map<Member, String> getReviews() {
         return reviews;
     }
 
-    public void setReviewers(Set<User> reviewers){
+    public void setReviewers(Set<Member> reviewers){
         this.reviewers = reviewers;
     }
 
-    public Set<User> getReviewers(){
+    public Set<Member> getReviewers(){
         return reviewers;
     }
 
-    public void setReviews(Map<User, String> reviews) {
+    public void setReviews(Map<Member, String> reviews) {
         this.reviews = reviews;
     }
 
@@ -180,14 +183,12 @@ public class ProposalReview {
     }
 
     private String getTeamOrNull(){
-        try {
             //TODO: optimize
-            for (ProposalAttribute attr: ProposalAttributeLocalServiceUtil.getAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
+            for (ProposalAttribute attr: ProposalsClient.getAllProposalAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
                 if (attr.getName().equals(ProposalAttributeKeys.TEAM) && attr.getAdditionalId() == 0) {
                     return attr.getStringValue();
                 }
             }
-        } catch(SystemException ignored) { }
 
         return null;
     }
