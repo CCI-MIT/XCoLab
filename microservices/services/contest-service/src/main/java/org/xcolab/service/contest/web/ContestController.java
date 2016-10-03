@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
@@ -21,6 +22,10 @@ import org.xcolab.model.tables.pojos.ContestSchedule;
 import org.xcolab.model.tables.pojos.ContestTeamMember;
 import org.xcolab.model.tables.pojos.ContestTeamMemberRole;
 import org.xcolab.model.tables.pojos.ContestType;
+import org.xcolab.model.tables.pojos.ImpactTemplateSeries;
+import org.xcolab.model.tables.pojos.ImpactIteration;
+
+
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
@@ -31,7 +36,7 @@ import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMember
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.domain.impactiteration.ImpactIterationDao;
 import org.xcolab.service.contest.domain.impacttemplateseries.ImpactTemplateSeriesDao;
-import org.xcolab.service.contest.domain.plantemplate.PlanTemplateDao;
+
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.utils.PaginationHelper;
@@ -90,8 +95,7 @@ public class ContestController {
             @RequestParam(required = false) Long planTemplateId,
 			@RequestParam(required = false) List<Long> focusAreaOntologyTerms,
             @RequestParam(required = false) Long contestTypeId,
-            @RequestParam(required = false) Boolean contestPrivate
-{
+            @RequestParam(required = false) Boolean contestPrivate){
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                 sort);
         return contestDao.findByGiven(paginationHelper, contestUrlName, contestYear, active, featured, contestTier,
@@ -304,13 +308,11 @@ public class ContestController {
         }
     }
 
-    @RequestMapping(value = "/contestPhases/{contestPhasePK}", method = RequestMethod.DELETE)
-    public String deleteContestPhase(@PathVariable("contestPhasePK") Long contestPhasePK)
-            throws NotFoundException {
 
     @DeleteMapping(value = "/contestPhases/{contestPhasePK}")
-    public boolean deleteContestPhase(@PathVariable long contestPhasePK)
+    public Boolean deleteContestPhase(@PathVariable("contestPhasePK") Long contestPhasePK)
             throws NotFoundException {
+
         if (contestPhaseDao.exists(contestPhasePK)) {
             return contestPhaseDao.delete(contestPhasePK);
         }

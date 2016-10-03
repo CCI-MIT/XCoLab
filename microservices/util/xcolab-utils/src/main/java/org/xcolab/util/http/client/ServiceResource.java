@@ -1,7 +1,10 @@
 package org.xcolab.util.http.client;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.client.queries.ServiceQuery;
+
+import java.util.List;
 
 public interface ServiceResource extends HttpResource {
 

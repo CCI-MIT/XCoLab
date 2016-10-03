@@ -82,7 +82,8 @@ public class ContestService {
                 return new ArrayList<>();
             }
             List<Long> focusAreaOntologyTerms = ontologyService.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(focusAreaId,ontologySpaceId );
-            return contestDao.findByGiven(null, null, null, null, contestTier, focusAreaOntologyTerms, null, null, null, null);
+            PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
+            return contestDao.findByGiven(ph, null, null, null, null, contestTier, focusAreaOntologyTerms, null, null, null, null);
 
 
         } catch (NotFoundException ignored) {
@@ -93,7 +94,8 @@ public class ContestService {
     public List<Contest> getContestsMatchingOntologyTerms(List<Long> ontologyTerms) {
 
         if (ontologyTerms.isEmpty()) {
-            return contestDao.findByGiven(null,null,null,null,null,null,null,null,null,null);
+            PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
+            return contestDao.findByGiven(ph,null,null,null,null,null,null,null,null,null,null);
         }
 
         List<Long> allChildTerms = new ArrayList<>();
@@ -102,8 +104,8 @@ public class ContestService {
         }
 
         List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(allChildTerms);
-
-         return contestDao.findByGiven(null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
+        PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
+         return contestDao.findByGiven(ph,null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
 
     }
 

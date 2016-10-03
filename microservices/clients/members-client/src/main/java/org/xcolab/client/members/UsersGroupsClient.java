@@ -2,6 +2,7 @@ package org.xcolab.client.members;
 
 import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class UsersGroupsClient {
 
     private static final RestService usersGroupsService = new RestService("members-service");
 
-    private static final RestResource<UsersGroups> usersGroupsResource = new RestResource<>(usersGroupsService,
+    private static final RestResource1<UsersGroups,Long> usersGroupsResource = new RestResource1<>(usersGroupsService,
             "usersGroups", UsersGroups.TYPES);
 
     public static UsersGroups createUsersGroups(UsersGroups usersGroups) {

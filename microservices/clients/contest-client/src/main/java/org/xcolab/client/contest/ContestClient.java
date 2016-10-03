@@ -61,29 +61,29 @@ public class ContestClient {
     private static final RestResource1<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
             "contestSchedules", ContestSchedule.TYPES);
 
-    private static final RestResource<ImpactIteration> impactIterationResource = new RestResource<>(contestService,
+    private static final RestResource1<ImpactIteration,Long> impactIterationResource = new RestResource1<>(contestService,
             "impactIterations", ImpactIteration.TYPES);
 
-    private static final RestResource<ImpactTemplateSeries> impactTemplateSeriesResource = new RestResource<>(contestService,
+    private static final RestResource1<ImpactTemplateSeries,Long> impactTemplateSeriesResource = new RestResource1<>(contestService,
             "impactTemplateSeries", ImpactTemplateSeries.TYPES);
 
-    private static final RestResource<ContestPhaseRibbonType> contestPhaseRibbonTypeResource = new RestResource<>(contestService,
+    private static final RestResource1<ContestPhaseRibbonType,Long> contestPhaseRibbonTypeResource = new RestResource1<>(contestService,
             "contestPhaseRibbonTypes", ContestPhaseRibbonType.TYPES);
 
-    private static final RestResource<ImpactTemplateMaxFocusArea> impactTemplateMaxFocusAreaResource = new RestResource<>(contestService,
+    private static final RestResource1<ImpactTemplateMaxFocusArea,Long> impactTemplateMaxFocusAreaResource = new RestResource1<>(contestService,
             "impactTemplateMaxFocusAreas", ImpactTemplateMaxFocusArea.TYPES);
 
-    private static final RestResource<ImpactTemplateFocusAreaList> impactTemplateFocusAreaListResource = new RestResource<>(contestService,
+    private static final RestResource1<ImpactTemplateFocusAreaList,Long> impactTemplateFocusAreaListResource = new RestResource1<>(contestService,
             "impactTemplateFocusAreaLists", ImpactTemplateFocusAreaList.TYPES);
 
-    private static final RestResource<PlanTemplate> planTemplateResource = new RestResource<>(contestService,
+    private static final RestResource1<PlanTemplate,Long> planTemplateResource = new RestResource1<>(contestService,
             "planTemplates", PlanTemplate.TYPES);
 
-    private static final RestResource<PlanSectionDefinition> planSectionDefinitionResource = new RestResource<>(contestService,
+    private static final RestResource1<PlanSectionDefinition,Long> planSectionDefinitionResource = new RestResource1<>(contestService,
             "planSectionDefinitions", PlanSectionDefinition.TYPES);
 
 
-    private static final RestResource<PlanTemplateSection> planTemplateSectionResource = new RestResource<>(contestService,
+    private static final RestResource1<PlanTemplateSection,Long> planTemplateSectionResource = new RestResource1<>(contestService,
             "planTemplateSections", PlanTemplateSection.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {

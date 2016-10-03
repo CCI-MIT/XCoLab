@@ -173,7 +173,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public List<Contest> findByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate) {
+    public List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();
 

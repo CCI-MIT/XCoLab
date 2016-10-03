@@ -65,38 +65,40 @@ public final class ProposalsClient {
     private static final RestResource<ProposalContestPhaseAttribute, Long> proposalContestPhaseAttributeResource = new RestResource1<>(proposalService,
             "proposalContestPhaseAttributes", ProposalContestPhaseAttribute.TYPES);
 
-    private static final RestResource<ProposalAttribute> proposalAttributeResource = new RestResource<>(proposalService,
+    private static final RestResource1<ProposalAttribute,Long> proposalAttributeResource = new RestResource1<>(proposalService,
             "proposalAttributes", ProposalAttribute.TYPES);
 
-    private static final RestResource<ProposalSupporter> proposalSupporterResource = new RestResource<>(proposalService,
+    private static final RestResource1<ProposalSupporter,Long> proposalSupporterResource = new RestResource1<>(proposalService,
             "proposalSupporters", ProposalSupporter.TYPES);
 
-    private static final RestResource<ProposalVersion> proposalVersionResource = new RestResource<>(proposalService,
+    private static final RestResource1<ProposalVersion,Long> proposalVersionResource = new RestResource1<>(proposalService,
             "proposalVersions", ProposalVersion.TYPES);
 
 
-    private static final RestResource<ProposalRating> proposalRatingResource = new RestResource<>(proposalService,
+    private static final RestResource1<ProposalRating,Long> proposalRatingResource = new RestResource1<>(proposalService,
             "proposalRatings", ProposalRating.TYPES);
 
-    private static final RestResource<ProposalRatingValue> proposalRatingValueResource = new RestResource<>(proposalService,
+    private static final RestResource1<ProposalRatingValue,Long> proposalRatingValueResource = new RestResource1<>(proposalService,
             "proposalRatingValues", ProposalRatingValue.TYPES);
 
-    private static final RestResource<ProposalRatingType> proposalRatingTypeResource = new RestResource<>(proposalService,
+    private static final RestResource1<ProposalRatingType,Long> proposalRatingTypeResource = new RestResource1<>(proposalService,
             "proposalRatingTypes", ProposalRatingType.TYPES);
 
-    private static final RestResource<PointsDistributionConfiguration> pointsDistributionConfigurationResource = new RestResource<>(proposalService,
+    private static final RestResource1<PointsDistributionConfiguration,Long> pointsDistributionConfigurationResource = new RestResource1<>(proposalService,
             "pointsDistributionConfigurations", PointsDistributionConfiguration.TYPES);
 
-    private static final RestResource<PointType> pointTypeResource = new RestResource<>(proposalService,
+    private static final RestResource1<PointType,Long> pointTypeResource = new RestResource1<>(proposalService,
             "pointTypes", PointType.TYPES);
 
-    private static final RestResource<ProposalUnversionedAttribute> proposalUnversionedAttributeResource = new RestResource<>(proposalService,
+    private static final RestResource1<ProposalUnversionedAttribute,Long> proposalUnversionedAttributeResource = new RestResource1<>(proposalService,
             "proposalUnversionedAttributes", ProposalUnversionedAttribute.TYPES);
 
 
-    private static final RestResource<ProposalMoveHistory> proposalMoveHistoryResource = new RestResource<>(proposalService,
+    private static final RestResource1<ProposalMoveHistory,Long> proposalMoveHistoryResource = new RestResource1<>(proposalService,
             "proposalMoveHistories", ProposalMoveHistory.TYPES);
 
+    private static final RestResource1<ProposalReference,Long> proposalReferenceResource = new RestResource1<>(proposalService,
+            "proposalReference", ProposalReference.TYPES);
 
     public static Proposal createProposal(Proposal proposal) {
         return proposalResource.create(proposal).execute();
@@ -187,7 +189,7 @@ public final class ProposalsClient {
     }
 
     public static List<Proposal> getContestIntegrationRelevantSubproposals(Long proposalId) {
-        return proposalResource.getSubRestResource(proposalId, "contestIntegrationRelevantSubproposal", Proposal.TYPES).list().execute();
+        return proposalResource.service(proposalId, "contestIntegrationRelevantSubproposal", Proposal.TYPES.getTypeReference()).getList();
     }
 
     public static Long getLatestContestPhaseIdInProposal(Long proposalId) {
@@ -212,8 +214,8 @@ public final class ProposalsClient {
     }
 
     public static List<Proposal> getSubproposals(Long proposalId, Boolean includeProposalsInSameContest) {
-        return proposalResource.getSubRestResource(proposalId, "getSubproposals", Proposal.TYPES)
-                .list().queryParam("includeProposalsInSameContest", includeProposalsInSameContest).execute();
+        return proposalResource.service(proposalId, "getSubproposals", Proposal.TYPES.getTypeReference())
+                .queryParam("includeProposalsInSameContest", includeProposalsInSameContest).getList();
     }
 
     public static Integer getProposalMaterializedPoints(Long proposalId) {
@@ -752,8 +754,7 @@ public final class ProposalsClient {
                 .get();
     }
 
-    private static final RestResource<ProposalReference> proposalReferenceResource = new RestResource<>(proposalService,
-            "proposalReference", ProposalReference.TYPES);
+
 
 
     public static void populateTableWithProposal(long proposalId) {

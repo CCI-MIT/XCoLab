@@ -7,6 +7,7 @@ import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.OntologySpace;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.ArrayList;
@@ -19,22 +20,22 @@ public class OntologyClient {
 
     private static final RestService contestService = new RestService("contest-service");
 
-    private static final RestResource<OntologySpace> ontologySpaceResource = new RestResource<>(contestService,
+    private static final RestResource1<OntologySpace,Long> ontologySpaceResource = new RestResource1<>(contestService,
             "ontologySpaces", OntologySpace.TYPES);
 
-    private static final RestResource<OntologyTerm> ontologyTermResource = new RestResource<>(contestService,
+    private static final RestResource1<OntologyTerm,Long> ontologyTermResource = new RestResource1<>(contestService,
             "ontologyTerms", OntologyTerm.TYPES);
 
-    private static final RestResource<FocusArea> focusAreaResource = new RestResource<>(contestService,
+    private static final RestResource1<FocusArea,Long> focusAreaResource = new RestResource1<>(contestService,
             "focusAreas", FocusArea.TYPES);
 
-    private static final RestResource<FocusAreaOntologyTerm> focusAreaOntologyTermResource = new RestResource<>(contestService,
+    private static final RestResource1<FocusAreaOntologyTerm,Long> focusAreaOntologyTermResource = new RestResource1<>(contestService,
             "focusAreaOntologyTerms", FocusAreaOntologyTerm.TYPES);
 
-    private static final RestResource<ImpactDefaultSeries> impactDefaultSeriesResource = new RestResource<>(contestService,
+    private static final RestResource1<ImpactDefaultSeries,Long> impactDefaultSeriesResource = new RestResource1<>(contestService,
             "impactDefaultSeriesDatas", ImpactDefaultSeries.TYPES);
 
-    private static final RestResource<ImpactDefaultSeriesData> impactDefaultSeriesDataResource = new RestResource<>(contestService,
+    private static final RestResource1<ImpactDefaultSeriesData,Long> impactDefaultSeriesDataResource = new RestResource1<>(contestService,
             "impactDefaultSeriesDatas", ImpactDefaultSeriesData.TYPES);
 
     public static List<OntologySpace> getAllOntologySpaces() {

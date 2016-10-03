@@ -10,6 +10,7 @@ import org.xcolab.client.proposals.pojo.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
 
@@ -22,7 +23,7 @@ public class MembershipRequestClient {
 
     private static final RestService proposalService = new RestService("proposals-service");
 
-    private static final RestResource<MembershipRequest> membershipRequestResource = new RestResource<>(proposalService,
+    private static final RestResource1<MembershipRequest,Long> membershipRequestResource = new RestResource1<>(proposalService,
             "membershipRequests", MembershipRequest.TYPES);
 
     public static MembershipRequest createMembershipRequest(MembershipRequest membershipRequest) {

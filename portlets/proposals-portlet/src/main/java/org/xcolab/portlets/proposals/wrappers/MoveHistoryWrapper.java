@@ -7,6 +7,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.joda.time.DateTime;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.ProposalMoveHistory;
 import org.xcolab.portlets.proposals.utils.MoveType;
