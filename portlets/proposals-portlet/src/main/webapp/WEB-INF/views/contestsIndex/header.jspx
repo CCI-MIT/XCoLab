@@ -50,6 +50,7 @@
 						</c:choose>
 					</div>
 				</div>
+				<!--
 				<div class="outline ${viewType == 'OUTLINE' ? 'selected' : ''}">
 					<div>
 						<c:choose>
@@ -62,7 +63,7 @@
 						</c:choose>
 					</div>
 				</div>
-				<!--
+				-->
 				<div class="list ${viewType == 'LIST' ? 'selected' : ''}">
 					<div>
 						<c:choose>
@@ -75,7 +76,6 @@
 						</c:choose>
 					</div>
 				</div>
-				-->
 			</div>
 		</c:if>
 
