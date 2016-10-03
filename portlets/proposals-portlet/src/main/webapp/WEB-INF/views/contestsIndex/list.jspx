@@ -12,14 +12,13 @@
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
 
-    <table class="c-Table p-Contests__ListViewTable tooltips">
+    <div class="c-ListView tooltips" style="background-color: lightgray">
         <c:if test="${not empty contestsSorted.contestsFeatured }">
-            <proposalsPortlet:contestsList contests="${contestsSorted.contestsFeatured }" featured="true"/>
+            <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsFeatured }" featured="true"/>
         </c:if>
         <c:if test="${not empty contestsSorted.contestsNormal }">
-            <proposalsPortlet:contestsList contests="${contestsSorted.contestsNormal }" featured="false"/>
+            <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
         </c:if>
-	</table>
-
-
+        <proposalsPortlet:collectionListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
+	</div>
 </jsp:root>

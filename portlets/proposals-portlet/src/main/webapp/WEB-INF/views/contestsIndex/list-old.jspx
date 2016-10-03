@@ -122,10 +122,10 @@
 			</tr>
 		</thead>
         <c:if test="${not empty contestsSorted.contestsFeatured }">
-            <proposalsPortlet:contestsList contests="${contestsSorted.contestsFeatured }" featured="true"/>
+            <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsFeatured }" featured="true"/>
         </c:if>
         <c:if test="${not empty contestsSorted.contestsNormal }">
-            <proposalsPortlet:contestsList contests="${contestsSorted.contestsNormal }" featured="false"/>
+            <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
         </c:if>
 	</table>
 

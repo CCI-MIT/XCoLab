@@ -15,14 +15,21 @@
 	<c:forEach var="contest" items="${contests }">
 		<c:if test="${contest.showInListView}">
 			<div class="c-ListItem">
+				<div class="c-ListItem__contests">
+					<div class="c-ListItem__circle">
+						15
+					</div>
+					contests
+				</div>
 				<div class="c-ListItem__title">
 					<div class="contestFlag">
 						<collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
+						<br/>
 						${contest.contestName}
 					</div>
 				</div>
 				<div class="c-ListItem__meta">
-					<div class="c-ListItem__phase">
+					<div class="c-ListItem__meta__flag--grey">
 						<c:if test="${not empty contest.flagText }">
 							<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
 							<c:if test="${not empty contest.flagTooltip}">
@@ -31,17 +38,10 @@
 						</c:if>
 					</div>
 					<div class="c-ListItem__proposals">
-						${contest.proposalsCount} proposals
-					</div>
-					<div class="c-ListItem__comments">
-						<c:choose>
-							<c:when test="${contest.activePhase.canVote }">
-								${contest.votesCount} contests
-							</c:when>
-							<c:otherwise>
-								${contest.totalCommentsCount} comments
-							</c:otherwise>
-						</c:choose>
+						<strong>
+							${contest.proposalsCount}
+						</strong>
+						proposals
 					</div>
 				</div>
 			</div>
