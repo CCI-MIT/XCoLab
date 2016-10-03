@@ -1,23 +1,19 @@
 package org.xcolab.portlets.proposals.utils.edit;
 
-import com.ext.portlet.NoSuchProposal2PhaseException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalMoveHistoryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import javax.validation.Valid;
 
@@ -32,18 +28,18 @@ public final class ProposalMoveUtil {
             final Contest fromContest = ProposalsClient.getCurrentContestForProposal(proposalWrapper.getProposalId());
             ContestPhase targetPhase = ContestClient.getActivePhase(targetContest.getContestPK());
 
-            try {
-                if (Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalWrapper.getProposalId(),
+            try {//Proposal2PhaseLocalServiceUtil
+                if (ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposalWrapper.getProposalId(),
                         targetPhase.getContestPhasePK()) != null) {
                     throw new PortalException("The proposal is already associated with the target contest.");
                 }
-            } catch (NoSuchProposal2PhaseException ignored) {
+            } catch (Proposal2PhaseNotFoundException ignored) {
                 //proposal is not in the target phase -> that's what we want
             }
 
             switch (updateProposalSectionsBean.getMoveType()) {
                 case MOVE_PERMANENTLY:
-                    ProposalMoveHistoryLocalServiceUtil.createMoveHistory(proposalWrapper.getProposalId(),
+                    ProposalsClient.createProposalMoveHistory(proposalWrapper.getProposalId(),
                             fromContest.getContestPK(), targetContest.getContestPK(), 0L, targetPhase.getContestPhasePK(),
                             themeDisplay.getUserId());
                     for (Proposal2Phase p2p : ProposalsClient
@@ -62,7 +58,7 @@ public final class ProposalMoveUtil {
                         if (updateProposalSectionsBean.getMoveFromContestPhaseId() != null) {
                             if (!ContestClient.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate()
                                     .before(
-                                            ContestPhaseLocalServiceUtil
+                                            ContestClient
                                                     .getContestPhase(updateProposalSectionsBean.getMoveFromContestPhaseId())
                                                     .getPhaseStartDate())) {
                                 // remove proposal from this contest in all phases that come after the selected one
@@ -72,7 +68,7 @@ public final class ProposalMoveUtil {
                     }
                     break;
                 case COPY:
-                    ProposalMoveHistoryLocalServiceUtil.createCopyHistory(proposalWrapper.getProposalId(),
+                    ProposalsClient.createCopyProposalMoveHistory(proposalWrapper.getProposalId(),
                             fromContest.getContestPK(), targetContest.getContestPK(), 0L, targetPhase.getContestPhasePK(),
                             themeDisplay.getUserId());
                     for (Proposal2Phase p2p : ProposalsClient
@@ -91,13 +87,18 @@ public final class ProposalMoveUtil {
                     throw new SystemException("Not supported");
                 default:
             }
+            Proposal2Phase p2p = new Proposal2Phase();
+            p2p.setContestPhaseId(targetPhase.getContestPhasePK());
+            p2p.setProposalId(proposalWrapper.getProposalId());
 
-            Proposal2PhaseLocalServiceUtil.create(proposalWrapper.getProposalId(), targetPhase.getContestPhasePK(),
-                    proposalWrapper.getCurrentVersion(), -1);
-            ProposalContestPhaseAttributeLocalServiceUtil
+            p2p.setVersionFrom( proposalWrapper.getCurrentVersion());
+            p2p.setVersionTo(-1);
+
+            ProposalsClient.createProposal2Phase(p2p);
+            ProposalsClient
                     .setProposalContestPhaseAttribute(proposalWrapper.getProposalId(), contestPhase
                                     .getContestPhasePK(),
-                            ProposalContestPhaseAttributeKeys.VISIBLE, 1);
+                            ProposalContestPhaseAttributeKeys.VISIBLE,0l, 1l,"");
         }catch (ContestNotFoundException ignored){
 
         }

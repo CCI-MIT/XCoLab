@@ -1,6 +1,7 @@
 package org.xcolab.client.proposals;
 
 
+import org.joda.time.DateTime;
 import org.xcolab.client.activities.ActivitiesClient;
 
 import org.xcolab.client.activities.enums.ActivityProvidersType;
@@ -890,6 +891,46 @@ public final class ProposalsClient {
                 .optionalQueryParam("targetContestId", targetContestId)
                 .execute();
     }
+    public static  ProposalMoveHistory createProposalMoveHistory(ProposalMoveHistory proposalMoveHistory) {
+        return proposalMoveHistoryResource.create(proposalMoveHistory).execute();
+    }
 
+    public static ProposalMoveHistory createProposalMoveHistory(long proposalId, long srcContestId, long targetContestId,
+                                                 long srcPhaseId, long targetPhaseId, long userId)  {
+        return createProposalMoveHistory(proposalId, proposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId, "MOVE_PERMANENTLY");
+    }
+
+
+    public static ProposalMoveHistory createCopyProposalMoveHistory(long proposalId, long srcContestId, long targetContestId,
+                                                 long srcPhaseId, long targetPhaseId, long userId) {
+        return createProposalMoveHistory(proposalId, proposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId, "COPY");
+    }
+
+
+    public static ProposalMoveHistory createForkProposalMoveHistory(long srcProposalId, long targetProposalId, long srcContestId, long targetContestId,
+                                                 long srcPhaseId, long targetPhaseId, long userId) {
+        return createProposalMoveHistory(srcProposalId, targetProposalId, srcContestId, targetContestId, srcPhaseId, targetPhaseId, userId, "FORK");
+    }
+
+    public static ProposalMoveHistory createProposalMoveHistory(long srcProposalId, long targetProposalId, long srcContestId, long targetContestId,
+                                      long sourcePhaseId, long targetPhaseId, long userId, String moveType) {
+        ProposalMoveHistory proposalMoveHistory = new ProposalMoveHistory();
+        proposalMoveHistory.setSourceProposalId(srcProposalId);
+        proposalMoveHistory.setTargetProposalId(targetProposalId);
+
+        proposalMoveHistory.setSourceContestId(srcContestId);
+        proposalMoveHistory.setTargetContestId(targetContestId);
+
+        proposalMoveHistory.setSourcePhaseId(sourcePhaseId);
+        proposalMoveHistory.setTargetPhaseId(targetPhaseId);
+
+        proposalMoveHistory.setMovingUserId(userId);
+        proposalMoveHistory.setMoveDate(new Timestamp(new Date().getTime()));
+        proposalMoveHistory.setMoveType(moveType);
+
+        proposalMoveHistory = createProposalMoveHistory(proposalMoveHistory);
+
+        return proposalMoveHistory;
+    }
 
 }

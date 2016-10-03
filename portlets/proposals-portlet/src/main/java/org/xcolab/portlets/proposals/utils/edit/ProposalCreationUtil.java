@@ -62,7 +62,7 @@ public final class ProposalCreationUtil {
                 ProposalsClient.setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                         ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID,
                         0l,baseContestId);
-                ProposalMoveHistoryLocalServiceUtil.createForkHistory(baseProposalId, proposalWrapper.getProposalId(),
+                ProposalsClient.createForkProposalMoveHistory(baseProposalId, proposalWrapper.getProposalId(),
                         baseContestId, contest.getContestPK(), 0L, contestPhase.getContestPhasePK(), userId);
 
                 for (ProposalAttribute attribute : ProposalsClient

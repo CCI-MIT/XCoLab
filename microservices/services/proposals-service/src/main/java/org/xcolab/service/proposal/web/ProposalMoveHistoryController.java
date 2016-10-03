@@ -1,6 +1,7 @@
 package org.xcolab.service.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,7 @@ public class ProposalMoveHistoryController {
     ProposalMoveHistoryDao proposalMoveHistoryDao;
 
     @RequestMapping(value = "/proposalMoveHistories", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalMoveHistory> getProposalMoveHistorys(
+    public List<ProposalMoveHistory> getProposalMoveHistories(
             @RequestParam(required = false) Long sourceProposalId,
             @RequestParam(required = false) Long sourceContestId,
             @RequestParam(required = false) Long targetProposalId,
@@ -28,5 +29,9 @@ public class ProposalMoveHistoryController {
         return proposalMoveHistoryDao.findByGiven(sourceProposalId, sourceContestId, targetProposalId, targetContestId);
     }
 
+    @RequestMapping(value = "/proposalMoveHistories", method = RequestMethod.POST)
+    public ProposalMoveHistory createProposalMoveHistory(@RequestBody ProposalMoveHistory proposalMoveHistory) {
+        return this.proposalMoveHistoryDao.create(proposalMoveHistory);
+    }
 
 }

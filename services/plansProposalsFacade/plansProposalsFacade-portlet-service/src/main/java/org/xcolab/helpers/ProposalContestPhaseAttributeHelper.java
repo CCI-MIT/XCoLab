@@ -61,7 +61,7 @@ public class ProposalContestPhaseAttributeHelper {
             attribute.setProposalId(proposalId);
             attribute.setContestPhaseId(contestPhasePK);
             attribute.setName(attributeName);
-            ProposalsClient.createProposalContestPhaseAttribute(attribute);
+            attribute = ProposalsClient.createProposalContestPhaseAttribute(attribute);
 
         return attribute;
     }

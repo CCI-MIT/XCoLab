@@ -37,7 +37,7 @@ public class Proposal2PhaseController {
     }
 
     @RequestMapping(value = "/proposal2Phases/getByContestPhaseIdProposalId", method = {RequestMethod.GET})
-    public Proposal2Phase getProposal2Phases(
+    public Proposal2Phase getByContestPhaseIdProposalId(
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId
     ) throws NotFoundException {
@@ -48,20 +48,20 @@ public class Proposal2PhaseController {
         return ret.get(0);
     }
 
-    @RequestMapping(value = "/proposal2Phase/updateProposal2Phase", method = RequestMethod.POST)
+    @RequestMapping(value = "/proposal2Phases/updateProposal2Phase", method = RequestMethod.POST)
     public boolean updateProposal2Phase(@RequestBody Proposal2Phase proposal2Phase) throws NotFoundException {
 
             return proposal2PhaseDao.update(proposal2Phase);
     }
 
-    @RequestMapping(value = "/proposal2Phase/deleteProposal", method = RequestMethod.POST)
+    @RequestMapping(value = "/proposal2Phases/deleteProposal2Phase", method = RequestMethod.POST)
     public boolean deleteProposal2Phase(@RequestBody Proposal2Phase proposal2Phase) throws NotFoundException {
 
         return proposal2PhaseDao.delete(proposal2Phase.getProposalId(), proposal2Phase.getContestPhaseId())>0;
     }
 
 
-    @RequestMapping(value = "/proposal2Phase/promoteProposal", method = RequestMethod.GET)
+    @RequestMapping(value = "/proposal2Phases/promoteProposal", method = RequestMethod.GET)
     public boolean promoteProposal(@RequestParam Long proposalId,
                                         @RequestParam Long activePhaseForContest,
                                         @RequestParam Long currentProposalContestPhase) throws NotFoundException {
@@ -70,5 +70,12 @@ public class Proposal2PhaseController {
         return true;
     }
 
+    @RequestMapping(value = "/proposal2Phases", method = {RequestMethod.GET})
+    public List<Proposal2Phase>  getProposal2Phases(
+            @RequestParam(required = false) Long proposalId
+    ) throws NotFoundException {
+        return proposal2PhaseDao.findByGiven(proposalId, null);
+
+    }
 
 }
