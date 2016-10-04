@@ -1,11 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 
-import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalRatingClient;
 import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.client.proposals.pojo.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.ProposalRatingValue;
@@ -74,7 +70,7 @@ public class ProposalRatingWrapper {
         ProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
             if (ratingType == null)
-                ratingType = ProposalsClient.getProposalRatingType(ratingValue.getRatingTypeId());
+                ratingType = ProposalRatingClient.getProposalRatingType(ratingValue.getRatingTypeId());
             return ratingType;
         }
 
@@ -86,7 +82,7 @@ public class ProposalRatingWrapper {
             if (roundFactor == null) {
                 roundFactor = 1L;
             }
-        ratingValue = ProposalsClient.getProposalRatingValue(this.proposalRating.getRatingValueId() / roundFactor);
+        ratingValue = ProposalRatingClient.getProposalRatingValue(this.proposalRating.getRatingValueId() / roundFactor);
         return ratingValue;
     }
 

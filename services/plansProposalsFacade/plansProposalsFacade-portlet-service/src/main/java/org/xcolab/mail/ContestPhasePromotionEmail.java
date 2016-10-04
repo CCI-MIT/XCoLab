@@ -10,6 +10,7 @@ import com.liferay.util.mail.MailEngineException;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
@@ -28,7 +29,7 @@ public class ContestPhasePromotionEmail {
     public static void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase, PortletRequest request)
             throws PortalException, SystemException, AddressException, MailEngineException, UnsupportedEncodingException {
 
-        String subject = "Judging Results on your Proposal " + ProposalsClient.getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0l).getStringValue();
+        String subject = "Judging Results on your Proposal " + ProposalAttributeClient.getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0l).getStringValue();
 
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);

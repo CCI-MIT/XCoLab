@@ -13,6 +13,8 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -221,7 +223,7 @@ public class Proposal implements Serializable {
     }
     @JsonIgnore
     public boolean isOpen(){
-        ProposalAttribute attribute = ProposalsClient.getProposalAttribute(this.getProposalId(), ProposalAttributeKeys.OPEN, 0l);
+        ProposalAttribute attribute = ProposalAttributeClient.getProposalAttribute(this.getProposalId(), ProposalAttributeKeys.OPEN, 0l);
         if(attribute!= null) {
             return attribute.getNumericValue() > 0;
         }else{
@@ -267,7 +269,7 @@ public class Proposal implements Serializable {
         final ContestPhase contestPhase = ContestClient.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
-            ProposalContestPhaseAttribute pcpa = ProposalsClient.getProposalContestPhaseAttribute(this.getProposalId(),
+            ProposalContestPhaseAttribute pcpa = ProposalContestPhaseAttributeClient.getProposalContestPhaseAttribute(this.getProposalId(),
                     contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
             if(pcpa!=null) {
                 visibleAttributeValue = pcpa.getNumericValue();

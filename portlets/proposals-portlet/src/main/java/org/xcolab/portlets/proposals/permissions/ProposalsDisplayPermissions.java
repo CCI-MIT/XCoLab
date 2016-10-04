@@ -11,7 +11,8 @@ import com.liferay.portal.model.User;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.proposals.MembershipRequestClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalSupporterClient;
+import org.xcolab.client.proposals.ProposalVoteClient;
 import org.xcolab.client.proposals.pojo.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.MembershipRequestStatus;
@@ -42,7 +43,7 @@ public class ProposalsDisplayPermissions {
 
     private boolean hasVotedOnThisProposal() throws SystemException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalsClient.hasUserVoted(
+                && ProposalVoteClient.hasUserVoted(
                     proposal.getProposalId(), contestPhase.getContestPhasePK(), user.getUserId());
     }
 
@@ -62,7 +63,7 @@ public class ProposalsDisplayPermissions {
 
     boolean isSubscribedToProposal() throws PortalException, SystemException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalsClient.isMemberProposalSupporter(proposal.getProposalId(), user.getUserId());
+                && ProposalSupporterClient.isMemberProposalSupporter(proposal.getProposalId(), user.getUserId());
     }
 
     public boolean getCanSeeUnsubscribeContestButton() throws PortalException, SystemException {
@@ -79,7 +80,7 @@ public class ProposalsDisplayPermissions {
 
     boolean isSupporter() throws PortalException, SystemException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalsClient.isMemberProposalSupporter(proposal.getProposalId(), user.getUserId());
+                && ProposalSupporterClient.isMemberProposalSupporter(proposal.getProposalId(), user.getUserId());
     }
 
     public boolean getCanSeeUnsupportButton() throws PortalException, SystemException {

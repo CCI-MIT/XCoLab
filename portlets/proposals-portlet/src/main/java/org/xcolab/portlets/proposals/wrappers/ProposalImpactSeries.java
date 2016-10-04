@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ImpactTemplateClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.FocusArea;
@@ -25,6 +25,7 @@ import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.ImpactIteration;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
@@ -75,7 +76,7 @@ public class ProposalImpactSeries {
         this.proposalWrapper = new ProposalWrapper(proposal);
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
-        this.impactIterations = ContestClient.getContestImpactIterations(contest);
+        this.impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = OntologyClient.getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
         Boolean invertSeriesSign = false;
@@ -174,7 +175,7 @@ public class ProposalImpactSeries {
                 ProposalImpactSeriesValues seriesValues = this.seriesTypeToSeriesMap.get(seriesType);
                 for (ImpactIteration iteration : impactIterations) {
                     double filteredValue = ProposalImpactValueFilterAlgorithm.filterValueForImpactSeriesType(seriesValues.getValueForYear(iteration.getYear()), seriesType);
-                    ProposalsClient.setProposalAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
+                    ProposalAttributeClient.setProposalAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
                             focusArea.getId_(), "", new Long(iteration.getYear()), filteredValue);
                 }
 
@@ -252,7 +253,7 @@ public class ProposalImpactSeries {
 
         // TODO create query to filter by additionalId?
         List<ProposalAttribute> impactProposalAttributes =
-                ProposalsClient.getImpactProposalAttributes(proposal);
+                ProposalAttributeClient.getImpactProposalAttributes(proposal);
 
         for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
 

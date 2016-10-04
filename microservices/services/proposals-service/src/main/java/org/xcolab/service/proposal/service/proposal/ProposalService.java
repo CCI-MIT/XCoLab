@@ -7,6 +7,7 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
@@ -223,7 +224,7 @@ public class ProposalService {
             try {
                 if (onlyWithContestIntegrationRelevance) {
                     ProposalAttribute attribute = proposalAttributeDao.get(proposalReference.getSectionAttributeId());
-                    PlanSectionDefinition psd = ContestClient.getPlanSectionDefinition(attribute.getAdditionalId());
+                    PlanSectionDefinition psd = PlanTemplateClient.getPlanSectionDefinition(attribute.getAdditionalId());
                     if (!psd.getContestIntegrationRelevance()) {
                         continue;
                     }

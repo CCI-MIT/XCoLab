@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
@@ -18,6 +19,8 @@ import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
+import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 
@@ -110,7 +113,7 @@ public class BaseProposalWrapper {
             return null;
         }
         try {
-            return ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+            return Proposal2PhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
         } catch (Proposal2PhaseNotFoundException e) {
             _log.warn(String.format("Could not fetch p2p for proposal %d, contest phase %d",
                     proposal.getProposalId(), contestPhase.getContestPhasePK()));
@@ -216,7 +219,7 @@ public class BaseProposalWrapper {
     }
 
     public boolean isUserAmongFellows(User userInQuestion) {
-        for (Long fellowId : ContestClient.getFellowsForContest(contest.getContestPK())) {
+        for (Long fellowId : ContestTeamMemberClient.getFellowsForContest(contest.getContestPK())) {
             if (fellowId == userInQuestion.getUserId()) {
                 return true;
             }
@@ -225,7 +228,7 @@ public class BaseProposalWrapper {
     }
 
     public boolean isUserAmongJudges(Member userInQuestion) {
-        for (Long judge : ContestClient.getJudgesForContest(contest.getContestPK())) {
+        for (Long judge : ContestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
             if (judge == userInQuestion.getUserId()) {
                 return true;
             }
@@ -252,7 +255,7 @@ public class BaseProposalWrapper {
     }
 
     public long getSupportersCount() {
-        return ProposalsClient.getProposalSupportersCount(proposal.getProposalId());
+        return ProposalSupporterClient.getProposalSupportersCount(proposal.getProposalId());
     }
 
     public long getCommentsCount() {
@@ -303,7 +306,7 @@ public class BaseProposalWrapper {
 
     public List<Member> getSupporters() {
         List<Member> supporters = new ArrayList<>();
-        for (ProposalSupporter ps : ProposalsClient.getProposalSupporters(proposal.getProposalId())) {
+        for (ProposalSupporter ps : ProposalSupporterClient.getProposalSupporters(proposal.getProposalId())) {
             try {
                 supporters.add(MembersClient.getMember(ps.getUserId()));
             } catch (MemberNotFoundException ignored) {

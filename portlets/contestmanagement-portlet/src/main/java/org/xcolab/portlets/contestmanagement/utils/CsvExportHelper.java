@@ -5,7 +5,6 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.ext.portlet.NoSuchContestException;
 
 
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -22,7 +21,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
@@ -86,7 +85,7 @@ public class CsvExportHelper {
             throws PortalException, SystemException {
         List<String[]> proposalExportData = new ArrayList<>();
         try {
-            Proposal2Phase proposal2Phase = ProposalsClient
+            Proposal2Phase proposal2Phase = Proposal2PhaseClient
                     .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
             BaseProposalWrapper proposalWrapper = getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
             Long contestId = contestPhase.getContestPK();

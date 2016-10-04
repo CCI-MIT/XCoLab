@@ -12,6 +12,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestTeamMemberClient;
+import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
@@ -21,6 +23,9 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.MembershipRequestClient;
+import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.ProposalRatingClient;
+import org.xcolab.client.proposals.ProposalVoteClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.MembershipRequest;
@@ -137,7 +142,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (Long judge : ContestClient.getJudgesForContest(contest.getContestPK())) {
+            for (Long judge : ContestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
 
                 selectedJudges.add(judge);
             }
@@ -159,7 +164,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (Long judgeId : ContestClient.getJudgesForContest(contest.getContestPK())) {
+            for (Long judgeId : ContestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
 
                 try {
                     Member judge = MembersClient.getMember(judgeId);
@@ -203,7 +208,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
             try {
                 org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
                 long votingPhasePK = new ContestWrapper(contestMicro).getVotingPhasePK();
-                return ProposalsClient.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
+                return ProposalVoteClient.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
             } catch (ContestNotFoundException ignored) {
 
             }
@@ -216,9 +221,9 @@ public class ProposalWrapper extends BaseProposalWrapper {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
-                    PlanTemplate planTemplate = ContestClient.getPlanTemplate(contest.getPlanTemplateId());
+                    PlanTemplate planTemplate = PlanTemplateClient.getPlanTemplate(contest.getPlanTemplateId());
                     if (planTemplate != null) {
-                        for (PlanSectionDefinition psd : ContestClient.getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
+                        for (PlanSectionDefinition psd : PlanTemplateClient.getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
                             sections.add(new ProposalSectionWrapper(psd, this));
                         }
                     }
@@ -260,7 +265,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public void setModelRegion(String region, Long userId) throws PortalException, SystemException {
-        ProposalsClient.setProposalAttribute(createProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.REGION, region),userId);
+        ProposalAttributeClient.setProposalAttribute(createProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.REGION, region),userId);
     }
     private static ProposalAttribute createProposalAttribute(Long proposalId, String name, String stringValue){
         ProposalAttribute proposalAttribute = new ProposalAttribute();
@@ -283,7 +288,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         proposalAttribute.setName(ProposalAttributeKeys.SCENARIO_ID);
         proposalAttribute.setNumericValue(isConsolidatedScenario);
         proposalAttribute.setAdditionalId(scenarioId);
-        ProposalsClient.setProposalAttribute(proposalAttribute,userId);
+        ProposalAttributeClient.setProposalAttribute(proposalAttribute,userId);
     }
 
     public Long getScenarioId() throws PortalException, SystemException {
@@ -427,7 +432,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
             if (!getSelectedJudges().isEmpty()) {
                 for (long userId : getSelectedJudges()) {
-                    List<ProposalRating> proposalRatings = ProposalsClient
+                    List<ProposalRating> proposalRatings = ProposalRatingClient
                     .getProposalRatingsByProposalUserContestPhase(
                                     userId, proposal.getProposalId(),
                                     contestPhase.getContestPhasePK());
@@ -444,7 +449,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public boolean getJudgeReviewFinishedStatusUserId(long userId) {
 
-            List<ProposalRating> proposalRatings = ProposalsClient
+            List<ProposalRating> proposalRatings = ProposalRatingClient
                     .getProposalRatingsByProposalUserContestPhase(
                             userId, proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);

@@ -3,7 +3,7 @@ package org.xcolab.helpers;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 
@@ -24,7 +24,7 @@ public class ProposalContestPhaseAttributeHelper {
         this.proposalId = proposal.getProposalId();
         if (contestPhase != null) {
             this.contestPhasePK = contestPhase.getContestPhasePK();
-                proposalContestPhaseAttributes = ProposalsClient.getAllProposalContestPhaseProposalAttributes(contestPhasePK, proposalId);
+                proposalContestPhaseAttributes = ProposalContestPhaseAttributeClient.getAllProposalContestPhaseProposalAttributes(contestPhasePK, proposalId);
         }
     }
 
@@ -61,7 +61,7 @@ public class ProposalContestPhaseAttributeHelper {
             attribute.setProposalId(proposalId);
             attribute.setContestPhaseId(contestPhasePK);
             attribute.setName(attributeName);
-            attribute = ProposalsClient.createProposalContestPhaseAttribute(attribute);
+            attribute = ProposalContestPhaseAttributeClient.createProposalContestPhaseAttribute(attribute);
 
         return attribute;
     }

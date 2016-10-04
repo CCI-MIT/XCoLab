@@ -3,7 +3,7 @@ package org.xcolab.service.proposal.helper;
 
 
 import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.Proposal;
 
@@ -20,7 +20,7 @@ public class ProposalContestPhaseAttributeHelper {
         this.proposalId = proposal.getProposalId();
         if (contestPhase != null) {
             this.contestPhasePK = contestPhase.getContestPhasePK();
-                proposalContestPhaseAttributes = ProposalsClient.getAllProposalContestPhaseProposalAttributes(contestPhasePK, proposalId);
+                proposalContestPhaseAttributes = ProposalContestPhaseAttributeClient.getAllProposalContestPhaseProposalAttributes(contestPhasePK, proposalId);
         }
     }
 
@@ -57,7 +57,7 @@ public class ProposalContestPhaseAttributeHelper {
             attribute.setProposalId(proposalId);
             attribute.setContestPhaseId(contestPhasePK);
             attribute.setName(attributeName);
-            ProposalsClient.createProposalContestPhaseAttribute(attribute);
+            ProposalContestPhaseAttributeClient.createProposalContestPhaseAttribute(attribute);
 
         return attribute;
     }

@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
 
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -221,10 +221,10 @@ public class ProposalPickerSortingUtil {
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
                             try {
-                                ProposalAttribute t1 = ProposalsClient
+                                ProposalAttribute t1 = ProposalAttributeClient
                                         .getProposalAttribute(o1.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.TEAM, 0l);
-                                ProposalAttribute t2 = ProposalsClient
+                                ProposalAttribute t2 = ProposalAttributeClient
                                         .getProposalAttribute(o2.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.TEAM, 0l);
 

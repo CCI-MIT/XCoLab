@@ -3,8 +3,6 @@ package org.xcolab.portlets.userprofile.wrappers;
 import com.ext.portlet.Activity.ActivityUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -30,6 +28,7 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalSupporter;
@@ -137,7 +136,7 @@ public class UserProfileWrapper implements Serializable {
             userSubscriptions = new UserSubscriptionsWrapper(user);
             supportedProposals.clear();
             userActivities.clear();
-            for (ProposalSupporter ps : ProposalsClient.getProposalSupportersByUserId(user.getId_())) {
+            for (ProposalSupporter ps : ProposalSupporterClient.getProposalSupportersByUserId(user.getId_())) {
                 supportedProposals.add(new SupportedProposalWrapper(ps));
             }
 

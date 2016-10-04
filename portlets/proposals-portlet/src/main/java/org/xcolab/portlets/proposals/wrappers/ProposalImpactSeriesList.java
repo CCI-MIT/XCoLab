@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -11,6 +10,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
@@ -101,7 +101,7 @@ public class ProposalImpactSeriesList {
         Set<Long> focusAreaIdSet = new HashSet<>();
         List<FocusArea> impactSeriesFocusAreas = new ArrayList<>();
 
-        for (ProposalAttribute attribute : ProposalsClient.getImpactProposalAttributes(proposal)) {
+        for (ProposalAttribute attribute : ProposalAttributeClient.getImpactProposalAttributes(proposal)) {
             if (!focusAreaIdSet.contains(attribute.getAdditionalId())) {
                 focusAreaIdSet.add(attribute.getAdditionalId());
                 impactSeriesFocusAreas.add(OntologyClient.getFocusArea(attribute.getAdditionalId()));

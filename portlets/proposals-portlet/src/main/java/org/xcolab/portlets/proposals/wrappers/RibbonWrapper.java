@@ -1,20 +1,13 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 
-
-
-
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
@@ -48,7 +41,7 @@ public class RibbonWrapper {
                         proposalId, proposalWrapper.getContestPK()));
                 return null;
             }
-                ribbonAttribute = ProposalsClient
+                ribbonAttribute = ProposalContestPhaseAttributeClient
                         .getProposalContestPhaseAttribute(
                                 proposalId,
                                 contestPhase.getContestPhasePK(),

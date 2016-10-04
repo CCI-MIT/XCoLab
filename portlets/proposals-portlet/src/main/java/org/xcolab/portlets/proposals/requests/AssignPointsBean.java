@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
 import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.ReceiverLimitationStrategy;
@@ -49,7 +49,7 @@ public class AssignPointsBean {
             PointsDistributionConfigurationLocalServiceUtil.verifyDistributionConfigurationsForProposalId(proposalId);
 
             List<PointsDistributionConfiguration> existingDistributionConfigurations =
-                    ProposalsClient.getPointsDistributionByProposalIdPointTypeId(proposalId, pointType.getId());
+                    PointsDistributionConfigurationClient.getPointsDistributionByProposalIdPointTypeId(proposalId, pointType.getId());
 
             switch(pointType.getReceiverLimitationStrategy().getType()) {
                 case USER:

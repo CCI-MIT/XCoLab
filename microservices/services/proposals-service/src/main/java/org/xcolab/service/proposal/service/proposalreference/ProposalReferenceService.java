@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.pojo.PlanSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
 
@@ -56,7 +56,7 @@ public class ProposalReferenceService {
         processedProposals.add(proposal.getProposalId());
         for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal).getAttributesByName(ProposalAttributeKeys.SECTION)) {
 
-                PlanSectionDefinition psd = ContestClient.getPlanSectionDefinition(attribute.getAdditionalId());
+                PlanSectionDefinition psd = PlanTemplateClient.getPlanSectionDefinition(attribute.getAdditionalId());
 
                 if (StringUtils.isBlank(psd.getType_())) {
                     continue;

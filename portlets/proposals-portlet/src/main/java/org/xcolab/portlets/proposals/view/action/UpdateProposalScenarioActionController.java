@@ -9,11 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalUnversionedAttributeClient;
 import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.utils.ProposalUnversionedAttributeUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -57,19 +56,19 @@ public class UpdateProposalScenarioActionController {
             proposal.setModelRegion(region, proposalsContext.getUser(request).getUserId());
         }
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalsClient.
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeClient.
                 getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
 
         if(impactAuthorComment!=null||impactIAFComment!=null) {
               if(impactAuthorComment!=null) {
 
-                  ProposalsClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
+                  ProposalUnversionedAttributeClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
                           HtmlUtil.cleanAll(impactAuthorComment),
                           ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
                           proposal.getProposalId());
                 }
                 if(impactIAFComment!=null) {
-                    ProposalsClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                    ProposalUnversionedAttributeClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                             ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
                             proposal.getProposalId());
                 }

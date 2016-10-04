@@ -1,9 +1,6 @@
 package org.xcolab.wrappers;
 
 
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -11,6 +8,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -20,10 +18,10 @@ import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.helpers.Tuple;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.sql.Timestamp;
@@ -332,7 +330,7 @@ public class BaseContestWrapper {
         try {
             ContestPhase cp = ContestClient.getActivePhase(contest.getContestPK());
             if (cp != null) {
-                return ProposalsClient
+                return Proposal2PhaseClient
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
             }
         } catch (UncheckedEntityNotFoundException e) {
@@ -423,9 +421,9 @@ public class BaseContestWrapper {
         if (contestTeamMembersByRole == null) {
 
             Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
-            for (org.xcolab.client.contest.pojo.ContestTeamMember teamMember : ContestClient.getTeamMembers(contest.getContestPK())) {
+            for (org.xcolab.client.contest.pojo.ContestTeamMember teamMember : ContestTeamMemberClient.getTeamMembers(contest.getContestPK())) {
                 try {
-                    org.xcolab.client.contest.pojo.ContestTeamMemberRole role = ContestClient.getContestTeamMemberRole(teamMember.getRoleId());
+                    org.xcolab.client.contest.pojo.ContestTeamMemberRole role = ContestTeamMemberClient.getContestTeamMemberRole(teamMember.getRoleId());
                     List<Member> roleUsers = teamRoleUsersMap
                             .get(new Tuple<>(role.getRole(), role.getSort()));
                     if (roleUsers == null) {

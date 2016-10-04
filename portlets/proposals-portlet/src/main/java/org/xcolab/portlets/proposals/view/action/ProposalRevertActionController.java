@@ -3,10 +3,8 @@ package org.xcolab.portlets.proposals.view.action;
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.ProposalAttributeKeys;
 
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalReferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -16,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -128,7 +127,7 @@ public class ProposalRevertActionController {
                 // we are in a completed phase - need to adjust the end version
                 final Proposal updatedProposal = ProposalsClient.getProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
-                ProposalsClient.updateProposal2Phase(p2p);
+                Proposal2PhaseClient.updateProposal2Phase(p2p);
             }
             // extra check to reset dependencies from the old versions
             if (updateProposalReferences) {

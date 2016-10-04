@@ -1,16 +1,14 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.PlanTemplate;
@@ -18,7 +16,6 @@ import org.xcolab.client.contest.pojo.PlanTemplateSection;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
@@ -44,7 +41,7 @@ public class ProposalTemplateWrapper {
     }
 
     public ProposalTemplateWrapper(Long planTemplateId) throws PortalException, SystemException {
-        this.planTemplate = ContestClient.getPlanTemplate(planTemplateId);
+        this.planTemplate = PlanTemplateClient.getPlanTemplate(planTemplateId);
         populateExistingProposalTemplateSections();
     }
 
@@ -69,13 +66,13 @@ public class ProposalTemplateWrapper {
     }
 
     public void initPlanTemplate(Long planTemplateId) throws PortalException, SystemException {
-        this.planTemplate = ContestClient.getPlanTemplate(planTemplateId);
+        this.planTemplate = PlanTemplateClient.getPlanTemplate(planTemplateId);
     }
 
     private void populateExistingProposalTemplateSections() throws PortalException, SystemException {
         sections = new ArrayList<>();
         if (planTemplate != null) {
-            for (PlanSectionDefinition planSectionDefinition : ContestClient.getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), null)) {
+            for (PlanSectionDefinition planSectionDefinition : PlanTemplateClient.getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), null)) {
                 if (!planSectionDefinition.getLocked()) {
                     sections.add(new SectionDefinitionWrapper(planSectionDefinition, planTemplate.getId_()));
                 }
@@ -175,7 +172,7 @@ public class ProposalTemplateWrapper {
         }
 
 
-            List<PlanSectionDefinition> planSectionDefinitions = ContestClient
+            List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateClient
                     .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), null);
             for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
                 if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId_())) {
@@ -183,10 +180,10 @@ public class ProposalTemplateWrapper {
                             .isPlanSectionDefinitionUsedInOtherTemplate(
                                     planSectionDefinition.getId_(),
                                     planTemplate.getId_())) {
-                        ContestClient
+                        PlanTemplateClient
                                 .deletePlanSectionDefinition(planSectionDefinition.getId_());
                     }
-                    ContestClient.deletePlanTemplateSection(planTemplate.getId_(), planSectionDefinition.getId_());
+                    PlanTemplateClient.deletePlanTemplateSection(planTemplate.getId_(), planSectionDefinition.getId_());
                 }
             }
 
@@ -209,7 +206,7 @@ public class ProposalTemplateWrapper {
 
     private void duplicateExistingPlanTemplate() {
 
-        PlanTemplate newPlanTemplate = ContestClient.createPlanTemplate(planTemplate);
+        PlanTemplate newPlanTemplate = PlanTemplateClient.createPlanTemplate(planTemplate);
         planTemplateId = newPlanTemplate.getId_();
 
         for (SectionDefinitionWrapper section : sections) {
@@ -228,7 +225,7 @@ public class ProposalTemplateWrapper {
         if (planTemplate != null && templateName != null) {
             planTemplate.setName(templateName);
 
-            ContestClient.updatePlanTemplate(planTemplate);
+            PlanTemplateClient.updatePlanTemplate(planTemplate);
 
 
         }
@@ -243,13 +240,13 @@ public class ProposalTemplateWrapper {
             Integer weight = sectionDefinitionWrapper.getWeight();
 
             List<PlanTemplateSection> planTemplateSectionsWithSectionDefinition =
-                    ContestClient
+                    PlanTemplateClient
                             .getPlanTemplateSectionByPlanSectionDefinitionId(sectionDefinitionWrapper.getId());
 
             for (PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
                 if (planTemplateSection.getPlanTemplateId() == planTemplateId) {
                     planTemplateSection.setWeight(weight);
-                    ContestClient
+                    PlanTemplateClient
                             .updatePlanTemplateSection(planTemplateSection);
 
                     wasUpdated = true;
@@ -269,7 +266,7 @@ public class ProposalTemplateWrapper {
     public static List<LabelValue> getAllPlanTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
 
-            for (PlanTemplate planTemplateItem : ContestClient.getPlanTemplates()) {
+            for (PlanTemplate planTemplateItem : PlanTemplateClient.getPlanTemplates()) {
                 selectItems.add(new LabelValue(planTemplateItem.getId_(), planTemplateItem.getName()));
             }
 

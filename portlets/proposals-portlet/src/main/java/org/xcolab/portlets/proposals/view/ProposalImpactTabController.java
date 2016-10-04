@@ -4,8 +4,6 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -20,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ImpactTemplateClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ImpactIteration;
 import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.proposals.ProposalUnversionedAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
@@ -80,7 +80,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("canCommentAsAIF", userCanCommentAsAIF);
         }
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalsClient.
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeClient.
                 getProposalUnversionedAttributesByProposalId(proposalWrapper.getProposalId());
         if ( unversionedAttributes != null && ! unversionedAttributes.isEmpty()) {
             for (ProposalUnversionedAttribute pua : unversionedAttributes) {
@@ -116,7 +116,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (showDataTable) {
             IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest);
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
-            List<ImpactIteration> impactIterations = ContestClient.getContestImpactIterations(contest);
+            List<ImpactIteration> impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         }
 
@@ -252,7 +252,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
 
         try {
-            List<ImpactIteration> impactIterations = ContestClient.getContestImpactIterations(contest);
+            List<ImpactIteration> impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
 
             ProposalImpactSeriesList proposalImpactSeriesList =

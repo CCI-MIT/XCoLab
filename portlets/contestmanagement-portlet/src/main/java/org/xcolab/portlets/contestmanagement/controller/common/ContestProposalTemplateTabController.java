@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.contest.pojo.PlanSectionDefinition;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
 import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.enums.ContestTier;
@@ -99,7 +100,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
             throws PortalException, SystemException, java.io.IOException {
 
         PlanSectionDefinition planSectionDefinition =
-                ContestClient.getPlanSectionDefinition(sectionDefinitionId);
+                PlanTemplateClient.getPlanSectionDefinition(sectionDefinitionId);
         SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper(planSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
@@ -127,7 +128,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     private List<LabelValue> getPointTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         selectItems.add(new LabelValue(0L, "Default"));
-        for (PointType pointType : ProposalsClient.getAllPointTypes()) {
+        for (PointType pointType : PointsDistributionConfigurationClient.getAllPointTypes()) {
             if (pointType.getDistributionStrategy()
                     .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
                 selectItems.add(new LabelValue(pointType.getId_(),

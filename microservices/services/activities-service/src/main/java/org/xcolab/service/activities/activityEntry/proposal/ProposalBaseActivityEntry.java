@@ -9,6 +9,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -44,7 +45,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
             contestType = ContestClient.getContestType(contest.getContestTypeId());
 
-            proposalName = ProposalsClient.getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
+            proposalName = ProposalAttributeClient.getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
 
         } catch (ContestNotFoundException| ProposalNotFoundException e){
             //_log.error("Portal exception  " + e.getMessage());

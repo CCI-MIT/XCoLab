@@ -1,11 +1,7 @@
 package org.xcolab.portlets.proposals.utils;
 
-import com.ext.portlet.NoSuchContestException;
-
-
 
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -29,6 +25,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -248,7 +245,7 @@ public class ProposalsContextImpl implements ProposalsContext {
 
                 if (proposalId > 0) {
                     try {
-                        proposal2Phase = ProposalsClient
+                        proposal2Phase = Proposal2PhaseClient
                                 .getProposal2PhaseByProposalIdContestPhaseId(proposalId,
                                         contestPhase.getContestPhasePK());
                     } catch (Proposal2PhaseNotFoundException e) {
@@ -303,7 +300,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                     contestPhase = mostRecentPhaseInRequestedContest;
                                 }
                                 try {
-                                    proposal2Phase = ProposalsClient.
+                                    proposal2Phase = Proposal2PhaseClient.
                                             getProposal2PhaseByProposalIdContestPhaseId(proposalId,
                                                     contestPhase.getContestPhasePK());
                                 }catch (Proposal2PhaseNotFoundException ignored){

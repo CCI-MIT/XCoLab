@@ -17,6 +17,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.proposals.ProposalMoveHistoryClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalMoveHistory;
@@ -163,7 +164,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
     private void populateMoveHistory(Model model, Proposal proposal, Contest contest)
             throws SystemException {
-        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalsClient
+        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveHistoryClient
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         List<MoveHistoryWrapper> sourceMoveHistories = new ArrayList<>();
 
@@ -173,7 +174,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
 
-        ProposalMoveHistory targetMoveHistoryRaw = ProposalsClient
+        ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveHistoryClient
                 .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         if (targetMoveHistoryRaw != null) {
             MoveHistoryWrapper targetMoveHistory = new MoveHistoryWrapper(targetMoveHistoryRaw);

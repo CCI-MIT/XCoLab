@@ -2,14 +2,10 @@ package org.xcolab.utils.judging;
 
 
 
-import com.liferay.portal.kernel.exception.SystemException;
-
-import com.liferay.portal.service.UserLocalServiceUtil;
-
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalRatingClient;
 import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.client.proposals.pojo.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.ProposalRatingValue;
@@ -59,7 +55,7 @@ public class ProposalRatingWrapper {
     public ProposalRatingType getRatingType()  {
         ProposalRatingValue ratingValue = this.getRatingValue();
             if (ratingValue != null) {
-                ProposalRatingType ratingType = ProposalsClient.getProposalRatingType(ratingValue.getRatingTypeId());
+                ProposalRatingType ratingType = ProposalRatingClient.getProposalRatingType(ratingValue.getRatingTypeId());
                 return ratingType;
             }
 
@@ -68,7 +64,7 @@ public class ProposalRatingWrapper {
 
     public ProposalRatingValue getRatingValue()  {
 
-            ProposalRatingValue ratingValue = ProposalsClient.getProposalRatingValue(this.proposalRating.getRatingValueId());
+            ProposalRatingValue ratingValue = ProposalRatingClient.getProposalRatingValue(this.proposalRating.getRatingValueId());
             return ratingValue;
 
     }

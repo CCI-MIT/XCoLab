@@ -10,7 +10,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalVoteClient;
 
 import org.xcolab.wrappers.BaseContestWrapper;
 
@@ -58,7 +58,7 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
 
     public long getVotesCount() {
         ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
-        return ProposalsClient.countProposalVotesInContestPhase(phase.getContestPhasePK());
+        return ProposalVoteClient.countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 }
 

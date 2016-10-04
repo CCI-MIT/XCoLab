@@ -7,8 +7,6 @@ import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.ContestTeamMember;
-import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ImpactIteration;
 import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
@@ -17,7 +15,6 @@ import org.xcolab.client.contest.pojo.ImpactTemplateSeries;
 import org.xcolab.client.contest.pojo.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.PlanTemplate;
 import org.xcolab.client.contest.pojo.PlanTemplateSection;
-import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -30,8 +27,6 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class ContestClient {
 
@@ -52,39 +47,27 @@ public class ContestClient {
     private static final RestResource<ContestType, Long> contestTypeResource = new RestResource1<>(contestService,
             "contestTypes", ContestType.TYPES);
 
-    private static final RestResource<ContestTeamMember, Long> contestTeamMemberResource = new RestResource1<>(contestService,
-            "contestTeamMembers", ContestTeamMember.TYPES);
 
-    private static final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource = new RestResource1<>(contestService,
-            "contestTeamMemberRoles", ContestTeamMemberRole.TYPES);
 
     private static final RestResource1<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
             "contestSchedules", ContestSchedule.TYPES);
 
-    private static final RestResource1<ImpactIteration,Long> impactIterationResource = new RestResource1<>(contestService,
-            "impactIterations", ImpactIteration.TYPES);
 
-    private static final RestResource1<ImpactTemplateSeries,Long> impactTemplateSeriesResource = new RestResource1<>(contestService,
-            "impactTemplateSeries", ImpactTemplateSeries.TYPES);
+
 
     private static final RestResource1<ContestPhaseRibbonType,Long> contestPhaseRibbonTypeResource = new RestResource1<>(contestService,
             "contestPhaseRibbonTypes", ContestPhaseRibbonType.TYPES);
 
-    private static final RestResource1<ImpactTemplateMaxFocusArea,Long> impactTemplateMaxFocusAreaResource = new RestResource1<>(contestService,
-            "impactTemplateMaxFocusAreas", ImpactTemplateMaxFocusArea.TYPES);
-
-    private static final RestResource1<ImpactTemplateFocusAreaList,Long> impactTemplateFocusAreaListResource = new RestResource1<>(contestService,
-            "impactTemplateFocusAreaLists", ImpactTemplateFocusAreaList.TYPES);
-
-    private static final RestResource1<PlanTemplate,Long> planTemplateResource = new RestResource1<>(contestService,
-            "planTemplates", PlanTemplate.TYPES);
-
-    private static final RestResource1<PlanSectionDefinition,Long> planSectionDefinitionResource = new RestResource1<>(contestService,
-            "planSectionDefinitions", PlanSectionDefinition.TYPES);
 
 
-    private static final RestResource1<PlanTemplateSection,Long> planTemplateSectionResource = new RestResource1<>(contestService,
-            "planTemplateSections", PlanTemplateSection.TYPES);
+
+
+
+
+
+
+
+
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
@@ -424,95 +407,8 @@ public class ContestClient {
     }
 
 
-    public static List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
-        Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
-        List<Long> members = teamRoleToUsersMap.get(roleId);
-        if (members == null) {
-            return new ArrayList<>();
-        } else {
-            return members;
-        }
-    }
-
-    public static List<Long> getAdvisorsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.ADVISOR.getRoleId());
-
-    }
-
-    public static List<Long> getJudgesForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.JUDGE.getRoleId());
-    }
-
-    public static List<Long> getFellowsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.FELLOW.getRoleId());
-    }
-
-    public static List<Long> getContestManagersForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.CONTEST_MANAGER.getRoleId());
-
-    }
-
-    public static Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
-        Map<Long, List<Long>> teamRoleToUsersMap = new TreeMap<>();
-        for (ContestTeamMember ctm : getTeamMembers(contestId)) {
-            List<Long> roleUsers = teamRoleToUsersMap.get(ctm.getRoleId());
-
-            if (roleUsers == null) {
-                roleUsers = new ArrayList<>();
-                teamRoleToUsersMap.put(ctm.getRoleId(), roleUsers);
-            }
-
-            roleUsers.add(ctm.getUserId());
-
-        }
-        return teamRoleToUsersMap;
-    }
-
-    public static List<ContestTeamMember> getTeamMembers(Long contestId) {
-        return contestTeamMemberResource.list()
-                .optionalQueryParam("contestId", contestId)
-                .execute();
-    }
-
-    public static ContestTeamMember createContestTeamMember(ContestTeamMember contestTeamMember) {
-        return contestTeamMemberResource.create(contestTeamMember).execute();
-    }
-
-    public static void deleteContestTeamMember(Long contestTeamMemberId) {
-        contestTeamMemberResource.delete(contestTeamMemberId).execute();
-    }
-
-    public static ContestTeamMemberRole getContestTeamMemberRole(long id) {
-        return contestTeamMemberRoleResource.get(id)
-                .withCache(CacheKeys.of(ContestTeamMemberRole.class, id), CacheRetention.LONG)
-                .execute();
-    }
-
     public static String getContestPhaseName(ContestPhase ck) {
         return getContestPhaseType(ck.getContestPhaseType()).getName();
-    }
-
-    public static List<ImpactIteration> getContestImpactIterations(Contest contest) {
-        ImpactTemplateSeries impactSeries = getContestImpactTemplateSeries(contest);
-        return getContestImpactIterations(impactSeries.getIterationId());
-    }
-
-    public static List<ImpactIteration> getContestImpactIterations(Long iterationId) {
-        return impactIterationResource.list()
-                .optionalQueryParam("iterationId", iterationId)
-                .execute();
-    }
-
-    public static ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest) {
-
-        PlanTemplate planTemplate = getPlanTemplate(contest.getPlanTemplateId());
-        return getImpactTemplateSeries(planTemplate.getImpactSeriesTemplateId());
-
-    }
-
-    public static ImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
-        return impactTemplateSeriesResource.get(seriesId)
-                .execute();
     }
 
     public static ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
@@ -535,105 +431,6 @@ public class ContestClient {
 
     public static void unsubscribeMemberFromContest(long contestPK, long userId) {
         ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
-    }
-
-    public static ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) {
-        PlanTemplate planTemplate = getPlanTemplate(contest.getPlanTemplateId());
-        return getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
-    }
-
-    public static ImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(long focusAreaListId) {
-        return impactTemplateFocusAreaListResource.get(focusAreaListId)
-                .execute();
-    }
-
-    public static List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) {
-        ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
-        return getImpactTemplateMaxFocusArea(focusAreaList.getFocusAreaListId());
-    }
-
-    public static List<ImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusArea(Long focusAreaListId) {
-        return impactTemplateMaxFocusAreaResource.list()
-                .optionalQueryParam("focusAreaListId", focusAreaListId)
-                .execute();
-    }
-
-    public static PlanTemplate getPlanTemplate(long Id_) {
-        return planTemplateResource.get(Id_)
-                .execute();
-    }
-
-    public static List<PlanTemplate> getPlanTemplates() {
-        return planTemplateResource.list()
-                .execute();
-    }
-
-
-    public static PlanTemplate createPlanTemplate(PlanTemplate planTemplate) {
-        return planTemplateResource.create(planTemplate).execute();
-    }
-
-
-    public static boolean updatePlanTemplate(PlanTemplate planTemplate) {
-        return planTemplateResource.update(planTemplate, planTemplate.getId_())
-                .execute();
-    }
-
-
-    public static PlanSectionDefinition getPlanSectionDefinition(long Id_) {
-        return planSectionDefinitionResource.get(Id_)
-                .execute();
-
-
-    }
-
-    public static boolean updatePlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
-        return planSectionDefinitionResource.update(planSectionDefinition, planSectionDefinition.getId_())
-                .execute();
-    }
-
-
-    public static PlanSectionDefinition createPlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
-        return planSectionDefinitionResource.create(planSectionDefinition).execute();
-    }
-
-    public static List<PlanSectionDefinition> getPlanSectionDefinitionByPlanTemplateId(Long planTemplateId, Boolean weight) {
-
-        return planSectionDefinitionResource.list()
-                .optionalQueryParam("planTemplateId", planTemplateId)
-                .optionalQueryParam("weight", ((weight == null) ? (false) : weight))
-                .execute();
-    }
-
-    public static Boolean deletePlanSectionDefinition(Long id_) {
-        return planSectionDefinitionResource.delete(id_).execute();
-    }
-
-
-    public static Boolean deletePlanTemplateSection(Long planTemplateId, Long planSectionDefinitionId) {
-        return planTemplateSectionResource.service("deletePlanTemplateSection", Boolean.class)
-                .queryParam("planTemplateId", planTemplateId)
-                .queryParam("planSectionDefinitionId", planSectionDefinitionId)
-                .delete();
-    }
-
-
-    public static List<PlanTemplateSection> getPlanTemplateSectionByPlanTemplateId(Long planTemplateId) {
-        return planTemplateSectionResource.list()
-                .optionalQueryParam("planTemplateId", planTemplateId)
-                .execute();
-    }
-
-    public static boolean updatePlanTemplateSection(PlanTemplateSection planTemplateSection) {
-        return planTemplateSectionResource.update(planTemplateSection, planTemplateSection.getPlanTemplateId())
-                .execute();
-    }
-
-
-    public static List<PlanTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(Long planSectionId) {
-        return planTemplateSectionResource.list()
-                .optionalQueryParam("planSectionId", planSectionId)
-                .execute();
     }
 
 

@@ -7,14 +7,14 @@ import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologySpace;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.contest.pojo.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.PlanTemplateSection;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
 import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.utils.IdListUtil;
@@ -68,7 +68,7 @@ public class SectionDefinitionWrapper implements Serializable {
         initPlanSectionDefinition(planSectionDefinition);
 
         List<PlanTemplateSection> planTemplateSections =
-                ContestClient.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
+                PlanTemplateClient.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
 
         // TODO very inefficient, add finder to service layer
         for (PlanTemplateSection planTemplateSection : planTemplateSections) {
@@ -103,7 +103,7 @@ public class SectionDefinitionWrapper implements Serializable {
 
 
         PointsDistributionConfiguration pdc =
-                ProposalsClient.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+                PointsDistributionConfigurationClient.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
         this.pointPercentage = Double.toString(pdc.getPercentage());
         this.pointType = pdc.getPointTypeId();
 
@@ -450,20 +450,20 @@ public class SectionDefinitionWrapper implements Serializable {
                     IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
             psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
 
-            psd = ContestClient.createPlanSectionDefinition(psd);
+            psd = PlanTemplateClient.createPlanSectionDefinition(psd);
             id = psd.getId_();
         } else {
-            psd = ContestClient.getPlanSectionDefinition(id);
-            pdc = ProposalsClient
+            psd = PlanTemplateClient.getPlanSectionDefinition(id);
+            pdc = PointsDistributionConfigurationClient
                     .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
             if (pointType == 0L) {
-                ProposalsClient
+                PointsDistributionConfigurationClient
                         .deletePointsDistributionConfiguration(pdc.getId_());
             } else {
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetPlanSectionDefinitionId(id);
-                ProposalsClient.updatePointsDistributionConfiguration(pdc);
+                PointsDistributionConfigurationClient.updatePointsDistributionConfiguration(pdc);
             }
 
 
@@ -474,16 +474,16 @@ public class SectionDefinitionWrapper implements Serializable {
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetPlanSectionDefinitionId(id);
-                pdc = ProposalsClient.createPointsDistributionConfiguration(pdc);
+                pdc = PointsDistributionConfigurationClient.createPointsDistributionConfiguration(pdc);
             }
         }
 
-        ContestClient.updatePlanSectionDefinition(psd);
+        PlanTemplateClient.updatePlanSectionDefinition(psd);
 
     }
 
     public boolean hasUpdates() {
-        PlanSectionDefinition psd = ContestClient
+        PlanSectionDefinition psd = PlanTemplateClient
                 .getPlanSectionDefinition(id);
         return !this.equals(new SectionDefinitionWrapper(psd));
     }

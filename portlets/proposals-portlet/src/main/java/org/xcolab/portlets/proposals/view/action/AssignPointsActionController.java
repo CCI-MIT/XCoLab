@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
 import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
@@ -69,10 +69,10 @@ public class AssignPointsActionController {
         }
 
         //first, delete the existing configuration
-        ProposalsClient.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+        PointsDistributionConfigurationClient.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
 
         try {
-            org.xcolab.client.proposals.pojo.PointType contestRootPointType = ProposalsClient.getPointType(contest.getDefaultParentPointType());
+            org.xcolab.client.proposals.pojo.PointType contestRootPointType = PointsDistributionConfigurationClient.getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype
             this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));
@@ -99,7 +99,7 @@ public class AssignPointsActionController {
                     pointsDistributionConfiguration.setPercentage(percentage);
                     pointsDistributionConfiguration.setCreator(currentUser.getUserId());
 
-                    ProposalsClient.createPointsDistributionConfiguration(pointsDistributionConfiguration);
+                    PointsDistributionConfigurationClient.createPointsDistributionConfiguration(pointsDistributionConfiguration);
 
                 }
                 //round to two decimals
@@ -111,7 +111,7 @@ public class AssignPointsActionController {
         } catch (SystemException | IllegalArgumentException e) {
             //in case a (validation) error occurs, we simply delete all created configurations.
             //since we do client-side validations, this state will not be reached by regular uses of the UI.
-            ProposalsClient.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+            PointsDistributionConfigurationClient.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
             throw e;
         }
 

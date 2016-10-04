@@ -7,7 +7,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ImpactTemplateClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.FocusArea;
@@ -49,7 +49,7 @@ public class ProposalImpactUtil {
         Map<OntologyTerm, List<OntologyTerm>> ontologyTermMap = new HashMap<>();
         Map<Long, Boolean> impactSeriesAvailableMap = getImpactSeriesAvailableMap(impactSerieses);
 
-        List<ImpactTemplateMaxFocusArea> impactFocusAreas = ContestClient.getContestImpactFocusAreas(contest);
+        List<ImpactTemplateMaxFocusArea> impactFocusAreas = ImpactTemplateClient.getContestImpactFocusAreas(contest);
 
         for (ImpactTemplateMaxFocusArea impactFocusArea : impactFocusAreas) {
             FocusArea focusArea = OntologyClient.getFocusArea(impactFocusArea.getFocusAreaId());
@@ -73,7 +73,7 @@ public class ProposalImpactUtil {
     }
 
     public FocusArea getFocusAreaAssociatedWithTerms(OntologyTerm whatTerm, OntologyTerm whereTerm) throws SystemException, PortalException {
-        List<ImpactTemplateMaxFocusArea> impactFocusAreas = ContestClient.getContestImpactFocusAreas(contest);
+        List<ImpactTemplateMaxFocusArea> impactFocusAreas = ImpactTemplateClient.getContestImpactFocusAreas(contest);
 
         List<OntologyTerm> matchingOntologyTerms = new ArrayList<>();
         matchingOntologyTerms.add(whatTerm);

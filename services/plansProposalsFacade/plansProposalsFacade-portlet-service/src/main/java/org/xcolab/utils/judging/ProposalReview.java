@@ -10,7 +10,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.ProposalRatingType;
@@ -184,7 +184,7 @@ public class ProposalReview {
 
     private String getTeamOrNull(){
             //TODO: optimize
-            for (ProposalAttribute attr: ProposalsClient.getAllProposalAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
+            for (ProposalAttribute attr: ProposalAttributeClient.getAllProposalAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
                 if (attr.getName().equals(ProposalAttributeKeys.TEAM) && attr.getAdditionalId() == 0) {
                     return attr.getStringValue();
                 }

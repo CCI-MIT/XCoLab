@@ -1,10 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
 ;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -26,7 +23,8 @@ import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.ProposalUnversionedAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
@@ -35,7 +33,6 @@ import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserExceptio
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalImpactDataParser;
 import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
-import org.xcolab.portlets.proposals.utils.ProposalUnversionedAttributeUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
@@ -178,8 +175,8 @@ public class ProposalImpactJSONController {
         FocusArea focusArea = OntologyClient.getFocusArea(focusAreaId);
         Proposal proposal = proposalsContext.getProposal(request);
 
-        for (ProposalAttribute proposalAttribute : ProposalsClient.getImpactProposalAttributes(proposal, focusArea)) {
-            ProposalsClient.deleteProposalAttribute(proposalAttribute.getId_());
+        for (ProposalAttribute proposalAttribute : ProposalAttributeClient.getImpactProposalAttributes(proposal, focusArea)) {
+            ProposalAttributeClient.deleteProposalAttribute(proposalAttribute.getId_());
         }
 
         responseJSON.put("success", true);
@@ -247,19 +244,19 @@ public class ProposalImpactJSONController {
         }
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalsClient.
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeClient.
                 getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
 
         if (impactAuthorComment != null || impactIAFComment != null) {
             if(impactAuthorComment != null) {
 
-                ProposalsClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
+                ProposalUnversionedAttributeClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
                         HtmlUtil.cleanAll(impactAuthorComment),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
                         proposal.getProposalId());
             }
             if (impactIAFComment != null) {
-                ProposalsClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                ProposalUnversionedAttributeClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
                         proposal.getProposalId());
             }

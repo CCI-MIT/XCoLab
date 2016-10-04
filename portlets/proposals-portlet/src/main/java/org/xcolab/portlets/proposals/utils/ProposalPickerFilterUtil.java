@@ -11,8 +11,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -73,7 +75,7 @@ public class ProposalPickerFilterUtil {
     public static Map<Long, String> filterContests(List<Pair<ContestWrapper, Date>> contests,
             long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
             throws SystemException, PortalException {
-        PlanSectionDefinition planSectionDefinition = ContestClient.getPlanSectionDefinition(sectionId);
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
 
         List<Long> alwaysIncludedContestIds = planSectionDefinition.getAdditionalIdsAsList();
@@ -164,7 +166,7 @@ public class ProposalPickerFilterUtil {
             long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        for (ProposalSupporter ps : ProposalsClient.getProposalSupportersByUserId(userId)) {
+        for (ProposalSupporter ps : ProposalSupporterClient.getProposalSupportersByUserId(userId)) {
             try{
                 proposals.add(Pair.of(ProposalsClient.getProposal(ps.getProposalId()), new Date(ps.getCreateDate().getTime())));
             }catch (ProposalNotFoundException ignored){
@@ -204,7 +206,7 @@ public class ProposalPickerFilterUtil {
         filterByParameter(filterKey, proposals);
         filterByVisibility(proposals);
 
-        PlanSectionDefinition planSectionDefinition = ContestClient.getPlanSectionDefinition(sectionId);
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
 
         List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();

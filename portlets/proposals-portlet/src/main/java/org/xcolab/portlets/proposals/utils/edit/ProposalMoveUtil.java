@@ -8,6 +8,9 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
+import org.xcolab.client.proposals.ProposalMoveHistoryClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
@@ -29,7 +32,7 @@ public final class ProposalMoveUtil {
             ContestPhase targetPhase = ContestClient.getActivePhase(targetContest.getContestPK());
 
             try {//Proposal2PhaseLocalServiceUtil
-                if (ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposalWrapper.getProposalId(),
+                if (Proposal2PhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposalWrapper.getProposalId(),
                         targetPhase.getContestPhasePK()) != null) {
                     throw new PortalException("The proposal is already associated with the target contest.");
                 }
@@ -39,10 +42,10 @@ public final class ProposalMoveUtil {
 
             switch (updateProposalSectionsBean.getMoveType()) {
                 case MOVE_PERMANENTLY:
-                    ProposalsClient.createProposalMoveHistory(proposalWrapper.getProposalId(),
+                    ProposalMoveHistoryClient.createProposalMoveHistory(proposalWrapper.getProposalId(),
                             fromContest.getContestPK(), targetContest.getContestPK(), 0L, targetPhase.getContestPhasePK(),
                             themeDisplay.getUserId());
-                    for (Proposal2Phase p2p : ProposalsClient
+                    for (Proposal2Phase p2p : Proposal2PhaseClient
                             .getProposal2PhaseByProposalId(proposalWrapper.getProposalId())) {
                         if (ContestClient.getContestPhase(p2p.getContestPhaseId()).getContestPK()
                                 != updateProposalSectionsBean.getBaseProposalContestId()) {
@@ -52,7 +55,7 @@ public final class ProposalMoveUtil {
                         // Set end version if it was not set already
                         if (p2p.getVersionTo() < 0) {
                             p2p.setVersionTo(proposalWrapper.getCurrentVersion());
-                            ProposalsClient.updateProposal2Phase(p2p);
+                            Proposal2PhaseClient.updateProposal2Phase(p2p);
                         }
 
                         if (updateProposalSectionsBean.getMoveFromContestPhaseId() != null) {
@@ -62,20 +65,20 @@ public final class ProposalMoveUtil {
                                                     .getContestPhase(updateProposalSectionsBean.getMoveFromContestPhaseId())
                                                     .getPhaseStartDate())) {
                                 // remove proposal from this contest in all phases that come after the selected one
-                                ProposalsClient.deleteProposal2Phase(p2p);
+                                Proposal2PhaseClient.deleteProposal2Phase(p2p);
                             }
                         }
                     }
                     break;
                 case COPY:
-                    ProposalsClient.createCopyProposalMoveHistory(proposalWrapper.getProposalId(),
+                    ProposalMoveHistoryClient.createCopyProposalMoveHistory(proposalWrapper.getProposalId(),
                             fromContest.getContestPK(), targetContest.getContestPK(), 0L, targetPhase.getContestPhasePK(),
                             themeDisplay.getUserId());
-                    for (Proposal2Phase p2p : ProposalsClient
+                    for (Proposal2Phase p2p : Proposal2PhaseClient
                             .getProposal2PhaseByProposalId(proposalWrapper.getProposalId())) {
                         if (p2p.getVersionTo() < 0) {
                             p2p.setVersionTo(proposalWrapper.getCurrentVersion());
-                            ProposalsClient.updateProposal2Phase(p2p);
+                            Proposal2PhaseClient.updateProposal2Phase(p2p);
                         }
                     }
                     break;
@@ -94,8 +97,8 @@ public final class ProposalMoveUtil {
             p2p.setVersionFrom( proposalWrapper.getCurrentVersion());
             p2p.setVersionTo(-1);
 
-            ProposalsClient.createProposal2Phase(p2p);
-            ProposalsClient
+            Proposal2PhaseClient.createProposal2Phase(p2p);
+            ProposalContestPhaseAttributeClient
                     .setProposalContestPhaseAttribute(proposalWrapper.getProposalId(), contestPhase
                                     .getContestPhasePK(),
                             ProposalContestPhaseAttributeKeys.VISIBLE,0l, 1l,"");

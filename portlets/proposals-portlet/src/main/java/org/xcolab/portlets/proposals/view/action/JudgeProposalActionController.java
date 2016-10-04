@@ -28,12 +28,15 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
+import org.xcolab.client.proposals.ProposalRatingClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
@@ -106,7 +109,7 @@ public class JudgeProposalActionController {
         }
 
         //check if advancement was frozen
-        boolean isFrozen = ProposalsClient.isProposalContestPhaseAttributeSetAndTrue(proposalId,
+        boolean isFrozen = ProposalContestPhaseAttributeClient.isProposalContestPhaseAttributeSetAndTrue(proposalId,
                 contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN);
 
         boolean isUndecided = (proposalAdvancingBean.getAdvanceDecision()
@@ -121,7 +124,7 @@ public class JudgeProposalActionController {
 
         // save judge decision
 
-        ProposalsClient.setProposalContestPhaseAttribute(proposalId,
+        ProposalContestPhaseAttributeClient.setProposalContestPhaseAttribute(proposalId,
                 contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
                 0l, new Long(proposalAdvancingBean.getAdvanceDecision()), null);
 
@@ -135,14 +138,14 @@ public class JudgeProposalActionController {
         //freeze the advancement
         if (!isUndecided && request.getParameter("isFreeze") != null
                 && request.getParameter("isFreeze").equals("true")) {
-            ProposalsClient.setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
+            ProposalContestPhaseAttributeClient.setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
                     ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0l,null, "true");
         }
 
         //unfreeze the advancement
         if (permissions.getCanAdminAll() && request.getParameter("isUnfreeze") != null
                 && request.getParameter("isUnfreeze").equals("true")) {
-            ProposalsClient.setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
+            ProposalContestPhaseAttributeClient.setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
                     ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0l, null,"false");
         }
 
@@ -203,7 +206,7 @@ public class JudgeProposalActionController {
                 continue;
             }
             for (Proposal proposal : stillActiveProposals) {
-                    ProposalContestPhaseAttribute fellowActionAttribute = ProposalsClient.
+                    ProposalContestPhaseAttribute fellowActionAttribute = ProposalContestPhaseAttributeClient.
                             getProposalContestPhaseAttribute( proposal.getProposalId(),judgingPhase.getContestPhasePK(),
                                     ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
                     JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
@@ -217,7 +220,7 @@ public class JudgeProposalActionController {
                 final String proposalUrl = serviceContext.getPortalURL() + proposal.getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
                 proposalReview.setReviewers(ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase)));
-                List<ProposalRating> ratings = ProposalsClient.getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
+                List<ProposalRating> ratings = ProposalRatingClient.getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
                 Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
 
                 for (ProposalRating rating: ratings) {
@@ -264,7 +267,7 @@ public class JudgeProposalActionController {
         List<Member> selectedJudges = null;
 
         if (judgingPhase.getFellowScreeningActive()) {
-                final String judgeIdString = ProposalsClient.
+                final String judgeIdString = ProposalContestPhaseAttributeClient.
                         getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
                                 ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
 
@@ -283,7 +286,7 @@ public class JudgeProposalActionController {
         // Choose all judges
         else {
             try {
-                List<Long> members = ContestClient.getJudgesForContest(judgingPhase.getContestPK());
+                List<Long> members = ContestTeamMemberClient.getJudgesForContest(judgingPhase.getContestPK());
                 selectedJudges = new ArrayList<>();
                 for(Long memberId : members){
                     selectedJudges.add(MembersClient.getMember(memberId));
@@ -329,7 +332,7 @@ public class JudgeProposalActionController {
         }
 
         //find existing ratings
-        List<ProposalRating> existingRatings = ProposalsClient.getJudgeRatingsForProposalAndUser(
+        List<ProposalRating> existingRatings = ProposalRatingClient.getJudgeRatingsForProposalAndUser(
                 liferayUser.getUserId(),
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK());
@@ -367,14 +370,14 @@ public class JudgeProposalActionController {
 
             // save selection of judges
             if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions.FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
-                ProposalsClient.persistSelectedJudgesAttribute(
+                ProposalContestPhaseAttributeClient.persistSelectedJudgesAttribute(
                         proposalId,
                         contestPhaseId,
                         fellowProposalScreeningBean.getSelectedJudges()
                 );
             } else {
                 //clear selected judges attribute since the decision is not to pass the proposal.
-                ProposalsClient.persistSelectedJudgesAttribute(
+                ProposalContestPhaseAttributeClient.persistSelectedJudgesAttribute(
                         proposalId,
                         contestPhaseId,
                         null
@@ -383,7 +386,7 @@ public class JudgeProposalActionController {
 
             // save fellow action
             if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction())) {
-                ProposalsClient.setProposalContestPhaseAttribute(
+                ProposalContestPhaseAttributeClient.setProposalContestPhaseAttribute(
                         proposalId,
                         contestPhaseId,
                         ProposalContestPhaseAttributeKeys.FELLOW_ACTION,
@@ -406,7 +409,7 @@ public class JudgeProposalActionController {
 
             // save fellow comment and rating
             //find existing ratings
-            List<ProposalRating> existingRatings = ProposalsClient.getFellowRatingForProposalAndUser(
+            List<ProposalRating> existingRatings = ProposalRatingClient.getFellowRatingForProposalAndUser(
                     currentUser.getUserId(),
                     proposalId,
                     contestPhaseId);
@@ -459,7 +462,7 @@ public class JudgeProposalActionController {
                         existingRating.setComment_(null);
                         existingRating.setCommentEnabled(false);
                     }
-                    ProposalsClient.updateProposalRating(existingRating);
+                    ProposalRatingClient.updateProposalRating(existingRating);
                 } else {
                     String comment = null;
                     if (!commentAdded) {
@@ -476,7 +479,7 @@ public class JudgeProposalActionController {
                     proposalRating.setOtherDataString("");
                     proposalRating.setOnlyForInternalUsage(isPublicRating);
 
-                    proposalRating = ProposalsClient.createProposalRating(proposalRating);
+                    proposalRating = ProposalRatingClient.createProposalRating(proposalRating);
 
                 }
             }

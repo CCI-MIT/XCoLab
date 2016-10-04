@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -45,12 +45,12 @@ public class SupportProposalActionController {
             long userId = proposalsContext.getUser(request).getUserId();
             long proposalId = proposalsContext.getProposal(request).getProposalId();
 
-            if (ProposalsClient.isMemberProposalSupporter(proposalId, userId)) {
-                ProposalsClient.removeProposalSupporter(proposalId, userId);
+            if (ProposalSupporterClient.isMemberProposalSupporter(proposalId, userId)) {
+                ProposalSupporterClient.removeProposalSupporter(proposalId, userId);
             }
             else {
-                ProposalsClient.addProposalSupporter(proposalId, userId);
-                int supportedCount = ProposalsClient.getProposalSupportersCount(userId);
+                ProposalSupporterClient.addProposalSupporter(proposalId, userId);
+                int supportedCount = ProposalSupporterClient.getProposalSupportersCount(userId);
                 if (supportedCount > 0) {
                     int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(supportedCount);
                     AnalyticsUtil.publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue,

@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -48,7 +49,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         Contest contest = proposalsContext.getContest(request);
 
-        PointType contestParentPointType = ProposalsClient.getPointType(contest.getDefaultParentPointType());
+        PointType contestParentPointType = PointsDistributionConfigurationClient.getPointType(contest.getDefaultParentPointType());
 
         if (contestParentPointType == null) {
             //there is no point scheme set for this contest, forward to description tab
@@ -63,7 +64,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             subProposalsWrapped.add(new ProposalWrapper(p));
         }
         //TODO: make this flexible
-        PointType pointType = ProposalsClient.getPointType(9L);
+        PointType pointType = PointsDistributionConfigurationClient.getPointType(9L);
         DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 
@@ -73,7 +74,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             regionalPercentages.add(new PointsTargetProposalWrapper(target, 93));
         }
 
-        pointType = ProposalsClient.getPointType(4L);
+        pointType = PointsDistributionConfigurationClient.getPointType(4L);
         distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 

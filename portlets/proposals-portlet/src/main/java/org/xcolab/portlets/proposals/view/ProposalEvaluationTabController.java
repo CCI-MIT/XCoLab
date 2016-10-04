@@ -2,10 +2,6 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -20,6 +16,8 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
+import org.xcolab.client.proposals.ProposalRatingClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
@@ -164,7 +162,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                     contestPhase.getFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
             if (isPhasePastScreeningPhase) {
 
-                List<ProposalRating> judgeRatingsForProposal = ProposalsClient
+                List<ProposalRating> judgeRatingsForProposal = ProposalRatingClient
                         .getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
 
                 if (!judgeRatingsForProposal.isEmpty()) {
@@ -196,7 +194,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
     private Boolean wasProposalPromotedInContestPhase(Proposal proposal, ContestPhase contestPhase) throws SystemException, NoSuchProposalContestPhaseAttributeException {
-        ProposalContestPhaseAttribute judgingDecisionAttr = ProposalsClient.getProposalContestPhaseAttribute(
+        ProposalContestPhaseAttribute judgingDecisionAttr = ProposalContestPhaseAttributeClient.getProposalContestPhaseAttribute(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
                 ProposalContestPhaseAttributeKeys.JUDGE_DECISION

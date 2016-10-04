@@ -1,6 +1,8 @@
 package org.xcolab.points;
 
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.PointType;
@@ -40,10 +42,10 @@ public class PointsDistributionUtil {
         for (long subProposalId : subProposalIds) {
             try {
                 ProposalReference reference = ProposalsClient.getProposalReferenceByProposalIdSubProposalId(proposal.getProposalId(), subProposalId);
-                final ProposalAttribute referenceSectionProposalAttribute = ProposalsClient.getProposalAttribute(reference.getSectionAttributeId());
+                final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeClient.getProposalAttribute(reference.getSectionAttributeId());
                 final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
 
-                PointsDistributionConfiguration pdc = ProposalsClient.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(planSectionDefinitionId);
+                PointsDistributionConfiguration pdc = PointsDistributionConfigurationClient.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(planSectionDefinitionId);
                 targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
             } catch (ProposalAttributeNotFoundException  ignored) {
             }
@@ -53,7 +55,7 @@ public class PointsDistributionUtil {
 
     public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
-        for (PointsDistributionConfiguration pdc : ProposalsClient.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+        for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationClient.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
             if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
                 PointsTarget target = new PointsTarget();
                 target.setProposalId(pdc.getTargetSubProposalId());

@@ -1,18 +1,15 @@
 package org.xcolab.utils.judging;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
 
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalRatingType;
 
@@ -52,7 +49,7 @@ public class ProposalReviewCsvExporter {
         for (Map.Entry<Proposal, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
             final Proposal proposal = entry.getKey();
             final List<ProposalReview> proposalReviews = entry.getValue();
-            String proposalName = ProposalsClient.getProposalAttribute(proposal.getProposalId(),
+            String proposalName = ProposalAttributeClient.getProposalAttribute(proposal.getProposalId(),
                     ProposalAttributeKeys.NAME, 0l).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {

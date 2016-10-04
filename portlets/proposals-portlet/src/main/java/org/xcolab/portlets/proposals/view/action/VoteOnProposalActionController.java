@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.ext.portlet.NoSuchProposalVoteException;
-
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
@@ -28,6 +26,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalVoteClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -126,10 +125,10 @@ public class VoteOnProposalActionController {
         List<User> usersWithSharedIP = Xcolab_UserLocalServiceUtil.findUsersByLoginIP(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
         if (!usersWithSharedIP.isEmpty()) {
-            final ProposalVote vote = ProposalsClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), user.getUserId());
+            final ProposalVote vote = ProposalVoteClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), user.getUserId());
             int recentVotesFromSharedIP = 0;
             for (User otherUser : usersWithSharedIP) {
-                    final ProposalVote otherVote = ProposalsClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
+                    final ProposalVote otherVote = ProposalVoteClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
                     //check if vote is less than 12 hours old
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
                         recentVotesFromSharedIP++;
@@ -145,7 +144,7 @@ public class VoteOnProposalActionController {
                 vote.setIsValid(false);
                 sendConfirmationMail(vote, proposal, contest, member, serviceContext);
             }
-            ProposalsClient.updateProposalVote(vote);
+            ProposalVoteClient.updateProposalVote(vote);
             return vote.getIsValid();
         }
         return true;
@@ -173,11 +172,11 @@ public class VoteOnProposalActionController {
                               @RequestParam String confirmationToken) {
         boolean success = false;
         try {
-            ProposalVote vote = ProposalsClient.getProposalVoteByProposalIdUserId(proposalId, userId);
+            ProposalVote vote = ProposalVoteClient.getProposalVoteByProposalIdUserId(proposalId, userId);
             if (!vote.getConfirmationToken().isEmpty()
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
-                ProposalsClient.updateProposalVote(vote);
+                ProposalVoteClient.updateProposalVote(vote);
                 ProposalWrapper proposal = new ProposalWrapper(ProposalsClient.getProposal(proposalId));
                 model.addAttribute("proposal", proposal);
                 success = true;

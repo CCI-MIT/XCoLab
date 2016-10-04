@@ -1,12 +1,8 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
-
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +34,7 @@ public class AssignRibbonToProposalActionController {
             long contestId = proposalsContext.getContest(request).getContestPK();
 
 
-                ProposalsClient.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
+                ProposalContestPhaseAttributeClient.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
                         ProposalContestPhaseAttributeKeys.RIBBON,null,new Long(ribbon),null);
 
             //    ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId,

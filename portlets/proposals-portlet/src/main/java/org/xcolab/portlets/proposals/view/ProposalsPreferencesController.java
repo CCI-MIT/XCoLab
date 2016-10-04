@@ -1,13 +1,14 @@
 package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -16,16 +17,11 @@ import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.mail.ContestPhasePromotionEmail;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
+
 import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -305,14 +301,14 @@ public class ProposalsPreferencesController {
                             throw new SystemException("Proposal not found");
                         }
                         try {
-                            Proposal2Phase oldP2p = ProposalsClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
+                            Proposal2Phase oldP2p = Proposal2PhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
 
                             assert oldP2p != null;
 
                             boolean isBoundedVersion = false;
                             if (oldP2p.getVersionTo() < 0) {
                                 oldP2p.setVersionTo(currentProposalVersion.intValue());
-                                ProposalsClient.updateProposal2Phase(oldP2p);
+                                Proposal2PhaseClient.updateProposal2Phase(oldP2p);
                             } else {
                                 isBoundedVersion = true;
                             }
@@ -323,7 +319,7 @@ public class ProposalsPreferencesController {
                             p2p.setVersionFrom(currentProposalVersion.intValue());
                             p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
 
-                            ProposalsClient.createProposal2Phase(p2p);
+                            Proposal2PhaseClient.createProposal2Phase(p2p);
 
                             message.append("Proposal ").append(proposal.getProposalId()).append(" moved successfully (version: ").append(currentProposalVersion).append(").<br/>\n");
                         }catch(Proposal2PhaseNotFoundException ignored){
@@ -339,7 +335,7 @@ public class ProposalsPreferencesController {
                             //first, see if a ribbon already exists
                             ProposalContestPhaseAttribute attribute = null;
 
-                                attribute = ProposalsClient.getProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                attribute = ProposalContestPhaseAttributeClient.getProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
                                         ProposalContestPhaseAttributeKeys.RIBBON);
 
 
