@@ -1,7 +1,7 @@
-package org.xcolab.service.proposal.domain.contestcollectioncard;
+package org.xcolab.service.contest.domain.contestcollectioncard;
 
 import org.xcolab.model.tables.pojos.ContestCollectionCard;
-import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 
 public interface ContestCollectionCardDao {
 

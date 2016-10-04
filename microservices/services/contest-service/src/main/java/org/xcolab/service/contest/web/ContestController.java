@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.model.tables.pojos.ContestCollectionCard;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
 import org.xcolab.model.tables.pojos.ContestPhaseType;
@@ -64,6 +65,9 @@ public class ContestController {
 
     @Autowired
     private ContestPhaseTypeDao contestPhaseTypeDao;
+
+    @Autowired
+    private ContestCollectionCard contestCollectionCard;
 
 
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})

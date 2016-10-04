@@ -53,7 +53,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalRating|xcolab_ProposalVote|xcolab_ProposalSupporter|xcolab_ProposalVersion|xcolab_PointType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_OntologySpace|xcolab_ContestPhase|xcolab_ContestPhaseRibbonType|xcolab_ContestCollectionCard</includes>
+                            <includes>xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalRating|xcolab_ProposalVote|xcolab_ProposalSupporter|xcolab_ProposalVersion|xcolab_PointType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_OntologySpace|xcolab_ContestPhase|xcolab_ContestPhaseRibbonType</includes>
                         </database>
                     </generator>
                 </configuration>

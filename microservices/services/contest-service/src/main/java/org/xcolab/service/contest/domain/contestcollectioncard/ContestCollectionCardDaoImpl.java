@@ -1,4 +1,4 @@
-package org.xcolab.service.proposal.domain.contestcollectioncard;
+package org.xcolab.service.contest.domain.contestcollectioncard;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.ContestCollectionCard;
 import org.xcolab.model.tables.records.ContestCollectionCardRecord;
-import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.CONTEST_COLLECTION_CARD;
 
