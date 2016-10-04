@@ -12,7 +12,8 @@
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
 
-    <div class="c-ListView tooltips" style="background-color: lightgray">
+    <div class="c-ListView tooltips">
+        <br/>
         <c:if test="${not empty contestsSorted.contestsFeatured }">
             <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsFeatured }" featured="true"/>
         </c:if>

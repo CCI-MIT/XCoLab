@@ -12,10 +12,11 @@
   margin-left: 110px;
   padding-bottom: 15px;
   background-color: white;
-  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid $t-Color__grey--light;
 }
 
-.c-ListItemc-ListItem--background-container {
+.c-ListItem--background-container {
   border-radius: 3px;
   color: $t-Color__grey--light;
   height: 60px;
@@ -23,7 +24,8 @@
   width: 800px;
   padding-bottom: 15px;
   background-color: white;
-  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid $t-Color__grey--light;
 }
 
 .c-ListItem__title {

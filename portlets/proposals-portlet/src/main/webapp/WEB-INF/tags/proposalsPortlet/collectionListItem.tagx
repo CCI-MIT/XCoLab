@@ -31,15 +31,7 @@
                             </div>
                         </div>
                         <div class="c-ListItem__meta">
-                            <div class="c-ListItem__meta__flag--grey">
-                                <c:if test="${not empty contest.flagText }">
-                                    <span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
-                                    <c:if test="${not empty contest.flagTooltip}">
-                                        <div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
-                                    </c:if>
-                                </c:if>
-                            </div>
-                            <div class="c-ListItem__proposals">
+                            <div class="c-ListItem__proposals" style="margin-top: 20px;">
                                 <strong>
                                     ${contest.proposalsCount}
                                 </strong>
