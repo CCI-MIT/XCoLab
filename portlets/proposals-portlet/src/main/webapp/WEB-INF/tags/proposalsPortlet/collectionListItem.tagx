@@ -14,9 +14,9 @@
 
 	<c:forEach var="contest" items="${contests }">
 		<c:if test="${contest.showInListView}">
-            <div class="c-ListItem--background-container">
-                <div class="c-ListItem--background-container" style="right:3px; bottom:3px;">
-                    <div class="c-ListItem" style="right:3px; bottom:3px;">
+            <div class="c-ListItem--background-container" style="  margin-left: 110px;">
+                <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
+                    <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
                         <div class="c-ListItem__contests">
                             <div class="c-ListItem__circle">
                                 15
