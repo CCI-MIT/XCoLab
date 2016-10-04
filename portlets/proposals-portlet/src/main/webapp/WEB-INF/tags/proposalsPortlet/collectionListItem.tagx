@@ -14,37 +14,41 @@
 
 	<c:forEach var="contest" items="${contests }">
 		<c:if test="${contest.showInListView}">
-			<div class="c-ListItem">
-				<div class="c-ListItem__contests">
-					<div class="c-ListItem__circle">
-						15
-					</div>
-					contests
-				</div>
-				<div class="c-ListItem__title">
-					<div class="contestFlag">
-						<collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
-						<br/>
-						${contest.contestName}
-					</div>
-				</div>
-				<div class="c-ListItem__meta">
-					<div class="c-ListItem__meta__flag--grey">
-						<c:if test="${not empty contest.flagText }">
-							<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
-							<c:if test="${not empty contest.flagTooltip}">
-								<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
-							</c:if>
-						</c:if>
-					</div>
-					<div class="c-ListItem__proposals">
-						<strong>
-							${contest.proposalsCount}
-						</strong>
-						proposals
-					</div>
-				</div>
-			</div>
+            <div class="c-ListItem--background-container">
+                <div class="c-ListItem--background-container" style="right:3px; bottom:3px;">
+                    <div class="c-ListItem" style="right:3px; bottom:3px;">
+                        <div class="c-ListItem__contests">
+                            <div class="c-ListItem__circle">
+                                15
+                            </div>
+                            contests
+                        </div>
+                        <div class="c-ListItem__title">
+                            <div class="contestFlag">
+                                <collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
+                                <br/>
+                                ${contest.contestName}
+                            </div>
+                        </div>
+                        <div class="c-ListItem__meta">
+                            <div class="c-ListItem__meta__flag--grey">
+                                <c:if test="${not empty contest.flagText }">
+                                    <span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
+                                    <c:if test="${not empty contest.flagTooltip}">
+                                        <div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
+                                    </c:if>
+                                </c:if>
+                            </div>
+                            <div class="c-ListItem__proposals">
+                                <strong>
+                                    ${contest.proposalsCount}
+                                </strong>
+                                proposals
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</c:if>
 	</c:forEach>
 </jsp:root>

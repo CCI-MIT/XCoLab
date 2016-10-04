@@ -15,6 +15,18 @@
   margin-top: 10px;
 }
 
+.c-ListItemc-ListItem--background-container {
+  border-radius: 3px;
+  color: $t-Color__grey--light;
+  height: 60px;
+  float: left;
+  width: 800px;
+  margin-left: 110px;
+  padding-bottom: 15px;
+  background-color: white;
+  margin-top: 10px;
+}
+
 .c-ListItem__title {
   width: 474px;
   float: left;
@@ -66,12 +78,12 @@
 }
 
 .c-ListItem__contests {
-  border-right: 1px solid $t-Color__grey--medium;
+  border-right: 1px dashed $t-Color__grey--light;
   height: 59px;
   width: 55px;
   padding: 8px;
   float: left;
-  color: black;
+  color: $t-Color__grey--medium;
 }
 
 .c-ListItem__circle {
