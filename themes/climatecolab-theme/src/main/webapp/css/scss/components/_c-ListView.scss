@@ -13,23 +13,22 @@
   padding-bottom: 15px;
   background-color: white;
   margin-top: 10px;
-
-  a{
-    font-size: 17px;
-  }
 }
 
 .c-ListItem__title {
-  width: 504px;
+  width: 474px;
   float: left;
   padding: 8px;
+  font-size: 14px;
+  a{
+    font-size: 17px;
+  }
 }
 
 .c-ListItem__meta {
   width: 214px;
   float: right;
   padding: 8px;
-  margin-left: 50px;
 }
 
 .c-ListItem__proposals {
