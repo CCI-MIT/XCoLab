@@ -1,7 +1,10 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -17,6 +20,10 @@ public final class ProposalContestPhaseAttributeClient {
 
     public static List<ProposalContestPhaseAttribute> getAllProposalContestPhaseProposalAttributes(Long contestPhaseId, Long proposalId) {
         return proposalContestPhaseAttributeResource.list()
+                .withCache(CacheKeys.withClass(ProposalContestPhaseAttribute.class)
+                                .withParameter("proposalId", proposalId)
+                                .withParameter("contestPhaseId", contestPhaseId).asList(),
+                        CacheRetention.MEDIUM)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute();

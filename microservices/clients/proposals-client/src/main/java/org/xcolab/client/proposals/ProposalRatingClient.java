@@ -4,6 +4,8 @@ import org.xcolab.client.proposals.enums.ProposalJudgeType;
 import org.xcolab.client.proposals.pojo.ProposalRating;
 import org.xcolab.client.proposals.pojo.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.ProposalRatingValue;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
@@ -25,6 +27,11 @@ public final class ProposalRatingClient {
 
     public static List<ProposalRating> getProposalRatingsByProposalUserContestPhase(Long proposalId, Long contestPhaseId, Long userId) {
         return proposalRatingResource.list()
+                .withCache(CacheKeys.withClass(ProposalRating.class)
+                                .withParameter("proposalId", proposalId)
+                                .withParameter("contestPhaseId", contestPhaseId)
+                                .withParameter("userId", userId).asList(),
+                        CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("userId", userId)

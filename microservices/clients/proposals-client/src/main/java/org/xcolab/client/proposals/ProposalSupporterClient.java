@@ -3,6 +3,8 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.proposals.pojo.ProposalSupporter;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
@@ -18,6 +20,10 @@ public final class ProposalSupporterClient {
 
     public static List<ProposalSupporter> getProposalSupporters(Long proposalId) {
         return proposalSupporterResource.list()
+                .withCache(CacheKeys.withClass(ProposalSupporter.class)
+                                .withParameter("proposalId", proposalId)
+                                .asList(),
+                        CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute();
     }

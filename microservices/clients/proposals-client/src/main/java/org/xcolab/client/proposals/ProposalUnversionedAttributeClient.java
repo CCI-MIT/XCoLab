@@ -1,6 +1,8 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
@@ -38,6 +40,10 @@ public final class ProposalUnversionedAttributeClient {
 
     public static List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(Long proposalId) {
         return proposalUnversionedAttributeResource.list()
+                .withCache(CacheKeys.withClass(ProposalUnversionedAttribute.class)
+                                .withParameter("proposalId", proposalId)
+                                .asList(),
+                        CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute();
     }

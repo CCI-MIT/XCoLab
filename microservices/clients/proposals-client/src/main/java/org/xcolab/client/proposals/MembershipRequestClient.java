@@ -9,6 +9,8 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -50,9 +52,7 @@ public class MembershipRequestClient {
         }
         return null;
     }
-    public void approveMembershipRequest(){
 
-    }
     public static Boolean hasUserRequestedMembership(Long proposalId, Long userId){
         try{
             Long groupId = ProposalsClient.getProposal(proposalId).getGroupId();
@@ -120,6 +120,9 @@ public class MembershipRequestClient {
 
     public static List<MembershipRequest> getMembershipRequestsByUser(Long groupId, Long userId) {
         return membershipRequestResource.list()
+                .withCache(CacheKeys.withClass(MembershipRequest.class)
+                        .withParameter("groupId", groupId)
+                        .withParameter("userId", userId).asList(),CacheRetention.MEDIUM)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("userId", userId)
                 .execute();
@@ -127,6 +130,9 @@ public class MembershipRequestClient {
 
     public static List<MembershipRequest> getMembershipRequestsByStatus(Long groupId, Integer statusId) {
         return membershipRequestResource.list()
+                .withCache(CacheKeys.withClass(MembershipRequest.class)
+                        .withParameter("groupId", groupId)
+                        .withParameter("statusId", statusId).asList(),CacheRetention.REQUEST)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("statusId", statusId)
                 .execute();

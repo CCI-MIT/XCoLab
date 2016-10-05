@@ -8,13 +8,6 @@ import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.contest.pojo.ImpactIteration;
-import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
-import org.xcolab.client.contest.pojo.ImpactTemplateMaxFocusArea;
-import org.xcolab.client.contest.pojo.ImpactTemplateSeries;
-import org.xcolab.client.contest.pojo.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.PlanTemplate;
-import org.xcolab.client.contest.pojo.PlanTemplateSection;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -57,16 +50,6 @@ public class ContestClient {
 
     private static final RestResource1<ContestPhaseRibbonType,Long> contestPhaseRibbonTypeResource = new RestResource1<>(contestService,
             "contestPhaseRibbonTypes", ContestPhaseRibbonType.TYPES);
-
-
-
-
-
-
-
-
-
-
 
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {

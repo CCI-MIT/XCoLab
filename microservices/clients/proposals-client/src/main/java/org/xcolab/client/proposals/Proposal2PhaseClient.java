@@ -2,6 +2,8 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -20,6 +22,7 @@ public final class Proposal2PhaseClient {
             return proposal2PhaseResource.service("getByContestPhaseIdProposalId", Proposal2Phase.class)
                     .queryParam("proposalId", proposalId)
                     .queryParam("contestPhaseId", contestPhaseId)
+
                     .getChecked();
         } catch (EntityNotFoundException ignored) {
             throw new Proposal2PhaseNotFoundException(proposalId);
