@@ -21,18 +21,6 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     private DSLContext dslContext;
 
 
-    /*
-    OntologySpaceLocalServiceUtil.getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
-	OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
-	OntologySpaceLocalServiceUtil.deleteOntologySpace(spaceId);
-	OntologySpaceLocalServiceUtil.createSpace(newSpace, newSpaceDescription);
-	LIST
-	OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE)
-	OntologySpaceLocalServiceUtil.getTopTerms(space)
-	
-    *
-    * */
-
     public OntologySpace create(OntologySpace ontologySpace) {
 
         OntologySpaceRecord ret = this.dslContext.insertInto(ONTOLOGY_SPACE)
@@ -75,13 +63,11 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     }
 
     @Override
-    public List<OntologySpace> findByGiven(Integer order) {
+    public List<OntologySpace> findByGiven() {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ONTOLOGY_SPACE).getQuery();
 
-        if (order != null) {
-            query.addConditions(ONTOLOGY_SPACE.ORDER_.eq(order));
-        }
+
         return query.fetchInto(OntologySpace.class);
     }
 

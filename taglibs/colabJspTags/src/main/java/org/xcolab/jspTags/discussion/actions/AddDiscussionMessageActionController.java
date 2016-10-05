@@ -1,5 +1,8 @@
 package org.xcolab.jspTags.discussion.actions;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -11,11 +14,9 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.activityEntry.discussion.DiscussionAddCommentActivityEntry;
-import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
+
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
@@ -30,10 +31,11 @@ import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.liferay.SharedColabUtil;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.servlet.http.Cookie;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -80,7 +82,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     if (proposalIdForThread != null && proposalIdForThread != 0L) {
                         ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(),
                                 comment.getCommentId() + "",
-                                new DiscussionAddProposalCommentActivityEntry());
+                                ActivityProvidersType.DiscussionAddProposalCommentActivityEntry.getType());
                         Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposalIdForThread);
                         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(),userId);
                     }
@@ -88,7 +90,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     ActivityEntryHelper.createActivityEntry(userId,
                             commentThread.getCategory().getCategoryId(),
                             comment.getCommentId() + "",
-                            new DiscussionAddCommentActivityEntry());
+                            ActivityProvidersType.DiscussionAddCommentActivityEntry.getType());
                 }
             }
             if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {

@@ -1,17 +1,14 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseRibbonType;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
+import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 /**
@@ -31,20 +28,20 @@ public class RibbonWrapper {
     private ContestPhaseRibbonType getContestPhaseRibbonType() {
         if (contestPhaseRibbonType == null) {
             ProposalContestPhaseAttribute ribbonAttribute;
-            final long proposalId = proposalWrapper.getProposalId();
-            ContestPhase contestPhase = null;
-            try {
-                 contestPhase = ContestPhaseLocalServiceUtil.fetchContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
-            }catch (SystemException ignored){
-
+            final Long proposalId = proposalWrapper.getProposalId();
+            if(proposalId == null || proposalId == 0 ){
+                return null;
             }
+            ContestPhase contestPhase = null;
+
+            contestPhase = ContestClient.getContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
+
             if (contestPhase == null) {
                 _log.info(String.format("Could not retrieve ribbon type. Wrapper for proposal %d in Contest %d has no contestPhase.",
                         proposalId, proposalWrapper.getContestPK()));
                 return null;
             }
-            try {
-                ribbonAttribute = ProposalContestPhaseAttributeLocalServiceUtil
+                ribbonAttribute = ProposalContestPhaseAttributeClient
                         .getProposalContestPhaseAttribute(
                                 proposalId,
                                 contestPhase.getContestPhasePK(),
@@ -53,16 +50,12 @@ public class RibbonWrapper {
                 if (ribbonAttribute != null) {
                     long typeId = ribbonAttribute.getNumericValue();
                     if (typeId >= 0) {
-                        contestPhaseRibbonType = ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(typeId);
+                        contestPhaseRibbonType = ContestClient.getContestPhaseRibbonType(typeId);
                     }
                 } else {
                     _log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalId));
                 }
-            } catch (NoSuchProposalContestPhaseAttributeException ignored) {
-            } catch (PortalException | SystemException e) {
-                _log.error(String.format("Liferay exception occurred while getting ContestPhaseRibbonType for proposal %d",
-                        proposalId), e);
-            }
+
         }
         return contestPhaseRibbonType;
     }
@@ -75,7 +68,7 @@ public class RibbonWrapper {
     }
     public long getRibbonId() {
         if (contestPhaseRibbonType != null) {
-            return contestPhaseRibbonType.getId();
+            return contestPhaseRibbonType.getId_();
         }
         return 0L;
     }
@@ -101,7 +94,7 @@ public class RibbonWrapper {
             } else if (getRibbonText().equalsIgnoreCase("Semi-Finalist")) {
                 return "Semi-Finalist";
             } else {
-                if(contestPhaseRibbonType.getId()== 14 ||contestPhaseRibbonType.getId()== 11 || contestPhaseRibbonType.getId()== 12) {
+                if(contestPhaseRibbonType.getId_()== 14 ||contestPhaseRibbonType.getId_()== 11 || contestPhaseRibbonType.getId_()== 12) {
                     return "Finalist";
                 }else{
                     return "Winner";

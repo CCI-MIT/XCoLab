@@ -16,16 +16,6 @@ import static org.xcolab.model.Tables.POINT_TYPE;
 @Repository
 public class PointTypeDaoImpl implements PointTypeDao {
 
-    /*
-
-    PointTypeLocalServiceUtil.getPointTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)
-	PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
-	PointTypeLocalServiceUtil.getPointType(9L);
-	LIST
-	PointTypeLocalServiceUtil.getChildrenOfPointType(pointType.getId());
-    *
-    *
-    * */
     @Autowired
     private DSLContext dslContext;
 
@@ -84,6 +74,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
         if (parentPointTypeId != null) {
             query.addConditions(POINT_TYPE.PARENT_POINT_TYPE_ID.eq(parentPointTypeId));
         }
+        query.addOrderBy(POINT_TYPE.SORT.asc());
 
         return query.fetchInto(PointType.class);
     }

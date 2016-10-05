@@ -198,7 +198,7 @@ public class ActivitySubscriptionEmailHelper {
                 }
 
             }
-        }catch(java.lang.IllegalArgumentException comparatorFailed){
+        }catch(IllegalArgumentException comparatorFailed){
             _log.debug("Comparator failed " + comparatorFailed.getLocalizedMessage());
         }
         return body.toString();

@@ -1,11 +1,6 @@
 package org.xcolab.wrappers;
 
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -13,15 +8,20 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestTeamMemberClient;
+import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.helpers.Tuple;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.sql.Timestamp;
@@ -330,7 +330,7 @@ public class BaseContestWrapper {
         try {
             ContestPhase cp = ContestClient.getActivePhase(contest.getContestPK());
             if (cp != null) {
-                return ProposalsClient
+                return Proposal2PhaseClient
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
             }
         } catch (UncheckedEntityNotFoundException e) {
@@ -383,21 +383,20 @@ public class BaseContestWrapper {
     }
 
     protected List<OntologyTerm> getTermFromSpace(String space) {
-        try {
             if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {
                 if (!faCache.containsKey(contest.getFocusAreaId())) {
-                    FocusArea fa = FocusAreaLocalServiceUtil.getFocusArea(contest
+                    FocusArea fa = OntologyClient.getFocusArea(contest
                             .getFocusAreaId());
                     if (fa == null) {
                         ontologySpaceCache.put(space, null);
                         return null;
                     }
-                    faCache.put(fa.getId(), fa);
+                    faCache.put(fa.getId_(), fa);
                 }
                 List<OntologyTerm> terms = new ArrayList<>();
-                for (OntologyTerm t : FocusAreaLocalServiceUtil
-                        .getTerms(faCache.get(contest.getFocusAreaId()))) {
-                    if (OntologyTermLocalServiceUtil.getSpace(t).getName()
+                for (OntologyTerm t : OntologyClient
+                        .getOntologyTermsForFocusArea(faCache.get(contest.getFocusAreaId()))) {
+                    if (OntologyClient.getOntologySpace(t.getOntologySpaceId()).getName()
                             .equalsIgnoreCase(space)) {
                         terms.add(t);
                     }
@@ -405,12 +404,7 @@ public class BaseContestWrapper {
                 ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
             }
             return ontologySpaceCache.get(space);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new IllegalStateException("Dead id reference for contest "
-                    + contest.getContestPK() + " retrieving ontology term for space " + space);
-        }
+
     }
 
     public List<BaseContestPhaseWrapper> getPhases() {
@@ -427,9 +421,9 @@ public class BaseContestWrapper {
         if (contestTeamMembersByRole == null) {
 
             Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
-            for (org.xcolab.client.contest.pojo.ContestTeamMember teamMember : ContestClient.getTeamMembers(contest.getContestPK())) {
+            for (org.xcolab.client.contest.pojo.ContestTeamMember teamMember : ContestTeamMemberClient.getTeamMembers(contest.getContestPK())) {
                 try {
-                    org.xcolab.client.contest.pojo.ContestTeamMemberRole role = ContestClient.getContestTeamMemberRole(teamMember.getRoleId());
+                    org.xcolab.client.contest.pojo.ContestTeamMemberRole role = ContestTeamMemberClient.getContestTeamMemberRole(teamMember.getRoleId());
                     List<Member> roleUsers = teamRoleUsersMap
                             .get(new Tuple<>(role.getRole(), role.getSort()));
                     if (roleUsers == null) {
@@ -517,21 +511,15 @@ public class BaseContestWrapper {
 
     public long getTotalProposalsCount() {
         Set<Proposal> proposalList = new HashSet<>();
-        try {
+
             List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contest.getContestPK());
             for (ContestPhase contestPhase : contestPhases) {
-                try {
-                    List<Proposal> proposals = ProposalLocalServiceUtil
+                    List<Proposal> proposals = ProposalsClient
                             .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
                     proposalList.addAll(proposals);
-                } catch (PortalException e) {
-                    _log.error("Proposal count: failed to retrieve active proposals in contest phase " + contestPhase
-                            .getContestPhasePK());
-                }
+
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
         return proposalList.size();
     }
     public org.xcolab.client.contest.pojo.ContestType getContestType() {

@@ -2,8 +2,7 @@ package org.xcolab.portlets.proposals.utils;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
+
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
@@ -12,6 +11,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
 
+import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.Collections;
@@ -219,12 +221,12 @@ public class ProposalPickerSortingUtil {
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
                             try {
-                                ProposalAttribute t1 = ProposalAttributeLocalServiceUtil
-                                        .getAttribute(o1.getLeft().getProposalId(),
-                                                ProposalAttributeKeys.TEAM, 0);
-                                ProposalAttribute t2 = ProposalAttributeLocalServiceUtil
-                                        .getAttribute(o2.getLeft().getProposalId(),
-                                                ProposalAttributeKeys.TEAM, 0);
+                                ProposalAttribute t1 = ProposalAttributeClient
+                                        .getProposalAttribute(o1.getLeft().getProposalId(),
+                                                ProposalAttributeKeys.TEAM, 0l);
+                                ProposalAttribute t2 = ProposalAttributeClient
+                                        .getProposalAttribute(o2.getLeft().getProposalId(),
+                                                ProposalAttributeKeys.TEAM, 0l);
 
                                 String author1 = t1 == null
                                         || t1.getStringValue().trim().isEmpty()

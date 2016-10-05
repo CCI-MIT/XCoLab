@@ -9,10 +9,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.xcolab.activityEntry.DiscussionActivitySubType;
+import org.xcolab.activityEntry.MemberSubActivityType;
+import org.xcolab.activityEntry.ProposalActivitySubType;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.activityEntry.discussion.DiscussionBaseActivityEntry;
-import org.xcolab.activityEntry.member.MemberJoinedActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalBaseActivityEntry;
+
 import org.xcolab.client.activities.pojo.ActivityEntry;
 
 import java.io.Serializable;
@@ -157,27 +158,27 @@ public class SocialActivityWrapper implements Serializable {
 
 
     public static enum ActivityType {
-		VOTE("up", ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId()
+		VOTE("up", ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId()
 		),
 		EDIT("edit",
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_ATTRIBUTE_UPDATE.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_MEMBER_ADDED.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_MEMBER_REMOVED.getSecondaryTypeId()
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_ATTRIBUTE_UPDATE.getSecondaryTypeId(),
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_MEMBER_ADDED.getSecondaryTypeId(),
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_MEMBER_REMOVED.getSecondaryTypeId()
 				),
 		NEW("new",
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalBaseActivityEntry.ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId()),
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId()),
 		COMMENT("comment",
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId() +"" + DiscussionBaseActivityEntry.DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId(),
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId() +"" + DiscussionBaseActivityEntry.DiscussionActivitySubType.DISCUSSION_CATEGORY_ADDED.getSecondaryTypeId(),
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId() +"" + DiscussionBaseActivityEntry.DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId(),
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId() +"" + DiscussionBaseActivityEntry.DiscussionActivitySubType.DISCUSSION_FORUM_COMMENT.getSecondaryTypeId()
+                ActivityEntryType.DISCUSSION.getPrimaryTypeId() +"" + DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId(),
+                ActivityEntryType.DISCUSSION.getPrimaryTypeId() +"" + DiscussionActivitySubType.DISCUSSION_CATEGORY_ADDED.getSecondaryTypeId(),
+                ActivityEntryType.DISCUSSION.getPrimaryTypeId() +"" + DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId(),
+                ActivityEntryType.DISCUSSION.getPrimaryTypeId() +"" + DiscussionActivitySubType.DISCUSSION_FORUM_COMMENT.getSecondaryTypeId()
         ),
         USER("new_user",
-                ActivityEntryType.MEMBER.getPrimaryTypeId() +"" + MemberJoinedActivityEntry.MemberSubActivityType.MEMBER_JOINED.getSecondaryTypeId());
+                ActivityEntryType.MEMBER.getPrimaryTypeId() +"" + MemberSubActivityType.MEMBER_JOINED.getSecondaryTypeId());
 
         private final String[] classes;
         private final String displayName;

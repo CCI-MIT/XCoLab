@@ -85,7 +85,7 @@ public class ProposalReferenceLocalServiceImpl
     public void populateTableWithProposal(Proposal proposal) throws PortalException, SystemException {
         final List<ProposalReference> existingReferences = getByProposalId(proposal.getProposalId());
         for (ProposalReference existingReference : existingReferences) {
-            deleteProposalReference(existingReference);
+                deleteProposalReference(existingReference);
         }
         populateTableWithProposal(proposal, new HashSet<Long>());
     }
@@ -99,6 +99,7 @@ public class ProposalReferenceLocalServiceImpl
             deleteProposalReference(existingReference);
         }
         processedProposals.add(proposal.getProposalId());
+        /*
         for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal).getAttributesByName(ProposalAttributeKeys.SECTION)) {
             PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
 
@@ -136,7 +137,7 @@ public class ProposalReferenceLocalServiceImpl
                 addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId());
                 populateTableWithProposal(proposalLocalService.fetchProposal(subProposalId), processedProposals);
             }
-        }
+        }*/
     }
 
     private void addProposalReference(long proposalId, long subProposalId, long sectionAttributeId) throws SystemException {

@@ -3,6 +3,8 @@ package org.xcolab.client.contest.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.ContestClient;
@@ -389,6 +391,11 @@ public class ContestPhase {
         result = prime * result + ((updated == null) ? 0 : updated.hashCode());
         result = prime * result + ((authorid == null) ? 0 : authorid.hashCode());
         return result;
+    }
+    @JsonIgnore
+    public int compareTo(ContestPhase contestPhase) {
+
+        return getPhaseStartDate().getTime() == contestPhase.getPhaseStartDate().getTime()?0:(getPhaseStartDate().getTime() < contestPhase.getPhaseStartDate().getTime()?-1:1);
     }
 
     @Override

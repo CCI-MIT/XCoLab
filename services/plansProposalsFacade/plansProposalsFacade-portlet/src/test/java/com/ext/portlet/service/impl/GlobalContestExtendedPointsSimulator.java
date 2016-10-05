@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import org.xcolab.points.DistributionStrategy;
-import org.xcolab.points.ReceiverLimitationStrategy;
+
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -338,7 +338,8 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
      * @throws SystemException
      */
     private double getPointsFactorForReceiverDistributionStrategy(long parentPointTypeId, String receiverLimitationStrategyIdentifier) throws SystemException {
-        for (PointType pointType : testInstance.pointTypePersistence.findByParentPointTypeId(parentPointTypeId)) {
+
+       /* for (PointType pointType : testInstance.pointTypePersistence.findByParentPointTypeId(parentPointTypeId)) {
             // Leaf point type
             if (pointType.getDistributionStrategy().equals(DistributionStrategy.USER_DEFINED.name()) &&
                     pointType.getReceiverLimitationStrategy().equals(receiverLimitationStrategyIdentifier)) {
@@ -353,11 +354,13 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                 return Math.floor(pointType.getPercentageOfParent() * getPointsFactorForReceiverDistributionStrategy(pointType.getId(), receiverLimitationStrategyIdentifier) * 1000000) / 1000000;
             }
         }
-
+        */
         throw new RuntimeException("Could not resolve points factor for parentPointTypeId " + parentPointTypeId);
+
     }
 
     private void assertDistributionForProposal(int contestTierIdx, int contestIdx, int proposalIndex, long sourceId, double hypotheticalPoints, double materializedPoints) throws SystemException {
+        /*
         if (hypotheticalPoints < 1 && materializedPoints < 1) {
             return;
         }
@@ -454,7 +457,7 @@ public class GlobalContestExtendedPointsSimulator extends GlobalContestPointsSim
                 }
             }
         }
-
+        */
         // todo we are done. the proposal links array should be empty by now.
     }
 

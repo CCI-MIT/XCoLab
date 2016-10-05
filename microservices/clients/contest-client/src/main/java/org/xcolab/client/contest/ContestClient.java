@@ -1,15 +1,22 @@
 package org.xcolab.client.contest;
 
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.ContestTeamMember;
-import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.contest.pojo.ImpactIteration;
+import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
+import org.xcolab.client.contest.pojo.ImpactTemplateMaxFocusArea;
+import org.xcolab.client.contest.pojo.ImpactTemplateSeries;
+import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.PlanTemplate;
+import org.xcolab.client.contest.pojo.PlanTemplateSection;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -20,8 +27,6 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class ContestClient {
 
@@ -42,14 +47,27 @@ public class ContestClient {
     private static final RestResource<ContestType, Long> contestTypeResource = new RestResource1<>(contestService,
             "contestTypes", ContestType.TYPES);
 
-    private static final RestResource<ContestTeamMember, Long> contestTeamMemberResource = new RestResource1<>(contestService,
-            "contestTeamMembers", ContestTeamMember.TYPES);
 
-    private static final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource = new RestResource1<>(contestService,
-            "contestTeamMemberRoles", ContestTeamMemberRole.TYPES);
 
     private static final RestResource1<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
             "contestSchedules", ContestSchedule.TYPES);
+
+
+
+
+    private static final RestResource1<ContestPhaseRibbonType,Long> contestPhaseRibbonTypeResource = new RestResource1<>(contestService,
+            "contestPhaseRibbonTypes", ContestPhaseRibbonType.TYPES);
+
+
+
+
+
+
+
+
+
+
+
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
@@ -59,6 +77,17 @@ public class ContestClient {
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
         }
+    }
+
+    public static Contest getContestByContestUrlNameContestYear(String contestUrlName, Long contestYear) {
+        List<Contest> list = contestResource.list()
+                .queryParam("contestUrlName", contestUrlName)
+                .queryParam("contestYear", contestYear)
+                .execute();
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
     }
 
     public static Contest createContest(Long userId, String name) {
@@ -106,6 +135,9 @@ public class ContestClient {
         return contestResource.create(contest).execute();
     }
 
+    public static List<Contest> getContestsMatchingTier(Long contestTier) {
+        return contestResource.list().queryParam("contestTier", contestTier).execute();
+    }
 
     public static boolean updateContest(Contest contest) {
         return contestResource.update(contest, contest.getContestPK())
@@ -161,16 +193,25 @@ public class ContestClient {
                 .execute();
     }
 
-    public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
+    public static List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
+        return contestResource.service("getContestMatchingOntologyTerms", Contest.TYPES.getTypeReference())
+                .queryParam("ontologyTermIds", ontologyTermIds)
+                .getList();
+    }
 
-        try {
-            //TODO: bad url design
-            return contestResource.service(contestId, "getSubContestsByOntologySpaceId", List.class)
+    public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
+            return contestResource.service(contestId, "getSubContestsByOntologySpaceId", Contest.TYPES.getTypeReference())
                     .optionalQueryParam("ontologySpaceId", ontologySpaceId)
-                    .getChecked();
-        } catch (EntityNotFoundException e) {
-            return new ArrayList<>();
-        }
+                    .getList();
+
+    }
+
+    public static void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
+        contestPhasesResource.service(proposalId, "forcePropomotionOfProposalInContestPhaseId", Boolean.class)
+                .queryParam("contestPhaseId", contestPhaseId)
+                .get();
+        //TODO: NEEDS TO MIGRATE A TON OF THINGS.
+
     }
 
     public static List<Contest> getAllContests() {
@@ -191,6 +232,31 @@ public class ContestClient {
         return contestResource
                 .list()
                 .queryParam("contestScheduleId", contestScheduleId)
+                .execute();
+    }
+
+    public static List<Contest> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) {
+        return contestResource
+                .list()
+                .queryParam("active", contestActive)
+                .queryParam("contestPrivate", contestPrivate)
+                .execute();
+    }
+
+
+    public static List<Contest> getContestsByActivePrivateType(boolean contestActive, boolean contestPrivate, Long contestTypeId) {
+        return contestResource
+                .list()
+                .queryParam("active", contestActive)
+                .queryParam("contestPrivate", contestPrivate)
+                .queryParam("contestTypeId", contestTypeId)
+                .execute();
+    }
+
+    public static List<Contest> getContestsByContestTypeId(Long contestTypeId) {
+        return contestResource
+                .list()
+                .queryParam("contestTypeId", contestTypeId)
                 .execute();
     }
 
@@ -227,6 +293,18 @@ public class ContestClient {
                     .withParameter("visible", true).asList(),
                         CacheRetention.MEDIUM)
                 .execute();
+    }
+
+    public static Integer getPointsAccessibleForActivePhaseOfContest(Contest contest) {
+        //check if the phase, the contest is currently in, allows for editing
+        ContestPhase activePhase = getActivePhase(contest.getContestPK());
+        if (activePhase != null) {
+            ContestPhaseType cpType = getContestPhaseType(activePhase.getContestPhaseType());
+            if (cpType != null) {
+                return cpType.getPointsAccessible();
+            }
+        }
+        return null;
     }
 
     public static void deleteContestPhase(Long contestPhasePK) {
@@ -305,68 +383,55 @@ public class ContestClient {
                 .execute();
     }
 
-    public static List<Long> getAdvisorsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.ADVISOR.getRoleId());
-
-    }
-
-    public static List<Long> getJudgesForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.JUDGE.getRoleId());
-    }
-
-    public static List<Long> getFellowsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.FELLOW.getRoleId());
-    }
-
-    public static List<Long> getContestManagersForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.CONTEST_MANAGER.getRoleId());
-
-    }
-
-    private static List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
-        Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
-        List<Long> members = teamRoleToUsersMap.get(roleId);
-        if (members == null) {
-            return new ArrayList<>();
-        } else {
-            return members;
-        }
-    }
-
-    private static Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
-        Map<Long, List<Long>> teamRoleToUsersMap = new TreeMap<>();
-        for (ContestTeamMember ctm : getTeamMembers(contestId)) {
-            List<Long> roleUsers = teamRoleToUsersMap.get(ctm.getRoleId());
-
-            if (roleUsers == null) {
-                roleUsers = new ArrayList<>();
-                teamRoleToUsersMap.put(ctm.getRoleId(), roleUsers);
+    public static List<ContestType> getActiveContestTypes() {
+        final List<ContestType> contestTypes = getAllContestTypes();
+        List<ContestType> activeContestTypes = new ArrayList<>();
+        for (ContestType contestType : contestTypes) {
+            if (countContestsByContestType(contestType.getId_()) > 0) {
+                activeContestTypes.add(contestType);
             }
-
-            roleUsers.add(ctm.getUserId());
-
         }
-        return teamRoleToUsersMap;
+        return activeContestTypes;
     }
 
-    public static List<ContestTeamMember> getTeamMembers(Long contestId) {
-        return contestTeamMemberResource.list()
-                .optionalQueryParam("contestId", contestId)
+    public static Integer countContestsByContestType(Long contestTypeId) {
+        return contestResource.service("countByContestType", Integer.class)
+                .queryParam("contestTypeId", contestTypeId)
+                .get();
+    }
+
+    public static List<Contest> getContestsByContestType(Long contestTypeId) {
+        return contestResource.list()
+                .queryParam("contestTypeId", contestTypeId)
                 .execute();
     }
 
-    public static ContestTeamMember createContestTeamMember(ContestTeamMember contestTeamMember) {
-        return contestTeamMemberResource.create(contestTeamMember).execute();
+
+    public static String getContestPhaseName(ContestPhase ck) {
+        return getContestPhaseType(ck.getContestPhaseType()).getName();
     }
 
-    public static void deleteContestTeamMember(Long contestTeamMemberId) {
-        contestTeamMemberResource.delete(contestTeamMemberId).execute();
-    }
-
-    public static ContestTeamMemberRole getContestTeamMemberRole(long id) {
-        return contestTeamMemberRoleResource.get(id)
-                .withCache(CacheKeys.of(ContestTeamMemberRole.class, id), CacheRetention.LONG)
+    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
+        return contestPhaseRibbonTypeResource.get(id_)
                 .execute();
     }
+
+    public static List<ContestPhaseRibbonType> getAllContestPhaseRibbonType() {
+        return contestPhaseRibbonTypeResource.list()
+                .execute();
+    }
+
+    public static boolean isMemberSubscribedToContest(long contestPK, long userId) {
+        return ActivitiesClient.isSubscribedToActivity(userId, ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK, 0, "");
+    }
+
+    public static void subscribeMemberToContest(long contestPK, long userId) {
+        ActivitiesClient.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+    }
+
+    public static void unsubscribeMemberFromContest(long contestPK, long userId) {
+        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+    }
+
 
 }

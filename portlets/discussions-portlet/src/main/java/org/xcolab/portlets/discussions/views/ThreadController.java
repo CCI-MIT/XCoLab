@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import org.xcolab.activityEntry.discussion.DiscussionAddedActivityEntry;
+
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
@@ -99,7 +100,7 @@ public class ThreadController extends BaseDiscussionController {
 
             if( !thread.getIsQuiet()) {
                 ActivityEntryHelper.createActivityEntry(userId, categoryId, (comment.getCommentId()+""),
-                        new DiscussionAddedActivityEntry());
+                        ActivityProvidersType.DiscussionAddedActivityEntry.getType());
             }
 
             response.sendRedirect(thread.getLinkUrl());

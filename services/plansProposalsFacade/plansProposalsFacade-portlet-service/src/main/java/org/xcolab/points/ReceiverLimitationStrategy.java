@@ -1,13 +1,13 @@
 package org.xcolab.points;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.PointType;
+import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.utils.IdListUtil;
 
@@ -17,80 +17,80 @@ import java.util.List;
 import java.util.Set;
 
 public enum ReceiverLimitationStrategy {
-	ANY_USER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
+    ANY_USER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
-		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws SystemException {
-			// check if there is any configuration, if there is create appropriate targets
-			List<PointsTarget> targets = new ArrayList<>();
-			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
-					if (pdc.getTargetUserId() > 0) {
-						PointsTarget target = new PointsTarget();
-						target.setUserId(pdc.getTargetUserId());
-						target.setPercentage(pdc.getPercentage());
-						targets.add(target);
-					}
-				}
-			}
-			return targets;
-		}
-		
-	}), 
-	
-	ANY_NON_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
+        @Override
+        public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) {
+            // check if there is any configuration, if there is create appropriate targets
+            List<PointsTarget> targets = new ArrayList<>();
+            if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
+                for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationClient.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+                    if (pdc.getTargetUserId() > 0) {
+                        PointsTarget target = new PointsTarget();
+                        target.setUserId(pdc.getTargetUserId());
+                        target.setPercentage(pdc.getPercentage());
+                        targets.add(target);
+                    }
+                }
+            }
+            return targets;
+        }
 
-		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
-			List<PointsTarget> targets = new ArrayList<>();
-			
-			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
-					if (pdc.getTargetUserId() > 0 && !ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
-						PointsTarget target = new PointsTarget();
-						target.setUserId(pdc.getTargetUserId());
-						target.setPercentage(pdc.getPercentage());
-						targets.add(target);
-					}
-				}
-			}
-			return targets;
-		}
-		
-	}),
-	ANY_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
+    }),
 
-		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
-			List<PointsTarget> targets = new ArrayList<>();
+    ANY_NON_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
-			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
-					if (pdc.getTargetUserId() > 0 && ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
-						PointsTarget target = new PointsTarget();
-						target.setUserId(pdc.getTargetUserId());
-						target.setPercentage(pdc.getPercentage());
-						targets.add(target);
-					}
-				}
-				if (targets.isEmpty()) {
+        @Override
+        public List<PointsTarget> getPointTargets(Proposal proposal,
+                                                  PointType pointType, DistributionStrategy distributionStrategy) {
+            List<PointsTarget> targets = new ArrayList<>();
+
+            if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
+                for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationClient.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+                    if (pdc.getTargetUserId() > 0 && !ProposalsClient.isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
+                        PointsTarget target = new PointsTarget();
+                        target.setUserId(pdc.getTargetUserId());
+                        target.setPercentage(pdc.getPercentage());
+                        targets.add(target);
+                    }
+                }
+            }
+            return targets;
+        }
+
+    }),
+    ANY_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
+
+        @Override
+        public List<PointsTarget> getPointTargets(Proposal proposal,
+                                                  PointType pointType, DistributionStrategy distributionStrategy)  {
+            List<PointsTarget> targets = new ArrayList<>();
+
+            if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
+                for (PointsDistributionConfiguration pdc: PointsDistributionConfigurationClient.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+                    if (pdc.getTargetUserId() > 0 && ProposalsClient.isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
+                        PointsTarget target = new PointsTarget();
+                        target.setUserId(pdc.getTargetUserId());
+                        target.setPercentage(pdc.getPercentage());
+                        targets.add(target);
+                    }
+                }
+                if (targets.isEmpty()) {
                     return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
-				}
-			} else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
+                }
+            } else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
                 return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
-			}
-			return targets;
-		}
-		
-	}),
+            }
+            return targets;
+        }
+
+    }),
     SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
+                                                  PointType pointType, DistributionStrategy distributionStrategy) {
+            List<Proposal> subProposals = ProposalsClient.getSubproposals(proposal.getProposalId(), false);
             Set<Long> subProposalIds = new HashSet<>(IdListUtil.PROPOSALS.toIdList(subProposals));
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         }
@@ -100,18 +100,23 @@ public enum ReceiverLimitationStrategy {
 
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
-            Set<Long> subProposalIds = new HashSet<>();
-            for (Proposal subProposal : subProposals) {
-                final Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(subProposal.getProposalId());
-                final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
-                if (contestTier == ContestTier.REGION_AGGREGATE) {
-                    subProposalIds.add(subProposal.getProposalId());
+                                                  PointType pointType, DistributionStrategy distributionStrategy) {
+            try {
+                List<Proposal> subProposals = ProposalsClient.getSubproposals(proposal.getProposalId(), false);
+                Set<Long> subProposalIds = new HashSet<>();
+                for (Proposal subProposal : subProposals) {
+                    final Contest latestProposalContest = ProposalsClient.getCurrentContestForProposal(subProposal.getProposalId());
+                    final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
+                    if (contestTier == ContestTier.REGION_AGGREGATE) {
+                        subProposalIds.add(subProposal.getProposalId());
+                    }
                 }
+                subProposalIds.remove(proposal.getProposalId());
+                return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
+            } catch (ContestNotFoundException ignored) {
+
             }
-            subProposalIds.remove(proposal.getProposalId());
-            return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
+            return null;
         }
 
     }),
@@ -119,14 +124,18 @@ public enum ReceiverLimitationStrategy {
 
         @Override
         public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) throws SystemException, PortalException {
-            List<Proposal> subProposals = ProposalLocalServiceUtil.getSubproposals(proposal.getProposalId(), false);
+                                                  PointType pointType, DistributionStrategy distributionStrategy)  {
+            List<Proposal> subProposals = ProposalsClient.getSubproposals(proposal.getProposalId(), false);
             Set<Long> subProposalIds = new HashSet<>();
             for (Proposal subProposal : subProposals) {
-                final Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(subProposal.getProposalId());
-                final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
-                if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
-                    subProposalIds.add(subProposal.getProposalId());
+                try {
+                    final Contest latestProposalContest = ProposalsClient.getCurrentContestForProposal(subProposal.getProposalId());
+                    final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
+                    if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
+                        subProposalIds.add(subProposal.getProposalId());
+                    }
+                }catch (ContestNotFoundException ignored){
+
                 }
             }
             subProposalIds.remove(proposal.getProposalId());
@@ -134,38 +143,38 @@ public enum ReceiverLimitationStrategy {
         }
 
     }),
-	NONE(Type.OTHER, new ReceiverLimitationTargetsPickerAlgorithm() {
+    NONE(Type.OTHER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
-		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy) {
-			return null;
-		}
-		
-	});
+        @Override
+        public List<PointsTarget> getPointTargets(Proposal proposal,
+                                                  PointType pointType, DistributionStrategy distributionStrategy) {
+            return null;
+        }
 
-	private final Type type;
-	private final ReceiverLimitationTargetsPickerAlgorithm targetsPickerAlgorithm;
-	
-	ReceiverLimitationStrategy(Type type, ReceiverLimitationTargetsPickerAlgorithm algorithm) {
-		this.type = type;
-		targetsPickerAlgorithm = algorithm;
-	}
-	
-	public List<PointsTarget> getTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException {
-		return targetsPickerAlgorithm.getPointTargets(proposal, pointType, distributionStrategy);
-		
-	}
+    });
 
-	public Type getType() {
-		return type;
-	}
+    private final Type type;
+    private final ReceiverLimitationTargetsPickerAlgorithm targetsPickerAlgorithm;
 
-	public interface ReceiverLimitationTargetsPickerAlgorithm {
-		List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) throws PortalException, SystemException;
-	}
+    ReceiverLimitationStrategy(Type type, ReceiverLimitationTargetsPickerAlgorithm algorithm) {
+        this.type = type;
+        targetsPickerAlgorithm = algorithm;
+    }
 
-	public enum Type {
-		USER, SUB_PROPOSAL, OTHER
-	}
+    public List<PointsTarget> getTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) {
+        return targetsPickerAlgorithm.getPointTargets(proposal, pointType, distributionStrategy);
+
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public interface ReceiverLimitationTargetsPickerAlgorithm {
+        List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) ;
+    }
+
+    public enum Type {
+        USER, SUB_PROPOSAL, OTHER
+    }
 }

@@ -1,9 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -32,21 +36,25 @@ public class PromoteProposalActionController {
                              @RequestParam Long proposalId ) throws PortalException, SystemException, IOException {
 
         ProposalsPermissions proposalsPermissions = proposalsContext.getPermissions(request);
-        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+        ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
-            Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(proposalId);
-            ContestPhase currentProposalContestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-            ContestPhase activePhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(latestProposalContest);
+            try {
+                Contest latestProposalContest = ProposalsClient.getLatestContestInProposal(proposalId);
+                ContestPhase currentProposalContestPhase = ContestClient.getContestPhase(contestPhaseId);
+                ContestPhase activePhaseForContest = ContestClient.getActivePhase(latestProposalContest.getContestPK());
 
-            ContestPhaseLocalServiceUtil.promoteProposal(proposalId,
-                    activePhaseForContest.getContestPhasePK(),
-                    currentProposalContestPhase.getContestPhasePK());
+                Proposal2PhaseClient.promoteProposal(proposalId,
+                        activePhaseForContest.getContestPhasePK(),
+                        currentProposalContestPhase.getContestPhasePK());
 
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
-                    proposalsContext.getProposal(request), contestPhase));
+                response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request),
+                        contestPhase.getContestPhasePK()));
+            }catch (ContestNotFoundException ignored){
+
+            }
         } else {
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getContest(request),
-                    proposalsContext.getProposal(request), contestPhase) + "/tab/ADMIN");
+            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request),
+                    contestPhase.getContestPhasePK()) + "/tab/ADMIN");
         }
     }
 }

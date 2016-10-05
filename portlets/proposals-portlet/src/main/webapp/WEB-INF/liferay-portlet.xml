@@ -18,7 +18,7 @@
         <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
         <friendly-url-mapping>plans</friendly-url-mapping>
 		<friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
-		<social-activity-interpreter-class>org.xcolab.portlets.proposals.activity.ProposalsSocialActivityInterpreter</social-activity-interpreter-class>
+
 		<instanceable>false</instanceable>
         <private-session-attributes>false</private-session-attributes>
         <requires-namespaced-parameters>false</requires-namespaced-parameters> 

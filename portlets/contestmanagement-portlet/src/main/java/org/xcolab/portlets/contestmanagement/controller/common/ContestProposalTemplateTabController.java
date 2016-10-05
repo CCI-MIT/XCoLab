@@ -1,25 +1,25 @@
 package org.xcolab.portlets.contestmanagement.controller.common;
 
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.PointTypeLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
+import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.OntologySpaceEnum;
@@ -29,7 +29,6 @@ import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.util.ArrayList;
@@ -101,7 +100,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
             throws PortalException, SystemException, java.io.IOException {
 
         PlanSectionDefinition planSectionDefinition =
-                PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionDefinitionId);
+                PlanTemplateClient.getPlanSectionDefinition(sectionDefinitionId);
         SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper(planSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
@@ -117,36 +116,29 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
     private List<LabelValue> getContestTypeSelectionItems() {
-        try {
-            List<LabelValue> selectItems = new ArrayList<>();
-            for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
-                selectItems.add(new LabelValue(contestType.getId(),
-                        ContestTypeLocalServiceUtil.getLabelName(contestType)));
-            }
-            return selectItems;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+        List<LabelValue> selectItems = new ArrayList<>();
+        for (ContestType contestType : ContestClient.getActiveContestTypes()) {
+            selectItems.add(new LabelValue(contestType.getId_(),
+                    contestType.getLabelName()));
         }
+        return selectItems;
+
     }
 
     private List<LabelValue> getPointTypeSelectionItems() {
-        try {
-            List<LabelValue> selectItems = new ArrayList<>();
-            selectItems.add(new LabelValue(0L, "Default"));
-            for (PointType pointType : PointTypeLocalServiceUtil
-                    .getPointTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-                if (pointType.getDistributionStrategy()
-                        .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
-                    selectItems.add(new LabelValue(pointType.getId(),
-                            String.format("%d - %s : %s", pointType.getId(),
-                                    pointType.getDistributionStrategy(),
-                                    pointType.getReceiverLimitationStrategy())));
-                }
+        List<LabelValue> selectItems = new ArrayList<>();
+        selectItems.add(new LabelValue(0L, "Default"));
+        for (PointType pointType : PointsDistributionConfigurationClient.getAllPointTypes()) {
+            if (pointType.getDistributionStrategy()
+                    .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
+                selectItems.add(new LabelValue(pointType.getId_(),
+                        String.format("%d - %s : %s", pointType.getId_(),
+                                pointType.getDistributionStrategy(),
+                                pointType.getReceiverLimitationStrategy())));
             }
-            return selectItems;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
         }
+        return selectItems;
+
     }
 
     private List<LabelStringValue> getSectionTypesSelectionItems() {
@@ -182,23 +174,21 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
     private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(
             OntologySpaceEnum ontologySpace) {
-        try {
-            List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
-            for (OntologyTerm term : OntologyTermLocalServiceUtil
-                    .getOntologyTerms(0, Integer.MAX_VALUE)) {
-                // Just consider terms in the passed ontologySpace
-                if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
-                    continue;
-                }
 
-                Stack<OntologyTerm> parentsPath = getOntologyTermParentPath(term);
-                allParentsPaths.add(parentsPath);
+        List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
+        for (OntologyTerm term : OntologyClient
+                .getAllOntologyTerms()) {
+            // Just consider terms in the passed ontologySpace
+            if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
+                continue;
             }
 
-            return allParentsPaths;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+            Stack<OntologyTerm> parentsPath = getOntologyTermParentPath(term);
+            allParentsPaths.add(parentsPath);
         }
+
+        return allParentsPaths;
+
     }
 
     private void sortOntologyTermParentPathsAlphabetically(List<Stack<OntologyTerm>> allParentsPaths) {
@@ -240,7 +230,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
             OntologyTerm childTerm = ontologyTermParentsPath.firstElement();
             String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath);
-            termSelectItems.add(new LabelValue(childTerm.getId(), ontologyTermPathString));
+            termSelectItems.add(new LabelValue(childTerm.getId_(), ontologyTermPathString));
         }
 
         return termSelectItems;
@@ -248,22 +238,16 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
 
     private Stack<OntologyTerm> getOntologyTermParentPath(OntologyTerm term) {
-        try {
-            Stack<OntologyTerm> parentsPath = new Stack<>();
-            OntologyTerm current = term;
-            while (current != null) {
-                parentsPath.push(current);
-                try {
-                    current = OntologyTermLocalServiceUtil.getParent(current);
-                } catch (PortalException e) {
-                    _log.warn("Could not find parent for ontology term " + current.getId());
-                    break;
-                }
-            }
-            return parentsPath;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+
+        Stack<OntologyTerm> parentsPath = new Stack<>();
+        OntologyTerm current = term;
+        while (current != null) {
+            parentsPath.push(current);
+            current = OntologyClient.getOntologyTermParent(current);
+
         }
+        return parentsPath;
+
     }
 
     private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath) {

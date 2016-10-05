@@ -1,6 +1,8 @@
 package org.xcolab.wrappers;
 
-import com.ext.portlet.model.ContestType;
+
+
+import org.xcolab.client.contest.pojo.ContestType;
 
 import java.util.ArrayList;
 import java.util.List;

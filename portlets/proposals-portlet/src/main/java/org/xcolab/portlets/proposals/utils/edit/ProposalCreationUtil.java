@@ -1,16 +1,6 @@
 package org.xcolab.portlets.proposals.utils.edit;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalMoveHistoryLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
@@ -18,6 +8,18 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
+import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.ProposalMoveHistoryClient;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
@@ -43,52 +45,57 @@ public final class ProposalCreationUtil {
     }
 
     public static ProposalWrapper createProposal(long userId,
-            @Valid UpdateProposalDetailsBean updateProposalSectionsBean, Contest contest, ThemeDisplay themeDisplay,
-            ContestPhase contestPhase) throws PortalException,
+                                                 @Valid UpdateProposalDetailsBean updateProposalSectionsBean, Contest contest, ThemeDisplay themeDisplay,
+                                                 ContestPhase contestPhase) throws PortalException,
             SystemException {
-        Proposal newProposal = ProposalLocalServiceUtil.create(userId, contestPhase.getContestPhasePK());
-        Proposal2Phase newProposal2Phase = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(
-                newProposal.getProposalId(), contestPhase.getContestPhasePK());
+        try {
+            Proposal newProposal = ProposalsClient.createProposal(userId, contestPhase.getContestPhasePK(), true);
+            Proposal2Phase newProposal2Phase = Proposal2PhaseClient.getProposal2PhaseByProposalIdContestPhaseId(
+                    newProposal.getProposalId(), contestPhase.getContestPhasePK());
 
-        ProposalWrapper proposalWrapper = new ProposalWrapper(newProposal, 0, contest, contestPhase, newProposal2Phase);
+            ProposalWrapper proposalWrapper = new ProposalWrapper(newProposal, 0, contest, contestPhase, newProposal2Phase);
 
-        final long baseProposalId = updateProposalSectionsBean.getBaseProposalId();
-        if (baseProposalId > 0) {
-            ProposalAttributeLocalServiceUtil.setAttribute(
-                    themeDisplay.getUserId(), proposalWrapper.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
-                    baseProposalId);
-            final long baseContestId = updateProposalSectionsBean.getBaseProposalContestId();
-            ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
-                    ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID,
-                    baseContestId);
-            ProposalMoveHistoryLocalServiceUtil.createForkHistory(baseProposalId, proposalWrapper.getProposalId(),
-                    baseContestId, contest.getContestPK(), 0L, contestPhase.getContestPhasePK(), userId);
+            final long baseProposalId = updateProposalSectionsBean.getBaseProposalId();
+            if (baseProposalId > 0) {
+                ProposalAttributeClient.setProposalAttribute(
+                        themeDisplay.getUserId(), proposalWrapper.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,0l,
+                        baseProposalId);
+                final long baseContestId = updateProposalSectionsBean.getBaseProposalContestId();
+                ProposalAttributeClient.setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
+                        ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID,
+                        0l,baseContestId);
+                ProposalMoveHistoryClient.createForkProposalMoveHistory(baseProposalId, proposalWrapper.getProposalId(),
+                        baseContestId, contest.getContestPK(), 0L, contestPhase.getContestPhasePK(), userId);
 
-            for (ProposalAttribute attribute : ProposalAttributeLocalServiceUtil
-                    .getAttributes(baseProposalId)) {
-                if (attributesNotToBeCopiedFromBaseProposal.contains(attribute.getName())) {
-                    continue;
+                for (ProposalAttribute attribute : ProposalAttributeClient
+                        .getAllProposalAttributes(baseProposalId)) {
+                    if (attributesNotToBeCopiedFromBaseProposal.contains(attribute.getName())) {
+                        continue;
+                    }
+                    ProposalAttributeClient.setProposalAttribute(themeDisplay.getUserId(),
+                            proposalWrapper.getProposalId(), attribute.getName(), attribute.getAdditionalId(),
+                            attribute.getStringValue(), attribute.getNumericValue(), attribute.getRealValue());
                 }
-                ProposalAttributeLocalServiceUtil.setAttribute(themeDisplay.getUserId(),
-                        proposalWrapper.getProposalId(), attribute.getName(), attribute.getAdditionalId(),
-                        attribute.getStringValue(), attribute.getNumericValue(), attribute.getRealValue());
             }
+            return proposalWrapper;
+        }catch (Proposal2PhaseNotFoundException ignored){
+            return null;
         }
-        return proposalWrapper;
     }
 
     public static void sendAuthorNotification(ThemeDisplay themeDisplay,
-            ProposalWrapper proposalWrapper, ContestPhase contestPhase) throws PortalException,
+                                              ProposalWrapper proposalWrapper, ContestPhase contestPhase) throws PortalException,
             SystemException {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
-        Contest contest = ContestPhaseLocalServiceUtil
-                .getContest(ContestPhaseLocalServiceUtil.getContestPhase(contestPhase.getContestPhasePK()));
-        final Proposal updatedProposal = ProposalLocalServiceUtil.fetchProposal(proposalWrapper.getProposalId());
-        try{
+        try {
+            Contest contest = ContestClient
+                    .getContest(ContestClient.getContestPhase(contestPhase.getContestPhasePK()).getContestPK());
+
+            Proposal updatedProposal = ProposalsClient.getProposal(proposalWrapper.getProposalId());
             org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
-                    new ProposalCreationNotification(updatedProposal, contestMicro, serviceContext).sendMessage();
-        }catch (ContestNotFoundException ignored){
+            new ProposalCreationNotification(updatedProposal, contestMicro, serviceContext).sendMessage();
+        } catch (ContestNotFoundException | ProposalNotFoundException ignored) {
 
         }
     }
