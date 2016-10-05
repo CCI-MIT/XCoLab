@@ -2,10 +2,13 @@ package org.xcolab.service.contest.domain.ontologyterm;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.OntologyTerm;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+
+import java.util.List;
 
 import static org.xcolab.model.Tables.ONTOLOGY_TERM;
 
@@ -27,4 +30,20 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
         return record.into(OntologyTerm.class);
 
     }
+
+    @Override
+    public List<OntologyTerm> findByGiven(String name, Long parentId) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(ONTOLOGY_TERM).getQuery();
+
+        if(name != null){
+            query.addConditions(ONTOLOGY_TERM.NAME.eq(name));
+        }
+        if(parentId != null){
+            query.addConditions(ONTOLOGY_TERM.PARENT_ID.eq(parentId));
+        }
+        return query.fetchInto(OntologyTerm.class);
+    }
+
+
 }

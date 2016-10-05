@@ -1,11 +1,13 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.Contest;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
 import org.apache.log4j.Logger;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 
 /**
  * Created by Thomas on 7/2/2015.
@@ -23,18 +25,14 @@ public class ProposalSimulationScenarioRegionWrapper {
         this.region = region;
     }
 
-    public ProposalSimulationScenarioRegionWrapper(ProposalWrapper proposalWrapper) throws SystemException, PortalException{
+    public ProposalSimulationScenarioRegionWrapper(ProposalWrapper proposalWrapper) throws SystemException, PortalException {
         this.proposalWrapper = proposalWrapper;
         proposalName = proposalWrapper.getName();
         Contest contestForProposal = proposalWrapper.getContest();
-        try {
-            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contestForProposal.getContestPK());
 
-            ContestWrapper contestWrapper = new ContestWrapper(contestMicro); //contestForProposal
-            this.region = contestWrapper.getWhereName();
-        }catch(ContestNotFoundException ignored){
+        ContestWrapper contestWrapper = new ContestWrapper(contestForProposal); //contestForProposal
+        this.region = contestWrapper.getWhereName();
 
-        }
     }
 
     public ProposalSimulationScenarioRegionWrapper() {
@@ -64,13 +62,13 @@ public class ProposalSimulationScenarioRegionWrapper {
         this.region = region;
     }
 
-    public void setRegion(Contest contest) throws SystemException, PortalException{
+    public void setRegion(Contest contest) throws SystemException, PortalException {
 
         try {
             org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
             ContestWrapper contestWrapper = new ContestWrapper(contestMicro);//contest
             this.region = contestWrapper.getWhereName();
-        }catch (ContestNotFoundException ignored){
+        } catch (ContestNotFoundException ignored) {
 
         }
     }
@@ -81,7 +79,7 @@ public class ProposalSimulationScenarioRegionWrapper {
     }
 
     public String getProposalUrl() {
-        if(proposalWrapper != null) {
+        if (proposalWrapper != null) {
             return proposalWrapper.getProposalUrl();
         } else {
             return "";

@@ -665,6 +665,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             	continue;
             }
 
+            /*
             // Directly transfer the support to a vote
             try {
                 Member member = MembersClient.getMember(user.getUserId());
@@ -690,6 +691,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
             } catch (MemberNotFoundException e) {
                 //ignore, we know it exists
             }
+            */
 
         }
     }
@@ -708,6 +710,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
      */
     @Override
     public String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase, ServiceContext serviceContext) throws SystemException, PortalException {
+    /*
         Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
         List<Proposal> stillActiveProposals = proposalLocalService.getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
@@ -781,7 +784,8 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
 
         ProposalReviewCsvExporter csvExporter = new ProposalReviewCsvExporter(proposalToProposalReviewsMap, new ArrayList<>(occurringRatingTypes));
 
-        return csvExporter.getCsvString();
+        return csvExporter.getCsvString();*/
+                return "";
     }
 
     /**

@@ -16,6 +16,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class Member implements Serializable {
+
+    @JsonIgnore
+    public static final String USER_PROFILE_PATH = "/web/guest/member/-/member/userId/";
+
     public static final TypeProvider<Member> TYPES =
             new TypeProvider<>(Member.class,
                     new ParameterizedTypeReference<List<Member>>() {
@@ -278,5 +282,22 @@ public class Member implements Serializable {
     @Override
     public int hashCode() {
         return (int) (this.getId_() ^ this.getId_() >>> 32);
+    }
+
+
+
+    @JsonIgnore
+    public  String generateUserURL() {
+        if (this.getId_() <= 0) {
+            return "";
+        }
+        return "<a href='" + generateUserHref(this.getId_())+ "'>" + this.getScreenName()+ "</a>";
+    }
+    @JsonIgnore
+    private  String generateUserHref(long userId)  {
+        if (userId <= 0) {
+            return "";
+        }
+        return USER_PROFILE_PATH + userId;
     }
 }

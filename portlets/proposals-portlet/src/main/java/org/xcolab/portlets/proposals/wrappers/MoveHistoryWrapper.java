@@ -1,14 +1,16 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import org.joda.time.DateTime;
 
-import com.ext.portlet.model.ProposalMoveHistory;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import org.joda.time.DateTime;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.ProposalMoveHistory;
 import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
@@ -26,7 +28,11 @@ public class MoveHistoryWrapper {
     }
 
     public ProposalWrapper getSourceProposal() throws PortalException, SystemException {
-        return new ProposalWrapper(wrapped.getSourceProposalId());
+        try {
+            return new ProposalWrapper(wrapped.getSourceProposalId());
+        }catch (ProposalNotFoundException ignored){
+            return null;
+        }
     }
 
     public ContestWrapper getSourceContest() {
@@ -46,7 +52,11 @@ public class MoveHistoryWrapper {
     }
 
     public ProposalWrapper getTargetProposal() throws PortalException, SystemException {
-        return new ProposalWrapper(wrapped.getTargetProposalId());
+        try {
+            return new ProposalWrapper(wrapped.getTargetProposalId());
+        }catch (ProposalNotFoundException ignored){
+            return null;
+        }
     }
 
     public ContestWrapper getTargetContest() {

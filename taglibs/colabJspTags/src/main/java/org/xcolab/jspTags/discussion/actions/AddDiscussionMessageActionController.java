@@ -15,9 +15,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.activityEntry.discussion.DiscussionAddCommentActivityEntry;
-import org.xcolab.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
@@ -84,7 +83,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     if (proposalIdForThread != null && proposalIdForThread != 0L) {
                         ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(),
                                 comment.getCommentId() + "",
-                                new DiscussionAddProposalCommentActivityEntry());
+                                ActivityProvidersType.DiscussionAddProposalCommentActivityEntry.getType());
                         Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposalIdForThread);
                         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(),userId);
                     }
@@ -92,7 +91,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     ActivityEntryHelper.createActivityEntry(userId,
                             commentThread.getCategory().getCategoryId(),
                             comment.getCommentId() + "",
-                            new DiscussionAddCommentActivityEntry());
+                            ActivityProvidersType.DiscussionAddCommentActivityEntry.getType());
                 }
             }
             if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {

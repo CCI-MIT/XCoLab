@@ -2,8 +2,9 @@ package org.xcolab.portlets.randomproposals;
 
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Proposal;
 
+
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
 public class ProposalWrapper extends BaseProposalWrapper {

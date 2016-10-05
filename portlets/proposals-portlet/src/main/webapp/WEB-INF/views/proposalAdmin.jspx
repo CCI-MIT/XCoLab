@@ -65,11 +65,11 @@
             				<option value="-1">no ribbon</option>
             				<c:forEach var="ribbon" items="${availableRibbons }">
             					<c:choose>
-            						<c:when test="${proposal.ribbonWrapper.ribbonId == ribbon.id }">
-            							<option value="${ribbon.id }" selected="selected">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
+            						<c:when test="${proposal.ribbonWrapper.ribbonId == ribbon.id_ }">
+            							<option value="${ribbon.id_ }" selected="selected">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
             						</c:when>
             						<c:otherwise>
-            							<option value="${ribbon.id }">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
+            							<option value="${ribbon.id_ }">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
             						</c:otherwise>
             					</c:choose>	
             				</c:forEach>
@@ -184,7 +184,7 @@
                         <form action="${replyToMembershipRequest }" method="post" style="padding: 10px 0; ${count lt fn:length(proposal.membershipRequests) ? 'border-bottom: 1px solid gray;' :''}">
                             <proposalsPortlet:userLinkSimple userId="${request.requestUser.userId}" text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})" />
                             <div>${request.membershipRequest.comments }</div>
-                            <input type="hidden" name="requestId" value="${request.membershipRequest.primaryKey}" />
+                            <input type="hidden" name="requestId" value="${request.membershipRequest.membershipRequestId}" />
                             <div style="margin-top: 10px;">
                                 <textarea name="comment" class="membership-request-comment-admin" onfocus="clearContents(this);">Optional response</textarea>
                                 <div class="allow-deny-membership-box">

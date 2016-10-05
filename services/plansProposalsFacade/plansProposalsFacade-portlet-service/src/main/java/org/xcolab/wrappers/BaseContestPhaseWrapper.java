@@ -10,9 +10,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.StringUtils;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -27,7 +28,7 @@ public class BaseContestPhaseWrapper {
         this(ContestClient.getContestPhase(contestPhaseId));
     }
 
-    public BaseContestPhaseWrapper(org.xcolab.client.contest.pojo.ContestPhase contestPhase) {
+    public BaseContestPhaseWrapper(ContestPhase contestPhase) {
         if (contestPhase == null) {
             throw new IllegalArgumentException("Contest phase must not be null.");
         }
@@ -50,7 +51,7 @@ public class BaseContestPhaseWrapper {
         contestPhase.setContestPK(ContestPK);
     }
 
-    public org.xcolab.client.contest.pojo.ContestPhaseType getContestPhaseTypeObject() throws SystemException {
+    public ContestPhaseType getContestPhaseTypeObject() throws SystemException {
         return ContestClient.getContestPhaseType(this.getContestPhaseType());
     }
 

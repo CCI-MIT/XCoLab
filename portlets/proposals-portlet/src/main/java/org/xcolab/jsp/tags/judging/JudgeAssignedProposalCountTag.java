@@ -1,12 +1,14 @@
 package org.xcolab.jsp.tags.judging;
 
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
+
+
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 
@@ -39,21 +41,15 @@ public class JudgeAssignedProposalCountTag extends BodyTagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        try {
-            User judge = UserLocalServiceUtil.getUser(userId);
-            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-            int judgeAssignedProposalCount = ContestPhaseLocalServiceUtil.getNumberOfProposalsForJudge(judge, contestPhase);
+
+            int judgeAssignedProposalCount = ProposalsClient.getNumberOfProposalsForJudge(userId, contestPhaseId);
 
             PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
             if (portletRequest == null) {
                 throw new JspException("Can't find portlet request");
             }
             pageContext.setAttribute("proposalCount", judgeAssignedProposalCount);
-        } catch (PortalException e) {
-            throw new InternalException(e);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
         return EVAL_BODY_INCLUDE; 
     }
 }

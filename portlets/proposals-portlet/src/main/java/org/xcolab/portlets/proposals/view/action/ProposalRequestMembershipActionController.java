@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -18,12 +16,13 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.MembershipRequest;
+
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,10 +33,15 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.MembershipRequestClient;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.pojo.MembershipRequest;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -73,11 +77,11 @@ public class ProposalRequestMembershipActionController {
 
     @RequestMapping(params = {"action=requestMembership"})
     public void show(ActionRequest request, Model model,
-            ActionResponse response, @Valid RequestMembershipBean requestMembershipBean, BindingResult result, @RequestParam("requestComment") String comment)
+                     ActionResponse response, @Valid RequestMembershipBean requestMembershipBean, BindingResult result, @RequestParam("requestComment") String comment)
             throws PortalException, SystemException, IOException {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-    	if (result.hasErrors()) {
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("action", "requestMembership");
             return;
@@ -86,93 +90,84 @@ public class ProposalRequestMembershipActionController {
         final User liferaySender = proposalsContext.getUser(request);
         final Member sender = proposalsContext.getMember(request);
         if (liferaySender.getDefaultUser()) {
-    		return;
-    	}
+            return;
+        }
 
         final Proposal proposal = proposalsContext.getProposal(request);
         final long proposalId = proposal.getProposalId();
         final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorId());
         final Contest contest = proposalsContext.getContest(request);
 
-        ProposalLocalServiceUtil.addRequestedMembershipRequest(proposalId, liferaySender.getUserId(), comment);
+        MembershipRequestClient.addRequestedMembershipRequest(proposalId, liferaySender.getUserId(), comment);
 
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
 
-            try {
-                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
-                new ProposalUserActionNotification(proposal, contestMicro, sender, proposalAuthor, MEMBERSHIP_REQUEST_TEMPLATE,
-                        serviceContext).sendMessage();
-            }catch (ContestNotFoundException ignored){
+        new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor, MEMBERSHIP_REQUEST_TEMPLATE,
+                serviceContext).sendMessage();
 
-            }
 
         SessionMessages.add(request, "membershipRequestSent");
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal) + "/tab/TEAM");
+        response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/TEAM");
     }
 
     @RequestMapping(params = {"action=inviteMember"})
     public void invite(ActionRequest request, Model model,
-                     ActionResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
+                       ActionResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws PortalException, SystemException, IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
                 WebKeys.THEME_DISPLAY);
 
         String input = requestMembershipInviteBean.getInviteRecipient();
         if (input == null || input.equals("")) {
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getProposal(request).getProposalId()) + "/tab/TEAM");
+            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
             return;
         }
 
         String[] inputParts = input.split(" ");
 
-		try {
-			if (inputParts.length > 0) {
-				String screenName = inputParts[0];
-                try {
-                    Member recipient = MembersClient.findMemberByScreenName(screenName);
+        if (inputParts.length > 0) {
+            String screenName = inputParts[0];
+            try {
+                Member recipient = MembersClient.findMemberByScreenName(screenName);
 
-                    if (recipient != null) {
-                        final Proposal proposal = proposalsContext.getProposal(request);
-                        final long proposalId = proposal.getProposalId();
-                        final Contest contest = proposalsContext.getContest(request);
+                if (recipient != null) {
+                    final Proposal proposal = proposalsContext.getProposal(request);
+                    final long proposalId = proposal.getProposalId();
+                    final Contest contest = proposalsContext.getContest(request);
 
-                        String comment = HtmlUtil
-                                .cleanAll(requestMembershipInviteBean.getInviteComment());
+                    String comment = HtmlUtil
+                            .cleanAll(requestMembershipInviteBean.getInviteComment());
 
-                        if (Validator.isNull(comment)) {
-                            comment = "No message specified";
-                        }
-                        MembershipRequest memberRequest = ProposalLocalServiceUtil
-                                .addInvitedMembershipRequest(proposalId, recipient.getUserId(),
-                                        comment);
-
-                        ServiceContext serviceContext = new ServiceContext();
-                        serviceContext.setPortalURL(themeDisplay.getPortalURL());
-                        final Member sender = proposalsContext.getMember(request);
-                        try {
-                                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
-                            new ProposalMembershipInviteNotification(proposal, contestMicro, sender,
-                                    recipient,
-                                    memberRequest, comment, serviceContext).sendMessage();
-                        }catch (ContestNotFoundException ignored){
-
-                        }
-
-                        SessionMessages.add(request, "memberInviteSent");
+                    if (Validator.isNull(comment)) {
+                        comment = "No message specified";
                     }
-                } catch (MemberNotFoundException e) {
-                    throw new IllegalArgumentException("Member with screen name not found: " + screenName);
-                }
-            } else {
-				SessionErrors.add(request, "memberInviteRecipientError");
-			}
+                    MembershipRequest memberRequest = MembershipRequestClient
+                            .addInvitedMembershipRequest(proposalId, recipient.getUserId(),
+                                    comment);
 
-		} catch (NoSuchUserException e) {
-			SessionErrors.add(request, "memberInviteRecipientError");
-		}
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalsContext.getProposal(request).getProposalId()) + "/tab/TEAM");
+                    ServiceContext serviceContext = new ServiceContext();
+                    serviceContext.setPortalURL(themeDisplay.getPortalURL());
+                    final Member sender = proposalsContext.getMember(request);
+
+
+                    new ProposalMembershipInviteNotification(proposal, contest, sender,
+                            recipient,
+                            memberRequest, comment, serviceContext).sendMessage();
+
+
+                    SessionMessages.add(request, "memberInviteSent");
+                }
+            } catch (MemberNotFoundException e) {
+                throw new IllegalArgumentException("Member with screen name not found: " + screenName);
+            }
+        } else {
+            SessionErrors.add(request, "memberInviteRecipientError");
+        }
+
+
+        response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
     }
 
     @ResourceMapping("inviteMembers-validateRecipient")
@@ -206,8 +201,8 @@ public class ProposalRequestMembershipActionController {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
 
         MembershipRequest membershipRequest = null;
-        for (MembershipRequest mr : ProposalLocalServiceUtil.getMembershipRequests(proposalId)){
-            if (mr.getPrimaryKey() == requestId) {
+        for (MembershipRequest mr : MembershipRequestClient.getMembershipRequests(proposalId)) {
+            if (mr.getMembershipRequestId() == requestId) {
                 membershipRequest = mr;
             }
         }
@@ -219,14 +214,14 @@ public class ProposalRequestMembershipActionController {
         if (comment == null || comment.equalsIgnoreCase("Optional response")) {
             comment = "no comments";
         }
-        if (approve.equalsIgnoreCase("APPROVE")){
-            ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
-            sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_RESPONSE_SUBJECT,MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
-        } else if (approve.equalsIgnoreCase("DENY")){
-            ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
-            sendMessage(proposalsContext.getUser(request).getUserId(),membershipRequest.getUserId(),MSG_MEMBERSHIP_RESPONSE_SUBJECT,MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
+        if (approve.equalsIgnoreCase("APPROVE")) {
+            MembershipRequestClient.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
+            sendMessage(proposalsContext.getUser(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
+        } else if (approve.equalsIgnoreCase("DENY")) {
+            MembershipRequestClient.denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
+            sendMessage(proposalsContext.getUser(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
         }
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId) + "/tab/ADMIN");
+        response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/ADMIN");
     }
 
     private void sendMessage(long sender, long recipient, String subject, String content) {
@@ -242,12 +237,12 @@ public class ProposalRequestMembershipActionController {
             return new ArrayList<>();
         }
 
-		List<Long> contributorIds = new ArrayList<>();
-		for (User contributor : ProposalLocalServiceUtil.getMembers(proposalId)) {
-			contributorIds.add(contributor.getUserId());
-		}
+        List<Long> contributorIds = new ArrayList<>();
+        for (Member contributor : ProposalsClient.getProposalMembers(proposalId)) {
+            contributorIds.add(contributor.getUserId());
+        }
 
-		List<User> recipients = new ArrayList<>();
+        List<User> recipients = new ArrayList<>();
 
         Criterion criterion = RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", contributorIds));
         // For the sake of performance we only search the first word for either screenname, firstname or last name match
@@ -258,15 +253,15 @@ public class ProposalRequestMembershipActionController {
         query.setLimit(0, 5);
         List<User> result = UserLocalServiceUtil.dynamicQuery(query);
 
-		if (!result.isEmpty()) {
-			recipients.addAll(result);
-		}
+        if (!result.isEmpty()) {
+            recipients.addAll(result);
+        }
 
         // Search by last name
         DynamicQuery lnQuery = DynamicQueryFactoryUtil.forClass(User.class);
-		lnQuery.add(RestrictionsFactoryUtil.ilike("lastName", String.format("%s%%", inputParts[0])));
-		lnQuery.add(criterion);
-		lnQuery.setLimit(0, 5);
+        lnQuery.add(RestrictionsFactoryUtil.ilike("lastName", String.format("%s%%", inputParts[0])));
+        lnQuery.add(criterion);
+        lnQuery.setLimit(0, 5);
         List<User> lnRecipients = UserLocalServiceUtil.dynamicQuery(lnQuery);
 
         for (User user : lnRecipients) {

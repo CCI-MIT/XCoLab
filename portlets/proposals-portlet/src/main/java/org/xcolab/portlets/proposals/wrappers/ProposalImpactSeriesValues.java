@@ -1,12 +1,14 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.ImpactIteration;
+
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+
+import org.xcolab.client.contest.pojo.ImpactIteration;
 
 import java.util.HashMap;
 import java.util.HashSet;

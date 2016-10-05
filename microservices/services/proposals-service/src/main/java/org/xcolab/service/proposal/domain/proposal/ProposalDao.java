@@ -17,4 +17,7 @@ public interface ProposalDao {
 
     boolean update(Proposal proposal);
 
+    Integer getProposalMaterializedPoints(Long proposalId);
+
+    Proposal getByGroupId(Long groupId) throws NotFoundException;
 }

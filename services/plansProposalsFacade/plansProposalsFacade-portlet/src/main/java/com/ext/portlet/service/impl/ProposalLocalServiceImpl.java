@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.GroupConstants;
 import com.liferay.portal.model.MembershipRequest;
@@ -63,20 +62,11 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.mail.MailEngineException;
 
-import org.xcolab.activityEntry.proposal.ProposalMemberAddedActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalSupporterRemovedActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalVoteActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalVoteRetractActivityEntry;
-import org.xcolab.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.members.MessagingClient;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.proposals.events.ProposalAssociatedWithContestPhaseEvent;
@@ -91,7 +81,6 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.TemplateReplacementUtil;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -576,8 +565,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         if (publishActivity) {
             eventBus.post(new ProposalSupporterAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
 
-            ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
-                    new ProposalSupporterAddedActivityEntry());
+           /* ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                    new ProposalSupporterAddedActivityEntry());*/
         }
     }
 
@@ -598,8 +587,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
         proposalSupporterLocalService.deleteProposalSupporter(supporter);
         eventBus.post(new ProposalSupporterRemovedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
 
-        ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
-                new ProposalSupporterRemovedActivityEntry());
+        /*ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+                 new ProposalSupporterRemovedActivityEntry());*/
     }
 
     /**
@@ -684,11 +673,11 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             eventBus.post(new ProposalVotedOnEvent(getProposal(proposalId), userLocalService.getUser(userId), voted));
 
             if(!voted) {
-                ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
-                        new ProposalVoteActivityEntry());
+                /*ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+                         ActivityProvidersType.ProposalVoteActivityEntry);*/
             }else{
-                ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
-                        new ProposalVoteSwitchActivityEntry());
+                /*ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+                        ActivityProvidersType.ProposalVoteSwitchActivityEntry);*/
             }
         }
     }
@@ -709,8 +698,8 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
             proposalVoteLocalService.deleteProposalVote(proposalVote);
             eventBus.post(new ProposalRemovedVoteEvent(getProposal(proposalVote.getProposalId()), userLocalService.getUser(userId)));
 
-            ActivityEntryHelper.createActivityEntry(userId,proposalVote.getProposalId(),null,
-                    new ProposalVoteRetractActivityEntry());
+            /*ActivityEntryHelper.createActivityEntry(userId,proposalVote.getProposalId(),null,
+                    new ProposalVoteRetractActivityEntry());*/
 
         } catch (NoSuchProposalVoteException ignored) { }
     }
@@ -903,8 +892,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         eventBus.post(new ProposalMemberRemovedEvent(proposal, userLocalService.getUser(userId)));
 
+        /*
         ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
-                new ProposalMemberRemovedActivityEntry());
+                new ProposalMemberRemovedActivityEntry());*/
     }
 
     /**
@@ -933,6 +923,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      * @throws SystemException in case of LR error
      */
     @Override
+
     public void approveMembershipRequest(long proposalId, Long userId, MembershipRequest request, String reply, Long updateAuthorId)
             throws PortalException, SystemException {
 
@@ -941,8 +932,9 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
                     MembershipRequestConstants.STATUS_APPROVED, true, null);
             eventBus.post(new ProposalMemberAddedEvent(getProposal(proposalId), userLocalService.getUser(userId)));
 
-            ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
+            /*ActivityEntryHelper.createActivityEntry(userId,proposalId,null,
                     new ProposalMemberAddedActivityEntry());
+                    */
 
             if (!isSubscribed(proposalId, userId)) {
                 subscribe(proposalId, userId);
@@ -1107,12 +1099,12 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
 
         String subject = "Judging Results on your Proposal " + proposalAttributeLocalService.getAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0).getStringValue();
 
-        ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
+        /*ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);
         if (Validator.isNotNull(messageBody)) {
             MessagingClient
                     .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
-        }
+        }*/
     }
 
     private List<Long> getMemberUserIds(Proposal proposal) throws PortalException, SystemException {

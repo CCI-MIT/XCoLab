@@ -16,4 +16,6 @@ public interface ProposalRatingDao {
     ProposalRating create(ProposalRating proposalRating);
 
     boolean update(ProposalRating proposalRating);
+
+    List<ProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(Long proposalId, Integer judgeType, Long contestPhaseId, Long userId);
 }

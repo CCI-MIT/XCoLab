@@ -35,8 +35,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
-
-import org.xcolab.activityEntry.member.MemberJoinedActivityEntry;
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
@@ -351,7 +350,7 @@ public class MainViewController {
                     .addActivity(user.getId_(), themeDisplay.getScopeGroupId(), User.class.getName(),
                             user.getId_(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
 
-            ActivityEntryHelper.createActivityEntry(user.getUserId(), user.getUserId(),null, new MemberJoinedActivityEntry());
+            ActivityEntryHelper.createActivityEntry(user.getUserId(), user.getUserId(),null, ActivityProvidersType.MemberJoinedActivityEntry.getType());
 
 
             request.getPortletSession().setAttribute("collab_user_has_registered", true);

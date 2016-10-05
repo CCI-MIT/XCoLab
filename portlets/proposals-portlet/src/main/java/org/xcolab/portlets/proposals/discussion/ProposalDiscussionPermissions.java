@@ -1,10 +1,7 @@
 package org.xcolab.portlets.proposals.discussion;
 
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
@@ -12,7 +9,12 @@ import com.liferay.portal.model.User;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -70,9 +72,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 phaseId = Long.parseLong(contestPhaseIdParameter);
             } else if (proposalId != null && proposalId > 0) {
-                phaseId = Proposal2PhaseLocalServiceUtil.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
+                phaseId = ProposalsClient.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
             }
-        } catch (NumberFormatException | SystemException | PortalException ignored) {
+        } catch (NumberFormatException  ignored) {
         }
         return phaseId;
     }
@@ -99,11 +101,11 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     public boolean getCanAdminMessage(Comment comment) {
         if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
             try {
-                Proposal proposal = ProposalLocalServiceUtil.fetchProposal(proposalId);
+                Proposal proposal = ProposalsClient.getProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
                 return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
-            } catch (SystemException ignored) {
+            } catch (ProposalNotFoundException ignored) {
             }
         }
         return comment.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
@@ -114,11 +116,11 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
         boolean isUserAllowed = false;
         try {
-            Proposal proposal = ProposalLocalServiceUtil.getProposal(proposalId);
+            Proposal proposal = ProposalsClient.getProposal(proposalId);
             isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId)
                     || isUserProposalAuthorOrTeamMember(user, proposal)
                     || getCanAdminAll();
-        } catch (SystemException | PortalException ignored) {
+        } catch (ProposalNotFoundException ignored) {
         }
         return isUserAllowed;
     }
@@ -126,11 +128,11 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal, Long contestPhaseId) {
 
         try {
-            ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
+            ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
 
-            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(proposalWrapper.getContest().getContestPK());
-            ContestWrapper contestWrapper = new ContestWrapper(contestMicro);
+
+            ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
 
             boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
                     MembersClient.getMemberUnchecked(user.getUserId()));
@@ -138,8 +140,6 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             boolean isAdvisor = contestWrapper.isUserAmongAdvisors(user);
 
             return isFellow || isJudge || isAdvisor;
-        } catch (ContestNotFoundException ignored) {
-            throw new DatabaseAccessException(ignored);
         } catch (SystemException e) {
             throw new DatabaseAccessException(e);
         } catch (PortalException e) {
@@ -152,11 +152,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         boolean isAuthor = false;
         boolean isMember = false;
 
-        try {
             isAuthor = proposal.getAuthorId() == user.getUserId();
-            isMember = ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId());
-        } catch (PortalException | SystemException ignored) {
-        }
+            isMember = MembersClient.isUserInGroup(user.getUserId(), proposal.getProposalId());
+
 
         return isAuthor || isMember;
     }
