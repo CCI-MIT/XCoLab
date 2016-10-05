@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestCollectionCard;
+import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
 import org.xcolab.model.tables.pojos.ContestPhaseType;
@@ -23,6 +23,7 @@ import org.xcolab.model.tables.pojos.ContestTeamMember;
 import org.xcolab.model.tables.pojos.ContestTeamMemberRole;
 import org.xcolab.model.tables.pojos.ContestType;
 import org.xcolab.service.contest.domain.contest.ContestDao;
+import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -67,8 +68,17 @@ public class ContestController {
     private ContestPhaseTypeDao contestPhaseTypeDao;
 
     @Autowired
-    private ContestCollectionCard contestCollectionCard;
+    private ContestCollectionCardDao contestCollectionCardDao;
 
+    @GetMapping(value = "/contestCollectionCard/{contestCollectionCardId}")
+    public ContestCollectionCard getContestCollectionCard( @PathVariable long contestCollectionCardId) throws NotFoundException {
+        return contestCollectionCardDao.get(contestCollectionCardId);
+    }
+
+    @GetMapping(value = "/contestCollectionCards")
+    public List<ContestCollectionCard> getContestCollectionCards(@RequestParam(required=false) Long parentCollectionCardId) throws NotFoundException{
+        return contestCollectionCardDao.findByGiven(parentCollectionCardId);
+    }
 
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContests(

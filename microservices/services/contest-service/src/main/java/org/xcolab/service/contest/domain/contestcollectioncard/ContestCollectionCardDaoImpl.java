@@ -2,12 +2,15 @@ package org.xcolab.service.contest.domain.contestcollectioncard;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.ContestCollectionCard;
 import org.xcolab.model.tables.records.ContestCollectionCardRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+
+import java.util.List;
 
 import static org.xcolab.model.Tables.CONTEST_COLLECTION_CARD;
 
@@ -69,5 +72,18 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
         }
         return record.into(ContestCollectionCard.class);
 
+    }
+
+    @Override
+    public List<ContestCollectionCard> findByGiven(Long parentCollectionCardId) throws NotFoundException {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(CONTEST_COLLECTION_CARD).getQuery();
+
+        if (parentCollectionCardId != null) {
+            query.addConditions(CONTEST_COLLECTION_CARD.PARENT.eq(parentCollectionCardId));
+        }
+
+        query.addOrderBy(CONTEST_COLLECTION_CARD.ORDER.asc());
+        return query.fetchInto(ContestCollectionCard.class);
     }
 }
