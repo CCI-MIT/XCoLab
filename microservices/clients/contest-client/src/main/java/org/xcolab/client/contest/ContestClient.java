@@ -2,6 +2,7 @@ package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.client.contest.pojo.ContestSchedule;
@@ -27,29 +28,32 @@ public class ContestClient {
 
     private static final RestService contestService = new RestService("contest-service");
 
-    private static final RestResource1<Contest, Long> contestResource = new RestResource1<>(contestService,
-            "contests", Contest.TYPES);
+    private static final RestResource1<Contest, Long> contestResource =
+            new RestResource1<>(contestService, "contests", Contest.TYPES);
 
     private static final RestResource2L<Contest, ContestPhase> visiblePhasesResource =
             new RestResource2L<>(contestResource, "visiblePhases", ContestPhase.TYPES);
 
-    private static final RestResource<ContestPhase, Long> contestPhasesResource = new RestResource1<>(contestService,
-            "contestPhases", ContestPhase.TYPES);
+    private static final RestResource<ContestPhase, Long> contestPhasesResource =
+            new RestResource1<>(contestService, "contestPhases", ContestPhase.TYPES);
 
-    private static final RestResource<ContestPhaseType, Long> contestPhaseTypesResource = new RestResource1<>(contestService,
-            "contestPhaseTypes", ContestPhaseType.TYPES);
+    private static final RestResource<ContestPhaseType, Long> contestPhaseTypesResource =
+            new RestResource1<>(contestService, "contestPhaseTypes", ContestPhaseType.TYPES);
 
-    private static final RestResource<ContestType, Long> contestTypeResource = new RestResource1<>(contestService,
-            "contestTypes", ContestType.TYPES);
+    private static final RestResource<ContestType, Long> contestTypeResource =
+            new RestResource1<>(contestService, "contestTypes", ContestType.TYPES);
 
-    private static final RestResource<ContestTeamMember, Long> contestTeamMemberResource = new RestResource1<>(contestService,
-            "contestTeamMembers", ContestTeamMember.TYPES);
+    private static final RestResource<ContestTeamMember, Long> contestTeamMemberResource =
+            new RestResource1<>(contestService, "contestTeamMembers", ContestTeamMember.TYPES);
 
-    private static final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource = new RestResource1<>(contestService,
-            "contestTeamMemberRoles", ContestTeamMemberRole.TYPES);
+    private static final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource =
+            new RestResource1<>(contestService, "contestTeamMemberRoles", ContestTeamMemberRole.TYPES);
 
-    private static final RestResource1<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
-            "contestSchedules", ContestSchedule.TYPES);
+    private static final RestResource<ContestCollectionCard, Long> contestCollectionCardRestResource =
+            new RestResource1<>(contestService, "contestCollectionCards", ContestCollectionCard.TYPES);
+
+    private static final RestResource1<ContestSchedule, Long> contestScheduleResource =
+            new RestResource1<>(contestService, "contestSchedules", ContestSchedule.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
@@ -366,6 +370,17 @@ public class ContestClient {
     public static ContestTeamMemberRole getContestTeamMemberRole(long id) {
         return contestTeamMemberRoleResource.get(id)
                 .withCache(CacheKeys.of(ContestTeamMemberRole.class, id), CacheRetention.LONG)
+                .execute();
+    }
+
+    public static List<ContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {
+        return contestCollectionCardRestResource.list()
+                .queryParam("parentCollectionCardId", parentCollectionCardId)
+                .execute();
+    }
+
+    public static ContestCollectionCard getContestCollectionCard(long id) {
+        return contestCollectionCardRestResource.get(id)
                 .execute();
     }
 
