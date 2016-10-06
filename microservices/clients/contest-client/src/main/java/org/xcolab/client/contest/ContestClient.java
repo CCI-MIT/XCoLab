@@ -177,6 +177,8 @@ public class ContestClient {
         }
     }
 
+    public static
+
     public static List<Contest> getAllContests() {
         return contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
@@ -379,9 +381,13 @@ public class ContestClient {
                 .execute();
     }
 
+    public static List<ContestCollectionCard> getSubContestCollectionCards() {
+        return contestCollectionCardRestResource.list()
+                .execute();
+    }
+
     public static ContestCollectionCard getContestCollectionCard(long id) {
         return contestCollectionCardRestResource.get(id)
                 .execute();
     }
-
 }

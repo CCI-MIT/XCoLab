@@ -70,7 +70,7 @@ public class ContestController {
     @Autowired
     private ContestCollectionCardDao contestCollectionCardDao;
 
-    @GetMapping(value = "/contestCollectionCard/{contestCollectionCardId}")
+    @GetMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
     public ContestCollectionCard getContestCollectionCard( @PathVariable long contestCollectionCardId) throws NotFoundException {
         return contestCollectionCardDao.get(contestCollectionCardId);
     }
