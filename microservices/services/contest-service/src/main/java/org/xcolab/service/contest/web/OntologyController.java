@@ -42,5 +42,4 @@ public class OntologyController {
             return focusAreaDao.get(focusAreaId);
         }
     }
-
 }

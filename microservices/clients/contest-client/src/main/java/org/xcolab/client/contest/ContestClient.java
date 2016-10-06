@@ -9,6 +9,7 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestTeamMember;
 import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -54,6 +55,9 @@ public class ContestClient {
 
     private static final RestResource1<ContestSchedule, Long> contestScheduleResource =
             new RestResource1<>(contestService, "contestSchedules", ContestSchedule.TYPES);
+
+    private static final RestResource1<OntologyTerm, Long> ontologyTermResource =
+            new RestResource1<>(contestService, "ontologyTerms", OntologyTerm.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
@@ -177,7 +181,9 @@ public class ContestClient {
         }
     }
 
-    public static
+    public static OntologyTerm get(long id) {
+        return ontologyTermResource.get(id).execute();
+    }
 
     public static List<Contest> getAllContests() {
         return contestResource.list()
