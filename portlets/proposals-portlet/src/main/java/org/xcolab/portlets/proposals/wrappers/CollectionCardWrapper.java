@@ -2,11 +2,15 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
+import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologyTerm;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollectionCardWrapper{
 
-//TODO: BotFoundexception
+//TODO: NotFoundexception
 
     protected final ContestCollectionCard contestCollectionCard;
 
@@ -18,16 +22,35 @@ public class CollectionCardWrapper{
        this.contestCollectionCard = contestCollectionCard;
     }
 
-    public ContestCollectionCard getParent() {
-        return ContestClient.getContestCollectionCard(this.contestCollectionCard.getParent());
+    public CollectionCardWrapper getParent() {
+        if(hasParent()){
+            return new CollectionCardWrapper(ContestClient.getContestCollectionCard(this.contestCollectionCard.getParent()));
+        } else {
+            return null;
+        }
     }
 
     public boolean hasParent() {
-        if(ContestClient.getContestCollectionCard(this.contestCollectionCard.getParent()) != null) {
-            return true;
-        } else {
-            return false;
+        if(this.contestCollectionCard.getParent() != null) {
+            if(ContestClient.getContestCollectionCard(this.contestCollectionCard.getParent()) != null) {
+                return true;
+            }
         }
+        return false;
+    }
+
+    public int getNumberofContests() {
+        int count = 0;
+        List<ContestCollectionCard> childList = new ArrayList<>();
+        childList.add(ContestClient.getContestCollectionCard(this.getId()));
+        while(!childList.isEmpty()) {
+            for (FocusArea area: ContestClient.getFocusAreasByOntologyTermId(childList.get(0).getOntology_term_to_load())) {
+                count += ContestClient.getContestsByFocusAreaId(area.getId_()).size();
+            }
+            childList.addAll(ContestClient.getSubContestCollectionCards(childList.get(0).getId_()));
+            childList.remove(0);
+        }
+        return count;
     }
 
     public long getId() {
@@ -56,6 +79,10 @@ public class CollectionCardWrapper{
 
     public boolean getVisible() {
         return this.contestCollectionCard.getVisible();
+    }
+
+    public String getDescription() {
+        return this.contestCollectionCard.getDescription();
     }
 
 }

@@ -7,7 +7,7 @@ public class CollectionCardFilterBean {
 
     private List<CollectionCardWrapper> collectionCardsFeatured;
 
-    // todo:  SortFilterPage sortFilterPage
+    // todo:  SortFilterPage
 
     public CollectionCardFilterBean(List<CollectionCardWrapper> collectionCards) {
         this.collectionCards = collectionCards;
@@ -58,11 +58,11 @@ public class CollectionCardFilterBean {
         */
     }
 
-    public List<CollectionCardWrapper> getContestsFeatured() {
+    public List<CollectionCardWrapper> getCollectionCardsFeatured() {
         return collectionCardsFeatured;
     }
 
-  public List<CollectionCardWrapper> getContests() {
+  public List<CollectionCardWrapper> getCollectionCards() {
         return collectionCards;
     }
 

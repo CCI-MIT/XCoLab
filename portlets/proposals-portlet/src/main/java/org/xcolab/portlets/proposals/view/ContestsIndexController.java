@@ -7,43 +7,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.FocusAreaOntologyTerm;
-import com.ext.portlet.model.OntologySpace;
-import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.util.PortalUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
+import org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean;
+import org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
-import org.xcolab.portlets.proposals.wrappers.FocusAreaWrapper;
-import org.xcolab.portlets.proposals.wrappers.OntologySpaceWrapper;
-import org.xcolab.portlets.proposals.wrappers.OntologyTermWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -67,6 +50,7 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false) String viewType, 
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
+            @RequestParam(required = false, defaultValue = "1") long contestCard,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
 
@@ -101,6 +85,7 @@ public class ContestsIndexController extends BaseProposalsController {
         if (viewType == null) {
             viewType = VIEW_TYPE_DEFAULT;
         }
+        /*
         List<ContestWrapper> contests = new ArrayList<>();
         List<Contest> contestsToWrap = showAllContests ? ContestLocalServiceUtil.getContestsByContestType(contestType.getId()) :
         	ContestLocalServiceUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId());
@@ -128,23 +113,33 @@ public class ContestsIndexController extends BaseProposalsController {
                 }
             }
         }
+        */
+
+
 
         //Collection cards
 
-        List<ContestCollectionCard> collectionCards = new ArrayList<>();
-        collectionCards.add(ContestClient.getContestCollectionCard(0));
-        collectionCards.add(ContestClient.getContestCollectionCard(1));
-        /*
-        List <Long> termIds = new ArrayList<>();
-        termIds.add((long) 0);
-        List<org.xcolab.client.contest.pojo.FocusArea> focusAreas = ContestClient.getFocusAreasByOntologyTermId((long) 1300359);
-        List<org.xcolab.client.contest.pojo.Contest> testList = ContestClient.getContestsByFocusAreaId(focusAreas.get(0).getId_());
-        */
-        model.addAttribute("collectionCards", collectionCards);
+        List<CollectionCardWrapper> collectionCards = new ArrayList<>();
+        for (ContestCollectionCard card: ContestClient.getSubContestCollectionCards(contestCard)) {
+            collectionCards.add(new CollectionCardWrapper(card));
+        }
+
+        //contests
+
+        List<ContestWrapper> contests = new ArrayList<>();
+        List<org.xcolab.client.contest.pojo.FocusArea> focusAreas = ContestClient.getFocusAreasByOntologyTermId(ContestClient.getContestCollectionCard(contestCard).getOntology_term_to_load());
+        for (org.xcolab.client.contest.pojo.FocusArea area: focusAreas) {
+            for (org.xcolab.client.contest.pojo.Contest contest: ContestClient.getContestsByFocusAreaId(area.getId_())) {
+                contests.add(new ContestWrapper(contest));
+            }
+        }
+
+        model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));
+
 
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
-        model.addAttribute("priorContestsExist", !priorContests.isEmpty());
+        //model.addAttribute("priorContestsExist", !priorContests.isEmpty());
         model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
                 showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
         model.addAttribute("viewType", viewType);
@@ -162,7 +157,8 @@ public class ContestsIndexController extends BaseProposalsController {
                 ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());
 
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
-        
+
+        /*
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
         	List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE);
         	List<OntologyTerm> ontologyTermsRaw = OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE);
@@ -222,6 +218,7 @@ public class ContestsIndexController extends BaseProposalsController {
         	model.addAttribute("otherContests", otherContests);
         	model.addAttribute("contestType", contestType);
         }
+        */
         
         return "contestsIndex";
     }
