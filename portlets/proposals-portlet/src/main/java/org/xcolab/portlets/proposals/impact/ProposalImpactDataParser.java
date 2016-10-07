@@ -1,22 +1,21 @@
-package org.xcolab.portlets.proposals.utils;
+package org.xcolab.portlets.proposals.impact;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.ext.portlet.ProposalImpactAttributeKeys;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
-import org.apache.commons.lang.StringUtils;
+
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
 
 import java.util.ArrayList;
 import java.util.Arrays;

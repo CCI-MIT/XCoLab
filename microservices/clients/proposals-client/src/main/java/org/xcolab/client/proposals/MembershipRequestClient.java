@@ -11,10 +11,8 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
-import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
-
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -149,20 +147,19 @@ public class MembershipRequestClient {
             List<MembershipRequest> olderRequests = getMembershipRequestsByStatus(proposal.getGroupId(),
                     MembershipRequestStatus.STATUS_PENDING);
             List<MembershipRequest> combined = new ArrayList<>();
-            if (invited != null && invited.size() > 0) {
+            if (invited != null && !invited.isEmpty()) {
                 combined.addAll(invited);
             }
-            if (requested != null && requested.size() > 0) {
+            if (requested != null && !requested.isEmpty()) {
                 combined.addAll(requested);
             }
-            if (olderRequests != null && olderRequests.size() > 0) {
+            if (olderRequests != null && !olderRequests.isEmpty()) {
                 combined.addAll(olderRequests);
             }
             return combined;
-        }catch( ProposalNotFoundException ignored){
+        } catch (ProposalNotFoundException ignored) {
             return null;
         }
     }
-
 
 }

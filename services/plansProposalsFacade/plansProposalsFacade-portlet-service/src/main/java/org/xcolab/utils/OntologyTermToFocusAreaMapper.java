@@ -1,19 +1,9 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.NoSuchOntologySpaceException;
-
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologySpace;
 import org.xcolab.client.contest.pojo.OntologyTerm;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.util.List;
 
@@ -33,27 +23,21 @@ public class OntologyTermToFocusAreaMapper {
             return applyFilterToFocusAreasMatchingExactly(
                     OntologyClient.getAllFocusAreas(),
                     true);
-
     }
 
     /**
      * Returns a focus area that exactly matches all OntologyTerms within the passed focusAreas. That is, only returns a focus area that matches only the
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
-     *
-     * @throws SystemException
-     * @throws PortalException
      */
-    public FocusArea getFocusAreaMatchingTermsExactly(List<FocusArea> focusAreasToBeSearched) throws SystemException, PortalException {
+    public FocusArea getFocusAreaMatchingTermsExactly(List<FocusArea> focusAreasToBeSearched) {
         return applyFilterToFocusAreasMatchingExactly(focusAreasToBeSearched, true);
     }
 
     /**
      * Returns a focus area that matches at least all passed OntologyTerms.
      *
-     * @throws SystemException
-     * @throws PortalException
      */
-    public FocusArea getFocusAreaMatchingTermsPartially() throws SystemException, PortalException {
+    public FocusArea getFocusAreaMatchingTermsPartially() {
         return applyFilterToFocusAreasMatchingExactly(OntologyClient.getAllFocusAreas(), false);
     }
 
@@ -61,10 +45,8 @@ public class OntologyTermToFocusAreaMapper {
      * Returns a focus area that partially matches all OntologyTerms within the passed focusAreas. That is, only returns a focus area that matches only the
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
      *
-     * @throws SystemException
-     * @throws PortalException
      */
-    public FocusArea getFocusAreaMatchingTermsPartially(List<FocusArea> focusAreasToBeSearched) throws SystemException, PortalException {
+    public FocusArea getFocusAreaMatchingTermsPartially(List<FocusArea> focusAreasToBeSearched) {
         return applyFilterToFocusAreasMatchingExactly(focusAreasToBeSearched, false);
     }
 
@@ -76,7 +58,7 @@ public class OntologyTermToFocusAreaMapper {
             boolean focusAreaMatchesTerms = true;
             for (OntologyTerm toBeMatchedTerm : toBeMatchedTerms) {
                 OntologyTerm focusAreaOntologyTerm = getTermWithSpaceId(focusArea, toBeMatchedTerm.getOntologySpaceId());
-                if (focusAreaOntologyTerm.getId_() != toBeMatchedTerm.getId_()) {
+                if (focusAreaOntologyTerm.getId_() != toBeMatchedTerm.getId_().longValue()) {
                     focusAreaMatchesTerms = false;
                     break;
                 }

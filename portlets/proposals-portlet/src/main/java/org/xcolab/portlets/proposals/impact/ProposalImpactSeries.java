@@ -1,12 +1,9 @@
-package org.xcolab.portlets.proposals.wrappers;
+package org.xcolab.portlets.proposals.impact;
 
 import com.ext.portlet.NoSuchImpactDefaultSeriesDataException;
 import com.ext.portlet.NoSuchImpactDefaultSeriesException;
 import com.ext.portlet.NoSuchProposalVersionException;
 import com.ext.portlet.ProposalImpactAttributeKeys;
-
-
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -31,8 +28,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.enums.MemberRoleChoiceAlgorithm;
-import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
-import org.xcolab.portlets.proposals.utils.ProposalImpactValueFilterAlgorithm;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -68,7 +65,8 @@ public class ProposalImpactSeries {
 
     private ProposalImpactSeriesValues resultValues;
 
-    protected ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea, boolean loadData) throws SystemException, PortalException {
+    private ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea,
+            boolean loadData) throws SystemException, PortalException {
         this.seriesTypeToSeriesMap = new HashMap<>();
         this.seriesTypeToEditableMap = new HashMap<>();
         this.focusArea = focusArea;
@@ -79,8 +77,7 @@ public class ProposalImpactSeries {
         this.impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = OntologyClient.getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
-        Boolean invertSeriesSign = false;
-        addSeriesWithType(bauSeries, false, invertSeriesSign);
+        addSeriesWithType(bauSeries, false, false);
 
 //        ddppSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
 //        addSeriesWithType(ddppSeries, false);
@@ -124,7 +121,8 @@ public class ProposalImpactSeries {
         seriesValues.putSeriesValue(year, value);
     }
 
-    public void addSeriesWithType(String seriesType, List<ImpactDefaultSeriesData> seriesDataList, boolean editable) {
+    private void addSeriesWithType(String seriesType, List<ImpactDefaultSeriesData> seriesDataList,
+            boolean editable) {
         ProposalImpactSeriesValues seriesValues = new ProposalImpactSeriesValues();
         seriesTypeToSeriesMap.put(seriesType, seriesValues);
         seriesTypeToEditableMap.put(seriesType, editable);
@@ -134,8 +132,11 @@ public class ProposalImpactSeries {
         }
     }
 
-    public void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable, boolean invertSeriesSign) throws SystemException {
-        List<ImpactDefaultSeriesData> seriesDataList = OntologyClient.getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
+
+    private void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable,
+            boolean invertSeriesSign) throws SystemException {
+        List<ImpactDefaultSeriesData> seriesDataList = OntologyClient
+                .getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
         if(invertSeriesSign){
             for (ImpactDefaultSeriesData seriesData : seriesDataList) {
                 if(Validator.isNotNull(seriesData.getValue())) {
@@ -263,7 +264,8 @@ public class ProposalImpactSeries {
                 // TODO write a separate finder for the proposal attribute that is being searched
                 boolean foundEnteredData = false;
                 for (ProposalAttribute attribute : impactProposalAttributes) {
-                    if (attribute.getName().equals(defaultSeries.getName()) && attribute.getAdditionalId() == focusArea.getId_()) {
+                    if (attribute.getName().equals(defaultSeries.getName()) && Objects
+                            .equals(attribute.getAdditionalId(), focusArea.getId_())) {
                         foundEnteredData = true;
                         addSeriesValueWithType(attribute.getName(), (int) attribute.getNumericValue().intValue(), attribute.getRealValue());
 
@@ -323,7 +325,7 @@ public class ProposalImpactSeries {
         return focusArea;
     }
 
-    public User getSeriesAuthor() {
+    private User getSeriesAuthor() {
         try {
             if (lastModifiedVersion != null) {
                 return UserLocalServiceUtil.getUser(lastModifiedVersion.getAuthorId());

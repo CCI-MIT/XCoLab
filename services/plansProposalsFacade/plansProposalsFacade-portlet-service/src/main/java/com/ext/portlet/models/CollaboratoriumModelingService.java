@@ -6,13 +6,12 @@
 
 package com.ext.portlet.models;
 
-import com.liferay.portal.kernel.exception.SystemException;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.comm.ClientRepository;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
-
-import edu.mit.cci.roma.client.Simulation;
-import edu.mit.cci.roma.client.comm.ClientRepository;
 
 public class CollaboratoriumModelingService {
 
@@ -22,7 +21,7 @@ public class CollaboratoriumModelingService {
 	private static final Log _log = LogFactoryUtil
 			.getLog(CollaboratoriumModelingService.class);
 
-	public static ClientRepository repository() throws SystemException {
+	public static ClientRepository repository() {
 		if (instance == null) {
 
 			synchronized (mutex) {

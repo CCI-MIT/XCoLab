@@ -1,9 +1,7 @@
-package org.xcolab.portlets.proposals.utils;
+package org.xcolab.portlets.proposals.impact;
 
 import com.ext.portlet.ProposalImpactAttributeKeys;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -13,11 +11,10 @@ import java.util.Map;
  * This class decides whether impact series values are valid for a given impact series type (i.e. ProposalImpactAttributeKeys.IMPACT_REDUCTION)
  */
 public abstract class ProposalImpactValueFilterAlgorithm {
-    private final static Log _log = LogFactoryUtil.getLog(ProposalImpactValueFilterAlgorithm.class);
 
-    private static String[] impactSeriesTypes = {ProposalImpactAttributeKeys.IMPACT_REDUCTION,
+    private static final String[] impactSeriesTypes = {ProposalImpactAttributeKeys.IMPACT_REDUCTION,
             ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE};
-    private static ProposalImpactValueFilterAlgorithm[] algorithms = {
+    private static final ProposalImpactValueFilterAlgorithm[] algorithms = {
             // ProposalImpactAttributeKeys.IMPACT_REDUCTION
             new ProposalImpactValueFilterAlgorithm() {
 

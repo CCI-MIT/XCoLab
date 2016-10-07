@@ -31,11 +31,11 @@ import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.utils.ProposalImpactDataParser;
-import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
+import org.xcolab.portlets.proposals.impact.ProposalImpactDataParser;
+import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
+import org.xcolab.portlets.proposals.impact.ProposalImpactSeries;
+import org.xcolab.portlets.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.html.HtmlUtil;
 
