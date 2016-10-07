@@ -1,8 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-
-
-
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -51,8 +48,6 @@ public class ContestWrapper extends BaseContestWrapper {
     public ContestWrapper(Contest contest) {
         super(contest);
     }
-
-
 
     public boolean getIsSharedContest(){
         return contest.getIsSharedContest();
@@ -144,13 +139,13 @@ public class ContestWrapper extends BaseContestWrapper {
     	if (contest.getCreated() != null) {
     		return contest.getCreated().getTime();
     	}
-    	else if (contest.getUpdated() != null) {
-    		return contest.getUpdated().getTime();
-    	}
-    	return 0;
+        if (contest.getUpdated() != null) {
+            return contest.getUpdated().getTime();
+        }
+        return 0;
     }
 
-    public long getTotalCommentsCount() throws PortalException, SystemException {
+    public long getTotalCommentsCount() {
         if (getContestType().getHasDiscussion()) {
            return CommentClient.countComments(contest.getDiscussionGroupId());
         }
@@ -166,7 +161,7 @@ public class ContestWrapper extends BaseContestWrapper {
         return ProposalVoteClient.countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 
-    public BaseContestPhaseWrapper getLastPhase() throws PortalException, SystemException {
+    public BaseContestPhaseWrapper getLastPhase() {
         BaseContestPhaseWrapper last = null;
         for (BaseContestPhaseWrapper ph : getPhases()) {
             if (last == null || (ph.getPhaseReferenceDate() != null && ph.getPhaseReferenceDate().compareTo(last.getPhaseReferenceDate()) > 0)) {
@@ -176,23 +171,23 @@ public class ContestWrapper extends BaseContestWrapper {
         return last;
     }
 
-    public String getWhoName() throws PortalException, SystemException {
+    public String getWhoName() {
         return getTermNameFromSpace(WHO);
     }
 
-    public String getWhatName() throws PortalException, SystemException {
+    public String getWhatName() {
         return getTermNameFromSpace(WHAT);
     }
 
-    public String getWhereName() throws PortalException, SystemException {
+    public String getWhereName() {
         return getTermNameFromSpace(WHERE);
     }
 
-    public String getHowName() throws PortalException, SystemException {
+    public String getHowName() {
         return getTermNameFromSpace(HOW);
     }
 
-    public String getTermNameFromSpace(String space) throws PortalException, SystemException {
+    private String getTermNameFromSpace(String space) {
         String ontologyJoinedName = ontologyJoinedNames.get(space);
         if (ontologyJoinedName == null) {
             getTermFromSpace(space);
@@ -233,10 +228,12 @@ public class ContestWrapper extends BaseContestWrapper {
         return new ContestWrapper(contests.get(0));
     }
 
-    public Long getVotingPhasePK() throws PortalException, SystemException {
+    public Long getVotingPhasePK() {
         BaseContestPhaseWrapper lastVotingPhase = null;
         for (BaseContestPhaseWrapper ph : getPhases()) {
-            if (ph.getContestPhaseTypeObject() != null && "VOTING".equals(ph.getContestPhaseTypeObject().getStatus())) {
+            final ContestPhaseType contestPhaseType = ph.getContestPhaseTypeObject();
+            if (contestPhaseType != null && "VOTING".equals(
+                    contestPhaseType.getStatus())) {
                 lastVotingPhase = ph;
             }
         }
@@ -249,7 +246,7 @@ public class ContestWrapper extends BaseContestWrapper {
         try {
             activePhase = ContestClient.getActivePhase(this.contest.getContestPK());
             type = new BaseContestPhaseWrapper(activePhase).getContestPhaseTypeObject();
-        } catch (IllegalArgumentException | NullPointerException | SystemException  e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             return false;
         }
         return !(type == null || activePhase == null
@@ -291,7 +288,11 @@ public class ContestWrapper extends BaseContestWrapper {
             ContestPhase contestPhase = ContestClient.getActivePhase(contest.getContestPK());
             for (Proposal proposal : ProposalsClient.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
                 Proposal2Phase p2p = Proposal2PhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest, contestPhase, p2p)).getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
+
+                final ProposalWrapper proposalWrapper =
+                        new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest,
+                                contestPhase, p2p);
+                if (proposalWrapper.getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
                     return false;
                 }
             }

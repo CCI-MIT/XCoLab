@@ -1,14 +1,11 @@
 package org.xcolab.portlets.proposals.utils;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.ext.portlet.ProposalAttributeKeys;
-
-
-
-
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
@@ -16,9 +13,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.OntologyClient;
@@ -250,33 +244,27 @@ public class ProposalPickerFilter {
             for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
                 ContestWrapper c = i.next().getLeft();
 
-                try{
-                    // CONTEST NAME
-                    if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
-                        continue;
-                    }
-                    if (StringUtils.containsIgnoreCase(c.getContestShortName(), searchCriterion)) {
-                        continue;
-                    }
-                    // focus area
-                    if (StringUtils.containsIgnoreCase(c.getWhatName(), searchCriterion)) {
-                        continue;
-                    }
-                    if (StringUtils.containsIgnoreCase(c.getWhoName(), searchCriterion)) {
-                        continue;
-                    }
-                    if (StringUtils.containsIgnoreCase(c.getWhereName(), searchCriterion)) {
-                        continue;
-                    }
-
-                    // Remove element if it does not match any criterion
-                    removedContests.add(c.getContestPK());
-                    i.remove();
-                } catch (SystemException e) {
-                    throw new DatabaseAccessException(e);
-                } catch (PortalException e) {
-                    throw new InternalException(e);
+                // CONTEST NAME
+                if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
+                    continue;
                 }
+                if (StringUtils.containsIgnoreCase(c.getContestShortName(), searchCriterion)) {
+                    continue;
+                }
+                // focus area
+                if (StringUtils.containsIgnoreCase(c.getWhatName(), searchCriterion)) {
+                    continue;
+                }
+                if (StringUtils.containsIgnoreCase(c.getWhoName(), searchCriterion)) {
+                    continue;
+                }
+                if (StringUtils.containsIgnoreCase(c.getWhereName(), searchCriterion)) {
+                    continue;
+                }
+
+                // Remove element if it does not match any criterion
+                removedContests.add(c.getContestPK());
+                i.remove();
             }
             return removedContests;
         }
@@ -384,7 +372,6 @@ public class ProposalPickerFilter {
     public final static ProposalPickerFilter CONTEST_TYPE_FILTER = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
-            Set<Long> removedProposals = new HashSet<>();
 
             final String allowedContestTypeIdsString = (String) additionalFilterCriterion;
 
@@ -405,6 +392,7 @@ public class ProposalPickerFilter {
                 }
             }
 
+            Set<Long> removedProposals = new HashSet<>();
             return removedProposals;
         }
 

@@ -1,7 +1,4 @@
-package org.xcolab.portlets.proposals.utils;
-
-
-
+package org.xcolab.portlets.proposals.impact;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -15,7 +12,6 @@ import org.xcolab.client.contest.pojo.ImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.OntologySpace;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.enums.OntologySpaceEnum;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
 import org.xcolab.utils.OntologyTermToFocusAreaMapper;
 
 import java.util.ArrayList;
@@ -23,26 +19,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by kmang on 12/03/15.
- */
 public class ProposalImpactUtil {
 
-    private Contest contest;
+    private final Contest contest;
 
     public ProposalImpactUtil(Contest contest) {
         this.contest = contest;
     }
 
     // TODO cache this map somehow
-
     /**
      * Returns a map that maps from a region (WHERE) OntologyTerm to all sector (WHAT) OntologyTerms that are still available
      *
      * @param impactSerieses        A list of impact series objects
      * @return                      A map with region terms as keys and a list of sector terms as values
-     * @throws SystemException
-     * @throws PortalException
      */
     public Map<OntologyTerm, List<OntologyTerm>> calculateAvailableOntologyMap(List<ProposalImpactSeries> impactSerieses) throws SystemException, PortalException {
 
@@ -72,7 +62,7 @@ public class ProposalImpactUtil {
         return ontologyTermMap;
     }
 
-    public FocusArea getFocusAreaAssociatedWithTerms(OntologyTerm whatTerm, OntologyTerm whereTerm) throws SystemException, PortalException {
+    public FocusArea getFocusAreaAssociatedWithTerms(OntologyTerm whatTerm, OntologyTerm whereTerm) {
         List<ImpactTemplateMaxFocusArea> impactFocusAreas = ImpactTemplateClient.getContestImpactFocusAreas(contest);
 
         List<OntologyTerm> matchingOntologyTerms = new ArrayList<>();

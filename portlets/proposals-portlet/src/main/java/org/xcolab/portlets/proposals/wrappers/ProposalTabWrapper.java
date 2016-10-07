@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -14,7 +12,7 @@ public class ProposalTabWrapper {
     private final ProposalsContext context;
     private final ProposalsPermissions permissions;
     
-    public ProposalTabWrapper(ProposalTab tab, PortletRequest request, ProposalsContext context) throws PortalException, SystemException {
+    public ProposalTabWrapper(ProposalTab tab, PortletRequest request, ProposalsContext context) {
         super();
         this.tab = tab;
         this.request = request;

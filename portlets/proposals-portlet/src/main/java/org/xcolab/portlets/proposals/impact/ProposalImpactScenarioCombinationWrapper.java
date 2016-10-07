@@ -1,10 +1,5 @@
-package org.xcolab.portlets.proposals.wrappers;
+package org.xcolab.portlets.proposals.impact;
 
-
-import com.ext.portlet.models.CollaboratoriumModelingService;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Tuple;
@@ -13,7 +8,12 @@ import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.log4j.Logger;
+
+import com.ext.portlet.models.CollaboratoriumModelingService;
+import com.liferay.portal.kernel.util.Validator;
+
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -41,7 +41,9 @@ public class ProposalImpactScenarioCombinationWrapper {
         REGION_AVG_FACTOR = Collections.unmodifiableMap(avgFactor);
     }
 
-    private final static List<String> validationRegions = Arrays.asList("United States", "European Union", "China", "India", "Other developing countries", "Other developed countries");
+    private final static List<String> validationRegions
+            = Arrays.asList("United States", "European Union", "China", "India",
+            "Other developing countries", "Other developed countries");
     private final static Long ENROADS_MODEL_ID = 23L;
     private final static Long ENROADS_REGION_INPUT_ID = 814L;
 
@@ -51,18 +53,17 @@ public class ProposalImpactScenarioCombinationWrapper {
     private final static Long EMF_SCENARIO_INPUT_ID = 366L;
 
 
-    Set<Scenario> scenarios;
-    Map<Long, Scenario> modelIdToScenarioMap;
-    Map<String, ProposalSimulationScenarioRegionWrapper> regionToProposalSimulationScenarioMap;
-    Set<String> presentRegion;
-    List<Variable> combinedInputParameters;
-    Map<Long, Object> combinedInputParametersMap;
-    Scenario combinedScenario;
-    Simulation combinedSimulation;
-    ClientRepository romaClient;
+    private final Set<Scenario> scenarios;
+    private final Map<Long, Scenario> modelIdToScenarioMap;
+    private final Map<String, ProposalSimulationScenarioRegionWrapper> regionToProposalSimulationScenarioMap;
+    private final Set<String> presentRegion;
+    private Map<Long, Object> combinedInputParametersMap;
+    private Scenario combinedScenario;
+    private Simulation combinedSimulation;
+    private ClientRepository romaClient;
 
 
-    public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws SystemException, PortalException, IOException {
+    public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws IOException {
         initRomaClient();
         presentRegion = new HashSet<>();
         scenarios = new HashSet<>();
@@ -105,7 +106,7 @@ public class ProposalImpactScenarioCombinationWrapper {
             } else {
                 combinedSimulation = getRomaClient().getSimulation(EMF_MODEL_ID);
             }
-            combinedInputParameters = scenario.getInputSet();
+            List<Variable> combinedInputParameters = scenario.getInputSet();
         }
     }
 
@@ -152,14 +153,11 @@ public class ProposalImpactScenarioCombinationWrapper {
     }
 
     private void initRomaClient() {
-        try {
-            romaClient = CollaboratoriumModelingService.repository();
-        } catch (SystemException e) {
-            // TODO implement: Wait for roma Client Thread to be stared!
-        }
+        // TODO implement: Wait for roma Client Thread to be stared!
+        romaClient = CollaboratoriumModelingService.repository();
     }
 
-    public Scenario getScenarioForScenarioId(Long scenarioId) throws IOException {
+    private Scenario getScenarioForScenarioId(Long scenarioId) throws IOException {
         return getRomaClient().getScenario(scenarioId);
     }
 
@@ -182,7 +180,7 @@ public class ProposalImpactScenarioCombinationWrapper {
     }
 
 
-    public boolean isOneSubProposalPerRegionSelected() {
+    private boolean isOneSubProposalPerRegionSelected() {
         boolean oneSubProposalPerRegionSelected = true;
         for (String region : validationRegions) {
             if (!presentRegion.contains(region)) {
@@ -196,13 +194,13 @@ public class ProposalImpactScenarioCombinationWrapper {
         return oneSubProposalPerRegionSelected;
     }
 
-    public boolean doAllScenariosUseSameModel() {
+    private boolean doAllScenariosUseSameModel() {
         boolean isMoreThanOneModelIdInMap = (modelIdToScenarioMap.size() > 1);
         return !isMoreThanOneModelIdInMap;
     }
 
 
-    public boolean doAllEMFScenariosHaveSameModelRun() {
+    private boolean doAllEMFScenariosHaveSameModelRun() {
         boolean allEMFScenariosHaveSameModelRun = true;
         String commonScenarioModelRun = "";
         for (Scenario scenario : scenarios) {
@@ -291,7 +289,8 @@ public class ProposalImpactScenarioCombinationWrapper {
         return true;
     }
 
-    public void runCombinedScenarioSimulation() throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException {
+    public void runCombinedScenarioSimulation()
+            throws IOException, ScenarioNotFoundException, ModelNotFoundException {
         if (isConsolidationOfScenariosPossible()) {
             if (combinedInputParametersMap == null) {
                 calculateCombinedInputParameters();

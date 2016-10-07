@@ -6,7 +6,6 @@ import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.OntologySpace;
 import org.xcolab.client.contest.pojo.OntologyTerm;
-import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
@@ -93,7 +92,8 @@ public class OntologyClient {
                 .execute();
     }
 
-    public static Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(Long focusAreaId, Long ontologyTermId) {
+    public static Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+            Long focusAreaId, Long ontologyTermId) {
 
         OntologyTerm ontologyParentTerm = getOntologyTerm(ontologyTermId);
         List<OntologyTerm> ontologyTermList = getAllOntologyTermDescendant(ontologyParentTerm.getId_());
@@ -132,10 +132,11 @@ public class OntologyClient {
 
     }
 
-    public static List<OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(FocusArea focusArea, OntologySpace ontologySpace) {
+    public static List<OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(
+            FocusArea focusArea, OntologySpace ontologySpace) {
         List<OntologyTerm> list = new ArrayList<>();
         for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
-            if (term.getOntologySpaceId() == ontologySpace.getId_()) {
+            if (term.getOntologySpaceId() == ontologySpace.getId_().longValue()) {
                 list.add(term);
             }
         }
@@ -145,7 +146,7 @@ public class OntologyClient {
 
     public static OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(FocusArea focusArea, OntologySpace ontologySpace) {
         for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
-            if (term.getOntologySpaceId() == ontologySpace.getId_()) {
+            if (term.getOntologySpaceId() == ontologySpace.getId_().longValue()) {
                 return term;
             }
         }
@@ -166,7 +167,8 @@ public class OntologyClient {
                 .optionalQueryParam("focusAreaId", focusAreaId)
                 .optionalQueryParam("name", name)
                 .execute();
-        if (allImpactDefaultSeriesWithFocusAreaName != null && allImpactDefaultSeriesWithFocusAreaName.size() > 0) {
+        if (allImpactDefaultSeriesWithFocusAreaName != null && !allImpactDefaultSeriesWithFocusAreaName
+                .isEmpty()) {
             return allImpactDefaultSeriesWithFocusAreaName.get(0);
         } else {
             return null;
@@ -191,7 +193,7 @@ public class OntologyClient {
                         .optionalQueryParam("seriesId", seriesId)
                         .optionalQueryParam("year", year)
                         .execute();
-        if (ret != null && ret.size() > 0) {
+        if (ret != null && !ret.isEmpty()) {
             return ret.get(0);
         } else {
             return null;

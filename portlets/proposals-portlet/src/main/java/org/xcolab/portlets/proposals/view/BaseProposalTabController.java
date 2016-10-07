@@ -1,10 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-
-
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +31,7 @@ public class BaseProposalTabController extends BaseProposalsController {
     private ProposalsContext proposalsContext;
     
     @ModelAttribute
-    public void getTabs(Model model, PortletRequest request) throws PortalException, SystemException {
+    public void getTabs(Model model, PortletRequest request) {
         // populate available tabs
         
         List<ProposalTabWrapper> tabs = new ArrayList<>();
@@ -53,8 +48,7 @@ public class BaseProposalTabController extends BaseProposalsController {
     }
     
 
-    protected void setCommonModelAndPageAttributes(PortletRequest request, Model model, ProposalTab tab) 
-            throws PortalException, SystemException {
+    protected void setCommonModelAndPageAttributes(PortletRequest request, Model model, ProposalTab tab) {
        
         model.addAttribute("currentTab", tab);
         model.addAttribute("currentTabWrapped", new ProposalTabWrapper(tab, request, proposalsContext));
@@ -79,8 +73,7 @@ public class BaseProposalTabController extends BaseProposalsController {
     }
 
     protected long createDiscussionThread(PortletRequest request,
-            String threadTitleSuffix, boolean isQuiet)
-            throws SystemException, PortalException {
+            String threadTitleSuffix, boolean isQuiet) {
         final ContestType contestType = proposalsContext.getContestType(request);
         CommentThread thread = new CommentThread();
         final Proposal proposal = proposalsContext.getProposal(request);

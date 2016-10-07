@@ -1,15 +1,15 @@
 package org.xcolab.portlets.proposals.utils;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.ProposalAttributeKeys;
-
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.apache.commons.lang3.tuple.Pair;
 
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -60,12 +60,8 @@ public class ProposalPickerSortingUtil {
                             if (contest1wasRemoved != contest2wasRemoved) {
                                 return contest1wasRemoved ? 1 : -1;
                             }
-                            try {
-                                return sortOrderModifier * (int) (o1.getLeft().getTotalCommentsCount() - o2
-                                        .getLeft().getTotalCommentsCount());
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+                            return sortOrderModifier * (int) (o1.getLeft().getTotalCommentsCount() - o2
+                                    .getLeft().getTotalCommentsCount());
                         }
                     });
                     break;
@@ -79,12 +75,8 @@ public class ProposalPickerSortingUtil {
                             if (contest1wasRemoved != contest2wasRemoved) {
                                 return contest1wasRemoved ? 1 : -1;
                             }
-                            try {
-                                return sortOrderModifier * o1.getLeft().getWhatName()
-                                        .compareTo(o2.getLeft().getWhatName());
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+                            return sortOrderModifier * o1.getLeft().getWhatName()
+                                    .compareTo(o2.getLeft().getWhatName());
                         }
                     });
                     break;
@@ -98,12 +90,8 @@ public class ProposalPickerSortingUtil {
                             if (contest1wasRemoved != contest2wasRemoved) {
                                 return contest1wasRemoved ? 1 : -1;
                             }
-                            try {
-                                return sortOrderModifier * o1.getLeft().getWhereName()
-                                        .compareTo(o2.getLeft().getWhereName());
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+                            return sortOrderModifier * o1.getLeft().getWhereName()
+                                    .compareTo(o2.getLeft().getWhereName());
                         }
                     });
                     break;
@@ -117,12 +105,8 @@ public class ProposalPickerSortingUtil {
                             if (contest1wasRemoved != contest2wasRemoved) {
                                 return contest1wasRemoved ? 1 : -1;
                             }
-                            try {
-                                return sortOrderModifier * o1.getLeft().getWhoName()
-                                        .compareTo(o2.getLeft().getWhoName());
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+                            return sortOrderModifier * o1.getLeft().getWhoName()
+                                    .compareTo(o2.getLeft().getWhoName());
                         }
                     });
                     break;
@@ -136,12 +120,8 @@ public class ProposalPickerSortingUtil {
                             if (contest1wasRemoved != contest2wasRemoved) {
                                 return contest1wasRemoved ? 1 : -1;
                             }
-                            try {
-                                return sortOrderModifier * o1.getLeft().getHowName()
-                                        .compareTo(o2.getLeft().getHowName());
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+                            return sortOrderModifier * o1.getLeft().getHowName()
+                                    .compareTo(o2.getLeft().getHowName());
                         }
                     });
                     break;
@@ -223,10 +203,10 @@ public class ProposalPickerSortingUtil {
                             try {
                                 ProposalAttribute t1 = ProposalAttributeClient
                                         .getProposalAttribute(o1.getLeft().getProposalId(),
-                                                ProposalAttributeKeys.TEAM, 0l);
+                                                ProposalAttributeKeys.TEAM, 0L);
                                 ProposalAttribute t2 = ProposalAttributeClient
                                         .getProposalAttribute(o2.getLeft().getProposalId(),
-                                                ProposalAttributeKeys.TEAM, 0l);
+                                                ProposalAttributeKeys.TEAM, 0L);
 
                                 String author1 = t1 == null
                                         || t1.getStringValue().trim().isEmpty()

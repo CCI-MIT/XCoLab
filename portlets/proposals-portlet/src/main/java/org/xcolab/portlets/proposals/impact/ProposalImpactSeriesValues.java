@@ -1,12 +1,11 @@
-package org.xcolab.portlets.proposals.wrappers;
+package org.xcolab.portlets.proposals.impact;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.contest.pojo.ImpactIteration;
 
@@ -20,8 +19,18 @@ import java.util.Set;
  * ProposalImpactSeriesValues represents a data series for exactly one category of data (i.e. BAU, adoption rate, ...).
  */
 public class ProposalImpactSeriesValues {
-    private final static Log _log = LogFactoryUtil.getLog(ProposalImpactSeriesValues.class);
+    private final static Logger _log = LoggerFactory.getLogger(ProposalImpactSeriesValues.class);
+
     private final Map<Integer, Double> yearToValueMap = new HashMap<>();
+
+    public double getValueForYear(int year) {
+        Double valueForYear = yearToValueMap.get(year);
+        if (valueForYear == null) {
+            _log.warn("No value found for year {}", year);
+            return 0;
+        }
+        return valueForYear;
+    }
 
     public Map<Integer, Double> getYearToValueMap() {
         return yearToValueMap;
@@ -31,27 +40,16 @@ public class ProposalImpactSeriesValues {
         yearToValueMap.put(year, value);
     }
 
-    public double getValueForYear(int year) {
-        double valueForYear = 0.;
-        try{
-            valueForYear = yearToValueMap.get(year);
-        } catch (NullPointerException e){
-            _log.warn("Could not getValueForYear" + year, e);
-        }
-        return valueForYear;
-    }
-
-    public void addImpactSeriesValues(ProposalImpactSeriesValues anotherSeriesValues) {
+    public void addImpactSeriesValues(ProposalImpactSeriesValues otherSeriesValues) {
         Set<Integer> mergedYearKeySet = new HashSet<>(yearToValueMap.keySet());
-        mergedYearKeySet.addAll(anotherSeriesValues.yearToValueMap.keySet());
+        mergedYearKeySet.addAll(otherSeriesValues.yearToValueMap.keySet());
 
         for (Integer yearKey : mergedYearKeySet) {
             // Get values in fail-safe manner
-            double thisValue = Validator.isNotNull(yearToValueMap.get(yearKey)) ? yearToValueMap.get(yearKey) : 0.0;
-            double otherValue = Validator.isNotNull(anotherSeriesValues.getValueForYear(yearKey)) ? anotherSeriesValues.getValueForYear(yearKey) : 0.0;
+            double thisValue = getValueForYear(yearKey);
+            double otherValue = otherSeriesValues.getValueForYear(yearKey);
             yearToValueMap.put(yearKey, (thisValue + otherValue));
         }
-
     }
 
     public void addImpactSeriesValues(ProposalImpactSeriesValues anotherSeriesValues, Map<Integer, Double> yearToValueFactor) {
@@ -60,22 +58,15 @@ public class ProposalImpactSeriesValues {
 
         for (Integer yearKey : mergedYearKeySet) {
             // Get values in fail-safe manner
-            double thisValue = Validator.isNotNull(yearToValueMap.get(yearKey)) ? yearToValueMap.get(yearKey) : 0.0;
-            double otherValue = Validator.isNotNull(anotherSeriesValues.getValueForYear(yearKey)) ? anotherSeriesValues.getValueForYear(yearKey) : 0.0;
-            double yearFactor = Validator.isNotNull(yearToValueFactor.get(yearKey)) ? yearToValueFactor.get(yearKey) : 0.0;
-            yearToValueMap.put(yearKey, (thisValue + otherValue * yearFactor));
+            double thisValue = getValueForYear(yearKey);
+            double otherValue = anotherSeriesValues.getValueForYear(yearKey);
+            Double yearFactor = yearToValueFactor.get(yearKey);
+            if (yearFactor != null) {
+                yearToValueMap.put(yearKey, (thisValue + otherValue * yearFactor));
+            } else {
+                yearToValueMap.put(yearKey, 0.0);
+            }
         }
-
-    }
-
-    public JSONObject toJSONObject() {
-        JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-        for (Map.Entry<Integer, Double> entry : yearToValueMap.entrySet()) {
-            jsonObject.put(""+entry.getKey(),  entry.getValue());
-        }
-
-        return jsonObject;
     }
 
     public JSONArray toJSONArrayWithIteration(List<ImpactIteration> iterations) {

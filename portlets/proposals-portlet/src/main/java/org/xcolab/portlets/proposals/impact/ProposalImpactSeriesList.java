@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.wrappers;
+package org.xcolab.portlets.proposals.impact;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -40,7 +40,6 @@ public class ProposalImpactSeriesList {
     private static final Integer[] YEARS_YEAR_TO_VALUE_FACTOR = {2015,2020,2030,2040,2050};
 
     static {
-        Map<Long, Map<Integer,Double>> ontologyRegionTermToYearToValueFactor =  new HashMap<>();
         Map<Integer,Double> usMap = new HashMap<>();
         Map<Integer,Double> euMap = new HashMap<>();
         Map<Integer,Double> indiaMap = new HashMap<>();
@@ -48,7 +47,7 @@ public class ProposalImpactSeriesList {
         Map<Integer,Double> developedMap = new HashMap<>();
         Map<Integer,Double> developingMap = new HashMap<>();
 
-        for(int i = 0; i < YEARS_YEAR_TO_VALUE_FACTOR.length; i++){
+        for (int i = 0; i < YEARS_YEAR_TO_VALUE_FACTOR.length; i++) {
             usMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i],US_YEAR_TO_VALUE_FACTOR[i]);
             euMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i],EU_YEAR_TO_VALUE_FACTOR[i]);
             indiaMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i],INDIA_YEAR_TO_VALUE_FACTOR[i]);
@@ -57,6 +56,7 @@ public class ProposalImpactSeriesList {
             developingMap.put(YEARS_YEAR_TO_VALUE_FACTOR[i],OTHER_DEVELOPING_YEAR_TO_VALUE_FACTOR[i]);
         }
 
+        Map<Long, Map<Integer, Double>> ontologyRegionTermToYearToValueFactor = new HashMap<>();
         ontologyRegionTermToYearToValueFactor.put(1300340L, usMap);
         ontologyRegionTermToYearToValueFactor.put(1300341L, euMap);
         ontologyRegionTermToYearToValueFactor.put(1300345L, chinaMap);
@@ -73,7 +73,7 @@ public class ProposalImpactSeriesList {
     public ProposalImpactSeriesList(Contest contest, Proposal proposal)
             throws PortalException, SystemException {
 
-        this.impactSerieses = new ArrayList<ProposalImpactSeries>();
+        this.impactSerieses = new ArrayList<>();
 
         List<FocusArea> proposalFocusAreas = getImpactProposalFocusAreas(proposal);
         
