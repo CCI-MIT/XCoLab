@@ -9,6 +9,7 @@
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"-->
+    <!--@elvariable id="collectionCard" type="org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper"-->
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
     <!--@elvariable id="collectionCards" type="org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean"-->
@@ -16,14 +17,12 @@
 
     <div class="c-ListView tooltips">
         <br/>
+        <proposalsPortlet:collectionListItem collectionCards="${collectionCards.collectionCards }" featured="false"/>
         <c:if test="${not empty contestsSorted.contestsFeatured }">
             <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsFeatured }" featured="true"/>
         </c:if>
         <c:if test="${not empty contestsSorted.contestsNormal }">
             <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
         </c:if>
-        <!--
-        <proposalsPortlet:collectionListItem contests="${collectionCards.collectionCards }" featured="false"/>
-        -->
 	</div>
 </jsp:root>

@@ -5,11 +5,11 @@
 
     <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
 
-	<jsp:directive.attribute name="collectionCard" type="org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper" required="true" rtexprvalue="true" description="Contest" />
+	<jsp:directive.attribute name="collectionCard" type="org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper" required="true" rtexprvalue="true" description="CollectionCardWrapper" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
 
     <portlet:renderURL var="changeCurrentContestCardURL">
-        <portlet:param name="contestCard" value="${collectionCard.id}" />
+        <portlet:param name="collectionCard" value="${collectionCard.id}" />
     </portlet:renderURL>
 
     <div class="c-CollectionCard--background-container" >
@@ -17,7 +17,7 @@
             <div class="c-CollectionCard" style="right:3px; bottom:3px;">
                 <div class="c-CollectionCard__separator" style="margin-top: 70px;">
                     <div class="c-CollectionCard__circle" style="margin-left: 25px;">
-                        ${collectionCard.numberofContests}
+                        ${collectionCard.numberOfContests}
                     </div>
                     <div class="c-CollectionCard__circle">
                         XX

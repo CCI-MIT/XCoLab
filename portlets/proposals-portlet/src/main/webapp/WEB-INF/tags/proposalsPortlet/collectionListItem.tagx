@@ -1,5 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 		  xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:portlet="http://java.sun.com/portlet_2_0"
 		  xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 		  xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 		  xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
@@ -9,38 +10,41 @@
 
 	<!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
 	
-	<jsp:directive.attribute name="contests" type="java.util.ArrayList" required="true" rtexprvalue="true" description="Contests to be shown" />
-	<jsp:directive.attribute name="featured" type="java.lang.Boolean" required="true" rtexprvalue="true" description="whether the contests are featured" />
+	<jsp:directive.attribute name="collectionCards" type="java.util.ArrayList" required="true" rtexprvalue="true" description="CollectionCards to be shown" />
+    <jsp:directive.attribute name="featured" type="java.lang.Boolean" required="true" rtexprvalue="true" description="whether the contests are featured" />
 
-	<c:forEach var="contest" items="${contests }">
-		<c:if test="${contest.showInListView}">
-            <div class="c-ListItem--background-container" style="  margin-left: 110px;">
-                <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
-                    <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
-                        <div class="c-ListItem__contests">
-                            <div class="c-ListItem__circle">
-                                15
-                            </div>
-                            contests
+	<c:forEach var="collectionCard" items="${collectionCards }">
+        <portlet:renderURL var="changeCurrentContestCardURL">´
+            <portlet:param name="collectionCard" value="${collectionCard.id}" />
+        </portlet:renderURL>
+        <div class="c-ListItem--background-container" style="  margin-left: 110px;">
+            <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
+                <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
+                    <div class="c-ListItem__contests">
+                        <div class="c-ListItem__circle">
+                            ${collectionCard.numberOfContests}
                         </div>
-                        <div class="c-ListItem__title">
-                            <div class="contestFlag">
-                                <collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
-                                <br/>
-                                ${contest.contestName}
-                            </div>
+                        contests
+                    </div>
+                    <div class="c-ListItem__title">
+                        <div class="contestFlag">
+                            <a href="${changeCurrentContestCardURL}">
+                                ${collectionCard.ontologyTermToLoad.name}
+                            </a>
+                            <br/>
+                            ${collectionCard.description}
                         </div>
-                        <div class="c-ListItem__meta">
-                            <div class="c-ListItem__proposals" style="margin-top: 20px;">
-                                <strong>
-                                    ${contest.proposalsCount}
-                                </strong>
-                                proposals
-                            </div>
+                    </div>
+                    <div class="c-ListItem__meta">
+                        <div class="c-ListItem__proposals" style="margin-top: 20px;">
+                            <strong>
+                                ${collectionCard.numberOfContests}
+                            </strong>
+                            proposals
                         </div>
                     </div>
                 </div>
             </div>
-		</c:if>
+        </div>
 	</c:forEach>
 </jsp:root>

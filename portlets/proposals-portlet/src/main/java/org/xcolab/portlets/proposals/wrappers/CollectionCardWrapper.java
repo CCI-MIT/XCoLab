@@ -39,7 +39,7 @@ public class CollectionCardWrapper{
         return false;
     }
 
-    public int getNumberofContests() {
+    public int getNumberOfContests() {
         int count = 0;
         List<ContestCollectionCard> childList = new ArrayList<>();
         childList.add(ContestClient.getContestCollectionCard(this.getId()));
