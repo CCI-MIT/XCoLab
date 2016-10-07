@@ -140,6 +140,8 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
         //model.addAttribute("priorContestsExist", !priorContests.isEmpty());
+        model.addAttribute("priorContestsExist", true);
+        //hacked
         model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
                 showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
         model.addAttribute("viewType", viewType);
