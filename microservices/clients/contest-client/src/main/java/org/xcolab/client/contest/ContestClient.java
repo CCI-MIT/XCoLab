@@ -9,6 +9,7 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestTeamMember;
 import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -58,6 +59,9 @@ public class ContestClient {
 
     private static final RestResource1<OntologyTerm, Long> ontologyTermResource =
             new RestResource1<>(contestService, "ontologyTerms", OntologyTerm.TYPES);
+
+    private static final RestResource1<FocusArea, Long> focusAreaResource =
+            new RestResource1<>(contestService, "focusAreas", FocusArea.TYPES);
 
     public static Contest getContest(long contestId) throws ContestNotFoundException {
         try {
@@ -170,18 +174,30 @@ public class ContestClient {
     }
 
     public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
-
         try {
-            //TODO: bad url design
-            return contestResource.service(contestId, "getSubContestsByOntologySpaceId", List.class)
-                    .optionalQueryParam("ontologySpaceId", ontologySpaceId)
+            return contestResource.service(contestId, "subContestsByOntologySpaceId", List.class)
+                    .queryParam("ontologySpaceId", ontologySpaceId)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return new ArrayList<>();
         }
     }
 
-    public static OntologyTerm get(long id) {
+    public static List<FocusArea> getFocusAreasByOntologyTermId(Long ontologyTermId) {
+        return focusAreaResource.list()
+                .queryParam("ontologyTermId", ontologyTermId)
+                .execute();
+    }
+
+    public static List<Contest> getContestsByFocusAreaId(Long focusAreaId) {
+        List<Long> areas = new ArrayList<>();
+        areas.add(focusAreaId);
+        return contestResource.list()
+                .queryParam("focusAreaOntologyTerms",areas.toArray())
+                .execute();
+    }
+
+    public static OntologyTerm getOntologyTerm(long id) {
         return ontologyTermResource.get(id).execute();
     }
 

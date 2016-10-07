@@ -14,7 +14,6 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
@@ -150,9 +149,6 @@ public class ContestWrapper extends BaseContestWrapper {
     }
 
     public long getTotalCommentsCount() throws PortalException, SystemException {
-        ContestCollectionCard contestCollectionCard = ContestClient.getContestCollectionCard(1);
-        List<ContestCollectionCard>  cardList = ContestClient.getSubContestCollectionCards();
-        System.out.println(contestCollectionCard);
         if (getContestType().getHasDiscussion()) {
            return CommentClient.countComments(contest.getDiscussionGroupId());
         }

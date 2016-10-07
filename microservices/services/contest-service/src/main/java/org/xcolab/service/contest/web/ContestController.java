@@ -99,7 +99,6 @@ public class ContestController {
                 focusAreaOntologyTerms, contestScheduleId, planTemplateId);
     }
 
-
     @RequestMapping(value = "/contests/{contestId}/subContestsByOntologySpaceId", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getSubContestsByOntologySpaceId(
             @PathVariable long contestId,

@@ -191,6 +191,7 @@ public class ContestDaoImpl implements ContestDao {
             query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
         }
 
+
         if (focusAreaOntologyTerms != null && !focusAreaOntologyTerms.isEmpty()) {
             query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
         }

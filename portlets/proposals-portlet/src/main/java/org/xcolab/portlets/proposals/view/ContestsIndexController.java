@@ -1,5 +1,10 @@
 package org.xcolab.portlets.proposals.view;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.FocusArea;
@@ -17,13 +22,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
@@ -126,6 +128,19 @@ public class ContestsIndexController extends BaseProposalsController {
                 }
             }
         }
+
+        //Collection cards
+
+        List<ContestCollectionCard> collectionCards = new ArrayList<>();
+        collectionCards.add(ContestClient.getContestCollectionCard(0));
+        collectionCards.add(ContestClient.getContestCollectionCard(1));
+        /*
+        List <Long> termIds = new ArrayList<>();
+        termIds.add((long) 0);
+        List<org.xcolab.client.contest.pojo.FocusArea> focusAreas = ContestClient.getFocusAreasByOntologyTermId((long) 1300359);
+        List<org.xcolab.client.contest.pojo.Contest> testList = ContestClient.getContestsByFocusAreaId(focusAreas.get(0).getId_());
+        */
+        model.addAttribute("collectionCards", collectionCards);
 
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
