@@ -50,7 +50,7 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false) String viewType, 
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
-            @RequestParam(required = false, defaultValue = "1") long contestCard,
+            @RequestParam(required = false, defaultValue = "1") long collectionCard,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
 
@@ -120,14 +120,14 @@ public class ContestsIndexController extends BaseProposalsController {
         //Collection cards
 
         List<CollectionCardWrapper> collectionCards = new ArrayList<>();
-        for (ContestCollectionCard card: ContestClient.getSubContestCollectionCards(contestCard)) {
+        for (ContestCollectionCard card: ContestClient.getSubContestCollectionCards(collectionCard)) {
             collectionCards.add(new CollectionCardWrapper(card));
         }
 
         //contests
 
         List<ContestWrapper> contests = new ArrayList<>();
-        List<org.xcolab.client.contest.pojo.FocusArea> focusAreas = ContestClient.getFocusAreasByOntologyTermId(ContestClient.getContestCollectionCard(contestCard).getOntology_term_to_load());
+        List<org.xcolab.client.contest.pojo.FocusArea> focusAreas = ContestClient.getFocusAreasByOntologyTermId(ContestClient.getContestCollectionCard(collectionCard).getOntology_term_to_load());
         for (org.xcolab.client.contest.pojo.FocusArea area: focusAreas) {
             for (org.xcolab.client.contest.pojo.Contest contest: ContestClient.getContestsByFocusAreaId(area.getId_())) {
                 contests.add(new ContestWrapper(contest));
