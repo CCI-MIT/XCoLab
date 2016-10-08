@@ -1,19 +1,15 @@
 package org.xcolab.portlets.proposals.impact;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.ext.portlet.ProposalImpactAttributeKeys;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 
@@ -30,31 +26,41 @@ import java.util.Map;
  * Used for the IAF fellow impact series edit feature
  */
 public class ProposalImpactDataParser {
-    private static final Log _log = LogFactoryUtil.getLog(ProposalImpactDataParser.class);
+
+    private static final Logger _log = LoggerFactory.getLogger(ProposalImpactDataParser.class);
 
     private static final String EXCEL_SERIES_TYPE_BAU_KEY = "Business as usual";
     private static final String EXCEL_SERIES_TYPE_REDUCTION_KEY = "emission reduction";
     private static final String EXCEL_SERIES_TYPE_ADOPTION_RATE_KEY = "Adoption rate";
     private static final String EXCEL_SERIES_TYPE_RESULT_KEY = "Estimated CO2 reduction";
-    private static final String[] excelSeriesTypeKeys = {EXCEL_SERIES_TYPE_BAU_KEY, EXCEL_SERIES_TYPE_REDUCTION_KEY, EXCEL_SERIES_TYPE_ADOPTION_RATE_KEY, EXCEL_SERIES_TYPE_REDUCTION_KEY};
+    private static final String[] excelSeriesTypeKeys =
+            {EXCEL_SERIES_TYPE_BAU_KEY, EXCEL_SERIES_TYPE_REDUCTION_KEY,
+                    EXCEL_SERIES_TYPE_ADOPTION_RATE_KEY, EXCEL_SERIES_TYPE_REDUCTION_KEY};
 
     private static final Map<String, String> excelTermToOntologyTermNameMap;
+    private static final Map<String, String> excelSeriesTypeToSeriesTypeMap;
+
     static {
         excelTermToOntologyTermNameMap = new HashMap<>();
         excelTermToOntologyTermNameMap.put("Transport", "Transportation");
         excelTermToOntologyTermNameMap.put("EnergySupply", "Energy supply");
         excelTermToOntologyTermNameMap.put("Other", "Land use & other sectors");
-        excelTermToOntologyTermNameMap.put("All other developed countries", "Other developed countries");
-        excelTermToOntologyTermNameMap.put("All other developing countries", "Other developing countries");
+        excelTermToOntologyTermNameMap
+                .put("All other developed countries", "Other developed countries");
+        excelTermToOntologyTermNameMap
+                .put("All other developing countries", "Other developing countries");
     }
 
-    private static final Map<String, String> excelSeriesTypeToSeriesTypeMap;
     static {
         excelSeriesTypeToSeriesTypeMap = new HashMap<>(excelSeriesTypeKeys.length);
-        excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_BAU_KEY, ProposalImpactSeries.SERIES_TYPE_BAU_KEY); // we don't need this one
-        excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_REDUCTION_KEY, ProposalImpactAttributeKeys.IMPACT_REDUCTION);
-        excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_ADOPTION_RATE_KEY, ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE);
-        excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_RESULT_KEY, ""); // we don't need this one
+        excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_BAU_KEY,
+                ProposalImpactSeries.SERIES_TYPE_BAU_KEY); // we don't need this one
+        excelSeriesTypeToSeriesTypeMap
+                .put(EXCEL_SERIES_TYPE_REDUCTION_KEY, ProposalImpactAttributeKeys.IMPACT_REDUCTION);
+        excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_ADOPTION_RATE_KEY,
+                ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE);
+        excelSeriesTypeToSeriesTypeMap
+                .put(EXCEL_SERIES_TYPE_RESULT_KEY, ""); // we don't need this one
     }
 
     private final String tabSeparatedString;
@@ -63,9 +69,8 @@ public class ProposalImpactDataParser {
 
 
     /**
-     * Creates a new ProposalImpactDataParser object with the input String (tab-separated string copy-pasted from Excel)
-     * and the Contest of the proposal in question.
-     *
+     * Creates a new ProposalImpactDataParser object with the input String (tab-separated string
+     * copy-pasted from Excel) and the Contest of the proposal in question.
      */
     public ProposalImpactDataParser(String tabSeparatedString, Proposal proposal, Contest contest) {
         this.tabSeparatedString = tabSeparatedString;
@@ -74,16 +79,18 @@ public class ProposalImpactDataParser {
 
     }
 
-    public ProposalImpactSeriesList parse() throws PortalException, SystemException, ProposalImpactDataParserException {
+    public ProposalImpactSeriesList parse() throws ProposalImpactDataParserException {
         String[] inputLines = getLines(tabSeparatedString);
         List<String> parsedSeriesTypeKeys = getParsedSeriesTypeKeys(inputLines);
         List<Long> iterationYears = getParsedIterationYears(inputLines);
 
-        return parseExcelData(Arrays.copyOfRange(inputLines, 2, inputLines.length), parsedSeriesTypeKeys, iterationYears);
+        return parseExcelData(Arrays.copyOfRange(inputLines, 2, inputLines.length),
+                parsedSeriesTypeKeys, iterationYears);
     }
 
-    private List<String> getParsedSeriesTypeKeys(String[] inputLines) throws ProposalImpactDataParserException {
-        if (ArrayUtil.isEmpty(inputLines)) {
+    private List<String> getParsedSeriesTypeKeys(String[] inputLines)
+            throws ProposalImpactDataParserException {
+        if (ArrayUtils.isEmpty(inputLines)) {
             return null;
         }
 
@@ -91,7 +98,7 @@ public class ProposalImpactDataParser {
         List<String> seriesTypes = new ArrayList<>();
         for (String headLineColumn : getTabbedStrings(headLine)) {
             // Ignore empty columns (tabs)
-            if (Validator.isNotNull(headLineColumn)) {
+            if (headLineColumn != null) {
                 // Try to match excelSeriesType from input
                 boolean foundMatch = false;
                 for (Map.Entry<String, String> entry : excelSeriesTypeToSeriesTypeMap.entrySet()) {
@@ -105,7 +112,8 @@ public class ProposalImpactDataParser {
                 }
 
                 if (!foundMatch) {
-                    throw new ProposalImpactDataParserException("Could not match data column '" + headLineColumn + "'");
+                    throw new ProposalImpactDataParserException(
+                            "Could not match data column '" + headLineColumn + "'");
                 }
             }
         }
@@ -113,8 +121,12 @@ public class ProposalImpactDataParser {
         return seriesTypes;
     }
 
+    private String[] getTabbedStrings(String inputLine) {
+        return inputLine.split("\\t", -1);
+    }
+
     private List<Long> getParsedIterationYears(String[] inputLines) {
-        if (ArrayUtil.isEmpty(inputLines)) {
+        if (ArrayUtils.isEmpty(inputLines)) {
             return null;
         }
 
@@ -122,7 +134,7 @@ public class ProposalImpactDataParser {
         List<Long> iterationYears = new ArrayList<>();
         for (String iterationYearColumn : getTabbedStrings(iterationYearLine)) {
             // Ignore empty columns (tabs)
-            if (Validator.isNotNull(iterationYearColumn)) {
+            if (iterationYearColumn != null) {
                 try {
                     long iterationYear = Long.parseLong(iterationYearColumn);
 
@@ -134,7 +146,8 @@ public class ProposalImpactDataParser {
                     iterationYears.add(iterationYear);
 
                 } catch (NumberFormatException e) {
-                    _log.error("Could not parse string to iteration year '" + iterationYearColumn + "' of line 1 '" + iterationYearLine + "'", e);
+                    _log.error("Could not parse string to iteration year '{}' of line 1 '{}'",
+                            iterationYearColumn, iterationYearLine, e);
                     throw e;
                 }
             }
@@ -144,10 +157,11 @@ public class ProposalImpactDataParser {
     }
 
     private ProposalImpactSeriesList parseExcelData(String[] inputLines,
-                                                    List<String> parsedSeriesTypeKeys,
-                                                    List<Long> iterationYears) throws SystemException, PortalException, ProposalImpactDataParserException {
+            List<String> parsedSeriesTypeKeys, List<Long> iterationYears)
+            throws ProposalImpactDataParserException {
 
-        ProposalImpactSeriesList seriesList = new ProposalImpactSeriesList(this.contest, this.proposal);
+        ProposalImpactSeriesList seriesList =
+                new ProposalImpactSeriesList(this.contest, this.proposal);
         ProposalImpactUtil proposalImpactUtil = new ProposalImpactUtil(contest);
 
         OntologyTerm regionTerm = null;
@@ -156,48 +170,57 @@ public class ProposalImpactDataParser {
             String[] dataStrings = getTabbedStrings(inputLine);
 
             // We need at least the region+sector and one full iteration of years
-            if (ArrayUtil.isNotEmpty(dataStrings) && dataStrings.length >= 2 + iterationYears.size()) {
+            if (ArrayUtils.isNotEmpty(dataStrings) && dataStrings.length >= 2 + iterationYears
+                    .size()) {
                 OntologyTerm sectorTerm;
                 try {
                     // Some of the first columns are empty - use old region term instead
-                    if (Validator.isNotNull(dataStrings[0])) {
+                    if (dataStrings[0] != null) {
                         regionTerm = getOntologyTermByName(dataStrings[0]);
                     }
 
                     sectorTerm = getOntologyTermByName(dataStrings[1]);
-                } catch (SystemException | ProposalImpactDataParserException e) {
-                    _log.error(e.getMessage() + " on line " + inputLineNumber);
+                } catch (ProposalImpactDataParserException e) {
+                    _log.error("{} on line {}", e.getMessage(), inputLineNumber);
                     throw new ProposalImpactDataParserException(e);
                 }
 
-                FocusArea focusArea = proposalImpactUtil.getFocusAreaAssociatedWithTerms(sectorTerm, regionTerm);
-                ProposalImpactSeries newProposalImpactSeries = new ProposalImpactSeries(contest, proposal, focusArea);
+                FocusArea focusArea =
+                        proposalImpactUtil.getFocusAreaAssociatedWithTerms(sectorTerm, regionTerm);
+                ProposalImpactSeries newProposalImpactSeries =
+                        new ProposalImpactSeries(contest, proposal, focusArea);
 
                 // Write the new impact series values
                 for (int idx = 2; idx < dataStrings.length; idx++) {
                     String dataString = dataStrings[idx];
-                    String currentSeriesType = parsedSeriesTypeKeys.get(((idx - 2) / iterationYears.size()));
+                    String currentSeriesType =
+                            parsedSeriesTypeKeys.get(((idx - 2) / iterationYears.size()));
 
                     // If the seriesType is not set we just ignore all upcoming values
-                    if (Validator.isNull(currentSeriesType)) {
+                    if (currentSeriesType == null) {
                         idx += iterationYears.size() - 1;
                         continue;
                     }
 
                     // Empty lines are not tolerated - abort
-                    if (Validator.isNull(dataString)) {
-                        throw new ProposalImpactDataParserException("Empty data column detected in line '" + inputLine);
+                    if (dataString == null) {
+                        throw new ProposalImpactDataParserException(
+                                "Empty data column detected in line '" + inputLine);
                     }
 
                     long year = iterationYears.get((idx - 2) % iterationYears.size());
 
                     try {
-                        setProposalImpactSeriesValue(newProposalImpactSeries, currentSeriesType, year, dataString);
+                        setProposalImpactSeriesValue(newProposalImpactSeries, currentSeriesType,
+                                year, dataString);
                     } catch (NumberFormatException e) {
-                        _log.error("Could not parse string '" + dataString + "' on line " + inputLineNumber + " to double value");
-                        throw new ProposalImpactDataParserException("\"Could not parse string '" + dataString + "' to double value\"", e);
+                        _log.error("Could not parse string '{}' on line {} to double value",
+                                dataString, inputLineNumber);
+                        throw new ProposalImpactDataParserException(
+                                "\"Could not parse string '" + dataString + "' to double value\"",
+                                e);
                     } catch (ProposalImpactDataParserException e) {
-                        _log.error("Input Line " + inputLineNumber + ": " + e.getMessage());
+                        _log.error("Input Line {}: {}", inputLineNumber, e.getMessage());
                         throw e;
                     }
                 }
@@ -205,7 +228,9 @@ public class ProposalImpactDataParser {
                 seriesList.addProposalImpactSeries(newProposalImpactSeries);
 
             } else {
-                throw new ProposalImpactDataParserException("Could not parse data line '" + StringUtils.join(dataStrings, ",") + "'; line too short");
+                throw new ProposalImpactDataParserException(
+                        "Could not parse data line '" + StringUtils.join(dataStrings, ",")
+                                + "'; line too short");
             }
 
             inputLineNumber++;
@@ -214,27 +239,33 @@ public class ProposalImpactDataParser {
         return seriesList;
     }
 
-    private void setProposalImpactSeriesValue(ProposalImpactSeries proposalImpactSeries, String seriesType, long year, String valueString) throws ProposalImpactDataParserException {
+    private void setProposalImpactSeriesValue(ProposalImpactSeries proposalImpactSeries,
+            String seriesType, long year, String valueString)
+            throws ProposalImpactDataParserException {
         double value = parseDataValue(seriesType, valueString);
-        proposalImpactSeries.addSeriesValueWithType(seriesType, (int)year, value);
+        proposalImpactSeries.addSeriesValueWithType(seriesType, (int) year, value);
     }
 
-    private double parseDataValue(String seriesType, String valueString) throws ProposalImpactDataParserException {
+    private double parseDataValue(String seriesType, String valueString)
+            throws ProposalImpactDataParserException {
         // Remove comma-thousand separators
         String decimalStringValue = valueString.replaceAll(",", "");
 
         // percentage value
         if (decimalStringValue.contains("%")) {
-            double value =  Double.parseDouble(decimalStringValue.substring(0, decimalStringValue.length() - 1));
+            double value = Double.parseDouble(
+                    decimalStringValue.substring(0, decimalStringValue.length() - 1));
             if (value < 0 || value > 100) {
-                throw new ProposalImpactDataParserException("Percentage value '" + value + "' out of bounds!");
+                throw new ProposalImpactDataParserException(
+                        "Percentage value '" + value + "' out of bounds!");
             }
             return value;
         } else {
             double value = Double.parseDouble(decimalStringValue);
 
             // Interpret impact reduction and adoption values as ratios
-            if ((seriesType.equals(ProposalImpactAttributeKeys.IMPACT_REDUCTION) || seriesType.equals(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE))) {
+            if ((seriesType.equals(ProposalImpactAttributeKeys.IMPACT_REDUCTION)
+                    || seriesType.equals(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE))) {
                 return value * 100.;    // impact reduction and adoption rate values are stored as percentage values (0-100%)
             } else {
                 return value;
@@ -242,22 +273,20 @@ public class ProposalImpactDataParser {
         }
     }
 
-    private OntologyTerm getOntologyTermByName(String name) throws SystemException, ProposalImpactDataParserException {
+    private OntologyTerm getOntologyTermByName(String name)
+            throws ProposalImpactDataParserException {
         // Use mapped name value if it exists
-        if (Validator.isNotNull(excelTermToOntologyTermNameMap.get(name))) {
+        if (excelTermToOntologyTermNameMap.get(name) != null) {
             name = excelTermToOntologyTermNameMap.get(name);
         }
 
         List<OntologyTerm> ontologyTerms = OntologyClient.getOntologyTermsByName(name);
-        if (Validator.isNull(ontologyTerms) || ontologyTerms.isEmpty()) {
-            throw new ProposalImpactDataParserException("Could not match ontology term with name '" + name + "'");
+        if (ontologyTerms == null || ontologyTerms.isEmpty()) {
+            throw new ProposalImpactDataParserException(
+                    "Could not match ontology term with name '" + name + "'");
         }
 
         return ontologyTerms.get(0);
-    }
-
-    private String[] getTabbedStrings(String inputLine) {
-        return inputLine.split("\\t", -1);
     }
 
     private String[] getLines(String inputLines) {

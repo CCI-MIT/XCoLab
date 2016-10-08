@@ -1,6 +1,6 @@
 package org.xcolab.utils.emailnotification.basic;
 
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
 
 import com.liferay.portal.service.ServiceContext;

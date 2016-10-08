@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.impact;
 
-import com.ext.portlet.ProposalImpactAttributeKeys;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
+import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,17 +61,17 @@ public abstract class ProposalImpactValueFilterAlgorithm {
      * @param seriesType    The ProposalImpactAttributeKey in question
      * @return              sanitized proposal impact value
      */
-    public static double filterValueForImpactSeriesType(double value, String seriesType) throws SystemException {
-        if (Validator.isNull(seriesTypeToAlgorithmMap)) {
+    public static double filterValueForImpactSeriesType(double value, String seriesType) {
+        if (seriesTypeToAlgorithmMap == null) {
             initMap();
         }
 
         ProposalImpactValueFilterAlgorithm algorithm = seriesTypeToAlgorithmMap.get(seriesType);
-        if (Validator.isNotNull(algorithm)) {
+        if (algorithm != null) {
             return algorithm.filterValue(value);
         }
 
-        throw new SystemException("Could not find a ProposalImpactValueFilterAlgorithm for the impact series type " + seriesType + "!");
+        throw new RuntimeException("Could not find a ProposalImpactValueFilterAlgorithm for the impact series type " + seriesType + "!");
     }
 
     abstract double filterValue(double value);

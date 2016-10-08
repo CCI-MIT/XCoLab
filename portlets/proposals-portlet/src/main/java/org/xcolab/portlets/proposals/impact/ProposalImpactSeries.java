@@ -1,17 +1,8 @@
 package org.xcolab.portlets.proposals.impact;
 
-import com.ext.portlet.NoSuchImpactDefaultSeriesDataException;
-import com.ext.portlet.NoSuchImpactDefaultSeriesException;
-import com.ext.portlet.NoSuchProposalVersionException;
-import com.ext.portlet.ProposalImpactAttributeKeys;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.contest.ImpactTemplateClient;
 import org.xcolab.client.contest.OntologyClient;
@@ -21,13 +12,15 @@ import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.ImpactIteration;
 import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
-import org.xcolab.enums.MemberRoleChoiceAlgorithm;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.text.DateFormat;
@@ -45,9 +38,10 @@ import java.util.TimeZone;
  * ProposalImpactSeries represents the data series for one sector-region pair.
  */
 public class ProposalImpactSeries {
+
     // Static value field names
     public static final String SERIES_TYPE_BAU_KEY = "BAU";
-//    public static final String SERIES_TYPE_DDPP_KEY = "DDPP";
+    //    public static final String SERIES_TYPE_DDPP_KEY = "DDPP";
     public static final String SERIES_TYPE_RESULT_KEY = "RESULT";
 
     private final List<ImpactIteration> impactIterations;
@@ -55,18 +49,20 @@ public class ProposalImpactSeries {
     private final OntologyTerm whereTerm;
     private final FocusArea focusArea;
     private final Proposal proposal;
-    private ProposalWrapper proposalWrapper;
-    private ProposalVersion lastModifiedVersion;
     private final Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
     private final Map<String, Boolean> seriesTypeToEditableMap;
-
     private final ImpactDefaultSeries bauSeries;
-//    private ImpactDefaultSeries ddppSeries;
-
+    private ProposalWrapper proposalWrapper;
+    private ProposalVersion lastModifiedVersion;
+    //    private ImpactDefaultSeries ddppSeries;
     private ProposalImpactSeriesValues resultValues;
 
+    public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea) {
+        this(contest, proposal, focusArea, true);
+    }
+
     private ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea,
-            boolean loadData) throws SystemException, PortalException {
+            boolean loadData) {
         this.seriesTypeToSeriesMap = new HashMap<>();
         this.seriesTypeToEditableMap = new HashMap<>();
         this.focusArea = focusArea;
@@ -76,49 +72,31 @@ public class ProposalImpactSeries {
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
         this.impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
         // Retrieve static serieses
-        bauSeries = OntologyClient.getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
+        bauSeries = OntologyClient
+                .getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false, false);
 
-//        ddppSeries = ImpactDefaultSeriesLocalServiceUtil.getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
-//        addSeriesWithType(ddppSeries, false);
+        //        ddppSeries = ImpactDefaultSeriesLocalServiceUtil
+        // .getImpactDefaultSeriesWithFocusAreaAndName(focusArea, SERIES_TYPE_DDPP_KEY);
+        //        addSeriesWithType(ddppSeries, false);
 
         if (loadData) {
             loadEditableData();
         }
     }
 
-    public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea) throws PortalException, SystemException {
-        this(contest, proposal, focusArea, true);
-    }
-
-    public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea, JSONObject json) throws PortalException, SystemException {
-        this(contest, proposal, focusArea, false);
-
-        for (ImpactDefaultSeries defaultSeries : OntologyClient.getAllmpactDefaultSeriesByFocusArea(focusArea.getId_())) {
-            if (!defaultSeries.getEditable()) {
-                continue;
-            }
-
-            seriesTypeToEditableMap.put(defaultSeries.getName(), true);
-            JSONObject seriesValues = json.getJSONObject(defaultSeries.getName());
-            for (ImpactIteration iteration : impactIterations) {
-                if (Double.isNaN(seriesValues.getDouble(iteration.getYear()+""))) {
-                    throw new SystemException("Could not parse value for year " + iteration.getYear());
+    private void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable,
+            boolean invertSeriesSign) {
+        List<ImpactDefaultSeriesData> seriesDataList = OntologyClient
+                .getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
+        if (invertSeriesSign) {
+            for (ImpactDefaultSeriesData seriesData : seriesDataList) {
+                if (seriesData.getValue() != null) {
+                    seriesData.setValue(seriesData.getValue() * (-1.0));
                 }
-                addSeriesValueWithType(defaultSeries.getName(), iteration.getYear(), seriesValues.getDouble(iteration.getYear()+""));
             }
         }
-    }
-
-    public void addSeriesValueWithType(String seriesType, int year, double value) {
-        ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
-        if (Validator.isNull(seriesValues)) {
-            seriesValues = new ProposalImpactSeriesValues();
-            seriesTypeToSeriesMap.put(seriesType, seriesValues);
-            seriesTypeToEditableMap.put(seriesType, true);
-        }
-
-        seriesValues.putSeriesValue(year, value);
+        addSeriesWithType(defaultSeries.getName(), seriesDataList, editable);
     }
 
     private void addSeriesWithType(String seriesType, List<ImpactDefaultSeriesData> seriesDataList,
@@ -132,122 +110,7 @@ public class ProposalImpactSeries {
         }
     }
 
-
-    private void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable,
-            boolean invertSeriesSign) throws SystemException {
-        List<ImpactDefaultSeriesData> seriesDataList = OntologyClient
-                .getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
-        if(invertSeriesSign){
-            for (ImpactDefaultSeriesData seriesData : seriesDataList) {
-                if(Validator.isNotNull(seriesData.getValue())) {
-                    seriesData.setValue(seriesData.getValue() * (-1.0));
-                }
-            }
-        }
-        addSeriesWithType(defaultSeries.getName(), seriesDataList, editable);
-    }
-
-    public Map<String, ProposalImpactSeriesValues> getSeriesTypeToSeriesMap() {
-        return seriesTypeToSeriesMap;
-    }
-
-    public ProposalImpactSeriesValues getSeriesValuesForType(String seriesType) throws PortalException, SystemException {
-        return seriesTypeToSeriesMap.get(seriesType);
-    }
-
-    public ProposalImpactSeriesValues getResultSeriesValues() throws SystemException, NoSuchImpactDefaultSeriesDataException {
-        if (Validator.isNull(resultValues)) {
-            calculateResultSeriesValues();
-        }
-
-        return resultValues;
-    }
-
-    public boolean getIsEditableForSeriesType(String seriesType) {
-        return seriesTypeToEditableMap.get(seriesType);
-    }
-
-    public void persistWithAuthor(Member author) throws SystemException, PortalException {
-        // Persist all editable attributes
-        for (Map.Entry<String, Boolean> entry: seriesTypeToEditableMap.entrySet()) {
-            final String seriesType = entry.getKey();
-            final Boolean isEditable = entry.getValue();
-            if (isEditable) {
-                ProposalImpactSeriesValues seriesValues = this.seriesTypeToSeriesMap.get(seriesType);
-                for (ImpactIteration iteration : impactIterations) {
-                    double filteredValue = ProposalImpactValueFilterAlgorithm.filterValueForImpactSeriesType(seriesValues.getValueForYear(iteration.getYear()), seriesType);
-                    ProposalAttributeClient.setProposalAttribute(author.getUserId(), proposal.getProposalId(), seriesType,
-                            focusArea.getId_(), "", new Long(iteration.getYear()), filteredValue);
-                }
-
-            }
-        }
-    }
-
-    public JSONObject toJSONObject() throws SystemException, NoSuchImpactDefaultSeriesException {
-        JSONObject returnObject = JSONFactoryUtil.createJSONObject();
-        JSONObject serieses = JSONFactoryUtil.createJSONObject();
-
-        returnObject.put("focusAreaId", getFocusArea().getId_());
-
-        if (Validator.isNotNull(getSeriesAuthor()) && Validator.isNotNull(getUpdatedDate())) {
-            // Author info
-            JSONObject authorObject = JSONFactoryUtil.createJSONObject();
-            returnObject.put("author", authorObject);
-            authorObject.put("userId", getSeriesAuthor().getUserId());
-            MemberRoleChoiceAlgorithm impactRoleChoiceAlgorithm = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
-            final String authorDescription = impactRoleChoiceAlgorithm.getUserRoleDescription(this.getSeriesAuthor()) + " "
-                    + this.getSeriesAuthor().getFullName();
-            authorObject.put("name", authorDescription);
-
-            // update date
-            DateFormat dateFormatter = new SimpleDateFormat("MMMMMM d, YYYY, KK:mm a zzzz");
-            dateFormatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
-            returnObject.put("updateDate", dateFormatter.format(getUpdatedDate()));
-        }
-
-        returnObject.put("serieses", serieses);
-        for (Map.Entry<String, ProposalImpactSeriesValues> entry : seriesTypeToSeriesMap.entrySet()) {
-            String seriesType = entry.getKey();
-            final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
-
-            ImpactDefaultSeries defaultSeries = OntologyClient.getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), seriesType);
-
-            JSONObject series = JSONFactoryUtil.createJSONObject();
-            series.put("name", defaultSeries.getName());
-            series.put("description", defaultSeries.getDescription());
-            series.put("editable", defaultSeries.getEditable());
-            series.put("values", seriesValues.toJSONArrayWithIteration(impactIterations));
-            serieses.put(defaultSeries.getName(), series);
-        }
-
-        JSONArray iterations = JSONFactoryUtil.createJSONArray();
-        for (ImpactIteration impactIteration : impactIterations) {
-            iterations.put(impactIteration.getYear());
-        }
-        returnObject.put("iterations", iterations);
-        returnObject.put("success", true);
-
-        return returnObject;
-    }
-
-    public JSONObject toJSONObjectByFiltering(Set<String> filteredSeriesNames) throws SystemException, NoSuchImpactDefaultSeriesException {
-        JSONObject jsonObject = toJSONObject();
-        JSONObject newSeriesObject = JSONFactoryUtil.createJSONObject();
-        Iterator<String> seriesNameIterator = jsonObject.getJSONObject("serieses").keys();
-        while (seriesNameIterator.hasNext()) {
-            String seriesName = seriesNameIterator.next();
-            // Only pass series objects whoms name is not included in the filter set
-            if (!filteredSeriesNames.contains(seriesName)) {
-                newSeriesObject.put(seriesName, jsonObject.getJSONObject("serieses").getJSONObject(seriesName));
-            }
-        }
-
-        jsonObject.put("serieses", newSeriesObject);
-        return jsonObject;
-    }
-
-    private void loadEditableData() throws SystemException, NoSuchProposalVersionException {
+    private void loadEditableData() {
         // Get default serieses
         List<ImpactDefaultSeries> impactDefaultSerieses =
                 OntologyClient.getAllmpactDefaultSeriesByFocusArea(focusArea.getId_());
@@ -267,42 +130,214 @@ public class ProposalImpactSeries {
                     if (attribute.getName().equals(defaultSeries.getName()) && Objects
                             .equals(attribute.getAdditionalId(), focusArea.getId_())) {
                         foundEnteredData = true;
-                        addSeriesValueWithType(attribute.getName(), (int) attribute.getNumericValue().intValue(), attribute.getRealValue());
+                        addSeriesValueWithType(attribute.getName(),
+                                attribute.getNumericValue().intValue(),
+                                attribute.getRealValue());
 
                         // Set author and modification date
-                        this.lastModifiedVersion = ProposalsClient.getProposalVersionByProposalIdVersion(proposal.getProposalId(), attribute.getVersionWhenCreated());
+                        this.lastModifiedVersion = ProposalsClient
+                                .getProposalVersionByProposalIdVersion(proposal.getProposalId(),
+                                        attribute.getVersionWhenCreated());
                     }
                 }
 
                 // Use default data if not entered
                 if (!foundEnteredData) {
                     List<ImpactDefaultSeriesData> defaultSeriesDataList =
-                            OntologyClient.getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
+                            OntologyClient.getImpactDefaultSeriesDataBySeries(
+                                    defaultSeries.getSeriesId());
                     addSeriesWithType(defaultSeries.getName(), defaultSeriesDataList, true);
                 }
             }
         }
     }
 
+    public void addSeriesValueWithType(String seriesType, int year, double value) {
+        ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
+        if (seriesValues == null) {
+            seriesValues = new ProposalImpactSeriesValues();
+            seriesTypeToSeriesMap.put(seriesType, seriesValues);
+            seriesTypeToEditableMap.put(seriesType, true);
+        }
+
+        seriesValues.putSeriesValue(year, value);
+    }
+
+    public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea,
+            JSONObject json) {
+        this(contest, proposal, focusArea, false);
+
+        for (ImpactDefaultSeries defaultSeries : OntologyClient
+                .getAllmpactDefaultSeriesByFocusArea(focusArea.getId_())) {
+            if (!defaultSeries.getEditable()) {
+                continue;
+            }
+
+            seriesTypeToEditableMap.put(defaultSeries.getName(), true);
+            JSONObject seriesValues = json.getJSONObject(defaultSeries.getName());
+            for (ImpactIteration iteration : impactIterations) {
+                if (Double.isNaN(seriesValues.getDouble(iteration.getYear() + ""))) {
+                    throw new RuntimeException(
+                            "Could not parse value for year " + iteration.getYear());
+                }
+                addSeriesValueWithType(defaultSeries.getName(), iteration.getYear(),
+                        seriesValues.getDouble(iteration.getYear() + ""));
+            }
+        }
+    }
+
+    public Map<String, ProposalImpactSeriesValues> getSeriesTypeToSeriesMap() {
+        return seriesTypeToSeriesMap;
+    }
+
+    public ProposalImpactSeriesValues getSeriesValuesForType(String seriesType) {
+        return seriesTypeToSeriesMap.get(seriesType);
+    }
+
+    public ProposalImpactSeriesValues getResultSeriesValues() {
+        if (resultValues == null) {
+            calculateResultSeriesValues();
+        }
+
+        return resultValues;
+    }
+
     /**
      * Calculate the result values for each time point in the Iteration
      */
-    private void calculateResultSeriesValues() throws SystemException, NoSuchImpactDefaultSeriesDataException {
+    private void calculateResultSeriesValues() {
         resultValues = new ProposalImpactSeriesValues();
         for (ImpactIteration impactIteration : impactIterations) {
             int currentYear = impactIteration.getYear();
 
             double bauValue =
-                    OntologyClient.getImpactDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
-                            currentYear).getValue();
+                    OntologyClient
+                            .getImpactDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
+                                    currentYear).getValue();
 
-            double reductionRate = seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_REDUCTION).getValueForYear(currentYear);
-            double adoptionRate = seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE).getValueForYear(currentYear);
+            double reductionRate =
+                    seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_REDUCTION)
+                            .getValueForYear(currentYear);
+            double adoptionRate =
+                    seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE)
+                            .getValueForYear(currentYear);
 
             // Round to 2 decimal digits
-            double resultValue = Math.round((bauValue * (reductionRate * 0.01 * adoptionRate * 0.01)) * 100.0) / 100.0;
+            double resultValue =
+                    Math.round((bauValue * (reductionRate * 0.01 * adoptionRate * 0.01)) * 100.0)
+                            / 100.0;
             resultValues.putSeriesValue(currentYear, resultValue);
         }
+    }
+
+    public boolean getIsEditableForSeriesType(String seriesType) {
+        return seriesTypeToEditableMap.get(seriesType);
+    }
+
+    public void persistWithAuthor(Member author) {
+        // Persist all editable attributes
+        for (Map.Entry<String, Boolean> entry : seriesTypeToEditableMap.entrySet()) {
+            final String seriesType = entry.getKey();
+            final Boolean isEditable = entry.getValue();
+            if (isEditable) {
+                ProposalImpactSeriesValues seriesValues =
+                        this.seriesTypeToSeriesMap.get(seriesType);
+                for (ImpactIteration iteration : impactIterations) {
+                    double filteredValue = ProposalImpactValueFilterAlgorithm
+                            .filterValueForImpactSeriesType(
+                                    seriesValues.getValueForYear(iteration.getYear()), seriesType);
+                    ProposalAttributeClient
+                            .setProposalAttribute(author.getUserId(), proposal.getProposalId(),
+                                    seriesType,
+                                    focusArea.getId_(), "", new Long(iteration.getYear()),
+                                    filteredValue);
+                }
+
+            }
+        }
+    }
+
+    public JSONObject toJSONObjectByFiltering(Set<String> filteredSeriesNames) {
+        JSONObject jsonObject = toJSONObject();
+        JSONObject newSeriesObject = JSONFactoryUtil.createJSONObject();
+        Iterator<String> seriesNameIterator = jsonObject.getJSONObject("serieses").keys();
+        while (seriesNameIterator.hasNext()) {
+            String seriesName = seriesNameIterator.next();
+            // Only pass series objects whoms name is not included in the filter set
+            if (!filteredSeriesNames.contains(seriesName)) {
+                newSeriesObject.put(seriesName,
+                        jsonObject.getJSONObject("serieses").getJSONObject(seriesName));
+            }
+        }
+
+        jsonObject.put("serieses", newSeriesObject);
+        return jsonObject;
+    }
+
+    public JSONObject toJSONObject() {
+        JSONObject returnObject = JSONFactoryUtil.createJSONObject();
+        JSONObject serieses = JSONFactoryUtil.createJSONObject();
+
+        returnObject.put("focusAreaId", getFocusArea().getId_());
+
+        if (getSeriesAuthor() != null && getUpdatedDate() != null) {
+            // Author info
+            JSONObject authorObject = JSONFactoryUtil.createJSONObject();
+            returnObject.put("author", authorObject);
+            authorObject.put("userId", getSeriesAuthor().getUserId());
+            MemberRoleChoiceAlgorithm impactRoleChoiceAlgorithm =
+                    MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
+            final String authorDescription =
+                    impactRoleChoiceAlgorithm.getUserRoleDescription(this.getSeriesAuthor()) + " "
+                            + this.getSeriesAuthor().getFullName();
+            authorObject.put("name", authorDescription);
+
+            // update date
+            DateFormat dateFormatter = new SimpleDateFormat("MMMMMM d, YYYY, KK:mm a zzzz");
+            dateFormatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
+            returnObject.put("updateDate", dateFormatter.format(getUpdatedDate()));
+        }
+
+        returnObject.put("serieses", serieses);
+        for (Map.Entry<String, ProposalImpactSeriesValues> entry : seriesTypeToSeriesMap
+                .entrySet()) {
+            String seriesType = entry.getKey();
+            final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
+
+            ImpactDefaultSeries defaultSeries = OntologyClient
+                    .getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), seriesType);
+
+            JSONObject series = JSONFactoryUtil.createJSONObject();
+            series.put("name", defaultSeries.getName());
+            series.put("description", defaultSeries.getDescription());
+            series.put("editable", defaultSeries.getEditable());
+            series.put("values", seriesValues.toJSONArrayWithIteration(impactIterations));
+            serieses.put(defaultSeries.getName(), series);
+        }
+
+        JSONArray iterations = JSONFactoryUtil.createJSONArray();
+        for (ImpactIteration impactIteration : impactIterations) {
+            iterations.put(impactIteration.getYear());
+        }
+        returnObject.put("iterations", iterations);
+        returnObject.put("success", true);
+
+        return returnObject;
+    }
+
+    public FocusArea getFocusArea() {
+        return focusArea;
+    }
+
+    private Member getSeriesAuthor() {
+        if (lastModifiedVersion != null) {
+            return MembersClient.getMemberUnchecked(lastModifiedVersion.getAuthorId());
+        }
+        return null;
+    }
+
+    public Date getUpdatedDate() {
+        return lastModifiedVersion.getCreateDate();
     }
 
     public ProposalWrapper getProposalWrapper() {
@@ -319,22 +354,5 @@ public class ProposalImpactSeries {
 
     public OntologyTerm getWhereTerm() {
         return whereTerm;
-    }
-
-    public FocusArea getFocusArea() {
-        return focusArea;
-    }
-
-    private User getSeriesAuthor() {
-        try {
-            if (lastModifiedVersion != null) {
-                return UserLocalServiceUtil.getUser(lastModifiedVersion.getAuthorId());
-            }
-        } catch (SystemException | PortalException ignored) { }
-        return null;
-    }
-
-    public Date getUpdatedDate() {
-        return lastModifiedVersion.getCreateDate();
     }
 }

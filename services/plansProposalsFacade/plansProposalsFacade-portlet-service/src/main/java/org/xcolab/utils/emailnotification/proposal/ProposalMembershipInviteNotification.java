@@ -1,6 +1,6 @@
 package org.xcolab.utils.emailnotification.proposal;
 
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
 
 import com.liferay.portal.kernel.util.HttpUtil;;

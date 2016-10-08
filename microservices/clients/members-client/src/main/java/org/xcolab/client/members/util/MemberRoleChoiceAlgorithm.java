@@ -1,12 +1,12 @@
-package org.xcolab.enums;
+package org.xcolab.client.members.util;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.RoleLocalServiceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.Role_;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,21 +17,22 @@ import java.util.Map;
  * (i.e. highest role in context of members-portlet or for the proposal impact tab)
  */
 public abstract class MemberRoleChoiceAlgorithm {
-    private static final Log _log = LogFactoryUtil.getLog(MemberRoleChoiceAlgorithm.class);
+    private static final Logger _log = LoggerFactory.getLogger(MemberRoleChoiceAlgorithm.class);
 
     public final static MemberRoleChoiceAlgorithm proposalImpactTabAlgorithm = new MemberRoleChoiceAlgorithm() {
 
         @Override
-        public MemberRole getHighestMemberRoleForUser(User user) throws SystemException {
-            Map<Long, Boolean> roleIdMap = getRoleIdMap(user);
+        public MemberRole getHighestMemberRoleForUser(Member member) {
+            Map<Long, Boolean> roleIdMap = getRoleIdMap(member);
 
             for (MemberRole memberRole : getPrioritizedMemberRoles()) {
-                if (Validator.isNotNull(roleIdMap.get(memberRole.getRoleId()))) {
+                if (roleIdMap.get(memberRole.getRoleId()) != null) {
                     return memberRole;
                 }
             }
 
-            _log.error("No member role could be found for proposal impact tab member selection algorithm for user with ID " + user.getUserId() + "! Returning Member...");
+            _log.error("No member role could be found for proposal impact tab member selection "
+                            + "algorithm for user with ID {}! Returning Member...", member.getUserId());
             return MemberRole.GUEST;
         }
 
@@ -43,7 +44,7 @@ public abstract class MemberRoleChoiceAlgorithm {
         @Override
         public String getMemberRoleDescription(MemberRole memberRole) {
             String memberDescription = getMemberRoleToMemberDescriptionMap().get(memberRole);
-            if (Validator.isNotNull(memberDescription)) {
+            if (memberDescription != null) {
                 return memberDescription;
             }
 
@@ -62,11 +63,10 @@ public abstract class MemberRoleChoiceAlgorithm {
 
     /**
      * Returns the role of the user with highest priority, where the priority is determined by the algorithm's implementation
-     * @param user      The user in question
+     * @param member      The user in question
      * @return          A member role object of type with the highest priority
-     * @throws SystemException
      */
-    public abstract MemberRole getHighestMemberRoleForUser(User user) throws SystemException;
+    public abstract MemberRole getHighestMemberRoleForUser(Member member);
 
     public abstract MemberRole[] getPrioritizedMemberRoles();
 
@@ -78,17 +78,17 @@ public abstract class MemberRoleChoiceAlgorithm {
     public abstract Map<MemberRole, String> getMemberRoleToMemberDescriptionMap();
 
     // Helper methods
-    public Map<Long, Boolean> getRoleIdMap(User user) throws SystemException {
-        List<Role> userRoles = RoleLocalServiceUtil.getUserRoles(user.getUserId());
+    public Map<Long, Boolean> getRoleIdMap(Member member) {
+        List<Role_> userRoles = MembersClient.getMemberRoles(member.getId_());
         Map<Long, Boolean> roleIdMap = new HashMap<>(userRoles.size());
-        for (Role role : userRoles) {
+        for (Role_ role : userRoles) {
             roleIdMap.put(role.getRoleId(), true);
         }
 
         return roleIdMap;
     }
 
-    public String getUserRoleDescription(User user) throws SystemException {
+    public String getUserRoleDescription(Member user) {
         return getMemberRoleDescription(getHighestMemberRoleForUser(user));
     }
 }

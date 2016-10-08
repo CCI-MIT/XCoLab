@@ -1,8 +1,5 @@
 package org.xcolab.portlets.proposals.impact;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -45,8 +42,7 @@ public class IntegratedProposalImpactSeries {
 
     private OntologyTerm regionOntologyTerm;
 
-    public IntegratedProposalImpactSeries(Proposal proposal, Contest contest)
-            throws PortalException, SystemException {
+    public IntegratedProposalImpactSeries(Proposal proposal, Contest contest) {
         try {
             org.xcolab.client.contest.pojo.Contest contestMicro =
                     ContestClient.getContest(contest.getContestPK());
@@ -62,8 +58,7 @@ public class IntegratedProposalImpactSeries {
 
     }
 
-    public static Set<Proposal> getSubProposalsOnContestTier(Proposal proposal, Long contestTierId)
-            throws SystemException, PortalException {
+    public static Set<Proposal> getSubProposalsOnContestTier(Proposal proposal, Long contestTierId) {
         Set<Proposal> subProposalsOnContestTier = new HashSet<>();
         getSubProposalsOnContestTier(Arrays.asList(proposal), subProposalsOnContestTier,
                 contestTierId);
@@ -71,8 +66,7 @@ public class IntegratedProposalImpactSeries {
     }
 
     public static void getSubProposalsOnContestTier(List<Proposal> proposals,
-            Set<Proposal> subProposalsOnContestTier, Long contestTierId)
-            throws SystemException, PortalException {
+            Set<Proposal> subProposalsOnContestTier, Long contestTierId) {
         if (!proposals.isEmpty()) {
             for (Proposal proposal : proposals) {
                 try {
@@ -110,8 +104,7 @@ public class IntegratedProposalImpactSeries {
         return this.resultSeriesValues.isEmpty();
     }
 
-    private void calculateIntegratedImpactSeries(boolean global)
-            throws SystemException, PortalException {
+    private void calculateIntegratedImpactSeries(boolean global) {
         Set<Proposal> referencedSubProposals =
                 getSubProposalsOnContestTier(proposal, ContestTier.BASIC.getTierType());
         seriesTypeToAggregatedSeriesMap = new LinkedHashMap<>(REFERENCE_SERIES_TYPES.length);

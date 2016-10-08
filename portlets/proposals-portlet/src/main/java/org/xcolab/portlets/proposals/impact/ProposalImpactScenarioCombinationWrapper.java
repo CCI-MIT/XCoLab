@@ -10,7 +10,6 @@ import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.log4j.Logger;
 
 import com.ext.portlet.models.CollaboratoriumModelingService;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -230,7 +229,7 @@ public class ProposalImpactScenarioCombinationWrapper {
                 regionInputId = ENROADS_REGION_INPUT_ID;
             }
             String scenarioRegionName = (String) currentScenarioInputParameters.get(regionInputId);
-            double regionFactor = Validator.isNotNull(REGION_AVG_FACTOR.get(scenarioRegionName)) ? REGION_AVG_FACTOR.get(scenarioRegionName) : 1.0;
+            double regionFactor = REGION_AVG_FACTOR.get(scenarioRegionName) != null ? REGION_AVG_FACTOR.get(scenarioRegionName) : 1.0;
 
             for (Map.Entry<Long, Object> entry : currentScenarioInputParameters.entrySet()) {
                 final Long inputId = entry.getKey();

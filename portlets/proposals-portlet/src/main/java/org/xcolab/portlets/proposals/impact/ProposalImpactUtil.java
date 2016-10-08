@@ -1,9 +1,5 @@
 package org.xcolab.portlets.proposals.impact;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
-
 import org.xcolab.client.contest.ImpactTemplateClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.Contest;
@@ -34,7 +30,7 @@ public class ProposalImpactUtil {
      * @param impactSerieses        A list of impact series objects
      * @return                      A map with region terms as keys and a list of sector terms as values
      */
-    public Map<OntologyTerm, List<OntologyTerm>> calculateAvailableOntologyMap(List<ProposalImpactSeries> impactSerieses) throws SystemException, PortalException {
+    public Map<OntologyTerm, List<OntologyTerm>> calculateAvailableOntologyMap(List<ProposalImpactSeries> impactSerieses) {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyTermMap = new HashMap<>();
         Map<Long, Boolean> impactSeriesAvailableMap = getImpactSeriesAvailableMap(impactSerieses);
@@ -45,13 +41,13 @@ public class ProposalImpactUtil {
             FocusArea focusArea = OntologyClient.getFocusArea(impactFocusArea.getFocusAreaId());
 
             // Only consider focus areas where we did not have a filled out impact series
-            if (Validator.isNull(impactSeriesAvailableMap.get(focusArea.getId_()))) {
+            if (impactSeriesAvailableMap.get(focusArea.getId_()) == null) {
                 OntologyTerm whatTerm = getWhatTerm(focusArea);
                 OntologyTerm whereTerm = getWhereTerm(focusArea);
 
                 List<OntologyTerm> whatTerms = ontologyTermMap.get(whereTerm);
-                if (Validator.isNull(whatTerms)) {
-                    whatTerms = new ArrayList<OntologyTerm>();
+                if (whatTerms == null) {
+                    whatTerms = new ArrayList<>();
                     ontologyTermMap.put(whereTerm, whatTerms);
                 }
 
@@ -79,10 +75,10 @@ public class ProposalImpactUtil {
     }
 
     private static Map<Long, Boolean> getImpactSeriesAvailableMap(List<ProposalImpactSeries> impactSerieses) {
-        Map<Long, Boolean> impactSeriesAvailableMap = new HashMap<>(impactSerieses.size());
-        if (Validator.isNull(impactSerieses)) {
-            return impactSeriesAvailableMap;
+        if (impactSerieses == null) {
+            return new HashMap<>(0);
         }
+        Map<Long, Boolean> impactSeriesAvailableMap = new HashMap<>();
 
         for (ProposalImpactSeries series : impactSerieses) {
             impactSeriesAvailableMap.put(series.getFocusArea().getId_(), true);
@@ -91,15 +87,15 @@ public class ProposalImpactUtil {
         return impactSeriesAvailableMap;
     }
 
-    public static OntologyTerm getWhatTerm(FocusArea focusArea) throws PortalException, SystemException {
+    public static OntologyTerm getWhatTerm(FocusArea focusArea) {
         return getTermWithSpaceId(focusArea, OntologySpaceEnum.WHAT.getSpaceId());
     }
 
-    public static OntologyTerm getWhereTerm(FocusArea focusArea) throws PortalException, SystemException {
+    public static OntologyTerm getWhereTerm(FocusArea focusArea) {
         return getTermWithSpaceId(focusArea, OntologySpaceEnum.WHERE.getSpaceId());
     }
 
-    private static OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) throws SystemException, PortalException {
+    private static OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) {
         OntologySpace space = OntologyClient.getOntologySpace(spaceId);
         return OntologyClient.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
     }

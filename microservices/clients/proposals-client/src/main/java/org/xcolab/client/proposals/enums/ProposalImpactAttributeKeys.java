@@ -1,4 +1,4 @@
-package com.ext.portlet;
+package org.xcolab.client.proposals.enums;
 
 public class ProposalImpactAttributeKeys extends ProposalAttributeKeys {
     /**

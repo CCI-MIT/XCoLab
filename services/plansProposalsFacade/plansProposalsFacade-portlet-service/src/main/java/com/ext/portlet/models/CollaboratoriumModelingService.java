@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2010. M.I.T. All Rights Reserved
- * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
- * or the license.txt file included in this distribution for the full text of the license.
- */
-
 package com.ext.portlet.models;
 
 import edu.mit.cci.roma.client.Simulation;
@@ -18,8 +12,7 @@ public class CollaboratoriumModelingService {
 	private static ClientRepository instance;
 	private static final Object mutex = new Object();
 
-	private static final Log _log = LogFactoryUtil
-			.getLog(CollaboratoriumModelingService.class);
+	private static final Log _log = LogFactoryUtil.getLog(CollaboratoriumModelingService.class);
 
 	public static ClientRepository repository() {
 		if (instance == null) {

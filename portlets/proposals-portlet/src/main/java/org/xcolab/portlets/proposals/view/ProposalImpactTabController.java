@@ -2,6 +2,8 @@ package org.xcolab.portlets.proposals.view;
 
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +14,6 @@ import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.contest.ContestClient;
@@ -28,13 +28,13 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalUnversionedAttribute;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
-import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.impact.IntegratedProposalImpactSeries;
 import org.xcolab.portlets.proposals.impact.ProposalImpactScenarioCombinationWrapper;
 import org.xcolab.portlets.proposals.impact.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.impact.ProposalImpactSeriesList;
+import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
+import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -54,7 +54,7 @@ import javax.portlet.PortletRequest;
 @RequestMapping("view")
 public class ProposalImpactTabController extends BaseProposalTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ProposalImpactTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
 
     @Autowired
     private ProposalsContext proposalsContext;
@@ -64,7 +64,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
     public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
-            throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException {
+            throws IOException, ScenarioNotFoundException, ModelNotFoundException, SystemException, PortalException {
 
         contest = proposalsContext.getContest(request);
         proposalWrapper = proposalsContext.getProposalWrapped(request);
@@ -247,31 +247,24 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return getConsolidateOptionsOnGlobalLevel();
     }
 
-    private String showImpactTabBasic(PortletRequest request, Model model)
-            throws PortalException, SystemException {
+    private String showImpactTabBasic(PortletRequest request, Model model) {
 
+        List<ImpactIteration> impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
+        model.addAttribute("impactIterations", impactIterations);
 
-        try {
-            List<ImpactIteration> impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
-            model.addAttribute("impactIterations", impactIterations);
+        ProposalImpactSeriesList proposalImpactSeriesList =
+                new ProposalImpactSeriesList(contest, proposalWrapper.getWrapped());
+        model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
-            ProposalImpactSeriesList proposalImpactSeriesList =
-                    new ProposalImpactSeriesList(contest, proposalWrapper.getWrapped());
-            model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
-
-            Map<OntologyTerm, List<OntologyTerm>> ontologyMap =
-                    new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
-            model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
-            model.addAttribute("proposalsPermissions", proposalsContext.getPermissions(request));
-        } catch (PortalException e) {
-            _log.error("Error retrieving impact serieses for contest with contest ID " + contest.getContestPK(), e);
-        }
+        Map<OntologyTerm, List<OntologyTerm>> ontologyMap =
+                new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
+        model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
+        model.addAttribute("proposalsPermissions", proposalsContext.getPermissions(request));
 
         return "basicProposalImpact";
     }
 
-    private List<ProposalImpactSeries> getImpactTabBasicProposal(Proposal proposalParent)
-            throws PortalException, SystemException {
+    private List<ProposalImpactSeries> getImpactTabBasicProposal(Proposal proposalParent) {
         Set<Proposal> referencedSubProposals =
                 IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalParent, ContestTier.BASIC.getTierType());
         try {
@@ -310,15 +303,15 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return list;
     }
 
-    private boolean isGlobalContest(Contest contest) throws PortalException, SystemException {
+    private boolean isGlobalContest(Contest contest) {
         return contest.getContestTier() == ContestTier.GLOBAL.getTierType();
     }
 
-    private boolean isRegionalContest(Contest contest) throws PortalException, SystemException {
+    private boolean isRegionalContest(Contest contest) {
         return contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType();
     }
 
-    private boolean isRegionalSectorContest(Contest contest) throws PortalException, SystemException {
+    private boolean isRegionalSectorContest(Contest contest) {
         return contest.getContestTier() == ContestTier.REGION_SECTOR.getTierType();
     }
 
