@@ -2,7 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 
 
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -59,7 +59,7 @@ public class ProposalModelTabController extends BaseProposalTabController {
         Map<Long, String> ret = new HashMap<>();
         for (Long modelId: modelIds) {
             try {
-                Simulation s = CollaboratoriumModelingService.repository().getSimulation(modelId);
+                Simulation s = RomaClientUtil.repository().getSimulation(modelId);
                 ret.put(s.getId(), s.getName());
 
             }

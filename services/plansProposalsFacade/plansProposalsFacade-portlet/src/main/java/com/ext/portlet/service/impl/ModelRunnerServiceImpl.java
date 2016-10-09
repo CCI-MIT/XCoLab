@@ -1,7 +1,7 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.model.ModelGlobalPreference;
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
@@ -73,7 +73,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getScenario(long scenarioId) {
         try {
-            Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
+            Scenario scenario = RomaClientUtil.repository().getScenario(scenarioId);
             return convertScenario(scenario);
 
         } catch (SystemException e) {
@@ -89,7 +89,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getModel(long modelId) throws SystemException, IllegalUIConfigurationException, IOException {
 
-        Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
         
         return convertModel(simulation);
     }
@@ -106,9 +106,10 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
             inputsValues.put(Long.parseLong(key), inputsObject.getString(key));
         }
 
-        Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 
-        Scenario scenario = CollaboratoriumModelingService.repository().runModel(simulation, inputsValues, 0L, false);
+        Scenario scenario = RomaClientUtil
+                .repository().runModel(simulation, inputsValues, 0L, false);
 
         if(Validator.isNotNull(scenario.getErrorStackTrace())){
             // Log error
@@ -120,8 +121,8 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     
     @Override
     public void refreshModels() throws SystemException, IOException {
-    	CollaboratoriumModelingService.repository().getManager().clearCache();
-    	CollaboratoriumModelingService.repository().getManager().refreshSimulations();
+    	RomaClientUtil.repository().getManager().clearCache();
+    	RomaClientUtil.repository().getManager().refreshSimulations();
     }
     
     private JSONObject convertScenario(Scenario scenario) throws SystemException, IllegalUIConfigurationException, IOException {

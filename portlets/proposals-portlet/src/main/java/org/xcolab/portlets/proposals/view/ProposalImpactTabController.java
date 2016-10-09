@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -22,6 +21,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ImpactIteration;
 import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.proposals.ProposalUnversionedAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -153,7 +153,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 Validator.isNotNull(proposalWrapper.getScenarioId()) && proposalWrapper.getScenarioId() > 0;
         if(scenarioIdValid){
             try {
-                modelId = CollaboratoriumModelingService.repository()
+                modelId = RomaClientUtil.repository()
                         .getScenario(proposalWrapper.getScenarioId()).getSimulation().getId();
             } catch (IOException e){
                 _log.warn("Could not fetch simulation id for proposal scenario: ", e);

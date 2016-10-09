@@ -5,7 +5,7 @@ import edu.mit.cci.roma.client.Simulation;
 
 import com.ext.portlet.JudgingSystemActions;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -322,14 +322,14 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public Scenario getScenarioByProposalId(Long proposalId) throws IOException, SystemException {
-        return CollaboratoriumModelingService.repository().getScenario(proposalId);
+        return RomaClientUtil.repository().getScenario(proposalId);
     }
 
     private static Long getModelIdForScenarioId(Long scenarioId) {
         Long modelId;
 
         try {
-            Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
+            Scenario scenario = RomaClientUtil.repository().getScenario(scenarioId);
             Simulation simulation = scenario.getSimulation();
             modelId = simulation.getId();
         } catch (IOException e) {

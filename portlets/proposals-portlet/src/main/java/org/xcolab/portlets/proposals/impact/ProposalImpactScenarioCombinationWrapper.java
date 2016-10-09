@@ -9,7 +9,7 @@ import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.log4j.Logger;
 
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -153,7 +153,7 @@ public class ProposalImpactScenarioCombinationWrapper {
 
     private void initRomaClient() {
         // TODO implement: Wait for roma Client Thread to be stared!
-        romaClient = CollaboratoriumModelingService.repository();
+        romaClient = RomaClientUtil.repository();
     }
 
     private Scenario getScenarioForScenarioId(Long scenarioId) throws IOException {
