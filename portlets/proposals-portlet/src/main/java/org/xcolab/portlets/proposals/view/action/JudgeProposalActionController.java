@@ -27,10 +27,10 @@ import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestTeamMemberClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -90,7 +90,7 @@ public class JudgeProposalActionController {
         Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         long proposalId = proposal.getProposalId();
-        ContestPhase contestPhase = ContestClient.getContestPhase(proposalAdvancingBean.getContestPhaseId());
+        ContestPhase contestPhase = ContestClientUtil.getContestPhase(proposalAdvancingBean.getContestPhaseId());
         User currentUser = proposalsContext.getUser(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
@@ -151,7 +151,7 @@ public class JudgeProposalActionController {
 
         //forcefully promote the advancement
         if (permissions.getCanAdminAll() && !isUndecided && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
-            ContestClient.forcePromotionOfProposalInPhase(proposal.getProposalId(), contestPhase.getContestPhasePK());
+            ContestClientUtil.forcePromotionOfProposalInPhase(proposal.getProposalId(), contestPhase.getContestPhasePK());
         }
         response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/ADVANCING");
     }
@@ -201,7 +201,7 @@ public class JudgeProposalActionController {
         Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
         Set<Member> occurringJudges = new HashSet<>();
 
-        for (ContestPhase judgingPhase : ContestClient.getAllContestPhases(contest.getContestPK())) {
+        for (ContestPhase judgingPhase : ContestClientUtil.getAllContestPhases(contest.getContestPK())) {
             if(!judgingPhase.getFellowScreeningActive()){
                 continue;
             }
@@ -286,7 +286,7 @@ public class JudgeProposalActionController {
         // Choose all judges
         else {
             try {
-                List<Long> members = ContestTeamMemberClient.getJudgesForContest(judgingPhase.getContestPK());
+                List<Long> members = ContestTeamMemberClientUtil.getJudgesForContest(judgingPhase.getContestPK());
                 selectedJudges = new ArrayList<>();
                 for(Long memberId : members){
                     selectedJudges.add(MembersClient.getMember(memberId));
@@ -311,7 +311,7 @@ public class JudgeProposalActionController {
 
         final Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
-        ContestPhase contestPhase = ContestClient.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
+        ContestPhase contestPhase = ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         User liferayUser = proposalsContext.getUser(request);
         Member member = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -395,7 +395,9 @@ public class JudgeProposalActionController {
                         ,null);
 
                 //save fellow action comment
-                ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), ContestClient.getContestPhase(contestPhaseId));
+                ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), ContestClientUtil
+
+                        .getContestPhase(contestPhaseId));
 
                 if (fellowProposalScreeningBean.getFellowScreeningAction()
                         == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()

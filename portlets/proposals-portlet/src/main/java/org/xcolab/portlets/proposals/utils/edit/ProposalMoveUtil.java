@@ -4,10 +4,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.ProposalMoveHistoryClient;
@@ -29,7 +29,7 @@ public final class ProposalMoveUtil {
             throws SystemException, PortalException {
         try {
             final Contest fromContest = ProposalsClient.getCurrentContestForProposal(proposalWrapper.getProposalId());
-            ContestPhase targetPhase = ContestClient.getActivePhase(targetContest.getContestPK());
+            ContestPhase targetPhase = ContestClientUtil.getActivePhase(targetContest.getContestPK());
 
             try {//Proposal2PhaseLocalServiceUtil
                 if (Proposal2PhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposalWrapper.getProposalId(),
@@ -47,7 +47,7 @@ public final class ProposalMoveUtil {
                             themeDisplay.getUserId());
                     for (Proposal2Phase p2p : Proposal2PhaseClient
                             .getProposal2PhaseByProposalId(proposalWrapper.getProposalId())) {
-                        if (ContestClient.getContestPhase(p2p.getContestPhaseId()).getContestPK()
+                        if (ContestClientUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK()
                                 != updateProposalSectionsBean.getBaseProposalContestId()) {
                             continue;
                         }
@@ -59,9 +59,9 @@ public final class ProposalMoveUtil {
                         }
 
                         if (updateProposalSectionsBean.getMoveFromContestPhaseId() != null) {
-                            if (!ContestClient.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate()
+                            if (!ContestClientUtil.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate()
                                     .before(
-                                            ContestClient
+                                            ContestClientUtil
                                                     .getContestPhase(updateProposalSectionsBean.getMoveFromContestPhaseId())
                                                     .getPhaseStartDate())) {
                                 // remove proposal from this contest in all phases that come after the selected one

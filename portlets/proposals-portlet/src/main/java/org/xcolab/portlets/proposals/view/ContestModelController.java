@@ -15,7 +15,7 @@ import com.ext.portlet.service.ModelRunnerServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -48,7 +48,7 @@ public class ContestModelController extends BaseProposalsController {
 		Long modelId = 0L;
     	Long contestPK = proposalsContext.getContest(request).getContestPK();
 		try{
-			Contest contest = ContestClient.getContest(contestPK);
+			Contest contest = ContestClientUtil.getContest(contestPK);
 			modelId = contest.getDefaultModelId();
 			Map<Long, String> modelIdsWithNames;
 			if (modelId != null) {

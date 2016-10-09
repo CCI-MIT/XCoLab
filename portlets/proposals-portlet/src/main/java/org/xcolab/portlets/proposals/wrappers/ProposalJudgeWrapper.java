@@ -3,7 +3,7 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.JudgingSystemActions;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalRatingClient;
 import org.xcolab.client.proposals.pojo.Proposal;

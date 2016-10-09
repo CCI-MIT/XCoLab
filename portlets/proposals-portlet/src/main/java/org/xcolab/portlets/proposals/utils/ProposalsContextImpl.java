@@ -1,6 +1,9 @@
 package org.xcolab.portlets.proposals.utils;
 
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -14,13 +17,11 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -209,13 +210,13 @@ public class ProposalsContextImpl implements ProposalsContext {
             Contest contest = null;
             if (contestId > 0) {
                 try {
-                    contest = ContestClient.getContest(contestId);
+                    contest = ContestClientUtil.getContest(contestId);
                 } catch (ContestNotFoundException e) {
                     handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, referralUrl,
                             userAgent);
                 }
             } else if (StringUtils.isNotBlank(contestUrlName) && contestYear > 0) {
-                    contest = ContestClient
+                    contest = ContestClientUtil
                             .getContestByContestUrlNameContestYear(contestUrlName, contestYear);
 
             }
@@ -227,14 +228,14 @@ public class ProposalsContextImpl implements ProposalsContext {
             if (contest != null) {
 
                     if (phaseId > 0) {
-                            contestPhase = ContestClient.getContestPhase(phaseId);
+                            contestPhase = ContestClientUtil.getContestPhase(phaseId);
                         if(contestPhase == null) {
-                            contestPhase = ContestClient.getActivePhase(contest.getContestPK());
+                            contestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
                         }
 
                     } else {
                         //get the last phase of this contest
-                        contestPhase = ContestClient.getActivePhase(contest.getContestPK());
+                        contestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
                     }
                 if( contestPhase == null) {
                     throw ReferenceResolutionException
@@ -262,10 +263,10 @@ public class ProposalsContextImpl implements ProposalsContext {
                                 for (Long contestPhaseId : Proposal2PhaseLocalServiceUtil
                                         .getContestPhasesForProposal(proposalId)) {
 
-                                    ContestPhase cp = ContestClient
+                                    ContestPhase cp = ContestClientUtil
                                             .getContestPhase(contestPhaseId);
                                     boolean isContestPhaseAssociatedWithRequestedContest =
-                                            cp.getContestPK() == contest.getContestPK();
+                                            cp.getContestPK() == contest.getContestPK().longValue();
                                     if (isContestPhaseAssociatedWithRequestedContest) {
                                         if (mostRecentPhaseInRequestedContest == null
                                                 || mostRecentPhaseInRequestedContest.compareTo(cp)
@@ -289,7 +290,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                         contestPhase = mostRecentPhaseInOtherContest;
                                         // TODO show user list if several contest are available
                                         try{
-                                            contest = ContestClient
+                                            contest = ContestClientUtil
                                                     .getContest(contestPhase.getContestPK());
                                         }catch (ContestNotFoundException ignored){
                                             contest = null;
@@ -324,7 +325,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             ContestType contestType = null;
             if (contest != null) {
                 try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
                     request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contestMicro));//contest
                 }catch (ContestNotFoundException ignored){
 
@@ -333,7 +334,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                     request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,
                             new BaseContestPhaseWrapper(contestPhase));//contestPhase
 
-                    contestType = ContestClient
+                    contestType = ContestClientUtil
                             .getContestType(contest.getContestTypeId());
                     if (proposal != null) {
                         ProposalWrapper proposalWrapper;

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -71,7 +71,7 @@ public class ProposalModelTabController extends BaseProposalTabController {
     }
     public List<Long> getModelIds(long contestPK) throws SystemException, PortalException {
         try {
-            Contest contest = ContestClient.getContest(contestPK);
+            Contest contest = ContestClientUtil.getContest(contestPK);
 
             List<Long> modelIds = new ArrayList<>();
 

@@ -4,14 +4,14 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
-import org.xcolab.client.contest.ImpactTemplateClient;
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.ImpactClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
-import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
-import org.xcolab.client.contest.pojo.ImpactIteration;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.impact.ImpactIteration;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
@@ -70,9 +70,9 @@ public class ProposalImpactSeries {
         this.proposalWrapper = new ProposalWrapper(proposal);
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
-        this.impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
+        this.impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         // Retrieve static serieses
-        bauSeries = OntologyClient
+        bauSeries = OntologyClientUtil
                 .getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false, false);
 
@@ -87,7 +87,7 @@ public class ProposalImpactSeries {
 
     private void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable,
             boolean invertSeriesSign) {
-        List<ImpactDefaultSeriesData> seriesDataList = OntologyClient
+        List<ImpactDefaultSeriesData> seriesDataList = OntologyClientUtil
                 .getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
         if (invertSeriesSign) {
             for (ImpactDefaultSeriesData seriesData : seriesDataList) {
@@ -113,7 +113,7 @@ public class ProposalImpactSeries {
     private void loadEditableData() {
         // Get default serieses
         List<ImpactDefaultSeries> impactDefaultSerieses =
-                OntologyClient.getAllmpactDefaultSeriesByFocusArea(focusArea.getId_());
+                OntologyClientUtil.getAllmpactDefaultSeriesByFocusArea(focusArea.getId_());
 
         // TODO create query to filter by additionalId?
         List<ProposalAttribute> impactProposalAttributes =
@@ -144,7 +144,7 @@ public class ProposalImpactSeries {
                 // Use default data if not entered
                 if (!foundEnteredData) {
                     List<ImpactDefaultSeriesData> defaultSeriesDataList =
-                            OntologyClient.getImpactDefaultSeriesDataBySeries(
+                            OntologyClientUtil.getImpactDefaultSeriesDataBySeries(
                                     defaultSeries.getSeriesId());
                     addSeriesWithType(defaultSeries.getName(), defaultSeriesDataList, true);
                 }
@@ -167,7 +167,7 @@ public class ProposalImpactSeries {
             JSONObject json) {
         this(contest, proposal, focusArea, false);
 
-        for (ImpactDefaultSeries defaultSeries : OntologyClient
+        for (ImpactDefaultSeries defaultSeries : OntologyClientUtil
                 .getAllmpactDefaultSeriesByFocusArea(focusArea.getId_())) {
             if (!defaultSeries.getEditable()) {
                 continue;
@@ -211,7 +211,7 @@ public class ProposalImpactSeries {
             int currentYear = impactIteration.getYear();
 
             double bauValue =
-                    OntologyClient
+                    OntologyClientUtil
                             .getImpactDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
                                     currentYear).getValue();
 
@@ -304,7 +304,7 @@ public class ProposalImpactSeries {
             String seriesType = entry.getKey();
             final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
 
-            ImpactDefaultSeries defaultSeries = OntologyClient
+            ImpactDefaultSeries defaultSeries = OntologyClientUtil
                     .getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), seriesType);
 
             JSONObject series = JSONFactoryUtil.createJSONObject();

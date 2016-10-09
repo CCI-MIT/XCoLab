@@ -10,10 +10,10 @@ import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -64,7 +64,7 @@ public class ProposalPickerFilterUtil {
     public static List<Pair<ContestWrapper, Date>> getAllContests() throws SystemException, PortalException {
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
-        for (Contest c: ContestClient.getAllContests()) {
+        for (Contest c: ContestClientUtil.getAllContests()) {
                 contests.add(Pair.of(new ContestWrapper(c),  //c
                         c.getCreated() == null ? new Date(0) : c.getCreated()));
 
@@ -75,7 +75,7 @@ public class ProposalPickerFilterUtil {
     public static Map<Long, String> filterContests(List<Pair<ContestWrapper, Date>> contests,
             long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
             throws SystemException, PortalException {
-        PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
 
         List<Long> alwaysIncludedContestIds = planSectionDefinition.getAdditionalIdsAsList();
@@ -206,7 +206,7 @@ public class ProposalPickerFilterUtil {
         filterByParameter(filterKey, proposals);
         filterByVisibility(proposals);
 
-        PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
 
         List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();

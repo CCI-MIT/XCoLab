@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.enums.ModelRegions;
@@ -128,7 +128,7 @@ public class ContestModelSettingsBean implements Serializable {
         if (defaultModelSettings != null) {
             contest.setDefaultModelSettings(defaultModelSettings);
         }
-        ContestClient.updateContest(contest);
+        ContestClientUtil.updateContest(contest);
 
 
     }

@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.controller.BaseTabController;
@@ -53,7 +53,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     private void initContest(PortletRequest request) {
         Long contestId = getContestIdFromRequest(request);
         try {
-            contest = ContestClient.getContest(contestId);
+            contest = ContestClientUtil.getContest(contestId);
             contestWrapper = new BaseContestWrapper(contest);
         } catch (ContestNotFoundException e) {
             throw new DatabaseAccessException(e);

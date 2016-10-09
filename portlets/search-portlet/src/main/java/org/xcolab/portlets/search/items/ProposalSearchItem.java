@@ -6,7 +6,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -54,7 +54,7 @@ public class ProposalSearchItem extends AbstractSearchItem {
 
             final long contestTypeId =
                     ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestClient
+            final ContestType contestType = ContestClientUtil
                     .getContestType(contestTypeId);
             return contestType.getProposalNamePlural();
 

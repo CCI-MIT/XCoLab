@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -36,12 +36,12 @@ public class PromoteProposalActionController {
                              @RequestParam Long proposalId ) throws PortalException, SystemException, IOException {
 
         ProposalsPermissions proposalsPermissions = proposalsContext.getPermissions(request);
-        ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
+        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             try {
                 Contest latestProposalContest = ProposalsClient.getLatestContestInProposal(proposalId);
-                ContestPhase currentProposalContestPhase = ContestClient.getContestPhase(contestPhaseId);
-                ContestPhase activePhaseForContest = ContestClient.getActivePhase(latestProposalContest.getContestPK());
+                ContestPhase currentProposalContestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+                ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
 
                 Proposal2PhaseClient.promoteProposal(proposalId,
                         activePhaseForContest.getContestPhasePK(),

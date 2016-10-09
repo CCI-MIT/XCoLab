@@ -14,7 +14,7 @@ public class CommentClient {
     private final RestService commentService;
 
     public CommentClient(RestService commentService) {
-        commentServiceWrapper = CommentServiceWrapper.ofService(commentService);
+        commentServiceWrapper = CommentServiceWrapper.fromService(commentService);
         this.commentService = commentService;
     }
 

@@ -1,8 +1,8 @@
 package org.xcolab.jsp.tags.judging;
 
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -11,7 +11,6 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
@@ -55,7 +54,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
         try {
             Member judge = MembersClient.getMember(userId);
             Proposal proposal = ProposalsClient.getProposal(proposalId);
-            ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
+            ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(new ProposalWrapper(proposal, contestPhase), judge);
 
             PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);

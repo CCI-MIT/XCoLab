@@ -10,9 +10,9 @@ import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
@@ -37,7 +37,7 @@ public final class ContestScheduleLifecycleUtil {
     }
 
     public static void deleteContestSchedule(Long scheduleId) {
-        boolean isContestScheduleUsed = ContestClient.isContestScheduleUsed(scheduleId);
+        boolean isContestScheduleUsed = ContestClientUtil.isContestScheduleUsed(scheduleId);
         if (!isContestScheduleUsed) {
             removeContestSchedulePhases(scheduleId);
             removeContestPhasesOfContestsThatAreUsingSchedule(scheduleId);
@@ -60,7 +60,7 @@ public final class ContestScheduleLifecycleUtil {
 
     private static void removeContestSchedulePhases(Long scheduleId) {
 
-        List<ContestPhase> contestSchedulePhases = ContestClient
+        List<ContestPhase> contestSchedulePhases = ContestClientUtil
                 .getPhasesForContestScheduleId(scheduleId);
         removeContestPhases(contestSchedulePhases);
 
@@ -82,7 +82,7 @@ public final class ContestScheduleLifecycleUtil {
                 _log.warn("There are remaining proposal2phase entries for contestPhaseId:"
                         + contestPhaseId);
             }
-            ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
+            ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
         } catch (SystemException e) {
             throw new DatabaseAccessException(e);
         }
@@ -90,11 +90,11 @@ public final class ContestScheduleLifecycleUtil {
 
     private static void removeContestPhasesOfContestsThatAreUsingSchedule(Long scheduleId) {
 
-        List<Contest> contestsUsingSchedule = ContestClient
+        List<Contest> contestsUsingSchedule = ContestClientUtil
                 .getContestsByContestScheduleId(scheduleId);
         for (Contest contestUsingSchedule : contestsUsingSchedule) {
             List<ContestPhase> contestSchedulePhases =
-                    ContestClient
+                    ContestClientUtil
                             .getPhasesForContestScheduleIdAndContest(scheduleId,
                                     contestUsingSchedule.getContestPK());
             removeContestPhases(contestSchedulePhases);
@@ -105,7 +105,7 @@ public final class ContestScheduleLifecycleUtil {
     public static List<LabelValue> getAllScheduleTemplateSelectionItems() {
         ContestCreatorUtil.insertSeedDataToContestScheduleTableIfNotAvailable();
         List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestSchedule scheduleTemplate : ContestClient.getAllContestSchedules()) {
+        for (ContestSchedule scheduleTemplate : ContestClientUtil.getAllContestSchedules()) {
             selectItems.add(new LabelValue(scheduleTemplate.getId_(), scheduleTemplate.getName()));
         }
         Collections.sort(selectItems);
@@ -121,7 +121,7 @@ public final class ContestScheduleLifecycleUtil {
         } else {
 
             List<ContestPhase> currentPhases = getCurrentPhasesForSchedule(existingScheduleId);
-            for (ContestSchedule scheduleTemplate : ContestClient.getAllContestSchedules()) {
+            for (ContestSchedule scheduleTemplate : ContestClientUtil.getAllContestSchedules()) {
                 if (arePhasesCompatibleUntilCurrentPhase(currentPhases,
                         scheduleTemplate.getId_())) {
                     selectItems.add(new LabelValue(scheduleTemplate.getId_(),
@@ -135,7 +135,7 @@ public final class ContestScheduleLifecycleUtil {
     }
 
     private static List<ContestPhase> getCurrentPhasesForSchedule(Long existingContestScheduleId) {
-        return ContestClient
+        return ContestClientUtil
                 .getTemplatePhasesForContestScheduleId(existingContestScheduleId);
 
     }
@@ -170,7 +170,7 @@ public final class ContestScheduleLifecycleUtil {
         ContestSchedule newContestSchedule = new ContestSchedule();
         newContestSchedule.setName(name);
 
-        newContestSchedule = ContestClient.createContestSchedule(newContestSchedule);
+        newContestSchedule = ContestClientUtil.createContestSchedule(newContestSchedule);
 
         ContestPhase contestPhase = new ContestPhase();
         contestPhase.setContestPK(0L);
@@ -179,7 +179,7 @@ public final class ContestScheduleLifecycleUtil {
         contestPhase.setPhaseStartDate(new Timestamp(DateTime.now().getMillis()));
         contestPhase.setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
         contestPhase.setFellowScreeningActive(false);
-        ContestClient.createContestPhase(contestPhase);
+        ContestClientUtil.createContestPhase(contestPhase);
 
         return newContestSchedule;
     }

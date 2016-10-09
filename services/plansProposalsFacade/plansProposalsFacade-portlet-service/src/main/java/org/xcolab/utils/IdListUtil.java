@@ -7,7 +7,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -35,7 +35,7 @@ public final class IdListUtil {
         @Override
         public Contest getObject(long id) {
             try {
-                return ContestClient.getContest(id);
+                return ContestClientUtil.getContest(id);
             }catch (ContestNotFoundException ignored){
                 return null;
             }
@@ -72,7 +72,7 @@ public final class IdListUtil {
     public final static IdListObjectConverter<ContestType> CONTEST_TYPES = new IdListObjectConverter<ContestType>() {
         @Override
         public ContestType getObject(long id) throws SystemException {
-            return ContestClient.getContestType(id);
+            return ContestClientUtil.getContestType(id);
         }
 
         @Override

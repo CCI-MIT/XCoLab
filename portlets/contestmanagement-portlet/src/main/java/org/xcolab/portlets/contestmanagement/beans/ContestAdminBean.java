@@ -1,7 +1,7 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 
@@ -117,7 +117,7 @@ public class ContestAdminBean implements Serializable {
         contest.setContestTypeId(contestType);
         contest.setHideRibbons(hideRibbons);
 
-        ContestClient.updateContest(contest);
+        ContestClientUtil.updateContest(contest);
 
         contestModelSettings.persist(contest);
     }

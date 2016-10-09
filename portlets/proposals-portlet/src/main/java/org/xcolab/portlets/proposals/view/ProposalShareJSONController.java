@@ -15,9 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -127,7 +127,7 @@ public class ProposalShareJSONController {
 		} else {
 			proposalUrl += proposal.getProposalLinkUrl(contest, phase.getContestPhasePK());
 		}
-        ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
+        ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
 		body += String.format("<p><a href='%s'>Link to %s</a></p>", proposalUrl, contestType.getProposalName());
 
 		// Send the message

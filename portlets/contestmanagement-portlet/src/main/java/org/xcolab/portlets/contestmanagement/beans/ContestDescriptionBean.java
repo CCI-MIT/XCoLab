@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
@@ -76,7 +76,7 @@ public class ContestDescriptionBean implements Serializable {
         try {
             final CommentThread thread = ThreadClientUtil.getThread(contest.getDiscussionGroupId());
             ContestType contestType =
-                    ContestClient.getContestType(contest.getContestTypeId());
+                    ContestClientUtil.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getContestShortName()));
             ThreadClientUtil.updateThread(thread);
@@ -87,7 +87,7 @@ public class ContestDescriptionBean implements Serializable {
 
         if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {
             contest.setContestUrlName((contest).getContestUrlName());
-                ContestClient.updateContest(contest);
+                ContestClientUtil.updateContest(contest);
         }
         WikiPageWrapper.updateContestWiki(contest);
     }
@@ -171,7 +171,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
-        ContestClient.updateContest(contest);
+        ContestClientUtil.updateContest(contest);
 
     }
 

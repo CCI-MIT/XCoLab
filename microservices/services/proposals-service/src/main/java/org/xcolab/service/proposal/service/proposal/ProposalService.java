@@ -3,16 +3,17 @@ package org.xcolab.service.proposal.service.proposal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -70,9 +71,9 @@ public class ProposalService {
             proposal.setCreateDate(new Timestamp(new Date().getTime()));
             proposal.setCurrentVersion(1);
 
-            ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
-            final Contest contest = ContestClient.getContest(contestPhase.getContestPK());
-            ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
+            ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+            final Contest contest = ContestClientUtil.getContest(contestPhase.getContestPK());
+            ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
 
             proposal = proposalDao.create(proposal);
             Long proposalId = proposal.getProposalId();
@@ -145,11 +146,11 @@ public class ProposalService {
     private Group_ createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) {
 
         // create new group
-        final ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
+        final ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
 
         String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
 
-        final ContestType contestTypeForLiferay = ContestClient.getContestType(contestType.getId_());
+        final ContestType contestTypeForLiferay = ContestClientUtil.getContestType(contestType.getId_());
         final String groupDescription = "Group working on " + contestTypeForLiferay.getProposalName();
 
         Group_ group = new Group_();
@@ -182,7 +183,7 @@ public class ProposalService {
         commentThread.setCategoryId(null);
         commentThread.setTitle(title);
         commentThread.setIsQuiet(isQuiet);
-        commentThread = CommentClient.createThread(commentThread);
+        commentThread = ThreadClientUtil.createThread(commentThread);
         return commentThread;
     }
 
@@ -224,7 +225,7 @@ public class ProposalService {
             try {
                 if (onlyWithContestIntegrationRelevance) {
                     ProposalAttribute attribute = proposalAttributeDao.get(proposalReference.getSectionAttributeId());
-                    PlanSectionDefinition psd = PlanTemplateClient.getPlanSectionDefinition(attribute.getAdditionalId());
+                    PlanSectionDefinition psd = PlanTemplateClientUtil.getPlanSectionDefinition(attribute.getAdditionalId());
                     if (!psd.getContestIntegrationRelevance()) {
                         continue;
                     }
@@ -270,7 +271,7 @@ public class ProposalService {
 
     public Long getLatestProposalContestId(Long proposalId) {
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-        ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
+        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
         return contestPhase.getContestPhasePK();
     }
 

@@ -12,9 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.ProposalRatingClient;
@@ -128,8 +128,8 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
         Contest contest = proposalsContext.getContest(request);
-        ContestPhase activeContestPhase = ContestClient.getActivePhase(contest.getContestPK());
-        List<ContestPhase> allContestPhasesForCurrentContest = ContestClient.getAllContestPhases(contest.getContestPK());
+        ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
+        List<ContestPhase> allContestPhasesForCurrentContest = ContestClientUtil.getAllContestPhases(contest.getContestPK());
 
         for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
             boolean isLastContestPhase = activeContestPhase.getPhaseEndDate() == null;
@@ -146,16 +146,16 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
     private boolean isActiveContestPhaseOpenForEdit(Contest contest) throws PortalException, SystemException {
-        ContestPhase activeContestPhase = ContestClient.getActivePhase(contest.getContestPK());
+        ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
         Long contestPhaseTypeId = activeContestPhase.getContestPhaseType();
-        return ContestClient.getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
+        return ContestClientUtil.getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
     private List<ProposalRatingsWrapper> getAverageRatingsForPastPhases(Long contestId, Proposal proposal)
             throws SystemException {
 
         List<ProposalRatingsWrapper> proposalRatings = new ArrayList<>();
-        List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contestId);
+        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
 
         for (ContestPhase contestPhase : contestPhases) {
             boolean isPhasePastScreeningPhase =

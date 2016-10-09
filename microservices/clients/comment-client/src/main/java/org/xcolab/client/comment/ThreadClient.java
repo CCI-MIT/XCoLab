@@ -16,7 +16,7 @@ public class ThreadClient {
     private final RestService commentService;
 
     public ThreadClient(RestService commentService) {
-        commentServiceWrapper = CommentServiceWrapper.ofService(commentService);
+        commentServiceWrapper = CommentServiceWrapper.fromService(commentService);
         this.commentService = commentService;
     }
 

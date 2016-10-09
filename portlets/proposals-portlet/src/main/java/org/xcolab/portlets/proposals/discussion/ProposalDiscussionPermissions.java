@@ -7,10 +7,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -128,7 +126,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal, Long contestPhaseId) {
 
         try {
-            ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
+            ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
 
 

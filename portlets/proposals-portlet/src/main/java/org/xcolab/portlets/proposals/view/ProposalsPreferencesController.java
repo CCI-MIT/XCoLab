@@ -2,11 +2,11 @@ package org.xcolab.portlets.proposals.view;
 
 import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -59,7 +59,7 @@ public class ProposalsPreferencesController {
     private static final Log _log = LogFactoryUtil.getLog(ProposalsPreferencesController.class);
 
     private static List<ContestPhase> getPhasesByContest(Contest c, final int sortModifier) {
-        List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(c.getContestPK());
+        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getContestPK());
 
         //sort the phases by startdate
         Collections.sort(contestPhases, new Comparator<ContestPhase>() {
@@ -77,7 +77,7 @@ public class ProposalsPreferencesController {
         model.addAttribute("prefs", new ProposalsPreferencesWrapper(request));
 
         //get all contests
-        List<Contest> contests = ContestClient.getContestsByActivePrivate(true,true);
+        List<Contest> contests = ContestClientUtil.getContestsByActivePrivate(true,true);
 
         //contestId to contestphases
         Map<Long, ContestPhaseType> contestPhaseTypeMap = new HashMap<>();
@@ -91,7 +91,7 @@ public class ProposalsPreferencesController {
 
             for (ContestPhase cp: contestPhases) {
                 if (!contestPhaseTypeMap.containsKey(cp.getContestPhaseType())) {
-                    contestPhaseTypeMap.put(cp.getContestPhaseType(), ContestClient.getContestPhaseType(cp.getContestPhaseType()));
+                    contestPhaseTypeMap.put(cp.getContestPhaseType(), ContestClientUtil.getContestPhaseType(cp.getContestPhaseType()));
                 }
                 List<Proposal> proposals = ProposalsClient.getProposalsInContestPhase(cp.getContestPhasePK());
                 List<ProposalWrapper> wrappers = new ArrayList<>();
@@ -107,7 +107,7 @@ public class ProposalsPreferencesController {
         model.addAttribute("contestPhaseType", contestPhaseTypeMap);
         model.addAttribute("contestPhases", contestPhasesMap);
         model.addAttribute("proposals", proposalsMap);
-        model.addAttribute("contestTypes", ContestClient.getAllContestTypes());
+        model.addAttribute("contestTypes", ContestClientUtil.getAllContestTypes());
 
         return "preferences";
     }
@@ -117,7 +117,7 @@ public class ProposalsPreferencesController {
     public void releaseJudgingMails(ActionRequest request) throws PortalException, SystemException, com.liferay.util.mail.MailEngineException, javax.mail.internet.AddressException, UnsupportedEncodingException {
         Integer[] phaseIds = { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };
         for (Integer phaseId : phaseIds) {
-            ContestPhase contestPhase = ContestClient.getContestPhase(phaseId.longValue());
+            ContestPhase contestPhase = ContestClientUtil.getContestPhase(phaseId.longValue());
             for (Proposal proposal : ProposalsClient.getProposalsInContestPhase(phaseId.longValue())) {
                 ContestPhasePromotionEmail.contestPhasePromotionEmailNotifyProposalContributors(proposal, contestPhase, request);
             }
@@ -144,11 +144,11 @@ public class ProposalsPreferencesController {
     @RequestMapping(params = "action=checkForMissingTeamMembers")
     public void checkForMissingTeamMembers(ActionRequest request, ActionResponse response, Model model)
             throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
-        List<Contest> activeContests = ContestClient.getContestsByActivePrivate(true, false);
+        List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
 
         for (Contest c : activeContests) {
-            ContestPhase activePhase = ContestClient.getActivePhase(c.getContestPK());
+            ContestPhase activePhase = ContestClientUtil.getActivePhase(c.getContestPK());
             if (activePhase == null || activePhase.getContestPhaseType() != 17L) {
                 message.append("<br/>\nSkipped contest: ").append(c.getContestShortName()).append("<br/><br/>\n");
                 continue;
@@ -198,11 +198,11 @@ public class ProposalsPreferencesController {
     @RequestMapping(params = "action=runRibbonDistribution")
     public void runRibbonDistribution(ActionRequest request, ActionResponse response, Model model)
             throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
-        List<Contest> activeContests = ContestClient.getContestsByActivePrivate(true, false);
+        List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
 
         for (Contest c : activeContests) {
-            ContestPhase activePhase = ContestClient.getActivePhase(c.getContestPK());
+            ContestPhase activePhase = ContestClientUtil.getActivePhase(c.getContestPK());
             if (activePhase == null || activePhase.getContestPhaseType() != 17L) {
                 message.append("<br/>\nSkipped contest: ").append(c.getContestShortName()).append("<br/><br/>\n");
                 continue;
@@ -211,7 +211,7 @@ public class ProposalsPreferencesController {
             message.append("<br/><br/>\nCONTEST: ").append(c.getContestShortName()).append("<br/><br/>\n");
 
             //identify the winners selection phase (= contains all finalist) and the finalist selection (= contains all semi-finalist) phase
-            List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(c.getContestPK());
+            List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getContestPK());
             ContestPhase winnersAwarded = null;
             ContestPhase winnersSelection = null;
             ContestPhase finalistSelection = null;
@@ -262,8 +262,8 @@ public class ProposalsPreferencesController {
         StringBuilder message = new StringBuilder();
         if (!proposalsToBeMoved.isEmpty() && moveToContestPhaseId > 0 && moveFromContestId > 0) {
             try {
-                Contest moveFromContest = ContestClient.getContest(moveFromContestId);
-                ContestPhase moveToContestPhase = ContestClient.getContestPhase(moveToContestPhaseId);
+                Contest moveFromContest = ContestClientUtil.getContest(moveFromContestId);
+                ContestPhase moveToContestPhase = ContestClientUtil.getContestPhase(moveToContestPhaseId);
 
                 assert moveFromContest != null;
                 assert moveToContestPhase != null;

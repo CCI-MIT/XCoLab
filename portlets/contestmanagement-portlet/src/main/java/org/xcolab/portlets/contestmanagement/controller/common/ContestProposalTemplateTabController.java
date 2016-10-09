@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.OntologyClient;
-import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.contest.pojo.OntologyTerm;
-import org.xcolab.client.contest.pojo.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
 import org.xcolab.client.proposals.pojo.PointType;
 import org.xcolab.controller.BaseTabController;
@@ -100,7 +100,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
             throws PortalException, SystemException, java.io.IOException {
 
         PlanSectionDefinition planSectionDefinition =
-                PlanTemplateClient.getPlanSectionDefinition(sectionDefinitionId);
+                PlanTemplateClientUtil.getPlanSectionDefinition(sectionDefinitionId);
         SectionDefinitionWrapper sectionDefinitionWrapper = new SectionDefinitionWrapper(planSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
@@ -117,7 +117,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestType contestType : ContestClient.getActiveContestTypes()) {
+        for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
             selectItems.add(new LabelValue(contestType.getId_(),
                     contestType.getLabelName()));
         }
@@ -176,7 +176,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
             OntologySpaceEnum ontologySpace) {
 
         List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
-        for (OntologyTerm term : OntologyClient
+        for (OntologyTerm term : OntologyClientUtil
                 .getAllOntologyTerms()) {
             // Just consider terms in the passed ontologySpace
             if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
@@ -243,7 +243,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         OntologyTerm current = term;
         while (current != null) {
             parentsPath.push(current);
-            current = OntologyClient.getOntologyTermParent(current);
+            current = OntologyClientUtil.getOntologyTermParent(current);
 
         }
         return parentsPath;

@@ -3,10 +3,10 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.NoSuchContestException;
 import com.liferay.portal.model.User;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalRatingClient;
@@ -24,7 +24,7 @@ public class ProposalFellowWrapper extends ProposalWrapper {
         try {
             //find out contestPhase
             Contest baseContest = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase contestPhase = ContestClient.getActivePhase(baseContest.getContestPK());
+            ContestPhase contestPhase = ContestClientUtil.getActivePhase(baseContest.getContestPK());
 
             List<ProposalRating> list = ProposalRatingClient.getFellowRatingForProposalAndUser(
                     currentUser.getUserId(),

@@ -4,9 +4,9 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -34,7 +34,7 @@ public class RibbonWrapper {
             }
             ContestPhase contestPhase = null;
 
-            contestPhase = ContestClient.getContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
+            contestPhase = ContestClientUtil.getContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
 
             if (contestPhase == null) {
                 _log.info(String.format("Could not retrieve ribbon type. Wrapper for proposal %d in Contest %d has no contestPhase.",
@@ -50,7 +50,7 @@ public class RibbonWrapper {
                 if (ribbonAttribute != null) {
                     long typeId = ribbonAttribute.getNumericValue();
                     if (typeId >= 0) {
-                        contestPhaseRibbonType = ContestClient.getContestPhaseRibbonType(typeId);
+                        contestPhaseRibbonType = ContestClientUtil.getContestPhaseRibbonType(typeId);
                     }
                 } else {
                     _log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalId));

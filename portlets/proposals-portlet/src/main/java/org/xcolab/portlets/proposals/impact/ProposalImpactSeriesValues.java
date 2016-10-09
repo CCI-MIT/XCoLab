@@ -7,7 +7,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
-import org.xcolab.client.contest.pojo.ImpactIteration;
+import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 
 import java.util.HashMap;
 import java.util.HashSet;

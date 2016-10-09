@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
@@ -241,13 +241,13 @@ public class Proposal implements Serializable {
         String friendlyUrlStringProposal;
         Long proposalId = this.getProposalId();
 
-            final ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
+            final ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
             link += contestType.getFriendlyUrlStringContests();
             friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
 
         if (contestPhaseId > 0) {
 
-            long activePhaseId = ContestClient.getActivePhase(contest.getContestPK()).getContestPhasePK();
+            long activePhaseId = ContestClientUtil.getActivePhase(contest.getContestPK()).getContestPhasePK();
             if (activePhaseId == contestPhaseId) {
                 link += "/%d/%s/c/" + friendlyUrlStringProposal + "/%d";
                 return String.format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
@@ -266,7 +266,7 @@ public class Proposal implements Serializable {
         if(this.proposalid == 0){
             return false;
         }
-        final ContestPhase contestPhase = ContestClient.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
+        final ContestPhase contestPhase = ContestClientUtil.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
             ProposalContestPhaseAttribute pcpa = ProposalContestPhaseAttributeClient.getProposalContestPhaseAttribute(this.getProposalId(),

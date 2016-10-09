@@ -1,62 +1,93 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
-import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.FocusAreaDto;
+import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTermDto;
+import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeriesDataDto;
+import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeriesDto;
+import org.xcolab.client.contest.pojo.ontology.OntologySpaceDto;
+import org.xcolab.client.contest.pojo.ontology.OntologyTermDto;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class OntologyClient {
 
-    private static final RestService contestService = new RestService("contest-service");
+    private static final Map<RestService, OntologyClient> instances = new HashMap<>();
 
-    private static final RestResource1<OntologySpace,Long> ontologySpaceResource = new RestResource1<>(contestService,
-            "ontologySpaces", OntologySpace.TYPES);
+    private final RestService contestService;
 
-    private static final RestResource1<OntologyTerm,Long> ontologyTermResource = new RestResource1<>(contestService,
-            "ontologyTerms", OntologyTerm.TYPES);
+    private final RestResource1<OntologySpaceDto, Long> ontologySpaceResource;
 
-    private static final RestResource1<FocusArea,Long> focusAreaResource = new RestResource1<>(contestService,
-            "focusAreas", FocusArea.TYPES);
+    private final RestResource1<OntologyTermDto, Long> ontologyTermResource;
 
-    private static final RestResource1<FocusAreaOntologyTerm,Long> focusAreaOntologyTermResource = new RestResource1<>(contestService,
-            "focusAreaOntologyTerms", FocusAreaOntologyTerm.TYPES);
+    private final RestResource1<FocusAreaDto, Long> focusAreaResource;
 
-    private static final RestResource1<ImpactDefaultSeries,Long> impactDefaultSeriesResource = new RestResource1<>(contestService,
-            "impactDefaultSeriesDatas", ImpactDefaultSeries.TYPES);
+    private final RestResource1<FocusAreaOntologyTermDto, Long> focusAreaOntologyTermResource;
 
-    private static final RestResource1<ImpactDefaultSeriesData,Long> impactDefaultSeriesDataResource = new RestResource1<>(contestService,
-            "impactDefaultSeriesDatas", ImpactDefaultSeriesData.TYPES);
+    private final RestResource1<ImpactDefaultSeriesDto, Long> impactDefaultSeriesResource;
 
-    public static List<OntologySpace> getAllOntologySpaces() {
-        return ontologySpaceResource.list().execute();
+    private final RestResource1<ImpactDefaultSeriesDataDto, Long> impactDefaultSeriesDataResource;
+
+    private OntologyClient(RestService contestService) {
+        this.contestService = contestService;
+        ontologySpaceResource = new RestResource1<>(this.contestService,
+                "ontologySpaces", OntologySpaceDto.TYPES);
+        ontologyTermResource = new RestResource1<>(this.contestService,
+                "ontologyTerms", OntologyTermDto.TYPES);
+        focusAreaResource = new RestResource1<>(this.contestService,
+                "focusAreas", FocusAreaDto.TYPES);
+        focusAreaOntologyTermResource = new RestResource1<>(this.contestService,
+                "focusAreaOntologyTerms", FocusAreaOntologyTermDto.TYPES);
+        impactDefaultSeriesResource = new RestResource1<>(this.contestService,
+                "impactDefaultSeriesDatas", ImpactDefaultSeriesDto.TYPES);
+        impactDefaultSeriesDataResource = new RestResource1<>(this.contestService,
+                "impactDefaultSeriesDatas", ImpactDefaultSeriesDataDto.TYPES);
     }
 
-    public static List<OntologyTerm> getAllOntologyTerms() {
-        return ontologyTermResource.list()
-                .execute();
+    public static OntologyClient fromService(RestService contestService) {
+        OntologyClient client = instances.get(contestService);
+        if (client == null) {
+            client = new OntologyClient(contestService);
+            instances.put(contestService, client);
+        }
+        return client;
     }
 
-    public static List<FocusArea> getAllFocusAreas() {
-        return focusAreaResource.list()
-                .execute();
+    public List<OntologySpace> getAllOntologySpaces() {
+        return DtoUtil.toPojos(ontologySpaceResource.list().execute(), contestService);
     }
 
-    public static FocusArea createFocusArea(FocusArea focusArea) {
-        return focusAreaResource.create(focusArea).execute();
+    public List<OntologyTerm> getAllOntologyTerms() {
+        return DtoUtil.toPojos(ontologyTermResource.list()
+                .execute(), contestService);
     }
 
-    public static void addOntologyTermsToFocusAreaByOntologyTermId(Long focusAreaId, Long ontologyTermId) {
-        FocusAreaOntologyTerm faot = new FocusAreaOntologyTerm();
+    public List<FocusArea> getAllFocusAreas() {
+        return DtoUtil.toPojos(focusAreaResource.list()
+                .execute(), contestService);
+    }
+
+    public FocusArea createFocusArea(FocusArea focusArea) {
+        return focusAreaResource.create(new FocusAreaDto(focusArea))
+                .execute().toPojo(contestService);
+    }
+
+    public void addOntologyTermsToFocusAreaByOntologyTermId(Long focusAreaId, Long ontologyTermId) {
+        FocusAreaOntologyTermDto faot = new FocusAreaOntologyTermDto();
         faot.setFocusAreaId(focusAreaId);
         faot.setOntologyTermId(ontologyTermId);
         faot.setOrder_((int) new Date().getTime());
@@ -64,45 +95,36 @@ public class OntologyClient {
 
     }
 
-    public static List<FocusAreaOntologyTerm> getAllFocusAreaOntologyTerms() {
-        return focusAreaOntologyTermResource.list()
-                .execute();
+    public List<FocusAreaOntologyTerm> getAllFocusAreaOntologyTerms() {
+        return DtoUtil.toPojos(focusAreaOntologyTermResource.list()
+                .execute(), contestService);
     }
 
-    public static List<FocusAreaOntologyTerm> getFocusAreaOntologyTermsByFocusArea(Long focusAreaId) {
-        return focusAreaOntologyTermResource.list()
-                .queryParam("focusAreaId", focusAreaId)
-                .execute();
-    }
-
-    public static OntologyTerm getOntologyTermParent(OntologyTerm ontologyTerm) {
+    public OntologyTerm getOntologyTermParent(OntologyTerm ontologyTerm) {
         if (ontologyTerm.getParentId() > 0) {
             return getOntologyTerm(ontologyTerm.getParentId());
         }
         return null;
     }
-    public static List<OntologyTerm> getAllOntologyTermDescendant(Long ontologyTermId) {
-        return ontologyTermResource.service("getAllOntologyTermDescendant", OntologyTerm.TYPES.getTypeReference())
-                .queryParam("ontologyTermId", ontologyTermId)
-                .getList();
-    }
 
-    public static OntologyTerm getOntologyTerm(long Id_) {
+    public OntologyTerm getOntologyTerm(long Id_) {
         return ontologyTermResource.get(Id_)
-                .execute();
+                .execute().toPojo(contestService);
     }
 
-    public static Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
+    public Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
             Long focusAreaId, Long ontologyTermId) {
 
         OntologyTerm ontologyParentTerm = getOntologyTerm(ontologyTermId);
-        List<OntologyTerm> ontologyTermList = getAllOntologyTermDescendant(ontologyParentTerm.getId_());
+        List<OntologyTerm> ontologyTermList =
+                getAllOntologyTermDescendant(ontologyParentTerm.getId_());
         ontologyTermList.add(ontologyParentTerm);
-        List<FocusAreaOntologyTerm> focusAreaOntologyTerms = getFocusAreaOntologyTermsByFocusArea(focusAreaId);
+        List<FocusAreaOntologyTerm> focusAreaOntologyTerms =
+                getFocusAreaOntologyTermsByFocusArea(focusAreaId);
 
         Set<Long> ontologyTermIds = new HashSet<>();
 
-        for(OntologyTerm ontologyTerm : ontologyTermList) {
+        for (OntologyTerm ontologyTerm : ontologyTermList) {
             ontologyTermIds.add(ontologyTerm.getId_());
         }
 
@@ -114,25 +136,37 @@ public class OntologyClient {
         return false;
     }
 
-    public static List<OntologyTerm> getOntologyTermsByName(String name) {
-        return ontologyTermResource.list()
+    public List<FocusAreaOntologyTerm> getFocusAreaOntologyTermsByFocusArea(Long focusAreaId) {
+        return DtoUtil.toPojos(focusAreaOntologyTermResource.list()
+                .queryParam("focusAreaId", focusAreaId)
+                .execute(), contestService);
+    }
+
+    public List<OntologyTerm> getAllOntologyTermDescendant(Long ontologyTermId) {
+        return DtoUtil.toPojos(ontologyTermResource
+                .service("getAllOntologyTermDescendant", OntologyTermDto.TYPES.getTypeReference())
+                .queryParam("ontologyTermId", ontologyTermId)
+                .getList(), contestService);
+    }
+
+    public List<OntologyTerm> getOntologyTermsByName(String name) {
+        return DtoUtil.toPojos(ontologyTermResource.list()
                 .optionalQueryParam("name", name)
-                .execute();
+                .execute(), contestService);
     }
 
 
-    public static FocusArea getFocusArea(long Id_) {
+    public FocusArea getFocusArea(long Id_) {
         return focusAreaResource.get(Id_)
-                .execute();
+                .execute().toPojo(contestService);
     }
 
-    public static OntologySpace getOntologySpace(long id_) {
+    public OntologySpace getOntologySpace(long id_) {
         return ontologySpaceResource.get(id_)
-                .execute();
-
+                .execute().toPojo(contestService);
     }
 
-    public static List<OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(
+    public List<OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(
             FocusArea focusArea, OntologySpace ontologySpace) {
         List<OntologyTerm> list = new ArrayList<>();
         for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
@@ -144,7 +178,17 @@ public class OntologyClient {
         return list;
     }
 
-    public static OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(FocusArea focusArea, OntologySpace ontologySpace) {
+    public List<OntologyTerm> getOntologyTermsForFocusArea(FocusArea focusArea) {
+        List<OntologyTerm> ret = new ArrayList<>();
+        for (FocusAreaOntologyTerm faot : getFocusAreaOntologyTermsByFocusArea(
+                focusArea.getId_())) {
+            ret.add(getOntologyTerm(faot.getOntologyTermId()));
+        }
+        return ret;
+    }
+
+    public OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(FocusArea focusArea,
+            OntologySpace ontologySpace) {
         for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
             if (term.getOntologySpaceId() == ontologySpace.getId_().longValue()) {
                 return term;
@@ -154,20 +198,16 @@ public class OntologyClient {
         return null;
     }
 
-    public static List<OntologyTerm> getOntologyTermsForFocusArea(FocusArea focusArea) {
-        List<OntologyTerm> ret = new ArrayList<>();
-        for (FocusAreaOntologyTerm faot : getFocusAreaOntologyTermsByFocusArea(focusArea.getId_())) {
-            ret.add(getOntologyTerm(faot.getOntologyTermId()));
-        }
-        return ret;
-    }
-
-    public static ImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(Long focusAreaId, String name) {
-        List<ImpactDefaultSeries> allImpactDefaultSeriesWithFocusAreaName = impactDefaultSeriesResource.list()
-                .optionalQueryParam("focusAreaId", focusAreaId)
-                .optionalQueryParam("name", name)
-                .execute();
-        if (allImpactDefaultSeriesWithFocusAreaName != null && !allImpactDefaultSeriesWithFocusAreaName
+    public ImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(Long focusAreaId,
+            String name) {
+        List<ImpactDefaultSeries> allImpactDefaultSeriesWithFocusAreaName = DtoUtil.toPojos(
+                impactDefaultSeriesResource.list()
+                        .optionalQueryParam("focusAreaId", focusAreaId)
+                        .optionalQueryParam("name", name)
+                        .execute(),
+                contestService);
+        if (allImpactDefaultSeriesWithFocusAreaName != null
+                && !allImpactDefaultSeriesWithFocusAreaName
                 .isEmpty()) {
             return allImpactDefaultSeriesWithFocusAreaName.get(0);
         } else {
@@ -175,24 +215,26 @@ public class OntologyClient {
         }
     }
 
-    public static List<ImpactDefaultSeries> getAllmpactDefaultSeriesByFocusArea(Long focusAreaId) {
-        return impactDefaultSeriesResource.list()
+    public List<ImpactDefaultSeries> getAllmpactDefaultSeriesByFocusArea(Long focusAreaId) {
+        return DtoUtil.toPojos(impactDefaultSeriesResource.list()
                 .optionalQueryParam("focusAreaId", focusAreaId)
-                .execute();
+                .execute(), contestService);
     }
 
-    public static List<ImpactDefaultSeriesData> getImpactDefaultSeriesDataBySeries(Long seriesId) {
-        return impactDefaultSeriesDataResource.list()
+    public List<ImpactDefaultSeriesData> getImpactDefaultSeriesDataBySeries(Long seriesId) {
+        return DtoUtil.toPojos(impactDefaultSeriesDataResource.list()
                 .optionalQueryParam("seriesId", seriesId)
-                .execute();
+                .execute(), contestService);
     }
 
-    public static ImpactDefaultSeriesData getImpactDefaultSeriesDataBySeriesIdAndYear(Long seriesId, Integer year) {
-        List<ImpactDefaultSeriesData> ret =
+    public ImpactDefaultSeriesData getImpactDefaultSeriesDataBySeriesIdAndYear(Long seriesId,
+            Integer year) {
+        List<ImpactDefaultSeriesData> ret = DtoUtil.toPojos(
                 impactDefaultSeriesDataResource.list()
                         .optionalQueryParam("seriesId", seriesId)
                         .optionalQueryParam("year", year)
-                        .execute();
+                        .execute(),
+                contestService);
         if (ret != null && !ret.isEmpty()) {
             return ret.get(0);
         } else {

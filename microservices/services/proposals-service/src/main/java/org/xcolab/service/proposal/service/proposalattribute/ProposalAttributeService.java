@@ -2,15 +2,15 @@ package org.xcolab.service.proposal.service.proposalattribute;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.xcolab.client.comment.CommentClient;
+
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
@@ -83,11 +83,11 @@ public class ProposalAttributeService {
             // Update the proposal name in the discussion category
             if (proposalAttribute.getName().equals(ProposalAttributeKeys.NAME)) {
                 try {
-                    CommentThread thread = CommentClient.getThread(proposal.getDiscussionId());
+                    CommentThread thread = ThreadClientUtil.getThread(proposal.getDiscussionId());
                     Contest contest = ProposalsClient.getCurrentContestForProposal(proposalAttribute.getProposalId());
-                    ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
+                    ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
                     thread.setTitle(String.format("%s %s", contestType.getProposalName(), proposalAttribute.getStringValue()));
-                    CommentClient.updateThread(thread);
+                    ThreadClientUtil.updateThread(thread);
                 } catch (ThreadNotFoundException | ContestNotFoundException ignored) {
                 }
             }

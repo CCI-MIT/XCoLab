@@ -3,14 +3,7 @@ package org.xcolab.jsp.tags.judging;
 
 
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;

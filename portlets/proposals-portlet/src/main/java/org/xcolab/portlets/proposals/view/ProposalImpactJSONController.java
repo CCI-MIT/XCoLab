@@ -17,10 +17,10 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
 
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -98,8 +98,8 @@ public class ProposalImpactJSONController {
 
         try {
             Contest contest = proposalsContext.getContest(request);
-            OntologyTerm sectorOntologyTerm = OntologyClient.getOntologyTerm(sectorTermId);
-            OntologyTerm regionOntologyTerm = OntologyClient.getOntologyTerm(regionTermId);
+            OntologyTerm sectorOntologyTerm = OntologyClientUtil.getOntologyTerm(sectorTermId);
+            OntologyTerm regionOntologyTerm = OntologyClientUtil.getOntologyTerm(regionTermId);
 
             // ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
             FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
@@ -133,7 +133,7 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        FocusArea focusArea = OntologyClient.getFocusArea(focusAreaId);
+        FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
         Contest contest = proposalsContext.getContest(request);
 
         JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
@@ -165,7 +165,7 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        FocusArea focusArea = OntologyClient.getFocusArea(focusAreaId);
+        FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
         Proposal proposal = proposalsContext.getProposal(request);
 
         for (ProposalAttribute proposalAttribute : ProposalAttributeClient.getImpactProposalAttributes(proposal, focusArea)) {

@@ -6,10 +6,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalMoveHistoryClient;
@@ -89,11 +89,11 @@ public final class ProposalCreationUtil {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
         try {
-            Contest contest = ContestClient
-                    .getContest(ContestClient.getContestPhase(contestPhase.getContestPhasePK()).getContestPK());
+            Contest contest = ContestClientUtil
+                    .getContest(ContestClientUtil.getContestPhase(contestPhase.getContestPhasePK()).getContestPK());
 
             Proposal updatedProposal = ProposalsClient.getProposal(proposalWrapper.getProposalId());
-            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
             new ProposalCreationNotification(updatedProposal, contestMicro, serviceContext).sendMessage();
         } catch (ContestNotFoundException | ProposalNotFoundException ignored) {
 

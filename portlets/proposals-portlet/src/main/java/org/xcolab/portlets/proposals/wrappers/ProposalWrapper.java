@@ -14,14 +14,14 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestTeamMemberClient;
-import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.PlanTemplate;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -142,7 +142,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (Long judge : ContestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
+            for (Long judge : ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK())) {
 
                 selectedJudges.add(judge);
             }
@@ -164,7 +164,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (Long judgeId : ContestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
+            for (Long judgeId : ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK())) {
 
                 try {
                     Member judge = MembersClient.getMember(judgeId);
@@ -206,7 +206,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     public long getVotesCount() {
         if (proposal.getProposalId() > 0) {
             try {
-                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
                 long votingPhasePK = new ContestWrapper(contestMicro).getVotingPhasePK();
                 return ProposalVoteClient.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
             } catch (ContestNotFoundException ignored) {
@@ -221,9 +221,10 @@ public class ProposalWrapper extends BaseProposalWrapper {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
-                    PlanTemplate planTemplate = PlanTemplateClient.getPlanTemplate(contest.getPlanTemplateId());
+                    PlanTemplate planTemplate = PlanTemplateClientUtil.getPlanTemplate(contest.getPlanTemplateId());
                     if (planTemplate != null) {
-                        for (PlanSectionDefinition psd : PlanTemplateClient.getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
+                        for (PlanSectionDefinition psd : PlanTemplateClientUtil
+                                .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
                             sections.add(new ProposalSectionWrapper(psd, this));
                         }
                     }

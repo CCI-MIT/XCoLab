@@ -2,7 +2,7 @@ package org.xcolab.service.proposal.util;
 
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -26,12 +26,12 @@ public final class EntityGroupingUtil {
     public static Map<ContestType, List<Proposal>> groupByContestType(List<Proposal> proposals) {
         Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
         Map<ContestType, List<Proposal>> proposalsByContestType = new HashMap<>();
-        final List<ContestType> contestTypes = ContestClient.getActiveContestTypes();
+        final List<ContestType> contestTypes = ContestClientUtil.getActiveContestTypes();
         if (contestTypes.size()  == 1) {
             proposalsByContestType.put(contestTypes.get(0), proposals);
         } else {
             for (ContestType contestType : contestTypes) {
-                final List<Contest> contests = ContestClient.getContestsByContestTypeId(contestType.getId_());
+                final List<Contest> contests = ContestClientUtil.getContestsByContestTypeId(contestType.getId_());
                 proposalsByContestType.put(contestType, new ArrayList<Proposal>());
                 for (Contest contest : contests) {
                     contestIdToContestTypeMap.put(contest.getContestPK(), contestType);

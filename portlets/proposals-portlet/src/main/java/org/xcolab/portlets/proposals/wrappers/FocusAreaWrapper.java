@@ -2,7 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 
 
-import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
 
 import java.util.ArrayList;
 import java.util.List;

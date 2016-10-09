@@ -7,13 +7,13 @@ import com.liferay.portal.kernel.util.Validator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.xcolab.client.contest.OntologyClient;
-import org.xcolab.client.contest.PlanTemplateClient;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
-import org.xcolab.client.contest.pojo.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.PlanTemplateSection;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
 import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.enums.OntologySpaceEnum;
@@ -68,7 +68,7 @@ public class SectionDefinitionWrapper implements Serializable {
         initPlanSectionDefinition(planSectionDefinition);
 
         List<PlanTemplateSection> planTemplateSections =
-                PlanTemplateClient.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
+                PlanTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
 
         // TODO very inefficient, add finder to service layer
         for (PlanTemplateSection planTemplateSection : planTemplateSections) {
@@ -113,31 +113,31 @@ public class SectionDefinitionWrapper implements Serializable {
 
     private void initOntologyTermIdsWithFocusAreaId() {
         if (this.focusAreaId != 0) {
-            FocusArea focusArea = OntologyClient.getFocusArea(this.focusAreaId);
+            FocusArea focusArea = OntologyClientUtil.getFocusArea(this.focusAreaId);
 
-            OntologySpace space = OntologyClient
+            OntologySpace space = OntologyClientUtil
                     .getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
             List<OntologyTerm> terms =
-                    OntologyClient
+                    OntologyClientUtil
                             .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea,
                                     space);
             this.whatTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClient
+            space = OntologyClientUtil
                     .getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
-            terms = OntologyClient
+            terms = OntologyClientUtil
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whereTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClient
+            space = OntologyClientUtil
                     .getOntologySpace(OntologySpaceEnum.WHO.getSpaceId());
-            terms = OntologyClient
+            terms = OntologyClientUtil
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whoTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClient
+            space = OntologyClientUtil
                     .getOntologySpace(OntologySpaceEnum.HOW.getSpaceId());
-            terms = OntologyClient
+            terms = OntologyClientUtil
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.howTermIds = getIdsFromOntologyTerms(terms);
         }
@@ -395,10 +395,11 @@ public class SectionDefinitionWrapper implements Serializable {
 
         newFocusArea.setName("created for planSectionDefinition '" + this.title + "'");
 
-        newFocusArea = OntologyClient.createFocusArea(newFocusArea);
+        newFocusArea = OntologyClientUtil.createFocusArea(newFocusArea);
 
         for (OntologyTerm ontologyTerm : focusAreaOntologyTerms) {
-            OntologyClient.addOntologyTermsToFocusAreaByOntologyTermId(newFocusArea.getId_(), ontologyTerm.getId_());
+            OntologyClientUtil
+                    .addOntologyTermsToFocusAreaByOntologyTermId(newFocusArea.getId_(), ontologyTerm.getId_());
         }
 
         return newFocusArea;
@@ -424,7 +425,7 @@ public class SectionDefinitionWrapper implements Serializable {
         for (List<Long> ontologyTermIds : ontologyTermIdLists) {
             for (Long ontologyTermId : ontologyTermIds) {
                 selectedOntologyTerms
-                        .add(OntologyClient.getOntologyTerm(ontologyTermId));
+                        .add(OntologyClientUtil.getOntologyTerm(ontologyTermId));
             }
         }
         return selectedOntologyTerms;
@@ -450,10 +451,10 @@ public class SectionDefinitionWrapper implements Serializable {
                     IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
             psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
 
-            psd = PlanTemplateClient.createPlanSectionDefinition(psd);
+            psd = PlanTemplateClientUtil.createPlanSectionDefinition(psd);
             id = psd.getId_();
         } else {
-            psd = PlanTemplateClient.getPlanSectionDefinition(id);
+            psd = PlanTemplateClientUtil.getPlanSectionDefinition(id);
             pdc = PointsDistributionConfigurationClient
                     .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
             if (pointType == 0L) {
@@ -478,12 +479,12 @@ public class SectionDefinitionWrapper implements Serializable {
             }
         }
 
-        PlanTemplateClient.updatePlanSectionDefinition(psd);
+        PlanTemplateClientUtil.updatePlanSectionDefinition(psd);
 
     }
 
     public boolean hasUpdates() {
-        PlanSectionDefinition psd = PlanTemplateClient
+        PlanSectionDefinition psd = PlanTemplateClientUtil
                 .getPlanSectionDefinition(id);
         return !this.equals(new SectionDefinitionWrapper(psd));
     }

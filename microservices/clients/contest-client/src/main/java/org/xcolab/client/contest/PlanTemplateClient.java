@@ -1,94 +1,124 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.PlanTemplate;
-import org.xcolab.client.contest.pojo.PlanTemplateSection;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinitionDto;
+import org.xcolab.client.contest.pojo.templates.PlanTemplateDto;
+import org.xcolab.client.contest.pojo.templates.PlanTemplateSectionDto;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.dto.DtoUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public final class PlanTemplateClient {
+public class PlanTemplateClient {
 
-    private static final RestService contestService = new RestService("contest-service");
+    private static final Map<RestService, PlanTemplateClient> instances = new HashMap<>();
 
-    private static final RestResource1<PlanTemplate,Long> planTemplateResource = new RestResource1<>(contestService,
-            "planTemplates", PlanTemplate.TYPES);
+    private final RestService contestService;
 
-    private static final RestResource1<PlanSectionDefinition,Long> planSectionDefinitionResource = new RestResource1<>(contestService,
-            "planSectionDefinitions", PlanSectionDefinition.TYPES);
+    private final RestResource1<PlanTemplateDto, Long> planTemplateResource;
+    private final RestResource1<PlanSectionDefinitionDto, Long> planSectionDefinitionResource;
+    private final RestResource1<PlanTemplateSectionDto, Long> planTemplateSectionResource;
 
-    private static final RestResource1<PlanTemplateSection,Long> planTemplateSectionResource = new RestResource1<>(contestService,
-            "planTemplateSections", PlanTemplateSection.TYPES);
+    private PlanTemplateClient(RestService contestService) {
+        this.contestService = contestService;
+        planTemplateResource =
+                new RestResource1<>(this.contestService, "planTemplates", PlanTemplateDto.TYPES);
+        planSectionDefinitionResource =
+                new RestResource1<>(this.contestService, "planSectionDefinitions",
+                        PlanSectionDefinitionDto.TYPES);
+        planTemplateSectionResource =
+                new RestResource1<>(this.contestService, "planTemplateSections",
+                        PlanTemplateSectionDto.TYPES);
+    }
 
-    public static PlanTemplate getPlanTemplate(long Id_) {
+    public static PlanTemplateClient fromService(RestService contestService) {
+        PlanTemplateClient client = instances.get(contestService);
+        if (client == null) {
+            client = new PlanTemplateClient(contestService);
+            instances.put(contestService, client);
+        }
+        return client;
+    }
+
+    public PlanTemplate getPlanTemplate(long Id_) {
         return planTemplateResource.get(Id_)
+                .execute().toPojo(contestService);
+    }
+
+    public List<PlanTemplate> getPlanTemplates() {
+        return DtoUtil.toPojos(planTemplateResource.list()
+                .execute(), contestService);
+    }
+
+    public PlanTemplate createPlanTemplate(PlanTemplate planTemplate) {
+        return planTemplateResource.create(new PlanTemplateDto(planTemplate))
+                .execute().toPojo(contestService);
+    }
+
+    public boolean updatePlanTemplate(PlanTemplate planTemplate) {
+        return planTemplateResource.update(new PlanTemplateDto(planTemplate), planTemplate.getId_())
                 .execute();
     }
 
-    public static List<PlanTemplate> getPlanTemplates() {
-        return planTemplateResource.list()
+    public PlanSectionDefinition getPlanSectionDefinition(long id) {
+        return planSectionDefinitionResource.get(id)
+                .execute().toPojo(contestService);
+    }
+
+    public boolean updatePlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
+        return planSectionDefinitionResource.update(
+                new PlanSectionDefinitionDto(planSectionDefinition), planSectionDefinition.getId_())
                 .execute();
     }
 
-    public static PlanTemplate createPlanTemplate(PlanTemplate planTemplate) {
-        return planTemplateResource.create(planTemplate).execute();
+    public PlanSectionDefinition createPlanSectionDefinition(
+            PlanSectionDefinition planSectionDefinition) {
+        return planSectionDefinitionResource
+                .create(new PlanSectionDefinitionDto(planSectionDefinition))
+                .execute().toPojo(contestService);
     }
 
-    public static boolean updatePlanTemplate(PlanTemplate planTemplate) {
-        return planTemplateResource.update(planTemplate, planTemplate.getId_())
-                .execute();
-    }
+    public List<PlanSectionDefinition> getPlanSectionDefinitionByPlanTemplateId(Long planTemplateId,
+            Boolean weight) {
 
-    public static PlanSectionDefinition getPlanSectionDefinition(long Id_) {
-        return planSectionDefinitionResource.get(Id_)
-                .execute();
-
-
-    }
-
-    public static boolean updatePlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
-        return planSectionDefinitionResource.update(planSectionDefinition, planSectionDefinition.getId_())
-                .execute();
-    }
-
-    public static PlanSectionDefinition createPlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
-        return planSectionDefinitionResource.create(planSectionDefinition).execute();
-    }
-
-    public static List<PlanSectionDefinition> getPlanSectionDefinitionByPlanTemplateId(Long planTemplateId, Boolean weight) {
-
-        return planSectionDefinitionResource.list()
+        return DtoUtil.toPojos(planSectionDefinitionResource.list()
                 .optionalQueryParam("planTemplateId", planTemplateId)
                 .optionalQueryParam("weight", ((weight == null) ? (false) : weight))
-                .execute();
+                .execute(), contestService);
     }
 
-    public static Boolean deletePlanSectionDefinition(Long id_) {
-        return planSectionDefinitionResource.delete(id_).execute();
+    public Boolean deletePlanSectionDefinition(Long id) {
+        return planSectionDefinitionResource.delete(id).execute();
     }
 
-    public static Boolean deletePlanTemplateSection(Long planTemplateId, Long planSectionDefinitionId) {
+    public Boolean deletePlanTemplateSection(Long planTemplateId, Long planSectionDefinitionId) {
         return planTemplateSectionResource.service("deletePlanTemplateSection", Boolean.class)
                 .queryParam("planTemplateId", planTemplateId)
                 .queryParam("planSectionDefinitionId", planSectionDefinitionId)
                 .delete();
     }
 
-    public static List<PlanTemplateSection> getPlanTemplateSectionByPlanTemplateId(Long planTemplateId) {
-        return planTemplateSectionResource.list()
+    public List<PlanTemplateSection> getPlanTemplateSectionByPlanTemplateId(Long planTemplateId) {
+        return DtoUtil.toPojos(planTemplateSectionResource.list()
                 .optionalQueryParam("planTemplateId", planTemplateId)
+                .execute(), contestService);
+    }
+
+    public boolean updatePlanTemplateSection(PlanTemplateSection planTemplateSection) {
+        return planTemplateSectionResource.update(new PlanTemplateSectionDto(planTemplateSection),
+                planTemplateSection.getPlanTemplateId())
                 .execute();
     }
 
-    public static boolean updatePlanTemplateSection(PlanTemplateSection planTemplateSection) {
-        return planTemplateSectionResource.update(planTemplateSection, planTemplateSection.getPlanTemplateId())
-                .execute();
-    }
-
-    public static List<PlanTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(Long planSectionId) {
-        return planTemplateSectionResource.list()
+    public List<PlanTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(
+            Long planSectionId) {
+        return DtoUtil.toPojos(planTemplateSectionResource.list()
                 .optionalQueryParam("planSectionId", planSectionId)
-                .execute();
+                .execute(), contestService);
     }
 }

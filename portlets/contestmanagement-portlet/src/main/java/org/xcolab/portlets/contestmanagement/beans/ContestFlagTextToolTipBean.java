@@ -1,7 +1,7 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 
@@ -51,7 +51,7 @@ public class ContestFlagTextToolTipBean implements Serializable {
         contest.setFlag(flagNumber);
         contest.setFlagText(flagText);
         contest.setFlagTooltip(flagTooltip);
-        ContestClient.updateContest(contest);
+        ContestClientUtil.updateContest(contest);
 
     }
 

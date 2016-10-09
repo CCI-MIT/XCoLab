@@ -9,7 +9,7 @@ import com.liferay.portal.model.User;
 
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.MembershipRequestClient;
 import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalVoteClient;

@@ -7,14 +7,16 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestTeamMemberClient;
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.team.ContestTeamMember;
+import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -52,7 +54,7 @@ public class BaseContestWrapper {
     protected BaseContestPhaseWrapper activePhase;
 
     public BaseContestWrapper(Long contestId) throws ContestNotFoundException {
-        this(ContestClient.getContest(contestId));
+        this(ContestClientUtil.getContest(contestId));
     }
 
     public BaseContestWrapper(Contest contest) {
@@ -60,7 +62,7 @@ public class BaseContestWrapper {
     }
 
     public void persist() throws SystemException {
-        ContestClient.updateContest(contest);
+        ContestClientUtil.updateContest(contest);
     }
 
     public long getContestPK() {
@@ -328,7 +330,7 @@ public class BaseContestWrapper {
 
     public long getProposalsCount() {
         try {
-            ContestPhase cp = ContestClient.getActivePhase(contest.getContestPK());
+            ContestPhase cp = ContestClientUtil.getActivePhase(contest.getContestPK());
             if (cp != null) {
                 return Proposal2PhaseClient
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
@@ -385,7 +387,7 @@ public class BaseContestWrapper {
     protected List<OntologyTerm> getTermFromSpace(String space) {
             if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {
                 if (!faCache.containsKey(contest.getFocusAreaId())) {
-                    FocusArea fa = OntologyClient.getFocusArea(contest
+                    FocusArea fa = OntologyClientUtil.getFocusArea(contest
                             .getFocusAreaId());
                     if (fa == null) {
                         ontologySpaceCache.put(space, null);
@@ -394,9 +396,9 @@ public class BaseContestWrapper {
                     faCache.put(fa.getId_(), fa);
                 }
                 List<OntologyTerm> terms = new ArrayList<>();
-                for (OntologyTerm t : OntologyClient
+                for (OntologyTerm t : OntologyClientUtil
                         .getOntologyTermsForFocusArea(faCache.get(contest.getFocusAreaId()))) {
-                    if (OntologyClient.getOntologySpace(t.getOntologySpaceId()).getName()
+                    if (OntologyClientUtil.getOntologySpace(t.getOntologySpaceId()).getName()
                             .equalsIgnoreCase(space)) {
                         terms.add(t);
                     }
@@ -410,7 +412,7 @@ public class BaseContestWrapper {
     public List<BaseContestPhaseWrapper> getPhases() {
         if (phases == null) {
             phases = new ArrayList<>();
-            for (org.xcolab.client.contest.pojo.ContestPhase phase : ContestClient.getAllContestPhases(contest.getContestPK())) {
+            for (ContestPhase phase : ContestClientUtil.getAllContestPhases(contest.getContestPK())) {
                 phases.add(new BaseContestPhaseWrapper(phase));
             }
         }
@@ -421,9 +423,12 @@ public class BaseContestWrapper {
         if (contestTeamMembersByRole == null) {
 
             Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
-            for (org.xcolab.client.contest.pojo.ContestTeamMember teamMember : ContestTeamMemberClient.getTeamMembers(contest.getContestPK())) {
+            for (ContestTeamMember teamMember : ContestTeamMemberClientUtil
+
+                    .getTeamMembers(contest.getContestPK())) {
                 try {
-                    org.xcolab.client.contest.pojo.ContestTeamMemberRole role = ContestTeamMemberClient.getContestTeamMemberRole(teamMember.getRoleId());
+                    ContestTeamMemberRole role = ContestTeamMemberClientUtil
+                            .getContestTeamMemberRole(teamMember.getRoleId());
                     List<Member> roleUsers = teamRoleUsersMap
                             .get(new Tuple<>(role.getRole(), role.getSort()));
                     if (roleUsers == null) {
@@ -464,7 +469,7 @@ public class BaseContestWrapper {
 
     public BaseContestPhaseWrapper getActivePhase() throws PortalException, SystemException {
         if (activePhase == null) {
-            org.xcolab.client.contest.pojo.ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
+            ContestPhase phase = ContestClientUtil.getActivePhase(contest.getContestPK());
             if (phase == null) {
                 return null;
             }
@@ -512,7 +517,7 @@ public class BaseContestWrapper {
     public long getTotalProposalsCount() {
         Set<Proposal> proposalList = new HashSet<>();
 
-            List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contest.getContestPK());
+            List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contest.getContestPK());
             for (ContestPhase contestPhase : contestPhases) {
                     List<Proposal> proposals = ProposalsClient
                             .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
@@ -524,7 +529,7 @@ public class BaseContestWrapper {
     }
     public org.xcolab.client.contest.pojo.ContestType getContestType() {
         if (contestType == null) {
-            contestType = ContestClient.getContestType(contest.getContestTypeId());
+            contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
         }
         return contestType;
     }

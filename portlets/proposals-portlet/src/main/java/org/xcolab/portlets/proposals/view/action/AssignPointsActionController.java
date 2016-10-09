@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
 import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.Proposal;

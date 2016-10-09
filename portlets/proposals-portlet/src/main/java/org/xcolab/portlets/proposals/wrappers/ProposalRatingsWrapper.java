@@ -6,8 +6,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -96,12 +96,12 @@ public class ProposalRatingsWrapper {
         String contestPhaseTitle = "";
 
             if(this.contestPhase != null) {
-                contestPhaseTitle = ContestClient.getContestPhaseName(this.contestPhase);
+                contestPhaseTitle = ContestClientUtil.getContestPhaseName(this.contestPhase);
             } else {
                 if (!proposalRatings.isEmpty()) {
                     long contestPhaseId = proposalRatings.get(0).unwrap().getContestPhaseId();
-                    ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
-                    contestPhaseTitle = ContestClient.getContestPhaseName(contestPhase);
+                    ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+                    contestPhaseTitle = ContestClientUtil.getContestPhaseName(contestPhase);
                 }
             }
 

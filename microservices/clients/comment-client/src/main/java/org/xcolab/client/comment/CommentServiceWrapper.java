@@ -44,7 +44,7 @@ class CommentServiceWrapper {
         categoryGroupResource = new RestResource1<>(commentService, "groups", CategoryGroup.TYPES);
     }
 
-    static CommentServiceWrapper ofService(RestService commentService) {
+    static CommentServiceWrapper fromService(RestService commentService) {
         CommentServiceWrapper serviceWrapper = instances.get(commentService);
         if (serviceWrapper == null) {
             serviceWrapper = new CommentServiceWrapper(commentService);

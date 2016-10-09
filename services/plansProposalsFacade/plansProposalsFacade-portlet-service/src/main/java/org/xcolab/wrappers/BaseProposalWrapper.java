@@ -9,11 +9,11 @@ import com.liferay.portal.model.User;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestTeamMemberClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -87,7 +87,7 @@ public class BaseProposalWrapper {
     private Contest fetchContest(ContestPhase contestPhase) {
         try {
             if (contestPhase != null) {
-                return ContestClient.getContest(contestPhase.getContestPK());
+                return ContestClientUtil.getContest(contestPhase.getContestPK());
             }
             return ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
         } catch (ContestNotFoundException e) {
@@ -98,10 +98,10 @@ public class BaseProposalWrapper {
 
     private ContestPhase fetchContestPhase() {
         if (proposal2Phase != null) {
-            return ContestClient.getContestPhase(proposal2Phase.getContestPhaseId());
+            return ContestClientUtil.getContestPhase(proposal2Phase.getContestPhaseId());
         }
         if (contest != null) {
-            return ContestClient.getActivePhase(contest.getContestPK());
+            return ContestClientUtil.getActivePhase(contest.getContestPK());
         }
         _log.error(String.format("Could not get contest phase for proposal %d", proposal.getProposalId()));
         return null;
@@ -218,7 +218,7 @@ public class BaseProposalWrapper {
     }
 
     public boolean isUserAmongFellows(User userInQuestion) {
-        for (Long fellowId : ContestTeamMemberClient.getFellowsForContest(contest.getContestPK())) {
+        for (Long fellowId : ContestTeamMemberClientUtil.getFellowsForContest(contest.getContestPK())) {
             if (fellowId == userInQuestion.getUserId()) {
                 return true;
             }
@@ -227,7 +227,7 @@ public class BaseProposalWrapper {
     }
 
     public boolean isUserAmongJudges(Member userInQuestion) {
-        for (Long judge : ContestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
+        for (Long judge : ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK())) {
             if (judge == userInQuestion.getUserId()) {
                 return true;
             }
@@ -299,7 +299,7 @@ public class BaseProposalWrapper {
         return proposal.getProposalLinkUrl(contest);
     }
 
-    public String getProposalUrl(org.xcolab.client.contest.pojo.ContestPhase inPhase) {
+    public String getProposalUrl(ContestPhase inPhase) {
         return proposal.getProposalLinkUrl(contest, inPhase.getContestPhasePK());
     }
 
@@ -337,7 +337,7 @@ public class BaseProposalWrapper {
             Contest c = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
             if (c.getContestPK() != contest.getContestPK().longValue()) {
                 try {
-                    return new BaseContestWrapper(ContestClient.getContest(c.getContestPK()));
+                    return new BaseContestWrapper(ContestClientUtil.getContest(c.getContestPK()));
                 } catch (ContestNotFoundException ignored) {
                 }
 
@@ -381,9 +381,9 @@ public class BaseProposalWrapper {
         return !proposal.isVisibleInContest(contestId);
     }
 
-    public org.xcolab.client.contest.pojo.ContestPhase getContestPhase() {
+    public ContestPhase getContestPhase() {
 
-        return ContestClient.getContestPhase(contestPhase.getContestPhasePK());
+        return ContestClientUtil.getContestPhase(contestPhase.getContestPhasePK());
     }
 
     public List<BaseProposalTeamMemberWrapper> getMembers() {

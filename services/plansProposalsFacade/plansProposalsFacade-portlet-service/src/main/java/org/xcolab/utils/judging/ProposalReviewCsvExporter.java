@@ -7,7 +7,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -119,7 +119,7 @@ public class ProposalReviewCsvExporter {
     private String getRowHeader(String proposalName, ProposalReview proposalReview) {
         String contestPhaseName = "";
 
-        contestPhaseName = ContestClient.getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
+        contestPhaseName = ContestClientUtil.getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
 
         return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s", TQF, escapeQuote(proposalName), delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()), delimiter, proposalReview.getProposalUrl(), delimiter, escapeQuote(contestPhaseName), delimiter);
     }

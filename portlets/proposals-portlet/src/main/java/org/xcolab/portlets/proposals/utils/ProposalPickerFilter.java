@@ -14,12 +14,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
@@ -90,10 +90,10 @@ public class ProposalPickerFilter {
                     for(OntologyTerm ot : terms){
                         otIds.add(ot.getId_());
                     }
-                    List<Contest> contests = ContestClient.getContestMatchingOntologyTerms(otIds);
+                    List<Contest> contests = ContestClientUtil.getContestMatchingOntologyTerms(otIds);
                     for (long filterExceptionContestId : filterExceptionContestIds) {
                         try {
-                            final Contest filterExceptionContest = ContestClient.getContest(filterExceptionContestId);
+                            final Contest filterExceptionContest = ContestClientUtil.getContest(filterExceptionContestId);
                             if (!contests.contains(filterExceptionContest)) {
                                 contests.add(filterExceptionContest);
                             }
@@ -139,10 +139,10 @@ public class ProposalPickerFilter {
                     if (filterExceptionContestIds.contains(contest.getContestPK())) {
                         continue;
                     }
-                        FocusArea focusArea = OntologyClient.getFocusArea(contest.getFocusAreaId());
-                        List<OntologyTerm> contestTerms = OntologyClient.getOntologyTermsForFocusArea(focusArea);
+                        FocusArea focusArea = OntologyClientUtil.getFocusArea(contest.getFocusAreaId());
+                        List<OntologyTerm> contestTerms = OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
                         for (OntologyTerm requiredTerm : requiredTerms) {
-                            List<OntologyTerm> requiredDescendantTerms = OntologyClient.getAllOntologyTermDescendant(requiredTerm.getId_());
+                            List<OntologyTerm> requiredDescendantTerms = OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId_());
                             requiredDescendantTerms.add(requiredTerm);
                             if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
                                 removedContests.add(contest.getContestPK());
@@ -171,9 +171,9 @@ public class ProposalPickerFilter {
             }
             List<OntologyTerm> terms = new ArrayList<>();
 
-            FocusArea focusArea = OntologyClient.getFocusArea(focusAreaId);
+            FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
             addTermsInFocusArea(terms, focusArea);
-            FocusArea contestFocusArea = OntologyClient.getFocusArea(localContestFocusAreaId);
+            FocusArea contestFocusArea = OntologyClientUtil.getFocusArea(localContestFocusAreaId);
             addTermsInFocusArea(terms, contestFocusArea);
 
             return terms;
@@ -181,7 +181,7 @@ public class ProposalPickerFilter {
 
         private void addTermsInFocusArea(List<OntologyTerm> terms, FocusArea focusArea) throws PortalException, SystemException {
             if (focusArea != null) {
-                final List<OntologyTerm> focusAreaTerms = OntologyClient.getOntologyTermsForFocusArea(focusArea);
+                final List<OntologyTerm> focusAreaTerms = OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
                 removeRootTerms(focusAreaTerms);
                 _log.debug(String.format("Added %d non-root contest terms", focusAreaTerms.size()));
                 terms.addAll(focusAreaTerms);
@@ -309,7 +309,7 @@ public class ProposalPickerFilter {
                     for (Long tier : allowedContestTiers) {
                         ContestTier contestTier = ContestTier.getContestTierByTierType(tier);
                         if (contestTier != null) {
-                            tierFilteredContests.addAll(ContestClient.getContestsMatchingTier(contestTier.getTierType()));
+                            tierFilteredContests.addAll(ContestClientUtil.getContestsMatchingTier(contestTier.getTierType()));
                         } else {
                             _log.error(String.format("Could not find contest tier %d. Tier ignored in filtering.", tier));
                         }

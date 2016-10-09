@@ -10,9 +10,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
@@ -87,7 +87,7 @@ public class ContestResourcesBean implements Serializable {
 
     @SuppressWarnings("unused")
     public ContestResourcesBean() throws SystemException, PortalException {
-        this(ContestClient.getContestType(
+        this(ContestClientUtil.getContestType(
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
     }
 
@@ -243,7 +243,7 @@ public class ContestResourcesBean implements Serializable {
     }
 
     public void fillOverviewSectionContent(Contest contest) {
-            List<ContestPhase> contestPhaseList = ContestClient.getAllContestPhases(contest.getContestPK());
+            List<ContestPhase> contestPhaseList = ContestClientUtil.getAllContestPhases(contest.getContestPK());
             String proposalSubmissionEndDate = "";
             for (ContestPhase contestPhase : contestPhaseList) {
                 Long contestPhaseType = contestPhase.getContestPhaseType();

@@ -1,10 +1,10 @@
 package org.xcolab.portlets.proposals.impact;
 
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -112,7 +112,7 @@ public class ProposalImpactSeriesList {
             if (!focusAreaIdSet.contains(attribute.getAdditionalId())) {
                 focusAreaIdSet.add(attribute.getAdditionalId());
                 impactSeriesFocusAreas
-                        .add(OntologyClient.getFocusArea(attribute.getAdditionalId()));
+                        .add(OntologyClientUtil.getFocusArea(attribute.getAdditionalId()));
             }
         }
 
@@ -251,7 +251,7 @@ public class ProposalImpactSeriesList {
 
         Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesSumMap =
                 new HashMap<>(seriesTypes.size());
-        OntologyTerm regionOntologyTerm = OntologyClient.getOntologyTerm(regionOntologyTermId);
+        OntologyTerm regionOntologyTerm = OntologyClientUtil.getOntologyTerm(regionOntologyTermId);
 
         for (String seriesType : seriesTypes) {
             seriesTypeToSeriesSumMap.put(seriesType, new ProposalImpactSeriesValues());
@@ -285,7 +285,7 @@ public class ProposalImpactSeriesList {
 
                 for (Long sectorOntologyTermId : sectorOntologyTermIds) {
                     OntologyTerm sectorOntologyTerm =
-                            OntologyClient.getOntologyTerm(sectorOntologyTermId);
+                            OntologyClientUtil.getOntologyTerm(sectorOntologyTermId);
                     integratedSeriesValues =
                             seriesTypeToSeriesSumMap.get(sectorOntologyTermId.toString());
                     if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm))) {
@@ -308,7 +308,7 @@ public class ProposalImpactSeriesList {
         ProposalImpactSeriesValues aggregatedSeriesValuesByOntologyTermId =
                 new ProposalImpactSeriesValues();
 
-        OntologyTerm ontologyTerm = OntologyClient.getOntologyTerm(ontologyTermId);
+        OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(ontologyTermId);
         ProposalImpactSeriesValues emptySeries = new ProposalImpactSeriesValues();
         for (ProposalImpactSeries impactSeries : impactSerieses) {
 
@@ -332,7 +332,7 @@ public class ProposalImpactSeriesList {
             Long regionOntologyTermId, List<Long> sectorOntologyTermIds) {
         Map<String, ProposalImpactSeriesValues> ontologyTermIdToSeriesSumMap =
                 new HashMap<>(sectorOntologyTermIds.size());
-        OntologyTerm regionOntologyTerm = OntologyClient.getOntologyTerm(regionOntologyTermId);
+        OntologyTerm regionOntologyTerm = OntologyClientUtil.getOntologyTerm(regionOntologyTermId);
 
         for (Long ontologyTermId : sectorOntologyTermIds) {
             ontologyTermIdToSeriesSumMap
@@ -352,7 +352,7 @@ public class ProposalImpactSeriesList {
                 final ProposalImpactSeriesValues integratedSeriesValues = entry.getValue();
 
                 OntologyTerm sectorOntologyTerm =
-                        OntologyClient.getOntologyTerm(Long.parseLong(sectorOntologyTermId));
+                        OntologyClientUtil.getOntologyTerm(Long.parseLong(sectorOntologyTermId));
 
                 if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm) && impactSeries
                         .getWhereTerm().equals(regionOntologyTerm))) {
@@ -393,7 +393,7 @@ public class ProposalImpactSeriesList {
                 final ProposalImpactSeriesValues integratedSeriesValues = entry.getValue();
 
                 OntologyTerm sectorOntologyTerm =
-                        OntologyClient.getOntologyTerm(Long.parseLong(sectorOntologyTermId));
+                        OntologyClientUtil.getOntologyTerm(Long.parseLong(sectorOntologyTermId));
 
                 if (!(impactSeries.getWhatTerm().equals(sectorOntologyTerm))) {
                     for (Integer year : impactSeriesValues.getYearToValueMap().keySet()) {

@@ -1,12 +1,9 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.NoSuchContestException;
-
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
@@ -87,7 +84,7 @@ public class MassActionConfirmationWrapper {
     private void populateValidContestWrapper(List<Integer> contestIds) throws PortalException, SystemException {
         for (Integer contestId : contestIds) {
             try {
-                Contest contest = ContestClient.getContest(contestId);
+                Contest contest = ContestClientUtil.getContest(contestId);
                 this.contestWrappers.add(new BaseContestWrapper(contest));
                 this.selectedContest.add(false);
             } catch (ContestNotFoundException ignored) {

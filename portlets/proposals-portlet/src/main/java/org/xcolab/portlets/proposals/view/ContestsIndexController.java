@@ -3,10 +3,6 @@ package org.xcolab.portlets.proposals.view;
 
 
 
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -18,15 +14,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
@@ -76,7 +72,7 @@ public class ContestsIndexController extends BaseProposalsController {
 
         if (contestType.getSuggestionContestId() > 0) {
             try {
-                Contest c = ContestClient.getContest(contestType.getSuggestionContestId());
+                Contest c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
                 String link = c.getContestLinkUrl();
                 model.addAttribute("suggestionContestLink", link);
             }catch (ContestNotFoundException ignored){
@@ -107,9 +103,9 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
         List<ContestWrapper> contests = new ArrayList<>();
-        List<Contest> contestsToWrap = showAllContests ? ContestClient.getContestsByContestTypeId(contestType.getId_()) :
-        	ContestClient.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
-        List<Contest> priorContests = ContestClient.getContestsByActivePrivateType(false, false,
+        List<Contest> contestsToWrap = showAllContests ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_()) :
+        	ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
+        List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
                 contestType.getId_());
 
         if (contestsToWrap.size() == 1) {
@@ -126,7 +122,7 @@ public class ContestsIndexController extends BaseProposalsController {
         for (Contest contest: contestsToWrap) {
         	if (! contest.getContestPrivate()) {
                 try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
                     contests.add(new ContestWrapper(contestMicro));//contest
                 }catch (ContestNotFoundException ignored){
 
@@ -156,10 +152,10 @@ public class ContestsIndexController extends BaseProposalsController {
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
         
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
-        	List<OntologySpace> ontologySpacesRaw = OntologyClient.getAllOntologySpaces();
-        	List<OntologyTerm> ontologyTermsRaw = OntologyClient.getAllOntologyTerms();
-        	List<FocusArea> focusAreasRaw = OntologyClient.getAllFocusAreas();
-        	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClient.getAllFocusAreaOntologyTerms();
+        	List<OntologySpace> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
+        	List<OntologyTerm> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
+        	List<FocusArea> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
+        	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClientUtil.getAllFocusAreaOntologyTerms();
         	
         	Map<Long, FocusAreaWrapper> focusAreas = new TreeMap<>();
         	Map<Long, OntologySpaceWrapper> ontologySpaces = new HashMap<>();
@@ -190,9 +186,10 @@ public class ContestsIndexController extends BaseProposalsController {
         	}
 
             List<ContestWrapper> otherContests = new ArrayList<>();
-            for (Contest contest: ContestClient.getContestsByActivePrivate(!showActiveContests, false)) {
+            for (Contest contest: ContestClientUtil
+                    .getContestsByActivePrivate(!showActiveContests, false)) {
                 try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
                     otherContests.add(new ContestWrapper(contestMicro));//contest
                 }catch (ContestNotFoundException ignored){
 

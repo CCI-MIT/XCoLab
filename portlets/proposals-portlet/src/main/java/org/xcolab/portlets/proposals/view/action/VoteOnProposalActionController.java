@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.analytics.AnalyticsUtil;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
@@ -92,7 +92,7 @@ public class VoteOnProposalActionController {
                 final boolean voteIsValid = validateVote(user, member, proposal, contest, serviceContext);
                 if (voteIsValid) {
                     try {
-                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
                         new ProposalVoteNotification(proposal, contestMicro, member, serviceContext).sendMessage();
                     } catch (ContestNotFoundException ignored) {
 
@@ -155,7 +155,7 @@ public class VoteOnProposalActionController {
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
         try {
-                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
             new ProposalVoteValidityConfirmation(proposal, contestMicro, member, serviceContext,
                     confirmationToken).sendEmailNotification();
         }catch (ContestNotFoundException ignored){

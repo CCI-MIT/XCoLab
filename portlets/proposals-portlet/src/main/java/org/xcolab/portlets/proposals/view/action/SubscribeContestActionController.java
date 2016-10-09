@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -30,11 +30,11 @@ public class SubscribeContestActionController {
         if (proposalsContext.getPermissions(request).getCanSubscribeContest()) {
             long contestId = proposalsContext.getContest(request).getContestPK();
             long userId = proposalsContext.getUser(request).getUserId();
-            if (ContestClient.isMemberSubscribedToContest(contestId, userId)) {
-                ContestClient.unsubscribeMemberFromContest(contestId, userId);
+            if (ContestClientUtil.isMemberSubscribedToContest(contestId, userId)) {
+                ContestClientUtil.unsubscribeMemberFromContest(contestId, userId);
             }
             else {
-                ContestClient.subscribeMemberToContest(contestId, userId);
+                ContestClientUtil.subscribeMemberToContest(contestId, userId);
 
             }
             response.sendRedirect(proposalsContext.getContest(request).getContestLinkUrl());

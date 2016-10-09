@@ -2,10 +2,10 @@ package org.xcolab.client.proposals;
 
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -58,7 +58,7 @@ public final class ProposalsClient {
 
 
     public static List<Proposal> getProposalsInContest(Long contestPK) {
-        ContestPhase cp = ContestClient.getActivePhase(contestPK);
+        ContestPhase cp = ContestClientUtil.getActivePhase(contestPK);
 
         return listProposals(0, Integer.MAX_VALUE, null, true, cp.getContestPhasePK(), null);
     }
@@ -238,28 +238,28 @@ public final class ProposalsClient {
     public static Contest getCurrentContestForProposal(Long proposalId) throws ContestNotFoundException {
 
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-        ContestPhase contestPhase = ContestClient.getContestPhase(contestPhaseId);
-        return ContestClient.getContest(contestPhase.getContestPK());
+        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+        return ContestClientUtil.getContest(contestPhase.getContestPK());
 
     }
 
     public static ContestType getContestTypeFromProposalId(Long proposalId) {
         try {
             Contest contest = getCurrentContestForProposal(proposalId);
-            return ContestClient.getContestType(contest.getContestTypeId());
+            return ContestClientUtil.getContestType(contest.getContestTypeId());
         } catch (ContestNotFoundException ignored) {
             return null;
         }
     }
 
     public static Contest getLatestContestInProposal(Long proposalId) throws ContestNotFoundException {
-        return ContestClient.getContest(getLatestContestPhaseInContest(proposalId).getContestPK());
+        return ContestClientUtil.getContest(getLatestContestPhaseInContest(proposalId).getContestPK());
     }
 
 
     public static ContestPhase getLatestContestPhaseInContest(Long proposalId) {
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-        return ContestClient.getContestPhase(contestPhaseId);
+        return ContestClientUtil.getContestPhase(contestPhaseId);
     }
 
 

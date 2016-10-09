@@ -16,11 +16,11 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -90,7 +90,7 @@ public class CsvExportHelper {
             BaseProposalWrapper proposalWrapper = getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
             Long contestId = contestPhase.getContestPK();
 
-            Contest contest = ContestClient.getContest(contestId);
+            Contest contest = ContestClientUtil.getContest(contestId);
 
             String contestTitle = normalizeApostrophes(contest.getContestShortName());
             String proposalTitle = normalizeApostrophes(proposalWrapper.getName());
@@ -125,7 +125,7 @@ public class CsvExportHelper {
 
     private static String getContestPhaseTitle(ContestPhase contestPhase) throws PortalException, SystemException {
         Long contestPhaseTypeId = contestPhase.getContestPhaseType();
-        ContestPhaseType contestPhaseType = ContestClient.getContestPhaseType(contestPhaseTypeId);
+        ContestPhaseType contestPhaseType = ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
         return contestPhaseType.getName();
     }
 

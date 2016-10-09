@@ -18,7 +18,7 @@ import com.liferay.util.EncryptorException;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -152,7 +152,7 @@ public class UserProfileWrapper implements Serializable {
             List<Proposal> proposals = ProposalsClient.getMemberProposals(user.getId_());
             Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil
                     .groupByContestType(proposals);
-            for (ContestType contestType : ContestClient.getActiveContestTypes()) {
+            for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
                 contestTypeProposalWrappersByContestTypeId
                         .put(contestType.getId_(), new ContestTypeProposalWrapper(contestType));
                 final List<Proposal> proposalsInContestType = proposalsByContestType

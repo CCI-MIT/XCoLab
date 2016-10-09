@@ -15,12 +15,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ImpactTemplateClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ImpactIteration;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.impact.ImpactIteration;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.proposals.ProposalUnversionedAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -115,7 +115,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (showDataTable) {
             IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest);
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
-            List<ImpactIteration> impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
+            List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         }
 
@@ -249,7 +249,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private String showImpactTabBasic(PortletRequest request, Model model) {
 
-        List<ImpactIteration> impactIterations = ImpactTemplateClient.getContestImpactIterations(contest);
+        List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
 
         ProposalImpactSeriesList proposalImpactSeriesList =
@@ -269,7 +269,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalParent, ContestTier.BASIC.getTierType());
         try {
 
-            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
             ContestWrapper contestWrapper = new ContestWrapper(contestMicro);//contest
             List<OntologyTerm> ontologyTermList = contestWrapper.getWhere();
             List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();

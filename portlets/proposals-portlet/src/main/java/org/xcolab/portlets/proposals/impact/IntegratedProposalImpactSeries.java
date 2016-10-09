@@ -1,9 +1,9 @@
 package org.xcolab.portlets.proposals.impact;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
@@ -45,7 +45,7 @@ public class IntegratedProposalImpactSeries {
     public IntegratedProposalImpactSeries(Proposal proposal, Contest contest) {
         try {
             org.xcolab.client.contest.pojo.Contest contestMicro =
-                    ContestClient.getContest(contest.getContestPK());
+                    ContestClientUtil.getContest(contest.getContestPK());
             ContestWrapper contestWrapper = new ContestWrapper(contestMicro);
             this.regionOntologyTerm = contestWrapper.getWhere().get(0);
             this.proposal = proposal;

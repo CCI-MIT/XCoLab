@@ -2,7 +2,7 @@ package org.xcolab.service.activities.activityEntry.proposal;
 
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -43,7 +43,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
             contest = ProposalsClient.getCurrentContestForProposal(rawProposal.getProposalId());
 
-            contestType = ContestClient.getContestType(contest.getContestTypeId());
+            contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
 
             proposalName = ProposalAttributeClient.getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
 

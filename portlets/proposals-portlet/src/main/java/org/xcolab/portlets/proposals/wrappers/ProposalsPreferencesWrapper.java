@@ -1,14 +1,10 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.judging.EmailTemplateWrapper;
 
 import java.io.IOException;
@@ -48,7 +44,7 @@ public class ProposalsPreferencesWrapper {
         callToAction = preferences.getValue(CALL_TO_ACTION, CALL_TO_ACTION_DEFAULT);
         contestTypeId = preferences.getValue(CONTEST_TYPE_ID, "0");
 
-        contestType = ContestClient.getContestType(Long.parseLong(contestTypeId));
+        contestType = ContestClientUtil.getContestType(Long.parseLong(contestTypeId));
 
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;

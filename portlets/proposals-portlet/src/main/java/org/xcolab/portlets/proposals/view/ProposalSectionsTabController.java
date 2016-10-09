@@ -11,10 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.proposals.ProposalMoveHistoryClient;
@@ -92,14 +92,14 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
             if (isMove) {
                 // get base proposal from base contest
-                ContestPhase baseContestPhase = ContestClient.getActivePhase(baseContest.getContestPK());
+                ContestPhase baseContestPhase = ContestClientUtil.getActivePhase(baseContest.getContestPK());
 
                 ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
                         baseContest, baseContestPhase, null);
                 model.addAttribute("baseProposal", baseProposalWrapped);
 
                 try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(baseContest.getContestPK());
+                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(baseContest.getContestPK());
                     model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
                 } catch (ContestNotFoundException ignored) {
 
@@ -190,7 +190,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : ContestClient.getActiveContestTypes()) {
+        for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
                     new ContestTypeProposalWrapper(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
@@ -225,7 +225,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     }
 
     private Date getVotingDeadline(Contest contest) throws SystemException, PortalException {
-        List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contest.getContestPK());
+        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contest.getContestPK());
         try {
             return getActiveVotingPhase(contestPhases).getPhaseEndDate();
         }

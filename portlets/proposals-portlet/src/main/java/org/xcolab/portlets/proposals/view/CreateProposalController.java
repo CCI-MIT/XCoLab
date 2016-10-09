@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 
 import org.xcolab.client.proposals.ProposalsClient;
@@ -66,9 +66,9 @@ public class CreateProposalController extends BaseProposalsController {
         ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
             try {
-                Contest baseContest = ContestClient.getContest(baseContestId);
+                Contest baseContest = ContestClientUtil.getContest(baseContestId);
                 ProposalWrapper baseProposalWrapper = new ProposalWrapper(ProposalsClient.getProposal(baseProposalId),
-                        baseProposalVersion, baseContest, ContestClient.getActivePhase(baseContest.getContestPK()), null);
+                        baseProposalVersion, baseContest, ContestClientUtil.getActivePhase(baseContest.getContestPK()), null);
 
 
                 model.addAttribute("baseProposal", baseProposalWrapper);
@@ -87,7 +87,7 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposal", proposalWrapped);
 
         model.addAttribute("isEditingProposal", true);
-        ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
+        ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
         final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();
         setSeoTexts(request, seoText, null, null);
 

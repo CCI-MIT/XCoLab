@@ -2,9 +2,9 @@ package org.xcolab.service.proposal.helper.autopromotion;
 
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
@@ -115,7 +115,7 @@ public class PhasePromotionHelper {
 
     public boolean isPhaseContestHasNoValidContest(){
         try{
-            ContestClient.getContest(phase.getContestPK());
+            ContestClientUtil.getContest(phase.getContestPK());
         } catch(ContestNotFoundException e){
             //_log.warn("promoting phase failed due to invalid contest ", e);
             return true;

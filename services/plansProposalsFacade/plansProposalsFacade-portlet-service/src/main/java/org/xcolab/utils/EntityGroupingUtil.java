@@ -6,7 +6,7 @@ import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -28,12 +28,12 @@ public final class EntityGroupingUtil {
     public static Map<ContestType, List<Proposal>> groupByContestType(List<Proposal> proposals) throws SystemException, PortalException {
         Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
         Map<ContestType, List<Proposal>> proposalsByContestType = new HashMap<>();
-        final List<ContestType> contestTypes = ContestClient.getActiveContestTypes();
+        final List<ContestType> contestTypes = ContestClientUtil.getActiveContestTypes();
         if (contestTypes.size()  == 1) {
             proposalsByContestType.put(contestTypes.get(0), proposals);
         } else {
             for (ContestType contestType : contestTypes) {
-                final List<Contest> contests = ContestClient.getContestsByContestType(contestType.getId_());
+                final List<Contest> contests = ContestClientUtil.getContestsByContestType(contestType.getId_());
                 proposalsByContestType.put(contestType, new ArrayList<Proposal>());
                 for (Contest contest : contests) {
                     contestIdToContestTypeMap.put(contest.getContestPK(), contestType);

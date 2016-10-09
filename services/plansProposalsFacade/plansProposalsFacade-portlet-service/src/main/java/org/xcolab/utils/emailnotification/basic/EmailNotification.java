@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ServiceContext;
 
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
@@ -248,7 +248,7 @@ public abstract class EmailNotification {
             final ContestType contestType;
 
             contestType = contest != null
-                        ? ContestClient.getContestType(contest.getContestTypeId()) : null;
+                        ? ContestClientUtil.getContestType(contest.getContestTypeId()) : null;
 
 
             switch (tag.nodeName()) {

@@ -3,9 +3,9 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
@@ -42,9 +42,9 @@ public class ContestScheduleWrapper {
     private ContestSchedule loadContestSchedule(Long scheduleId) {
 
         if (scheduleId != null) {
-            return ContestClient.getContestSchedule(scheduleId);
+            return ContestClientUtil.getContestSchedule(scheduleId);
         } else {
-            List<ContestSchedule> contestScheduleList = ContestClient.getAllContestSchedules();
+            List<ContestSchedule> contestScheduleList = ContestClientUtil.getAllContestSchedules();
             return contestScheduleList.get(0);
         }
     }
@@ -52,7 +52,7 @@ public class ContestScheduleWrapper {
     private List<ContestPhaseBean> loadContestPhases(Long scheduleId) {
         List<ContestPhaseBean> schedulePhaseBeans = new ArrayList<>();
         List<ContestPhase> contestPhases =
-                ContestClient.getTemplatePhasesForContestScheduleId(scheduleId);
+                ContestClientUtil.getTemplatePhasesForContestScheduleId(scheduleId);
         for (ContestPhase contestPhase : contestPhases) {
             schedulePhaseBeans.add(new ContestPhaseBean(contestPhase));
         }
@@ -75,7 +75,7 @@ public class ContestScheduleWrapper {
 
     private List<BaseContestWrapper> loadContestsUsingSchedule(long scheduleId) {
         List<BaseContestWrapper> wrappedContestsUsingSchedule = new ArrayList<>();
-        List<Contest> contestsUsingSchedule = ContestClient.getContestsByContestScheduleId(scheduleId);
+        List<Contest> contestsUsingSchedule = ContestClientUtil.getContestsByContestScheduleId(scheduleId);
         for (Contest contest : contestsUsingSchedule) {
             wrappedContestsUsingSchedule.add(new BaseContestWrapper(contest));
         }
@@ -125,7 +125,7 @@ public class ContestScheduleWrapper {
             createNewScheduleFromExistingSchedule();
         } else {
             //TODO: once we improve the algorithm we don't have to fail here anymore
-            List<Contest> contestsUsingScheduleId = ContestClient
+            List<Contest> contestsUsingScheduleId = ContestClientUtil
                     .getContestsByContestScheduleId(getScheduleId());
             for (Contest contest : contestsUsingScheduleId) {
                 if (!ContestScheduleUtil.isBlankContest(contest)) {
@@ -152,7 +152,7 @@ public class ContestScheduleWrapper {
         newContestSchedule.setDescription(contestSchedule.getDescription());
         newContestSchedule.setName(contestSchedule.getName());
         newContestSchedule.setStatus(contestSchedule.getStatus());
-        newContestSchedule = ContestClient.createContestSchedule(newContestSchedule);
+        newContestSchedule = ContestClientUtil.createContestSchedule(newContestSchedule);
         contestSchedule = newContestSchedule;
 
         for (ContestPhaseBean contestPhaseBean : schedulePhases) {
@@ -165,7 +165,7 @@ public class ContestScheduleWrapper {
         updateScheduleContestPhases();
         updateContestsUsingSchedule(contestSchedule.getId_());
 
-        ContestClient.updateContestSchedule(contestSchedule);
+        ContestClientUtil.updateContestSchedule(contestSchedule);
     }
 
     private void updateScheduleContestPhases() {
@@ -176,7 +176,7 @@ public class ContestScheduleWrapper {
 
     private void updateContestsUsingSchedule(long contestScheduleId) {
 
-        List<Contest> contestsUsingScheduleId = ContestClient
+        List<Contest> contestsUsingScheduleId = ContestClientUtil
                 .getContestsByContestScheduleId(contestScheduleId);
         for (Contest contest : contestsUsingScheduleId) {
             ContestScheduleUtil.changeScheduleForContest(contest, contestScheduleId);

@@ -3,11 +3,17 @@ package org.xcolab.client.contest;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.ContestDto;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseDto;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonTypeDto;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseTypeDto;
+import org.xcolab.client.contest.pojo.ContestScheduleDto;
+import org.xcolab.client.contest.pojo.ContestTypeDto;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -16,64 +22,79 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ContestClient {
 
-    private static final RestService contestService = new RestService("contest-service");
+    private static final Map<RestService, ContestClient> instances = new HashMap<>();
 
-    private static final RestResource1<Contest, Long> contestResource = new RestResource1<>(contestService,
-            "contests", Contest.TYPES);
+    private final RestService contestService;
 
-    private static final RestResource2L<Contest, ContestPhase> visiblePhasesResource =
-            new RestResource2L<>(contestResource, "visiblePhases", ContestPhase.TYPES);
+    private final RestResource1<ContestDto, Long> contestResource;
+    private final RestResource<ContestTypeDto, Long> contestTypeResource;
 
-    private static final RestResource<ContestPhase, Long> contestPhasesResource = new RestResource1<>(contestService,
-            "contestPhases", ContestPhase.TYPES);
+    private final RestResource2L<ContestDto, ContestPhaseDto> visiblePhasesResource;
+    private final RestResource<ContestPhaseDto, Long> contestPhasesResource;
+    private final RestResource<ContestPhaseTypeDto, Long> contestPhaseTypesResource;
+    private final RestResource1<ContestPhaseRibbonTypeDto, Long> contestPhaseRibbonTypeResource;
 
-    private static final RestResource<ContestPhaseType, Long> contestPhaseTypesResource = new RestResource1<>(contestService,
-            "contestPhaseTypes", ContestPhaseType.TYPES);
+    private final RestResource1<ContestScheduleDto, Long> contestScheduleResource;
 
-    private static final RestResource<ContestType, Long> contestTypeResource = new RestResource1<>(contestService,
-            "contestTypes", ContestType.TYPES);
+    private ContestClient(RestService contestService) {
+        this.contestService = contestService;
+        contestPhaseRibbonTypeResource = new RestResource1<>(this.contestService,
+                "contestPhaseRibbonTypes", ContestPhaseRibbonTypeDto.TYPES);
+        contestScheduleResource = new RestResource1<>(this.contestService,
+                "contestSchedules", ContestScheduleDto.TYPES);
+        contestTypeResource = new RestResource1<>(this.contestService,
+                "contestTypes", ContestTypeDto.TYPES);
+        contestPhaseTypesResource = new RestResource1<>(this.contestService,
+                "contestPhaseTypes", ContestPhaseTypeDto.TYPES);
+        contestPhasesResource = new RestResource1<>(this.contestService,
+                "contestPhases", ContestPhaseDto.TYPES);
+        contestResource = new RestResource1<>(this.contestService,
+                "contests", ContestDto.TYPES);
+        visiblePhasesResource = new RestResource2L<>(
+                contestResource, "visiblePhases", ContestPhaseDto.TYPES);
+    }
 
+    public static ContestClient fromService(RestService contestService) {
+        ContestClient client = instances.get(contestService);
+        if (client == null) {
+            client = new ContestClient(contestService);
+            instances.put(contestService, client);
+        }
+        return client;
+    }
 
-
-    private static final RestResource1<ContestSchedule, Long> contestScheduleResource = new RestResource1<>(contestService,
-            "contestSchedules", ContestSchedule.TYPES);
-
-
-
-
-    private static final RestResource1<ContestPhaseRibbonType,Long> contestPhaseRibbonTypeResource = new RestResource1<>(contestService,
-            "contestPhaseRibbonTypes", ContestPhaseRibbonType.TYPES);
-
-
-    public static Contest getContest(long contestId) throws ContestNotFoundException {
+    public Contest getContest(long contestId) throws ContestNotFoundException {
         try {
             return contestResource.get(contestId)
-                    .withCache(CacheKeys.of(Contest.class, contestId), CacheRetention.REQUEST)
-                    .executeChecked();
+                    .withCache(CacheKeys.of(ContestDto.class, contestId), CacheRetention.REQUEST)
+                    .executeChecked().toPojo(contestService);
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
         }
     }
 
-    public static Contest getContestByContestUrlNameContestYear(String contestUrlName, Long contestYear) {
-        List<Contest> list = contestResource.list()
+    public Contest getContestByContestUrlNameContestYear(String contestUrlName, Long contestYear) {
+        List<ContestDto> list = contestResource.list()
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear)
                 .execute();
-        if (list != null && list.size() > 0) {
-            return list.get(0);
+        if (list != null && !list.isEmpty()) {
+            return list.get(0).toPojo(contestService);
         }
         return null;
     }
 
-    public static Contest createContest(Long userId, String name) {
+    public Contest createContest(Long userId, String name) {
         Contest c = new Contest();
         c.setAuthorId(userId);
         c.setContestName(name);
@@ -114,22 +135,25 @@ public class ContestClient {
         return createContest(c);
     }
 
-    public static Contest createContest(Contest contest) {
-        return contestResource.create(contest).execute();
+    public Contest createContest(Contest contest) {
+        return contestResource.create(new ContestDto(contest)).execute().toPojo(contestService);
     }
 
-    public static List<Contest> getContestsMatchingTier(Long contestTier) {
-        return contestResource.list().queryParam("contestTier", contestTier).execute();
+    public List<Contest> getContestsMatchingTier(Long contestTier) {
+        return DtoUtil.toPojos(
+                contestResource.list().queryParam("contestTier", contestTier).execute(),
+                contestService);
     }
 
-    public static boolean updateContest(Contest contest) {
-        return contestResource.update(contest, contest.getContestPK())
+    public boolean updateContest(Contest contest) {
+        return contestResource.update(new ContestDto(contest), contest.getContestPK())
                 .execute();
     }
 
-    public static Integer getProposalCount(Long contestId) {
+    public Integer getProposalCount(Long contestId) {
         try {
-            return contestResource.<Proposal, Integer>service(contestId, "proposalCountForActivePhase", Integer.class)
+            return contestResource.<Proposal, Integer>service(contestId,
+                    "proposalCountForActivePhase", Integer.class)
                     .withCache(CacheKeys.withClass(Proposal.class)
                             .withParameter("contestId", contestId).asCount(), CacheRetention.MEDIUM)
                     .getChecked();
@@ -138,22 +162,22 @@ public class ContestClient {
         }
     }
 
-    public static Contest getContest(String contestUrlName, long contestYear)
+    public Contest getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
         final Contest contest = contestResource.list()
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear)
-                .withCache(CacheKeys.withClass(Contest.class)
+                .withCache(CacheKeys.withClass(ContestDto.class)
                         .withParameter("contestUrlName", contestUrlName)
                         .withParameter("contestYear", contestYear).asList(), CacheRetention.LONG)
-                .executeWithResult().getFirstIfExists();
+                .executeWithResult().getFirstIfExists().toPojo(contestService);
         if (contest == null) {
             throw new ContestNotFoundException(contestUrlName, contestYear);
         }
         return contest;
     }
 
-    public static boolean isContestShared(long contestId) {
+    public boolean isContestShared(long contestId) {
         return contestResource.<Contest, Boolean>service(contestId, "isShared", Boolean.class)
                 .withCache(CacheKeys.withClass(Contest.class)
                         .withParameter("contestId", contestId)
@@ -162,123 +186,130 @@ public class ContestClient {
                 .get();
     }
 
-    public static List<Contest> findContestsByActiveFeatured(Boolean active, Boolean featured) {
-        return contestResource.list()
+    public List<Contest> findContestsByActiveFeatured(Boolean active, Boolean featured) {
+        return DtoUtil.toPojos(contestResource.list()
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
-                .execute();
+                .execute(), contestService);
     }
 
-    public static List<Contest> findContestsTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTerms) {
-        return contestResource.list()
+    public List<Contest> findContestsTierLevelAndOntologyTermIds(Long contestTier,
+            List<Long> focusAreaOntologyTerms) {
+        return DtoUtil.toPojos(contestResource.list()
                 .queryParam("contestTier", contestTier)
                 .queryParam("focusAreaOntologyTerms", focusAreaOntologyTerms.toArray())
-                .execute();
+                .execute(), contestService);
     }
 
-    public static List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
-        return contestResource.service("getContestMatchingOntologyTerms", Contest.TYPES.getTypeReference())
+    public List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
+        return DtoUtil.toPojos(contestResource
+                .service("getContestMatchingOntologyTerms", ContestDto.TYPES.getTypeReference())
                 .queryParam("ontologyTermIds", ontologyTermIds)
-                .getList();
+                .getList(), contestService);
     }
 
-    public static List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
-            return contestResource.service(contestId, "getSubContestsByOntologySpaceId", Contest.TYPES.getTypeReference())
-                    .optionalQueryParam("ontologySpaceId", ontologySpaceId)
-                    .getList();
+    public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
+        return DtoUtil.toPojos(contestResource.service(contestId, "getSubContestsByOntologySpaceId",
+                ContestDto.TYPES.getTypeReference())
+                .optionalQueryParam("ontologySpaceId", ontologySpaceId)
+                .getList(), contestService);
 
     }
 
-    public static void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
-        contestPhasesResource.service(proposalId, "forcePropomotionOfProposalInContestPhaseId", Boolean.class)
+    public void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
+        contestPhasesResource
+                .service(proposalId, "forcePropomotionOfProposalInContestPhaseId", Boolean.class)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .get();
         //TODO: NEEDS TO MIGRATE A TON OF THINGS.
 
     }
 
-    public static List<Contest> getAllContests() {
-        return contestResource.list()
+    public List<Contest> getAllContests() {
+        return DtoUtil.toPojos(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("sort", "weight")
-                .execute();
+                .execute(), contestService);
     }
 
-    public static List<Contest> getContestsByPlanTemplateId(Long planTemplateId) {
-        return contestResource
+    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) {
+        return DtoUtil.toPojos(contestResource
                 .list()
                 .queryParam("planTemplateId", planTemplateId)
-                .execute();
+                .execute(), contestService);
     }
 
-    public static List<Contest> getContestsByContestScheduleId(Long contestScheduleId) {
-        return contestResource
+    public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) {
+        return DtoUtil.toPojos(contestResource
                 .list()
                 .queryParam("contestScheduleId", contestScheduleId)
-                .execute();
+                .execute(), contestService);
     }
 
-    public static List<Contest> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) {
-        return contestResource
+    public List<Contest> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) {
+        return DtoUtil.toPojos(contestResource
                 .list()
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
-                .execute();
+                .execute(), contestService);
     }
 
 
-    public static List<Contest> getContestsByActivePrivateType(boolean contestActive, boolean contestPrivate, Long contestTypeId) {
-        return contestResource
+    public List<Contest> getContestsByActivePrivateType(boolean contestActive,
+            boolean contestPrivate, Long contestTypeId) {
+        return DtoUtil.toPojos(contestResource
                 .list()
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
                 .queryParam("contestTypeId", contestTypeId)
-                .execute();
+                .execute(), contestService);
     }
 
-    public static List<Contest> getContestsByContestTypeId(Long contestTypeId) {
-        return contestResource
+    public List<Contest> getContestsByContestTypeId(Long contestTypeId) {
+        return DtoUtil.toPojos(contestResource
                 .list()
                 .queryParam("contestTypeId", contestTypeId)
+                .execute(), contestService);
+    }
+
+    public ContestSchedule createContestSchedule(ContestSchedule contestSchedule) {
+        return contestScheduleResource.create(new ContestScheduleDto(contestSchedule))
+                .execute().toPojo(contestService);
+    }
+
+    public boolean updateContestSchedule(ContestSchedule contestSchedule) {
+        return contestScheduleResource
+                .update(new ContestScheduleDto(contestSchedule), contestSchedule.getId_())
                 .execute();
     }
 
-    public static ContestSchedule createContestSchedule(ContestSchedule contestSchedule) {
-        return contestScheduleResource.create(contestSchedule).execute();
-    }
-
-    public static boolean updateContestSchedule(ContestSchedule contestSchedule) {
-        return contestScheduleResource.update(contestSchedule, contestSchedule.getId_())
-                .execute();
-    }
-
-    public static ContestSchedule getContestSchedule(long id) {
+    public ContestSchedule getContestSchedule(long id) {
         return contestScheduleResource.get(id)
-                .withCache(CacheKeys.of(ContestSchedule.class, id), CacheRetention.REQUEST)
-                .execute();
+                .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheRetention.REQUEST)
+                .execute().toPojo(contestService);
     }
 
-    public static boolean isContestScheduleUsed(long contestScheduleId) {
+    public boolean isContestScheduleUsed(long contestScheduleId) {
         return contestScheduleResource.service(contestScheduleId, "isUsed", Boolean.class)
                 .get();
     }
 
-    public static List<ContestSchedule> getAllContestSchedules() {
-        return contestScheduleResource.list().execute();
+    public List<ContestSchedule> getAllContestSchedules() {
+        return DtoUtil.toPojos(contestScheduleResource.list().execute(), contestService);
     }
 
 
-    public static List<ContestPhase> getVisibleContestPhases(Long contestId) {
-        return visiblePhasesResource.resolveParent(contestResource.id(contestId))
+    public List<ContestPhase> getVisibleContestPhases(Long contestId) {
+        return DtoUtil.toPojos(visiblePhasesResource.resolveParent(contestResource.id(contestId))
                 .list()
-                .withCache(CacheKeys.withClass(ContestPhase.class)
-                    .withParameter("contestId", contestId)
-                    .withParameter("visible", true).asList(),
+                .withCache(CacheKeys.withClass(ContestPhaseDto.class)
+                                .withParameter("contestId", contestId)
+                                .withParameter("visible", true).asList(),
                         CacheRetention.MEDIUM)
-                .execute();
+                .execute(), contestService);
     }
 
-    public static Integer getPointsAccessibleForActivePhaseOfContest(Contest contest) {
+    public Integer getPointsAccessibleForActivePhaseOfContest(Contest contest) {
         //check if the phase, the contest is currently in, allows for editing
         ContestPhase activePhase = getActivePhase(contest.getContestPK());
         if (activePhase != null) {
@@ -290,83 +321,80 @@ public class ContestClient {
         return null;
     }
 
-    public static void deleteContestPhase(Long contestPhasePK) {
-        contestPhasesResource.delete(contestPhasePK).execute();
-    }
-
-    public static boolean updateContestPhase(ContestPhase contestPhase) {
-        return contestPhasesResource.update(contestPhase, contestPhase.getContestPhasePK())
-                .execute();
-    }
-
-    public static ContestPhase createContestPhase(ContestPhase contestPhase) {
-        return contestPhasesResource.create(contestPhase).execute();
-    }
-
-    public static List<ContestPhase> getAllContestPhases(Long contestPK) {
-        return contestPhasesResource.list()
-                .queryParam("contestPK", contestPK)
-                .execute();
-    }
-
-    public static List<ContestPhase> getPhasesForContestScheduleId(Long contestScheduleId) {
-        return contestPhasesResource.list()
-                .queryParam("contestScheduleId", contestScheduleId)
-                .execute();
-    }
-
-    public static List<ContestPhase> getPhasesForContestScheduleIdAndContest(Long contestScheduleId, Long contestPK) {
-        return contestPhasesResource.list()
-                .queryParam("contestPK", contestPK)
-                .queryParam("contestScheduleId", contestScheduleId)
-                .execute();
-    }
-
-    public static List<ContestPhase> getTemplatePhasesForContestScheduleId(Long contestScheduleId) {
-        return contestPhasesResource.list()
-                .queryParam("contestPK", ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
-                .queryParam("contestScheduleId", contestScheduleId)
-                .execute();
-    }
-
-
-    public static ContestPhase getContestPhase(Long contestPhaseId) {
-        return contestPhasesResource.get(contestPhaseId).execute();
-    }
-
-    public static ContestPhase getActivePhase(Long contestId) {
+    public ContestPhase getActivePhase(Long contestId) {
         return contestResource.service(contestId, "activePhase", ContestPhase.class).get();
     }
 
-    public static ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {
+    public ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {
         return contestPhaseTypesResource.get(contestPhaseTypeId)
-                .withCache(CacheKeys.of(ContestPhaseType.class, contestPhaseTypeId),
+                .withCache(CacheKeys.of(ContestPhaseTypeDto.class, contestPhaseTypeId),
                         CacheRetention.MEDIUM)
+                .execute().toPojo(contestService);
+    }
+
+    public void deleteContestPhase(Long contestPhasePK) {
+        contestPhasesResource.delete(contestPhasePK).execute();
+    }
+
+    public boolean updateContestPhase(ContestPhase contestPhase) {
+        return contestPhasesResource
+                .update(new ContestPhaseDto(contestPhase), contestPhase.getContestPhasePK())
                 .execute();
     }
 
-    public static List<ContestPhaseType> getAllContestPhaseTypes() {
-        return contestPhaseTypesResource.list()
-                .execute();
+    public ContestPhase createContestPhase(ContestPhase contestPhase) {
+        return contestPhasesResource.create(new ContestPhaseDto(contestPhase))
+                .execute().toPojo(contestService);
     }
 
-    public static String getContestStatusStr(Long contestPhaseId) {
+    public List<ContestPhase> getAllContestPhases(Long contestPK) {
+        return DtoUtil.toPojos(contestPhasesResource.list()
+                .queryParam("contestPK", contestPK)
+                .execute(), contestService);
+    }
+
+    public List<ContestPhase> getPhasesForContestScheduleId(Long contestScheduleId) {
+        return DtoUtil.toPojos(contestPhasesResource.list()
+                .queryParam("contestScheduleId", contestScheduleId)
+                .execute(), contestService);
+    }
+
+    public List<ContestPhase> getPhasesForContestScheduleIdAndContest(Long contestScheduleId,
+            Long contestPK) {
+        return DtoUtil.toPojos(contestPhasesResource.list()
+                .queryParam("contestPK", contestPK)
+                .queryParam("contestScheduleId", contestScheduleId)
+                .execute(), contestService);
+    }
+
+    public List<ContestPhase> getTemplatePhasesForContestScheduleId(Long contestScheduleId) {
+        return DtoUtil.toPojos(contestPhasesResource.list()
+                .queryParam("contestPK", ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
+                .queryParam("contestScheduleId", contestScheduleId)
+                .execute(), contestService);
+    }
+
+    public ContestPhase getContestPhase(Long contestPhaseId) {
+        return contestPhasesResource.get(contestPhaseId)
+                .execute().toPojo(contestService);
+    }
+
+    public List<ContestPhaseType> getAllContestPhaseTypes() {
+        return DtoUtil.toPojos(contestPhaseTypesResource.list()
+                .execute(), contestService);
+    }
+
+    public String getContestStatusStr(Long contestPhaseId) {
         return null;
     }
 
-    public static ContestType getContestType(long id) {
+    public ContestType getContestType(long id) {
         return contestTypeResource.get(id)
-                .withCache(CacheKeys.of(ContestType.class, id), CacheRetention.RUNTIME)
-                .execute();
+                .withCache(CacheKeys.of(ContestTypeDto.class, id), CacheRetention.RUNTIME)
+                .execute().toPojo(contestService);
     }
 
-    public static List<ContestType> getAllContestTypes() {
-        return contestTypeResource.list()
-                .withCache(CacheKeys.withClass(ContestType.class).asList(), CacheRetention.LONG)
-                .execute();
-    }
-
-    public static List<ContestType> getActiveContestTypes() {
+    public List<ContestType> getActiveContestTypes() {
         final List<ContestType> contestTypes = getAllContestTypes();
         List<ContestType> activeContestTypes = new ArrayList<>();
         for (ContestType contestType : contestTypes) {
@@ -377,44 +405,50 @@ public class ContestClient {
         return activeContestTypes;
     }
 
-    public static Integer countContestsByContestType(Long contestTypeId) {
+    public List<ContestType> getAllContestTypes() {
+        return DtoUtil.toPojos(contestTypeResource.list()
+                .withCache(CacheKeys.withClass(ContestTypeDto.class).asList(), CacheRetention.LONG)
+                .execute(), contestService);
+    }
+
+    public Integer countContestsByContestType(Long contestTypeId) {
         return contestResource.service("countByContestType", Integer.class)
                 .queryParam("contestTypeId", contestTypeId)
                 .get();
     }
 
-    public static List<Contest> getContestsByContestType(Long contestTypeId) {
-        return contestResource.list()
+    public List<Contest> getContestsByContestType(Long contestTypeId) {
+        return DtoUtil.toPojos(contestResource.list()
                 .queryParam("contestTypeId", contestTypeId)
-                .execute();
+                .execute(), contestService);
     }
 
 
-    public static String getContestPhaseName(ContestPhase ck) {
+    public String getContestPhaseName(ContestPhase ck) {
         return getContestPhaseType(ck.getContestPhaseType()).getName();
     }
 
-    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
+    public ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
         return contestPhaseRibbonTypeResource.get(id_)
-                .execute();
+                .execute().toPojo(contestService);
     }
 
-    public static List<ContestPhaseRibbonType> getAllContestPhaseRibbonType() {
-        return contestPhaseRibbonTypeResource.list()
-                .execute();
+    public List<ContestPhaseRibbonType> getAllContestPhaseRibbonType() {
+        return DtoUtil.toPojos(contestPhaseRibbonTypeResource.list()
+                .execute(), contestService);
     }
 
-    public static boolean isMemberSubscribedToContest(long contestPK, long userId) {
-        return ActivitiesClient.isSubscribedToActivity(userId, ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK, 0, "");
+    public boolean isMemberSubscribedToContest(long contestPK, long userId) {
+        return ActivitiesClient.isSubscribedToActivity(userId,
+                ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK, 0, "");
     }
 
-    public static void subscribeMemberToContest(long contestPK, long userId) {
+    public void subscribeMemberToContest(long contestPK, long userId) {
         ActivitiesClient.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
 
-    public static void unsubscribeMemberFromContest(long contestPK, long userId) {
+    public void unsubscribeMemberFromContest(long contestPK, long userId) {
         ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
-
 
 }

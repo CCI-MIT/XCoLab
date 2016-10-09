@@ -9,11 +9,11 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
@@ -45,7 +45,7 @@ public class ProposalsPermissions {
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
 
-                final ContestPhaseType contestPhaseType = ContestClient
+                final ContestPhaseType contestPhaseType = ContestClientUtil
                         .getContestPhaseType(contestPhaseTypeId);
                 String statusStr = contestPhaseType.getStatus();
                 contestStatus = ContestStatus.valueOf(statusStr);
@@ -224,7 +224,7 @@ public class ProposalsPermissions {
 
         try {
             Contest latestProposalContest = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase activePhaseForContest = ContestClient.getActivePhase(latestProposalContest.getContestPK());
+            ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
         }catch (ContestNotFoundException ignored){

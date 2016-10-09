@@ -1,9 +1,9 @@
 package org.xcolab.utils;
 
-import org.xcolab.client.contest.OntologyClient;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class OntologyTermToFocusAreaMapper {
      */
     public FocusArea getFocusAreaMatchingTermsExactly() {
             return applyFilterToFocusAreasMatchingExactly(
-                    OntologyClient.getAllFocusAreas(),
+                    OntologyClientUtil.getAllFocusAreas(),
                     true);
     }
 
@@ -38,7 +38,7 @@ public class OntologyTermToFocusAreaMapper {
      *
      */
     public FocusArea getFocusAreaMatchingTermsPartially() {
-        return applyFilterToFocusAreasMatchingExactly(OntologyClient.getAllFocusAreas(), false);
+        return applyFilterToFocusAreasMatchingExactly(OntologyClientUtil.getAllFocusAreas(), false);
     }
 
     /**
@@ -73,14 +73,14 @@ public class OntologyTermToFocusAreaMapper {
     }
 
     private OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) {
-            OntologySpace space = OntologyClient.getOntologySpace(spaceId);
-            return OntologyClient
+            OntologySpace space = OntologyClientUtil.getOntologySpace(spaceId);
+            return OntologyClientUtil
                     .getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
 
     }
 
     private boolean isFocusAreaOntologyTermCountMatching(FocusArea focusArea, int ontologyTermCount) {
-            return OntologyClient.getOntologyTermsForFocusArea(focusArea).size() == ontologyTermCount;
+            return OntologyClientUtil.getOntologyTermsForFocusArea(focusArea).size() == ontologyTermCount;
 
     }
 }

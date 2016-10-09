@@ -10,8 +10,8 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.contest.ContestTeamMemberClient;
-import org.xcolab.client.contest.pojo.ContestTeamMember;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
@@ -72,15 +72,15 @@ public class ContestTeamWrapper {
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
             contestTeamMember.setRoleId(memberRole.getRoleId());
-            ContestTeamMemberClient.createContestTeamMember(contestTeamMember);
+            ContestTeamMemberClientUtil.createContestTeamMember(contestTeamMember);
         }
     }
 
     private void removeAllContestTeamMembersForContest() {
-        List<ContestTeamMember> contestTeamMembers = ContestTeamMemberClient.getTeamMembers(contestId);
+        List<ContestTeamMember> contestTeamMembers = ContestTeamMemberClientUtil.getTeamMembers(contestId);
         for (ContestTeamMember contestTeamMember : contestTeamMembers) {
             try {
-                ContestTeamMemberClient.deleteContestTeamMember(contestTeamMember.getId_());
+                ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId_());
             } catch (UncheckedEntityNotFoundException e) {
                 log.warn("ContestTeamMember {} already deleted", contestTeamMember.getId_());
             }

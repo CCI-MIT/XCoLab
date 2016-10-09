@@ -1,9 +1,9 @@
 package org.xcolab.service.proposal.service.proposal2phase;
 
 import org.springframework.stereotype.Service;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 
 
 import org.xcolab.model.tables.pojos.Proposal2Phase;
@@ -52,7 +52,7 @@ public class Proposal2PhaseService {
             //throw new SystemException("Proposal not found");
             return;
         }
-        ContestPhase nextPhase = ContestClient.getContestPhase(nextPhaseId);
+        ContestPhase nextPhase = ContestClientUtil.getContestPhase(nextPhaseId);
         if (nextPhase == null) {
             //throw new SystemException("phase not found");
             return;
@@ -63,7 +63,7 @@ public class Proposal2PhaseService {
         List<ContestPhase> candidatePhase = new LinkedList<>();
 
         for (Long phId : phases) {
-            ContestPhase ph = ContestClient.getContestPhase(phId);
+            ContestPhase ph = ContestClientUtil.getContestPhase(phId);
             if (ph.getContestPK() == nextPhase.getContestPK()) { //this contestphase is in our target contest
                 candidatePhase.add(ph);
             }
@@ -112,7 +112,7 @@ public class Proposal2PhaseService {
         List<Long> ret = new LinkedList<>();
 
         for (Proposal2Phase p2p : proposal2Phases) {
-            if (ContestClient.getContestPhase(p2p.getContestPhaseId()) != null) {
+            if (ContestClientUtil.getContestPhase(p2p.getContestPhaseId()) != null) {
                 ret.add(p2p.getContestPhaseId());
             }
         }

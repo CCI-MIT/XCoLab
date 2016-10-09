@@ -10,10 +10,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -135,7 +135,7 @@ interface ProposalTabCanAccessAlgorithm {
 				//first, check if the contest has points activated.
 				if ((contest != null && contest.getDefaultParentPointType() > 0)) {
 					//if yes, check if contest phase allows viewing
-					Integer pointsAccessible = ContestClient.getPointsAccessibleForActivePhaseOfContest(contest);
+					Integer pointsAccessible = ContestClientUtil.getPointsAccessibleForActivePhaseOfContest(contest);
 					return (pointsAccessible != null && pointsAccessible >= 1);
 				}
 			return false;
@@ -155,7 +155,7 @@ interface ProposalTabCanAccessAlgorithm {
 				//first, check if user is a team member and if the contest has points activated.
 				if ((contest != null && contest.getDefaultParentPointType() > 0) && (permissions.getIsTeamMember() || permissions.getCanAdminProposal())) {
 					//if yes, check if contest phase allows editing
-					Integer pointsAccessible = ContestClient.getPointsAccessibleForActivePhaseOfContest(contest);
+					Integer pointsAccessible = ContestClientUtil.getPointsAccessibleForActivePhaseOfContest(contest);
 					return permissions.getCanAdminAll() || (pointsAccessible != null && pointsAccessible >= 2);
 				}
 			} catch (SystemException | PortalException e) {
@@ -195,7 +195,7 @@ interface ProposalTabCanAccessAlgorithm {
             final List<Long> excludedOntologyTermIds = ConfigurationAttributeKey
 					.IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS.get();
             for (Long excludedOntologyTermId : excludedOntologyTermIds) {
-                if (OntologyClient
+                if (OntologyClientUtil
                         .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
                                         focusAreaId, excludedOntologyTermId)) {
                     return true;
