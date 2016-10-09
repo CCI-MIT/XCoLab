@@ -1,7 +1,14 @@
 package com.ext.portlet.service.impl;
 
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.Variable;
+import edu.mit.cci.roma.client.comm.ModelNotFoundException;
+import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+
 import com.ext.portlet.model.ModelGlobalPreference;
-import org.xcolab.client.modeling.RomaClientUtil;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
@@ -19,13 +26,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.ac.AccessControlled;
-import edu.mit.cci.roma.client.Scenario;
-import edu.mit.cci.roma.client.Simulation;
-import edu.mit.cci.roma.client.Variable;
-import edu.mit.cci.roma.client.comm.ModelNotFoundException;
-import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
-import org.jsoup.Jsoup;
 
+import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.IOException;
@@ -111,8 +113,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
         Scenario scenario = RomaClientUtil
                 .repository().runModel(simulation, inputsValues, 0L, false);
 
-        if(Validator.isNotNull(scenario.getErrorStackTrace())){
-            // Log error
+        if (StringUtils.isNotBlank(scenario.getErrorStackTrace())) {
             _log.error("Error while fetching scenario: " + Jsoup.parse(scenario.getErrorStackTrace()).getElementById("main").text());
         }
 

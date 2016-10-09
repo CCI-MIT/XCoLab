@@ -1,75 +1,58 @@
-/*
- * Copyright (c) 2010. M.I.T. All Rights Reserved
- * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
- * or the license.txt file included in this distribution for the full text of the license.
- */
-
 package com.ext.portlet.models.ui;
-
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.TupleStatus;
 import edu.mit.cci.roma.client.Variable;
 
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 /**
  * Very simple wrapper class around a singleton output variable.  Not backed,
  * no additional display information is necessary (currently).
- *
- *
- * @author: jintrone
- * @date: May 25, 2010
  */
 public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
 
-    private final MetaData md;
-
     private static final Log _log = LogFactoryUtil.getLog(ModelOutputScalarDisplayItem.class);
-
+    private final MetaData md;
 
     /**
      * Clients should not need to call this constructor directly.
-     * 
-     * @param s
-     * @param d
      */
-
     ModelOutputScalarDisplayItem(Simulation s, MetaData d) {
         super(s);
         this.md = d;
+    }
+
+    public Variable getVariable() {
+        if (getScenario() != null) {
+            return ModelUIFactory.getVariableForMetaData(getScenario(), getMetaData(), false);
+        }
+        return null;
+
     }
 
     public MetaData getMetaData() {
         return md;
     }
 
-    public Variable getVariable() {
-        if (getScenario()!=null) {
-            return ModelUIFactory.getVariableForMetaData(getScenario(),getMetaData(),false);
-        }
-        return null;
+    @Override
+    public int getOrder() {
+        return 1000;
+    }
 
+    @Override
+    public void setOrder(int o) {
+        _log.warn("Setting order on scalar items is not currently supported");
     }
 
     @Override
     public String getName() {
         return md.getName();
     }
-
-    @Override
-    public int getOrder() {
-       return 1000;
-    }
-
-    @Override
-    public void setOrder(int o) {
-       _log.warn("Setting order on scalar items is not currently supported");
-    }
-    
 
     @Override
     public ModelOutputDisplayItemType getDisplayItemType() {
@@ -96,9 +79,9 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
     public boolean isVisible() {
         return true;
     }
-    
+
     public void setVisible(boolean visible) {
-       _log.warn("Setting visibility on scalar items is not currently supported");
+        _log.warn("Setting visibility on scalar items is not currently supported");
     }
 
     @Override
@@ -106,7 +89,7 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
         JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
         jsonObject.put("id", md.getId());
         jsonObject.put("outputType", "SCALAR");
-        
+
         return jsonObject;
     }
 }

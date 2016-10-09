@@ -1,20 +1,10 @@
-/*
- * Copyright (c) 2010. M.I.T. All Rights Reserved
- * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
- * or the license.txt file included in this distribution for the full text of the license.
- */
-
 package com.ext.portlet.models.ui;
 
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.Tuple;
+import edu.mit.cci.roma.client.Variable;
 
 import com.ext.portlet.model.ModelInputGroup;
 import com.ext.portlet.model.ModelInputItem;
@@ -30,20 +20,19 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import edu.mit.cci.roma.client.MetaData;
-import edu.mit.cci.roma.client.Scenario;
-import edu.mit.cci.roma.client.Simulation;
-import edu.mit.cci.roma.client.Tuple;
-import edu.mit.cci.roma.client.Variable;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * @author: jintrone
- * @date: May 24, 2010
- */
 public class ModelUIFactory {
     private static ModelUIFactory ourInstance = new ModelUIFactory();
 
-    private static Log _log = LogFactoryUtil.getLog(ModelUIFactory.class);
+    private static final Log _log = LogFactoryUtil.getLog(ModelUIFactory.class);
     
     public static ModelUIFactory getInstance() {
         return ourInstance;
@@ -55,10 +44,6 @@ public class ModelUIFactory {
 
     /**
      * Returns the layout information for the model
-     *
-     * @param s
-     * @return
-     * @throws IOException 
      */
     public ModelDisplay getDisplay(Simulation s) throws SystemException, IllegalUIConfigurationException, IOException {
         return new ModelDisplay(s);
@@ -69,10 +54,6 @@ public class ModelUIFactory {
      * Returns the layout information for the model, and also sets the scenario
      * on the display container (enabling variable retrieval functions through the
      * display classes
-     *
-     * @param s
-     * @return
-     * @throws IOException 
      */
     public ModelDisplay getDisplay(Scenario s) throws SystemException, IllegalUIConfigurationException, IOException {
         return new ModelDisplay(s);
@@ -81,9 +62,6 @@ public class ModelUIFactory {
 
     /**
      * Package scoped helper function, used to build the output layout classes for the Simulation
-     *
-     * @param s
-     * @return
      */
     List<ModelOutputDisplayItem> parseOutputs(Simulation s) {
         Map<String, ModelOutputDisplayItem> found = new HashMap<String, ModelOutputDisplayItem>();
@@ -146,13 +124,6 @@ public class ModelUIFactory {
 
     /**
      * Recursive call to process groups
-     *
-     * @param group
-     * @param bareMetaData
-     * @return
-     * @throws SystemException
-     * @throws IllegalUIConfigurationException
-     * @throws IOException 
      */
     private ModelInputGroupDisplayItem processGroup(ModelInputGroup group, Set<MetaData> bareMetaData) throws SystemException, IllegalUIConfigurationException, IOException {
         ModelInputGroupDisplayItem result=null;
@@ -181,10 +152,6 @@ public class ModelUIFactory {
 
     /**
      * Package scoped helper function, used to build the input layout classes for the Simulation
-     *
-     * @param s
-     * @return
-     * @throws IOException 
      */
     public List<ModelInputDisplayItem> parseInputs(Simulation s) throws SystemException, IllegalUIConfigurationException, IOException {
         List<ModelInputDisplayItem> result = new ArrayList<ModelInputDisplayItem>();
@@ -205,12 +172,10 @@ public class ModelUIFactory {
                     result.add(toadd);
 
 
-                } catch (SystemException e) {
+                } catch (SystemException | IOException e) {
                    _log.error(e);
-                } catch (IOException e) {
-                    _log.error(e);
                 }
-            }
+        }
 
         return result;
     }
@@ -218,9 +183,7 @@ public class ModelUIFactory {
     public ModelInputDisplayItem getInputItem(ModelInputItem item) {
         try {
             return new ModelInputIndividualDisplayItem(item);
-        } catch (SystemException e) {
-            _log.error(e);
-        } catch (IOException e) {
+        } catch (SystemException | IOException e) {
             _log.error(e);
         }
         return null;
@@ -230,9 +193,7 @@ public class ModelUIFactory {
     public ModelInputGroupDisplayItem getGroupItem(ModelInputGroup item) {
         try {
             return new ModelInputGroupDisplayItem(item);
-        } catch (SystemException e) {
-            _log.error(e);
-        } catch (IOException e) {
+        } catch (SystemException | IOException e) {
             _log.error(e);
         }
         return null;
@@ -266,9 +227,6 @@ public class ModelUIFactory {
 
     /**
      * Helper function, returns variable for a scenario given its associated metadata
-     *
-     * @param s
-     * @return
      */
     public static Variable getVariableForMetaData(Scenario s, MetaData md, boolean isInput) {
         Variable result = null;
@@ -284,7 +242,7 @@ public class ModelUIFactory {
 
 
 
-    //this is just sample code - could be made into a test case with apppriate mocks
+    //this is just sample code - could be made into a test case with appropriate mocks
     // (unless of course 999 is actually the id of a model)
    /* private static void example() throws SystemException, IOException, IncompatibleScenarioException, IllegalUIConfigurationException {
 
@@ -360,7 +318,7 @@ public class ModelUIFactory {
     }
     */
     public static List<Long> getSimulationPositionsIds(Simulation sim) throws SystemException {
-        List<Long> ret = new ArrayList<Long>();
+        List<Long> ret = new ArrayList<>();
         for (ModelPosition position: ModelPositionLocalServiceUtil.getModelPositionsByModelId(sim.getId())) {
             ret.add(position.getPositionId());
         }
@@ -417,7 +375,9 @@ public class ModelUIFactory {
 
     
     public static void addField(JSONObject jsonObject, String key, Object obj) {
-        if (obj == null) return;
+        if (obj == null) {
+            return;
+        }
         if (obj.getClass().isArray()) {
             jsonObject.put(key, convertArray((Object[]) obj));
         }
@@ -439,7 +399,6 @@ public class ModelUIFactory {
         else {
             jsonObject.put(key, String.valueOf(obj));
         }
-        
         
     }
     
@@ -466,7 +425,9 @@ public class ModelUIFactory {
                     jsonArray.put(String.valueOf(obj));
                 }
             }
-            else jsonArray.put((String) null);
+            else {
+                jsonArray.put((String) null);
+            }
         }
         return jsonArray;
     }
