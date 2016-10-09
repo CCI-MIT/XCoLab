@@ -2,7 +2,7 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.NoSuchModelInputItemException;
 import com.ext.portlet.model.ModelInputItem;
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.ext.portlet.service.base.ModelInputItemLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -84,12 +84,12 @@ public class ModelInputItemLocalServiceImpl
 
     @Override
     public MetaData getMetaData(ModelInputItem item) throws SystemException, IOException {
-        return CollaboratoriumModelingService.repository().getMetaData(item.getModelInputItemID());
+        return RomaClientUtil.repository().getMetaData(item.getModelInputItemID());
     }
 
     @Override
     public Simulation getModel(ModelInputItem item) throws SystemException, IOException {
-        return CollaboratoriumModelingService.repository().getSimulation(item.getModelId());
+        return RomaClientUtil.repository().getSimulation(item.getModelId());
     }
 
     @Override

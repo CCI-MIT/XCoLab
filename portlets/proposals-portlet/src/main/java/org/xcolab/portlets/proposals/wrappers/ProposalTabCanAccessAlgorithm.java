@@ -116,7 +116,7 @@ interface ProposalTabCanAccessAlgorithm {
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
 			try {
 				return permissions.getCanEdit();
-			} catch (SystemException | PortalException e) {
+			} catch (SystemException e) {
 				_log.error("can't check if user is allowed to edit proposal", e);
 			}
 			return false;

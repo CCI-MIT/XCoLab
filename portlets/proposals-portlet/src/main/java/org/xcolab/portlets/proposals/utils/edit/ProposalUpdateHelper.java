@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.utils.edit;
 
 import com.ext.portlet.PlanSectionTypeKeys;
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 ;
 
 

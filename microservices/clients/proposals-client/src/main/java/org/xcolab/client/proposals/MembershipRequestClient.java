@@ -9,10 +9,10 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
-
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -50,9 +50,7 @@ public class MembershipRequestClient {
         }
         return null;
     }
-    public void approveMembershipRequest(){
 
-    }
     public static Boolean hasUserRequestedMembership(Long proposalId, Long userId){
         try{
             Long groupId = ProposalsClient.getProposal(proposalId).getGroupId();
@@ -120,6 +118,9 @@ public class MembershipRequestClient {
 
     public static List<MembershipRequest> getMembershipRequestsByUser(Long groupId, Long userId) {
         return membershipRequestResource.list()
+                .withCache(CacheKeys.withClass(MembershipRequest.class)
+                        .withParameter("groupId", groupId)
+                        .withParameter("userId", userId).asList(),CacheRetention.MEDIUM)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("userId", userId)
                 .execute();
@@ -127,6 +128,9 @@ public class MembershipRequestClient {
 
     public static List<MembershipRequest> getMembershipRequestsByStatus(Long groupId, Integer statusId) {
         return membershipRequestResource.list()
+                .withCache(CacheKeys.withClass(MembershipRequest.class)
+                        .withParameter("groupId", groupId)
+                        .withParameter("statusId", statusId).asList(),CacheRetention.REQUEST)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("statusId", statusId)
                 .execute();
@@ -143,20 +147,19 @@ public class MembershipRequestClient {
             List<MembershipRequest> olderRequests = getMembershipRequestsByStatus(proposal.getGroupId(),
                     MembershipRequestStatus.STATUS_PENDING);
             List<MembershipRequest> combined = new ArrayList<>();
-            if (invited != null && invited.size() > 0) {
+            if (invited != null && !invited.isEmpty()) {
                 combined.addAll(invited);
             }
-            if (requested != null && requested.size() > 0) {
+            if (requested != null && !requested.isEmpty()) {
                 combined.addAll(requested);
             }
-            if (olderRequests != null && olderRequests.size() > 0) {
+            if (olderRequests != null && !olderRequests.isEmpty()) {
                 combined.addAll(olderRequests);
             }
             return combined;
-        }catch( ProposalNotFoundException ignored){
+        } catch (ProposalNotFoundException ignored) {
             return null;
         }
     }
-
 
 }

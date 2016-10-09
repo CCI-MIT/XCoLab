@@ -1,6 +1,6 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;

@@ -4,6 +4,8 @@ import org.xcolab.client.contest.pojo.FocusArea;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
@@ -43,6 +45,7 @@ public final class ProposalAttributeClient {
 
     public static ProposalAttribute getProposalAttribute(long id_) throws ProposalAttributeNotFoundException {
         return proposalAttributeResource.get(id_)
+                .withCache(CacheKeys.of(ProposalAttribute.class, id_), CacheRetention.REQUEST)
                 .execute();
     }
 
@@ -74,12 +77,19 @@ public final class ProposalAttributeClient {
 
     public static List<ProposalAttribute> getAllProposalAttributes(Long proposalId) {
         return proposalAttributeResource.list()
+                .withCache(CacheKeys.withClass(ProposalAttribute.class)
+                                .withParameter("proposalId", proposalId).asList(),
+                        CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute();
     }
 
     public static List<ProposalAttribute> getAllProposalAttributes(Long proposalId, Integer version) {
         return proposalAttributeResource.list()
+                .withCache(CacheKeys.withClass(ProposalAttribute.class)
+                                .withParameter("proposalId", proposalId)
+                                .withParameter("version", version).asList(),
+                        CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("version", version)
                 .execute();

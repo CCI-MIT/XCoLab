@@ -1,6 +1,8 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.ProposalMoveHistory;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 
@@ -29,6 +31,13 @@ public final class ProposalMoveHistoryClient {
 
     public static List<ProposalMoveHistory> getProposalMoveHistory(Long sourceProposalId, Long sourceContestId, Long targetProposalId, Long targetContestId) {
         return proposalMoveHistoryResource.list()
+                .withCache(CacheKeys.withClass(ProposalMoveHistory.class)
+                                .withParameter("sourceProposalId", sourceProposalId)
+                                .withParameter("sourceContestId", sourceContestId)
+                                .withParameter("targetProposalId", targetProposalId)
+                                .withParameter("targetContestId", targetContestId)
+                                .asList(),
+                        CacheRetention.MEDIUM)
                 .optionalQueryParam("sourceProposalId", sourceProposalId)
                 .optionalQueryParam("sourceContestId", sourceContestId)
                 .optionalQueryParam("targetProposalId", targetProposalId)

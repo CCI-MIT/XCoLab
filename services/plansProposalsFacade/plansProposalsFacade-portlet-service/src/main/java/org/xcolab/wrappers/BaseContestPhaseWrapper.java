@@ -1,5 +1,7 @@
 package org.xcolab.wrappers;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.ext.portlet.NoSuchContestPhaseException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.contests.ContestStatus;
@@ -8,12 +10,11 @@ import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.apache.commons.lang.StringUtils;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestPhaseType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -51,7 +52,7 @@ public class BaseContestPhaseWrapper {
         contestPhase.setContestPK(ContestPK);
     }
 
-    public ContestPhaseType getContestPhaseTypeObject() throws SystemException {
+    public ContestPhaseType getContestPhaseTypeObject() {
         return ContestClient.getContestPhaseType(this.getContestPhaseType());
     }
 

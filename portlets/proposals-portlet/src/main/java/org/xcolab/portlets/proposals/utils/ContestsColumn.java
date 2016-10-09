@@ -1,14 +1,15 @@
 package org.xcolab.portlets.proposals.utils;
 
+import jodd.util.StringUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import jodd.util.StringUtil;
+
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.Comparator;
-
 
 public enum ContestsColumn {
     CONTEST_NAME (new Comparator<ContestWrapper>() {
@@ -49,74 +50,47 @@ public enum ContestsColumn {
 
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-            try {
-            	String s1 = o1.getWhatName();
-            	String s2 = o2.getWhatName();
-                return compareContestsByStringValues(o1, s1, o2, s2);
-
-            } catch (PortalException | SystemException e) {
-                _log.error("Can't get what for contest", e);
-            }
-            return 0;
+            String s1 = o1.getWhatName();
+            String s2 = o2.getWhatName();
+            return compareContestsByStringValues(o1, s1, o2, s2);
         }
     }),
     WHERE(new Comparator<ContestWrapper>() {
 
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-            try {
-            	String s1 = o1.getWhereName();
-            	String s2 = o2.getWhereName();
-            	return compareContestsByStringValues(o1, s1, o2, s2);
-
-            } catch (PortalException | SystemException e) {
-                _log.error("Can't get where for contest", e);
-            }
-            return 0;
+            String s1 = o1.getWhereName();
+            String s2 = o2.getWhereName();
+            return compareContestsByStringValues(o1, s1, o2, s2);
         }
     }),
     WHO(new Comparator<ContestWrapper>() {
 
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-            try {
-            	String s1 = o1.getWhoName();
-            	String s2 = o2.getWhoName();
-                return compareContestsByStringValues(o1, s1, o2, s2);
-
-            } catch (PortalException | SystemException e) {
-                _log.error("Can't get who for contest", e);
-            }
-            return 0;
+            String s1 = o1.getWhoName();
+            String s2 = o2.getWhoName();
+            return compareContestsByStringValues(o1, s1, o2, s2);
         }
     }),
     HOW(new Comparator<ContestWrapper>() {
 
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-            try {
-            	String s1 = o1.getHowName();
-            	String s2 = o2.getHowName();
-                return compareContestsByStringValues(o1, s1, o2, s2);
-
-            } catch (PortalException | SystemException e) {
-                _log.error("Can't get who for contest", e);
-            }
-            return 0;
+            String s1 = o1.getHowName();
+            String s2 = o2.getHowName();
+            return compareContestsByStringValues(o1, s1, o2, s2);
         }
     }),
 
     REFERENCE_DATE (new Comparator<ContestWrapper>() {
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-            try {
-                if(o2.getLastPhase() != null && o1.getLastPhase() != null) {
-                    return o2.getLastPhase().getPhaseReferenceDate().compareTo(o1.getLastPhase().getPhaseReferenceDate());
-                } else if(o2.getLastPhase() == null){
-                    return 1;
-                }
-            } catch (PortalException | SystemException e) {
-                _log.error("Can't get reference date for contest", e);
+            if(o2.getLastPhase() != null && o1.getLastPhase() != null) {
+                return o2.getLastPhase().getPhaseReferenceDate().compareTo(o1.getLastPhase().getPhaseReferenceDate());
+            }
+            if(o2.getLastPhase() == null){
+                return 1;
             }
             return 0;
         }

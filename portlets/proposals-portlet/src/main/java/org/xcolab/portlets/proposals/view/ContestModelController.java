@@ -1,19 +1,19 @@
 package org.xcolab.portlets.proposals.view;
 
-
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ModelRunnerServiceUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.ext.portlet.service.ModelRunnerServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -38,13 +38,14 @@ public class ContestModelController extends BaseProposalsController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = "pageToDisplay=contestModel")
-    public String showContestProposals(RenderRequest request, RenderResponse response, Model model, @RequestParam(required = false) boolean refreshModels) 
+    public String showContestProposals(RenderRequest request, RenderResponse response, Model model,
+			@RequestParam(required = false) boolean refreshModels)
             throws PortalException, SystemException, IOException {
     	
     	if (refreshModels) {
     		ModelRunnerServiceUtil.refreshModels();
     	}
-		Long modelId = 0l;
+		Long modelId = 0L;
     	Long contestPK = proposalsContext.getContest(request).getContestPK();
 		try{
 			Contest contest = ContestClient.getContest(contestPK);

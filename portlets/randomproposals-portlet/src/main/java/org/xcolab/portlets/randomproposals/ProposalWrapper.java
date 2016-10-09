@@ -1,7 +1,7 @@
 package org.xcolab.portlets.randomproposals;
 
 import com.ext.portlet.NoSuchContestException;
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
 
 import org.xcolab.client.proposals.pojo.Proposal;

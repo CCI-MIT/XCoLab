@@ -1,6 +1,8 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.JudgingSystemActions;
+import edu.mit.cci.roma.client.Simulation;
+import org.apache.commons.lang3.StringUtils;
+
 import com.ext.portlet.NoSuchContestException;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.ext.portlet.contests.ContestStatus;
@@ -18,16 +20,12 @@ import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.Proposal;
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.model.ProposalRatingType;
 import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.model.ProposalVote;
-import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
 import com.ext.portlet.service.base.ContestLocalServiceBaseImpl;
-import com.google.common.collect.ImmutableSet;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.NoSuchModelException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -56,18 +54,12 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import edu.mit.cci.roma.client.Simulation;
-import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.MemberRole;
@@ -75,11 +67,6 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.utils.IdListUtil;
-import org.xcolab.utils.emailnotification.contest.ContestVoteQuestionNotification;
-import org.xcolab.utils.emailnotification.proposal.ContestVoteNotification;
-import org.xcolab.utils.judging.ProposalRatingWrapper;
-import org.xcolab.utils.judging.ProposalReview;
-import org.xcolab.utils.judging.ProposalReviewCsvExporter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -481,7 +468,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
         Map<Long, String> ret = new HashMap<>();
         for (Long modelId: modelIds) {
         	try {
-        		Simulation s = CollaboratoriumModelingService.repository().getSimulation(modelId);
+        		Simulation s = RomaClientUtil.repository().getSimulation(modelId);
                 ret.put(s.getId(), s.getName());
         	
         	}

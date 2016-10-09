@@ -1,14 +1,10 @@
-/*
- * Copyright (c) 2010. M.I.T. All Rights Reserved
- * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
- * or the license.txt file included in this distribution for the full text of the license.
- */
-
 package com.ext.portlet.models.ui;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.TupleStatus;
+import edu.mit.cci.roma.client.Variable;
+import edu.mit.cci.roma.client.comm.ClientRepository;
 
 import com.ext.portlet.NoSuchModelOutputItemException;
 import com.ext.portlet.model.ModelOutputItem;
@@ -20,28 +16,17 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import edu.mit.cci.roma.client.MetaData;
-import edu.mit.cci.roma.client.Simulation;
-import edu.mit.cci.roma.client.TupleStatus;
-import edu.mit.cci.roma.client.Variable;
-import edu.mit.cci.roma.client.comm.ClientRepository;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Wrapper around series metadata; series metadata is merely that
- * data that is indexed by some other metadata (e.g. in a time series).  It is always part of a {@link
- * com.ext.portlet.models.ui.ModelOutputIndexedDisplayItem}
- *
- * @author: jintrone
- * @date: May 25, 2010
- */
 public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
-
 
     ModelOutputItem item;
 
-    private MetaData md;
+    private final MetaData metaData;
 
-    private Map<TupleStatus,ModelOutputErrorBehavior> errorBehaviors = new HashMap<TupleStatus,ModelOutputErrorBehavior>();
+    private final Map<TupleStatus,ModelOutputErrorBehavior> errorBehaviors = new HashMap<>();
 
     private static Log _log = LogFactoryUtil.getLog(ModelOutputSeriesDisplayItem.class);
 
@@ -50,16 +35,12 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
      * should be used to generate the display classes, and any subsequent modifications made there.
      *
      * Note that this constructor implicitly creates a backing store.
-     *
-     * @param s
-     * @param md
-     * @throws SystemException
      */
-    ModelOutputSeriesDisplayItem(Simulation s, MetaData md) throws SystemException {
+    ModelOutputSeriesDisplayItem(Simulation s, MetaData metaData) throws SystemException {
         super(s);
-        this.md = md;
+        this.metaData = metaData;
         try {
-            item = ModelOutputItemLocalServiceUtil.getOutputItem(md);
+            item = ModelOutputItemLocalServiceUtil.getOutputItem(metaData);
         } catch (NoSuchModelOutputItemException e) {
             createPersistence();
         } catch (SystemException e) {
@@ -72,24 +53,26 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
         Long pk = CounterLocalServiceUtil.increment(ModelOutputItem.class.getName());
         item = ModelOutputItemLocalServiceUtil.createModelOutputItem(pk);
         item.setModelId(getSimulation().getId());
-        item.setModelOutputItemId(md.getId());
+        item.setModelOutputItemId(metaData.getId());
         item.setModelItemIsVisible(true);
         ModelOutputItemLocalServiceUtil.addModelOutputItem(item);
     }
 
     public MetaData getMetaData() {
-        return md;
+        return metaData;
     }
    
 
     public Variable getVariable() {
-        if (getScenario() == null || getMetaData() == null) return null; 
+        if (getScenario() == null || getMetaData() == null) {
+            return null;
+        }
         return ModelUIFactory.getVariableForMetaData(getScenario(),getMetaData(),false);
     }
 
     @Override
     public String getName() {
-      return md.getName();
+      return metaData.getName();
     }
 
 
@@ -101,10 +84,8 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
     /**
      * Sets the display order for this display item within its parent container.  Generally
      * this will boil down to the order in the legend.
-     *
-     * @param i
-     * @throws SystemException
      */
+    @Override
     public void setOrder(int i) throws SystemException {
         item.setModelOutputItemOrder(i);
         ModelOutputItemLocalServiceUtil.updateModelOutputItem(item);
@@ -113,8 +94,6 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
 
     /**
      * Get additional information about this series
-     *
-     * @return
      */
     public ModelOutputSeriesType getSeriesType() {
          return (item.getItemType() == null || item.getItemType().trim().equals("")) ? ModelOutputSeriesType.NORMAL:ModelOutputSeriesType.valueOf(item.getItemType());
@@ -124,8 +103,6 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
     /**
      * Sets additional information about this series; this setting is persisted
      * in the backing store.
-     *
-     * @return
      */
     public void setSeriesType(ModelOutputSeriesType type) throws SystemException {
         if (item!=null) {
@@ -138,16 +115,12 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
     /**
      * If this metadata is "about" another piece of meta data within the same simulation,
      * this method will return that metadata.
-     *
-     * @return
-     * @throws SystemException
-     * @throws IOException 
      */
     public MetaData getAssociatedMetaData() throws SystemException, IOException {
-            Long l = item.getRelatedOutputItem();
+            long l = item.getRelatedOutputItem();
             // FIXME CollaboratoriumModelingService won't work as PropsUtil can't be found from portlet
             //return l==null?null:CollaboratoriumModelingService.repository().getMetaData(item.getRelatedOutputItem());
-            return l==null || l <= 0 ?null:ClientRepository.instance().getMetaData(item.getRelatedOutputItem());
+            return l <= 0 ?null:ClientRepository.instance().getMetaData(item.getRelatedOutputItem());
     }
 
     public void setAssociatedMetaData(MetaData md) throws SystemException {
@@ -163,7 +136,6 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
         item.setRelatedOutputItem(id);
         ModelOutputItemLocalServiceUtil.updateModelOutputItem(item);   
     }
-    
 
     @Override
     public ModelOutputDisplayItemType getDisplayItemType() {
@@ -197,6 +169,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem{
         return getError(getVariable(),TupleStatus.OUT_OF_RANGE,1);
     }
 
+    @Override
     public ModelOutputErrorBehavior getInvalidError() {
         return getError(getVariable(),TupleStatus.INVALID,1);
     }

@@ -1,12 +1,8 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.NoSuchProposalReferenceException;
-import com.ext.portlet.PlanSectionTypeKeys;
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalReferenceLocalServiceBaseImpl;
@@ -16,10 +12,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.helpers.ProposalAttributeHelper;
-import org.xcolab.utils.LinkUtils;
 
 import java.util.HashSet;
 import java.util.List;

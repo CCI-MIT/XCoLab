@@ -1,14 +1,11 @@
 package org.xcolab.wrappers;
 
-
 import org.apache.commons.lang3.StringUtils;
 
-import com.ext.portlet.ProposalAttributeKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
@@ -25,6 +22,7 @@ import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
@@ -337,7 +335,7 @@ public class BaseProposalWrapper {
     public BaseContestWrapper getWasMovedToContest() {
         try {
             Contest c = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
-            if (c.getContestPK() != contest.getContestPK()) {
+            if (c.getContestPK() != contest.getContestPK().longValue()) {
                 try {
                     return new BaseContestWrapper(ContestClient.getContest(c.getContestPK()));
                 } catch (ContestNotFoundException ignored) {

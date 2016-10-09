@@ -1,18 +1,16 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
+import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.comm.ClientRepository;
 
-import com.ext.portlet.models.CollaboratoriumModelingService;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import edu.mit.cci.roma.client.Simulation;
-import edu.mit.cci.roma.client.comm.ClientRepository;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
@@ -24,7 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ContestModelSettingsBean implements Serializable {
-    private final static Log _log = LogFactoryUtil.getLog(ContestModelSettingsBean.class);
+
     private Long defaultModelId;
     private List<Long> otherModelIds;
     private String otherModels;
@@ -136,27 +134,23 @@ public class ContestModelSettingsBean implements Serializable {
     }
 
     public static List<LabelValue> getAllModelIds() {
+        final ClientRepository repository = RomaClientUtil.repository();
+        List<Simulation> simulationsSorted;
+        if (repository != null) { //will be null on very first call - fail gracefully
+            simulationsSorted = new ArrayList<>(repository.getAllSimulations());
+        } else {
+            simulationsSorted = Collections.emptyList();
+        }
+        Collections.sort(simulationsSorted, new Comparator<Simulation>() {
+            @Override
+            public int compare(Simulation o1, Simulation o2) {
+                return (int) (o2.getId() - o1.getId());
+            }
+        });
         List<LabelValue> allModelIds = new ArrayList<>();
-        try {
-            final ClientRepository repository = CollaboratoriumModelingService.repository();
-            List<Simulation> simulationsSorted;
-            if (repository != null) { //will be null on very first call - fail gracefully
-                simulationsSorted = new ArrayList<>(repository.getAllSimulations());
-            } else {
-                simulationsSorted = Collections.emptyList();
-            }
-            Collections.sort(simulationsSorted, new Comparator<Simulation>() {
-                @Override
-                public int compare(Simulation o1, Simulation o2) {
-                    return (int) (o2.getId() - o1.getId());
-                }
-            });
-            for (Simulation simulation : simulationsSorted) {
-                allModelIds.add(new LabelValue(simulation.getId(),
-                        "(Id: " + simulation.getId() + ") " + simulation.getName()));
-            }
-        } catch (SystemException e) {
-            _log.warn("Couldn't fetch contest model Ids.", e);
+        for (Simulation simulation : simulationsSorted) {
+            allModelIds.add(new LabelValue(simulation.getId(),
+                    "(Id: " + simulation.getId() + ") " + simulation.getName()));
         }
         return allModelIds;
     }

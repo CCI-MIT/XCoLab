@@ -2,7 +2,7 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.model.ModelInputGroup;
 import com.ext.portlet.model.ModelInputItem;
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.ext.portlet.service.ModelInputGroupLocalServiceUtil;
 import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
 import com.ext.portlet.service.base.ModelInputGroupLocalServiceBaseImpl;
@@ -80,13 +80,13 @@ public class ModelInputGroupLocalServiceImpl
 
       @Override
       public Simulation getModel(ModelInputGroup group) throws SystemException, IOException {
-         return CollaboratoriumModelingService.repository().getSimulation(group.getModelId());       
+         return RomaClientUtil.repository().getSimulation(group.getModelId());
      }
 
      @Override
      public MetaData getMetaData(ModelInputGroup group) throws SystemException, IOException {
          if (group.getNameAndDescriptionMetaDataId() > 0) {
-             return CollaboratoriumModelingService.repository().getMetaData(group.getNameAndDescriptionMetaDataId());
+             return RomaClientUtil.repository().getMetaData(group.getNameAndDescriptionMetaDataId());
          }
          return null;
      }

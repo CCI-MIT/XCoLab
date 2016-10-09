@@ -1,8 +1,11 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
+
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -45,9 +48,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import edu.mit.cci.roma.client.Scenario;
-import edu.mit.cci.roma.client.Simulation;
 
 public class ProposalWrapper extends BaseProposalWrapper {
 
@@ -203,7 +203,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return false;
     }
 
-    public long getVotesCount() throws SystemException, PortalException {
+    public long getVotesCount() {
         if (proposal.getProposalId() > 0) {
             try {
                 org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
@@ -217,7 +217,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return 0;
     }
 
-    public List<ProposalSectionWrapper> getSections() throws PortalException, SystemException {
+    public List<ProposalSectionWrapper> getSections() {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
@@ -256,7 +256,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return modelRegions;
     }
 
-    public String getModelRegion() throws PortalException, SystemException {
+    public String getModelRegion() {
         ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.REGION);
         if (attr == null) {
             return "";
@@ -264,7 +264,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return attr.getStringValue();
     }
 
-    public void setModelRegion(String region, Long userId) throws PortalException, SystemException {
+    public void setModelRegion(String region, Long userId) {
         ProposalAttributeClient.setProposalAttribute(createProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.REGION, region),userId);
     }
     private static ProposalAttribute createProposalAttribute(Long proposalId, String name, String stringValue){
@@ -275,14 +275,11 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return proposalAttribute;
     }
 
-    public Long getModelId() throws PortalException, SystemException {
-        Long modelId = 0L;
-            modelId = contest.getDefaultModelId();
-
-        return modelId;
+    public Long getModelId() {
+        return contest.getDefaultModelId();
     }
 
-    public void setScenarioId(Long scenarioId, Long isConsolidatedScenario, Long userId) throws PortalException, SystemException {
+    public void setScenarioId(Long scenarioId, Long isConsolidatedScenario, Long userId) {
         ProposalAttribute proposalAttribute = new ProposalAttribute();
         proposalAttribute.setProposalId(proposal.getProposalId());
         proposalAttribute.setName(ProposalAttributeKeys.SCENARIO_ID);
@@ -291,7 +288,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         ProposalAttributeClient.setProposalAttribute(proposalAttribute,userId);
     }
 
-    public Long getScenarioId() throws PortalException, SystemException {
+    public Long getScenarioId() {
         ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
         if (attr == null) {
             return 0L;
@@ -299,12 +296,12 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return attr.getNumericValue();
     }
 
-    public Boolean isConsolidatedScenario(Long scenarioId) throws PortalException, SystemException {
+    public Boolean isConsolidatedScenario(Long scenarioId) {
         ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
         return attr != null && attr.getAdditionalId() == 1;
     }
 
-    public Map<Long, List<ProposalWrapper>> getSubProposalPerModel() throws PortalException, SystemException {
+    public Map<Long, List<ProposalWrapper>> getSubProposalPerModel() {
         Map<Long, List<ProposalWrapper>> subProposalPerModel = new HashMap<>();
         List<Proposal> subProposals = ProposalsClient.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
 
@@ -325,14 +322,14 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public Scenario getScenarioByProposalId(Long proposalId) throws IOException, SystemException {
-        return CollaboratoriumModelingService.repository().getScenario(proposalId);
+        return RomaClientUtil.repository().getScenario(proposalId);
     }
 
-    private static Long getModelIdForScenarioId(Long scenarioId) throws SystemException {
+    private static Long getModelIdForScenarioId(Long scenarioId) {
         Long modelId;
 
         try {
-            Scenario scenario = CollaboratoriumModelingService.repository().getScenario(scenarioId);
+            Scenario scenario = RomaClientUtil.repository().getScenario(scenarioId);
             Simulation simulation = scenario.getSimulation();
             modelId = simulation.getId();
         } catch (IOException e) {
@@ -352,7 +349,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return subProposalScenarios;
     }
 
-    private Long getModelIdForStoredScenario() throws SystemException {
+    private Long getModelIdForStoredScenario() {
         return getModelIdForScenarioId(proposal.getProposalId());
     }
 

@@ -1,7 +1,7 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.Proposal;
