@@ -186,6 +186,13 @@ public class ProposalsController {
         return proposalVersionDao.findByGiven(proposalId, null);
     }
 
+    @RequestMapping(value = "/proposalVersions/count", method = RequestMethod.GET)
+    public Integer getProposalVersionsCount(
+            @RequestParam(required = false) Long proposalId
+    ) {
+        return proposalVersionDao.countByGiven(proposalId);
+    }
+
     @RequestMapping(value = "/proposalVersions/getByProposalIdVersion", method = RequestMethod.GET)
     public ProposalVersion getProposalVersion(@RequestParam("proposalId") Long proposalId,
                                               @RequestParam("version") Integer version) throws NotFoundException {

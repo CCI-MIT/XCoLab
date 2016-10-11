@@ -3,6 +3,8 @@ package org.xcolab.service.proposal.helper;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
@@ -13,20 +15,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class ProposalAttributeHelper {
     private final Proposal proposal;
     private final int version;
     private Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId;
 
+
     private ProposalAttributeDao proposalAttributeDao;
 
-    public ProposalAttributeHelper(Proposal proposal, int version) {
+    public ProposalAttributeHelper(Proposal proposal, int version, ProposalAttributeDao proposalAttributeDao) {
         this.proposal = proposal;
         this.version = version;
+        this.proposalAttributeDao = proposalAttributeDao;
     }
 
-    public ProposalAttributeHelper(Proposal proposal) {
-        this(proposal, proposal.getCurrentVersion());
+    public ProposalAttributeHelper(Proposal proposal, ProposalAttributeDao proposalAttributeDao) {
+        this(proposal, proposal.getCurrentVersion(), proposalAttributeDao);
     }
 
     //initialization is expensive --> be lazy

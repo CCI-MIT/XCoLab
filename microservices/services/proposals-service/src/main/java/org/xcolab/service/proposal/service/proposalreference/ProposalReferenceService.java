@@ -1,6 +1,7 @@
 package org.xcolab.service.proposal.service.proposalreference;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -11,6 +12,7 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalReference;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
+import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.enums.PlanSectionTypeKeys;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
@@ -31,11 +33,15 @@ public class ProposalReferenceService {
 
     private final ProposalDao proposalDao;
 
+    private final ProposalAttributeDao proposalAttributeDao;
 
 
-    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao,ProposalDao proposalDao){
+
+    @Autowired
+    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao, ProposalDao proposalDao, ProposalAttributeDao proposalAttributeDao){
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalDao = proposalDao;
+        this.proposalAttributeDao = proposalAttributeDao;
     }
 
     public void populateTableWithProposal(Proposal proposal)  {
@@ -54,7 +60,7 @@ public class ProposalReferenceService {
             proposalReferenceDao.delete(existingReference.getProposalId(), existingReference.getSubProposalId());
         }
         processedProposals.add(proposal.getProposalId());
-        for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal).getAttributesByName(ProposalAttributeKeys.SECTION)) {
+        for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal,proposalAttributeDao).getAttributesByName(ProposalAttributeKeys.SECTION)) {
 
                 PlanSectionDefinition psd = PlanTemplateClient.getPlanSectionDefinition(attribute.getAdditionalId());
 

@@ -66,7 +66,7 @@ public class PlanTemplateController {
 
 
 
-    @RequestMapping(value = "/planSectionDefinition/{planSectionDefinitionId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/planSectionDefinitions/{planSectionDefinitionId}", method = RequestMethod.GET)
     public PlanSectionDefinition getPlanSectionDefinition(@PathVariable("planSectionDefinitionId") Long planSectionDefinitionId) throws NotFoundException {
         if (planSectionDefinitionId == null || planSectionDefinitionId == 0) {
             throw new NotFoundException("No planSectionDefinitionId given");

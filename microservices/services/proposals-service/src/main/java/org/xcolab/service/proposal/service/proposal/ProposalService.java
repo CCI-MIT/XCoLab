@@ -115,6 +115,9 @@ public class ProposalService {
 
             proposalDao.update(proposal);
 
+            UsersGroupsClient.createUsersGroups(authorId, proposal.getGroupId());
+            MembersClient.createUserGroupRole(authorId,proposal.getGroupId());
+
             if (contestPhaseId > 0) {
                 // associate proposal with phase
                 Proposal2Phase p2p = new Proposal2Phase();

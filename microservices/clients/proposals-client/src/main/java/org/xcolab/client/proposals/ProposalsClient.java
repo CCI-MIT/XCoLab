@@ -221,6 +221,11 @@ public final class ProposalsClient {
                 .get();
     }
 
+    public static Integer countProposalVersions(Long proposalId) {
+        return proposalVersionResource.service("count", Integer.class)
+                .optionalQueryParam("proposalId", proposalId)
+                .get();
+    }
     public static ProposalVersion getProposalVersionByProposal(Long proposalId) {
         return proposalVersionResource.service("getByProposalIdVersion", ProposalVersion.class)
                 .queryParam("proposalId", proposalId)
