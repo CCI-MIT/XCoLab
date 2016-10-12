@@ -14,7 +14,7 @@
     <jsp:directive.attribute name="featured" type="java.lang.Boolean" required="true" rtexprvalue="true" description="whether the contests are featured" />
 
 	<c:forEach var="collectionCard" items="${collectionCards }">
-        <portlet:renderURL var="changeCurrentContestCardURL">´
+        <portlet:renderURL var="changeCurrentContestCardURL">
             <portlet:param name="collectionCard" value="${collectionCard.id}" />
         </portlet:renderURL>
         <div class="c-ListItem--background-container" style="  margin-left: 110px;">

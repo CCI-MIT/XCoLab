@@ -14,6 +14,81 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   width: 484px;
 }
 
+.contests-container {
+  background-color: $t-Color__grey--lightest;
+  padding-left:50px;
+  overflow:hidden;
+}
+
+.c-ontology-selector {
+
+  .arrow {
+    float:left;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 32px solid $t-Color__grey--lightest;
+    margin-right: 50px;
+  }
+
+  height: 50px;
+  a {
+    margin-right: 50px;
+  }
+
+
+}
+.c-display-selector {
+
+  background-color: $t-Color__grey--lightest;
+  height: 65px;
+
+  .show-active {
+    float: right;
+    text-align: right;
+    position: relative;
+    font: 12px "Lucida Grande", Arial, sans-serif;
+    margin-right: 40px;
+    padding: 0 16px 0 0;
+  }
+
+  .view{
+    > div {
+      width:100px;
+      text-align: center;
+      margin: 15px;
+      float: left;
+      height: 34px;
+      line-height: 34px;
+      font-size: 12px;
+      font-weight: $b-Typography__fontWeight--bold;
+      text-transform: uppercase;
+
+      &.selected {
+        color: $t-Color__grey--medium;
+        border: solid 1px $t-Color__primary;
+        border-radius: 3px;
+        margin:14px;
+      }
+     }
+
+    .grid {
+      background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
+
+      &.selected {
+        background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $t-Color__primary;
+      }
+    }
+
+    .list {
+      background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
+
+      &.selected {
+        background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $t-Color__primary;
+      }
+    }
+  }
+}
+
 /* grid-view / list-view button */
 .c-Headline .view {
   float: left;
@@ -43,13 +118,6 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
     }
   }
 
-  .grid {
-    background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
-
-    &.selected {
-      background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $t-Color__primary;
-    }
-  }
 
   .outline {
     background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
@@ -59,14 +127,8 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
     }
   }
 
-  .list {
-    background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
-
-    &.selected {
-      background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $t-Color__primary;
-    }
-  }
 }
+
 
 .p-Contests__ListViewTable { //table.contest-list-view
 

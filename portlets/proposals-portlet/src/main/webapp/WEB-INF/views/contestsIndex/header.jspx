@@ -15,18 +15,6 @@
 			</c:if>
 		</div>
 		<h1>${contestType.contestNamePlural}</h1>
-		<portlet:renderURL var="changeToListViewTypeURL">
-			<portlet:param name="viewType" value="LIST" />
-			<portlet:param name="filter" value="${sortFilterPage.filter }" />
-			<portlet:param name="showActiveContests" value="${showActiveContests }" />
-			<portlet:param name="showAllContests" value="${showAllContests }" />
-		</portlet:renderURL>
-		<portlet:renderURL var="changeToGridViewTypeURL">
-			<portlet:param name="viewType" value="GRID" />
-			<portlet:param name="filter" value="${sortFilterPage.filter }" />
-			<portlet:param name="showActiveContests" value="${showActiveContests }" />
-			<portlet:param name="showAllContests" value="${showAllContests }" />
-		</portlet:renderURL>
 		<portlet:renderURL var="changeToOutlineViewTypeURL">
 			<portlet:param name="viewType" value="OUTLINE" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
@@ -38,19 +26,6 @@
 			<div class="view">
 				<!-- To switch the button over to list view just change "gridview" to "listview" -->
 				<!--@elvariable id="viewType" type="java.lang.String"-->
-				<div class="grid ${viewType == 'GRID' ? 'selected' : ''}">
-					<div>
-						<c:choose>
-							<c:when test="${viewType == 'GRID' }">
-								Grid view
-							</c:when>
-							<c:otherwise>
-								<a href="${changeToGridViewTypeURL }">Grid view</a>
-							</c:otherwise>
-						</c:choose>
-					</div>
-				</div>
-				<!--
 				<div class="outline ${viewType == 'OUTLINE' ? 'selected' : ''}">
 					<div>
 						<c:choose>
@@ -63,46 +38,6 @@
 						</c:choose>
 					</div>
 				</div>
-				-->
-				<div class="list ${viewType == 'LIST' ? 'selected' : ''}">
-					<div>
-						<c:choose>
-							<c:when test="${viewType == 'LIST' }">
-								List view
-							</c:when>
-							<c:otherwise>
-								<a href="${changeToListViewTypeURL }">List view</a>
-							</c:otherwise>
-						</c:choose>
-					</div>
-				</div>
-			</div>
-		</c:if>
-
-		<c:if test="${priorContestsExist}">
-			<div class="show">
-				<div class="show-active">
-					<c:choose>
-						<c:when test="${showActiveContests }">
-							<a href="#" >Active ${contestType.contestNamePlural}</a>
-						</c:when>
-						<c:when test="${not showActiveContests and not showAllContests }">
-							<a href="#" >Prior ${contestType.contestNamePlural}</a>
-						</c:when>
-						<c:otherwise>
-							<a href="#" >All ${contestType.contestNamePlural}</a>
-						</c:otherwise>
-					</c:choose>
-					<div id="priorActiveAllWidget">
-						<ul>
-							<li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
-
-								<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
-
-							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All ${contestType.contestNamePlural}</a></li>
-						</ul>
-					</div>
-				</div>
 			</div>
 		</c:if>
 		<c:if test="${not empty suggestionContestLink}">
@@ -110,21 +45,6 @@
   			<div class="show">
   				<a href="${suggestionContestLink}">Suggest a new ${contestType.contestName}</a>
   			</div>
-		</c:if>
-		<c:if test="${showFilter}">
- 			<div class="filter" style="position: relative;">
- 				<portlet:renderURL var="filterURL" />
-	 			<form action="${filterURL }" id="filterContestsForm" method="get">
- 					<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
- 					<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
- 					<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
- 					<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
-	 				<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter ${contestType.contestNamePlural}" name="filter" />
-    				<c:if test="${not empty sortFilterPage.filter }">
-        				<a href="javascript:;" id="contestsFilterClear">&#160;</a>
-        			</c:if>
-	            </form>
-    	    </div>
 		</c:if>
     </div>
 	<div class="c-Headline">
@@ -144,4 +64,123 @@
             </div>
 		</c:otherwise>
 	</c:choose>
+
+	<div class="c-ontology-selector">
+		<portlet:renderURL var="changeFeaturedRootURL">
+			<portlet:param name="collectionCard" value="1" />
+		</portlet:renderURL>
+		<portlet:renderURL var="changeTopicRootURL">
+			<portlet:param name="collectionCard" value="2" />
+		</portlet:renderURL>
+		<portlet:renderURL var="changeLocationRootURL">
+			<portlet:param name="collectionCard" value="3" />
+		</portlet:renderURL>
+		<a href="${changeFeaturedRootURL}">
+			Featured
+		</a>
+		<a href="${changeTopicRootURL}">
+			By topic
+		</a>
+		<a href="${changeLocationRootURL}">
+			By location
+		</a>
+		<br/>
+		<div class="c-arrow featured">
+			<jsp:text />
+		</div>
+		<div class="c-arrow topic">
+			<jsp:text />
+		</div>
+		<div class="c-arrow location">
+			<jsp:text />
+		</div>
+
+		<c:if test="${showFilter}">
+			<div class="filter" style="position: relative;">
+				<portlet:renderURL var="filterURL" />
+				<form action="${filterURL }" id="filterContestsForm" method="get">
+					<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
+					<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
+					<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
+					<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
+					<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter ${contestType.contestNamePlural}" name="filter" />
+					<c:if test="${not empty sortFilterPage.filter }">
+						<a href="javascript:;" id="contestsFilterClear">&#160;</a>
+					</c:if>
+				</form>
+			</div>
+		</c:if>
+
+	</div>
+
+	<div class="c-display-selector">
+		<portlet:renderURL var="changeToListViewTypeURL">
+			<portlet:param name="viewType" value="LIST" />
+			<portlet:param name="filter" value="${sortFilterPage.filter }" />
+			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
+		</portlet:renderURL>
+		<portlet:renderURL var="changeToGridViewTypeURL">
+			<portlet:param name="viewType" value="GRID" />
+			<portlet:param name="filter" value="${sortFilterPage.filter }" />
+			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
+		</portlet:renderURL>
+		<c:if test="${showContestDisplayOptions}">
+			<div class="view">
+				<!-- To switch the button over to list view just change "gridview" to "listview" -->
+				<!--@elvariable id="viewType" type="java.lang.String"-->
+				<div class="grid ${viewType == 'GRID' ? 'selected' : ''}" style="margin-left: 400px;">
+					<div>
+						<c:choose>
+							<c:when test="${viewType == 'GRID' }">
+								Grid view
+							</c:when>
+							<c:otherwise>
+								<a href="${changeToGridViewTypeURL }">Grid view</a>
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</div>
+				<div class="list ${viewType == 'LIST' ? 'selected' : ''}">
+					<div>
+						<c:choose>
+							<c:when test="${viewType == 'LIST' }">
+								List view
+							</c:when>
+							<c:otherwise>
+								<a href="${changeToListViewTypeURL }">List view</a>
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${priorContestsExist}">
+			<div class="show">
+				<div class="show-active">
+					<c:choose>
+						<c:when test="${showActiveContests }">
+							<a href="#" >Active ${contestType.contestNamePlural}</a>
+						</c:when>
+						<c:when test="${not showActiveContests and not showAllContests }">
+							<a href="#" >Prior ${contestType.contestNamePlural}</a>
+						</c:when>
+						<c:otherwise>
+							<a href="#" >All ${contestType.contestNamePlural}</a>
+						</c:otherwise>
+					</c:choose>
+					<div id="priorActiveAllWidget">
+						<ul>
+							<li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
+
+							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
+
+							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All ${contestType.contestNamePlural}</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</c:if>
+	</div>
 </jsp:root>

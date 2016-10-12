@@ -7,7 +7,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 	<!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
 	<!--@elvariable id="collectionCards" type="org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean"-->
 
-	<div class="contestsContainer">
+	<div class="contests-container">
 		<div>
 			<c:forEach var="collectionCard" items="${collectionCards.collectionCards }" varStatus="status">
 				<proposalsPortlet:collectionCard collectionCard="${collectionCard }" index="${status.index}" />
