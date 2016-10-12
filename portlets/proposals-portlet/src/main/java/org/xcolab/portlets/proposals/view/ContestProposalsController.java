@@ -21,12 +21,12 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.Proposal2PhaseClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
@@ -66,10 +66,10 @@ public class ContestProposalsController extends BaseProposalsController {
         Member u = request.getRemoteUser() != null ? MembersClient.getMemberUnchecked(Long.parseLong(request.getRemoteUser())) : null;
         List<ProposalWrapper> proposals = new ArrayList<>();
 
-        for (Proposal proposal : ProposalsClient.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+        for (Proposal proposal : ProposalClientUtil.getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
 
             try {
-                Proposal2Phase p2p = Proposal2PhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                Proposal2Phase p2p = Proposal2PhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
                 ProposalWrapper proposalWrapper;
 
                 if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGE.getRoleId(), u.getUserId())) {
@@ -129,7 +129,7 @@ public class ContestProposalsController extends BaseProposalsController {
             throws PortalException, SystemException, IOException {
 
         try {
-            Proposal proposal = ProposalsClient.getProposal(proposalId);
+            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             Contest contest = ContestClientUtil.getContest(contestId);
 
             String redirectUrl;

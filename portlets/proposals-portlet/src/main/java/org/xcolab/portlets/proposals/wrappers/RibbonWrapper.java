@@ -7,8 +7,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
-import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
-import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClientUtil;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 /**
@@ -41,7 +41,7 @@ public class RibbonWrapper {
                         proposalId, proposalWrapper.getContestPK()));
                 return null;
             }
-                ribbonAttribute = ProposalContestPhaseAttributeClient
+                ribbonAttribute = ProposalContestPhaseAttributeClientUtil
                         .getProposalContestPhaseAttribute(
                                 proposalId,
                                 contestPhase.getContestPhasePK(),

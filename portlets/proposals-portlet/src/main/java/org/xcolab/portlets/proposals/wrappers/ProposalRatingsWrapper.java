@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.pojo.ProposalRating;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 
 import java.util.ArrayList;
 import java.util.Collections;

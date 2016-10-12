@@ -2,9 +2,9 @@ package org.xcolab.helpers;
 
 
 
-import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.utils.EntityGroupingUtil;
 
 import java.util.Collection;
@@ -29,7 +29,7 @@ public class ProposalAttributeHelper {
 
     //initialization is expensive --> be lazy
     private void init() {
-            List<ProposalAttribute> attributes = ProposalAttributeClient
+            List<ProposalAttribute> attributes = ProposalAttributeClientUtil
                     .getAllProposalAttributes(proposal.getProposalId(), version);
             if (attributesByNameAndAdditionalId == null) {
                 attributesByNameAndAdditionalId = new HashMap<>();

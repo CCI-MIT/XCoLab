@@ -6,13 +6,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -64,7 +61,7 @@ public class BaseProposalTabController extends BaseProposalsController {
         String pageDescription = proposalWrapped.getPitch();
         
         if (pageSubTitle == null || StringUtils.isBlank(pageSubTitle)) {
-            final ContestType contestType = ProposalsClient.getContestTypeFromProposalId(proposalWrapped.getProposalId());
+            final ContestType contestType = ProposalClientUtil.getContestTypeFromProposalId(proposalWrapped.getProposalId());
             pageSubTitle = contestType.getProposalName() + " for " + contestWrapped.getContestShortName();
         }
 

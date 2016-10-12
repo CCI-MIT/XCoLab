@@ -13,8 +13,8 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.Proposal2PhaseClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -39,11 +39,11 @@ public class PromoteProposalActionController {
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             try {
-                Contest latestProposalContest = ProposalsClient.getLatestContestInProposal(proposalId);
+                Contest latestProposalContest = ProposalClientUtil.getLatestContestInProposal(proposalId);
                 ContestPhase currentProposalContestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
                 ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
 
-                Proposal2PhaseClient.promoteProposal(proposalId,
+                Proposal2PhaseClientUtil.promoteProposal(proposalId,
                         activePhaseForContest.getContestPhasePK(),
                         currentProposalContestPhase.getContestPhasePK());
 

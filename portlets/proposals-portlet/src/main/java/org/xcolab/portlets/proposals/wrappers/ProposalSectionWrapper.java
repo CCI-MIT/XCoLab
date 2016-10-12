@@ -18,10 +18,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.enums.Plurality;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.IdListUtil;
@@ -209,7 +209,7 @@ public class ProposalSectionWrapper {
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
         }
-        return new ProposalWrapper(ProposalsClient.getProposal(attr.getNumericValue()));
+        return new ProposalWrapper(ProposalClientUtil.getProposal(attr.getNumericValue()));
     }
 
     public ProposalWrapper[] getStringValueAsProposalArray() throws SystemException, PortalException {
@@ -222,7 +222,7 @@ public class ProposalSectionWrapper {
         ProposalWrapper[] ret = new ProposalWrapper[props.length];
         for (int i = 0; i < props.length; i++) {
             try {
-                ret[i] = new ProposalWrapper(ProposalsClient.getProposal(Long.parseLong(props[i])));
+                ret[i] = new ProposalWrapper(ProposalClientUtil.getProposal(Long.parseLong(props[i])));
             } catch (NumberFormatException e) {
                 _log.error(String.format("Could not parse proposalId %s as a number", props[i]));
             } catch (ProposalNotFoundException e) {

@@ -19,7 +19,7 @@ import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.Group_;
 import org.xcolab.model.tables.pojos.Proposal;
@@ -282,7 +282,7 @@ public class ProposalService {
     public Contest getLatestProposalContest(Long proposalId) {
         Contest contest = null;
         try {
-            contest = ProposalsClient.getLatestContestInProposal(proposalId);
+            contest = ProposalClientUtil.getLatestContestInProposal(proposalId);
         } catch (ContestNotFoundException ignored) {
         }
         return contest;

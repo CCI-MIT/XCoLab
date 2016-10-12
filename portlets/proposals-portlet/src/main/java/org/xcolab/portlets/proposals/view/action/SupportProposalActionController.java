@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalSupporterClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalSupporterClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -45,12 +45,12 @@ public class SupportProposalActionController {
             long userId = proposalsContext.getUser(request).getUserId();
             long proposalId = proposalsContext.getProposal(request).getProposalId();
 
-            if (ProposalSupporterClient.isMemberProposalSupporter(proposalId, userId)) {
-                ProposalSupporterClient.removeProposalSupporter(proposalId, userId);
+            if (ProposalSupporterClientUtil.isMemberProposalSupporter(proposalId, userId)) {
+                ProposalSupporterClientUtil.removeProposalSupporter(proposalId, userId);
             }
             else {
-                ProposalSupporterClient.addProposalSupporter(proposalId, userId);
-                int supportedCount = ProposalSupporterClient.getProposalSupportersCount(userId);
+                ProposalSupporterClientUtil.addProposalSupporter(proposalId, userId);
+                int supportedCount = ProposalSupporterClientUtil.getProposalSupportersCount(userId);
                 if (supportedCount > 0) {
                     int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(supportedCount);
                     AnalyticsUtil.publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue,
@@ -60,7 +60,7 @@ public class SupportProposalActionController {
             			analyticsValue);
                 }
                 try {
-                    Contest contest = ProposalsClient.getLatestContestInProposal(proposalId);
+                    Contest contest = ProposalClientUtil.getLatestContestInProposal(proposalId);
                     SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
                 }catch (ContestNotFoundException ignore){
 

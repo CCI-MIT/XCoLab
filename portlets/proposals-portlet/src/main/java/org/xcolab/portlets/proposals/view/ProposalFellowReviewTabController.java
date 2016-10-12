@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
@@ -51,7 +51,7 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
         Proposal proposal = proposalsContext.getProposal(request);
         final long discussionThreadId = createDiscussionThread(request, " fellow review", true);
         proposal.setFellowDiscussionId(discussionThreadId);
-        ProposalsClient.updateProposal(proposal);
+        ProposalClientUtil.updateProposal(proposal);
         return discussionThreadId;
     }
 }

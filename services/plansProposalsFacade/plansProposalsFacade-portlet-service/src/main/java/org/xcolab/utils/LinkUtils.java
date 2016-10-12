@@ -2,7 +2,7 @@ package org.xcolab.utils;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 
@@ -22,7 +22,7 @@ public final class LinkUtils {
         List<Long> proposalIds = getProposalIdsFromLinksInText(linkUrl);
         if (!proposalIds.isEmpty()) {
             try {
-                return ProposalsClient.getProposal(proposalIds.get(0));
+                return ProposalClientUtil.getProposal(proposalIds.get(0));
             } catch (ProposalNotFoundException ignored) {
             }
         }

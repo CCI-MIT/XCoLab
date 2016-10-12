@@ -17,10 +17,10 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.proposals.ProposalMoveHistoryClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalMoveHistoryClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalMoveHistory;
+import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
@@ -84,7 +84,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         final Proposal proposal = proposalsContext.getProposal(request);
         final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
         try {
-            final Contest baseContest = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
+            final Contest baseContest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
 
             if (voted) {
                 setVotingDeadline(model, baseContest);
@@ -164,7 +164,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
     private void populateMoveHistory(Model model, Proposal proposal, Contest contest)
             throws SystemException {
-        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveHistoryClient
+        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveHistoryClientUtil
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         List<MoveHistoryWrapper> sourceMoveHistories = new ArrayList<>();
 
@@ -174,7 +174,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
 
-        ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveHistoryClient
+        ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveHistoryClientUtil
                 .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         if (targetMoveHistoryRaw != null) {
             MoveHistoryWrapper targetMoveHistory = new MoveHistoryWrapper(targetMoveHistoryRaw);
@@ -185,7 +185,8 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
     private void setLinkedProposals(Model model, Proposal proposal)
             throws PortalException, SystemException {
-        List<Proposal> linkedProposals = ProposalsClient.getSubproposals(proposal.getProposalId(), true);
+        List<Proposal> linkedProposals = ProposalClientUtil
+                .getSubproposals(proposal.getProposalId(), true);
         Map<ContestType, List<Proposal>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();

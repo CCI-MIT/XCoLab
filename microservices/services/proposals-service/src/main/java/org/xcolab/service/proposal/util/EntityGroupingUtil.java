@@ -6,7 +6,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public final class EntityGroupingUtil {
             }
             for (Proposal p : proposals) {
                 try {
-                    final long contestPK = ProposalsClient.getLatestContestInProposal(p.getProposalId()).getContestPK();
+                    final long contestPK = ProposalClientUtil.getLatestContestInProposal(p.getProposalId()).getContestPK();
                     ContestType contestType = contestIdToContestTypeMap.get(contestPK);
                     proposalsByContestType.get(contestType).add(p);
                 }catch (ContestNotFoundException ignored){

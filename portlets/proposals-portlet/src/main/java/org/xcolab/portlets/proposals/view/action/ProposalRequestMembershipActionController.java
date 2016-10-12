@@ -35,9 +35,9 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.MembershipRequestClient;
-import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.pojo.MembershipRequest;
+import org.xcolab.client.proposals.MembershipRequestClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
@@ -95,7 +95,8 @@ public class ProposalRequestMembershipActionController {
         final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorId());
         final Contest contest = proposalsContext.getContest(request);
 
-        MembershipRequestClient.addRequestedMembershipRequest(proposalId, liferaySender.getUserId(), comment);
+        MembershipRequestClientUtil
+                .addRequestedMembershipRequest(proposalId, liferaySender.getUserId(), comment);
 
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
@@ -140,7 +141,7 @@ public class ProposalRequestMembershipActionController {
                     if (Validator.isNull(comment)) {
                         comment = "No message specified";
                     }
-                    MembershipRequest memberRequest = MembershipRequestClient
+                    MembershipRequest memberRequest = MembershipRequestClientUtil
                             .addInvitedMembershipRequest(proposalId, recipient.getUserId(),
                                     comment);
 
@@ -198,7 +199,7 @@ public class ProposalRequestMembershipActionController {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
 
         MembershipRequest membershipRequest = null;
-        for (MembershipRequest mr : MembershipRequestClient.getMembershipRequests(proposalId)) {
+        for (MembershipRequest mr : MembershipRequestClientUtil.getMembershipRequests(proposalId)) {
             if (mr.getMembershipRequestId() == requestId) {
                 membershipRequest = mr;
             }
@@ -212,10 +213,11 @@ public class ProposalRequestMembershipActionController {
             comment = "no comments";
         }
         if (approve.equalsIgnoreCase("APPROVE")) {
-            MembershipRequestClient.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
+            MembershipRequestClientUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
             sendMessage(proposalsContext.getUser(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
         } else if (approve.equalsIgnoreCase("DENY")) {
-            MembershipRequestClient.denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
+            MembershipRequestClientUtil
+                    .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
             sendMessage(proposalsContext.getUser(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
         }
         response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/ADMIN");
@@ -235,7 +237,7 @@ public class ProposalRequestMembershipActionController {
         }
 
         List<Long> contributorIds = new ArrayList<>();
-        for (Member contributor : ProposalsClient.getProposalMembers(proposalId)) {
+        for (Member contributor : ProposalClientUtil.getProposalMembers(proposalId)) {
             contributorIds.add(contributor.getUserId());
         }
 

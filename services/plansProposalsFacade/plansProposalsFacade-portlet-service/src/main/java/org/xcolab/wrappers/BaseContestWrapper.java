@@ -20,8 +20,8 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.Proposal2PhaseClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.helpers.Tuple;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
@@ -332,7 +332,7 @@ public class BaseContestWrapper {
         try {
             ContestPhase cp = ContestClientUtil.getActivePhase(contest.getContestPK());
             if (cp != null) {
-                return Proposal2PhaseClient
+                return Proposal2PhaseClientUtil
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
             }
         } catch (UncheckedEntityNotFoundException e) {
@@ -519,7 +519,7 @@ public class BaseContestWrapper {
 
             List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contest.getContestPK());
             for (ContestPhase contestPhase : contestPhases) {
-                    List<Proposal> proposals = ProposalsClient
+                    List<Proposal> proposals = ProposalClientUtil
                             .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
                     proposalList.addAll(proposals);
 

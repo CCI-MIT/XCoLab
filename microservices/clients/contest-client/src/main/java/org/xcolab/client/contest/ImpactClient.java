@@ -38,9 +38,9 @@ public class ImpactClient {
         impactIterationResource = new RestResource1<>(this.contestService,
                 "impactIterations", ImpactIterationDto.TYPES);
         impactTemplateFocusAreaListResource = new RestResource1<>(this.contestService,
-        "impactTemplateFocusAreaLists", ImpactTemplateFocusAreaListDto.TYPES);
+                "impactTemplateFocusAreaLists", ImpactTemplateFocusAreaListDto.TYPES);
         impactTemplateMaxFocusAreaResource = new RestResource1<>(this.contestService,
-        "impactTemplateMaxFocusAreas", ImpactTemplateMaxFocusAreaDto.TYPES);
+                "impactTemplateMaxFocusAreas", ImpactTemplateMaxFocusAreaDto.TYPES);
     }
 
     public static ImpactClient fromService(RestService contestService) {

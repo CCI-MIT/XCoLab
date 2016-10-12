@@ -20,7 +20,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
@@ -67,7 +67,7 @@ public class CreateProposalController extends BaseProposalsController {
         if (baseProposalId != null && baseProposalId > 0) {
             try {
                 Contest baseContest = ContestClientUtil.getContest(baseContestId);
-                ProposalWrapper baseProposalWrapper = new ProposalWrapper(ProposalsClient.getProposal(baseProposalId),
+                ProposalWrapper baseProposalWrapper = new ProposalWrapper(ProposalClientUtil.getProposal(baseProposalId),
                         baseProposalVersion, baseContest, ContestClientUtil.getActivePhase(baseContest.getContestPK()), null);
 
 

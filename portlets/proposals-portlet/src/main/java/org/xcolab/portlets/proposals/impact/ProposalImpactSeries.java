@@ -15,11 +15,11 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -117,7 +117,7 @@ public class ProposalImpactSeries {
 
         // TODO create query to filter by additionalId?
         List<ProposalAttribute> impactProposalAttributes =
-                ProposalAttributeClient.getImpactProposalAttributes(proposal);
+                ProposalAttributeClientUtil.getImpactProposalAttributes(proposal);
 
         for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
 
@@ -135,7 +135,7 @@ public class ProposalImpactSeries {
                                 attribute.getRealValue());
 
                         // Set author and modification date
-                        this.lastModifiedVersion = ProposalsClient
+                        this.lastModifiedVersion = ProposalClientUtil
                                 .getProposalVersionByProposalIdVersion(proposal.getProposalId(),
                                         attribute.getVersionWhenCreated());
                     }
@@ -246,7 +246,7 @@ public class ProposalImpactSeries {
                     double filteredValue = ProposalImpactValueFilterAlgorithm
                             .filterValueForImpactSeriesType(
                                     seriesValues.getValueForYear(iteration.getYear()), seriesType);
-                    ProposalAttributeClient
+                    ProposalAttributeClientUtil
                             .setProposalAttribute(author.getUserId(), proposal.getProposalId(),
                                     seriesType,
                                     focusArea.getId_(), "", new Long(iteration.getYear()),

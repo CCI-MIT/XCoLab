@@ -21,7 +21,7 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -67,7 +67,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         }
 
         try {
-            Proposal plan = ProposalsClient.getProposal(id);
+            Proposal plan = ProposalClientUtil.getProposal(id);
             SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, getDocument(plan).getUID());
         } catch (Throwable e) {
             _log.error("Can't remove plan from index: " + obj, e);
@@ -89,7 +89,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             doc.addKeyword(Field.COMPANY_ID, defaultCompanyId);
             doc.addKeyword(Field.PORTLET_ID, PORTLET_ID);
             
-            Contest currentContest = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
+            Contest currentContest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
             
             
 
@@ -206,7 +206,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             Long proposalId = 0L;
             try {
                 proposalId = (Long) obj;
-                p = ProposalsClient.getProposal(proposalId);
+                p = ProposalClientUtil.getProposal(proposalId);
             } catch (Throwable e) {
                 _log.error("Can't reindex plan " + proposalId, e);
             }
@@ -215,7 +215,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             try {
                 Method m = obj.getClass().getMethod("getProposalId");
                 Long proposalId = (Long) m.invoke(obj);
-                p = ProposalsClient.getProposal(proposalId);
+                p = ProposalClientUtil.getProposal(proposalId);
             } catch (Throwable e) {
                 _log.error("Can't reindex plan " + obj, e);
             }
@@ -240,7 +240,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         long companyId = GetterUtil.getLong(ids[0]);
         List<Proposal> proposals = null;
         
-            proposals = ProposalsClient.getAllProposals();
+            proposals = ProposalClientUtil.getAllProposals();
 
         Collection<Document> documents = new ArrayList<>();
         for (Proposal p : proposals) {

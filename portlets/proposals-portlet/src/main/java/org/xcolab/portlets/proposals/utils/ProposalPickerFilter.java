@@ -20,7 +20,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -104,7 +104,7 @@ public class ProposalPickerFilter {
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
                         try {
-                            if (!contests.contains(ProposalsClient.getCurrentContestForProposal(p.getProposalId()))) {
+                            if (!contests.contains(ProposalClientUtil.getCurrentContestForProposal(p.getProposalId()))) {
                                 removedProposals.add(p.getProposalId());
                                 i.remove();
                             }

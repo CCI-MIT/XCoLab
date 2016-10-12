@@ -10,7 +10,7 @@ import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.flagging.ManagerAction;
@@ -72,7 +72,7 @@ public class FlaggingReportWrapper {
 
     private Proposal getTargetProposal() {
         try {
-            return ProposalsClient.getProposal(report.getTargetId());
+            return ProposalClientUtil.getProposal(report.getTargetId());
         } catch (ProposalNotFoundException  e) {
             return null;
         }

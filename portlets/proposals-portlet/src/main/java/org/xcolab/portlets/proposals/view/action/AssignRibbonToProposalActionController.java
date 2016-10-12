@@ -1,6 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClientUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -34,7 +34,8 @@ public class AssignRibbonToProposalActionController {
             long contestId = proposalsContext.getContest(request).getContestPK();
 
 
-                ProposalContestPhaseAttributeClient.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
+                ProposalContestPhaseAttributeClientUtil
+                        .setProposalContestPhaseAttribute(proposalId, contestPhaseId,
                         ProposalContestPhaseAttributeKeys.RIBBON,null,new Long(ribbon),null);
 
             //    ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId,

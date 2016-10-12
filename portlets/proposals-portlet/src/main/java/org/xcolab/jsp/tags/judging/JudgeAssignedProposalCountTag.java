@@ -3,7 +3,7 @@ package org.xcolab.jsp.tags.judging;
 
 
 
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
@@ -35,7 +35,8 @@ public class JudgeAssignedProposalCountTag extends BodyTagSupport {
     @Override
     public int doStartTag() throws JspException {
 
-            int judgeAssignedProposalCount = ProposalsClient.getNumberOfProposalsForJudge(userId, contestPhaseId);
+            int judgeAssignedProposalCount = ProposalClientUtil
+                    .getNumberOfProposalsForJudge(userId, contestPhaseId);
 
             PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
             if (portletRequest == null) {

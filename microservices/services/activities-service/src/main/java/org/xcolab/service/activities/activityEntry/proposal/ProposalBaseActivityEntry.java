@@ -9,8 +9,8 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -39,13 +39,14 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         this.activityEntry = activityEntry;
 
         try {
-            rawProposal = ProposalsClient.getProposal(this.activityEntry.getClassPrimaryKey());
+            rawProposal = ProposalClientUtil.getProposal(this.activityEntry.getClassPrimaryKey());
 
-            contest = ProposalsClient.getCurrentContestForProposal(rawProposal.getProposalId());
+            contest = ProposalClientUtil.getCurrentContestForProposal(rawProposal.getProposalId());
 
             contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
 
-            proposalName = ProposalAttributeClient.getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
+            proposalName = ProposalAttributeClientUtil
+                    .getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
 
         } catch (ContestNotFoundException| ProposalNotFoundException e){
             //_log.error("Portal exception  " + e.getMessage());

@@ -12,9 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
-import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
@@ -69,10 +70,12 @@ public class AssignPointsActionController {
         }
 
         //first, delete the existing configuration
-        PointsDistributionConfigurationClient.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+        PointsDistributionConfigurationClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
 
         try {
-            org.xcolab.client.proposals.pojo.PointType contestRootPointType = PointsDistributionConfigurationClient.getPointType(contest.getDefaultParentPointType());
+            PointType contestRootPointType = PointsDistributionConfigurationClientUtil
+
+                    .getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype
             this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));
@@ -99,7 +102,7 @@ public class AssignPointsActionController {
                     pointsDistributionConfiguration.setPercentage(percentage);
                     pointsDistributionConfiguration.setCreator(currentUser.getUserId());
 
-                    PointsDistributionConfigurationClient.createPointsDistributionConfiguration(pointsDistributionConfiguration);
+                    PointsDistributionConfigurationClientUtil.createPointsDistributionConfiguration(pointsDistributionConfiguration);
 
                 }
                 //round to two decimals
@@ -110,8 +113,9 @@ public class AssignPointsActionController {
             }
         } catch (SystemException | IllegalArgumentException e) {
             //in case a (validation) error occurs, we simply delete all created configurations.
-            //since we do client-side validations, this state will not be reached by regular uses of the UI.
-            PointsDistributionConfigurationClient.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+            //since we do client-side validations, this state will not be reached by regular uses
+            // of the UI.
+            PointsDistributionConfigurationClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
             throw e;
         }
 

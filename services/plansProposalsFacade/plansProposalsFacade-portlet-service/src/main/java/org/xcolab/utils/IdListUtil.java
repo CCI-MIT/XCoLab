@@ -11,7 +11,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 
@@ -54,7 +54,7 @@ public final class IdListUtil {
         @Override
         public Proposal getObject(long id) {
             try{
-                return ProposalsClient.getProposal(id);
+                return ProposalClientUtil.getProposal(id);
             }catch (ProposalNotFoundException ignored){
                 return null;
             }

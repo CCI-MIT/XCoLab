@@ -5,11 +5,11 @@ import com.ext.portlet.JudgingSystemActions;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalRatingClient;
+import org.xcolab.client.proposals.ProposalRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.Proposal2Phase;
-import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.ProposalRating;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
 
     private void setProposalRatings(long proposalId, ContestPhase contestPhase) {
 
-            List<ProposalRating> list = ProposalRatingClient
+            List<ProposalRating> list = ProposalRatingClientUtil
                     .getJudgeRatingsForProposalAndUser(
                             currentUser.getUserId(),
                             proposalId,

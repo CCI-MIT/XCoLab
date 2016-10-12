@@ -11,9 +11,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.Collections;
@@ -201,10 +201,10 @@ public class ProposalPickerSortingUtil {
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
                             try {
-                                ProposalAttribute t1 = ProposalAttributeClient
+                                ProposalAttribute t1 = ProposalAttributeClientUtil
                                         .getProposalAttribute(o1.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.TEAM, 0L);
-                                ProposalAttribute t2 = ProposalAttributeClient
+                                ProposalAttribute t2 = ProposalAttributeClientUtil
                                         .getProposalAttribute(o2.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.TEAM, 0L);
 

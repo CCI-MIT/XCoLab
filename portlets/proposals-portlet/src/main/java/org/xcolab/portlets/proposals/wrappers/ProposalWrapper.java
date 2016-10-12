@@ -25,17 +25,17 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.MembershipRequestClient;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalRatingClient;
-import org.xcolab.client.proposals.ProposalVoteClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.MembershipRequestClientUtil;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalRatingClientUtil;
+import org.xcolab.client.proposals.ProposalVoteClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.MembershipRequest;
+import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.Proposal2Phase;
-import org.xcolab.client.proposals.pojo.ProposalAttribute;
-import org.xcolab.client.proposals.pojo.ProposalRating;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
@@ -63,7 +63,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     private List<MembershipRequestWrapper> membershipRequests;
 
     public ProposalWrapper(long proposalId) throws ProposalNotFoundException {
-        this(ProposalsClient.getProposal(proposalId));
+        this(ProposalClientUtil.getProposal(proposalId));
     }
 
     public ProposalWrapper(Proposal proposal) {
@@ -208,7 +208,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
             try {
                 org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
                 long votingPhasePK = new ContestWrapper(contestMicro).getVotingPhasePK();
-                return ProposalVoteClient.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
+                return ProposalVoteClientUtil.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
             } catch (ContestNotFoundException ignored) {
 
             }
@@ -240,7 +240,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     public List<MembershipRequestWrapper> getMembershipRequests() {
         if (this.membershipRequests == null) {
             membershipRequests = new ArrayList<>();
-                for (MembershipRequest m : MembershipRequestClient.getMembershipRequests(proposal.getProposalId())) {
+                for (MembershipRequest m : MembershipRequestClientUtil.getMembershipRequests(proposal.getProposalId())) {
                     if (m.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED) {
                         membershipRequests.add(new MembershipRequestWrapper(m));
                     }
@@ -266,7 +266,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     }
 
     public void setModelRegion(String region, Long userId) {
-        ProposalAttributeClient.setProposalAttribute(createProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.REGION, region),userId);
+        ProposalAttributeClientUtil.setProposalAttribute(createProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.REGION, region),userId);
     }
     private static ProposalAttribute createProposalAttribute(Long proposalId, String name, String stringValue){
         ProposalAttribute proposalAttribute = new ProposalAttribute();
@@ -286,7 +286,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         proposalAttribute.setName(ProposalAttributeKeys.SCENARIO_ID);
         proposalAttribute.setNumericValue(isConsolidatedScenario);
         proposalAttribute.setAdditionalId(scenarioId);
-        ProposalAttributeClient.setProposalAttribute(proposalAttribute,userId);
+        ProposalAttributeClientUtil.setProposalAttribute(proposalAttribute,userId);
     }
 
     public Long getScenarioId() {
@@ -304,7 +304,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public Map<Long, List<ProposalWrapper>> getSubProposalPerModel() {
         Map<Long, List<ProposalWrapper>> subProposalPerModel = new HashMap<>();
-        List<Proposal> subProposals = ProposalsClient.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+        List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
 
         for (Proposal subProposal : subProposals) {
             ProposalWrapper subProposalWrapper = new ProposalWrapper(subProposal);
@@ -342,7 +342,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public List<Scenario> getSubProposalScenarios() throws SystemException, PortalException, IOException {
         List<Scenario> subProposalScenarios = new ArrayList<>();
-        List<Proposal> subProposals = ProposalsClient.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+        List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
         for (Proposal subProposal : subProposals) {
             Scenario scenarioForSubProposal = getScenarioByProposalId(subProposal.getProposalId());
             subProposalScenarios.add(scenarioForSubProposal);
@@ -430,7 +430,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
             if (!getSelectedJudges().isEmpty()) {
                 for (long userId : getSelectedJudges()) {
-                    List<ProposalRating> proposalRatings = ProposalRatingClient
+                    List<ProposalRating> proposalRatings = ProposalRatingClientUtil
                     .getProposalRatingsByProposalUserContestPhase(
                                     userId, proposal.getProposalId(),
                                     contestPhase.getContestPhasePK());
@@ -447,7 +447,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public boolean getJudgeReviewFinishedStatusUserId(long userId) {
 
-            List<ProposalRating> proposalRatings = ProposalRatingClient
+            List<ProposalRating> proposalRatings = ProposalRatingClientUtil
                     .getProposalRatingsByProposalUserContestPhase(
                             userId, proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
@@ -461,7 +461,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
                 long baseProposalId = proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_ID, 0);
                 long baseProposalContestId = proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0);
                 if (baseProposalId > 0 && baseProposalContestId > 0) {
-                    Proposal p = ProposalsClient.getProposal(baseProposalId);
+                    Proposal p = ProposalClientUtil.getProposal(baseProposalId);
                     baseProposal = new ProposalWrapper(p);
                 }
             }

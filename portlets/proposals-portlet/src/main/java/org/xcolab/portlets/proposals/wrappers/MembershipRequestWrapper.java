@@ -4,7 +4,7 @@ package org.xcolab.portlets.proposals.wrappers;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.pojo.MembershipRequest;
+import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 public class MembershipRequestWrapper {

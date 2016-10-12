@@ -16,12 +16,12 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
-import org.xcolab.client.proposals.ProposalRatingClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalRatingClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.ProposalRating;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
@@ -106,7 +106,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         final long discussionThreadId = createDiscussionThread(request, " results discussion", true);
         proposal.setResultsDiscussionId(discussionThreadId);
 
-        ProposalsClient.updateProposal(proposal);
+        ProposalClientUtil.updateProposal(proposal);
         return discussionThreadId;
     }
 
@@ -162,7 +162,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                     contestPhase.getFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
             if (isPhasePastScreeningPhase) {
 
-                List<ProposalRating> judgeRatingsForProposal = ProposalRatingClient
+                List<ProposalRating> judgeRatingsForProposal = ProposalRatingClientUtil
                         .getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
 
                 if (!judgeRatingsForProposal.isEmpty()) {
@@ -194,7 +194,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
     private Boolean wasProposalPromotedInContestPhase(Proposal proposal, ContestPhase contestPhase) throws SystemException, NoSuchProposalContestPhaseAttributeException {
-        ProposalContestPhaseAttribute judgingDecisionAttr = ProposalContestPhaseAttributeClient.getProposalContestPhaseAttribute(
+        ProposalContestPhaseAttribute judgingDecisionAttr = ProposalContestPhaseAttributeClientUtil.getProposalContestPhaseAttribute(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
                 ProposalContestPhaseAttributeKeys.JUDGE_DECISION

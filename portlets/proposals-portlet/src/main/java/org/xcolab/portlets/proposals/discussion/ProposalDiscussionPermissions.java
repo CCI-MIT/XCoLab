@@ -10,7 +10,7 @@ import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -70,7 +70,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 phaseId = Long.parseLong(contestPhaseIdParameter);
             } else if (proposalId != null && proposalId > 0) {
-                phaseId = ProposalsClient.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
+                phaseId = ProposalClientUtil.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
             }
         } catch (NumberFormatException  ignored) {
         }
@@ -99,7 +99,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     public boolean getCanAdminMessage(Comment comment) {
         if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
             try {
-                Proposal proposal = ProposalsClient.getProposal(proposalId);
+                Proposal proposal = ProposalClientUtil.getProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
                 return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
@@ -114,7 +114,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
         boolean isUserAllowed = false;
         try {
-            Proposal proposal = ProposalsClient.getProposal(proposalId);
+            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId)
                     || isUserProposalAuthorOrTeamMember(user, proposal)
                     || getCanAdminAll();

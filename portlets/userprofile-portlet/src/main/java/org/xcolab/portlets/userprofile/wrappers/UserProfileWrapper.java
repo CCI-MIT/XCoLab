@@ -28,10 +28,10 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.proposals.ProposalSupporterClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalSupporterClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.enums.Plurality;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
@@ -136,7 +136,7 @@ public class UserProfileWrapper implements Serializable {
             userSubscriptions = new UserSubscriptionsWrapper(user);
             supportedProposals.clear();
             userActivities.clear();
-            for (ProposalSupporter ps : ProposalSupporterClient.getProposalSupportersByUserId(user.getId_())) {
+            for (ProposalSupporter ps : ProposalSupporterClientUtil.getProposalSupportersByUserId(user.getId_())) {
                 supportedProposals.add(new SupportedProposalWrapper(ps));
             }
 
@@ -149,7 +149,7 @@ public class UserProfileWrapper implements Serializable {
                 }
             }
 
-            List<Proposal> proposals = ProposalsClient.getMemberProposals(user.getId_());
+            List<Proposal> proposals = ProposalClientUtil.getMemberProposals(user.getId_());
             Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil
                     .groupByContestType(proposals);
             for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
@@ -391,7 +391,7 @@ public class UserProfileWrapper implements Serializable {
     public List<BaseProposalWrapper> getLinkingProposals() {
         if (linkingProposals == null) {
                 linkingProposals = new ArrayList<>();
-                List<Proposal> proposals = ProposalsClient.getLinkingProposalsForUser(getUserId());
+                List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
                 for (Proposal p : proposals) {
                     linkingProposals.add(new BaseProposalWrapper(p));
                 }

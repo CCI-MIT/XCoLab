@@ -6,7 +6,7 @@ import com.ext.portlet.NoSuchContestException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 
@@ -45,7 +45,7 @@ public class RandomProposalsController {
             for (int i = 0; i < proposals.size() && i < preferences.getFeedSize(); ++i) {
                 try {
                     ret.add(new ProposalWrapper(
-                            ProposalsClient.getProposal(proposals.get(i).getProposalId())));
+                            ProposalClientUtil.getProposal(proposals.get(i).getProposalId())));
                 } catch (ProposalNotFoundException | NoSuchContestException e) {
                     //ignored for now, will be removed after LR
                 }
@@ -66,12 +66,13 @@ public class RandomProposalsController {
         for (Long contestPhaseId : selectedPhases) {
             if (flagFilters == null || flagFilters.length == 0) {
                 availableProposals
-                        .addAll(ProposalsClient.listProposals(0, Integer.MAX_VALUE, null, true,
+                        .addAll(ProposalClientUtil.listProposals(0, Integer.MAX_VALUE, null, true,
                         contestPhaseId, null));
             } else {
                 for (Long flagFilter : flagFilters) {
                     availableProposals
-                            .addAll(ProposalsClient.listProposals(0, Integer.MAX_VALUE, null, true,
+                            .addAll(ProposalClientUtil
+                                    .listProposals(0, Integer.MAX_VALUE, null, true,
                             contestPhaseId, flagFilter.intValue()));
                 }
             }

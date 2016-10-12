@@ -19,7 +19,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.Date;
@@ -149,7 +149,7 @@ public class ProposalsPermissions {
 
     public boolean getIsTeamMember() throws SystemException, PortalException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalsClient.isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
+                && ProposalClientUtil.isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
                 && !user.isDefaultUser();
     }
 
@@ -223,7 +223,7 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
+            Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
             ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
@@ -258,7 +258,7 @@ public class ProposalsPermissions {
     private boolean wasProposalMovedElsewhere() {
 
         try {
-            final long currentContestId = ProposalsClient
+            final long currentContestId = ProposalClientUtil
                     .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
             return currentContestId != contestPhase.getContestPK();
         }catch(ContestNotFoundException ignored){

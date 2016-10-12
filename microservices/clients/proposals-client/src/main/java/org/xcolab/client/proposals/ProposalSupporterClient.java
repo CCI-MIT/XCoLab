@@ -2,71 +2,78 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.client.proposals.pojo.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporterDto;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.dto.DtoUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class ProposalSupporterClient {
 
-    private static final RestService proposalService = new RestService("proposals-service");
-    private static final RestResource1<ProposalSupporter, Long> proposalSupporterResource = new RestResource1<>(proposalService,
-            "proposalSupporters", ProposalSupporter.TYPES);
+    private static final Map<RestService, ProposalSupporterClient> instances = new HashMap<>();
 
-    public static List<ProposalSupporter> getProposalSupporters(Long proposalId) {
-        return proposalSupporterResource.list()
-                .withCache(CacheKeys.withClass(ProposalSupporter.class)
+    private final RestService proposalService;
+    private final RestResource1<ProposalSupporterDto, Long> proposalSupporterResource;
+
+    private ProposalSupporterClient(RestService proposalService) {
+        proposalSupporterResource = new RestResource1<>(proposalService,
+                "proposalSupporters", ProposalSupporterDto.TYPES);
+        this.proposalService = proposalService;
+    }
+
+    public static ProposalSupporterClient fromService(RestService proposalService) {
+        ProposalSupporterClient instance = instances.get(proposalService);
+        if (instance == null) {
+            instance = new ProposalSupporterClient(proposalService);
+            instances.put(proposalService, instance);
+        }
+        return instance;
+    }
+
+    public List<ProposalSupporter> getProposalSupporters(Long proposalId) {
+        return DtoUtil.toPojos(proposalSupporterResource.list()
+                .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
                                 .withParameter("proposalId", proposalId)
                                 .asList(),
                         CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
-                .execute();
+                .execute(), proposalService);
     }
 
-    public static List<ProposalSupporter> getProposalSupportersByUserId(Long userId) {
-        return proposalSupporterResource.list()
+    public List<ProposalSupporter> getProposalSupportersByUserId(Long userId) {
+        return DtoUtil.toPojos(proposalSupporterResource.list()
                 .optionalQueryParam("userId", userId)
-                .execute();
+                .execute(), proposalService);
     }
 
-    public static Integer getProposalSupportersCount(Long proposalId) {
+    public Integer getProposalSupportersCount(Long proposalId) {
 
         return proposalSupporterResource.service("count", Integer.class)
                 .optionalQueryParam("proposalId", proposalId)
                 .get();
-
     }
 
-    public static Boolean isMemberProposalSupporter(Long proposalId, Long memberId) {
+    public Boolean isMemberProposalSupporter(Long proposalId, Long memberId) {
 
         return proposalSupporterResource.service("isMemberProposalSupporter", Boolean.class)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("memberId", memberId)
                 .get();
-
     }
 
-    public static ProposalSupporter createProposalSupporter(ProposalSupporter proposalSupporter) {
-        return proposalSupporterResource.create(proposalSupporter).execute();
-    }
-
-    public static Boolean deleteProposalSupporter(Long proposalId, Long memberId) {
-        return proposalSupporterResource.service("deleteProposalSupporter", Boolean.class)
-                .queryParam("proposalId", proposalId)
-                .queryParam("memberId", memberId)
-                .delete();
-    }
-
-    public static void addProposalSupporter(long proposalId, long userId) {
+    public void addProposalSupporter(long proposalId, long userId) {
         addProposalSupporter(proposalId, userId, true);
     }
 
-    public static void addProposalSupporter(long proposalId, long userId, boolean publishActivity) {
+    public void addProposalSupporter(long proposalId, long userId, boolean publishActivity) {
         ProposalSupporter supporter = new ProposalSupporter();
         supporter.setProposalId(proposalId);
         supporter.setUserId(userId);
@@ -79,9 +86,22 @@ public final class ProposalSupporterClient {
         }
     }
 
-    public static void removeProposalSupporter(long proposalId, long userId) {
+    public ProposalSupporter createProposalSupporter(ProposalSupporter proposalSupporter) {
+        return proposalSupporterResource
+                .create(new ProposalSupporterDto(proposalSupporter))
+                .execute().toPojo(proposalService);
+    }
+
+    public void removeProposalSupporter(long proposalId, long userId) {
         deleteProposalSupporter(proposalId, userId);
         ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
                 ActivityProvidersType.ProposalSupporterRemovedActivityEntry.getType());
+    }
+
+    public Boolean deleteProposalSupporter(Long proposalId, Long memberId) {
+        return proposalSupporterResource.service("deleteProposalSupporter", Boolean.class)
+                .queryParam("proposalId", proposalId)
+                .queryParam("memberId", memberId)
+                .delete();
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -43,7 +43,7 @@ public class DeleteProposalActionController {
 
 
             proposal.setVisible(!delete);
-            ProposalsClient.updateProposal(proposal);
+            ProposalClientUtil.updateProposal(proposal);
 
             response.sendRedirect(
                     proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/ADMIN");

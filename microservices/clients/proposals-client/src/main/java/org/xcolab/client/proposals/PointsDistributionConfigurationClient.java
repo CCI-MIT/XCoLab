@@ -1,74 +1,108 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.proposals.pojo.PointType;
-import org.xcolab.client.proposals.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.points.PointType;
+import org.xcolab.client.proposals.pojo.points.PointTypeDto;
+import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.points.PointsDistributionConfigurationDto;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.dto.DtoUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class PointsDistributionConfigurationClient {
-    private static final RestService proposalService = new RestService("proposals-service");
 
-    private static final RestResource1<PointsDistributionConfiguration, Long> pointsDistributionConfigurationResource = new RestResource1<>(proposalService,
-            "pointsDistributionConfigurations", PointsDistributionConfiguration.TYPES);
+    private static final Map<RestService, PointsDistributionConfigurationClient> instances = new HashMap<>();
 
-    private static final RestResource1<PointType, Long> pointTypeResource = new RestResource1<>(proposalService,
-            "pointTypes", PointType.TYPES);
+    private final RestService proposalService;
 
-    public static PointsDistributionConfiguration createPointsDistributionConfiguration(PointsDistributionConfiguration pointsDistributionConfiguration) {
-        return pointsDistributionConfigurationResource.create(pointsDistributionConfiguration).execute();
+    private final RestResource1<PointsDistributionConfigurationDto, Long>
+            pointsDistributionConfigurationResource;
+    private final RestResource1<PointTypeDto, Long> pointTypeResource;
+
+    private PointsDistributionConfigurationClient(RestService proposalService) {
+        pointsDistributionConfigurationResource = new RestResource1<>(proposalService,
+        "pointsDistributionConfigurations", PointsDistributionConfigurationDto.TYPES);
+        pointTypeResource = new RestResource1<>(proposalService,
+                "pointTypes", PointTypeDto.TYPES);
+        this.proposalService = proposalService;
     }
 
-    public static PointsDistributionConfiguration getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(long targetPlanSectionDefinitionId) {
-        return pointsDistributionConfigurationResource.service("getByTargetPlanSectionDefinitionId", PointsDistributionConfiguration.class)
+    public static PointsDistributionConfigurationClient fromService(RestService proposalService) {
+        PointsDistributionConfigurationClient instance = instances.get(proposalService);
+        if (instance == null) {
+            instance = new PointsDistributionConfigurationClient(proposalService);
+            instances.put(proposalService, instance);
+        }
+        return instance;
+    }
+
+    public PointsDistributionConfiguration createPointsDistributionConfiguration(
+            PointsDistributionConfiguration pointsDistributionConfiguration) {
+        return pointsDistributionConfigurationResource
+                .create(new PointsDistributionConfigurationDto(pointsDistributionConfiguration))
+                .execute().toPojo(proposalService);
+    }
+
+    public PointsDistributionConfiguration
+    getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(
+            long targetPlanSectionDefinitionId) {
+        return pointsDistributionConfigurationResource.service("getByTargetPlanSectionDefinitionId",
+                PointsDistributionConfiguration.class)
                 .queryParam("targetPlanSectionDefinitionId", targetPlanSectionDefinitionId)
                 .get();
 
     }
 
-    public static boolean updatePointsDistributionConfiguration(PointsDistributionConfiguration pointsDistributionConfiguration) {
-        return pointsDistributionConfigurationResource.update(pointsDistributionConfiguration, pointsDistributionConfiguration.getId_())
+    public boolean updatePointsDistributionConfiguration(
+            PointsDistributionConfiguration pointsDistributionConfiguration) {
+        return pointsDistributionConfigurationResource
+                .update(new PointsDistributionConfigurationDto(pointsDistributionConfiguration),
+                        pointsDistributionConfiguration.getId_())
                 .execute();
     }
 
-    public static List<PointsDistributionConfiguration> getPointsDistributionByProposalIdPointTypeId(Long proposalId, Long pointTypeId) {
-        return pointsDistributionConfigurationResource.list()
+    public List<PointsDistributionConfiguration> getPointsDistributionByProposalIdPointTypeId(
+            Long proposalId, Long pointTypeId) {
+        return DtoUtil.toPojos(pointsDistributionConfigurationResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("pointTypeId", pointTypeId)
+                .execute(), proposalService);
+    }
+
+    public Boolean deletePointsDistributionConfiguration(Long pointsDistributionConfigurationId) {
+        return pointsDistributionConfigurationResource.delete(pointsDistributionConfigurationId)
                 .execute();
     }
 
-    public static Boolean deletePointsDistributionConfiguration(Long pointsDistributionConfigurationId) {
-        return pointsDistributionConfigurationResource.delete(pointsDistributionConfigurationId).execute();
-    }
-
-    public static Boolean deletePointsDistributionConfigurationByProposalId(Long proposalId) {
+    public Boolean deletePointsDistributionConfigurationByProposalId(Long proposalId) {
         return pointsDistributionConfigurationResource.service("removeByProposalId", Boolean.class)
                 .queryParam("proposalId", proposalId).execute();
     }
 
-    public static PointType getPointType(long Id_) {
+    public PointType getPointType(long Id_) {
         return pointTypeResource.get(Id_)
-                .withCache(CacheKeys.of(PointType.class, Id_), CacheRetention.REQUEST)
-                .execute();
+                .withCache(CacheKeys.of(PointTypeDto.class, Id_), CacheRetention.REQUEST)
+                .execute().toPojo(proposalService);
 
     }
 
-    public static List<PointType> getAllPointTypes() {
-        return pointTypeResource.list()
-                .execute();
+    public List<PointType> getAllPointTypes() {
+        return DtoUtil.toPojos(pointTypeResource.list()
+                .execute(), proposalService);
     }
 
-    public static List<PointType> getChildrenOfPointType(Long parentPointTypeId) {
-        return pointTypeResource.list()
-                .withCache(CacheKeys.withClass(PointType.class)
+    public List<PointType> getChildrenOfPointType(Long parentPointTypeId) {
+        return DtoUtil.toPojos(pointTypeResource.list()
+                .withCache(CacheKeys.withClass(PointTypeDto.class)
                                 .withParameter("parentPointTypeId", parentPointTypeId)
                                 .asList(),
                         CacheRetention.MEDIUM)
                 .optionalQueryParam("parentPointTypeId", parentPointTypeId)
-                .execute();
+                .execute(), proposalService);
     }
 }

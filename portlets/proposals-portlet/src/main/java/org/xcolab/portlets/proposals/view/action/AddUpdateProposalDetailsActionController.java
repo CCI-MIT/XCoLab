@@ -20,9 +20,9 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
@@ -130,7 +130,7 @@ public class AddUpdateProposalDetailsActionController {
 
         Proposal proposal = new Proposal();
         proposal.setAuthorId(proposalsContext.getUser(request).getUserId());
-        proposal = ProposalsClient.createProposal(proposal);
+        proposal = ProposalClientUtil.createProposal(proposal);
 
         if (proposalWrapped == null) {
             proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request),

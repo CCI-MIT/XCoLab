@@ -4,7 +4,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.utils.SectorTypes;
@@ -71,11 +71,11 @@ public class IntegratedProposalImpactSeries {
             for (Proposal proposal : proposals) {
                 try {
                     Contest contestOfProposal =
-                            ProposalsClient.getLatestContestInProposal(proposal.getProposalId());
+                            ProposalClientUtil.getLatestContestInProposal(proposal.getProposalId());
                     if (Objects.equals(contestTierId, contestOfProposal.getContestTier())) {
                         subProposalsOnContestTier.addAll(proposals);
                     } else {
-                        List<Proposal> subProposals = ProposalsClient
+                        List<Proposal> subProposals = ProposalClientUtil
                                 .getContestIntegrationRelevantSubproposals(
                                         proposal.getProposalId());
                         getSubProposalsOnContestTier(subProposals, subProposalsOnContestTier,

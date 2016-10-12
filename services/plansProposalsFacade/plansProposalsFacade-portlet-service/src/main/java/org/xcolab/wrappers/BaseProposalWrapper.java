@@ -19,15 +19,15 @@ import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
-import org.xcolab.client.proposals.Proposal2PhaseClient;
-import org.xcolab.client.proposals.ProposalSupporterClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalSupporterClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.Proposal2Phase;
-import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
@@ -89,7 +89,7 @@ public class BaseProposalWrapper {
             if (contestPhase != null) {
                 return ContestClientUtil.getContest(contestPhase.getContestPK());
             }
-            return ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
+            return ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
         } catch (ContestNotFoundException e) {
             throw new IllegalStateException("Could not find a contest for proposal "
                     + proposal.getProposalId(), e);
@@ -112,7 +112,7 @@ public class BaseProposalWrapper {
             return null;
         }
         try {
-            return Proposal2PhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+            return Proposal2PhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
         } catch (Proposal2PhaseNotFoundException e) {
             _log.warn(String.format("Could not fetch p2p for proposal %d, contest phase %d",
                     proposal.getProposalId(), contestPhase.getContestPhasePK()));
@@ -191,7 +191,7 @@ public class BaseProposalWrapper {
             commentThread = ThreadClientUtil.createThread(commentThread);
             fellowDiscussionId =  commentThread.getThreadId();
             proposal.setFellowDiscussionId(fellowDiscussionId);
-            ProposalsClient.updateProposal(proposal);
+            ProposalClientUtil.updateProposal(proposal);
 
         }
         return fellowDiscussionId;
@@ -254,7 +254,7 @@ public class BaseProposalWrapper {
     }
 
     public long getSupportersCount() {
-        return ProposalSupporterClient.getProposalSupportersCount(proposal.getProposalId());
+        return ProposalSupporterClientUtil.getProposalSupportersCount(proposal.getProposalId());
     }
 
     public long getCommentsCount() {
@@ -283,7 +283,8 @@ public class BaseProposalWrapper {
         if (proposal2Phase.getVersionTo() == -1) {
             return getLastModifiedDate();
         }
-        return ProposalsClient.getProposalVersionByProposalIdVersion(proposal.getProposalId(), version).getCreateDate();
+        return ProposalClientUtil
+                .getProposalVersionByProposalIdVersion(proposal.getProposalId(), version).getCreateDate();
 
     }
 
@@ -305,7 +306,7 @@ public class BaseProposalWrapper {
 
     public List<Member> getSupporters() {
         List<Member> supporters = new ArrayList<>();
-        for (ProposalSupporter ps : ProposalSupporterClient.getProposalSupporters(proposal.getProposalId())) {
+        for (ProposalSupporter ps : ProposalSupporterClientUtil.getProposalSupporters(proposal.getProposalId())) {
             try {
                 supporters.add(MembersClient.getMember(ps.getUserId()));
             } catch (MemberNotFoundException ignored) {
@@ -334,7 +335,7 @@ public class BaseProposalWrapper {
 
     public BaseContestWrapper getWasMovedToContest() {
         try {
-            Contest c = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
+            Contest c = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
             if (c.getContestPK() != contest.getContestPK().longValue()) {
                 try {
                     return new BaseContestWrapper(ContestClientUtil.getContest(c.getContestPK()));
@@ -349,7 +350,7 @@ public class BaseProposalWrapper {
     }
 
     public ProposalVersion getSelectedVersion() {
-        for (ProposalVersion pv : ProposalsClient.getAllProposalVersions(proposal.getProposalId())) {
+        for (ProposalVersion pv : ProposalClientUtil.getAllProposalVersions(proposal.getProposalId())) {
             if (pv.getVersion() == version) {
                 return pv;
             }

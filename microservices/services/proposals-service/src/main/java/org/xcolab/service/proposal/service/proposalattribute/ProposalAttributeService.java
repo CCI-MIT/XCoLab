@@ -10,7 +10,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
@@ -84,7 +84,7 @@ public class ProposalAttributeService {
             if (proposalAttribute.getName().equals(ProposalAttributeKeys.NAME)) {
                 try {
                     CommentThread thread = ThreadClientUtil.getThread(proposal.getDiscussionId());
-                    Contest contest = ProposalsClient.getCurrentContestForProposal(proposalAttribute.getProposalId());
+                    Contest contest = ProposalClientUtil.getCurrentContestForProposal(proposalAttribute.getProposalId());
                     ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
                     thread.setTitle(String.format("%s %s", contestType.getProposalName(), proposalAttribute.getStringValue()));
                     ThreadClientUtil.updateThread(thread);

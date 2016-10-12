@@ -17,8 +17,8 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -69,11 +69,11 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
 
                 if (proposalId != null) {
 
-                    proposal = ProposalsClient.getProposal(proposalId);
-                    contest = ProposalsClient.getCurrentContestForProposal(proposal.getProposalId());
+                    proposal = ProposalClientUtil.getProposal(proposalId);
+                    contest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
 
 
-                    proposalName = ProposalAttributeClient
+                    proposalName = ProposalAttributeClientUtil
                             .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
                 }
             } catch (ProposalNotFoundException | ContestNotFoundException | ThreadNotFoundException ignored) {

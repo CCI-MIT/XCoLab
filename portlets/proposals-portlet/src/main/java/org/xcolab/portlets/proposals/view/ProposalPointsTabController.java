@@ -14,9 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClient;
-import org.xcolab.client.proposals.ProposalsClient;
-import org.xcolab.client.proposals.pojo.PointType;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.PointsTarget;
@@ -49,7 +49,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         Contest contest = proposalsContext.getContest(request);
 
-        PointType contestParentPointType = PointsDistributionConfigurationClient.getPointType(contest.getDefaultParentPointType());
+        PointType contestParentPointType = PointsDistributionConfigurationClientUtil.getPointType(contest.getDefaultParentPointType());
 
         if (contestParentPointType == null) {
             //there is no point scheme set for this contest, forward to description tab
@@ -58,13 +58,14 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
         PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
 
-        List<Proposal> subProposals = ProposalsClient.getSubproposals(proposal.getProposalId(), false);
+        List<Proposal> subProposals = ProposalClientUtil
+                .getSubproposals(proposal.getProposalId(), false);
         List<ProposalWrapper> subProposalsWrapped = new ArrayList<>();
         for (Proposal p: subProposals) {
             subProposalsWrapped.add(new ProposalWrapper(p));
         }
         //TODO: make this flexible
-        PointType pointType = PointsDistributionConfigurationClient.getPointType(9L);
+        PointType pointType = PointsDistributionConfigurationClientUtil.getPointType(9L);
         DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 
@@ -74,7 +75,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             regionalPercentages.add(new PointsTargetProposalWrapper(target, 93));
         }
 
-        pointType = PointsDistributionConfigurationClient.getPointType(4L);
+        pointType = PointsDistributionConfigurationClientUtil.getPointType(4L);
         distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 
@@ -85,12 +86,12 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         }
 
         List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
-        final List<Proposal> linkingProposals = ProposalsClient.getLinkingProposals(proposal.getProposalId());
+        final List<Proposal> linkingProposals = ProposalClientUtil.getLinkingProposals(proposal.getProposalId());
         for (Proposal p : linkingProposals) {
             linkingProposalsWrapped.add(new ProposalWrapper(p));
         }
 
-        List<Member> members = ProposalsClient.getProposalMembers(proposal.getProposalId());
+        List<Member> members = ProposalClientUtil.getProposalMembers(proposal.getProposalId());
 
         //this bean will be filled with the user input
         AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getProposalId());
@@ -105,7 +106,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("regionalPercentages", regionalPercentages);
         model.addAttribute("basicPercentages", basicPercentages);
         model.addAttribute("members", members);
-        model.addAttribute("totalPoints", ProposalsClient.getProposalMaterializedPoints(proposal.getProposalId()));
+        model.addAttribute("totalPoints", ProposalClientUtil.getProposalMaterializedPoints(proposal.getProposalId()));
         model.addAttribute("proposal", proposal);
         model.addAttribute("contest", contest);
         model.addAttribute("linkingProposals", linkingProposalsWrapped);

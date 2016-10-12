@@ -26,12 +26,12 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.Proposal2PhaseClient;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
@@ -246,7 +246,7 @@ public class ProposalsContextImpl implements ProposalsContext {
 
                 if (proposalId > 0) {
                     try {
-                        proposal2Phase = Proposal2PhaseClient
+                        proposal2Phase = Proposal2PhaseClientUtil
                                 .getProposal2PhaseByProposalIdContestPhaseId(proposalId,
                                         contestPhase.getContestPhasePK());
                     } catch (Proposal2PhaseNotFoundException e) {
@@ -301,7 +301,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                     contestPhase = mostRecentPhaseInRequestedContest;
                                 }
                                 try {
-                                    proposal2Phase = Proposal2PhaseClient.
+                                    proposal2Phase = Proposal2PhaseClientUtil.
                                             getProposal2PhaseByProposalIdContestPhaseId(proposalId,
                                                     contestPhase.getContestPhasePK());
                                 }catch (Proposal2PhaseNotFoundException ignored){
@@ -316,7 +316,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                         }
                     }
                     try {
-                        proposal = ProposalsClient.getProposal(proposalId);
+                        proposal = ProposalClientUtil.getProposal(proposalId);
                     } catch (ProposalNotFoundException e) {
                         handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, userAgent, referralUrl);
                     }

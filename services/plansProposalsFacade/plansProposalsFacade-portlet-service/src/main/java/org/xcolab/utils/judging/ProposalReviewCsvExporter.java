@@ -9,9 +9,9 @@ import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalRatingType;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
@@ -49,7 +49,7 @@ public class ProposalReviewCsvExporter {
         for (Map.Entry<Proposal, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
             final Proposal proposal = entry.getKey();
             final List<ProposalReview> proposalReviews = entry.getValue();
-            String proposalName = ProposalAttributeClient.getProposalAttribute(proposal.getProposalId(),
+            String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposal.getProposalId(),
                     ProposalAttributeKeys.NAME, 0l).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {
