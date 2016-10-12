@@ -70,5 +70,21 @@ public class ProposalContestPhaseAttributeController {
         }
     }
 
+    @RequestMapping(value = "/proposalContestPhaseAttributes/{id_}", method = RequestMethod.DELETE)
+    public String deleteProposalContestPhaseAttribute(@PathVariable("id_") Long id_)
+            throws NotFoundException {
+
+        if (id_ == null || id_ == 0) {
+            throw new NotFoundException("No ProposalContestPhaseAttribute with id given");
+        } else {
+            ProposalContestPhaseAttribute proposalContestPhaseAttribute = this.proposalContestPhaseAttributeDao.get(id_);
+            if (proposalContestPhaseAttribute != null) {
+                this.proposalContestPhaseAttributeDao.delete(proposalContestPhaseAttribute.getId_());
+                return "ProposalContestPhaseAttribute deleted successfully";
+            } else {
+                throw new NotFoundException("No ProposalContestPhaseAttribute with id given");
+            }
+        }
+    }
 
 }

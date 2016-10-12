@@ -11,6 +11,8 @@ import org.xcolab.model.tables.pojos.MembershipRequest;
 import org.xcolab.service.proposal.domain.membershiprequest.MembershipRequestDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,7 @@ public class MembershipRequestController {
 
     @RequestMapping(value = "/membershipRequests", method = RequestMethod.POST)
     public MembershipRequest createMembershipRequest(@RequestBody MembershipRequest membershipRequest) {
+            membershipRequest.setCreateDate(new Timestamp(new Date().getTime()));
         return this.membershipRequestDao.create(membershipRequest);
     }
 

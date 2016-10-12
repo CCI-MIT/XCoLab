@@ -1,12 +1,20 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.ext.portlet.NoSuchContestPhaseRibbonTypeException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -15,25 +23,11 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
-import org.xcolab.mail.ContestPhasePromotionEmail;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-
-import com.ext.portlet.service.ContestPhaseRibbonTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.enums.ContestPhaseTypeValue;
+import org.xcolab.mail.ContestPhasePromotionEmail;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.utils.IdListUtil;
 
 import java.io.IOException;
@@ -102,7 +96,7 @@ public class ProposalsPreferencesController {
             }
         }
 
-        model.addAttribute("availableRibbons", ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonTypes(0, Integer.MAX_VALUE));
+        model.addAttribute("availableRibbons", ContestClientUtil.getAllContestPhaseRibbonType());
         model.addAttribute("contests", contests);
         model.addAttribute("contestPhaseType", contestPhaseTypeMap);
         model.addAttribute("contestPhases", contestPhasesMap);
@@ -160,9 +154,9 @@ public class ProposalsPreferencesController {
                 //author id check
                 Long authorId = p.getAuthorId();
 
-                List<User> members = ProposalLocalServiceUtil.getMembers(p.getProposalId());
+                List<Member> members = ProposalsClient.getProposalMembers(p.getProposalId());
                 boolean foundAuthor = false;
-                for (User u: members) {
+                for (Member u: members) {
                     if (u.getUserId() == authorId) {
                         foundAuthor = true;
                     }
@@ -175,7 +169,7 @@ public class ProposalsPreferencesController {
                 boolean warningIssued = false;
                 for (ProposalVersion pv: ProposalsClient.getAllProposalVersions(p.getProposalId())) {
                     boolean foundVersionAuthor = false;
-                    for (User u: members) {
+                    for (Member u: members) {
                         if (u.getUserId() == pv.getAuthorId()) {
                             foundVersionAuthor = true;
                         }
@@ -296,7 +290,7 @@ public class ProposalsPreferencesController {
                         message.append("Proposal ").append(proposal.getProposalId()).append(" is already in the target phase or in a later phase.<br/>\n");
                     } else {
                         //update the last phase association - set the end version to the current version minus one
-                        Long currentProposalVersion = ProposalVersionLocalServiceUtil.countByProposalId(proposal.getProposalId());
+                        Integer currentProposalVersion = ProposalsClient.countProposalVersions(proposal.getProposalId());
                         if (currentProposalVersion < 0) {
                             throw new SystemException("Proposal not found");
                         }
@@ -342,14 +336,9 @@ public class ProposalsPreferencesController {
 
                             //do not overwrite existing ribbons
                             if (attribute == null) {
-                                try {
-                                    ContestPhaseRibbonTypeLocalServiceUtil.getContestPhaseRibbonType(ribbonId);
-                                    ProposalContestPhaseAttributeLocalServiceUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
-                                            ProposalContestPhaseAttributeKeys.RIBBON, ribbonId);
-                                } catch (NoSuchContestPhaseRibbonTypeException e) {
-                                    ProposalContestPhaseAttributeLocalServiceUtil.deleteProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
-                                            ProposalContestPhaseAttributeKeys.RIBBON);
-                                }
+                                    ContestClientUtil.getContestPhaseRibbonType(ribbonId);
+                                    ProposalContestPhaseAttributeClient.setProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                            ProposalContestPhaseAttributeKeys.RIBBON,0l, ribbonId,"");
                             }
                         }
                     }

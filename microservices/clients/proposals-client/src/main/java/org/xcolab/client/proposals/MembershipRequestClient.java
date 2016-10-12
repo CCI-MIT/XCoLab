@@ -3,6 +3,8 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.members.UsersGroupsClient;
+import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.proposals.enums.MembershipRequestStatus;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -43,6 +45,7 @@ public class MembershipRequestClient {
             membershipRequest.setUserId(userId);
             membershipRequest.setGroupId(groupId);
             membershipRequest.setCompanyId(10112l);
+            membershipRequest.setStatusId(status);
             membershipRequest = createMembershipRequest(membershipRequest);
             return membershipRequest;
         }catch (ProposalNotFoundException ignored){
@@ -89,6 +92,8 @@ public class MembershipRequestClient {
                 membershipRequest.setReplyComments(reply);
                 membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
                 updateMembershipRequest(membershipRequest);
+
+                UsersGroupsClient.createUsersGroups(userId, membershipRequest.getGroupId());
             }catch (MembershipRequestNotFoundException ignored){
 
             }

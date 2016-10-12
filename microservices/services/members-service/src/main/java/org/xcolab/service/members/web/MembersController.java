@@ -124,12 +124,22 @@ public class MembersController {
             return false;
         } else {
             List<UserGroupRole> ret = this.userGroupRoleDao.findByGiven(memberId, groupId);
-            if (ret != null || ret.size() > 0 ){
+            if (ret != null && ret.size() > 0 ){
                 return true;
             }else {
                 return false;
             }
         }
+    }
+    @GetMapping("{memberId}/addMemberToGroup")
+    public Boolean addMemberToGroup(@PathVariable Long memberId,
+                                    @RequestParam Long groupId) {
+        UserGroupRole ugr = new UserGroupRole();
+        ugr.setGroupId(groupId);
+        ugr.setUserId(memberId);
+        ugr.setRoleId(10125l);
+        this.userGroupRoleDao.create(ugr);
+        return true;
     }
 
     @GetMapping("count")

@@ -14,6 +14,13 @@ public class UsersGroupsClient {
     private static final RestResource1<UsersGroups,Long> usersGroupsResource = new RestResource1<>(usersGroupsService,
             "usersGroups", UsersGroups.TYPES);
 
+    public static UsersGroups createUsersGroups(Long userId, Long groupId) {
+        UsersGroups ug = new UsersGroups();
+        ug.setUserId(userId);
+        ug.setGroupId(groupId);
+        return usersGroupsResource.create(ug).execute();
+    }
+
     public static UsersGroups createUsersGroups(UsersGroups usersGroups) {
         return usersGroupsResource.create(usersGroups).execute();
     }

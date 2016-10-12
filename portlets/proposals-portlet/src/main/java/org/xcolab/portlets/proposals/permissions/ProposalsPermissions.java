@@ -149,7 +149,7 @@ public class ProposalsPermissions {
 
     public boolean getIsTeamMember() throws SystemException, PortalException {
         return proposal != null && proposal.getProposalId() > 0
-                && MembersClient.isUserInGroup(proposal.getProposalId(), user.getUserId())
+                && ProposalsClient.isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
                 && !user.isDefaultUser();
     }
 

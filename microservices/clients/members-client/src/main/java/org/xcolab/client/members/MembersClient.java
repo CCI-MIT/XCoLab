@@ -345,4 +345,9 @@ public final class MembersClient {
                 .queryParam("groupId", groupId)
                 .get();
     }
+    public static void createUserGroupRole(Long memberId, Long groupId){
+         memberResource.service(memberId, "addMemberToGroup",Boolean.class)
+                .queryParam("groupId", groupId)
+                .get();
+    }
 }

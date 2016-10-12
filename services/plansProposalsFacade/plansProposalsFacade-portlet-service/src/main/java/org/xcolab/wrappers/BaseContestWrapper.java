@@ -504,7 +504,7 @@ public class BaseContestWrapper {
     public List<Member> getContestAdvisors() {
         List<Member> advisors = null;
         for (BaseContestTeamRoleWrapper c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("Advisor")) {
+            if (c.getRoleName().equalsIgnoreCase("Advisor")||c.getRoleName().equalsIgnoreCase("Curator")) {
                 advisors = c.getUsers();
             }
         }

@@ -95,4 +95,8 @@ public final class ProposalContestPhaseAttributeClient {
         return proposalContestPhaseAttributeResource.update(proposalContestPhaseAttribute, proposalContestPhaseAttribute.getId_())
                 .execute();
     }
+    public static  Boolean deleteProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name) {
+        ProposalContestPhaseAttribute pcpa = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+        return  proposalContestPhaseAttributeResource.delete(pcpa.getId_()).execute();
+    }
 }
