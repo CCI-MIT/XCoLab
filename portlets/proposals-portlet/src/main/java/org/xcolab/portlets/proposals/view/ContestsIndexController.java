@@ -136,6 +136,8 @@ public class ContestsIndexController extends BaseProposalsController {
 
         model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));
 
+        //
+        model.addAttribute("rootCollectionCardId", (int) collectionCard);
 
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);

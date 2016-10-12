@@ -42,9 +42,7 @@
 			</div>
 		</c:if>
 		<div class="c-description">
-			Contests are a beautiful thing: Oct 12, 2016 7:30:12 PM org.apache.catalina.startup.HostConfig checkResources
-			INFO: Reloading context [/climatecolab-theme]
-			Oct 12, 2016 7:30:12 PM org.apache.catalina.core.StandardContext reload
+			Contests are a beautiful thing, ask Lukas! Contests are a beautiful thing, ask Lukas! Contests are a beautiful thing, ask Lukas! Contests are a beautiful thing, ask Lukas!
 		</div>
     </div>
 	<!--
@@ -86,13 +84,13 @@
 			By location
 		</a>
 		<br/>
-		<div class="c-arrow featured">
+		<div class="c-arrow ${rootCollectionCardId == 1 ? 'selected' : ''}">
 			<jsp:text />
 		</div>
-		<div class="c-arrow topic">
+		<div class="c-arrow ${rootCollectionCardId == 2 ? 'selected' : ''}">
 			<jsp:text />
 		</div>
-		<div class="c-arrow location">
+		<div class="c-arrow ${rootCollectionCardId == 3 ? 'selected' : ''}">
 			<jsp:text />
 		</div>
 

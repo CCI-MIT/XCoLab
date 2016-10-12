@@ -26,8 +26,13 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
     float:left;
     border-left: 30px solid transparent;
     border-right: 30px solid transparent;
-    border-bottom: 32px solid $t-Color__grey--lightest;
+    border-bottom: 32px solid transparent;
     margin-right: 50px;
+
+    &.selected {
+      border-bottom: 32px solid $t-Color__grey--lightest;
+      background-color:white;
+    }
   }
 
   height: 50px;
