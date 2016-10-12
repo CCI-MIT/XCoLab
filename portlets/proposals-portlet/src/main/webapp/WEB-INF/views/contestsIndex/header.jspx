@@ -14,14 +14,15 @@
 				<a href="/web/guest/cms/-/contestmanagement/manager/tab/OVERVIEW" target="_blank">Go to Contest Management Tool</a>
 			</c:if>
 		</div>
-		<h1>${contestType.contestNamePlural}</h1>
+		<div class="c-contest-title">
+			${contestType.contestNamePlural}
+		</div>
 		<portlet:renderURL var="changeToOutlineViewTypeURL">
 			<portlet:param name="viewType" value="OUTLINE" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
 			<portlet:param name="showAllContests" value="${showAllContests }" />
 		</portlet:renderURL>
-
 		<c:if test="${showContestDisplayOptions}">
 			<div class="view">
 				<!-- To switch the button over to list view just change "gridview" to "listview" -->
@@ -30,27 +31,27 @@
 					<div>
 						<c:choose>
 							<c:when test="${viewType == 'OUTLINE' }">
-								Outline view
+								Advanced view
 							</c:when>
 							<c:otherwise>
-								<a href="${changeToOutlineViewTypeURL }">Outline view</a>
+								<a href="${changeToOutlineViewTypeURL }">Advanced view</a>
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
 			</div>
 		</c:if>
-		<c:if test="${not empty suggestionContestLink}">
-			<div class="divider"><!--  --></div>
-  			<div class="show">
-  				<a href="${suggestionContestLink}">Suggest a new ${contestType.contestName}</a>
-  			</div>
-		</c:if>
+		<div class="c-description">
+			Contests are a beautiful thing: Oct 12, 2016 7:30:12 PM org.apache.catalina.startup.HostConfig checkResources
+			INFO: Reloading context [/climatecolab-theme]
+			Oct 12, 2016 7:30:12 PM org.apache.catalina.core.StandardContext reload
+		</div>
     </div>
+	<!--
 	<div class="c-Headline">
 		${preferences.callToAction}
 	</div>
-
+	-->
     <c:choose>
         <c:when test="${showActiveContests }">
             <!-- <div style="margin-bottom: 10px; font-size: 17px;">

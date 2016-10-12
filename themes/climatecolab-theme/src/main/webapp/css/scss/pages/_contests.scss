@@ -16,13 +16,13 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 
 .contests-container {
   background-color: $t-Color__grey--lightest;
+  padding-top:5px;
   padding-left:50px;
   overflow:hidden;
 }
 
 .c-ontology-selector {
-
-  .arrow {
+  .c-arrow {
     float:left;
     border-left: 30px solid transparent;
     border-right: 30px solid transparent;
@@ -34,9 +34,8 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   a {
     margin-right: 50px;
   }
-
-
 }
+
 .c-display-selector {
 
   background-color: $t-Color__grey--lightest;
@@ -47,14 +46,16 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
     text-align: right;
     position: relative;
     font: 12px "Lucida Grande", Arial, sans-serif;
-    margin-right: 40px;
+    margin-right: 65px;
+    margin-top: 25px;
     padding: 0 16px 0 0;
   }
 
   .view{
     > div {
       width:100px;
-      text-align: center;
+      text-align: right;
+      padding-right: 5px;
       margin: 15px;
       float: left;
       height: 34px;
@@ -73,62 +74,45 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 
     .grid {
       background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
-
-      &.selected {
-        background: url(../images/icon-grid_view-on.png) no-repeat 9px 8px $t-Color__primary;
-      }
     }
 
     .list {
       background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
-
-      &.selected {
-        background: url(../images/icon-list_view-on.png) no-repeat 9px 8px $t-Color__primary;
-      }
     }
   }
 }
 
-/* grid-view / list-view button */
+/* outline-view button */
 .c-Headline .view {
-  float: left;
+  float: right;
   height: 34px;
   line-height: 34px;
-  background: $t-Color__grey--lightest;
-  border: solid 1px $t-Color__grey--medium;
-  @include border-radius(6px);
-  margin-right: 16px;
+  margin-right: 45px;
   font-size: 12px;
   font-weight: $b-Typography__fontWeight--bold;
   text-transform: uppercase;
 
   > div {
-    float: left;
+    float:left;
     padding-left: 35px;
-    padding-right: 6px;
-
-    &.selected {
-      @include border-radius(5px);
-      color: white;
-
-      border: solid 1px #4746ad;
-      box-shadow: 0px 0px 4px #3e3e3e;
-      margin-top: -1px;
-      margin-left: -1px;
-    }
   }
-
 
   .outline {
     background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
-
-    &.selected {
-      background: url(../images/icon-list_outline-on.png) no-repeat 9px 8px $t-Color__primary;
-    }
   }
-
 }
 
+.c-description {
+  margin-right: 400px;
+}
+
+.c-contest-title {
+  font-family: "Bree serif", Verdana, sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  color: #404040;
+  line-height: 1em;
+}
 
 .p-Contests__ListViewTable { //table.contest-list-view
 
@@ -195,6 +179,7 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   float: right;
   width: 180px;
   height: 27px;
+  margin-right: 60px;
 }
 
 .filter input {
