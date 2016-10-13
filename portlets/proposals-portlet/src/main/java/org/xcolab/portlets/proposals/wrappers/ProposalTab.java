@@ -1,9 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
@@ -20,18 +16,12 @@ public enum ProposalTab {
 
                     // user is allowed to access actions and impacts only when there is a model defined 
                     // for current contest (model id in proposalwrapper will be > 0)
-                    try {
-                        Long contestPK = context.getContest(request).getContestPK();
-                        Long contestPKofFirst2015Contest = 1301101L;
-                        return contestPK <= contestPKofFirst2015Contest
-                                && context.getProposalWrapped(request).getModelId() > 0;
-                    } catch (PortalException | SystemException e) {
-                        _log.error("Can't access proposals model id", e);
-                    }
-                    return false;
+                    Long contestPK = context.getContest(request).getContestPK();
+                    Long contestPKofFirst2015Contest = 1301101L;
+                    return contestPK <= contestPKofFirst2015Contest
+                            && context.getProposalWrapped(request).getModelId() > 0;
                 }
-                private final Log _log = LogFactoryUtil.getLog(ProposalTabActivityCountAlgorithm.class);
-    }
+            }
             , ProposalTabCanAccessAlgorithm.canEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero), // TODO might need to change this
     IMPACT("Impact", Type.NORMAL, ProposalTabCanAccessAlgorithm.impactViewAccess, ProposalTabCanAccessAlgorithm.impactEditAccess, ProposalTabActivityCountAlgorithm.alwaysZero),
     TEAM("Contributors", Type.NORMAL, ProposalTabCanAccessAlgorithm.alwaysTrue, ProposalTabCanAccessAlgorithm.alwaysFalse, ProposalTabActivityCountAlgorithm.membersCount),

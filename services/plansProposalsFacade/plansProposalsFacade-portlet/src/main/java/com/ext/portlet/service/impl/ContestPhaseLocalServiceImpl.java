@@ -186,7 +186,8 @@ public class ContestPhaseLocalServiceImpl extends ContestPhaseLocalServiceBaseIm
 
     @Override
     public List<ContestPhase> getPhasesForContestScheduleId(long contestScheduleId) throws SystemException {
-        return contestPhasePersistence.findByContestScheduleId(contestScheduleId, org.xcolab.client.contest.pojo.ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
+        return contestPhasePersistence.findByContestScheduleId(contestScheduleId, org.xcolab
+                .client.contest.pojo.phases.ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
     }
 
     @Override

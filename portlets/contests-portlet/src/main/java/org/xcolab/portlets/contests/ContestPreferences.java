@@ -1,9 +1,9 @@
 package org.xcolab.portlets.contests;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.util.IdListUtil;
 
 import java.io.IOException;
@@ -72,7 +72,7 @@ public class ContestPreferences {
     }
 
     private void populateContestMap() {
-            final List<Contest> contests = ContestClient.getAllContests();
+            final List<Contest> contests = ContestClientUtil.getAllContests();
             contestMap = new LinkedHashMap<>();
 
             Collections.sort(contests, new Comparator<Contest>() {
@@ -92,11 +92,11 @@ public class ContestPreferences {
             });
 
             for (Contest c: contests) {
-                final ContestPhase activeOrLastPhase = ContestClient.getActivePhase(c.getContestPK());
+                final ContestPhase activeOrLastPhase = ContestClientUtil.getActivePhase(c.getContestPK());
                 final String phaseName;
                 if (activeOrLastPhase != null) {
                     final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();
-                    final ContestPhaseType contestPhaseType= ContestClient.getContestPhaseType(contestPhaseTypeId);
+                    final ContestPhaseType contestPhaseType= ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
                     phaseName = contestPhaseType.getName();
                 } else {
                     phaseName = " ";

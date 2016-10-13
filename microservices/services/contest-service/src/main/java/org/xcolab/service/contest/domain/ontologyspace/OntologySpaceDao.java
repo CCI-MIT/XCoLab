@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OntologySpaceDao {
 
-    List<OntologySpace> findByGiven(Integer order);
+    List<OntologySpace> findByGiven();
 
     int delete(Long id_);
 

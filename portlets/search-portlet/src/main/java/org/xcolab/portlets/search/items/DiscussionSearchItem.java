@@ -2,11 +2,12 @@ package org.xcolab.portlets.search.items;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.search.pojo.SearchPojo;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
@@ -19,8 +20,8 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     @Override
     public void init(SearchPojo pojo, String searchQuery) {
         try {
-            comment = CommentClient.getComment(pojo.getClassPrimaryKey());
-            thread = CommentClient.getThread(comment.getThreadId());
+            comment = CommentClientUtil.getComment(pojo.getClassPrimaryKey());
+            thread = ThreadClientUtil.getThread(comment.getThreadId());
             this.searchQuery = searchQuery;
         } catch (CommentNotFoundException | ThreadNotFoundException ignored) {
 

@@ -1,39 +1,40 @@
 package org.xcolab.portlets.proposals.view;
 
-
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ImpactIteration;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalUnversionedAttribute;
-import com.ext.portlet.models.CollaboratoriumModelingService;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
+import com.ext.portlet.service.ContestLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
+
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.impact.ImpactIteration;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.proposals.ProposalUnversionedAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
-import org.xcolab.portlets.proposals.utils.ProposalImpactUtil;
+import org.xcolab.portlets.proposals.impact.IntegratedProposalImpactSeries;
+import org.xcolab.portlets.proposals.impact.ProposalImpactScenarioCombinationWrapper;
+import org.xcolab.portlets.proposals.impact.ProposalImpactSeries;
+import org.xcolab.portlets.proposals.impact.ProposalImpactSeriesList;
+import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.IntegratedProposalImpactSeries;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactScenarioCombinationWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeries;
-import org.xcolab.portlets.proposals.wrappers.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -53,7 +54,7 @@ import javax.portlet.PortletRequest;
 @RequestMapping("view")
 public class ProposalImpactTabController extends BaseProposalTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ProposalImpactTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
 
     @Autowired
     private ProposalsContext proposalsContext;
@@ -63,7 +64,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
     public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
-            throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException {
+            throws IOException, ScenarioNotFoundException, ModelNotFoundException, SystemException, PortalException {
 
         contest = proposalsContext.getContest(request);
         proposalWrapper = proposalsContext.getProposalWrapped(request);
@@ -78,8 +79,10 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("canCommentAsAIF", userCanCommentAsAIF);
         }
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
-                getAttributes(proposalWrapper.getProposalId());
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeClientUtil
+
+                .
+                getProposalUnversionedAttributesByProposalId(proposalWrapper.getProposalId());
         if ( unversionedAttributes != null && ! unversionedAttributes.isEmpty()) {
             for (ProposalUnversionedAttribute pua : unversionedAttributes) {
                 if (pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT
@@ -114,7 +117,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (showDataTable) {
             IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest);
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
-            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
+            List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         }
 
@@ -146,28 +149,29 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "proposalImpactError";
     }
 
-    private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId() throws PortalException, SystemException {
+    private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId() {
         Long modelId = proposalWrapper.getModelId();
         boolean scenarioIdValid =
                 Validator.isNotNull(proposalWrapper.getScenarioId()) && proposalWrapper.getScenarioId() > 0;
         if(scenarioIdValid){
             try {
-                modelId = CollaboratoriumModelingService.repository()
+                modelId = RomaClientUtil.repository()
                         .getScenario(proposalWrapper.getScenarioId()).getSimulation().getId();
-            } catch (SystemException | PortalException | IOException e){
+            } catch (IOException e){
                 _log.warn("Could not fetch simulation id for proposal scenario: ", e);
             }
         }
         return modelId;
     }
 
-    private boolean canCommentAsAuthor(PortletRequest request) throws PortalException, SystemException {
+    private boolean canCommentAsAuthor(PortletRequest request) {
         return proposalsContext.getPermissions(request).getCanAdminProposal();
     }
-    private boolean canCommentAsAIF(PortletRequest request) throws PortalException, SystemException {
-        return proposalsContext.getPermissions(request).getCanIAFActions()||proposalsContext.getPermissions(request).getCanAdminAll();
+    private boolean canCommentAsAIF(PortletRequest request) {
+        return proposalsContext.getPermissions(request).getCanIAFActions()
+                || proposalsContext.getPermissions(request).getCanAdminAll();
     }
-    private boolean canEditImpactTab(PortletRequest request) throws PortalException, SystemException {
+    private boolean canEditImpactTab(PortletRequest request) {
         return ProposalTab.IMPACT.getCanEdit(proposalsContext.getPermissions(request), proposalsContext, request);
     }
 
@@ -184,10 +188,10 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private String showImpactTabEditGlobal(Model model)
-            throws PortalException, SystemException, IOException, ScenarioNotFoundException, ModelNotFoundException {
+            throws IOException, ScenarioNotFoundException, ModelNotFoundException {
 
         List<Proposal> subProposals =
-                ProposalLocalServiceUtil.getContestIntegrationRelevantSubproposals(proposalWrapper.getProposalId());
+                ProposalClientUtil.getContestIntegrationRelevantSubproposals(proposalWrapper.getProposalId());
         ProposalImpactScenarioCombinationWrapper proposalImpactScenarioCombinationWrapper =
                 new ProposalImpactScenarioCombinationWrapper(subProposals);
         boolean isConsolidationPossible =
@@ -245,43 +249,29 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return getConsolidateOptionsOnGlobalLevel();
     }
 
-    private String showImpactTabBasic(PortletRequest request, Model model)
-            throws PortalException, SystemException {
+    private String showImpactTabBasic(PortletRequest request, Model model) {
 
-        try {
-            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
-            model.addAttribute("impactIterations", impactIterations);
-        } catch (PortalException e) {
-            _log.warn("Using default impact tab view since no impact iteration are associated with the contest: " + contest.getContestPK());
-            return "proposalImpactError";
-        }
+        List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
+        model.addAttribute("impactIterations", impactIterations);
 
-        try {
-            List<ImpactIteration> impactIterations = ContestLocalServiceUtil.getContestImpactIterations(contest);
-            model.addAttribute("impactIterations", impactIterations);
+        ProposalImpactSeriesList proposalImpactSeriesList =
+                new ProposalImpactSeriesList(contest, proposalWrapper.getWrapped());
+        model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
-            ProposalImpactSeriesList proposalImpactSeriesList =
-                    new ProposalImpactSeriesList(contest, proposalWrapper.getWrapped());
-            model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
-
-            Map<OntologyTerm, List<OntologyTerm>> ontologyMap =
-                    new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
-            model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
-            model.addAttribute("proposalsPermissions", proposalsContext.getPermissions(request));
-        } catch (PortalException e) {
-            _log.error("Error retrieving impact serieses for contest with contest ID " + contest.getContestPK(), e);
-        }
+        Map<OntologyTerm, List<OntologyTerm>> ontologyMap =
+                new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
+        model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
+        model.addAttribute("proposalsPermissions", proposalsContext.getPermissions(request));
 
         return "basicProposalImpact";
     }
 
-    private List<ProposalImpactSeries> getImpactTabBasicProposal(Proposal proposalParent)
-            throws PortalException, SystemException {
+    private List<ProposalImpactSeries> getImpactTabBasicProposal(Proposal proposalParent) {
         Set<Proposal> referencedSubProposals =
                 IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalParent, ContestTier.BASIC.getTierType());
         try {
 
-            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
+            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
             ContestWrapper contestWrapper = new ContestWrapper(contestMicro);//contest
             List<OntologyTerm> ontologyTermList = contestWrapper.getWhere();
             List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
@@ -315,15 +305,15 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return list;
     }
 
-    private boolean isGlobalContest(Contest contest) throws PortalException, SystemException {
+    private boolean isGlobalContest(Contest contest) {
         return contest.getContestTier() == ContestTier.GLOBAL.getTierType();
     }
 
-    private boolean isRegionalContest(Contest contest) throws PortalException, SystemException {
+    private boolean isRegionalContest(Contest contest) {
         return contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType();
     }
 
-    private boolean isRegionalSectorContest(Contest contest) throws PortalException, SystemException {
+    private boolean isRegionalSectorContest(Contest contest) {
         return contest.getContestTier() == ContestTier.REGION_SECTOR.getTierType();
     }
 

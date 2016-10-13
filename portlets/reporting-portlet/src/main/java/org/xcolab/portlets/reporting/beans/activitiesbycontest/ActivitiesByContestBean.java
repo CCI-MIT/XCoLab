@@ -11,7 +11,7 @@ import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.pojo.Comment;
 
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class ActivitiesByContestBean {
         List<ProposalVote> proposalVotes = ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE);
         List<User> users = UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
         List<Proposal> proposals = ProposalLocalServiceUtil.getProposals(0, Integer.MAX_VALUE);
-        List<Comment> comments = CommentClient.listComments(0, Integer.MAX_VALUE);
+        List<Comment> comments = CommentClientUtil.listComments(0, Integer.MAX_VALUE);
 
         Map<Long, Contest> proposalContestMap = getProposalContestMap();
 

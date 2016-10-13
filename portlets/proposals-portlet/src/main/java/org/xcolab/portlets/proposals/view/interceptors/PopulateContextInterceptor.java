@@ -1,12 +1,13 @@
 package org.xcolab.portlets.proposals.view.interceptors;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;

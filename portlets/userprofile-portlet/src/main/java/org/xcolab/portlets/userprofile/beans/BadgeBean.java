@@ -1,7 +1,7 @@
 package org.xcolab.portlets.userprofile.beans;
 
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
 import com.ext.portlet.model.ContestPhaseRibbonType;

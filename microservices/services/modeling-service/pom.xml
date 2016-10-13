@@ -63,7 +63,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>xcolab_Impact*</includes>
+							<includes>xcolab_Model.*</includes>
 						</database>
 					</generator>
 				</configuration>

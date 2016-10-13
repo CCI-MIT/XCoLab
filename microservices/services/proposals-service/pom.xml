@@ -4,6 +4,41 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <dependencies>
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>members-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.liferay.portal</groupId>
+                    <artifactId>util-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>comment-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.liferay.portal</groupId>
+                    <artifactId>util-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>contest-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.liferay.portal</groupId>
+                    <artifactId>util-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
     </dependencies>
 
     <parent>
@@ -53,7 +88,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalRating|xcolab_ProposalVote|xcolab_ProposalSupporter|xcolab_ProposalVersion|xcolab_PointType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_OntologySpace|xcolab_ContestPhase|xcolab_ContestPhaseRibbonType</includes>
+                            <includes>Group_|xcolab_ProposalMoveHistory|xcolab_ProposalUnversionedAttribute|xcolab_Proposal|xcolab_Proposal2Phase|xcolab_ProposalAttribute|xcolab_ProposalAttributeType|xcolab_ProposalRating|xcolab_ProposalVote|xcolab_ProposalSupporter|xcolab_ProposalVersion|xcolab_PointType|xcolab_ProposalContestPhaseAttribute|xcolab_ProposalContestPhaseAttributeType|xcolab_ProposalMoveHistory|xcolab_OntologySpace|xcolab_ContestPhase|xcolab_ContestPhaseRibbonType|MembershipRequest|xcolab_ProposalReference|xcolab_ProposalRatingValue|xcolab_ProposalRatingType|xcolab_PointsDistributionConfiguration|xcolab_Points</includes>
                         </database>
                     </generator>
                 </configuration>

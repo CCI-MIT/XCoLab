@@ -1,7 +1,7 @@
 package org.xcolab.util.attributes.basic;
 
+import org.xcolab.util.attributes.AbstractAttributeGetter;
 import org.xcolab.util.attributes.Attribute;
-import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.attributes.AttributeProvider;
 
 /**
@@ -10,21 +10,14 @@ import org.xcolab.util.attributes.AttributeProvider;
  * The BooleanAttribute getter uses the {@link Attribute#getNumericValue()} method and return true
  * if the returned value is greater than zero.
  */
-public class BooleanAttribute implements AttributeGetter<Boolean> {
-
-    private final AttributeProvider<? extends Attribute> attributeProvider;
+public class BooleanAttribute extends AbstractAttributeGetter<Boolean> {
 
     public BooleanAttribute(AttributeProvider<? extends Attribute> attributeProvider) {
-        this.attributeProvider = attributeProvider;
+        super(attributeProvider, BooleanAttribute.class.getSimpleName());
     }
 
     @Override
-    public Boolean get() {
-        return attributeProvider.get().getNumericValue() > 0;
-    }
-
-    @Override
-    public Boolean get(long additionalId) {
-        return attributeProvider.get(additionalId).getNumericValue() > 0;
+    protected Boolean extractValue(Attribute attribute) {
+        return attribute.getNumericValue() > 0;
     }
 }

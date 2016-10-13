@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.FocusArea;
 import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
+import org.xcolab.model.tables.records.FocusAreaRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -33,17 +34,29 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
 
     }
 
-    @Override
-    public List<FocusAreaOntologyTerm> findByGiven(Long focusAreaId, Long ontologyTermId) {
-        final SelectQuery<Record> query = dslContext.select()
-                .from(FOCUS_AREA_ONTOLOGY_TERM).getQuery();
 
-        if (focusAreaId != null) {
-            query.addConditions(FOCUS_AREA_ONTOLOGY_TERM.FOCUS_AREA_ID.eq(focusAreaId));
+    public FocusArea create(FocusArea focusArea) {
+
+        FocusAreaRecord ret = this.dslContext.insertInto(FOCUS_AREA)
+                .set(FOCUS_AREA.NAME, focusArea.getName())
+                .set(FOCUS_AREA.ORDER_, focusArea.getOrder_())
+                .returning(FOCUS_AREA.ID_)
+                .fetchOne();
+        if (ret != null) {
+            focusArea.setId_(ret.getValue(FOCUS_AREA.ID_));
+            return focusArea;
+        } else {
+            return null;
         }
-        if (ontologyTermId != null) {
-            query.addConditions(FOCUS_AREA_ONTOLOGY_TERM.ONTOLOGY_TERM_ID.eq(ontologyTermId));
-        }
-        return query.fetchInto(FocusAreaOntologyTerm.class);
+
+    }
+
+    @Override
+    public List<FocusArea> findByGiven() {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(FOCUS_AREA).getQuery();
+
+
+        return query.fetchInto(FocusArea.class);
     }
 }

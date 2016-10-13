@@ -1,137 +1,70 @@
 package org.xcolab.client.comment.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(Include.NON_NULL)
-public class Comment implements Serializable {
-    public static final TypeProvider<Comment> TYPES =
-            new TypeProvider<>(Comment.class,
-                    new ParameterizedTypeReference<List<Comment>>() {
-                    });
+public class Comment extends AbstractComment {
+    public static final TypeProvider<CommentDto> TYPES = new TypeProvider<>(CommentDto.class,
+                    new ParameterizedTypeReference<List<CommentDto>>() {});
 
-    private static final long serialVersionUID = 113982360;
-
-    private Long commentid;
-    private Long threadid;
-    private Long authorid;
-    private Timestamp createdate;
-    private Timestamp modifieddate;
-    private Timestamp deleteddate;
-    private String content;
+    private final ThreadClient threadClient;
 
     public Comment() {
+        super();
+        threadClient = ThreadClientUtil.getThreadClient();
     }
 
-    public Comment(Long commentid, Long threadid, Long authorid, Timestamp createdate,
-            Timestamp modifieddate, Timestamp deleteddate, String title, String content) {
-        this.commentid = commentid;
-        this.threadid = threadid;
-        this.authorid = authorid;
-        this.createdate = createdate;
-        this.modifieddate = modifieddate;
-        this.deleteddate = deleteddate;
-        this.content = content;
+    public Comment(Long commentId, Long threadId, Long authorId, Timestamp createDate,
+            Timestamp modifiedDate, Timestamp deletedDate, String content) {
+        super(commentId, threadId, authorId, createDate, modifiedDate, deletedDate, content);
+        threadClient = ThreadClientUtil.getThreadClient();
     }
 
-    public Long getCommentId() {
-        return this.commentid;
+    public Comment(Comment comment) {
+        super(comment);
+        threadClient = comment.threadClient;
     }
 
-    public void setCommentId(Long commentid) {
-        this.commentid = commentid;
+    Comment(AbstractComment abstractComment, RestService commentService) {
+        super(abstractComment);
+        this.threadClient = new ThreadClient(commentService);
     }
 
-    public Long getThreadId() {
-        return this.threadid;
-    }
-
-    public void setThreadId(Long threadid) {
-        this.threadid = threadid;
-    }
-
-    public Long getAuthorId() {
-        return this.authorid;
-    }
-
-    public void setAuthorId(Long authorid) {
-        this.authorid = authorid;
-    }
-
-    public Timestamp getCreateDate() {
-        return this.createdate;
-    }
-
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
-    }
-
-    public Timestamp getModifiedDate() {
-        return this.modifieddate;
-    }
-
-    public void setModifiedDate(Timestamp modifieddate) {
-        this.modifieddate = modifieddate;
-    }
-
-    public Timestamp getDeletedDate() {
-        return this.deleteddate;
-    }
-
-    public void setDeletedDate(Timestamp deleteddate) {
-        this.deleteddate = deleteddate;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    @JsonIgnore
     public String getContentPlain() {
-        return HtmlUtil.cleanAll(content);
+        return HtmlUtil.cleanAll(getContent());
     }
 
-    @JsonIgnore
     public int getSpamReportCount() {
         //TODO: implement
         return 0;
     }
 
-    @JsonIgnore
     public Member getAuthor() {
         try {
-            return MembersClient.getMember(authorid);
+            return MembersClient.getMember(getAuthorId());
         } catch (MemberNotFoundException e) {
             throw new KeyReferenceException(e);
         }
     }
 
-    @JsonIgnore
     public CommentThread getThread() {
-        if (threadid != null && threadid > 0) {
+        final Long threadId = getThreadId();
+        if (threadId != null && threadId > 0) {
             try {
-                return CommentClient.getThread(threadid);
+                return threadClient.getThread(threadId);
             } catch (ThreadNotFoundException e) {
                 throw new KeyReferenceException(e);
             }
@@ -139,21 +72,7 @@ public class Comment implements Serializable {
         return null;
     }
 
-    @JsonIgnore
     public String getLinkUrl() {
         return getThread().getLinkUrl() + "#message_" + getCommentId();
-    }
-
-    @Override
-    public String toString() {
-
-        return "Comment (" + commentid +
-                ", " + threadid +
-                ", " + authorid +
-                ", " + createdate +
-                ", " + modifieddate +
-                ", " + deleteddate +
-                ", " + content +
-                ")";
     }
 }

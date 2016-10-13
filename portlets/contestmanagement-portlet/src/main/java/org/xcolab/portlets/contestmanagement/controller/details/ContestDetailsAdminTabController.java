@@ -16,7 +16,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
@@ -144,7 +144,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
             String subject = "<contest/> draft was submitted from the <contest/> management tool!";
 
-            ContestType contestType = ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+            ContestType contestType = ContestClientUtil.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
             body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);
 
@@ -192,7 +192,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
 
-        for (ContestType contestType : ContestClient.getAllContestTypes()) {
+        for (ContestType contestType : ContestClientUtil.getAllContestTypes()) {
             selectItems.add(new LabelValue(contestType.getId_(),
                     String.format("%d - %s with %s", contestType.getId_(),
                             contestType.getContestName(), contestType.getProposalNamePlural())));

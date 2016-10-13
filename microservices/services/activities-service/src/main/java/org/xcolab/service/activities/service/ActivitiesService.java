@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
@@ -77,7 +77,7 @@ public class ActivitiesService {
         final ActivitySubscription contestSubscription = createSubscription(memberId,
                 ActivityEntryType.CONTEST, contestId, extraInfo, 0);
 
-        final List<Proposal> proposals = ProposalsClient
+        final List<Proposal> proposals = ProposalClientUtil
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
@@ -110,7 +110,7 @@ public class ActivitiesService {
                     proposalId, extraInfo, 0);
         }
         try {
-            Proposal proposal = ProposalsClient.getProposal(proposalId);
+            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             subscribeDiscussion(memberId, proposal.getDiscussionId(), true);
         } catch (ProposalNotFoundException e) {
             log.warn("Proposal {} not found", proposalId, e);
@@ -170,7 +170,7 @@ public class ActivitiesService {
                 .getDeleteQuery(memberId,
                         ActivityEntryType.CONTEST.getPrimaryTypeId(), contestId, extraInfo));
 
-        final List<Proposal> proposals = ProposalsClient
+        final List<Proposal> proposals = ProposalClientUtil
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
@@ -243,7 +243,7 @@ public class ActivitiesService {
                 .getDeleteQuery(memberId,
                         ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, extraInfo));
         try {
-            final Proposal proposal = ProposalsClient.getProposal(proposalId);
+            final Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             queries.addAll(getDiscussionDeleteQueries(memberId,
                     proposal.getDiscussionId(), true));
         } catch (ProposalNotFoundException e) {

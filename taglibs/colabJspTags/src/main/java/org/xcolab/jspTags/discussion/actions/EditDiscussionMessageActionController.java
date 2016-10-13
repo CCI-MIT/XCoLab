@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -28,9 +28,9 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             throws IOException, DiscussionAuthorizationException, CommentNotFoundException {
 
         checkPermissions(request, "User isn't allowed to edit message", commentId);
-        Comment comment = CommentClient.getComment(commentId);
+        Comment comment = CommentClientUtil.getComment(commentId);
         comment.setContent(HtmlUtil.cleanSome(content, LinkUtils.getBaseUri(request)));
-        CommentClient.updateComment(comment);
+        CommentClientUtil.updateComment(comment);
 
         redirectToReferrer(request, response);
     }
@@ -38,7 +38,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
     @Override
     public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
             throws CommentNotFoundException {
-        final Comment comment = CommentClient.getComment(additionalId);
+        final Comment comment = CommentClientUtil.getComment(additionalId);
         return permissions.getCanAdminMessage(comment);
     }
 }

@@ -1,14 +1,11 @@
 package org.xcolab.helpers;
 
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.ProposalContestPhaseAttributeClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 
 import java.util.List;
 
@@ -27,12 +24,8 @@ public class ProposalContestPhaseAttributeHelper {
         this.proposalId = proposal.getProposalId();
         if (contestPhase != null) {
             this.contestPhasePK = contestPhase.getContestPhasePK();
-            try {
-                proposalContestPhaseAttributes = ProposalContestPhaseAttributeLocalServiceUtil.getAllContestPhaseProposalAttributes(contestPhasePK, proposalId);
-            } catch (NoSuchProposalContestPhaseAttributeException | SystemException e) {
-                _log.error(String.format("Error initializing attribute helper for proposal %d, contest phase %d.",
-                        proposalId, contestPhasePK), e);
-            }
+                proposalContestPhaseAttributes = ProposalContestPhaseAttributeClientUtil
+                        .getAllProposalContestPhaseProposalAttributes(contestPhasePK, proposalId);
         }
     }
 
@@ -60,22 +53,17 @@ public class ProposalContestPhaseAttributeHelper {
     public ProposalContestPhaseAttribute getAttributeOrCreate(
             String attributeName, long additionalId) {
         ProposalContestPhaseAttribute attribute = null;
-        try {
             attribute = getAttributeOrNull(attributeName, additionalId);
             if (attribute != null) {
                 return attribute;
             }
 
-            attribute = ProposalContestPhaseAttributeLocalServiceUtil.createProposalContestPhaseAttribute(
-                    CounterLocalServiceUtil.increment(ProposalContestPhaseAttribute.class.getName()));
+            attribute = new ProposalContestPhaseAttribute();
             attribute.setProposalId(proposalId);
             attribute.setContestPhaseId(contestPhasePK);
             attribute.setName(attributeName);
-            ProposalContestPhaseAttributeLocalServiceUtil.addProposalContestPhaseAttribute(attribute);
-        } catch (SystemException e) {
-            _log.error(String.format("Error getting/creating attribute for proposal %d, contest phase %d, attribute name %s, additionalId %d.",
-                    proposalId, contestPhasePK, attributeName, additionalId), e);
-        }
+            attribute = ProposalContestPhaseAttributeClientUtil.createProposalContestPhaseAttribute(attribute);
+
         return attribute;
     }
 }

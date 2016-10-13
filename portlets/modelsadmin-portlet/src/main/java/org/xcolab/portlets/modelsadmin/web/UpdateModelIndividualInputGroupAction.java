@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateIndividualInputGroupBean;
 
 import com.ext.portlet.model.ModelInputItem;
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
@@ -33,7 +33,7 @@ public class UpdateModelIndividualInputGroupAction {
 			@RequestParam Long modelId) throws SystemException,
 			IllegalUIConfigurationException, IOException, PortalException {
 
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		
 		ModelInputDisplayItem displayItem = null;

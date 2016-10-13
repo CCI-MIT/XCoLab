@@ -1,13 +1,8 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalSupporter;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -23,6 +18,8 @@ import com.liferay.util.EncryptorException;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -31,6 +28,10 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.proposals.ProposalSupporterClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.enums.Plurality;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
@@ -135,8 +136,7 @@ public class UserProfileWrapper implements Serializable {
             userSubscriptions = new UserSubscriptionsWrapper(user);
             supportedProposals.clear();
             userActivities.clear();
-            for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil
-                    .getProposals(user.getId_())) {
+            for (ProposalSupporter ps : ProposalSupporterClientUtil.getProposalSupportersByUserId(user.getId_())) {
                 supportedProposals.add(new SupportedProposalWrapper(ps));
             }
 
@@ -149,18 +149,18 @@ public class UserProfileWrapper implements Serializable {
                 }
             }
 
-            List<Proposal> proposals = ProposalLocalServiceUtil.getUserProposals(user.getId_());
+            List<Proposal> proposals = ProposalClientUtil.getMemberProposals(user.getId_());
             Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil
                     .groupByContestType(proposals);
-            for (ContestType contestType : ContestTypeLocalServiceUtil.getActiveContestTypes()) {
+            for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
                 contestTypeProposalWrappersByContestTypeId
-                        .put(contestType.getId(), new ContestTypeProposalWrapper(contestType));
+                        .put(contestType.getId_(), new ContestTypeProposalWrapper(contestType));
                 final List<Proposal> proposalsInContestType = proposalsByContestType
                         .get(contestType);
                 for (Proposal p : proposalsInContestType) {
                     try {
                         final BaseProposalWrapper proposalWrapper = new BaseProposalWrapper(p);
-                        contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
+                        contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
                                 .getProposals()
                                 .add(proposalWrapper);
                     } catch (DatabaseAccessException e) {
@@ -390,14 +390,12 @@ public class UserProfileWrapper implements Serializable {
 
     public List<BaseProposalWrapper> getLinkingProposals() {
         if (linkingProposals == null) {
-            try {
                 linkingProposals = new ArrayList<>();
-                List<Proposal> proposals = PointsLocalServiceUtil.getLinkingProposalsForUser(getUserId());
+                List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
                 for (Proposal p : proposals) {
                     linkingProposals.add(new BaseProposalWrapper(p));
                 }
-            } catch (PortalException | SystemException ignored) {
-            }
+
         }
         return linkingProposals;
     }

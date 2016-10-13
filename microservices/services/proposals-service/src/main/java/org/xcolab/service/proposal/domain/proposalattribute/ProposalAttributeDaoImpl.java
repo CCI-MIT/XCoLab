@@ -72,7 +72,7 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
     }
 
     @Override
-    public List<ProposalAttribute> findByGiven(Long proposalId, String name, Long additionalId) {
+    public List<ProposalAttribute> findByGiven(Long proposalId, String name, Long additionalId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_ATTRIBUTE).getQuery();
 
@@ -84,6 +84,25 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
         }
         if (additionalId != null) {
             query.addConditions(PROPOSAL_ATTRIBUTE.ADDITIONAL_ID.eq(additionalId));
+        }
+        if (version != null) {
+            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.eq(version));
+        }
+        return query.fetchInto(ProposalAttribute.class);
+    }
+
+    public List<ProposalAttribute> findByProposalIdVersionAndImpact(Long proposalId, Integer version) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(PROPOSAL_ATTRIBUTE).getQuery();
+
+        if (proposalId != null) {
+            query.addConditions(PROPOSAL_ATTRIBUTE.PROPOSAL_ID.eq(proposalId));
+        }
+        query.addConditions(PROPOSAL_ATTRIBUTE.NAME.like("IMPACT_%"));
+
+        if (version != null) {
+            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.ge(version));
+            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION_WHEN_CREATED.le(version));
         }
         return query.fetchInto(ProposalAttribute.class);
     }

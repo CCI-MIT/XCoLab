@@ -1,11 +1,12 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CollectionCardWrapper{
@@ -15,7 +16,7 @@ public class CollectionCardWrapper{
     protected final ContestCollectionCard contestCollectionCard;
 
     public CollectionCardWrapper(long contestCollectionCardId) {
-        this(ContestClient.getContestCollectionCard(contestCollectionCardId));
+        this(ContestClientUtil.getContestCollectionCard(contestCollectionCardId));
     }
 
     public CollectionCardWrapper(ContestCollectionCard contestCollectionCard) {
@@ -24,7 +25,7 @@ public class CollectionCardWrapper{
 
     public CollectionCardWrapper getParent() {
         if(hasParent()){
-            return new CollectionCardWrapper(ContestClient.getContestCollectionCard(this.contestCollectionCard.getParent()));
+            return new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(this.contestCollectionCard.getParent()));
         } else {
             return null;
         }
@@ -32,7 +33,7 @@ public class CollectionCardWrapper{
 
     public boolean hasParent() {
         if(this.contestCollectionCard.getParent() != null) {
-            if(ContestClient.getContestCollectionCard(this.contestCollectionCard.getParent()) != null) {
+            if(ContestClientUtil.getContestCollectionCard(this.contestCollectionCard.getParent()) != null) {
                 return true;
             }
         }
@@ -42,12 +43,11 @@ public class CollectionCardWrapper{
     public int getNumberOfContests() {
         int count = 0;
         List<ContestCollectionCard> childList = new ArrayList<>();
-        childList.add(ContestClient.getContestCollectionCard(this.getId()));
+        childList.add(ContestClientUtil.getContestCollectionCard(this.getId()));
         while(!childList.isEmpty()) {
-            for (FocusArea area: ContestClient.getFocusAreasByOntologyTermId(childList.get(0).getOntology_term_to_load())) {
-                count += ContestClient.getContestsByFocusAreaId(area.getId_()).size();
-            }
-            childList.addAll(ContestClient.getSubContestCollectionCards(childList.get(0).getId_()));
+            count += ContestClientUtil.getContestMatchingOntologyTerms(
+                    Arrays.asList(childList.get(0).getOntology_term_to_load())).size();
+            childList.addAll(ContestClientUtil.getSubContestCollectionCards(childList.get(0).getId_()));
             childList.remove(0);
         }
         return count;
@@ -58,15 +58,15 @@ public class CollectionCardWrapper{
     }
 
     public OntologyTerm getBigOntologyTerm() {
-        return ContestClient.getOntologyTerm(this.contestCollectionCard.getBig_ontology_term());
+        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getBig_ontology_term());
     }
 
     public OntologyTerm getSmallOntologyTerm() {
-        return ContestClient.getOntologyTerm(this.contestCollectionCard.getSmall_ontology_term());
+        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getSmall_ontology_term());
     }
 
     public OntologyTerm getOntologyTermToLoad() {
-        return ContestClient.getOntologyTerm(this.contestCollectionCard.getOntology_term_to_load());
+        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getOntology_term_to_load());
     }
 
     public int getOrder() {

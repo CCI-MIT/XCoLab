@@ -1,15 +1,6 @@
 package org.xcolab.portlets.proposals.utils;
 
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalSupporterLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -19,8 +10,15 @@ import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.proposals.ProposalSupporterClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.ArrayList;
@@ -66,14 +64,10 @@ public class ProposalPickerFilterUtil {
     public static List<Pair<ContestWrapper, Date>> getAllContests() throws SystemException, PortalException {
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
 
-        for (Contest c: ContestLocalServiceUtil.getContests(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-            try {
-                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(c.getContestPK());
-                contests.add(Pair.of(new ContestWrapper(contestMicro),  //c
+        for (Contest c: ContestClientUtil.getAllContests()) {
+                contests.add(Pair.of(new ContestWrapper(c),  //c
                         c.getCreated() == null ? new Date(0) : c.getCreated()));
-            }catch (ContestNotFoundException ignored){
 
-            }
         }
         return contests;
     }
@@ -81,10 +75,10 @@ public class ProposalPickerFilterUtil {
     public static Map<Long, String> filterContests(List<Pair<ContestWrapper, Date>> contests,
             long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
             throws SystemException, PortalException {
-        PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
 
-        List<Long> alwaysIncludedContestIds = PlanSectionDefinitionLocalServiceUtil.getAdditionalIds(planSectionDefinition);
+        List<Long> alwaysIncludedContestIds = planSectionDefinition.getAdditionalIdsAsList();
 
         final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
         final long contestFocusAreaId;
@@ -149,12 +143,17 @@ public class ProposalPickerFilterUtil {
         List<ActivitySubscription> activitySubscriptions = ActivitiesClient.getActivitySubscriptions(null, null, userId);
 
         for (ActivitySubscription as : activitySubscriptions) {
-            if (as.getClassNameId() == ClassNameLocalServiceUtil
-                    .getClassNameId(Proposal.class)) {
-                proposals.add(Pair.of(
-                        ProposalLocalServiceUtil.getProposal(as.getClassPK()),
-                       new Date(as.getCreateDate().getTime())
-                ));
+
+            try {
+                if (as.getClassNameId() == ClassNameLocalServiceUtil
+                        .getClassNameId(Proposal.class)) {
+                    proposals.add(Pair.of(
+                            ProposalClientUtil.getProposal(as.getClassPK()),
+                            new Date(as.getCreateDate().getTime())
+                    ));
+                }
+            }catch (ProposalNotFoundException ignored){
+
             }
         }
 
@@ -167,11 +166,12 @@ public class ProposalPickerFilterUtil {
             long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        for (ProposalSupporter ps : ProposalSupporterLocalServiceUtil
-                .getProposals(userId)) {
-            proposals.add(Pair.of(
-                    ProposalLocalServiceUtil.getProposal(ps.getProposalId()),
-                    ps.getCreateDate()));
+        for (ProposalSupporter ps : ProposalSupporterClientUtil.getProposalSupportersByUserId(userId)) {
+            try{
+                proposals.add(Pair.of(ProposalClientUtil.getProposal(ps.getProposalId()), new Date(ps.getCreateDate().getTime())));
+            }catch (ProposalNotFoundException ignored){
+
+            }
         }
 
         filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
@@ -185,11 +185,10 @@ public class ProposalPickerFilterUtil {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<Proposal> proposalsRaw;
         if (contestPK > 0) {
-            proposalsRaw = ProposalLocalServiceUtil
+            proposalsRaw = ProposalClientUtil
                     .getProposalsInContest(contestPK);
         } else {
-            proposalsRaw = ProposalLocalServiceUtil.getProposals(0,
-                    Integer.MAX_VALUE);
+            proposalsRaw = ProposalClientUtil.getAllProposals();
         }
         for (Proposal p : proposalsRaw) {
             proposals.add(Pair.of(p, new Date(0)));
@@ -207,10 +206,10 @@ public class ProposalPickerFilterUtil {
         filterByParameter(filterKey, proposals);
         filterByVisibility(proposals);
 
-        PlanSectionDefinition planSectionDefinition = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(sectionId);
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
 
-        List<Long> filterExceptionContestIds = PlanSectionDefinitionLocalServiceUtil.getAdditionalIds(planSectionDefinition);
+        List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();
 
         final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
         final long contestFocusAreaId;
@@ -229,7 +228,7 @@ public class ProposalPickerFilterUtil {
     private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
             Proposal proposal = iterator.next().getLeft();
-            if (ProposalLocalServiceUtil.isDeleted(proposal)) {
+            if (proposal.isDeleted()) {
                 iterator.remove();
             }
         }

@@ -2,9 +2,8 @@ package org.xcolab.utils.judging;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+
 import com.ext.portlet.model.ProposalContestPhaseAttribute;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -17,6 +16,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 

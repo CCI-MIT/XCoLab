@@ -1,18 +1,9 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.NoSuchOntologySpaceException;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologySpace;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 import java.util.List;
 
@@ -29,44 +20,33 @@ public class OntologyTermToFocusAreaMapper {
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
      */
     public FocusArea getFocusAreaMatchingTermsExactly() {
-        try {
             return applyFilterToFocusAreasMatchingExactly(
-                    FocusAreaLocalServiceUtil.getFocusAreas(QueryUtil.ALL_POS, QueryUtil.ALL_POS),
+                    OntologyClientUtil.getAllFocusAreas(),
                     true);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
     }
 
     /**
      * Returns a focus area that exactly matches all OntologyTerms within the passed focusAreas. That is, only returns a focus area that matches only the
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
-     *
-     * @throws SystemException
-     * @throws PortalException
      */
-    public FocusArea getFocusAreaMatchingTermsExactly(List<FocusArea> focusAreasToBeSearched) throws SystemException, PortalException {
+    public FocusArea getFocusAreaMatchingTermsExactly(List<FocusArea> focusAreasToBeSearched) {
         return applyFilterToFocusAreasMatchingExactly(focusAreasToBeSearched, true);
     }
 
     /**
      * Returns a focus area that matches at least all passed OntologyTerms.
      *
-     * @throws SystemException
-     * @throws PortalException
      */
-    public FocusArea getFocusAreaMatchingTermsPartially() throws SystemException, PortalException {
-        return applyFilterToFocusAreasMatchingExactly(FocusAreaLocalServiceUtil.getFocusAreas(QueryUtil.ALL_POS, QueryUtil.ALL_POS), false);
+    public FocusArea getFocusAreaMatchingTermsPartially() {
+        return applyFilterToFocusAreasMatchingExactly(OntologyClientUtil.getAllFocusAreas(), false);
     }
 
     /**
      * Returns a focus area that partially matches all OntologyTerms within the passed focusAreas. That is, only returns a focus area that matches only the
      * terms passed. This is in contrast to org.xcolab.utils.getFocusAreaMatchingTermsPartially
      *
-     * @throws SystemException
-     * @throws PortalException
      */
-    public FocusArea getFocusAreaMatchingTermsPartially(List<FocusArea> focusAreasToBeSearched) throws SystemException, PortalException {
+    public FocusArea getFocusAreaMatchingTermsPartially(List<FocusArea> focusAreasToBeSearched) {
         return applyFilterToFocusAreasMatchingExactly(focusAreasToBeSearched, false);
     }
 
@@ -78,7 +58,7 @@ public class OntologyTermToFocusAreaMapper {
             boolean focusAreaMatchesTerms = true;
             for (OntologyTerm toBeMatchedTerm : toBeMatchedTerms) {
                 OntologyTerm focusAreaOntologyTerm = getTermWithSpaceId(focusArea, toBeMatchedTerm.getOntologySpaceId());
-                if (focusAreaOntologyTerm.getId() != toBeMatchedTerm.getId()) {
+                if (focusAreaOntologyTerm.getId_() != toBeMatchedTerm.getId_().longValue()) {
                     focusAreaMatchesTerms = false;
                     break;
                 }
@@ -93,29 +73,14 @@ public class OntologyTermToFocusAreaMapper {
     }
 
     private OntologyTerm getTermWithSpaceId(FocusArea focusArea, long spaceId) {
-        try {
-            OntologySpace space = OntologySpaceLocalServiceUtil.getOntologySpace(spaceId);
-            return FocusAreaLocalServiceUtil
+            OntologySpace space = OntologyClientUtil.getOntologySpace(spaceId);
+            return OntologyClientUtil
                     .getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (NoSuchOntologySpaceException e) {
-            throw ReferenceResolutionException.toObject(OntologySpace.class, spaceId).build();
-        } catch (PortalException e) {
-            //TODO: which exception should this throw?
-            throw new InternalException("Ontology term not found: focus area "
-                    + focusArea.getId() + " and ontology space " + spaceId);
-        }
+
     }
 
     private boolean isFocusAreaOntologyTermCountMatching(FocusArea focusArea, int ontologyTermCount) {
-        try {
-            return FocusAreaLocalServiceUtil.getTerms(focusArea).size() == ontologyTermCount;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw ReferenceResolutionException.toObject(OntologyTerm.class, "list")
-                    .fromObject(FocusArea.class, focusArea.getId());
-        }
+            return OntologyClientUtil.getOntologyTermsForFocusArea(focusArea).size() == ontologyTermCount;
+
     }
 }

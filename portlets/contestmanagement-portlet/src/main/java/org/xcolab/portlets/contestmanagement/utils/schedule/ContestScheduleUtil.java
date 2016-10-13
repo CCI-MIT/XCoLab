@@ -1,8 +1,8 @@
 package org.xcolab.portlets.contestmanagement.utils.schedule;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.util.GroupingUtil;
 import org.xcolab.util.GroupingUtil.DuplicateElementException;
 import org.xcolab.util.functions.Function;
@@ -25,7 +25,7 @@ public final class ContestScheduleUtil {
             contestScheduleChangeHelper.changeScheduleForStartedContest();
         }
         contest.setContestScheduleId(contestScheduleId);
-        ContestClient.updateContest(contest);
+        ContestClientUtil.updateContest(contest);
     }
 
     public static boolean isBlankContest(Contest contest) {
@@ -40,9 +40,9 @@ public final class ContestScheduleUtil {
     }
 
     private static boolean existingPhaseTypesMatchSchedule(long contestId, long scheduleId) {
-        final List<ContestPhase> existingPhases = ContestClient
+        final List<ContestPhase> existingPhases = ContestClientUtil
                 .getAllContestPhases(contestId);
-        final List<ContestPhase> schedulePhases = ContestClient
+        final List<ContestPhase> schedulePhases = ContestClientUtil
                 .getPhasesForContestScheduleId(scheduleId);
 
         //TODO: improve contest change algorithm to allow more detailed changes of started contest

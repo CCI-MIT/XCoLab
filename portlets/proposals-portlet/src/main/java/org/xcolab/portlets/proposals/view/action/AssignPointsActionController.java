@@ -1,21 +1,21 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.PointType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.PointTypeLocalServiceUtil;
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
@@ -58,22 +58,24 @@ public class AssignPointsActionController {
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
         if (result.hasErrors()) {
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/POINTS");
+            response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/POINTS");
             return;
         }
 
         // Security handling
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         if (!ProposalTab.POINTS.getCanEdit(permissions, proposalsContext, portletRequest)) {
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/POINTS");
+            response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/POINTS");
             return;
         }
 
         //first, delete the existing configuration
-        PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());
+        PointsDistributionConfigurationClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
 
         try {
-            PointType contestRootPointType = PointTypeLocalServiceUtil.fetchPointType(contest.getDefaultParentPointType());
+            PointType contestRootPointType = PointsDistributionConfigurationClientUtil
+
+                    .getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype
             this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));
@@ -92,14 +94,16 @@ public class AssignPointsActionController {
                     sum += percentage;
                     //round to four decimals
                     percentage = (double)Math.round(percentage * 10000) / 10000;
-                    PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(
-                            proposal.getProposalId(),
-                            pointTypeId,
-                            entry.getKey(),
-                            null,
-                            percentage,
-                            currentUser.getUserId()
-                    );
+                    PointsDistributionConfiguration pointsDistributionConfiguration = new PointsDistributionConfiguration();
+                    pointsDistributionConfiguration.setProposalId(proposal.getProposalId());
+                    pointsDistributionConfiguration.setPointTypeId(pointTypeId);
+                    pointsDistributionConfiguration.setTargetUserId(entry.getKey());
+                    pointsDistributionConfiguration.setTargetSubProposalId(null);
+                    pointsDistributionConfiguration.setPercentage(percentage);
+                    pointsDistributionConfiguration.setCreator(currentUser.getUserId());
+
+                    PointsDistributionConfigurationClientUtil.createPointsDistributionConfiguration(pointsDistributionConfiguration);
+
                 }
                 //round to two decimals
                 sum = Math.round(sum * 100) / 100.0d;
@@ -109,11 +113,12 @@ public class AssignPointsActionController {
             }
         } catch (SystemException | IllegalArgumentException e) {
             //in case a (validation) error occurs, we simply delete all created configurations.
-            //since we do client-side validations, this state will not be reached by regular uses of the UI.
-            PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(proposal.getProposalId());
+            //since we do client-side validations, this state will not be reached by regular uses
+            // of the UI.
+            PointsDistributionConfigurationClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
             throw e;
         }
 
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal, contestPhase) + "/tab/POINTS");
+        response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/POINTS");
     }
 }

@@ -1,6 +1,6 @@
 package org.xcolab.utils;
 
-import com.ext.portlet.ProposalImpactAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 import com.ext.portlet.model.ProposalAttribute;
 
 import java.util.HashMap;

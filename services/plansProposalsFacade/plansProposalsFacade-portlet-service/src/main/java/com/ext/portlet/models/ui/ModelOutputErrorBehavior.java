@@ -1,25 +1,11 @@
-/*
- * Copyright (c) 2010. M.I.T. All Rights Reserved
- * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
- * or the license.txt file included in this distribution for the full text of the license.
- */
-
 package com.ext.portlet.models.ui;
+
+import edu.mit.cci.roma.client.TupleStatus;
 
 import com.ext.portlet.model.ModelOutputChartOrder;
 import com.ext.portlet.model.ModelOutputItem;
 
-import edu.mit.cci.roma.client.TupleStatus;
-
-/**
- * Created by IntelliJ IDEA.
- * User: jintrone
- * Date: Jun 1, 2010
- * Time: 5:09:07 PM
- * To change this template use File | Settings | File Templates.
- */
 public class ModelOutputErrorBehavior {
-
 
     ErrorPolicy policy;
     String msg;
@@ -63,7 +49,9 @@ public class ModelOutputErrorBehavior {
             String msg = item.getModelIndexErrorMessage();
            return new ModelOutputErrorBehavior(status,ErrorPolicy.valueOf(policyName),msg);
 
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
      public static ModelOutputErrorBehavior getBehavior(TupleStatus status, ModelOutputItem item) {
@@ -82,14 +70,9 @@ public class ModelOutputErrorBehavior {
             String msg = item.getModelItemErrorMessage();
            return new ModelOutputErrorBehavior(status,ErrorPolicy.valueOf(policyName),msg);
 
-        } else return null;
+        } else {
+            return null;
+        }
     }
-
-
-    
-
-
-
-
 
 }

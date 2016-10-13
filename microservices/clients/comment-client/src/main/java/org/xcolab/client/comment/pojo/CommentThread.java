@@ -1,126 +1,70 @@
 package org.xcolab.client.comment.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
+import org.xcolab.client.comment.util.CategoryClientUtil;
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.time.HumanTime;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(Include.NON_NULL)
-public class CommentThread implements Serializable {
-    public static final TypeProvider<CommentThread> TYPES =
-            new TypeProvider<>(CommentThread.class,
-                    new ParameterizedTypeReference<List<CommentThread>>() {
-                    });
+public class CommentThread extends AbstractCommentThread {
+    public static final TypeProvider<CommentThreadDto> TYPES = new TypeProvider<>(CommentThreadDto.class,
+                    new ParameterizedTypeReference<List<CommentThreadDto>>() {});
 
-    private static final long serialVersionUID = 1553344927;
-
-    private Long threadid;
-    private Long categoryid;
-    private Long authorid;
-    private String title;
-    private Timestamp createdate;
-    private Timestamp deleteddate;
-    private Boolean isquiet;
+    private final CommentClient commentClient;
+    private final ThreadClient threadClient;
+    private final CategoryClient categoryClient;
 
     public CommentThread() {
+        commentClient = CommentClientUtil.getCommentClient();
+        threadClient = ThreadClientUtil.getThreadClient();
+        categoryClient = CategoryClientUtil.getCategoryClient();
     }
 
-    public CommentThread(Long threadid, Long categoryid, Long authorid, String title,
-            Timestamp createdate, Timestamp deleteddate, Boolean isquiet) {
-        this.threadid = threadid;
-        this.categoryid = categoryid;
-        this.authorid = authorid;
-        this.title = title;
-        this.createdate = createdate;
-        this.deleteddate = deleteddate;
-        this.isquiet = isquiet;
+    public CommentThread(Long threadId, Long categoryId, Long authorId, String title,
+            Timestamp createDate, Timestamp deletedDate, Boolean isQuiet) {
+        super(threadId, categoryId, authorId, title, createDate, deletedDate, isQuiet);
+        commentClient = CommentClientUtil.getCommentClient();
+        threadClient = ThreadClientUtil.getThreadClient();
+        categoryClient = CategoryClientUtil.getCategoryClient();
     }
 
-    public Long getThreadId() {
-        return this.threadid;
-    }
+    public CommentThread(AbstractCommentThread abstractCommentThread, RestService commentService) {
+        super(abstractCommentThread);
 
-    public void setThreadId(Long threadid) {
-        this.threadid = threadid;
-    }
-
-    public Long getCategoryId() {
-        return this.categoryid;
-    }
-
-    public void setCategoryId(Long categoryid) {
-        this.categoryid = categoryid;
-    }
-
-    public Long getAuthorId() {
-        return this.authorid;
-    }
-
-    public void setAuthorId(Long authorid) {
-        this.authorid = authorid;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Timestamp getCreateDate() {
-        return this.createdate;
-    }
-
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
-    }
-
-    public Timestamp getDeletedDate() {
-        return this.deleteddate;
-    }
-
-    public void setDeletedDate(Timestamp deleteddate) {
-        this.deleteddate = deleteddate;
-    }
-
-    public Boolean getIsQuiet() {
-        return this.isquiet;
-    }
-
-    public void setIsQuiet(Boolean isquiet) {
-        this.isquiet = isquiet;
+        commentClient = new CommentClient(commentService);
+        threadClient = new ThreadClient(commentService);
+        categoryClient = new CategoryClient(commentService);
     }
 
     @JsonIgnore
     public int getCommentsCount() {
-        return CommentClient.countComments(threadid);
+        return CommentClientUtil.countComments(getThreadId());
     }
 
     @JsonIgnore
     public List<Comment> getComments() {
-        return CommentClient.listComments(0, Integer.MAX_VALUE, threadid);
+        return CommentClientUtil.listComments(0, Integer.MAX_VALUE, getThreadId());
     }
 
     @JsonIgnore
     public long getLastActivityAuthorId() {
-        return CommentClient.getLastActivityAuthorId(threadid);
+        return ThreadClientUtil.getLastActivityAuthorId(getThreadId());
     }
 
     @JsonIgnore
@@ -134,7 +78,7 @@ public class CommentThread implements Serializable {
 
     @JsonIgnore
     public Date getLastActivityDate() {
-        return CommentClient.getLastActivityDate(threadid);
+        return ThreadClientUtil.getLastActivityDate(getThreadId());
     }
 
     @JsonIgnore
@@ -145,7 +89,7 @@ public class CommentThread implements Serializable {
     @JsonIgnore
     public Member getAuthor() {
         try {
-            return MembersClient.getMember(authorid);
+            return MembersClient.getMember(getAuthorId());
         } catch (MemberNotFoundException e) {
             throw new KeyReferenceException(e);
         }
@@ -153,9 +97,10 @@ public class CommentThread implements Serializable {
 
     @JsonIgnore
     public Category getCategory() {
-        if (categoryid != null && categoryid > 0) {
+        final Long categoryId = getCategoryId();
+        if (categoryId != null && categoryId > 0) {
             try {
-                return CommentClient.getCategory(categoryid);
+                return CategoryClientUtil.getCategory(categoryId);
             } catch (CategoryNotFoundException ignored) {
                 //throw new KeyReferenceException(e);
             }
@@ -169,24 +114,11 @@ public class CommentThread implements Serializable {
         if(category!=null) {
             final CategoryGroup categoryGroup = category.getCategoryGroup();
             if (categoryGroup != null) {
-                return categoryGroup.getLinkUrl() + "/-/discussion/thread/" + threadid;
+                return categoryGroup.getLinkUrl() + "/-/discussion/thread/" + getThreadId();
             }
         }
-        //Long propId = CommentClient.getProposalIdForThread(threadid);
+        //Long propId = CommentClientUtil.getProposalIdForThread(threadId);
         //TODO: handle proposal comments
         return "";
-    }
-
-    @Override
-    public String toString() {
-
-        return "Thread (" + threadid +
-                ", " + categoryid +
-                ", " + authorid +
-                ", " + title +
-                ", " + createdate +
-                ", " + deleteddate +
-                ", " + isquiet +
-                ")";
     }
 }

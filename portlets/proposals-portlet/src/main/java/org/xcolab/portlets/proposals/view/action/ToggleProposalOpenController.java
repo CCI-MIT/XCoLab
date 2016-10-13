@@ -1,8 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -34,9 +34,9 @@ public class ToggleProposalOpenController {
         if (permissions.getCanDelete()) {
             final long proposalId = proposalsContext.getProposal(request).getProposalId();
             final long userId = proposalsContext.getUser(request).getUserId();
-            ProposalAttributeLocalServiceUtil.setAttribute(userId, proposalId,
-                    ProposalAttributeKeys.OPEN, planOpen ? 1 : 0);
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId));
+            ProposalAttributeClientUtil.setProposalAttribute(userId, proposalId,
+                    ProposalAttributeKeys.OPEN,0l, planOpen ? 1l : 0l);
+            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)));
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to change proposal open attribute");

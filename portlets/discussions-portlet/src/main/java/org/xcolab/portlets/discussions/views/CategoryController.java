@@ -10,8 +10,9 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadSortColumn;
+import org.xcolab.client.comment.util.CategoryClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
@@ -90,7 +91,7 @@ public class CategoryController extends BaseDiscussionController {
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         List<Category> categories = categoryGroup.getCategories();
-        Category currentCategory = CommentClient.getCategory(categoryId);
+        Category currentCategory = CategoryClientUtil.getCategory(categoryId);
 
         model.addAttribute("categoryGroup", categoryGroup);
         model.addAttribute("currentCategory", currentCategory);
@@ -112,7 +113,7 @@ public class CategoryController extends BaseDiscussionController {
 
         final String baseUrl;
         if (categoryId != null && categoryId > 0) {
-            Category category = CommentClient.getCategory(categoryId);
+            Category category = CategoryClientUtil.getCategory(categoryId);
             baseUrl = category.getLinkUrl();
         } else {
             baseUrl = "/web/guest/discussion/-/discussion/categories";
@@ -218,9 +219,9 @@ public class CategoryController extends BaseDiscussionController {
                         ret = o1.getCommentsCount() - o2.getCommentsCount();
                         break;
                     case LAST_COMMENTER:
-                        final long lastActivityAuthorId1 = CommentClient
+                        final long lastActivityAuthorId1 = ThreadClientUtil
                                 .getLastActivityAuthorId(o1.getThreadId());
-                        final long lastActivityAuthorId2 = CommentClient
+                        final long lastActivityAuthorId2 = ThreadClientUtil
                                 .getLastActivityAuthorId(o2.getThreadId());
                         try {
                             final Member lastActivityAuthor1 = MembersClient.getMember(
@@ -239,8 +240,8 @@ public class CategoryController extends BaseDiscussionController {
                         break;
                     case DATE:
                     default:
-                        ret = CommentClient.getLastActivityDate(o1.getThreadId())
-                                .compareTo(CommentClient.getLastActivityDate(o2.getThreadId()));
+                        ret = ThreadClientUtil.getLastActivityDate(o1.getThreadId())
+                                .compareTo(ThreadClientUtil.getLastActivityDate(o2.getThreadId()));
                         break;
                 }
 

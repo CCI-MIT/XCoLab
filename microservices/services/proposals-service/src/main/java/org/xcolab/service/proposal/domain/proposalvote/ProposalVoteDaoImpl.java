@@ -20,16 +20,6 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     private DSLContext dslContext;
 
 
-    /*
-
-    ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposalId, userId)
-	ProposalVoteLocalServiceUtil.hasUserVoted(contestPhaseId, userId)
-	ProposalVoteLocalServiceUtil.findByProposalIdUserId(proposal.getProposalId(), user.getUserId())
-	LIST
-	ProposalVoteLocalServiceUtil.getProposalVotes(0, Integer.MAX_VALUE)
-
-    *
-    * */
 
 
     public ProposalVote create(ProposalVote proposalVote) {
@@ -64,15 +54,14 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
 
     public boolean update(ProposalVote proposalVote) {
         return dslContext.update(PROPOSAL_VOTE)
-                .set(PROPOSAL_VOTE.PROPOSAL_ID, proposalVote.getProposalId())
-                .set(PROPOSAL_VOTE.CONTEST_PHASE_ID, proposalVote.getContestPhaseId())
-                .set(PROPOSAL_VOTE.USER_ID, proposalVote.getUserId())
                 .set(PROPOSAL_VOTE.CREATE_DATE, proposalVote.getCreateDate())
                 .set(PROPOSAL_VOTE.IS_VALID, proposalVote.getIsValid())
                 .set(PROPOSAL_VOTE.CONFIRMATION_EMAIL_SEND_DATE, proposalVote.getConfirmationEmailSendDate())
                 .set(PROPOSAL_VOTE.CONFIRMATION_TOKEN, proposalVote.getConfirmationToken())
                 .where(PROPOSAL_VOTE.PROPOSAL_ID.eq(proposalVote.getProposalId()))
                 .and(PROPOSAL_VOTE.CONTEST_PHASE_ID.eq(proposalVote.getContestPhaseId()))
+                .and(PROPOSAL_VOTE.USER_ID.eq(proposalVote.getUserId()))
+
                 .execute() > 0;
     }
 

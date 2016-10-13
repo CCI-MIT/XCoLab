@@ -3,10 +3,10 @@ package org.xcolab.service.flagging.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.Report;
@@ -103,10 +103,10 @@ public class FlaggingService {
     }
 
     private void approveProposal(long proposalId) throws ProposalNotFoundException {
-        final Proposal proposal = ProposalsClient.getProposal(proposalId, true);
+        final Proposal proposal = ProposalClientUtil.getProposal(proposalId, true);
         if (!proposal.getVisible()) {
             proposal.setVisible(true);
-            ProposalsClient.updateProposal(proposal);
+            ProposalClientUtil.updateProposal(proposal);
         }
     }
 
@@ -116,18 +116,18 @@ public class FlaggingService {
     }
 
     private void removeProposal(long proposalId) {
-        ProposalsClient.deleteProposal(proposalId);
+        ProposalClientUtil.deleteProposal(proposalId);
     }
 
     private void approveComment(long commentId) throws CommentNotFoundException {
-        final Comment comment = CommentClient.getComment(commentId, true);
+        final Comment comment = CommentClientUtil.getComment(commentId, true);
         if (comment.getDeletedDate() != null) {
             comment.setDeletedDate(null);
-            CommentClient.updateComment(comment);
+            CommentClientUtil.updateComment(comment);
         }
     }
 
     private void removeComment(long commentId) {
-        CommentClient.deleteComment(commentId);
+        CommentClientUtil.deleteComment(commentId);
     }
 }

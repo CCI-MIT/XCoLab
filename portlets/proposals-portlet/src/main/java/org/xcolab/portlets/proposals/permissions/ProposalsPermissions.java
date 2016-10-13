@@ -1,14 +1,6 @@
 package org.xcolab.portlets.proposals.permissions;
 
 import com.ext.portlet.contests.ContestStatus;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -17,11 +9,18 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.enums.MemberRole;
-import org.xcolab.enums.MemberRoleChoiceAlgorithm;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.Date;
 
@@ -34,6 +33,7 @@ public class ProposalsPermissions {
     private final boolean planIsEditable;
 
     private final User user;
+    private final Member member;
 
     private final Proposal proposal;
     private final ContestPhase contestPhase;
@@ -44,18 +44,12 @@ public class ProposalsPermissions {
 
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
-            try {
-                final ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil
+
+                final ContestPhaseType contestPhaseType = ContestClientUtil
                         .getContestPhaseType(contestPhaseTypeId);
                 String statusStr = contestPhaseType.getStatus();
                 contestStatus = ContestStatus.valueOf(statusStr);
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            } catch (PortalException e) {
-                throw ReferenceResolutionException
-                        .toObject(ContestPhaseType.class, contestPhaseTypeId)
-                        .fromObject(ContestPhase.class, contestPhase.getContestPK());
-            }
+
         } else {
             contestStatus = null;
         }
@@ -67,10 +61,11 @@ public class ProposalsPermissions {
         } else {
             groupId = proposal.getGroupId();
             planIsEditable = contestStatus != null && contestStatus.isCanEdit()
-                    && ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase);
+                    && contestPhase.getPhaseActive();
 
         }
         user = themeDisplay.getUser();
+        member = MembersClient.getMemberUnchecked(user.getUserId());
         this.contestPhase = contestPhase;
         this.proposal = proposal;
     }
@@ -89,7 +84,7 @@ public class ProposalsPermissions {
      *
      * @return true if user is allowed to edit a proposal, false otherwise
      */
-    public boolean getCanEdit() throws SystemException, PortalException {
+    public boolean getCanEdit() throws SystemException  {
         return !user.isDefaultUser()
                 && (getCanAdminAll() || planIsEditable
                 && (isProposalOpen() || isProposalMember())
@@ -139,7 +134,7 @@ public class ProposalsPermissions {
     }
 
     public boolean isVotingEnabled() {
-        return contestPhase != null && ContestPhaseLocalServiceUtil.getPhaseActive(contestPhase)
+        return contestPhase != null && contestPhase.getPhaseActive()
                 && contestStatus.isCanVote();
     }
 
@@ -154,7 +149,7 @@ public class ProposalsPermissions {
 
     public boolean getIsTeamMember() throws SystemException, PortalException {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalLocalServiceUtil.isUserAMember(proposal.getProposalId(), user.getUserId())
+                && ProposalClientUtil.isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
                 && !user.isDefaultUser();
     }
 
@@ -162,9 +157,9 @@ public class ProposalsPermissions {
         return !user.isDefaultUser() && (proposal == null || user.getUserId() == proposal.getAuthorId());
     }
 
-    private boolean isProposalOpen() throws SystemException, PortalException {
+    private boolean isProposalOpen() {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalLocalServiceUtil.isOpen(proposal.getProposalId());
+                && proposal.isOpen();
     }
 
     /**
@@ -195,23 +190,17 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanContestManagerActions() {
-        boolean canContestManagerActions = false;
-        try {
-            MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
-            canContestManagerActions = (memberRole == MemberRole.CONTEST_MANAGER || memberRole == MemberRole.STAFF);
-        } catch (SystemException ignored) {
-        }
-        return canContestManagerActions;
+        final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
+                MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
+        MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(member);
+        return memberRole == MemberRole.CONTEST_MANAGER || memberRole == MemberRole.STAFF;
     }
 
     public boolean getCanIAFActions() {
-        boolean canIAFAction = false;
-        try {
-            MemberRole memberRole = MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm.getHighestMemberRoleForUser(user);
-            canIAFAction = (memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW);
-        } catch (SystemException ignored) {
-        }
-        return canIAFAction;
+        final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
+                MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
+        MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(member);
+        return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
     }
 
     public boolean getCanSeeAdvancingTab() {
@@ -219,11 +208,11 @@ public class ProposalsPermissions {
                 || getCanContestManagerActions();
     }
 
-    public boolean getCanPromoteProposalToNextPhase() throws PortalException, SystemException {
+    public boolean getCanPromoteProposalToNextPhase() {
         return contestPhase != null && getCanPromoteProposalToNextPhase(contestPhase);
     }
 
-    public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) throws PortalException, SystemException {
+    public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) {
         if (wasProposalMovedElsewhere()) {
             return false;
         }
@@ -233,14 +222,18 @@ public class ProposalsPermissions {
             return false;
         }
 
-        Contest latestProposalContest = ProposalLocalServiceUtil.getLatestProposalContest(proposal.getProposalId());
-        ContestPhase activePhaseForContest = ContestPhaseLocalServiceUtil.getActivePhaseForContest(latestProposalContest);
-        boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
+        try {
+            Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
+            ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
+            boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
+            return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
+        }catch (ContestNotFoundException ignored){
 
-        return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
+        }
+        return false;
     }
 
-    public boolean getCanMoveProposal() throws SystemException, PortalException {
+    public boolean getCanMoveProposal() {
         if (wasProposalMovedElsewhere()) {
             return false;
         }
@@ -252,20 +245,26 @@ public class ProposalsPermissions {
         return getCanAdminAll();
     }
 
-    public boolean getCanCopyProposal() throws SystemException, PortalException {
+    public boolean getCanCopyProposal() {
         return !wasProposalMovedElsewhere()
                 && !getIsCreationAllowedByPhase() && getCanAdminProposal();
     }
 
-    public boolean getCanForkProposal() throws SystemException, PortalException {
+    public boolean getCanForkProposal() {
         return !wasProposalMovedElsewhere()
                 && getCanAdminProposal();
     }
 
-    private boolean wasProposalMovedElsewhere() throws SystemException, PortalException {
-        final long currentContestId = Proposal2PhaseLocalServiceUtil
-                .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
-        return currentContestId != contestPhase.getContestPK();
+    private boolean wasProposalMovedElsewhere() {
+
+        try {
+            final long currentContestId = ProposalClientUtil
+                    .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
+            return currentContestId != contestPhase.getContestPK();
+        }catch(ContestNotFoundException ignored){
+            return false;
+        }
+
     }
 
     public User getUser() {

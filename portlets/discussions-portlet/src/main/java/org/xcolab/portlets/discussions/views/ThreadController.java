@@ -9,14 +9,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import org.xcolab.activityEntry.discussion.DiscussionAddedActivityEntry;
+
+import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.util.html.HtmlUtil;
@@ -41,7 +43,7 @@ public class ThreadController extends BaseDiscussionController {
             throws DiscussionAuthorizationException, ThreadNotFoundException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
-        CommentThread thread = CommentClient.getThread(threadId);
+        CommentThread thread = ThreadClientUtil.getThread(threadId);
 
         checkCanView(request,
                 String.format("Thread %d is not in the portlet's configured category group %d",
@@ -89,17 +91,17 @@ public class ThreadController extends BaseDiscussionController {
             thread.setTitle(HtmlUtil.cleanAll(title));
             thread.setAuthorId(userId);
             thread.setIsQuiet(false);
-            thread = CommentClient.createThread(thread);
+            thread = ThreadClientUtil.createThread(thread);
 
             Comment comment = new Comment();
             comment.setThreadId(thread.getThreadId());
             comment.setContent(HtmlUtil.cleanSome(body, ""));
             comment.setAuthorId(userId);
-            comment = CommentClient.createComment(comment);
+            comment = CommentClientUtil.createComment(comment);
 
             if( !thread.getIsQuiet()) {
                 ActivityEntryHelper.createActivityEntry(userId, categoryId, (comment.getCommentId()+""),
-                        new DiscussionAddedActivityEntry());
+                        ActivityProvidersType.DiscussionAddedActivityEntry.getType());
             }
 
             response.sendRedirect(thread.getLinkUrl());
@@ -111,7 +113,7 @@ public class ThreadController extends BaseDiscussionController {
     @Override
     public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         try {
-            CommentThread thread = CommentClient.getThread(additionalId);
+            CommentThread thread = ThreadClientUtil.getThread(additionalId);
             return thread.getCategory().getCategoryGroup().getGroupId()
                     .equals(categoryGroup.getGroupId());
         } catch (ThreadNotFoundException e) {

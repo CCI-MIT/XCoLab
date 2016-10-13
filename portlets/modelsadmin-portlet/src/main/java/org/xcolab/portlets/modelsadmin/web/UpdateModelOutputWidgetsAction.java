@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelOutputWidgetsBean;
 
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelOutputDisplayItem;
@@ -31,7 +31,7 @@ public class UpdateModelOutputWidgetsAction {
 	public void update(ActionRequest request, ActionResponse response, UpdateModelOutputWidgetsBean updateModelWidgetsBean, 
 		@RequestParam Long modelId) throws SystemException, IllegalUIConfigurationException, IOException {
 
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		
 		

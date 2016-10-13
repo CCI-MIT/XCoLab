@@ -2,7 +2,7 @@ package org.xcolab.utils;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.util.exceptions.InternalException;
 
@@ -26,7 +26,7 @@ public final class TemplateReplacementUtil {
 
     public static String replaceContestTypeStrings(String text, ContestType contestType) {
             if (contestType == null) {
-                contestType = ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+                contestType = ContestClientUtil.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             }
             return text.replaceAll(PROPOSAL_PLACEHOLDER, contestType.getProposalName())
                     .replaceAll(PROPOSALS_PLACEHOLDER, contestType.getProposalNamePlural())

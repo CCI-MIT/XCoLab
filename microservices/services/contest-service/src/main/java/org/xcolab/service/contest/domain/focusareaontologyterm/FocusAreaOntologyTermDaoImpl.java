@@ -30,4 +30,27 @@ public class FocusAreaOntologyTermDaoImpl implements FocusAreaOntologyTermDao {
         }
         return query.fetchInto(FocusAreaOntologyTerm.class);
     }
+
+    public FocusAreaOntologyTerm create(FocusAreaOntologyTerm focusAreaOntologyTerm) {
+
+        this.dslContext.insertInto(FOCUS_AREA_ONTOLOGY_TERM)
+                .set(FOCUS_AREA_ONTOLOGY_TERM.FOCUS_AREA_ID, focusAreaOntologyTerm.getFocusAreaId())
+                .set(FOCUS_AREA_ONTOLOGY_TERM.ONTOLOGY_TERM_ID, focusAreaOntologyTerm.getOntologyTermId())
+                .set(FOCUS_AREA_ONTOLOGY_TERM.ORDER_, focusAreaOntologyTerm.getOrder_())
+                .execute();
+
+            return focusAreaOntologyTerm;
+    }
+
+    @Override
+    public List<FocusAreaOntologyTerm> findByOntologyTermIds(List<Long> ontologyTermId) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(FOCUS_AREA_ONTOLOGY_TERM).getQuery();
+
+
+        if (ontologyTermId != null) {
+            query.addConditions(FOCUS_AREA_ONTOLOGY_TERM.ONTOLOGY_TERM_ID.in(ontologyTermId));
+        }
+        return query.fetchInto(FocusAreaOntologyTerm.class);
+    }
 }

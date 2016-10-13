@@ -17,11 +17,6 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
     @Autowired
     private DSLContext dslContext;
 
-    /*
-
-	Proposal2PhaseLocalServiceUtil.create
-
-    * */
 
     public Proposal2Phase create(Proposal2Phase proposal2Phase) {
 
@@ -37,13 +32,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
     }
 
-    /*
 
-    Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal
-
-	Proposal2PhaseLocalServiceUtil.getProposal2Phase
-	Proposal2PhaseLocalServiceUtil.getByProposalId
-    * */
     public Proposal2Phase getByProposalIdContestPhaseId(Long proposalId, Long contestPhaseId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_2_PHASE)
@@ -57,7 +46,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
         return record.into(Proposal2Phase.class);
 
     }
-    //Proposal2PhaseLocalServiceUtil.updateProposal2Phase
+
     public boolean update(Proposal2Phase proposal2Phase) {
         return dslContext.update(PROPOSAL_2_PHASE)
                 .set(PROPOSAL_2_PHASE.PROPOSAL_ID, proposal2Phase.getProposalId())
@@ -71,15 +60,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
                 .execute() > 0;
     }
 
-/*
-    Lists
-    Proposal2PhaseLocalServiceUtil.getByContestPhaseId
-	Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal
-	Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId
-	Proposal2PhaseLocalServiceUtil.getProposal2Phases
-	Proposal2PhaseLocalServiceUtil.getLatestContestPhaseInContest
 
-* */
     public List<Proposal2Phase> findByGiven(Long proposalId, Long contestPhaseId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_2_PHASE).getQuery();
@@ -90,7 +71,13 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
         if (contestPhaseId != null) {
             query.addConditions(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId));
         }
-        return query.fetchInto(Proposal2Phase.class);
+
+        Result<Record> records = query.fetch();
+        if(records != null && records.size()> 0){
+            return records.into(Proposal2Phase.class);
+        }else{
+            return null;
+        }
     }
 
     public Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
@@ -117,7 +104,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
     }
 
-    //Proposal2PhaseLocalServiceUtil.deleteProposal2Phase
+
     public int delete(Long proposalId, Long contestPhaseId) {
         return dslContext.deleteFrom(PROPOSAL_2_PHASE)
                 .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(proposalId))

@@ -3,7 +3,7 @@ package org.xcolab.portlets.modelsadmin.web;
 import com.ext.portlet.model.ModelInputGroup;
 import com.ext.portlet.model.ModelInputItem;
 import com.ext.portlet.model.ModelOutputChartOrder;
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
@@ -43,7 +43,7 @@ public class UpdateModelDisplayFromJSONAction {
 	@RequestMapping(params={"action=updateModelDisplayFromJson", "modelId", "tab=modelDisplayByJSON"})
 	public void update(ActionRequest request, ActionResponse response, UpdateModelDisplayFromJSONBean bean, @RequestParam Long modelId) throws SystemException, IllegalUIConfigurationException, IOException, ParseException, PortalException {
 
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		
 		

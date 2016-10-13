@@ -1,11 +1,10 @@
 package org.xcolab.helpers;
 
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 
-import org.xcolab.util.exceptions.DatabaseAccessException;
+
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.utils.EntityGroupingUtil;
 
 import java.util.Collection;
@@ -30,9 +29,8 @@ public class ProposalAttributeHelper {
 
     //initialization is expensive --> be lazy
     private void init() {
-        try {
-            List<ProposalAttribute> attributes = ProposalAttributeLocalServiceUtil
-                    .getAttributes(proposal.getProposalId(), version);
+            List<ProposalAttribute> attributes = ProposalAttributeClientUtil
+                    .getAllProposalAttributes(proposal.getProposalId(), version);
             if (attributesByNameAndAdditionalId == null) {
                 attributesByNameAndAdditionalId = new HashMap<>();
                 for (ProposalAttribute attribute : attributes) {
@@ -50,9 +48,7 @@ public class ProposalAttributeHelper {
                     }
                 }
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     public boolean hasAttribute(String name) {
