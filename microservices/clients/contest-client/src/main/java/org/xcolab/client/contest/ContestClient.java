@@ -213,27 +213,6 @@ public class ContestClient {
                 .getList(), contestService);
     }
 
-
-    /*
-    public static List<FocusArea> getFocusAreasByOntologyTermId(Long ontologyTermId) {
-        return focusAreaResource.list()
-                .queryParam("ontologyTermId", ontologyTermId)
-                .execute();
-    }
-
-    public static List<Contest> getContestsByFocusAreaId(Long focusAreaId) {
-        List<Long> areas = new ArrayList<>();
-        areas.add(focusAreaId);
-        return contestResource.list()
-                .queryParam("focusAreaOntologyTerms",areas.toArray())
-                .execute();
-    }
-
-    public static OntologyTerm getOntologyTerm(long id) {
-        return ontologyTermResource.get(id).execute();
-    }
-    */
-
     public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
         return DtoUtil.toPojos(contestResource.service(contestId, "getSubContestsByOntologySpaceId",
                 ContestDto.TYPES.getTypeReference())
