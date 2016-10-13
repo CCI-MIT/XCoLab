@@ -10,9 +10,9 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalMoveHistoryClientUtil;
+import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -51,7 +51,7 @@ public final class ProposalCreationUtil {
         try {
             Proposal newProposal = ProposalClientUtil
                     .createProposal(userId, contestPhase.getContestPhasePK(), true);
-            Proposal2Phase newProposal2Phase = Proposal2PhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(
+            Proposal2Phase newProposal2Phase = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(
                     newProposal.getProposalId(), contestPhase.getContestPhasePK());
 
             ProposalWrapper proposalWrapper = new ProposalWrapper(newProposal, 0, contest, contestPhase, newProposal2Phase);
@@ -66,7 +66,7 @@ public final class ProposalCreationUtil {
                         .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                         ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID,
                         0l,baseContestId);
-                ProposalMoveHistoryClientUtil
+                ProposalMoveClientUtil
                         .createForkProposalMoveHistory(baseProposalId, proposalWrapper.getProposalId(),
                         baseContestId, contest.getContestPK(), 0L, contestPhase.getContestPhasePK(), userId);
 

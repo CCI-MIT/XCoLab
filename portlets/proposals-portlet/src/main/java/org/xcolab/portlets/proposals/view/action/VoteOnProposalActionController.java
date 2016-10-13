@@ -26,13 +26,13 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalVoteClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.emailnotification.proposal.ProposalVoteNotification;
@@ -125,11 +125,11 @@ public class VoteOnProposalActionController {
         List<User> usersWithSharedIP = Xcolab_UserLocalServiceUtil.findUsersByLoginIP(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
         if (!usersWithSharedIP.isEmpty()) {
-            final ProposalVote vote = ProposalVoteClientUtil
+            final ProposalVote vote = ProposalMemberRatingClientUtil
                     .getProposalVoteByProposalIdUserId(proposal.getProposalId(), user.getUserId());
             int recentVotesFromSharedIP = 0;
             for (User otherUser : usersWithSharedIP) {
-                    final ProposalVote otherVote = ProposalVoteClientUtil
+                    final ProposalVote otherVote = ProposalMemberRatingClientUtil
                             .getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
                     //check if vote is less than 12 hours old
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
@@ -146,7 +146,7 @@ public class VoteOnProposalActionController {
                 vote.setIsValid(false);
                 sendConfirmationMail(vote, proposal, contest, member, serviceContext);
             }
-            ProposalVoteClientUtil.updateProposalVote(vote);
+            ProposalMemberRatingClientUtil.updateProposalVote(vote);
             return vote.getIsValid();
         }
         return true;
@@ -174,12 +174,12 @@ public class VoteOnProposalActionController {
                               @RequestParam String confirmationToken) {
         boolean success = false;
         try {
-            ProposalVote vote = ProposalVoteClientUtil
+            ProposalVote vote = ProposalMemberRatingClientUtil
                     .getProposalVoteByProposalIdUserId(proposalId, userId);
             if (!vote.getConfirmationToken().isEmpty()
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
-                ProposalVoteClientUtil.updateProposalVote(vote);
+                ProposalMemberRatingClientUtil.updateProposalVote(vote);
                 ProposalWrapper proposal = new ProposalWrapper(ProposalClientUtil.getProposal(proposalId));
                 model.addAttribute("proposal", proposal);
                 success = true;

@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 
-import org.xcolab.client.proposals.ProposalRatingClientUtil;
+import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
@@ -70,7 +70,7 @@ public class ProposalRatingWrapper {
         ProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
             if (ratingType == null)
-                ratingType = ProposalRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
+                ratingType = ProposalJudgeRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
             return ratingType;
         }
 
@@ -82,7 +82,7 @@ public class ProposalRatingWrapper {
             if (roundFactor == null) {
                 roundFactor = 1L;
             }
-        ratingValue = ProposalRatingClientUtil
+        ratingValue = ProposalJudgeRatingClientUtil
                 .getProposalRatingValue(this.proposalRating.getRatingValueId() / roundFactor);
         return ratingValue;
     }

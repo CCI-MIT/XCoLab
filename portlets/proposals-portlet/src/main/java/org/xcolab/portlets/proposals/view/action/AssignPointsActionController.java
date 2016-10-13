@@ -12,14 +12,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
@@ -70,10 +70,10 @@ public class AssignPointsActionController {
         }
 
         //first, delete the existing configuration
-        PointsDistributionConfigurationClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+        PointsClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
 
         try {
-            PointType contestRootPointType = PointsDistributionConfigurationClientUtil
+            PointType contestRootPointType = PointsClientUtil
 
                     .getPointType(contest.getDefaultParentPointType());
 
@@ -102,7 +102,7 @@ public class AssignPointsActionController {
                     pointsDistributionConfiguration.setPercentage(percentage);
                     pointsDistributionConfiguration.setCreator(currentUser.getUserId());
 
-                    PointsDistributionConfigurationClientUtil.createPointsDistributionConfiguration(pointsDistributionConfiguration);
+                    PointsClientUtil.createPointsDistributionConfiguration(pointsDistributionConfiguration);
 
                 }
                 //round to two decimals
@@ -115,7 +115,7 @@ public class AssignPointsActionController {
             //in case a (validation) error occurs, we simply delete all created configurations.
             //since we do client-side validations, this state will not be reached by regular uses
             // of the UI.
-            PointsDistributionConfigurationClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+            PointsClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
             throw e;
         }
 

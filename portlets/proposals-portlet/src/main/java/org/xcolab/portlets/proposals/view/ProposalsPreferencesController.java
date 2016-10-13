@@ -15,8 +15,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
-import org.xcolab.client.proposals.ProposalContestPhaseAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -294,14 +293,14 @@ public class ProposalsPreferencesController {
                             throw new SystemException("Proposal not found");
                         }
                         try {
-                            Proposal2Phase oldP2p = Proposal2PhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
+                            Proposal2Phase oldP2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
 
                             assert oldP2p != null;
 
                             boolean isBoundedVersion = false;
                             if (oldP2p.getVersionTo() < 0) {
                                 oldP2p.setVersionTo(currentProposalVersion.intValue());
-                                Proposal2PhaseClientUtil.updateProposal2Phase(oldP2p);
+                                ProposalPhaseClientUtil.updateProposal2Phase(oldP2p);
                             } else {
                                 isBoundedVersion = true;
                             }
@@ -312,7 +311,7 @@ public class ProposalsPreferencesController {
                             p2p.setVersionFrom(currentProposalVersion.intValue());
                             p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
 
-                            Proposal2PhaseClientUtil.createProposal2Phase(p2p);
+                            ProposalPhaseClientUtil.createProposal2Phase(p2p);
 
                             message.append("Proposal ").append(proposal.getProposalId()).append(" moved successfully (version: ").append(currentProposalVersion).append(").<br/>\n");
                         }catch(Proposal2PhaseNotFoundException ignored){
@@ -328,7 +327,7 @@ public class ProposalsPreferencesController {
                             //first, see if a ribbon already exists
                             ProposalContestPhaseAttribute attribute = null;
 
-                                attribute = ProposalContestPhaseAttributeClientUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                attribute = ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
                                         ProposalContestPhaseAttributeKeys.RIBBON);
 
 
@@ -336,7 +335,7 @@ public class ProposalsPreferencesController {
                             //do not overwrite existing ribbons
                             if (attribute == null) {
                                     ContestClientUtil.getContestPhaseRibbonType(ribbonId);
-                                    ProposalContestPhaseAttributeClientUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                    ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
                                             ProposalContestPhaseAttributeKeys.RIBBON,0l, ribbonId,"");
                             }
                         }

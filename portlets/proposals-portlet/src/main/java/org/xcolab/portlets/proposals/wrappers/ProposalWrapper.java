@@ -4,6 +4,8 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 
 import com.ext.portlet.JudgingSystemActions;
+
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.modeling.RomaClientUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -25,10 +27,9 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.MembershipRequestClientUtil;
+import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalRatingClientUtil;
-import org.xcolab.client.proposals.ProposalVoteClientUtil;
+import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
@@ -208,7 +209,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
             try {
                 org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
                 long votingPhasePK = new ContestWrapper(contestMicro).getVotingPhasePK();
-                return ProposalVoteClientUtil.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
+                return ProposalMemberRatingClientUtil.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
             } catch (ContestNotFoundException ignored) {
 
             }
@@ -240,7 +241,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
     public List<MembershipRequestWrapper> getMembershipRequests() {
         if (this.membershipRequests == null) {
             membershipRequests = new ArrayList<>();
-                for (MembershipRequest m : MembershipRequestClientUtil.getMembershipRequests(proposal.getProposalId())) {
+                for (MembershipRequest m : MembershipClientUtil.getMembershipRequests(proposal.getProposalId())) {
                     if (m.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED) {
                         membershipRequests.add(new MembershipRequestWrapper(m));
                     }
@@ -430,7 +431,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
             if (!getSelectedJudges().isEmpty()) {
                 for (long userId : getSelectedJudges()) {
-                    List<ProposalRating> proposalRatings = ProposalRatingClientUtil
+                    List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                     .getProposalRatingsByProposalUserContestPhase(
                                     userId, proposal.getProposalId(),
                                     contestPhase.getContestPhasePK());
@@ -447,7 +448,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public boolean getJudgeReviewFinishedStatusUserId(long userId) {
 
-            List<ProposalRating> proposalRatings = ProposalRatingClientUtil
+            List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                     .getProposalRatingsByProposalUserContestPhase(
                             userId, proposal.getProposalId(), contestPhase.getContestPhasePK());
             ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);

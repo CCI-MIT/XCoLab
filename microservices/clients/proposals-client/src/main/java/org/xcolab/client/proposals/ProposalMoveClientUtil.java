@@ -5,13 +5,13 @@ import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
-public final class ProposalMoveHistoryClientUtil {
+public final class ProposalMoveClientUtil {
 
     private static final RestService proposalService = new RestService("proposals-service");
-    private static final ProposalMoveHistoryClient client
-            = ProposalMoveHistoryClient.fromService(proposalService);
+    private static final ProposalMoveClient client
+            = ProposalMoveClient.fromService(proposalService);
 
-    public static ProposalMoveHistoryClient getClient() {
+    public static ProposalMoveClient getClient() {
         return client;
     }
 

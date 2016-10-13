@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import javax.portlet.PortletRequest;
 

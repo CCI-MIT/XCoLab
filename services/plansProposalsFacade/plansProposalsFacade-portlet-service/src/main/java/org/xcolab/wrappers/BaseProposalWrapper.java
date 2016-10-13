@@ -19,8 +19,8 @@ import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
-import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
-import org.xcolab.client.proposals.ProposalSupporterClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -112,7 +112,7 @@ public class BaseProposalWrapper {
             return null;
         }
         try {
-            return Proposal2PhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+            return ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
         } catch (Proposal2PhaseNotFoundException e) {
             _log.warn(String.format("Could not fetch p2p for proposal %d, contest phase %d",
                     proposal.getProposalId(), contestPhase.getContestPhasePK()));
@@ -254,7 +254,7 @@ public class BaseProposalWrapper {
     }
 
     public long getSupportersCount() {
-        return ProposalSupporterClientUtil.getProposalSupportersCount(proposal.getProposalId());
+        return ProposalMemberRatingClientUtil.getProposalSupportersCount(proposal.getProposalId());
     }
 
     public long getCommentsCount() {
@@ -306,7 +306,7 @@ public class BaseProposalWrapper {
 
     public List<Member> getSupporters() {
         List<Member> supporters = new ArrayList<>();
-        for (ProposalSupporter ps : ProposalSupporterClientUtil.getProposalSupporters(proposal.getProposalId())) {
+        for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupporters(proposal.getProposalId())) {
             try {
                 supporters.add(MembersClient.getMember(ps.getUserId()));
             } catch (MemberNotFoundException ignored) {

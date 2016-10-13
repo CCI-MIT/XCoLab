@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class PointsDistributionConfigurationClient {
+public final class PointsClient {
 
-    private static final Map<RestService, PointsDistributionConfigurationClient> instances = new HashMap<>();
+    private static final Map<RestService, PointsClient> instances = new HashMap<>();
 
     private final RestService proposalService;
 
@@ -24,7 +24,7 @@ public final class PointsDistributionConfigurationClient {
             pointsDistributionConfigurationResource;
     private final RestResource1<PointTypeDto, Long> pointTypeResource;
 
-    private PointsDistributionConfigurationClient(RestService proposalService) {
+    private PointsClient(RestService proposalService) {
         pointsDistributionConfigurationResource = new RestResource1<>(proposalService,
         "pointsDistributionConfigurations", PointsDistributionConfigurationDto.TYPES);
         pointTypeResource = new RestResource1<>(proposalService,
@@ -32,10 +32,10 @@ public final class PointsDistributionConfigurationClient {
         this.proposalService = proposalService;
     }
 
-    public static PointsDistributionConfigurationClient fromService(RestService proposalService) {
-        PointsDistributionConfigurationClient instance = instances.get(proposalService);
+    public static PointsClient fromService(RestService proposalService) {
+        PointsClient instance = instances.get(proposalService);
         if (instance == null) {
-            instance = new PointsDistributionConfigurationClient(proposalService);
+            instance = new PointsClient(proposalService);
             instances.put(proposalService, instance);
         }
         return instance;

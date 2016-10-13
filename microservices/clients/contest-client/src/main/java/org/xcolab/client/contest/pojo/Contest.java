@@ -9,12 +9,12 @@ public class Contest extends AbstractContest {
     private final ContestClient contestClient;
 
     public Contest() {
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
     }
 
     public Contest(Contest value) {
         super(value);
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
     }
 
     public Contest(AbstractContest abstractContest, RestService restService) {

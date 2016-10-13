@@ -8,10 +8,10 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalContestPhaseAttributeClient;
-import org.xcolab.client.proposals.ProposalContestPhaseAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClient;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
@@ -25,21 +25,21 @@ public class Proposal extends AbstractProposal {
     private final ContestClient contestClient;
     private final ProposalClient proposalClient;
     private final ProposalAttributeClient proposalAttributeClient;
-    private final ProposalContestPhaseAttributeClient proposalContestPhaseAttributeClient;
+    private final ProposalPhaseClient proposalPhaseClient;
 
     public Proposal() {
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
         proposalClient = ProposalClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-        proposalContestPhaseAttributeClient = ProposalContestPhaseAttributeClientUtil.getClient();
+        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
     }
 
     public Proposal(Proposal value) {
         super(value);
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
         proposalClient = ProposalClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-        proposalContestPhaseAttributeClient = ProposalContestPhaseAttributeClientUtil.getClient();
+        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
     }
 
     public Proposal(Long proposalid, Timestamp createdate, Timestamp updateddate,
@@ -49,20 +49,19 @@ public class Proposal extends AbstractProposal {
         super(proposalid, createdate, updateddate, currentversion, authorid, visible, discussionid,
                 resultsdiscussionid, judgediscussionid, fellowdiscussionid,
                 advisordiscussionid, groupid);
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
         proposalClient = ProposalClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-        proposalContestPhaseAttributeClient = ProposalContestPhaseAttributeClientUtil.getClient();
+        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
     }
 
     public Proposal(AbstractProposal abstractProposal, RestService restService) {
         super(abstractProposal);
         //TODO: we should not be using that here
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
         proposalClient = ProposalClient.fromService(restService);
         proposalAttributeClient = ProposalAttributeClient.fromService(restService);
-        proposalContestPhaseAttributeClient =
-                ProposalContestPhaseAttributeClient.fromService(restService);
+        proposalPhaseClient = ProposalPhaseClient.fromService(restService);
     }
 
     public boolean isOpen() {
@@ -126,7 +125,7 @@ public class Proposal extends AbstractProposal {
                 proposalClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
-            ProposalContestPhaseAttribute pcpa = proposalContestPhaseAttributeClient
+            ProposalContestPhaseAttribute pcpa = proposalPhaseClient
                     .getProposalContestPhaseAttribute(this.getProposalId(),
                             contestPhase.getContestPhasePK(),
                             ProposalContestPhaseAttributeKeys.VISIBLE);

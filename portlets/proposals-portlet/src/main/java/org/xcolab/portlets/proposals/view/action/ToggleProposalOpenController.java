@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

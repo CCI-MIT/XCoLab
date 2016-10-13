@@ -12,9 +12,9 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
-import org.xcolab.client.proposals.ProposalVoteClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
@@ -158,7 +158,7 @@ public class ContestWrapper extends BaseContestWrapper {
 
     public long getVotesCount() throws PortalException, SystemException {
         ContestPhase phase = ContestClientUtil.getActivePhase(contest.getContestPK());
-        return ProposalVoteClientUtil.countProposalVotesInContestPhase(phase.getContestPhasePK());
+        return ProposalMemberRatingClientUtil.countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 
     public BaseContestPhaseWrapper getLastPhase() {
@@ -288,7 +288,7 @@ public class ContestWrapper extends BaseContestWrapper {
 
             ContestPhase contestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
             for (Proposal proposal : ProposalClientUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                Proposal2Phase p2p = Proposal2PhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                Proposal2Phase p2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
 
                 final ProposalWrapper proposalWrapper =
                         new ProposalWrapper(proposal, proposal.getCurrentVersion(), contest,
@@ -314,7 +314,7 @@ public class ContestWrapper extends BaseContestWrapper {
             ContestPhase contestPhase = ContestClientUtil.getActivePhase(contestLiferay.getContestPK());
 
             for (Proposal proposal : ProposalClientUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                Proposal2Phase p2p = Proposal2PhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                Proposal2Phase p2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
                 if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contestLiferay, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
                     return false;
                 }

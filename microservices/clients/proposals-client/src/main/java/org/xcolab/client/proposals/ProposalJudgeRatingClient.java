@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class ProposalRatingClient {
+public final class ProposalJudgeRatingClient {
 
-    private static final Map<RestService, ProposalRatingClient> instances = new HashMap<>();
+    private static final Map<RestService, ProposalJudgeRatingClient> instances = new HashMap<>();
 
     private final RestService proposalService;
 
@@ -27,7 +27,7 @@ public final class ProposalRatingClient {
     private final RestResource1<ProposalRatingValueDto, Long> proposalRatingValueResource;
     private final RestResource1<ProposalRatingTypeDto, Long> proposalRatingTypeResource;
 
-    private ProposalRatingClient(RestService proposalService) {
+    private ProposalJudgeRatingClient(RestService proposalService) {
         proposalRatingResource = new RestResource1<>(proposalService,
                 "proposalRatings", ProposalRatingDto.TYPES);
         proposalRatingValueResource = new RestResource1<>(proposalService,
@@ -37,10 +37,10 @@ public final class ProposalRatingClient {
         this.proposalService = proposalService;
     }
 
-    public static ProposalRatingClient fromService(RestService proposalService) {
-        ProposalRatingClient instance = instances.get(proposalService);
+    public static ProposalJudgeRatingClient fromService(RestService proposalService) {
+        ProposalJudgeRatingClient instance = instances.get(proposalService);
         if (instance == null) {
-            instance = new ProposalRatingClient(proposalService);
+            instance = new ProposalJudgeRatingClient(proposalService);
             instances.put(proposalService, instance);
         }
         return instance;

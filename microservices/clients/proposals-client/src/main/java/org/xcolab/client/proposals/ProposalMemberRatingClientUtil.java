@@ -1,17 +1,18 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
-public final class ProposalSupporterClientUtil {
+public final class ProposalMemberRatingClientUtil {
 
     private static final RestService proposalService = new RestService("proposals-service");
-    private static final ProposalSupporterClient client =
-            ProposalSupporterClient.fromService(proposalService);
+    private static final ProposalMemberRatingClient client =
+            ProposalMemberRatingClient.fromService(proposalService);
 
-    public static ProposalSupporterClient getClient() {
+    public static ProposalMemberRatingClient getClient() {
         return client;
     }
 
@@ -52,5 +53,33 @@ public final class ProposalSupporterClientUtil {
 
     public static Boolean deleteProposalSupporter(Long proposalId, Long memberId) {
         return client.deleteProposalSupporter(proposalId, memberId);
+    }
+
+    public static Integer countProposalVotesInContestPhase(Long contestPhaseId) {
+        return client.countProposalVotesInContestPhase(contestPhaseId);
+
+    }
+
+    public static Integer countProposalVotesInContestPhaseProposalId(Long proposalId,
+            Long contestPhaseId) {
+        return client.countProposalVotesInContestPhaseProposalId(proposalId, contestPhaseId);
+    }
+
+    public static Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
+        return client.hasUserVoted(proposalId, contestPhaseId, memberId);
+    }
+
+    public static List<ProposalVote> getProposalVotes(
+            Long contestPhaseId, Long proposalId, Long userId) {
+        return client.getProposalVotes(contestPhaseId, proposalId, userId);
+    }
+
+    public static boolean updateProposalVote(ProposalVote proposalVote) {
+        return client.updateProposalVote(proposalVote);
+    }
+
+    public static ProposalVote getProposalVoteByProposalIdUserId(
+            Long proposalId, Long userId) {
+        return client.getProposalVoteByProposalIdUserId(proposalId, userId);
     }
 }

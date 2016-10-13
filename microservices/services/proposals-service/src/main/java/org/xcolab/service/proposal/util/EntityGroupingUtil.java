@@ -1,7 +1,5 @@
 package org.xcolab.service.proposal.util;
 
-
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -18,7 +16,6 @@ import java.util.Map;
  * This is a utility class to group entities by certain other criteria.
  * It's in a separate class, because the liferay service layer does not support returning maps!
  */
-
 public final class EntityGroupingUtil {
 
     private EntityGroupingUtil() { }
@@ -32,13 +29,14 @@ public final class EntityGroupingUtil {
         } else {
             for (ContestType contestType : contestTypes) {
                 final List<Contest> contests = ContestClientUtil.getContestsByContestTypeId(contestType.getId_());
-                proposalsByContestType.put(contestType, new ArrayList<Proposal>());
+                proposalsByContestType.put(contestType, new ArrayList<>());
                 for (Contest contest : contests) {
                     contestIdToContestTypeMap.put(contest.getContestPK(), contestType);
                 }
             }
             for (Proposal p : proposals) {
                 try {
+                    //TODO: this looks shady, we should not be calling the proposal client from the proposal service
                     final long contestPK = ProposalClientUtil.getLatestContestInProposal(p.getProposalId()).getContestPK();
                     ContestType contestType = contestIdToContestTypeMap.get(contestPK);
                     proposalsByContestType.get(contestType).add(p);

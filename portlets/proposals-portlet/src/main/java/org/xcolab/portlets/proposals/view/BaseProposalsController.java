@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.liferay.portal.util.PortalUtil;
 
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;

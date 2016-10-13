@@ -17,7 +17,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.proposals.ProposalMoveHistoryClientUtil;
+import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
@@ -26,7 +26,7 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.MoveType;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
@@ -164,7 +164,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
     private void populateMoveHistory(Model model, Proposal proposal, Contest contest)
             throws SystemException {
-        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveHistoryClientUtil
+        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveClientUtil
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         List<MoveHistoryWrapper> sourceMoveHistories = new ArrayList<>();
 
@@ -174,7 +174,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
 
-        ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveHistoryClientUtil
+        ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveClientUtil
                 .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         if (targetMoveHistoryRaw != null) {
             MoveHistoryWrapper targetMoveHistory = new MoveHistoryWrapper(targetMoveHistoryRaw);

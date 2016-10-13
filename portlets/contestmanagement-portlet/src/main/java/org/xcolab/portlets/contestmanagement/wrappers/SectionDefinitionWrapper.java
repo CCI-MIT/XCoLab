@@ -14,7 +14,7 @@ import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.utils.IdListUtil;
@@ -103,7 +103,7 @@ public class SectionDefinitionWrapper implements Serializable {
 
 
         PointsDistributionConfiguration pdc =
-                PointsDistributionConfigurationClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+                PointsClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
         this.pointPercentage = Double.toString(pdc.getPercentage());
         this.pointType = pdc.getPointTypeId();
 
@@ -455,16 +455,16 @@ public class SectionDefinitionWrapper implements Serializable {
             id = psd.getId_();
         } else {
             psd = PlanTemplateClientUtil.getPlanSectionDefinition(id);
-            pdc = PointsDistributionConfigurationClientUtil
+            pdc = PointsClientUtil
                     .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
             if (pointType == 0L) {
-                PointsDistributionConfigurationClientUtil
+                PointsClientUtil
                         .deletePointsDistributionConfiguration(pdc.getId_());
             } else {
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetPlanSectionDefinitionId(id);
-                PointsDistributionConfigurationClientUtil.updatePointsDistributionConfiguration(pdc);
+                PointsClientUtil.updatePointsDistributionConfiguration(pdc);
             }
 
 
@@ -475,7 +475,7 @@ public class SectionDefinitionWrapper implements Serializable {
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetPlanSectionDefinitionId(id);
-                pdc = PointsDistributionConfigurationClientUtil.createPointsDistributionConfiguration(pdc);
+                pdc = PointsClientUtil.createPointsDistributionConfiguration(pdc);
             }
         }
 

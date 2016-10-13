@@ -84,6 +84,7 @@ public class ProposalAttributeService {
             if (proposalAttribute.getName().equals(ProposalAttributeKeys.NAME)) {
                 try {
                     CommentThread thread = ThreadClientUtil.getThread(proposal.getDiscussionId());
+                    //TODO: this looks shady, we should not call the proposal client from the proposal service
                     Contest contest = ProposalClientUtil.getCurrentContestForProposal(proposalAttribute.getProposalId());
                     ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
                     thread.setTitle(String.format("%s %s", contestType.getProposalName(), proposalAttribute.getStringValue()));

@@ -1,11 +1,10 @@
-package org.xcolab.portlets.proposals.utils;
-
+package org.xcolab.portlets.proposals.utils.context;
 
 import com.liferay.portal.model.User;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;

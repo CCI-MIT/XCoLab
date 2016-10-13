@@ -12,14 +12,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalRatingClientUtil;
+import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -92,11 +92,11 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
 
-        List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingClientUtil.getFellowRatingsForProposal(
+        List<ProposalRating> fellowRatingsUnWrapped = ProposalJudgeRatingClientUtil.getFellowRatingsForProposal(
                 proposal.getProposalId(), contestPhase.getContestPhasePK());
         List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
-        List<ProposalRating> judgesRatingsUnWrapped = ProposalRatingClientUtil.getJudgeRatingsForProposal(
+        List<ProposalRating> judgesRatingsUnWrapped = ProposalJudgeRatingClientUtil.getJudgeRatingsForProposal(
                 proposal.getProposalId(), contestPhase.getContestPhasePK());
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ){

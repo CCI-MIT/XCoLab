@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -22,7 +22,7 @@ import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.PointsTarget;
 import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.PointsTargetProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -49,7 +49,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         Contest contest = proposalsContext.getContest(request);
 
-        PointType contestParentPointType = PointsDistributionConfigurationClientUtil.getPointType(contest.getDefaultParentPointType());
+        PointType contestParentPointType = PointsClientUtil.getPointType(contest.getDefaultParentPointType());
 
         if (contestParentPointType == null) {
             //there is no point scheme set for this contest, forward to description tab
@@ -65,7 +65,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             subProposalsWrapped.add(new ProposalWrapper(p));
         }
         //TODO: make this flexible
-        PointType pointType = PointsDistributionConfigurationClientUtil.getPointType(9L);
+        PointType pointType = PointsClientUtil.getPointType(9L);
         DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 
@@ -75,7 +75,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             regionalPercentages.add(new PointsTargetProposalWrapper(target, 93));
         }
 
-        pointType = PointsDistributionConfigurationClientUtil.getPointType(4L);
+        pointType = PointsClientUtil.getPointType(4L);
         distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 

@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.utils;
+package org.xcolab.portlets.proposals.utils.context;
 
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,12 +21,12 @@ import com.liferay.portal.util.PortalUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -80,7 +80,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
     
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.ProposalsContext#getContest(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getContest(javax.portlet.PortletRequest)
      */
     @Override
     public Contest getContest(PortletRequest request) {
@@ -88,7 +88,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
     
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.ProposalsContext#getContestPhase(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getContestPhase(javax.portlet.PortletRequest)
      */
     @Override
     public ContestPhase getContestPhase(PortletRequest request) {
@@ -96,7 +96,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
     
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.ProposalsContext#getProposal(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getProposal(javax.portlet.PortletRequest)
      */
     @Override
     public Proposal getProposal(PortletRequest request) {
@@ -105,7 +105,7 @@ public class ProposalsContextImpl implements ProposalsContext {
 
 
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.ProposalsContext#getPermissions(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getPermissions(javax.portlet.PortletRequest)
      */
     @Override
     public ProposalsPermissions getPermissions(PortletRequest request) {
@@ -113,7 +113,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.ProposalsContext#getDisplayPermissions(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getDisplayPermissions(javax.portlet.PortletRequest)
      */
     @Override
     public ProposalsDisplayPermissions getDisplayPermissions(PortletRequest request) {
@@ -246,7 +246,7 @@ public class ProposalsContextImpl implements ProposalsContext {
 
                 if (proposalId > 0) {
                     try {
-                        proposal2Phase = Proposal2PhaseClientUtil
+                        proposal2Phase = ProposalPhaseClientUtil
                                 .getProposal2PhaseByProposalIdContestPhaseId(proposalId,
                                         contestPhase.getContestPhasePK());
                     } catch (Proposal2PhaseNotFoundException e) {
@@ -301,7 +301,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                                     contestPhase = mostRecentPhaseInRequestedContest;
                                 }
                                 try {
-                                    proposal2Phase = Proposal2PhaseClientUtil.
+                                    proposal2Phase = ProposalPhaseClientUtil.
                                             getProposal2PhaseByProposalIdContestPhaseId(proposalId,
                                                     contestPhase.getContestPhasePK());
                                 }catch (Proposal2PhaseNotFoundException ignored){

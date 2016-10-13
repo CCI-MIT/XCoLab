@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.apache.commons.lang.StringUtils;
 import org.xcolab.analytics.AnalyticsUtil;
-import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -129,7 +129,7 @@ public class ProposalUpdateHelper {
             try {
                 final Proposal updatedProposal = ProposalClientUtil.getProposal(proposalWrapper.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
-                Proposal2PhaseClientUtil.updateProposal2Phase(p2p);
+                ProposalPhaseClientUtil.updateProposal2Phase(p2p);
             }catch (ProposalNotFoundException ignored){
 
             }

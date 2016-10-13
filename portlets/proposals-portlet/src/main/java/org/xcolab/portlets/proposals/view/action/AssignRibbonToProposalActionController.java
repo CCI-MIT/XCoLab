@@ -1,6 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import org.xcolab.client.proposals.ProposalContestPhaseAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -34,7 +34,7 @@ public class AssignRibbonToProposalActionController {
             long contestId = proposalsContext.getContest(request).getContestPK();
 
 
-                ProposalContestPhaseAttributeClientUtil
+                ProposalPhaseClientUtil
                         .setProposalContestPhaseAttribute(proposalId, contestPhaseId,
                         ProposalContestPhaseAttributeKeys.RIBBON,null,new Long(ribbon),null);
 

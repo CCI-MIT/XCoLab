@@ -20,7 +20,7 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.Proposal2PhaseClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.helpers.Tuple;
@@ -332,7 +332,7 @@ public class BaseContestWrapper {
         try {
             ContestPhase cp = ContestClientUtil.getActivePhase(contest.getContestPK());
             if (cp != null) {
-                return Proposal2PhaseClientUtil
+                return ProposalPhaseClientUtil
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
             }
         } catch (UncheckedEntityNotFoundException e) {

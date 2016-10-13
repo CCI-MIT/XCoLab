@@ -16,12 +16,12 @@ public class ContestPhase extends AbstractContestPhase {
     private final ContestClient contestClient;
 
     public ContestPhase() {
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
     }
 
     public ContestPhase(ContestPhase value) {
         super(value);
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
     }
 
     public ContestPhase(Long contestphasepk, Long contestpk, Long contestphasetype,
@@ -35,7 +35,7 @@ public class ContestPhase extends AbstractContestPhase {
                 contestphaseautopromote, contestphasedescriptionoverride, phaseactiveoverride,
                 phaseinactiveoverride, phasestartdate, phaseenddate, phasebufferenddated,
                 nextstatus, created, updated, authorid);
-        contestClient = ContestClientUtil.getContestClient();
+        contestClient = ContestClientUtil.getClient();
     }
 
     public ContestPhase(AbstractContestPhase abstractContestPhase, RestService restService) {

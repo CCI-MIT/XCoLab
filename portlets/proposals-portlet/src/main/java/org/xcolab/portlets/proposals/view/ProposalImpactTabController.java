@@ -22,7 +22,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.modeling.RomaClientUtil;
-import org.xcolab.client.proposals.ProposalUnversionedAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
@@ -33,7 +33,7 @@ import org.xcolab.portlets.proposals.impact.ProposalImpactScenarioCombinationWra
 import org.xcolab.portlets.proposals.impact.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -79,7 +79,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("canCommentAsAIF", userCanCommentAsAIF);
         }
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeClientUtil
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
 
                 .
                 getProposalUnversionedAttributesByProposalId(proposalWrapper.getProposalId());

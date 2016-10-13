@@ -7,14 +7,14 @@ import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
-public final class ProposalRatingClientUtil {
+public final class ProposalJudgeRatingClientUtil {
 
     private static final RestService proposalService = new RestService("proposals-service");
 
-    private static final ProposalRatingClient client =
-            ProposalRatingClient.fromService(proposalService);
+    private static final ProposalJudgeRatingClient client =
+            ProposalJudgeRatingClient.fromService(proposalService);
 
-    public static ProposalRatingClient getClient() {
+    public static ProposalJudgeRatingClient getClient() {
         return client;
     }
 
