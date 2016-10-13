@@ -164,7 +164,8 @@ public class ContestsIndexController extends BaseProposalsController {
 
         /*
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
-        	List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil.getOntologySpaces(0, Integer.MAX_VALUE);
+        	List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil
+                    .getOntologySpaces(0, Integer.MAX_VALUE);
         	List<OntologyTerm> ontologyTermsRaw = OntologyTermLocalServiceUtil.getOntologyTerms(0, Integer.MAX_VALUE);
         	List<FocusArea> focusAreasRaw = FocusAreaLocalServiceUtil.getFocusAreas(0, Integer.MAX_VALUE);
         	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTerms(0, Integer.MAX_VALUE);
