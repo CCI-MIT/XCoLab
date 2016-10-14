@@ -1,21 +1,22 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.PlanSectionTypeKeys;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
@@ -24,9 +25,10 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import java.io.IOException;
 
 
 @Controller
@@ -46,8 +48,9 @@ public class ProposalRevertActionController {
     throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
 
         if (proposalsContext.getProposal(request) != null && !proposalsContext.getPermissions(request).getCanEdit()) {
-            throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
-                    proposalsContext.getUser(request).getUserId() + ", proposal: " + proposalsContext.getProposal(request).getProposalId());
+            throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: "
+                    + proposalsContext.getMember(request).getUserId() + ", proposal: "
+                    + proposalsContext.getProposal(request).getProposalId());
         }
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);

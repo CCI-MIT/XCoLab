@@ -4,7 +4,6 @@ package org.xcolab.portlets.proposals.discussion;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -80,14 +79,13 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     @Override
     public boolean getCanSeeAddCommentButton() {
         boolean canSeeAddCommentButton = false;
-        boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
         boolean isEvaluationTabActive = discussionTabName != null
                 && discussionTabName.equals(ProposalTab.EVALUATION.name());
 
         if (isEvaluationTabActive) {
+            boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
             if (isIdsInitialized) {
-                canSeeAddCommentButton = isUserAllowedToAddCommentsToProposalEvaluationInContestPhase(currentUser,
-                        proposalId, contestPhaseId);
+                canSeeAddCommentButton = isAllowedToAddCommentsToProposalEvaluationInContestPhase();
             }
         } else {
             canSeeAddCommentButton = true;
@@ -102,28 +100,27 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
                 Proposal proposal = ProposalClientUtil.getProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
-                return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
+                return proposalWrapper.isUserAmongFellows(currentMember) || getCanAdminAll();
             } catch (ProposalNotFoundException ignored) {
             }
         }
         return comment.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
     }
 
-    private boolean isUserAllowedToAddCommentsToProposalEvaluationInContestPhase
-            (User user, Long proposalId, Long contestPhaseId) {
+    private boolean isAllowedToAddCommentsToProposalEvaluationInContestPhase() {
 
         boolean isUserAllowed = false;
         try {
             Proposal proposal = ProposalClientUtil.getProposal(proposalId);
-            isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId)
-                    || isUserProposalAuthorOrTeamMember(user, proposal)
+            isUserAllowed = isUserFellowOrJudgeOrAdvisor(proposal)
+                    || isUserProposalAuthorOrTeamMember(proposal)
                     || getCanAdminAll();
         } catch (ProposalNotFoundException ignored) {
         }
         return isUserAllowed;
     }
 
-    private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal, Long contestPhaseId) {
+    private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
 
         try {
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
@@ -133,9 +130,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
 
             boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
-                    MembersClient.getMemberUnchecked(user.getUserId()));
-            boolean isFellow = proposalWrapper.isUserAmongFellows(user);
-            boolean isAdvisor = contestWrapper.isUserAmongAdvisors(user);
+                    MembersClient.getMemberUnchecked(currentMember.getUserId()));
+            boolean isFellow = proposalWrapper.isUserAmongFellows(currentMember);
+            boolean isAdvisor = contestWrapper.isUserAmongAdvisors(currentMember);
 
             return isFellow || isJudge || isAdvisor;
         } catch (SystemException e) {
@@ -146,13 +143,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     }
 
-    private boolean isUserProposalAuthorOrTeamMember(User user, Proposal proposal) {
-        boolean isAuthor = false;
-        boolean isMember = false;
-
-            isAuthor = proposal.getAuthorId() == user.getUserId();
-            isMember = MembersClient.isUserInGroup(user.getUserId(), proposal.getProposalId());
-
+    private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
+        boolean isAuthor = proposal.getAuthorId() == currentMember.getUserId();
+        boolean isMember = MembersClient.isUserInGroup(currentMember.getUserId(), proposal.getProposalId());
 
         return isAuthor || isMember;
     }

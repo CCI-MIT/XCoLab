@@ -1,6 +1,14 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -15,20 +23,11 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
@@ -37,8 +36,8 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -96,7 +95,7 @@ public class ProposalRequestMembershipActionController {
         final Contest contest = proposalsContext.getContest(request);
 
         MembershipClientUtil
-                .addRequestedMembershipRequest(proposalId, liferaySender.getUserId(), comment);
+                .addRequestedMembershipRequest(proposalId, sender.getUserId(), comment);
 
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
@@ -214,11 +213,11 @@ public class ProposalRequestMembershipActionController {
         }
         if (approve.equalsIgnoreCase("APPROVE")) {
             MembershipClientUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
-            sendMessage(proposalsContext.getUser(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
+            sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
         } else if (approve.equalsIgnoreCase("DENY")) {
             MembershipClientUtil
                     .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
-            sendMessage(proposalsContext.getUser(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
+            sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
         }
         response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/ADMIN");
     }

@@ -1,5 +1,14 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ext.portlet.PlanSectionTypeKeys;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.OntologyTerm;
@@ -8,15 +17,7 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -34,11 +35,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 public class ProposalSectionWrapper {
 
-    private final static Log _log = LogFactoryUtil.getLog(ProposalSectionWrapper.class);
+    private final static Logger _log = LoggerFactory.getLogger(ProposalSectionWrapper.class);
 
     private final PlanSectionDefinition definition;
     private final ProposalWrapper wrappedProposal;
@@ -52,7 +51,7 @@ public class ProposalSectionWrapper {
         return definition.getTitle();
     }
 
-    public String getContent() throws PortalException, SystemException {
+    public String getContent() {
         ProposalAttribute attr = getSectionAttribute();
 
         if (attr == null) {
@@ -61,7 +60,7 @@ public class ProposalSectionWrapper {
         return attr.getStringValue().trim();
     }
 
-    public String getContentFormatted() throws SystemException, PortalException, URISyntaxException {
+    public String getContentFormatted() throws URISyntaxException {
         String content = getContent();
         if (content == null) {
             //default text if available
@@ -212,7 +211,7 @@ public class ProposalSectionWrapper {
         return new ProposalWrapper(ProposalClientUtil.getProposal(attr.getNumericValue()));
     }
 
-    public ProposalWrapper[] getStringValueAsProposalArray() throws SystemException, PortalException {
+    public ProposalWrapper[] getStringValueAsProposalArray() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getStringValue() == null || attr.getStringValue().equals("")) {
             return null;

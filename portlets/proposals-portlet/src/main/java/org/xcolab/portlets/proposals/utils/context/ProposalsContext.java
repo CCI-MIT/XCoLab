@@ -45,6 +45,8 @@ public interface ProposalsContext {
 
     Member getMember(PortletRequest request);
 
+    long getMemberId(PortletRequest request);
+
     void invalidateContext(PortletRequest request);
 
     ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request);

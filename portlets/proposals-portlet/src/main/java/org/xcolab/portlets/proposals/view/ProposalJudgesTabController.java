@@ -157,7 +157,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(
-                proposalWrapper, proposalsContext.getUser(request));
+                proposalWrapper, proposalsContext.getMember(request));
 
         boolean hasAlreadyBeenPromoted = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
                 proposal.getProposalId(),

@@ -1,24 +1,23 @@
 package org.xcolab.portlets.proposals.view;
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.enums.ContestPhaseTypeValue;
@@ -34,6 +33,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.EntityGroupingUtil;
 import org.xcolab.wrappers.BaseProposalWrapper;
 import org.xcolab.wrappers.ContestTypeProposalWrapper;
@@ -54,6 +54,7 @@ import javax.portlet.PortletRequest;
 @Controller
 @RequestMapping("view")
 public class ProposalSectionsTabController extends BaseProposalTabController {
+
     @Autowired
     private ProposalsContext proposalsContext;
 
@@ -67,8 +68,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             @RequestParam(defaultValue = "false") String moveType,
             @RequestParam(required = false) Long moveFromContestPhaseId,
             @RequestParam(defaultValue = "false") boolean voted,
-            Model model, PortletRequest request)
-            throws PortalException, SystemException {
+            Model model, PortletRequest request) throws PortalException {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
 
@@ -149,21 +149,22 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
                 return "proposalDetails_edit";
             }
-
-            setJudgeProposalBean(model, request);
+            if (proposalsPermissions.getCanJudgeActions()) {
+                setJudgeProposalBean(model, request);
+            }
             setLinkedProposals(model, proposal);
             final Contest contest = proposalsContext.getContest(request);
             populateMoveHistory(model, proposal, contest);
         } catch (ContestNotFoundException ignored) {
 
+        } catch (SystemException e) {
+            throw new DatabaseAccessException(e);
         }
-
 
         return "proposalDetails";
     }
 
-    private void populateMoveHistory(Model model, Proposal proposal, Contest contest)
-            throws SystemException {
+    private void populateMoveHistory(Model model, Proposal proposal, Contest contest) {
         List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveClientUtil
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         List<MoveHistoryWrapper> sourceMoveHistories = new ArrayList<>();
@@ -204,7 +205,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 contestTypeProposalWrappersByContestTypeId);
     }
 
-    private void setJudgeProposalBean(Model model, PortletRequest request) throws PortalException, SystemException {
+    private void setJudgeProposalBean(Model model, PortletRequest request) {
         ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
         ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(
                 proposalWrapper, proposalsContext.getMember(request));
@@ -215,9 +216,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("judgeProposalBean", judgeProposalBean);
     }
 
-    private void setVotingDeadline(Model model, Contest baseContest) throws SystemException, PortalException {
+    private void setVotingDeadline(Model model, Contest baseContest) {
         Date votingDeadline = getVotingDeadline(baseContest);
-        if (Validator.isNotNull(votingDeadline)) {
+        if (votingDeadline != null) {
             final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, YYYY", Locale.US);
             model.addAttribute("votingDeadline", customDateFormat.format(votingDeadline));
         } else {
@@ -225,19 +226,12 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
     }
 
-    private Date getVotingDeadline(Contest contest) throws SystemException, PortalException {
+    private Date getVotingDeadline(Contest contest) {
         List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contest.getContestPK());
-        try {
-            return getActiveVotingPhase(contestPhases).getPhaseEndDate();
-        }
-        // No active proposal creation phase could be found -
-        // should never be the case unless an admin is creating a proposal in a non-creation phase
-        catch (SystemException exception) {
-            return null;
-        }
+        return getActiveVotingPhase(contestPhases).getPhaseEndDate();
     }
 
-    private ContestPhase getActiveVotingPhase(List<ContestPhase> contestPhases) throws SystemException {
+    private ContestPhase getActiveVotingPhase(List<ContestPhase> contestPhases) {
         for (ContestPhase phase : contestPhases) {
             if (phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() ||
                     phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId() ||
@@ -248,6 +242,6 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             }
         }
 
-        throw new SystemException("Active voting phase was not found");
+        throw new IllegalStateException("Active voting phase was not found");
     }
 }

@@ -3,7 +3,6 @@ package org.xcolab.portlets.proposals.wrappers;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -12,9 +11,9 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
@@ -269,9 +268,9 @@ public class ContestWrapper extends BaseContestWrapper {
         return contest.getFocusAreaId() > 0;
     }
 
-    public boolean isUserAmongAdvisors(User userInQuestion) throws SystemException, PortalException {
+    public boolean isUserAmongAdvisors(Member memberInQuestion) throws SystemException, PortalException {
         for (Member judge : getContestAdvisors()) {
-            if (judge.getUserId() == userInQuestion.getUserId()) {
+            if (judge.getUserId() == memberInQuestion.getUserId()) {
                 return true;
             }
         }

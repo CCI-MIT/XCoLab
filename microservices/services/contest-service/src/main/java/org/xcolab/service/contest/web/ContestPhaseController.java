@@ -45,8 +45,7 @@ public class ContestPhaseController {
     }
 
     @RequestMapping(value = "/contestPhaseRibbonTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestPhaseRibbonType> getContestPhaseRibbonTypes(
-    ) {
+    public List<ContestPhaseRibbonType> getContestPhaseRibbonTypes() {
         return contestPhaseRibbonTypeDao.findByGiven();
     }
 

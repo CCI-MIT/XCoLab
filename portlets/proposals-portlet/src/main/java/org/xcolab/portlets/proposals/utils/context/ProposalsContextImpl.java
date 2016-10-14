@@ -1,48 +1,29 @@
 package org.xcolab.portlets.proposals.utils.context;
 
-
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
+import org.xcolab.portlets.proposals.utils.context.ProposalContextHelper.InvalidAccessException;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
 import javax.portlet.PortletRequest;
@@ -50,62 +31,69 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
+
+    private final static Logger _log = LoggerFactory.getLogger(ProposalsContextImpl.class);
+
     private static final String PROPOSALS_ATTRIBUTE_PREFIX = "_proposalsProtlet_";
-    private static final String CONTEXT_INITIALIZED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contextInitialized";
+    private static final String CONTEXT_INITIALIZED_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "contextInitialized";
     private static final String PERMISSIONS_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "permissions";
-    private static final String DISPLAY_PERMISSIONS_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "displayPermissions";
+    private static final String DISPLAY_PERMISSIONS_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "displayPermissions";
     private static final String CONTEST_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contest";
     private static final String PROPOSAL_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposals";
-    private static final String CONTEST_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
+    private static final String CONTEST_PHASE_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
     private static final String USER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "user";
     private static final String MEMBER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "member";
-    private static final String PROPOSALS_PREFERENCES_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "preferences";
-    
-    private static final String PROPOSAL_2_PHASE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposal2phase";
-    private static final String REQUEST_PHASE_ID_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "requestPhaseId";
-    private static final String CONTEST_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestWrapped";
-    private static final String CONTEST_PHASE_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestPhaseWrapped";
+    private static final String PROPOSALS_PREFERENCES_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "preferences";
+    private static final String PROPOSAL_2_PHASE_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "proposal2phase";
+    private static final String REQUEST_PHASE_ID_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "requestPhaseId";
+    private static final String CONTEST_WRAPPED_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "contestWrapped";
+    private static final String CONTEST_PHASE_WRAPPED_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "contestPhaseWrapped";
     private static final String CONTEST_TYPE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestType";
-    private static final String PROPOSAL_WRAPPED_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
-
-    public static final String PROPOSAL_ID_PARAM = "proposalId";
-    public static final String PLAN_ID_PARAM = "planId";
-    public static final String CONTEST_ID_PARAM = "contestId";
-    public static final String CONTEST_URL_NAME_PARAM = "contestUrlName";
-    public static final String CONTEST_YEAR_PARAM = "contestYear";
-    public static final String CONTEST_PHASE_ID_PARAM = "phaseId";
-    public static final String VERSION_PARAM = "version";
+    private static final String PROPOSAL_WRAPPED_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
 
     public ProposalsContextImpl() {
     }
-    
+
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getContest(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getContest(javax.portlet
+     * .PortletRequest)
      */
     @Override
     public Contest getContest(PortletRequest request) {
         return getAttribute(request, CONTEST_ATTRIBUTE);
     }
-    
+
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getContestPhase(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getContestPhase(javax
+     * .portlet.PortletRequest)
      */
     @Override
     public ContestPhase getContestPhase(PortletRequest request) {
         return getAttribute(request, CONTEST_PHASE_ATTRIBUTE);
     }
-    
+
+
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getProposal(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getProposal(javax
+     * .portlet.PortletRequest)
      */
     @Override
     public Proposal getProposal(PortletRequest request) {
         return getAttribute(request, PROPOSAL_ATTRIBUTE);
     }
 
-
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getPermissions(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getPermissions(javax
+     * .portlet.PortletRequest)
      */
     @Override
     public ProposalsPermissions getPermissions(PortletRequest request) {
@@ -113,33 +101,34 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     /* (non-Javadoc)
-     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getDisplayPermissions(javax.portlet.PortletRequest)
+     * @see org.xcolab.portlets.proposals.utils.context.ProposalsContext#getDisplayPermissions
+     * (javax.portlet.PortletRequest)
      */
     @Override
     public ProposalsDisplayPermissions getDisplayPermissions(PortletRequest request) {
         return getAttribute(request, DISPLAY_PERMISSIONS_ATTRIBUTE);
     }
-    
+
     @Override
     public Proposal2Phase getProposal2Phase(PortletRequest request) {
         return getAttribute(request, PROPOSAL_2_PHASE_ATTRIBUTE);
     }
-    
+
     @Override
     public Long getViewContestPhaseId(PortletRequest request) {
         return getAttribute(request, REQUEST_PHASE_ID_ATTRIBUTE);
     }
-    
+
     @Override
     public ProposalWrapper getProposalWrapped(PortletRequest request) {
         return getAttribute(request, PROPOSAL_WRAPPED_ATTRIBUTE);
     }
-    
+
     @Override
     public ContestWrapper getContestWrapped(PortletRequest request) {
         return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE);
     }
-    
+
     @Override
     public BaseContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) {
         return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE);
@@ -151,11 +140,6 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     @Override
-    public ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request) {
-        return getAttribute(request, PROPOSALS_PREFERENCES_ATTRIBUTE);
-    }
-    
-    @Override
     public User getUser(PortletRequest request) {
         return getAttribute(request, USER_ATTRIBUTE);
     }
@@ -166,222 +150,80 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     @Override
+    public long getMemberId(PortletRequest request) {
+        Member member = getMember(request);
+        if (member == null) {
+            return 0;
+        }
+        return member.getId_();
+    }
+
+    @Override
     public void invalidateContext(PortletRequest request) {
         request.removeAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
     }
-    
+
+    @Override
+    public ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request) {
+        return getAttribute(request, PROPOSALS_PREFERENCES_ATTRIBUTE);
+    }
+
     private <T> T getAttribute(PortletRequest request, String attributeName) {
-        Object contextInitialized =  request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
+        Object contextInitialized = request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
             init(request);
         }
+        //noinspection unchecked
         return (T) request.getAttribute(attributeName);
     }
 
     private void init(PortletRequest request) {
+        ProposalContextHelper contextHelper = new ProposalContextHelper(request);
+
+        final Member member = contextHelper.getMember();
+        final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        final String currentUrl = themeDisplay.getPortalURL() + themeDisplay.getURLCurrent();
+
+        final HttpServletRequest httpServletRequest
+                = ((LiferayPortletRequest) request).getHttpServletRequest();
+        final String referralUrl = httpServletRequest.getHeader("Referer");
+        final String userAgent = httpServletRequest.getHeader("User-Agent");
+
         try {
-            final String contestUrlName = ParamUtil.getString(request, CONTEST_URL_NAME_PARAM);
-            final long contestYear = ParamUtil.getLong(request, CONTEST_YEAR_PARAM);
-            final long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
-            final long planId = ParamUtil.getLong(request, PLAN_ID_PARAM);
-            long proposalId = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
-            final long phaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
-            final int version = ParamUtil.getInteger(request, VERSION_PARAM);
-
-            if (proposalId == 0) {
-                proposalId = planId;
-            }
-
-            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-            String currentUrl = themeDisplay.getPortalURL() + themeDisplay.getURLCurrent();
-            User currentUser = null;
-
-            HttpServletRequest httpServletRequest = ((LiferayPortletRequest) request)
-                    .getHttpServletRequest();
-            String referralUrl = httpServletRequest.getHeader("Referer");
-            String userAgent = httpServletRequest.getHeader("User-Agent");
-
-            try {
-                currentUser = PortalUtil.getUser(request);
-            } catch (PortalException e) {
-                //not logged in
-            }
-
-            Contest contest = null;
-            if (contestId > 0) {
-                try {
-                    contest = ContestClientUtil.getContest(contestId);
-                } catch (ContestNotFoundException e) {
-                    handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, referralUrl,
-                            userAgent);
-                }
-            } else if (StringUtils.isNotBlank(contestUrlName) && contestYear > 0) {
-                    contest = ContestClientUtil
-                            .getContestByContestUrlNameContestYear(contestUrlName, contestYear);
-
-            }
+            Contest contest = contextHelper.getContest();
 
             ContestPhase contestPhase = null;
             Proposal proposal = null;
             Proposal2Phase proposal2Phase = null;
-
-            if (contest != null) {
-
-                    if (phaseId > 0) {
-                            contestPhase = ContestClientUtil.getContestPhase(phaseId);
-                        if(contestPhase == null) {
-                            contestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
-                        }
-
-                    } else {
-                        //get the last phase of this contest
-                        contestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
-                    }
-                if( contestPhase == null) {
-                    throw ReferenceResolutionException
-                            .toObject(ContestPhase.class, "")
-                            .fromObject(Contest.class, contest.getContestPK());
-                }
-
-
-                if (proposalId > 0) {
-                    try {
-                        proposal2Phase = ProposalPhaseClientUtil
-                                .getProposal2PhaseByProposalIdContestPhaseId(proposalId,
-                                        contestPhase.getContestPhasePK());
-                    } catch (Proposal2PhaseNotFoundException e) {
-                        // there is no connection between proposal and selected contest phase, check if phaseId was given by the user, if it was
-                        // rethrow the exception, if it wasn't check if there is a connection and any phase for given contest if there is such connection
-                        // fetch most recent one
-                        // if proposal is being moved ignore missing p2p mapping
-                        if (request.getParameter("isMove") == null) {
-                            if (phaseId <= 0) {
-                                _log.info("Can't find association between proposal " + proposalId
-                                        + " and phase " + contestPhase.getContestPhasePK());
-                                ContestPhase mostRecentPhaseInRequestedContest = null;
-                                ContestPhase mostRecentPhaseInOtherContest = null;
-                                for (Long contestPhaseId : Proposal2PhaseLocalServiceUtil
-                                        .getContestPhasesForProposal(proposalId)) {
-
-                                    ContestPhase cp = ContestClientUtil
-                                            .getContestPhase(contestPhaseId);
-                                    boolean isContestPhaseAssociatedWithRequestedContest =
-                                            cp.getContestPK() == contest.getContestPK().longValue();
-                                    if (isContestPhaseAssociatedWithRequestedContest) {
-                                        if (mostRecentPhaseInRequestedContest == null
-                                                || mostRecentPhaseInRequestedContest.compareTo(cp)
-                                                < 0) {
-                                            mostRecentPhaseInRequestedContest = cp;
-                                        }
-                                    } else {
-                                        if (mostRecentPhaseInOtherContest == null
-                                                || mostRecentPhaseInOtherContest.compareTo(cp)
-                                                < 0) {
-                                            mostRecentPhaseInOtherContest = cp;
-                                        }
-                                    }
-                                }
-                                if (mostRecentPhaseInRequestedContest == null) {
-
-                                    if (mostRecentPhaseInOtherContest == null) {
-                                        handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl,
-                                                userAgent, referralUrl);
-                                    } else {
-                                        contestPhase = mostRecentPhaseInOtherContest;
-                                        // TODO show user list if several contest are available
-                                        try{
-                                            contest = ContestClientUtil
-                                                    .getContest(contestPhase.getContestPK());
-                                        }catch (ContestNotFoundException ignored){
-                                            contest = null;
-                                        }
-                                    }
-
-                                } else {
-                                    contestPhase = mostRecentPhaseInRequestedContest;
-                                }
-                                try {
-                                    proposal2Phase = ProposalPhaseClientUtil.
-                                            getProposal2PhaseByProposalIdContestPhaseId(proposalId,
-                                                    contestPhase.getContestPhasePK());
-                                }catch (Proposal2PhaseNotFoundException ignored){
-                                    proposal2Phase = null;
-                                }
-                            } else {
-                                _log.warn("Couldn't find alternative association between proposal "
-                                        + proposalId + " and phase " + contestPhase
-                                        .getContestPhasePK());
-                                handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, userAgent, referralUrl);
-                            }
-                        }
-                    }
-                    try {
-                        proposal = ProposalClientUtil.getProposal(proposalId);
-                    } catch (ProposalNotFoundException e) {
-                        handleAccessedInvalidUrlIdInUrl(currentUser, currentUrl, userAgent, referralUrl);
-                    }
-                }
-            }
             ContestType contestType = null;
+
             if (contest != null) {
-                try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-                    request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contestMicro));//contest
-                }catch (ContestNotFoundException ignored){
-
-                }
-                if (contestPhase != null) {
-                    request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,
-                            new BaseContestPhaseWrapper(contestPhase));//contestPhase
-
-                    contestType = ContestClientUtil
-                            .getContestType(contest.getContestTypeId());
-                    if (proposal != null) {
-                        ProposalWrapper proposalWrapper;
-                        try {
-                            User liferayUser = request.getRemoteUser() != null ? UserLocalServiceUtil
-                                    .getUser(Long.parseLong(request.getRemoteUser())) : null;
-                            Member member = null;
-                            if (liferayUser != null) {
-                                try {
-                                    member = MembersClient.getMember(liferayUser.getUserId());
-                                } catch (MemberNotFoundException e) {
-                                    //ignore - we know he user exists
-                                }
-                            }
-
-                            if (version > 0) {
-                                if (member != null && UserLocalServiceUtil
-                                        .hasRoleUser(MemberRole.JUDGE.getRoleId(), liferayUser.getUserId())) {
-                                    proposalWrapper = new ProposalJudgeWrapper(proposal, version,
-                                            contest, contestPhase, proposal2Phase, member);
-                                } else {
-                                    proposalWrapper = new ProposalWrapper(proposal, version,
-                                            contest,
-                                            contestPhase, proposal2Phase);
-                                }
-                            } else {
-                                final boolean hasVersionTo =
-                                        proposal2Phase != null && proposal2Phase.getVersionTo() > 0;
-                                final int localVersion =
-                                        hasVersionTo ? proposal2Phase.getVersionTo()
-                                                : proposal.getCurrentVersion();
-
-                                if (member != null && UserLocalServiceUtil
-                                        .hasRoleUser(MemberRole.JUDGE.getRoleId(), liferayUser.getUserId())) {
-                                    proposalWrapper = new ProposalJudgeWrapper(proposal,
-                                            localVersion,
-                                            contest, contestPhase, proposal2Phase, member);
-                                } else {
-                                    proposalWrapper = new ProposalWrapper(proposal, localVersion,
-                                            contest, contestPhase, proposal2Phase);
-                                }
-                            }
-                            request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
-                        } catch (PortalException e) {
-                            throw new InternalException("Could not find user " + request.getRemoteUser());
+                contestPhase = contextHelper.getContestPhase(contest);
+                if (contextHelper.getGivenProposalId() > 0) {
+                    proposal2Phase = contextHelper.getProposal2Phase(contestPhase);
+                    if (proposal2Phase == null && request.getParameter("isMove") == null) {
+                        if (contextHelper.getGivenPhaseId() > 0) {
+                            throw new InvalidAccessException();
                         }
+                        //TODO: maybe this could be an InvalidAccessException?
+                        throw new InternalException(String.format(
+                                "Proposal %d has no phase association with phase %d in contest %d",
+                                contextHelper.getGivenProposalId(),
+                                contestPhase.getContestPhasePK(),
+                                contest.getContestPK()));
                     }
+                    proposal = contextHelper.getProposal();
+                }
+
+                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
+                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,
+                        new BaseContestPhaseWrapper(contestPhase));
+
+                contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
+                if (proposal != null) {
+                    ProposalWrapper proposalWrapper = contextHelper.getProposalWrapper(
+                            proposal, proposal2Phase, contestPhase, contest, member);
+                    request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
                 }
             }
             final ProposalsPermissions proposalsPermissions = new ProposalsPermissions(request,
@@ -400,47 +242,44 @@ public class ProposalsContextImpl implements ProposalsContext {
                     contestType == null ? preferences.getContestType() : contestType);
 
             request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
-            try {
-                request.setAttribute(MEMBER_ATTRIBUTE, MembersClient.getMember(themeDisplay.getUserId()));
-            } catch (MemberNotFoundException e) {
-                //ignored
-            }
+            request.setAttribute(MEMBER_ATTRIBUTE, member);
+            long phaseId = contextHelper.getGivenPhaseId();
             if (phaseId > 0) {
                 request.setAttribute(REQUEST_PHASE_ID_ATTRIBUTE, phaseId);
             }
 
             request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new InternalException(e);
+        } catch (InvalidAccessException e) {
+            handleAccessedInvalidUrlIdInUrl(member, currentUrl, referralUrl, userAgent);
         }
     }
 
-    private final static Log _log = LogFactoryUtil.getLog(ProposalsContextImpl.class);
-
-
-    private void reportInvalidUrlToAdmins(User currentUser, String currentUrl, String referralUrl, String userAgent) {
-        String userScreenName = "(not logged in)";
-        if (Validator.isNotNull(currentUser)) {
-            userScreenName = currentUser.getScreenName();
-        }
-
-        String emailMessage = "<p>User <b>" + userScreenName + "</b> could not access URL: <b>" + currentUrl + "</b></p>" +
-                "<p>Referral URL: <b>" + referralUrl + "</b></p>" +
-                "<p>User agent: <b>" + userAgent + "</b></p>";
-
-        //new EmailToAdminDispatcher("User accessed invalid URL " + currentUrl, emailMessage).sendMessage();
-        //TO REANABLE 404 email 
-    }
-
-    private void handleAccessedInvalidUrlIdInUrl(User currentUser, String currentUrl,
+    //TODO: report to table rather than email
+    @SuppressWarnings("UnusedParameters")
+    private void handleAccessedInvalidUrlIdInUrl(Member member, String currentUrl,
             String referralUrl, String userAgent)
             throws ProposalIdOrContestIdInvalidException {
-        if (Validator.isNotNull(currentUser)) {
-            reportInvalidUrlToAdmins(currentUser, currentUrl, referralUrl, userAgent);
-        }
+//        if (member != null) {
+//            reportInvalidUrlToAdmins(member, currentUrl, referralUrl, userAgent);
+//        }
 
         throw new ProposalIdOrContestIdInvalidException();
     }
+
+//    private void reportInvalidUrlToAdmins(User currentUser, String currentUrl, String referralUrl,
+//            String userAgent) {
+//        String userScreenName = "(not logged in)";
+//        if (Validator.isNotNull(currentUser)) {
+//            userScreenName = currentUser.getScreenName();
+//        }
+
+//        String emailMessage =
+//                "<p>User <b>" + userScreenName + "</b> could not access URL: <b>" + currentUrl
+//                        + "</b></p>" +
+//                        "<p>Referral URL: <b>" + referralUrl + "</b></p>" +
+//                        "<p>User agent: <b>" + userAgent + "</b></p>";
+
+        //new EmailToAdminDispatcher("User accessed invalid URL " + currentUrl, emailMessage).sendMessage();
+
+//    }
 }

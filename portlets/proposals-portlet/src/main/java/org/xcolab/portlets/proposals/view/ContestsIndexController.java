@@ -3,16 +3,17 @@ package org.xcolab.portlets.proposals.view;
 
 
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -140,10 +141,8 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("showActiveContests", showActiveContests);
         model.addAttribute("showAllContests", showAllContests);
 
-        //PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
-
         boolean showContestManagementLink = PermissionsClient
-                .canAdminAll(proposalsContext.getUser(request).getUserId()) ; //permissionChecker.isOmniadmin();
+                .canAdminAll(proposalsContext.getMemberId(request)) ;
         model.addAttribute("showContestManagementLink", showContestManagementLink);
 
         model.addAttribute("showContestDisplayOptions",

@@ -1,21 +1,22 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.PointsClientUtil;
-import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
+import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
@@ -23,13 +24,14 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -52,7 +54,7 @@ public class AssignPointsActionController {
                                 ActionResponse response, @Valid AssignPointsBean assignPointsBean,
                                 BindingResult result, PortletRequest portletRequest)
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
-        final User currentUser = proposalsContext.getUser(request);
+        final Member currentMember = proposalsContext.getMember(request);
         final Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
@@ -100,7 +102,7 @@ public class AssignPointsActionController {
                     pointsDistributionConfiguration.setTargetUserId(entry.getKey());
                     pointsDistributionConfiguration.setTargetSubProposalId(null);
                     pointsDistributionConfiguration.setPercentage(percentage);
-                    pointsDistributionConfiguration.setCreator(currentUser.getUserId());
+                    pointsDistributionConfiguration.setCreator(currentMember.getUserId());
 
                     PointsClientUtil.createPointsDistributionConfiguration(pointsDistributionConfiguration);
 

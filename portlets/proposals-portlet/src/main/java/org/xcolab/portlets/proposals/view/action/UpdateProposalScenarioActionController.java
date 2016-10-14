@@ -1,14 +1,15 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
@@ -19,11 +20,12 @@ import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.html.HtmlUtil;
 
+import java.io.IOException;
+import java.util.List;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
-import java.io.IOException;
-import java.util.List;
 
 
 @Controller
@@ -47,14 +49,14 @@ public class UpdateProposalScenarioActionController {
 
         if (proposalsContext.getProposal(request) != null && !canEditImpactTab(request)){
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
-                    proposalsContext.getUser(request).getUserId() + ", proposal: " + proposalsContext.getProposal(request).getProposalId());
+                    proposalsContext.getMember(request).getUserId() + ", proposal: " + proposalsContext.getProposal(request).getProposalId());
         }
 
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
         Long consolidatedScenario = Validator.isNotNull(isConsolidatedScenario) && isConsolidatedScenario ? 1L : 0L;
-        proposal.setScenarioId(scenarioId, consolidatedScenario, proposalsContext.getUser(request).getUserId());
+        proposal.setScenarioId(scenarioId, consolidatedScenario, proposalsContext.getMember(request).getUserId());
         if(!Validator.isBlank(region)){
-            proposal.setModelRegion(region, proposalsContext.getUser(request).getUserId());
+            proposal.setModelRegion(region, proposalsContext.getMember(request).getUserId());
         }
 
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
@@ -65,13 +67,13 @@ public class UpdateProposalScenarioActionController {
         if(impactAuthorComment!=null||impactIAFComment!=null) {
               if(impactAuthorComment!=null) {
 
-                  ProposalAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
+                  ProposalAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(),
                           HtmlUtil.cleanAll(impactAuthorComment),
                           ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
                           proposal.getProposalId());
                 }
                 if(impactIAFComment!=null) {
-                    ProposalAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                    ProposalAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                             ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
                             proposal.getProposalId());
                 }

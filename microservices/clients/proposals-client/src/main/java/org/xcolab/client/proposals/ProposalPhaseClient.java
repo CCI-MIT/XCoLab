@@ -1,6 +1,9 @@
 package org.xcolab.client.proposals;
 
+import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
+import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.Proposal2PhaseDto;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
@@ -10,7 +13,9 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -26,6 +31,8 @@ public final class ProposalPhaseClient {
     private final RestResource<Proposal2PhaseDto, Long> proposal2PhaseResource;
     private final RestResource<ProposalContestPhaseAttributeDto, Long>
             proposalContestPhaseAttributeResource;
+    private final RestResource1<ProposalDto, Long> proposalResource;
+    private final RestResource2L<ProposalDto, Long> proposalPhaseIdResource;
 
 
     private ProposalPhaseClient(RestService proposalService) {
@@ -33,6 +40,9 @@ public final class ProposalPhaseClient {
                 proposalService, "proposal2Phases", Proposal2PhaseDto.TYPES);
         proposalContestPhaseAttributeResource = new RestResource1<>(proposalService,
                 "proposalContestPhaseAttributes", ProposalContestPhaseAttributeDto.TYPES);
+        proposalResource = new RestResource1<>(proposalService, "proposals", ProposalDto.TYPES);
+        proposalPhaseIdResource = new RestResource2L<>(proposalResource, "phaseIds",
+                new TypeProvider<>(Long.class, new ParameterizedTypeReference<List<Long>>() {}));
         this.proposalService = proposalService;
     }
 
@@ -195,5 +205,11 @@ public final class ProposalPhaseClient {
         ProposalContestPhaseAttribute pcpa =
                 getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
         return proposalContestPhaseAttributeResource.delete(pcpa.getId_()).execute();
+    }
+
+    public List<Long> getContestPhasesForProposal(long proposalId) {
+        return proposalPhaseIdResource.resolveParent(proposalResource.id(proposalId))
+                .list()
+                .execute();
     }
 }

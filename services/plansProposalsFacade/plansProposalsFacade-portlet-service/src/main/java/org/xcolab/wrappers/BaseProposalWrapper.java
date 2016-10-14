@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
 
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
@@ -19,16 +18,16 @@ import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalVersion;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
-import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.helpers.ProposalContestPhaseAttributeHelper;
@@ -217,9 +216,9 @@ public class BaseProposalWrapper {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     }
 
-    public boolean isUserAmongFellows(User userInQuestion) {
+    public boolean isUserAmongFellows(Member memberInQuestion) {
         for (Long fellowId : ContestTeamMemberClientUtil.getFellowsForContest(contest.getContestPK())) {
-            if (fellowId == userInQuestion.getUserId()) {
+            if (fellowId == memberInQuestion.getUserId()) {
                 return true;
             }
         }

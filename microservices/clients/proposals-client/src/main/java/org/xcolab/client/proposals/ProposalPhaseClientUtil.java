@@ -91,4 +91,8 @@ public final class ProposalPhaseClientUtil {
             String name) {
         return client.deleteProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
     }
+
+    public static List<Long> getContestPhasesForProposal(long proposalId) {
+        return client.getContestPhasesForProposal(proposalId);
+    }
 }

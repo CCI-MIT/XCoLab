@@ -1,14 +1,11 @@
 package org.xcolab.service.proposal.service.proposal2phase;
 
 import org.springframework.stereotype.Service;
+
 import org.xcolab.client.contest.ContestClientUtil;
-
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-
-
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
-import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
@@ -17,21 +14,21 @@ import org.xcolab.service.proposal.helper.autopromotion.PhasePromotionHelper;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class Proposal2PhaseService {
 
     private final Proposal2PhaseDao proposal2PhaseDao;
 
-    private final ProposalDao proposalDao;
-
     private final ProposalVersionDao proposalVersionDao;
 
     private final ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
 
-    public Proposal2PhaseService(Proposal2PhaseDao proposal2PhaseDao, ProposalDao proposalDao, ProposalVersionDao proposalVersionDao, ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao) {
+    public Proposal2PhaseService(Proposal2PhaseDao proposal2PhaseDao,
+            ProposalVersionDao proposalVersionDao,
+            ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao) {
         this.proposal2PhaseDao = proposal2PhaseDao;
-        this.proposalDao = proposalDao;
         this.proposalVersionDao = proposalVersionDao;
         this.proposalContestPhaseAttributeDao = proposalContestPhaseAttributeDao;
     }
@@ -64,7 +61,7 @@ public class Proposal2PhaseService {
 
         for (Long phId : phases) {
             ContestPhase ph = ContestClientUtil.getContestPhase(phId);
-            if (ph.getContestPK() == nextPhase.getContestPK()) { //this contestphase is in our target contest
+            if (ph.getContestPK() == nextPhase.getContestPK().longValue()) { //this contestphase is in our target contest
                 candidatePhase.add(ph);
             }
         }
@@ -84,7 +81,7 @@ public class Proposal2PhaseService {
             try {
                 Proposal2Phase o = proposal2PhaseDao.getByProposalIdContestPhaseId(proposalId, closestPhase.getContestPhasePK());
                 if (o.getVersionTo() < 0) {
-                    o.setVersionTo(currentProposalVersion.intValue());
+                    o.setVersionTo(currentProposalVersion);
                     proposal2PhaseDao.update(o);
                 } else {
                     isBoundedVersion = true;
@@ -97,11 +94,12 @@ public class Proposal2PhaseService {
         Proposal2Phase p2p = new Proposal2Phase();
         p2p.setProposalId(proposalId);
         p2p.setContestPhaseId(nextPhaseId);
-        p2p.setVersionFrom(currentProposalVersion.intValue());
-        p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
+        p2p.setVersionFrom(currentProposalVersion);
+        p2p.setVersionTo(isBoundedVersion ? currentProposalVersion : -1);
         proposal2PhaseDao.create(p2p);
 
-        ProposalContestPhaseAttribute proposalContestPhaseAttribute = PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(proposalId, currentPhaseId);
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute
+                = PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(proposalId, currentPhaseId);
         proposalContestPhaseAttributeDao.create(proposalContestPhaseAttribute);
 
 
@@ -109,14 +107,10 @@ public class Proposal2PhaseService {
 
     public List<Long> getContestPhasesForProposal(long proposalId) {
         List<Proposal2Phase> proposal2Phases = proposal2PhaseDao.findByGiven(proposalId, null);
-        List<Long> ret = new LinkedList<>();
 
-        for (Proposal2Phase p2p : proposal2Phases) {
-            if (ContestClientUtil.getContestPhase(p2p.getContestPhaseId()) != null) {
-                ret.add(p2p.getContestPhaseId());
-            }
-        }
-
-        return ret;
+        return proposal2Phases.stream()
+                .filter(p2p -> ContestClientUtil.getContestPhase(p2p.getContestPhaseId()) != null)
+                .map(Proposal2Phase::getContestPhaseId)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 }

@@ -2,8 +2,8 @@ package org.xcolab.portlets.proposals.utils;
 
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import org.apache.commons.lang3.StringUtils;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
-import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -26,12 +26,13 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import javax.portlet.PortletURL;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
+import javax.portlet.PortletURL;
 
 /**
  * Indexes a proposal
@@ -116,9 +117,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             doc.addKeyword(Field.ENTRY_CLASS_PK, proposal.getProposalId());
             // doc.addText(Field.URL, Plan);
             return doc;
-        } catch (ContestNotFoundException | SystemException e) {
-            throw new SearchException("Can't index plan " + obj, e);
-        } catch (PortalException e) {
+        } catch (ContestNotFoundException e) {
             throw new SearchException("Can't index plan " + obj, e);
         }
     }

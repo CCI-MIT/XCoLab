@@ -1,9 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
-
-import com.google.common.collect.ImmutableSet;
-
 import au.com.bytecode.opencsv.CSVWriter;
+import com.google.common.collect.ImmutableSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +20,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClientUtil;
@@ -35,13 +31,13 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
@@ -91,7 +87,7 @@ public class JudgeProposalActionController {
         final Contest contest = proposalsContext.getContest(request);
         long proposalId = proposal.getProposalId();
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(proposalAdvancingBean.getContestPhaseId());
-        User currentUser = proposalsContext.getUser(request);
+        Member currentMember = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
         if (result.hasErrors()) {
@@ -101,7 +97,7 @@ public class JudgeProposalActionController {
         }
 
         // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
+        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember)) &&
                 !permissions.getCanAdminAll()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("pageToDisplay", "proposalDetails_ADVANCING");
@@ -126,7 +122,7 @@ public class JudgeProposalActionController {
 
         ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId,
                 contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
-                0l, new Long(proposalAdvancingBean.getAdvanceDecision()), null);
+                0L, (long) proposalAdvancingBean.getAdvanceDecision(), null);
 
         // save judge comment
         if (!isUndecided) {
@@ -140,7 +136,7 @@ public class JudgeProposalActionController {
                 && request.getParameter("isFreeze").equals("true")) {
             ProposalPhaseClientUtil
                     .setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
-                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0l,null, "true");
+                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0L, null, "true");
         }
 
         //unfreeze the advancement
@@ -148,7 +144,7 @@ public class JudgeProposalActionController {
                 && request.getParameter("isUnfreeze").equals("true")) {
             ProposalPhaseClientUtil
                     .setProposalContestPhaseAttribute(proposalId, contestPhase.getContestPhasePK(),
-                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0l, null,"false");
+                    ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0L, null,"false");
         }
 
         //forcefully promote the advancement
@@ -163,9 +159,9 @@ public class JudgeProposalActionController {
             throws PortalException, SystemException {
 
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        User currentUser = proposalsContext.getUser(request);
+        Member currentMember = proposalsContext.getMember(request);
         // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
+        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember)) &&
                 !permissions.getCanAdminAll() && !permissions.getCanJudgeActions() && !permissions.getCanContestManagerActions()) {
             return;
         }
@@ -267,6 +263,7 @@ public class JudgeProposalActionController {
 
         return csvExporter.getCsvString();
     }
+
     private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase) {
         List<Member> selectedJudges = null;
 
@@ -316,7 +313,6 @@ public class JudgeProposalActionController {
         final Contest contest = proposalsContext.getContest(request);
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
-        User liferayUser = proposalsContext.getUser(request);
         Member member = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         Boolean isPublicRating = permissions.getCanPublicRating();
@@ -337,12 +333,12 @@ public class JudgeProposalActionController {
 
         //find existing ratings
         List<ProposalRating> existingRatings = ProposalJudgeRatingClientUtil.getJudgeRatingsForProposalAndUser(
-                liferayUser.getUserId(),
+                member.getUserId(),
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK());
 
-        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(), contestPhase.getContestPhasePK(), liferayUser.getUserId(), isPublicRating);
-
+        this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(),
+                contestPhase.getContestPhasePK(), member.getUserId(), isPublicRating);
 
         response.sendRedirect(proposal.getWrapped().getProposalLinkUrl(contest,
                  contestPhase.getContestPhasePK()));
@@ -364,11 +360,12 @@ public class JudgeProposalActionController {
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
             ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-            User currentUser = proposalsContext.getUser(request);
+            Member currentMember = proposalsContext.getMember(request);
 
             // Security handling
-            if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentUser)) &&
-                    !permissions.getCanAdminAll()) {
+            if (!(permissions.getCanFellowActions()
+                    && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember))
+                    && !permissions.getCanAdminAll()) {
                 return;
             }
 
@@ -395,9 +392,9 @@ public class JudgeProposalActionController {
                         proposalId,
                         contestPhaseId,
                         ProposalContestPhaseAttributeKeys.FELLOW_ACTION,
-                        0l,
-                        new Long(fellowProposalScreeningBean.getFellowScreeningAction())
-                        ,null);
+                        0L,
+                        (long) fellowProposalScreeningBean.getFellowScreeningAction(),
+                        null);
 
                 //save fellow action comment
                 ProposalJudgingCommentHelper commentHelper = new ProposalJudgingCommentHelper(proposalsContext.getProposal(request), ContestClientUtil
@@ -417,11 +414,11 @@ public class JudgeProposalActionController {
             // save fellow comment and rating
             //find existing ratings
             List<ProposalRating> existingRatings = ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
-                    currentUser.getUserId(),
+                    currentMember.getUserId(),
                     proposalId,
                     contestPhaseId);
 
-            this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentUser.getUserId(), false);
+            this.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId, contestPhaseId, currentMember.getUserId(), false);
             response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request),
                      proposalsContext.getContestPhase(request).getContestPhasePK()) + "/tab/SCREENING");
         } catch (Exception e) {

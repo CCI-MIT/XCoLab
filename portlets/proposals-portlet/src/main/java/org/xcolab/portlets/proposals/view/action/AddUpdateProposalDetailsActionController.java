@@ -1,17 +1,18 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -55,12 +56,12 @@ public class AddUpdateProposalDetailsActionController {
         final Proposal proposal = proposalsContext.getProposal(request);
         if (proposal != null && !proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
-                    proposalsContext.getUser(request).getUserId() + ", proposal: " + proposal.getProposalId());
+                    proposalsContext.getMember(request).getUserId() + ", proposal: " + proposal.getProposalId());
         }
         final Contest contest = proposalsContext.getContest(request);
         if (proposal == null && !proposalsContext.getPermissions(request).getCanCreate()) {
             throw new ProposalsAuthorizationException("User is not allowed to create proposal, user: " +
-                    proposalsContext.getUser(request).getUserId() + ", contest: " + contest
+                    proposalsContext.getMember(request).getUserId() + ", contest: " + contest
                     .getContestPK());
         }
 
@@ -129,7 +130,7 @@ public class AddUpdateProposalDetailsActionController {
         ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
 
         Proposal proposal = new Proposal();
-        proposal.setAuthorId(proposalsContext.getUser(request).getUserId());
+        proposal.setAuthorId(proposalsContext.getMember(request).getUserId());
         proposal = ProposalClientUtil.createProposal(proposal);
 
         if (proposalWrapped == null) {
