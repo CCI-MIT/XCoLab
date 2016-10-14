@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestPhaseType;
-import org.xcolab.model.tables.pojos.OntologyTerm;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -16,8 +15,6 @@ import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -93,7 +90,7 @@ public class ContestService {
 
     public List<Contest> getContestsMatchingOntologyTerms(List<Long> ontologyTerms) {
 
-        if (ontologyTerms.isEmpty()) {
+        if (ontologyTerms == null || ontologyTerms.isEmpty()) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
             return contestDao.findByGiven(ph,null,null,null,null,null,null,null,null,null,null);
         }
@@ -106,6 +103,22 @@ public class ContestService {
         List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(allChildTerms);
         PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
          return contestDao.findByGiven(ph,null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
+
+    }
+
+    public int getNumberOfContestsMatchingOntologyTerms(List<Long> ontologyTerms) {
+        int count = 0;
+        if (ontologyTerms != null && !ontologyTerms.isEmpty()) {
+            List<Long> allChildTerms = new ArrayList<>();
+            for (Long otId : ontologyTerms) {
+                allChildTerms.addAll(ontologyService.getAllOntologyTermDescendantTermsIds(otId));
+            }
+
+            for(Long areaId : ontologyService.getFocusAreasIdForOntologyTermIds(allChildTerms)) {
+                count += contestDao.countByGiven(null,null,null,null,null,null,areaId,null,null,null);
+            }
+        }
+        return count;
 
     }
 

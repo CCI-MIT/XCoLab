@@ -84,13 +84,13 @@
 			By location
 		</a>
 		<br/>
-		<div class="c-arrow ${rootCollectionCardId == 1 ? 'selected' : ''}">
+		<div class="c-arrow ${ontologySpaceId == 999 ? 'selected' : ''}">
 			<jsp:text />
 		</div>
-		<div class="c-arrow ${rootCollectionCardId == 2 ? 'selected' : ''}">
+		<div class="c-arrow ${ontologySpaceId == 103 ? 'selected' : ''}">
 			<jsp:text />
 		</div>
-		<div class="c-arrow ${rootCollectionCardId == 3 ? 'selected' : ''}">
+		<div class="c-arrow ${ontologySpaceId == 104 ? 'selected' : ''}">
 			<jsp:text />
 		</div>
 
