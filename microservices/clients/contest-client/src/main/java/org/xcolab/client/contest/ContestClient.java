@@ -189,6 +189,11 @@ public class ContestClient {
 
     }
 
+    public static void autoPromoteProposals(){
+        contestPhasesResource.service("autoPromoteProposals", Boolean.class).get();
+    }
+
+
     public static void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
         contestPhasesResource.service(proposalId, "forcePropomotionOfProposalInContestPhaseId", Boolean.class)
                 .queryParam("contestPhaseId", contestPhaseId)

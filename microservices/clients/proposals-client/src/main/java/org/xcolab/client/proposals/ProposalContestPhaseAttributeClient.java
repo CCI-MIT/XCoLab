@@ -29,6 +29,16 @@ public final class ProposalContestPhaseAttributeClient {
                 .execute();
     }
 
+    public static Boolean hasProposalContestPhaseAttribute(Long proposalId, long contestPhaseId, String name) {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+        if (proposalContestPhaseAttribute != null) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public static ProposalContestPhaseAttribute getProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name) {
         try {
             return proposalContestPhaseAttributeResource.service("getByContestPhaseProposalIdName", ProposalContestPhaseAttribute.class)
@@ -36,10 +46,11 @@ public final class ProposalContestPhaseAttributeClient {
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("name", name)
                     .getChecked();
-        }catch (EntityNotFoundException ignored){
+        } catch (EntityNotFoundException ignored) {
             return null;
         }
     }
+
 
     public static Boolean isProposalContestPhaseAttributeSetAndTrue(Long proposalId, long contestPhaseId, String name) {
         ProposalContestPhaseAttribute proposalAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
@@ -70,6 +81,18 @@ public final class ProposalContestPhaseAttributeClient {
         return true;
     }
 
+    public static ProposalContestPhaseAttribute persistProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();
+        proposalContestPhaseAttribute.setProposalId(proposalId);
+        proposalContestPhaseAttribute.setName(name);
+        proposalContestPhaseAttribute.setAdditionalId(aditionalId);
+        proposalContestPhaseAttribute.setNumericValue(numericValue);
+        proposalContestPhaseAttribute.setStringValue(stringValue);
+        proposalContestPhaseAttribute.setContestPhaseId(contestPhaseId);
+        proposalContestPhaseAttribute = createProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+        return proposalContestPhaseAttribute;
+    }
+
     public static ProposalContestPhaseAttribute setProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
         ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
         if (proposalContestPhaseAttribute != null) {
@@ -95,8 +118,9 @@ public final class ProposalContestPhaseAttributeClient {
         return proposalContestPhaseAttributeResource.update(proposalContestPhaseAttribute, proposalContestPhaseAttribute.getId_())
                 .execute();
     }
-    public static  Boolean deleteProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name) {
+
+    public static Boolean deleteProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name) {
         ProposalContestPhaseAttribute pcpa = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
-        return  proposalContestPhaseAttributeResource.delete(pcpa.getId_()).execute();
+        return proposalContestPhaseAttributeResource.delete(pcpa.getId_()).execute();
     }
 }

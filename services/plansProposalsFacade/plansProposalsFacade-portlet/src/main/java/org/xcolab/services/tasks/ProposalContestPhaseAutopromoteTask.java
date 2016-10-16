@@ -9,6 +9,8 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 
+import org.xcolab.client.contest.ContestClient;
+
 /**
  * This scheduler automatically invokes the automatic promotion of proposals
  * from the last contest phase of all contests to the next active contest phase.
@@ -36,7 +38,8 @@ public class ProposalContestPhaseAutopromoteTask implements MessageListener {
 			isExecuting = true;
 		}
 		try {
-			ContestPhaseLocalServiceUtil.autoPromoteProposals();
+			//ContestPhaseLocalServiceUtil.autoPromoteProposals();
+			ContestClient.autoPromoteProposals();
 		} catch (Throwable e) {
 			_log.error("Error while promoting proposals in contest phases", e);
 		}

@@ -17,6 +17,8 @@ public interface ContestPhaseDao {
 
     List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId);
 
+    List<ContestPhase> findByPhaseAutopromote(String contestPhaseAutoPromote);
+
     Optional<ContestPhase> get(Long contestPhasePK) throws NotFoundException;
 
     boolean exists(Long contestPhasePK);

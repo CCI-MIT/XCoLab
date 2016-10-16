@@ -37,6 +37,13 @@ public final class ProposalVoteClient {
                 .get();
     }
 
+    public static Boolean hasUserVoted(Long contestPhaseId, Long memberId) {
+        return proposalVoteResource.service("hasUserVoted", Boolean.class)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("memberId", memberId)
+                .get();
+    }
+
     public static Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
         return proposalVoteResource.service("hasUserVoted", Boolean.class)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
