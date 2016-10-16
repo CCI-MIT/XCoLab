@@ -1,36 +1,37 @@
 package org.xcolab.portlets.proposals.view;
 
 
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.PointsTarget;
 import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.PointsTargetProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
-import javax.portlet.PortletRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.portlet.PortletRequest;
 
 @Controller
 @RequestMapping("view")
@@ -86,12 +87,12 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         }
 
         List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
-        final List<Proposal> linkingProposals = ProposalClientUtil.getLinkingProposals(proposal.getProposalId());
+        final List<Proposal> linkingProposals = ProposalsContextUtil.getClients(request).getProposalClient().getLinkingProposals(proposal.getProposalId());
         for (Proposal p : linkingProposals) {
             linkingProposalsWrapped.add(new ProposalWrapper(p));
         }
 
-        List<Member> members = ProposalClientUtil.getProposalMembers(proposal.getProposalId());
+        List<Member> members = ProposalsContextUtil.getClients(request).getProposalClient().getProposalMembers(proposal.getProposalId());
 
         //this bean will be filled with the user input
         AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getProposalId());
@@ -106,7 +107,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("regionalPercentages", regionalPercentages);
         model.addAttribute("basicPercentages", basicPercentages);
         model.addAttribute("members", members);
-        model.addAttribute("totalPoints", ProposalClientUtil.getProposalMaterializedPoints(proposal.getProposalId()));
+        model.addAttribute("totalPoints", ProposalsContextUtil.getClients(request).getProposalClient().getProposalMaterializedPoints(proposal.getProposalId()));
         model.addAttribute("proposal", proposal);
         model.addAttribute("contest", contest);
         model.addAttribute("linkingProposals", linkingProposalsWrapped);

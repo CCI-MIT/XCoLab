@@ -11,12 +11,12 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
+import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.wrappers.BaseContestPhaseWrapper;
 import org.xcolab.wrappers.BaseContestWrapper;
 
@@ -40,12 +40,15 @@ public class ContestWrapper extends BaseContestWrapper {
     private Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<BaseContestPhaseWrapper> visiblePhases;
 
+    private final ClientHelper clientHelper;
+
     public ContestWrapper(long contestId) throws ContestNotFoundException {
-        super(contestId);
+        this(ContestClientUtil.getContest(contestId));
     }
 
     public ContestWrapper(Contest contest) {
         super(contest);
+        clientHelper = new ClientHelper(contest);
     }
 
     public boolean getIsSharedContest(){
@@ -163,7 +166,8 @@ public class ContestWrapper extends BaseContestWrapper {
     public BaseContestPhaseWrapper getLastPhase() {
         BaseContestPhaseWrapper last = null;
         for (BaseContestPhaseWrapper ph : getPhases()) {
-            if (last == null || (ph.getPhaseReferenceDate() != null && ph.getPhaseReferenceDate().compareTo(last.getPhaseReferenceDate()) > 0)) {
+            if (last == null || (ph.getPhaseReferenceDate() != null
+                    && ph.getPhaseReferenceDate().compareTo(last.getPhaseReferenceDate()) > 0)) {
                 last = ph;
             }
         }
@@ -286,7 +290,7 @@ public class ContestWrapper extends BaseContestWrapper {
         try {
 
             ContestPhase contestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
-            for (Proposal proposal : ProposalClientUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+            for (Proposal proposal : clientHelper.getProposalClient().getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
                 Proposal2Phase p2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
 
                 final ProposalWrapper proposalWrapper =
@@ -312,7 +316,7 @@ public class ContestWrapper extends BaseContestWrapper {
             Contest contestLiferay = ContestClientUtil.getContest(contest.getContestPK());
             ContestPhase contestPhase = ContestClientUtil.getActivePhase(contestLiferay.getContestPK());
 
-            for (Proposal proposal : ProposalClientUtil.getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+            for (Proposal proposal : clientHelper.getProposalClient().getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
                 Proposal2Phase p2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
                 if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), contestLiferay, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
                     return false;

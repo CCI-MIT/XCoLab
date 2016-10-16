@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.utils.context;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -32,8 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
 
-    private final static Logger _log = LoggerFactory.getLogger(ProposalsContextImpl.class);
-
     private static final String PROPOSALS_ATTRIBUTE_PREFIX = "_proposalsProtlet_";
     private static final String CONTEXT_INITIALIZED_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "contextInitialized";
@@ -59,6 +55,8 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String CONTEST_TYPE_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "contestType";
     private static final String PROPOSAL_WRAPPED_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
+    private static final String CLIENTS_ATTRIBUTE =
+            PROPOSALS_ATTRIBUTE_PREFIX + "clients";
 
     public ProposalsContextImpl() {
     }
@@ -168,6 +166,11 @@ public class ProposalsContextImpl implements ProposalsContext {
         return getAttribute(request, PROPOSALS_PREFERENCES_ATTRIBUTE);
     }
 
+    @Override
+    public ClientHelper getClients(PortletRequest request) {
+        return getAttribute(request, CLIENTS_ATTRIBUTE);
+    }
+
     private <T> T getAttribute(PortletRequest request, String attributeName) {
         Object contextInitialized = request.getAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
         if (contextInitialized == null) {
@@ -247,6 +250,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             if (phaseId > 0) {
                 request.setAttribute(REQUEST_PHASE_ID_ATTRIBUTE, phaseId);
             }
+            request.setAttribute(CLIENTS_ATTRIBUTE, contextHelper.getClientHelper());
 
             request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
         } catch (InvalidAccessException e) {

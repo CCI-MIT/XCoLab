@@ -53,6 +53,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         try {
             Member judge = MembersClient.getMember(userId);
+            //TODO: judging will only work in host colab for shared contests!
             Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(new ProposalWrapper(proposal, contestPhase), judge);

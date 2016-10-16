@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ImpactClientUtil;
@@ -23,7 +23,6 @@ import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.enums.ContestTier;
@@ -34,6 +33,7 @@ import org.xcolab.portlets.proposals.impact.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -87,13 +87,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             for (ProposalUnversionedAttribute pua : unversionedAttributes) {
                 if (pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT
                         .toString())) {
-                    if (!Validator.isBlank(pua.getStringValue())) {
+                    if (StringUtils.isNotBlank(pua.getStringValue())) {
                         model.addAttribute("authorComment", pua);
                     }
                 }
                 if (pua.getName()
                         .equals(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString())) {
-                    if (!Validator.isBlank(pua.getStringValue())) {
+                    if (StringUtils.isNotBlank(pua.getStringValue())) {
                         model.addAttribute("iafComment", pua);
                     }
                 }
@@ -115,14 +115,19 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         boolean showSubProposalListing = (isRegionalContest(contest));
         boolean showDataTable = (isRegionalContest(contest));
         if (showDataTable) {
-            IntegratedProposalImpactSeries integratedProposalImpactSeries = new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest);
+            IntegratedProposalImpactSeries integratedProposalImpactSeries =
+                    new IntegratedProposalImpactSeries(proposalWrapper.getWrapped(), contest,
+                    request);
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
             List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         }
 
         if(showSubProposalListing){
-            model.addAttribute("impactSerieses", getImpactTabBasicProposal(proposalWrapper.getWrapped()));
+            model.addAttribute("impactSerieses", getImpactTabBasicProposal(proposalWrapper.getWrapped(),
+
+
+                    request));
         }
         model.addAttribute("showSubProposalListing", showSubProposalListing);
         model.addAttribute("showDataTable", showDataTable);
@@ -139,20 +144,21 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     return showImpactTabRegionAggregate();
                 case GLOBAL:
                     if(userAllowedToEdit) {
-                        return showImpactTabEditGlobal(model);
+                        return showImpactTabEditGlobal(request, model);
                     } else {
                         return showImpactTabGlobal();
                     }
             }
         }
-        _log.warn("Using default impact tab view since contest tier is not set for contest: " + contest.getContestPK());
+        _log.warn("Using default impact tab view since contest tier is not set for contest: {}",
+                contest.getContestPK());
         return "proposalImpactError";
     }
 
     private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId() {
         Long modelId = proposalWrapper.getModelId();
         boolean scenarioIdValid =
-                Validator.isNotNull(proposalWrapper.getScenarioId()) && proposalWrapper.getScenarioId() > 0;
+               proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() > 0;
         if(scenarioIdValid){
             try {
                 modelId = RomaClientUtil.repository()
@@ -187,11 +193,11 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "integratedProposalImpact";
     }
 
-    private String showImpactTabEditGlobal(Model model)
+    private String showImpactTabEditGlobal(PortletRequest request, Model model)
             throws IOException, ScenarioNotFoundException, ModelNotFoundException {
 
         List<Proposal> subProposals =
-                ProposalClientUtil.getContestIntegrationRelevantSubproposals(proposalWrapper.getProposalId());
+                ProposalsContextUtil.getClients(request).getProposalClient().getContestIntegrationRelevantSubproposals(proposalWrapper.getProposalId());
         ProposalImpactScenarioCombinationWrapper proposalImpactScenarioCombinationWrapper =
                 new ProposalImpactScenarioCombinationWrapper(subProposals);
         boolean isConsolidationPossible =
@@ -266,17 +272,19 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "basicProposalImpact";
     }
 
-    private List<ProposalImpactSeries> getImpactTabBasicProposal(Proposal proposalParent) {
+    private List<ProposalImpactSeries> getImpactTabBasicProposal(Proposal proposalParent,
+            PortletRequest request) {
         Set<Proposal> referencedSubProposals =
-                IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalParent, ContestTier.BASIC.getTierType());
+                IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalParent,
+                        ContestTier.BASIC.getTierType(), request);
         try {
-
-            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-            ContestWrapper contestWrapper = new ContestWrapper(contestMicro);//contest
+            Contest contest = ContestClientUtil.getContest(this.contest.getContestPK());
+            ContestWrapper contestWrapper = new ContestWrapper(contest);
             List<OntologyTerm> ontologyTermList = contestWrapper.getWhere();
             List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
             for (Proposal proposal : referencedSubProposals) {
-                ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal);
+                ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(
+                        this.contest, proposal);
                 for (ProposalImpactSeries proposalImpactSeries : proposalImpactSeriesList.getImpactSerieses()) {
                     if (proposalImpactSeries.getWhereTerm().equals(ontologyTermList.get(0))) {
                         proposalImpactSerieses.add(proposalImpactSeries);
@@ -284,7 +292,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 }
             }
             return proposalImpactSerieses;
-        }catch(ContestNotFoundException ignored){
+        } catch(ContestNotFoundException ignored) {
 
         }
         return null;

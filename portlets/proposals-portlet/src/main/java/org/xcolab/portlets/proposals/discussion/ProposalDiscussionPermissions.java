@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.discussion;
 
-
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -9,10 +7,10 @@ import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -26,12 +24,14 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     private final String discussionTabName;
     private final Long proposalId;
     private final Long contestPhaseId;
+    private final PortletRequest request;
 
     public ProposalDiscussionPermissions(PortletRequest request) {
         super(request);
         discussionTabName = getTabName(request);
         proposalId = getProposalId(request);
         contestPhaseId = getContestPhaseId(request);
+        this.request = request;
     }
 
     private String getTabName(PortletRequest request) {
@@ -69,7 +69,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 phaseId = Long.parseLong(contestPhaseIdParameter);
             } else if (proposalId != null && proposalId > 0) {
-                phaseId = ProposalClientUtil.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
+                phaseId = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestPhaseInContest(proposalId).getContestPhasePK();
             }
         } catch (NumberFormatException  ignored) {
         }
@@ -97,7 +97,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     public boolean getCanAdminMessage(Comment comment) {
         if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
             try {
-                Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+                Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
                 return proposalWrapper.isUserAmongFellows(currentMember) || getCanAdminAll();
@@ -111,7 +111,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
         boolean isUserAllowed = false;
         try {
-            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+            Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
             isUserAllowed = isUserFellowOrJudgeOrAdvisor(proposal)
                     || isUserProposalAuthorOrTeamMember(proposal)
                     || getCanAdminAll();

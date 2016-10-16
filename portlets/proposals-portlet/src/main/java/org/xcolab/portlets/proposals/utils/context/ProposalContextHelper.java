@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.liferay.portal.kernel.util.ParamUtil;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -11,8 +12,8 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.proposals.ProposalClient;
+import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -41,7 +42,10 @@ public class ProposalContextHelper {
     private final long givenProposalId;
     private final PortletRequest request;
 
-    public ProposalContextHelper(PortletRequest request) {
+    private final Contest contest;
+    private final ClientHelper clientHelper;
+
+    public ProposalContextHelper(PortletRequest request){
         this.request = request;
         final long proposalIdParam = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
         givenProposalId = (proposalIdParam == 0)
@@ -51,6 +55,9 @@ public class ProposalContextHelper {
         givenContestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
         givenPhaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         givenVersion = ParamUtil.getInteger(request, VERSION_PARAM);
+
+        contest = fetchContest();
+        clientHelper = new ClientHelper(contest);
     }
 
     public Member getMember() {
@@ -62,34 +69,46 @@ public class ProposalContextHelper {
         return member;
     }
 
-    public Contest getContest() throws InvalidAccessException {
-        Contest contest = null;
+    private Contest fetchContest() {
+        Contest localContest = null;
         if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
-            contest = ContestClientUtil
+            localContest = ContestClientUtil
                     .getContestByContestUrlNameContestYear(givenContestUrlName, givenContestYear);
-            if (contest == null) {
-                throw new InvalidAccessException();
-            }
         } else if (givenContestId > 0) {
             try {
-                contest = ContestClientUtil.getContest(givenContestId);
-            } catch (ContestNotFoundException e) {
+                localContest = ContestClientUtil.getContest(givenContestId);
+            } catch (ContestNotFoundException ignored) {
+            }
+        }
+        return localContest;
+    }
+
+    public Contest getContest() throws InvalidAccessException {
+        if (contest == null) {
+            final boolean contestUserSupplied = StringUtils.isNotBlank(givenContestUrlName)
+                    || givenContestId > 0;
+            if (contestUserSupplied) {
                 throw new InvalidAccessException();
             }
         }
         return contest;
     }
 
+    public ClientHelper getClientHelper() {
+        return clientHelper;
+    }
+
     public ContestPhase getContestPhase(Contest contest) {
+        final ContestClient contestClient = clientHelper.getContestClient();
         ContestPhase contestPhase;
         if (givenPhaseId > 0) {
-            contestPhase = ContestClientUtil.getContestPhase(givenPhaseId);
+            contestPhase = contestClient.getContestPhase(givenPhaseId);
             if (contestPhase == null) {
-                contestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
+                contestPhase = contestClient.getActivePhase(contest.getContestPK());
             }
 
         } else {
-            contestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
+            contestPhase = contestClient.getActivePhase(contest.getContestPK());
         }
         if (contestPhase == null) {
             throw ReferenceResolutionException
@@ -100,8 +119,9 @@ public class ProposalContextHelper {
     }
 
     public Proposal2Phase getProposal2Phase(ContestPhase contestPhase) {
+        final ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         try {
-            return ProposalPhaseClientUtil
+            return proposalPhaseClient
                     .getProposal2PhaseByProposalIdContestPhaseId(givenProposalId,
                             contestPhase.getContestPhasePK());
         } catch (Proposal2PhaseNotFoundException e) {
@@ -110,10 +130,11 @@ public class ProposalContextHelper {
     }
 
     public Proposal getProposal() throws InvalidAccessException {
+        final ProposalClient proposalClient = clientHelper.getProposalClient();
         Proposal proposal = null;
         if (givenProposalId > 0) {
             try {
-                proposal = ProposalClientUtil.getProposal(givenProposalId);
+                proposal = proposalClient.getProposal(givenProposalId);
             } catch (ProposalNotFoundException e) {
                 throw new InvalidAccessException();
             }

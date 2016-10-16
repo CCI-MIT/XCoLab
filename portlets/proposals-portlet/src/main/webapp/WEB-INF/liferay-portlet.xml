@@ -5,7 +5,6 @@
 	<portlet>
 		<portlet-name>proposals-portlet</portlet-name>
 		<icon>/icon.png</icon>
-        <indexer-class>org.xcolab.portlets.proposals.utils.Indexer</indexer-class>
         <scheduler-entry>
             <scheduler-event-listener-class>org.xcolab.utils.SendEmailNotifications</scheduler-event-listener-class>
             <trigger>

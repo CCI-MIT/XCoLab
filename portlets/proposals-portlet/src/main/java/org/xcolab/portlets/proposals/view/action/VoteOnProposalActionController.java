@@ -27,13 +27,13 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.emailnotification.proposal.ProposalVoteNotification;
@@ -181,7 +181,8 @@ public class VoteOnProposalActionController {
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
                 ProposalMemberRatingClientUtil.updateProposalVote(vote);
-                ProposalWrapper proposal = new ProposalWrapper(ProposalClientUtil.getProposal(proposalId));
+                ProposalWrapper proposal = new ProposalWrapper(
+                        ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId));
                 model.addAttribute("proposal", proposal);
                 success = true;
             } else {

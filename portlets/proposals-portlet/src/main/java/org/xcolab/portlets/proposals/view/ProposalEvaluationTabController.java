@@ -1,5 +1,10 @@
 package org.xcolab.portlets.proposals.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -7,26 +12,22 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
@@ -106,7 +107,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         final long discussionThreadId = createDiscussionThread(request, " results discussion", true);
         proposal.setResultsDiscussionId(discussionThreadId);
 
-        ProposalClientUtil.updateProposal(proposal);
+        ProposalsContextUtil.getClients(request).getProposalClient().updateProposal(proposal);
         return discussionThreadId;
     }
 
@@ -230,11 +231,11 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     private ProposalRatingsWrapper calculateAverageRating(List<ProposalRating> judgeRatingsForProposal)
             throws SystemException, PortalException {
 
-        List<Long> judgeIds = new ArrayList<>();
         Map<Long, List<ProposalRating>> map = new HashMap<>();
-        Map<Long, List<Long>> averageRatingList = new HashMap<>();
         map.put(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<ProposalRating>());
 
+        Map<Long, List<Long>> averageRatingList = new HashMap<>();
+        List<Long> judgeIds = new ArrayList<>();
         for (ProposalRating judgeRating : judgeRatingsForProposal) {
             if (judgeRating.getOnlyForInternalUsage()) {
                 continue;

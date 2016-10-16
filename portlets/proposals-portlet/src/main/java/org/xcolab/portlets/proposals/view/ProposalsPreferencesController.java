@@ -1,13 +1,13 @@
 package org.xcolab.portlets.proposals.view;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -16,14 +16,14 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.mail.ContestPhasePromotionEmail;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -39,6 +39,7 @@ import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -48,7 +49,7 @@ import javax.portlet.ValidatorException;
 @RequestMapping("edit")
 public class ProposalsPreferencesController {
 
-    private static final Log _log = LogFactoryUtil.getLog(ProposalsPreferencesController.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalsPreferencesController.class);
 
     private static List<ContestPhase> getPhasesByContest(Contest c, final int sortModifier) {
         List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getContestPK());
@@ -85,7 +86,7 @@ public class ProposalsPreferencesController {
                 if (!contestPhaseTypeMap.containsKey(cp.getContestPhaseType())) {
                     contestPhaseTypeMap.put(cp.getContestPhaseType(), ContestClientUtil.getContestPhaseType(cp.getContestPhaseType()));
                 }
-                List<Proposal> proposals = ProposalClientUtil.getProposalsInContestPhase(cp.getContestPhasePK());
+                List<Proposal> proposals = ProposalsContextUtil.getClients(request).getProposalClient().getProposalsInContestPhase(cp.getContestPhasePK());
                 List<ProposalWrapper> wrappers = new ArrayList<>();
                 for (Proposal p : proposals) {
                     wrappers.add(new ProposalWrapper(p));
@@ -110,7 +111,7 @@ public class ProposalsPreferencesController {
         Integer[] phaseIds = { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };
         for (Integer phaseId : phaseIds) {
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(phaseId.longValue());
-            for (Proposal proposal : ProposalClientUtil.getProposalsInContestPhase(phaseId.longValue())) {
+            for (Proposal proposal : ProposalsContextUtil.getClients(request).getProposalClient().getProposalsInContestPhase(phaseId.longValue())) {
                 ContestPhasePromotionEmail.contestPhasePromotionEmailNotifyProposalContributors(proposal, contestPhase, request);
             }
         }
@@ -118,7 +119,7 @@ public class ProposalsPreferencesController {
 
     @RequestMapping(params = "action=save")
     public void savePreferences(ActionRequest request, ActionResponse response, Model model, ProposalsPreferencesWrapper preferences)
-            throws ReadOnlyException, ValidatorException, IOException, PortalException {
+            throws ReadOnlyException, ValidatorException, IOException {
         //save terms
         preferences.store(request);
 
@@ -129,13 +130,14 @@ public class ProposalsPreferencesController {
         Long ribbonId = preferences.getRibbonId();
 
         //moving parameters are set
-        String message = moveProposals(IdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false);
+        String message = moveProposals(IdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false,
+                request);
         model.addAttribute("message", message);
     }
 
     @RequestMapping(params = "action=checkForMissingTeamMembers")
     public void checkForMissingTeamMembers(ActionRequest request, ActionResponse response, Model model)
-            throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
+            throws ReadOnlyException, ValidatorException, IOException {
         List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
 
@@ -148,11 +150,11 @@ public class ProposalsPreferencesController {
 
             message.append("<br/><br/>\nCONTEST: ").append(c.getContestShortName()).append("<br/><br/>\n");
 
-            for (Proposal p : ProposalClientUtil.getProposalsInContest(c.getContestPK())) {
+            for (Proposal p : ProposalsContextUtil.getClients(request).getProposalClient().getProposalsInContest(c.getContestPK())) {
                 //author id check
                 Long authorId = p.getAuthorId();
 
-                List<Member> members = ProposalClientUtil.getProposalMembers(p.getProposalId());
+                List<Member> members = ProposalsContextUtil.getClients(request).getProposalClient().getProposalMembers(p.getProposalId());
                 boolean foundAuthor = false;
                 for (Member u: members) {
                     if (u.getUserId() == authorId) {
@@ -165,7 +167,7 @@ public class ProposalsPreferencesController {
 
                 //proposal version check
                 boolean warningIssued = false;
-                for (ProposalVersion pv: ProposalClientUtil.getAllProposalVersions(p.getProposalId())) {
+                for (ProposalVersion pv: ProposalsContextUtil.getClients(request).getProposalClient().getAllProposalVersions(p.getProposalId())) {
                     boolean foundVersionAuthor = false;
                     for (Member u: members) {
                         if (u.getUserId() == pv.getAuthorId()) {
@@ -189,7 +191,7 @@ public class ProposalsPreferencesController {
 
     @RequestMapping(params = "action=runRibbonDistribution")
     public void runRibbonDistribution(ActionRequest request, ActionResponse response, Model model)
-            throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
+            throws ReadOnlyException, ValidatorException, IOException {
         List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
 
@@ -225,22 +227,25 @@ public class ProposalsPreferencesController {
                         proposalCreation = cp;
                         break;
                     default:
-                        _log.warn("Unhandled ContestPhaseType given: " + cp.getContestPhaseType());
+                        _log.warn("Unhandled ContestPhaseType given: {}", cp.getContestPhaseType());
                 }
             }
 
             if (winnersAwarded != null && winnersSelection != null && finalistSelection != null && proposalCreation != null) {
                 //get all proposals in Winners selection
-                List<Proposal> finalists = ProposalClientUtil.getActiveProposalsInContestPhase(winnersSelection.getContestPhasePK());
-                List<Proposal> semiFinalists = ProposalClientUtil.getActiveProposalsInContestPhase(finalistSelection.getContestPhasePK());
-                List<Proposal> otherProposals = ProposalClientUtil.getActiveProposalsInContestPhase(proposalCreation.getContestPhasePK());
+                List<Proposal> finalists = ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(winnersSelection.getContestPhasePK());
+                List<Proposal> semiFinalists = ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(finalistSelection.getContestPhasePK());
+                List<Proposal> otherProposals = ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(proposalCreation.getContestPhasePK());
 
                 final Long finalistRibbon = 1L;
                 final Long semiFinalistRibbon = 3L;
 
-                message.append(moveProposals(finalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon, true));
-                message.append(moveProposals(semiFinalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon, false));
-                message.append(moveProposals(otherProposals, c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L, false));
+                message.append(moveProposals(finalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), finalistRibbon, true,
+                        request));
+                message.append(moveProposals(semiFinalists, c.getContestPK(), winnersAwarded.getContestPhasePK(), semiFinalistRibbon, false,
+                        request));
+                message.append(moveProposals(otherProposals, c.getContestPK(), winnersAwarded.getContestPhasePK(), -1L, false,
+                        request));
             } else {
                 message.append("The proposals in this contests were not moved because the contest phases have not been found.<br/>\n");
             }
@@ -250,7 +255,9 @@ public class ProposalsPreferencesController {
         model.addAttribute("message", message.toString());
     }
 
-    private String moveProposals(List<Proposal> proposalsToBeMoved, Long moveFromContestId, Long moveToContestPhaseId, Long ribbonId, boolean forceRibbonCreation) throws PortalException {
+    private String moveProposals(List<Proposal> proposalsToBeMoved, Long moveFromContestId,
+            Long moveToContestPhaseId, Long ribbonId, boolean forceRibbonCreation,
+            PortletRequest request) {
         StringBuilder message = new StringBuilder();
         if (!proposalsToBeMoved.isEmpty() && moveToContestPhaseId > 0 && moveFromContestId > 0) {
             try {
@@ -269,7 +276,7 @@ public class ProposalsPreferencesController {
                     ContestPhase lastPhaseContainingProposal = null;
                     //traverse phases, later phases are first.
                     for (ContestPhase cp: contestPhases) {
-                        List<Proposal> proposalsInThisPhase = ProposalClientUtil.getProposalsInContestPhase(cp.getContestPhasePK());
+                        List<Proposal> proposalsInThisPhase = ProposalsContextUtil.getClients(request).getProposalClient().getProposalsInContestPhase(cp.getContestPhasePK());
                         if (proposalsInThisPhase.contains(proposal)) {
                             //found the last phase
                             lastPhaseContainingProposal = cp;
@@ -281,14 +288,16 @@ public class ProposalsPreferencesController {
                     }
 
                     //let's make sure that the last phase is before the phase which we move the proposal to!
-                    boolean proposalAlreadyInTargetPhase = lastPhaseContainingProposal.getContestPhasePK() == moveToContestPhase.getContestPhasePK() ||
-                            lastPhaseContainingProposal.getPhaseEndDate().after(moveToContestPhase.getPhaseStartDate());
+                    boolean proposalAlreadyInTargetPhase = lastPhaseContainingProposal.getContestPhasePK()
+                            == moveToContestPhase.getContestPhasePK().longValue()
+                            || lastPhaseContainingProposal.getPhaseEndDate()
+                                .after(moveToContestPhase.getPhaseStartDate());
                     if (proposalAlreadyInTargetPhase) {
                         //skip this
                         message.append("Proposal ").append(proposal.getProposalId()).append(" is already in the target phase or in a later phase.<br/>\n");
                     } else {
                         //update the last phase association - set the end version to the current version minus one
-                        Integer currentProposalVersion = ProposalClientUtil.countProposalVersions(proposal.getProposalId());
+                        Integer currentProposalVersion = ProposalsContextUtil.getClients(request).getProposalClient().countProposalVersions(proposal.getProposalId());
                         if (currentProposalVersion < 0) {
                             throw new SystemException("Proposal not found");
                         }
@@ -299,7 +308,7 @@ public class ProposalsPreferencesController {
 
                             boolean isBoundedVersion = false;
                             if (oldP2p.getVersionTo() < 0) {
-                                oldP2p.setVersionTo(currentProposalVersion.intValue());
+                                oldP2p.setVersionTo(currentProposalVersion);
                                 ProposalPhaseClientUtil.updateProposal2Phase(oldP2p);
                             } else {
                                 isBoundedVersion = true;
@@ -308,8 +317,8 @@ public class ProposalsPreferencesController {
                             Proposal2Phase p2p = new Proposal2Phase();
                             p2p.setProposalId(proposal.getProposalId());
                             p2p.setContestPhaseId(moveToContestPhase.getContestPhasePK());
-                            p2p.setVersionFrom(currentProposalVersion.intValue());
-                            p2p.setVersionTo(isBoundedVersion ? currentProposalVersion.intValue() : -1);
+                            p2p.setVersionFrom(currentProposalVersion);
+                            p2p.setVersionTo(isBoundedVersion ? currentProposalVersion : -1);
 
                             ProposalPhaseClientUtil.createProposal2Phase(p2p);
 
@@ -325,18 +334,19 @@ public class ProposalsPreferencesController {
                         if (ribbonId > 0) {
 
                             //first, see if a ribbon already exists
-                            ProposalContestPhaseAttribute attribute = null;
 
-                                attribute = ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
-                                        ProposalContestPhaseAttributeKeys.RIBBON);
-
+                            ProposalContestPhaseAttribute attribute = ProposalPhaseClientUtil
+                                    .getProposalContestPhaseAttribute(proposal.getProposalId(),
+                                            moveToContestPhase.getContestPhasePK(),
+                                            ProposalContestPhaseAttributeKeys.RIBBON);
 
 
                             //do not overwrite existing ribbons
                             if (attribute == null) {
                                     ContestClientUtil.getContestPhaseRibbonType(ribbonId);
-                                    ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
-                                            ProposalContestPhaseAttributeKeys.RIBBON,0l, ribbonId,"");
+                                    ProposalPhaseClientUtil.setProposalContestPhaseAttribute(
+                                            proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
+                                            ProposalContestPhaseAttributeKeys.RIBBON, 0L, ribbonId,"");
                             }
                         }
                     }

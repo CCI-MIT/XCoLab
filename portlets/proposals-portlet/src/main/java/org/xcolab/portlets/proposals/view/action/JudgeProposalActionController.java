@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -31,7 +30,6 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -45,6 +43,7 @@ import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.requests.RatingBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -67,6 +66,7 @@ import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.validation.Valid;
@@ -79,10 +79,9 @@ public class JudgeProposalActionController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = {"action=saveAdvanceDetails"})
-    public void saveAdvanceDetails(ActionRequest request, Model model,
-                                ActionResponse response, @Valid ProposalAdvancingBean proposalAdvancingBean,
-                                BindingResult result)
-            throws PortalException, SystemException, IOException {
+    public void saveAdvanceDetails(ActionRequest request, Model model, ActionResponse response,
+            @Valid ProposalAdvancingBean proposalAdvancingBean, BindingResult result)
+            throws IOException {
         Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         long proposalId = proposal.getProposalId();
@@ -155,8 +154,7 @@ public class JudgeProposalActionController {
     }
 
     @ResourceMapping("getJudgingCsv")
-    public void getJudgingCsv(ResourceRequest request, ResourceResponse response)
-            throws PortalException, SystemException {
+    public void getJudgingCsv(ResourceRequest request, ResourceResponse response) {
 
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         Member currentMember = proposalsContext.getMember(request);
@@ -173,7 +171,7 @@ public class JudgeProposalActionController {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             String csvPayload = getProposalJudgeReviewCsv(proposalsContext.getContest(request),
-                    proposalsContext.getContestPhase(request), serviceContext);
+                    proposalsContext.getContestPhase(request), serviceContext, request);
 
             String separatorIndicationForExcel =  "sep=" + CSVWriter.DEFAULT_SEPARATOR + CSVWriter.DEFAULT_LINE_END;
             csvPayload = separatorIndicationForExcel + csvPayload;
@@ -192,10 +190,11 @@ public class JudgeProposalActionController {
         }
     }
 
-    public String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase,ServiceContext serviceContext)  {
+    public String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase,
+            ServiceContext serviceContext, PortletRequest request)  {
         Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
-        List<Proposal> stillActiveProposals = ProposalClientUtil.getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
+        List<Proposal> stillActiveProposals = ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
         Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
         Set<Member> occurringJudges = new HashSet<>();
 
@@ -205,8 +204,7 @@ public class JudgeProposalActionController {
             }
             for (Proposal proposal : stillActiveProposals) {
                     ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
-                            .
-                            getProposalContestPhaseAttribute( proposal.getProposalId(),judgingPhase.getContestPhasePK(),
+                            .getProposalContestPhaseAttribute( proposal.getProposalId(),judgingPhase.getContestPhasePK(),
                                     ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
                     JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
 
@@ -304,7 +302,7 @@ public class JudgeProposalActionController {
     public void saveJudgingFeedback(ActionRequest request, Model model, ActionResponse response,
                                     @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
                                     BindingResult result)
-            throws PortalException, SystemException, IOException {
+            throws IOException {
 
         if (result.hasErrors()) {
             return;
@@ -437,8 +435,7 @@ public class JudgeProposalActionController {
 
 
     private void saveRatings(List<ProposalRating> existingRatings, RatingBean ratingBean,
-            long proposalId, long contestPhaseId, long currentUserId, boolean isPublicRating)
-            throws NoSuchUserException, SystemException {
+            long proposalId, long contestPhaseId, long currentUserId, boolean isPublicRating) {
         //initialize a map of existing ratings
         Map<Long, ProposalRating> typeToRatingMap = new HashMap<>();
         for (ProposalRating r: existingRatings) {

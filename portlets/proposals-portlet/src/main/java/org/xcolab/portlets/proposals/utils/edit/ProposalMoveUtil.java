@@ -8,15 +8,16 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalMoveClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
+import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
 public final class ProposalMoveUtil {
@@ -24,10 +25,11 @@ public final class ProposalMoveUtil {
     private ProposalMoveUtil() { }
 
     public static void moveProposal(@Valid UpdateProposalDetailsBean updateProposalSectionsBean,
-                                    ProposalWrapper proposalWrapper, ContestPhase contestPhase, Contest targetContest, ThemeDisplay themeDisplay)
+            ProposalWrapper proposalWrapper, ContestPhase contestPhase, Contest targetContest,
+            ThemeDisplay themeDisplay, PortletRequest request)
             throws SystemException, PortalException {
         try {
-            final Contest fromContest = ProposalClientUtil.getCurrentContestForProposal(proposalWrapper.getProposalId());
+            final Contest fromContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposalWrapper.getProposalId());
             ContestPhase targetPhase = ContestClientUtil.getActivePhase(targetContest.getContestPK());
 
             try {//Proposal2PhaseLocalServiceUtil

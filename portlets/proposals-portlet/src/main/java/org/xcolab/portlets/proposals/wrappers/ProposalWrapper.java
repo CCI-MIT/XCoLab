@@ -4,14 +4,8 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 
 import com.ext.portlet.JudgingSystemActions;
-
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.modeling.RomaClientUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -27,16 +21,19 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
@@ -51,8 +48,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ProposalWrapper extends BaseProposalWrapper {
-
-    private static final Log _log = LogFactoryUtil.getLog(ProposalWrapper.class);
 
     private static final Long LONG_DEFAULT_VAL = -1L;
     private static final String STRING_DEFAULT_VAL = "";
@@ -160,7 +155,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return selectedJudges;
     }
 
-    public List<Member> getSelectedJudgeUsers() throws SystemException, PortalException {
+    public List<Member> getSelectedJudgeUsers() {
         List<Member> selectedJudges = new ArrayList<>();
 
         // All judges are selected when screening is disabled
@@ -191,7 +186,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return selectedJudges;
     }
 
-    public boolean isUserAmongSelectedJudge(Member user) throws PortalException, SystemException {
+    public boolean isUserAmongSelectedJudge(Member user) {
         if (!getFellowScreeningNecessary()) {
             return isUserAmongJudges(user);
         }
@@ -319,11 +314,11 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return subProposalPerModel;
     }
 
-    public Scenario getScenario() throws IOException, SystemException {
+    public Scenario getScenario() throws IOException {
         return getScenarioByProposalId(proposal.getProposalId());
     }
 
-    public Scenario getScenarioByProposalId(Long proposalId) throws IOException, SystemException {
+    public Scenario getScenarioByProposalId(Long proposalId) throws IOException {
         return RomaClientUtil.repository().getScenario(proposalId);
     }
 
@@ -341,7 +336,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return modelId;
     }
 
-    public List<Scenario> getSubProposalScenarios() throws SystemException, PortalException, IOException {
+    public List<Scenario> getSubProposalScenarios() throws IOException {
         List<Scenario> subProposalScenarios = new ArrayList<>();
         List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(proposal.getProposalId());
         for (Proposal subProposal : subProposals) {
@@ -355,7 +350,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return getModelIdForScenarioId(proposal.getProposalId());
     }
 
-    public List<Long> getSubProposalScenarioIds() throws PortalException, SystemException {
+    public List<Long> getSubProposalScenarioIds() {
         List<Long> subProposalScenarioIds = new ArrayList<>();
         Map<Long, List<ProposalWrapper>> subProposalPerModel = getSubProposalPerModel();
 
@@ -456,7 +451,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     }
 
-    public ProposalWrapper getBaseProposal() throws PortalException, SystemException {
+    public ProposalWrapper getBaseProposal() {
         try {
             if (baseProposal == null) {
                 long baseProposalId = proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_ID, 0);
@@ -467,7 +462,7 @@ public class ProposalWrapper extends BaseProposalWrapper {
                 }
             }
             return baseProposal;
-        }catch (ProposalNotFoundException ignored){
+        } catch (ProposalNotFoundException ignored) {
             return null;
         }
     }

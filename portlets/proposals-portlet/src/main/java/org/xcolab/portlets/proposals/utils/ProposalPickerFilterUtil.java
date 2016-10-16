@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.utils;
 
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -7,19 +8,19 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.ArrayList;
@@ -149,7 +150,7 @@ public class ProposalPickerFilterUtil {
                 if (as.getClassNameId() == ClassNameLocalServiceUtil
                         .getClassNameId(Proposal.class)) {
                     proposals.add(Pair.of(
-                            ProposalClientUtil.getProposal(as.getClassPK()),
+                            ProposalsContextUtil.getClients(request).getProposalClient().getProposal(as.getClassPK()),
                             new Date(as.getCreateDate().getTime())
                     ));
                 }
@@ -169,7 +170,7 @@ public class ProposalPickerFilterUtil {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(userId)) {
             try{
-                proposals.add(Pair.of(ProposalClientUtil.getProposal(ps.getProposalId()), new Date(ps.getCreateDate().getTime())));
+                proposals.add(Pair.of(ProposalsContextUtil.getClients(request).getProposalClient().getProposal(ps.getProposalId()), new Date(ps.getCreateDate().getTime())));
             }catch (ProposalNotFoundException ignored){
 
             }
@@ -189,7 +190,7 @@ public class ProposalPickerFilterUtil {
             proposalsRaw = ProposalClientUtil
                     .getProposalsInContest(contestPK);
         } else {
-            proposalsRaw = ProposalClientUtil.getAllProposals();
+            proposalsRaw = ProposalsContextUtil.getClients(request).getProposalClient().getAllProposals();
         }
         for (Proposal p : proposalsRaw) {
             proposals.add(Pair.of(p, new Date(0)));

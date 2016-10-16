@@ -57,7 +57,7 @@ public final class CommentClientUtil {
         return commentClient.deleteComment(commentId);
     }
 
-    public static CommentClient getCommentClient() {
+    public static CommentClient getClient() {
         return commentClient;
     }
 }

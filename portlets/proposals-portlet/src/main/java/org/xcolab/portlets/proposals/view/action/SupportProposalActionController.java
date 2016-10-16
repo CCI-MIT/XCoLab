@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +14,11 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 
 import java.io.IOException;
 
@@ -63,7 +62,7 @@ public class SupportProposalActionController {
             			analyticsValue);
                 }
                 try {
-                    Contest contest = ProposalClientUtil.getLatestContestInProposal(proposalId);
+                    Contest contest = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestInProposal(proposalId);
                     SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
                 }catch (ContestNotFoundException ignore){
 

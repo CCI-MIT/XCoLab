@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view.action;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +20,13 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalCreationUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalMoveUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
@@ -39,7 +38,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
-
 
 @Controller
 @RequestMapping("view")
@@ -82,7 +80,7 @@ public class AddUpdateProposalDetailsActionController {
             proposalWrapper = proposalsContext.getProposalWrapped(request);
             if (updateProposalSectionsBean.getIsMove() && updateProposalSectionsBean.getMoveToContestId() > 0) {
                 ProposalMoveUtil.moveProposal(updateProposalSectionsBean,
-                        proposalWrapper, contestPhase, contest, themeDisplay);
+                        proposalWrapper, contestPhase, contest, themeDisplay, request);
             }
         } else {
             createNew = true;
@@ -96,7 +94,8 @@ public class AddUpdateProposalDetailsActionController {
         proposalUpdateHelper.updateProposal();
 
         if (createNew) {
-            ProposalCreationUtil.sendAuthorNotification(themeDisplay, proposalWrapper, contestPhase);
+            ProposalCreationUtil.sendAuthorNotification(themeDisplay, proposalWrapper, contestPhase,
+                    request);
 
             ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
@@ -131,7 +130,7 @@ public class AddUpdateProposalDetailsActionController {
 
         Proposal proposal = new Proposal();
         proposal.setAuthorId(proposalsContext.getMember(request).getUserId());
-        proposal = ProposalClientUtil.createProposal(proposal);
+        proposal = ProposalsContextUtil.getClients(request).getProposalClient().createProposal(proposal);
 
         if (proposalWrapped == null) {
             proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request),

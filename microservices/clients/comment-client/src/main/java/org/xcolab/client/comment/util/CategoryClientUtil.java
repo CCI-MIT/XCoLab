@@ -39,7 +39,7 @@ public final class CategoryClientUtil {
         return categoryClient.getCategoryGroup(groupId);
     }
 
-    public static CategoryClient getCategoryClient() {
+    public static CategoryClient getClient() {
         return categoryClient;
     }
 }

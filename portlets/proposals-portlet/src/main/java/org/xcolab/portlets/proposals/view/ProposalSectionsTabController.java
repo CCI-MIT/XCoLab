@@ -26,6 +26,7 @@ import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
@@ -84,7 +85,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         final Proposal proposal = proposalsContext.getProposal(request);
         final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
         try {
-            final Contest baseContest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
+            final Contest baseContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
 
             if (voted) {
                 setVotingDeadline(model, baseContest);

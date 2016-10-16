@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class RemoveUserFromProposalTeamActionController {
             }
         }
 
-        ProposalClientUtil.removeUserFromProposalTeam(proposalId,memberId);
+        ProposalsContextUtil.getClients(request).getProposalClient().removeUserFromProposalTeam(proposalId,memberId);
         response.sendRedirect(proposal.getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
     }
 }

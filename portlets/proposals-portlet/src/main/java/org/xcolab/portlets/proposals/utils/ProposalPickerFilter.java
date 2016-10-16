@@ -4,7 +4,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -21,6 +20,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -36,7 +36,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil.SectionDefFocusAreaArgument;
+import static org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil
+        .SectionDefFocusAreaArgument;
 
 public class ProposalPickerFilter {
     private static final Log _log = LogFactoryUtil.getLog(ProposalPickerFilter.class);
@@ -179,7 +180,7 @@ public class ProposalPickerFilter {
             return terms;
         }
 
-        private void addTermsInFocusArea(List<OntologyTerm> terms, FocusArea focusArea) throws PortalException, SystemException {
+        private void addTermsInFocusArea(List<OntologyTerm> terms, FocusArea focusArea) {
             if (focusArea != null) {
                 final List<OntologyTerm> focusAreaTerms = OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
                 removeRootTerms(focusAreaTerms);

@@ -1,18 +1,19 @@
 package org.xcolab.portlets.proposals.view;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.proposals.ProposalClientUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
 import javax.portlet.PortletRequest;
@@ -50,7 +51,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         final long discussionThreadId = createDiscussionThread(request, " comments", false);
         proposal.setDiscussionId(discussionThreadId);
-        ProposalClientUtil.updateProposal(proposal);
+        ProposalsContextUtil.getClients(request).getProposalClient().updateProposal(proposal);
         return discussionThreadId;
     }
 }

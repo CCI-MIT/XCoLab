@@ -10,23 +10,25 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMoveClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.portlet.PortletRequest;
 import javax.validation.Valid;
 
 public final class ProposalCreationUtil {
@@ -87,15 +89,14 @@ public final class ProposalCreationUtil {
     }
 
     public static void sendAuthorNotification(ThemeDisplay themeDisplay,
-                                              ProposalWrapper proposalWrapper, ContestPhase contestPhase) throws PortalException,
-            SystemException {
+            ProposalWrapper proposalWrapper, ContestPhase contestPhase, PortletRequest request) {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
         try {
             Contest contest = ContestClientUtil
                     .getContest(ContestClientUtil.getContestPhase(contestPhase.getContestPhasePK()).getContestPK());
 
-            Proposal updatedProposal = ProposalClientUtil.getProposal(proposalWrapper.getProposalId());
+            Proposal updatedProposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalWrapper.getProposalId());
             org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
             new ProposalCreationNotification(updatedProposal, contestMicro, serviceContext).sendMessage();
         } catch (ContestNotFoundException | ProposalNotFoundException ignored) {

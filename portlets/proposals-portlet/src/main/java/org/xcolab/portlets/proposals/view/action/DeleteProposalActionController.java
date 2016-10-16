@@ -1,9 +1,5 @@
 package org.xcolab.portlets.proposals.view.action;
 
-
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,11 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
-
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 
 import java.io.IOException;
 
@@ -32,7 +27,7 @@ public class DeleteProposalActionController {
     
     @RequestMapping(params = {"action=deleteProposal"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response, @RequestParam boolean delete)
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException, IOException {
 
         if (proposalsContext.getPermissions(request).getCanDelete()) {
             //TODO: Undelete doesnt work
@@ -43,7 +38,7 @@ public class DeleteProposalActionController {
 
 
             proposal.setVisible(!delete);
-            ProposalClientUtil.updateProposal(proposal);
+            ProposalsContextUtil.getClients(request).getProposalClient().updateProposal(proposal);
 
             response.sendRedirect(
                     proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/ADMIN");

@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.permissions;
 
 import com.ext.portlet.contests.ContestStatus;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -21,6 +20,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.util.Date;
@@ -39,8 +39,10 @@ public class ProposalsPermissions {
     private final Proposal proposal;
     private final ContestPhase contestPhase;
     private final ContestStatus contestStatus;
+    private final PortletRequest request;
 
     public ProposalsPermissions(PortletRequest request, Proposal proposal, ContestPhase contestPhase) {
+        this.request = request;
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         if (contestPhase != null) {
@@ -114,7 +116,7 @@ public class ProposalsPermissions {
         return !user.isDefaultUser() && getCanAdminAll();
     }
 
-    public boolean getCanPublicRating() throws SystemException, PortalException {
+    public boolean getCanPublicRating() {
         return !user.isDefaultUser(); // && !getCanJudgeActions() && !getIsTeamMember();
     }
 
@@ -150,7 +152,7 @@ public class ProposalsPermissions {
 
     public boolean getIsTeamMember() {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalClientUtil.isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
+                && ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
                 && !user.isDefaultUser();
     }
 
@@ -228,7 +230,7 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
+            Contest latestProposalContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
             ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();

@@ -1,26 +1,28 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
+
+import java.io.IOException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -39,7 +41,7 @@ public class PromoteProposalActionController {
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             try {
-                Contest latestProposalContest = ProposalClientUtil.getLatestContestInProposal(proposalId);
+                Contest latestProposalContest = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestInProposal(proposalId);
                 ContestPhase currentProposalContestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
                 ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
 

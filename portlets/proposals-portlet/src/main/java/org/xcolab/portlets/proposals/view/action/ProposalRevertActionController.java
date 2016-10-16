@@ -22,6 +22,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -128,7 +129,7 @@ public class ProposalRevertActionController {
         try {
             if (p2p != null && p2p.getVersionTo() != -1) {
                 // we are in a completed phase - need to adjust the end version
-                final Proposal updatedProposal = ProposalClientUtil.getProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
+                final Proposal updatedProposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
                 ProposalPhaseClientUtil.updateProposal2Phase(p2p);
             }

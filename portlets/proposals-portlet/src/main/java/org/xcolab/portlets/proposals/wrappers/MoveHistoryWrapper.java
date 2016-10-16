@@ -1,10 +1,10 @@
 package org.xcolab.portlets.proposals.wrappers;
 
+import org.joda.time.DateTime;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.joda.time.DateTime;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -18,7 +18,6 @@ public class MoveHistoryWrapper {
     private final ProposalMoveHistory wrapped;
 
     public MoveHistoryWrapper(ProposalMoveHistory wrapped) {
-
         this.wrapped = wrapped;
     }
 
@@ -29,7 +28,7 @@ public class MoveHistoryWrapper {
     public ProposalWrapper getSourceProposal() throws PortalException, SystemException {
         try {
             return new ProposalWrapper(wrapped.getSourceProposalId());
-        }catch (ProposalNotFoundException ignored){
+        } catch (ProposalNotFoundException ignored) {
             return null;
         }
     }
@@ -37,7 +36,7 @@ public class MoveHistoryWrapper {
     public ContestWrapper getSourceContest() {
         try {
             return new ContestWrapper(wrapped.getSourceContestId());
-        }catch (ContestNotFoundException ignored){
+        } catch (ContestNotFoundException ignored) {
             return null;
         }
     }
@@ -53,17 +52,17 @@ public class MoveHistoryWrapper {
     public ProposalWrapper getTargetProposal() throws PortalException, SystemException {
         try {
             return new ProposalWrapper(wrapped.getTargetProposalId());
-        }catch (ProposalNotFoundException ignored){
+        } catch (ProposalNotFoundException ignored) {
             return null;
         }
     }
 
     public ContestWrapper getTargetContest() {
-       try {
-           return new ContestWrapper(wrapped.getTargetContestId());
-       } catch (ContestNotFoundException ignored) {
-           return null;
-       }
+        try {
+            return new ContestWrapper(wrapped.getTargetContestId());
+        } catch (ContestNotFoundException ignored) {
+            return null;
+        }
     }
 
     public BaseContestPhaseWrapper getTargetContestPhase() {

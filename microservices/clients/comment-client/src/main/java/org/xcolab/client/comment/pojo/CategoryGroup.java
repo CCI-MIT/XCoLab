@@ -21,14 +21,14 @@ public class CategoryGroup extends AbstractCategoryGroup {
     private final CategoryClient categoryClient;
 
     public CategoryGroup() {
-        threadClient = ThreadClientUtil.getThreadClient();
-        categoryClient = CategoryClientUtil.getCategoryClient();
+        threadClient = ThreadClientUtil.getClient();
+        categoryClient = CategoryClientUtil.getClient();
     }
 
     public CategoryGroup(Long groupId, String description, String url, Boolean isQuiet) {
         super(groupId, description, url, isQuiet);
-        threadClient = ThreadClientUtil.getThreadClient();
-        categoryClient = CategoryClientUtil.getCategoryClient();
+        threadClient = ThreadClientUtil.getClient();
+        categoryClient = CategoryClientUtil.getClient();
     }
 
     CategoryGroup(AbstractCategoryGroup abstractCategoryGroup, RestService commentService) {
