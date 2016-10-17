@@ -63,6 +63,7 @@ $c-ContestCard__border__bottom: null !default;
   font-size: 12px;
   padding: 8px;
   line-height: 15px;
+  overflow: hidden;
   color: $t-Color__grey--dark;
   height: $c-ContestCard__text__height;
 }
@@ -91,18 +92,20 @@ $c-ContestCard__border__bottom: null !default;
   }
 }
 
-.c-ContestCard__meta__flag--grey { //.contest-flag-grey {
+.c-ContestCard__meta__flags {
+  height: 20px;
   display: inline-block;
   margin: 8px;
+  float: left;
+}
+
+.c-ContestCard__meta__flag--grey { //.contest-flag-grey {
   padding: 2px;
   border-radius: 3px;
-  height: 20px;
   line-height: 20px;
   font-size: 12px;
   color: $c-ContestCard__meta__flag__textColor;
   text-align: center;
-  float: left;
   text-transform: $c-ContestCard__meta__flag__capitalization;
   background: $c-ContestCard__meta__flag__background--grey;
-
 }
