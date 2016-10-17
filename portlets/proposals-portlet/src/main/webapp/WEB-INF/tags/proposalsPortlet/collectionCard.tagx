@@ -15,14 +15,13 @@
     <div class="c-CollectionCard--background-container" >
         <div class="c-CollectionCard--background-container" style="right:3px; bottom:3px;">
             <div class="c-CollectionCard" style="right:3px; bottom:3px;">
-                <div class="c-CollectionCard__separator" style="margin-top: 70px;">
+                <div class="c-CollectionCard__separator">
                     <div class="c-CollectionCard__circle">
                         ${collectionCard.numberOfContests}
                     </div>
                 </div>
                 <div class="c-CollectionCard__meta__info">
-                    <span style="margin-left: 21px;">contests</span>
-                    <span>workspaces</span>
+                    <span>contests</span>
                 </div>
                 <div class="c-CollectionCard__text__parent__title">
                     <strong>

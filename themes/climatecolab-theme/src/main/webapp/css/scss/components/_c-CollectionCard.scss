@@ -25,6 +25,7 @@ $c-CollectionCard__border__bottom: null !default;
   border-bottom: $c-CollectionCard__border;
   width: 184px;
   margin-left: 8px;
+  float: left;
 }
 
 .c-CollectionCard__circle {
@@ -33,13 +34,13 @@ $c-CollectionCard__border__bottom: null !default;
   background-color: $t-Color__primary;
   width: 50px;
   float:left;
-  margin-left: 70px;
+  margin-left: 67px; //200 - 2*8 (padding) - 50 (circle) / 2 -> 67
   color: white;
   text-align: center;
   font-size: 20px;
   line-height: 50px;
   position: relative;
-  top: -25px;
+  top: 25px;
 }
 
 .c-CollectionCard { //.contestbox {
@@ -93,6 +94,7 @@ $c-CollectionCard__border__bottom: null !default;
    padding: 8px;
    padding-top: 0px;
    text-align: center;
+   float: left;
 
    a:hover {
      color: $c-CollectionCard__text__title__textColor--hover;
@@ -103,19 +105,19 @@ $c-CollectionCard__border__bottom: null !default;
 .c-CollectionCard__text__parent__title {
   font-size: 13px;
   color: black;
-  padding: 8px;
-  margin-top: 50px;
+  width: 200px;
+  margin-top: 30px;
   text-align: center;
+  float:left;
 }
 
 .c-CollectionCard__meta__info {
   color: $t-Color__grey--medium;
-  width: 184px;
+  width: 200px;
   font-size: 14px;
   float:left;
-  span {
-    margin-left: 40px;
-  }
+  text-align: center;
+  margin-top: 30px;
 }
 
 
