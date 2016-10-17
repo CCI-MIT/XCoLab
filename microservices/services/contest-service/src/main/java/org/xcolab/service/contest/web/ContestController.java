@@ -20,6 +20,7 @@ import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -30,6 +31,9 @@ public class ContestController {
 
     @Autowired
     private ContestService contestService;
+
+    @Autowired
+    private CollectionCardService collectionCardService;
 
     @Autowired
     private ContestDao contestDao;
@@ -82,6 +86,11 @@ public class ContestController {
     public int getNumberOfContestMatchingOntologyTerms(
             @RequestParam(required = false) List<Long> focusAreaOntologyTerms){
         return contestService.getNumberOfContestsMatchingOntologyTerms(focusAreaOntologyTerms);
+    }
+
+    @RequestMapping(value = "contests/getNumberOfContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public int getNumberOfContestsInCollectionCard(@RequestParam(required = true) long collectionCardId) {
+        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId);
     }
 
     @RequestMapping(value = "/contests/{contestId}/subContestsByOntologySpaceId", method = {RequestMethod.GET, RequestMethod.HEAD})

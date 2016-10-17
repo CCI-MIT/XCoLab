@@ -222,6 +222,7 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));
 
         //
+
         model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(collectionCard).getOntology_term_to_load()).getOntologySpaceId());
 
         model.addAttribute("contests", contests);

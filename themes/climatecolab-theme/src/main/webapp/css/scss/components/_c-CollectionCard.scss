@@ -91,11 +91,10 @@ $c-CollectionCard__border__bottom: null !default;
 .c-CollectionCard__text__title {
    font-size: 15px;
    color: $c-CollectionCard__text__title__textColor;
-   padding: 8px;
-   padding-top: 0px;
+  margin-top: 10px;
    text-align: center;
    float: left;
-
+  width: 200px;
    a:hover {
      color: $c-CollectionCard__text__title__textColor--hover;
      text-decoration: none;

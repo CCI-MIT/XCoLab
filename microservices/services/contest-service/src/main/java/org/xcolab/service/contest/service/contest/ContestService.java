@@ -88,6 +88,8 @@ public class ContestService {
         }
     }
 
+
+
     public List<Contest> getContestsMatchingOntologyTerms(List<Long> ontologyTerms) {
 
         if (ontologyTerms == null || ontologyTerms.isEmpty()) {
@@ -117,6 +119,8 @@ public class ContestService {
             for(Long areaId : ontologyService.getFocusAreasIdForOntologyTermIds(allChildTerms)) {
                 count += contestDao.countByGiven(null,null,null,null,null,null,areaId,null,null,null);
             }
+        } else {
+            count += contestDao.countByGiven(null,null,null,null,null,null,null,null,null,null);
         }
         return count;
 

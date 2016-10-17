@@ -213,6 +213,12 @@ public class ContestClient {
                 .getList(), contestService);
     }
 
+    public int getNumberOfContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
+        return contestResource.service("getNumberOfContestMatchingOntologyTerms", Integer.class)
+                .queryParam("ontologyTermIds", ontologyTermIds)
+                .execute();
+    }
+
     public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
         return DtoUtil.toPojos(contestResource.service(contestId, "getSubContestsByOntologySpaceId",
                 ContestDto.TYPES.getTypeReference())

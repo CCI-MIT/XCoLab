@@ -45,8 +45,8 @@ public class CollectionCardWrapper{
         List<ContestCollectionCard> childList = new ArrayList<>();
         childList.add(ContestClientUtil.getContestCollectionCard(this.getId()));
         while(!childList.isEmpty()) {
-            count += ContestClientUtil.getContestMatchingOntologyTerms(
-                    Arrays.asList(childList.get(0).getOntology_term_to_load())).size();
+            count += ContestClientUtil.getNumberOfContestMatchingOntologyTerms(
+                    Arrays.asList(childList.get(0).getOntology_term_to_load()));
             childList.addAll(ContestClientUtil.getSubContestCollectionCards(childList.get(0).getId_()));
             childList.remove(0);
         }

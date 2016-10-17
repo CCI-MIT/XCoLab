@@ -72,7 +72,7 @@
 			<portlet:param name="collectionCard" value="2" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeLocationRootURL">
-			<portlet:param name="collectionCard" value="3" />
+			<portlet:param name="collectionCard" value="16" />
 		</portlet:renderURL>
 		<a href="${changeFeaturedRootURL}">
 			Featured

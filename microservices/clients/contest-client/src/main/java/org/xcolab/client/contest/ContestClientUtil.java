@@ -81,6 +81,11 @@ public final class ContestClientUtil {
         return contestClient.getContestMatchingOntologyTerms(ontologyTermIds);
     }
 
+    public static int getNumberOfContestMatchingOntologyTerms(
+            List<Long> ontologyTermIds) {
+        return contestClient.getNumberOfContestMatchingOntologyTerms(ontologyTermIds);
+    }
+
     public static List<Contest> getSubContestsByOntologySpaceId(
             Long contestId, Long ontologySpaceId) {
         return contestClient.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
