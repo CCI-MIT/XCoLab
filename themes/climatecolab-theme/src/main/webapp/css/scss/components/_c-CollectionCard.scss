@@ -29,17 +29,17 @@ $c-CollectionCard__border__bottom: null !default;
 
 .c-CollectionCard__circle {
   border-radius: 50%;
-  height: 30px;
+  height: 50px;
   background-color: $t-Color__primary;
-  width: 30px;
+  width: 50px;
   float:left;
   margin-left: 70px;
   color: white;
   text-align: center;
   font-size: 20px;
-  line-height: 30px;
+  line-height: 50px;
   position: relative;
-  top: -15px;
+  top: -25px;
 }
 
 .c-CollectionCard { //.contestbox {

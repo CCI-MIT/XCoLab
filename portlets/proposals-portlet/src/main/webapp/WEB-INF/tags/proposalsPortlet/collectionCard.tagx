@@ -16,11 +16,8 @@
         <div class="c-CollectionCard--background-container" style="right:3px; bottom:3px;">
             <div class="c-CollectionCard" style="right:3px; bottom:3px;">
                 <div class="c-CollectionCard__separator" style="margin-top: 70px;">
-                    <div class="c-CollectionCard__circle" style="margin-left: 25px;">
-                        ${collectionCard.numberOfContests}
-                    </div>
                     <div class="c-CollectionCard__circle">
-                        XX
+                        ${collectionCard.numberOfContests}
                     </div>
                 </div>
                 <div class="c-CollectionCard__meta__info">
