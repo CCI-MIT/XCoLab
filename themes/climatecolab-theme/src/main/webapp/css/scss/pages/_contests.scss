@@ -41,6 +41,16 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   }
 }
 
+.c-breadcrump {
+  font-size: 14px;
+  background-color: $t-Color__grey--lightest;
+
+  a {
+    color: $t-Color__primary;
+    text-decoration: none;
+  }
+}
+
 .c-display-selector {
 
   background-color: $t-Color__grey--lightest;

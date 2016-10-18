@@ -21,8 +21,10 @@
         <c:if test="${not empty contestsSorted.contestsFeatured }">
             <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsFeatured }" featured="true"/>
         </c:if>
-        <c:if test="${not empty contestsSorted.contestsNormal }">
-            <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
+        <c:if test="${not contestsSorted.showOnlyFeatured}">
+            <c:if test="${not empty contestsSorted.contestsNormal }">
+                <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
+            </c:if>
         </c:if>
 	</div>
 </jsp:root>

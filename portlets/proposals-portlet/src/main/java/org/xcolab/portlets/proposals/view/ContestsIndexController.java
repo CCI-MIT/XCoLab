@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -59,16 +60,16 @@ public class ContestsIndexController extends BaseProposalsController {
     private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
     private final static String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
     private static final int MIN_SIZE_CONTEST_FILTER = 9;
-    private static final int FEATURED_COLLECTION_CARD_ID = 18;
-    private static final int BY_TOPIC__COLLECTION_CARD_ID = 1;
-    private static final int BY_LOCATION_COLLECTION_CARD_ID = 16;
+    private static final int FEATURED_COLLECTION_CARD_ID = 1;
+    private static final int BY_TOPIC__COLLECTION_CARD_ID = 2;
+    private static final int BY_LOCATION_COLLECTION_CARD_ID = 3;
 
     @RequestMapping
     public String showContestsIndex(PortletRequest request, PortletResponse response, Model model,
             @RequestParam(required = false) String viewType,
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
-            @RequestParam(required = false, defaultValue = "1") long collectionCard,
+            @RequestParam(required = false, defaultValue = "" + BY_TOPIC__COLLECTION_CARD_ID) long collectionCard,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
 
@@ -120,6 +121,15 @@ public class ContestsIndexController extends BaseProposalsController {
         boolean showOnlyFeatured = false;
         List<ContestWrapper> contests = new ArrayList<>();
         if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
+
+            LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
+            long tempId = collectionCard;
+            while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
+                collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId)));
+                tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
+            }
+
+            model.addAttribute("collectionHierarchy", collectionHierarchy);
 
 
             if(collectionCard == FEATURED_COLLECTION_CARD_ID) {
@@ -241,7 +251,6 @@ public class ContestsIndexController extends BaseProposalsController {
         } else {
             model.addAttribute("ontologySpaceId", 0);
         }
-
 
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);

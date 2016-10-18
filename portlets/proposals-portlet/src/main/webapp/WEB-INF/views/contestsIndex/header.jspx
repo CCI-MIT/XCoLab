@@ -7,6 +7,8 @@
 	<!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
 	<!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="preferences" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"-->
+	<!--@elvariable id="collectionHierarchy" type="org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean"-->
+
 
 	<div class="c-Headline formmargin">
 		<div style="position: relative;">
@@ -66,13 +68,13 @@
 
 	<div class="c-ontology-selector">
 		<portlet:renderURL var="changeFeaturedRootURL">
-			<portlet:param name="collectionCard" value="18" />
+			<portlet:param name="collectionCard" value="1" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeTopicRootURL">
 			<portlet:param name="collectionCard" value="2" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeLocationRootURL">
-			<portlet:param name="collectionCard" value="16" />
+			<portlet:param name="collectionCard" value="3" />
 		</portlet:renderURL>
 		<a href="${changeFeaturedRootURL}">
 			Featured
@@ -110,6 +112,18 @@
 			</div>
 		</c:if>
 
+	</div>
+
+	<div class="c-breadcrump">
+		<c:forEach var="collectionCard" items="${collectionHierarchy}" >
+			<img height="8" width="8" src="/climatecolab-theme/images/arrow.gif"/>
+			<portlet:renderURL var="changeToCollectionCardURL">
+				<portlet:param name="collectionCard" value="${collectionCard.id}" />
+			</portlet:renderURL>
+			<a href="${changeToCollectionCardURL}">
+				${collectionCard.description}
+			</a>
+		</c:forEach>
 	</div>
 
 	<div class="c-display-selector">
