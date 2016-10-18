@@ -82,6 +82,12 @@ public class ContestController {
         return contestService.getContestsMatchingOntologyTerms(focusAreaOntologyTerms);
     }
 
+    @RequestMapping(value = "/contests/getContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Contest> getContestsByOntologyTerm(
+            @RequestParam(required = false) Long focusAreaOntologyTerm){
+        return contestService.getContestsByOntologyTerm(focusAreaOntologyTerm);
+    }
+
     @RequestMapping(value = "/contests/getNumberOfContestMatchingOntologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
     public int getNumberOfContestMatchingOntologyTerms(
             @RequestParam(required = false) List<Long> focusAreaOntologyTerms){

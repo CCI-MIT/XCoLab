@@ -209,8 +209,15 @@ public class ContestClient {
     //TODO:Confusing Variable naming
     public List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
         return DtoUtil.toPojos(contestResource
-                .service("getContestMatchingOntologyTerms", ContestDto.TYPES.getTypeReference())
+                .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
                 .queryParam("focusAreaOntologyTerms", ontologyTermIds.toArray())
+                .getList(), contestService);
+    }
+
+    public List<Contest> getContestByOntologyTerm(Long ontologyTermId) {
+        return DtoUtil.toPojos(contestResource
+                .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
+                .queryParam("focusAreaOntologyTerm", ontologyTermId)
                 .getList(), contestService);
     }
 

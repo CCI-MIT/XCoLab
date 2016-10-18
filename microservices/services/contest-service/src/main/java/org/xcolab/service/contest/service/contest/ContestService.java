@@ -15,6 +15,7 @@ import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -88,6 +89,19 @@ public class ContestService {
         }
     }
 
+
+    public List<Contest> getContestsByOntologyTerm(Long ontologyTerm) {
+
+        if (ontologyTerm == null) {
+            PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
+            return contestDao.findByGiven(ph,null,null,null,null,null,null,null,null,null,null);
+        }
+
+        List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(
+                Arrays.asList(ontologyTerm));
+        PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
+        return contestDao.findByGiven(ph,null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
+    }
 
 
     public List<Contest> getContestsMatchingOntologyTerms(List<Long> ontologyTerms) {

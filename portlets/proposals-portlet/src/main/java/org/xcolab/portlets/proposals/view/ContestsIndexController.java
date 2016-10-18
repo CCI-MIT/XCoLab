@@ -35,7 +35,6 @@ import org.xcolab.portlets.proposals.wrappers.OntologyTermWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -139,9 +138,8 @@ public class ContestsIndexController extends BaseProposalsController {
                 }
             } else {
                 for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil
-                        .getContestMatchingOntologyTerms(
-                                Arrays.asList(ContestClientUtil.getContestCollectionCard(collectionCard)
-                                        .getOntology_term_to_load()))) {
+                        .getContestByOntologyTerm(ContestClientUtil.getContestCollectionCard(collectionCard)
+                                        .getOntology_term_to_load())) {
                     contests.add(new ContestWrapper(contest));
                 }
             }

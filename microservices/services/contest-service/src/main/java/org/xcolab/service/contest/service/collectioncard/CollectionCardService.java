@@ -10,7 +10,6 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -35,7 +34,7 @@ public class CollectionCardService {
         try {
             collectionCards.add(contestCollectionCardDao.get(collectionCardId).getId_());
             while(!collectionCards.isEmpty()) {
-                for(Contest contest: contestService.getContestsMatchingOntologyTerms(Arrays.asList(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load()))) {
+                for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load())) {
                     if(!contestList.contains(contest.getContestPK())) {
                         contestList.add(contest.getContestPK());
                     }
