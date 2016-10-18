@@ -24,10 +24,11 @@ public class ProposalReindexingTask implements MessageListener, Serializable{
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.SECOND, - REINDEX_PROPOSALS_MODIFIED_IN_LAST_X_SECONDS);
 		try {
-			for (Proposal proposal: ProposalLocalServiceUtil.getModifiedAfter(calendar.getTime())) {
+			/*for (Proposal proposal: ProposalLocalServiceUtil.getModifiedAfter(calendar.getTime())) {
 				_log.info("Reindexing proposal: " + proposal.getProposalId());
 				indexer.reindex(proposal);
 			}
+			*/
 		}
 		catch (Exception e) {
 			_log.error("Can't reindex proposal", e);

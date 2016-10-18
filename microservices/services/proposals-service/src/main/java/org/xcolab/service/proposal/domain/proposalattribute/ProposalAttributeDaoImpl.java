@@ -86,7 +86,8 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
             query.addConditions(PROPOSAL_ATTRIBUTE.ADDITIONAL_ID.eq(additionalId));
         }
         if (version != null) {
-            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.eq(version));
+            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.ge(version));
+            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION_WHEN_CREATED.le(version));
         }
         return query.fetchInto(ProposalAttribute.class);
     }
