@@ -231,7 +231,7 @@ public class ProposalSectionWrapper {
         return ret;
     }
 
-    public long getNumericValue() throws SystemException, PortalException {
+    public long getNumericValue() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
             return 0;
@@ -239,7 +239,7 @@ public class ProposalSectionWrapper {
         return attr.getNumericValue();
     }
 
-    public String getStringValue() throws SystemException, PortalException {
+    public String getStringValue() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
             return "";

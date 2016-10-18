@@ -6,11 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 
 import java.io.IOException;
 
@@ -33,7 +33,7 @@ public class ToggleProposalOpenController {
         if (permissions.getCanDelete()) {
             final long proposalId = proposalsContext.getProposal(request).getProposalId();
             final long userId = proposalsContext.getMember(request).getUserId();
-            ProposalAttributeClientUtil.setProposalAttribute(userId, proposalId,
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient().setProposalAttribute(userId, proposalId,
                     ProposalAttributeKeys.OPEN, 0L, planOpen ? 1L : 0L);
             response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)));
         }

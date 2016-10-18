@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.mail.ContestPhasePromotionEmail;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
@@ -50,6 +52,13 @@ import javax.portlet.ValidatorException;
 public class ProposalsPreferencesController {
 
     private static final Logger _log = LoggerFactory.getLogger(ProposalsPreferencesController.class);
+
+    private final ProposalsContext proposalsContext;
+
+    @Autowired
+    public ProposalsPreferencesController(ProposalsContext proposalsContext) {
+        this.proposalsContext = proposalsContext;
+    }
 
     private static List<ContestPhase> getPhasesByContest(Contest c, final int sortModifier) {
         List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getContestPK());
@@ -302,14 +311,14 @@ public class ProposalsPreferencesController {
                             throw new SystemException("Proposal not found");
                         }
                         try {
-                            Proposal2Phase oldP2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
+                            Proposal2Phase oldP2p = proposalsContext.getClients(request).getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
 
                             assert oldP2p != null;
 
                             boolean isBoundedVersion = false;
                             if (oldP2p.getVersionTo() < 0) {
                                 oldP2p.setVersionTo(currentProposalVersion);
-                                ProposalPhaseClientUtil.updateProposal2Phase(oldP2p);
+                                proposalsContext.getClients(request).getProposalPhaseClient().updateProposal2Phase(oldP2p);
                             } else {
                                 isBoundedVersion = true;
                             }
@@ -320,7 +329,7 @@ public class ProposalsPreferencesController {
                             p2p.setVersionFrom(currentProposalVersion);
                             p2p.setVersionTo(isBoundedVersion ? currentProposalVersion : -1);
 
-                            ProposalPhaseClientUtil.createProposal2Phase(p2p);
+                            proposalsContext.getClients(request).getProposalPhaseClient().createProposal2Phase(p2p);
 
                             message.append("Proposal ").append(proposal.getProposalId()).append(" moved successfully (version: ").append(currentProposalVersion).append(").<br/>\n");
                         }catch(Proposal2PhaseNotFoundException ignored){
@@ -344,7 +353,7 @@ public class ProposalsPreferencesController {
                             //do not overwrite existing ribbons
                             if (attribute == null) {
                                     ContestClientUtil.getContestPhaseRibbonType(ribbonId);
-                                    ProposalPhaseClientUtil.setProposalContestPhaseAttribute(
+                                    proposalsContext.getClients(request).getProposalPhaseClient().setProposalContestPhaseAttribute(
                                             proposal.getProposalId(), moveToContestPhase.getContestPhasePK(),
                                             ProposalContestPhaseAttributeKeys.RIBBON, 0L, ribbonId,"");
                             }

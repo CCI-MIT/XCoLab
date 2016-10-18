@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -36,11 +35,8 @@ import javax.portlet.ActionResponse;
 @RequestMapping("view")
 public class ProposalRevertActionController {
 
-    
     @Autowired
     private ProposalsContext proposalsContext;
-
-
 
     @RequestMapping(params = "action=proposalRevert")
     public void showProposalRevert(ActionRequest request, Model model,
@@ -131,7 +127,7 @@ public class ProposalRevertActionController {
                 // we are in a completed phase - need to adjust the end version
                 final Proposal updatedProposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
-                ProposalPhaseClientUtil.updateProposal2Phase(p2p);
+                proposalsContext.getClients(request).getProposalPhaseClient().updateProposal2Phase(p2p);
             }
             // extra check to reset dependencies from the old versions
             if (updateProposalReferences) {

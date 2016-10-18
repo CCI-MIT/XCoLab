@@ -34,6 +34,7 @@ import org.xcolab.portlets.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.html.HtmlUtil;
 
@@ -163,7 +164,7 @@ public class ProposalImpactJSONController {
 
         for (ProposalAttribute proposalAttribute : ProposalAttributeClientUtil
                 .getImpactProposalAttributes(proposal, focusArea)) {
-            ProposalAttributeClientUtil.deleteProposalAttribute(proposalAttribute.getId_());
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient().deleteProposalAttribute(proposalAttribute.getId_());
         }
 
         responseJSON.put("success", true);
@@ -229,13 +230,13 @@ public class ProposalImpactJSONController {
         if (impactAuthorComment != null || impactIAFComment != null) {
             if(impactAuthorComment != null) {
 
-                ProposalAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(),
+                ProposalsContextUtil.getClients(request).getProposalAttributeClient().createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(),
                         HtmlUtil.cleanAll(impactAuthorComment),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
                         proposal.getProposalId());
             }
             if (impactIAFComment != null) {
-                ProposalAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                ProposalsContextUtil.getClients(request).getProposalAttributeClient().createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
                         proposal.getProposalId());
             }

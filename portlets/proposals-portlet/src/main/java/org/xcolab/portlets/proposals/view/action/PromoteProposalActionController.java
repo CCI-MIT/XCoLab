@@ -45,7 +45,7 @@ public class PromoteProposalActionController {
                 ContestPhase currentProposalContestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
                 ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
 
-                ProposalPhaseClientUtil.promoteProposal(proposalId,
+                proposalsContext.getClients(request).getProposalPhaseClient().promoteProposal(proposalId,
                         activePhaseForContest.getContestPhasePK(),
                         currentProposalContestPhase.getContestPhasePK());
 

@@ -238,7 +238,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             request.setAttribute(PROPOSAL_2_PHASE_ATTRIBUTE, proposal2Phase);
             request.setAttribute(PERMISSIONS_ATTRIBUTE, proposalsPermissions);
             request.setAttribute(DISPLAY_PERMISSIONS_ATTRIBUTE, new ProposalsDisplayPermissions(
-                    proposalsPermissions, proposal, contestPhase));
+                    proposalsPermissions, proposal, contestPhase, request));
             ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
             request.setAttribute(PROPOSALS_PREFERENCES_ATTRIBUTE, preferences);
             request.setAttribute(CONTEST_TYPE_ATTRIBUTE,

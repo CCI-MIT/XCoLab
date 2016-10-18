@@ -196,7 +196,7 @@ public class ProposalRequestMembershipActionController {
         long proposalId = proposalsContext.getProposal(request).getProposalId();
 
         MembershipRequest membershipRequest = null;
-        for (MembershipRequest mr : MembershipClientUtil.getMembershipRequests(proposalId)) {
+        for (MembershipRequest mr : ProposalsContextUtil.getClients(request).getMembershipClient().getMembershipRequests(proposalId)) {
             if (mr.getMembershipRequestId() == requestId) {
                 membershipRequest = mr;
             }
@@ -210,7 +210,7 @@ public class ProposalRequestMembershipActionController {
             comment = "no comments";
         }
         if (approve.equalsIgnoreCase("APPROVE")) {
-            MembershipClientUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
+            ProposalsContextUtil.getClients(request).getMembershipClient().approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
             sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
         } else if (approve.equalsIgnoreCase("DENY")) {
             MembershipClientUtil

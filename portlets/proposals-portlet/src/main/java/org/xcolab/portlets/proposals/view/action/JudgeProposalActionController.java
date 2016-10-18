@@ -104,7 +104,7 @@ public class JudgeProposalActionController {
         }
 
         //check if advancement was frozen
-        boolean isFrozen = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(proposalId,
+        boolean isFrozen = proposalsContext.getClients(request).getProposalPhaseClient().isProposalContestPhaseAttributeSetAndTrue(proposalId,
                 contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN);
 
         boolean isUndecided = (proposalAdvancingBean.getAdvanceDecision()
@@ -119,7 +119,7 @@ public class JudgeProposalActionController {
 
         // save judge decision
 
-        ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId,
+        proposalsContext.getClients(request).getProposalPhaseClient().setProposalContestPhaseAttribute(proposalId,
                 contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION,
                 0L, (long) proposalAdvancingBean.getAdvanceDecision(), null);
 
@@ -216,7 +216,8 @@ public class JudgeProposalActionController {
 
                 final String proposalUrl = serviceContext.getPortalURL() + proposal.getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
-                proposalReview.setReviewers(ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase)));
+                proposalReview.setReviewers(ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase,
+                        request)));
                 List<ProposalRating> ratings = ProposalJudgeRatingClientUtil
                         .getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
                 Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
@@ -262,11 +263,12 @@ public class JudgeProposalActionController {
         return csvExporter.getCsvString();
     }
 
-    private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase) {
+    private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase,
+            PortletRequest request) {
         List<Member> selectedJudges = null;
 
         if (judgingPhase.getFellowScreeningActive()) {
-                final String judgeIdString = ProposalPhaseClientUtil.
+                final String judgeIdString = proposalsContext.getClients(request).getProposalPhaseClient().
                         getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
                                 ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
 
@@ -370,14 +372,14 @@ public class JudgeProposalActionController {
             // save selection of judges
             if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions
                     .FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
-                ProposalPhaseClientUtil.persistSelectedJudgesAttribute(
+                proposalsContext.getClients(request).getProposalPhaseClient().persistSelectedJudgesAttribute(
                         proposalId,
                         contestPhaseId,
                         fellowProposalScreeningBean.getSelectedJudges()
                 );
             } else {
                 //clear selected judges attribute since the decision is not to pass the proposal.
-                ProposalPhaseClientUtil.persistSelectedJudgesAttribute(
+                proposalsContext.getClients(request).getProposalPhaseClient().persistSelectedJudgesAttribute(
                         proposalId,
                         contestPhaseId,
                         null
@@ -386,7 +388,7 @@ public class JudgeProposalActionController {
 
             // save fellow action
             if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction())) {
-                ProposalPhaseClientUtil.setProposalContestPhaseAttribute(
+                proposalsContext.getClients(request).getProposalPhaseClient().setProposalContestPhaseAttribute(
                         proposalId,
                         contestPhaseId,
                         ProposalContestPhaseAttributeKeys.FELLOW_ACTION,

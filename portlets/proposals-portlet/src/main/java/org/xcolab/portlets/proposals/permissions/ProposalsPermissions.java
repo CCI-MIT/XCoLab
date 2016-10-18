@@ -277,4 +277,8 @@ public class ProposalsPermissions {
     public User getUser() {
         return user;
     }
+
+    public Member getMember() {
+        return member;
+    }
 }

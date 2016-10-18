@@ -3,18 +3,17 @@ package org.xcolab.portlets.proposals.utils.edit;
 import org.apache.commons.lang.StringUtils;
 
 import com.ext.portlet.PlanSectionTypeKeys;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextImpl;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -23,8 +22,6 @@ import org.xcolab.utils.LinkUtils;
 
 import javax.portlet.ActionRequest;
 import javax.validation.Valid;
-
-;
 
 public class ProposalUpdateHelper {
 
@@ -40,6 +37,8 @@ public class ProposalUpdateHelper {
     private final Proposal2Phase p2p;
     private final long userId;
 
+    private final ProposalsContext proposalsContext = new ProposalsContextImpl();
+
     public ProposalUpdateHelper(@Valid UpdateProposalDetailsBean updateProposalSectionsBean, ActionRequest request,
             ThemeDisplay themeDisplay, ProposalWrapper proposalWrapper, Proposal2Phase p2p, long userId) {
         this.updateProposalSectionsBean = updateProposalSectionsBean;
@@ -50,7 +49,7 @@ public class ProposalUpdateHelper {
         this.userId = userId;
     }
 
-    public void updateProposal() throws PortalException, SystemException {
+    public void updateProposal() {
         boolean filledAll = updateBasicFields();
 
         boolean updateProposalReferences = false;
@@ -77,7 +76,7 @@ public class ProposalUpdateHelper {
                     if (StringUtils.isNumeric(newSectionValue)) {
                         long newNumericVal = Long.parseLong(newSectionValue);
                         if (newNumericVal != section.getNumericValue()) {
-                            ProposalAttributeClientUtil.setProposalAttribute(themeDisplay.getUserId(),
+                            ProposalsContextUtil.getClients(request).getProposalAttributeClient().setProposalAttribute(themeDisplay.getUserId(),
                                     proposalWrapper.getProposalId(), ProposalAttributeKeys.SECTION,
                                     section.getSectionDefinitionId(), newNumericVal);
                         }
@@ -129,7 +128,7 @@ public class ProposalUpdateHelper {
             try {
                 final Proposal updatedProposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalWrapper.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
-                ProposalPhaseClientUtil.updateProposal2Phase(p2p);
+                proposalsContext.getClients(request).getProposalPhaseClient().updateProposal2Phase(p2p);
             }catch (ProposalNotFoundException ignored){
 
             }
@@ -142,7 +141,7 @@ public class ProposalUpdateHelper {
         doAnalytics(request, filledAll);
     }
 
-    private boolean updateBasicFields() throws PortalException, SystemException {
+    private boolean updateBasicFields() {
         boolean filledAll = true;
 
         if (!StringUtils.equals(updateProposalSectionsBean.getName(), proposalWrapper.getName())) {
@@ -190,7 +189,7 @@ public class ProposalUpdateHelper {
         return filledAll;
     }
 
-    public void doAnalytics(ActionRequest request, boolean filledAll) throws SystemException {
+    public void doAnalytics(ActionRequest request, boolean filledAll) {
         int analyticsValue;
 
         if (filledAll) {

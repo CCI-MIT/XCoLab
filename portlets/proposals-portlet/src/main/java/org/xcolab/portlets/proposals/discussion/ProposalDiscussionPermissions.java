@@ -1,8 +1,5 @@
 package org.xcolab.portlets.proposals.discussion;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -14,8 +11,6 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
 
 import javax.portlet.PortletRequest;
 
@@ -121,26 +116,18 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
-
-        try {
-            ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
 
 
-            ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
+        ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
 
-            boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
-                    MembersClient.getMemberUnchecked(currentMember.getUserId()));
-            boolean isFellow = proposalWrapper.isUserAmongFellows(currentMember);
-            boolean isAdvisor = contestWrapper.isUserAmongAdvisors(currentMember);
+        boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
+                MembersClient.getMemberUnchecked(currentMember.getUserId()));
+        boolean isFellow = proposalWrapper.isUserAmongFellows(currentMember);
+        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(currentMember);
 
-            return isFellow || isJudge || isAdvisor;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new InternalException(e);
-        }
-
+        return isFellow || isJudge || isAdvisor;
     }
 
     private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {

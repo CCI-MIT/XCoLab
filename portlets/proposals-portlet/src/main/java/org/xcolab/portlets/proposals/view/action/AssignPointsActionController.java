@@ -7,9 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
@@ -21,6 +18,7 @@ import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
@@ -53,7 +51,7 @@ public class AssignPointsActionController {
     public void savePointAssignments(ActionRequest request, Model model,
                                 ActionResponse response, @Valid AssignPointsBean assignPointsBean,
                                 BindingResult result, PortletRequest portletRequest)
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException, IOException {
         final Member currentMember = proposalsContext.getMember(request);
         final Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
@@ -72,7 +70,8 @@ public class AssignPointsActionController {
         }
 
         //first, delete the existing configuration
-        PointsClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+        ProposalsContextUtil.getClients(request).getPointsClient()
+                .deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
 
         try {
             PointType contestRootPointType = PointsClientUtil
@@ -80,7 +79,7 @@ public class AssignPointsActionController {
                     .getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype
-            this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));
+            this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType, request));
 
             //custom user assignments
             for (Long pointTypeId : assignPointsBean.getAssignmentsByUserIdByPointTypeId().keySet()) {
@@ -104,7 +103,8 @@ public class AssignPointsActionController {
                     pointsDistributionConfiguration.setPercentage(percentage);
                     pointsDistributionConfiguration.setCreator(currentMember.getUserId());
 
-                    PointsClientUtil.createPointsDistributionConfiguration(pointsDistributionConfiguration);
+                    ProposalsContextUtil.getClients(request).getPointsClient()
+                            .createPointsDistributionConfiguration(pointsDistributionConfiguration);
 
                 }
                 //round to two decimals
@@ -113,11 +113,11 @@ public class AssignPointsActionController {
                     throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);
                 }
             }
-        } catch (SystemException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             //in case a (validation) error occurs, we simply delete all created configurations.
             //since we do client-side validations, this state will not be reached by regular uses
             // of the UI.
-            PointsClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+            ProposalsContextUtil.getClients(request).getPointsClient().deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
             throw e;
         }
 

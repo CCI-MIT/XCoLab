@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,12 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
@@ -37,10 +33,12 @@ import javax.portlet.PortletRequest;
 @RequestMapping("view")
 public class ProposalPointsTabController extends BaseProposalTabController {
 
-    private static final Log _log = LogFactoryUtil.getLog(ProposalPointsTabController.class);
+    private final ProposalsContext proposalsContext;
 
     @Autowired
-    private ProposalsContext proposalsContext;
+    public ProposalPointsTabController(ProposalsContext proposalsContext) {
+        this.proposalsContext = proposalsContext;
+    }
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_POINTS"})
     public String showProposalDetails(Model model, PortletRequest request) 
@@ -50,14 +48,15 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         Proposal proposal = proposalsContext.getProposal(request);
         Contest contest = proposalsContext.getContest(request);
 
-        PointType contestParentPointType = PointsClientUtil.getPointType(contest.getDefaultParentPointType());
+        PointType contestParentPointType = ProposalsContextUtil.getClients(request).getPointsClient()
+                .getPointType(contest.getDefaultParentPointType());
 
         if (contestParentPointType == null) {
             //there is no point scheme set for this contest, forward to description tab
             return "";
         }
 
-        PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType);
+        PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType, request);
 
         List<Proposal> subProposals = ProposalClientUtil
                 .getSubproposals(proposal.getProposalId(), false);
@@ -66,7 +65,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             subProposalsWrapped.add(new ProposalWrapper(p));
         }
         //TODO: make this flexible
-        PointType pointType = PointsClientUtil.getPointType(9L);
+        PointType pointType = ProposalsContextUtil.getClients(request).getPointsClient().getPointType(9L);
         DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 
@@ -76,7 +75,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             regionalPercentages.add(new PointsTargetProposalWrapper(target, 93));
         }
 
-        pointType = PointsClientUtil.getPointType(4L);
+        pointType = ProposalsContextUtil.getClients(request).getPointsClient().getPointType(4L);
         distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 
