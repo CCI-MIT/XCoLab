@@ -59,6 +59,9 @@ public class ContestsIndexController extends BaseProposalsController {
     private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
     private final static String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
     private static final int MIN_SIZE_CONTEST_FILTER = 9;
+    private static final int FEATURED_COLLECTION_CARD_ID = 18;
+    private static final int BY_TOPIC__COLLECTION_CARD_ID = 1;
+    private static final int BY_LOCATION_COLLECTION_CARD_ID = 16;
 
     @RequestMapping
     public String showContestsIndex(PortletRequest request, PortletResponse response, Model model,
@@ -108,25 +111,35 @@ public class ContestsIndexController extends BaseProposalsController {
 
 
         //Collection cards
-
         List<CollectionCardWrapper> collectionCards = new ArrayList<>();
         for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(collectionCard)) {
             collectionCards.add(new CollectionCardWrapper(card));
         }
 
         //contests
+        boolean showOnlyFeatured = false;
         List<ContestWrapper> contests = new ArrayList<>();
         if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
-            for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil
-                    .getContestMatchingOntologyTerms(
-                            Arrays.asList(ContestClientUtil.getContestCollectionCard(collectionCard)
-                                    .getOntology_term_to_load()))) {
-                contests.add(new ContestWrapper(contest));
+
+
+            if(collectionCard == FEATURED_COLLECTION_CARD_ID) {
+                showOnlyFeatured = true;
+                for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil.getAllContests()) {
+                    contests.add(new ContestWrapper(contest));
+                }
+            } else {
+                for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil
+                        .getContestMatchingOntologyTerms(
+                                Arrays.asList(ContestClientUtil.getContestCollectionCard(collectionCard)
+                                        .getOntology_term_to_load()))) {
+                    contests.add(new ContestWrapper(contest));
+                }
             }
         }
 
 
 
+        //ONLY OUTLINE VIEW
 
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
             List<Contest> contestsToWrap = showAllContests ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_()) :
@@ -219,18 +232,23 @@ public class ContestsIndexController extends BaseProposalsController {
 
         //Adding attributes to model
 
+
         model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));
 
-        //
+        //if only featured
+        if(ContestClientUtil.getContestCollectionCard(collectionCard).getOntology_term_to_load() != null) {
+            model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(collectionCard).getOntology_term_to_load()).getOntologySpaceId());
+        } else {
+            model.addAttribute("ontologySpaceId", 0);
+        }
 
-        model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(collectionCard).getOntology_term_to_load()).getOntologySpaceId());
 
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
         //model.addAttribute("priorContestsExist", !priorContests.isEmpty());
         model.addAttribute("priorContestsExist", true);
         //hacked
-        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
+        model.addAttribute("contestsSorted", new ContestsSortFilterBean(showOnlyFeatured, contests, sortFilterPage,
                 showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);

@@ -66,7 +66,7 @@
 
 	<div class="c-ontology-selector">
 		<portlet:renderURL var="changeFeaturedRootURL">
-			<portlet:param name="collectionCard" value="1" />
+			<portlet:param name="collectionCard" value="18" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeTopicRootURL">
 			<portlet:param name="collectionCard" value="2" />
@@ -84,7 +84,7 @@
 			By location
 		</a>
 		<br/>
-		<div class="c-arrow ${ontologySpaceId == 999 ? 'selected' : ''}">
+		<div class="c-arrow ${ontologySpaceId == 0 ? 'selected' : ''}">
 			<jsp:text />
 		</div>
 		<div class="c-arrow ${ontologySpaceId == 103 ? 'selected' : ''}">

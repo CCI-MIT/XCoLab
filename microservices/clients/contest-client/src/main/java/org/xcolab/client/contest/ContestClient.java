@@ -206,16 +206,17 @@ public class ContestClient {
                 .execute(), contestService);
     }
 
+    //TODO:Confusing Variable naming
     public List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
         return DtoUtil.toPojos(contestResource
                 .service("getContestMatchingOntologyTerms", ContestDto.TYPES.getTypeReference())
-                .queryParam("ontologyTermIds", ontologyTermIds)
+                .queryParam("focusAreaOntologyTerms", ontologyTermIds.toArray())
                 .getList(), contestService);
     }
 
     public int getNumberOfContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
         return contestResource.service("getNumberOfContestMatchingOntologyTerms", Integer.class)
-                .queryParam("ontologyTermIds", ontologyTermIds)
+                .queryParam("ontologyTermIds", ontologyTermIds.toArray())
                 .execute();
     }
 

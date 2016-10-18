@@ -1,6 +1,7 @@
 package org.xcolab.portlets.proposals.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
 
@@ -12,15 +13,15 @@ import java.util.List;
 public class ContestsSortFilterBean {
     private final List<ContestWrapper> contests;
     private ContestsColumn sortColumn;
-
+    private Boolean showOnlyFeatured;
     private List<ContestWrapper> contestsFeatured = new ArrayList<ContestWrapper>();
     private List<ContestWrapper> contestsNormal = new ArrayList<ContestWrapper>();
 
-    public ContestsSortFilterBean(List<ContestWrapper> contests, final SortFilterPage sortFilterPage) {
-        this(contests, sortFilterPage, null);
+    public ContestsSortFilterBean(Boolean showOnlyFeatured, List<ContestWrapper> contests, final SortFilterPage sortFilterPage) {
+        this(showOnlyFeatured, contests, sortFilterPage, null);
     }
 
-    public ContestsSortFilterBean(List<ContestWrapper> contests, final SortFilterPage sortFilterPage, ContestsColumn sortColumnConstruct) {
+    public ContestsSortFilterBean(Boolean showOnlyFeatured, List<ContestWrapper> contests, final SortFilterPage sortFilterPage, ContestsColumn sortColumnConstruct) {
         super();
         List<ContestWrapper> filteredContests = contests;
 
@@ -36,6 +37,7 @@ public class ContestsSortFilterBean {
             }
 
         }
+        this.showOnlyFeatured = showOnlyFeatured;
         this.contests = filteredContests;
 
         // sort contests
@@ -91,6 +93,9 @@ public class ContestsSortFilterBean {
         return contests;
     }
 
+    public Boolean getShowOnlyFeatured() {
+        return this.showOnlyFeatured;
+    }
 
 
 }
