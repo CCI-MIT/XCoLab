@@ -116,7 +116,7 @@
 
 	<div class="c-breadcrump">
 		<c:forEach var="collectionCard" items="${collectionHierarchy}" >
-			<img height="8" width="8" src="/climatecolab-theme/images/arrow.gif"/>
+			<span> > </span>
 			<portlet:renderURL var="changeToCollectionCardURL">
 				<portlet:param name="collectionCard" value="${collectionCard.id}" />
 			</portlet:renderURL>

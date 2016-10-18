@@ -45,6 +45,10 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   font-size: 14px;
   background-color: $t-Color__grey--lightest;
 
+  span {
+    color: $t-Color__grey--medium
+  }
+
   a {
     color: $t-Color__primary;
     text-decoration: none;
