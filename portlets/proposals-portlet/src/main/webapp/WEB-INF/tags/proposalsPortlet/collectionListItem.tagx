@@ -37,10 +37,12 @@
                     </div>
                     <div class="c-ListItem__meta">
                         <div class="c-ListItem__proposals" style="margin-top: 20px;">
+                            <!--
                             <strong>
                                 ${collectionCard.numberOfContests}
                             </strong>
                             proposals
+                            -->
                         </div>
                     </div>
                 </div>
