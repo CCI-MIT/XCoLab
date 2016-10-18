@@ -14,39 +14,39 @@
 
     <div class="c-CollectionCard--background-container" >
         <div class="c-CollectionCard--background-container" style="right:3px; bottom:3px;">
-            <div class="c-CollectionCard" style="right:3px; bottom:3px;">
-                <div class="c-CollectionCard__separator">
-                    <div class="c-CollectionCard__circle">
-                        ${collectionCard.numberOfContests}
+            <a href="${changeCurrentContestCardURL}">
+                <div class="c-CollectionCard" style="right:3px; bottom:3px;">
+                    <div class="c-CollectionCard__separator">
+                        <div class="c-CollectionCard__circle">
+                            ${collectionCard.numberOfContests}
+                        </div>
                     </div>
-                </div>
-                <div class="c-CollectionCard__meta__info">
-                    <span>contests</span>
-                </div>
-                <div class="c-CollectionCard__text__parent__title">
-                    <strong>
-                        <c:if test="${not empty collectionCard.parent.ontologyTermToLoad.name}">
-                            ${collectionCard.parent.ontologyTermToLoad.name}
-                        </c:if>
-                        <c:if test="${empty collectionCard.parent.ontologyTermToLoad.name}">
-                            <jsp:text />
-                        </c:if>
-                    </strong>
-                </div>
+                    <div class="c-CollectionCard__meta__info">
+                        <span>contests</span>
+                    </div>
+                    <div class="c-CollectionCard__text__parent__title">
+                        <strong>
+                            <c:if test="${not empty collectionCard.parent.ontologyTermToLoad.name}">
+                                ${collectionCard.parent.ontologyTermToLoad.name}
+                            </c:if>
+                            <c:if test="${empty collectionCard.parent.ontologyTermToLoad.name}">
+                                <jsp:text />
+                            </c:if>
+                        </strong>
+                    </div>
 
-                <div class="c-CollectionCard__text__title">
-                    <a href="${changeCurrentContestCardURL}">
+                    <div class="c-CollectionCard__text__title">
                         ${collectionCard.ontologyTermToLoad.name}
-                    </a>
-                </div>
-                <div class="c-CollectionCard__separator">
-                    <jsp:text/>
-                </div>
-                <div class="c-CollectionCard__text">
-                    ${collectionCard.description}
-                </div>
+                    </div>
+                    <div class="c-CollectionCard__separator">
+                        <jsp:text/>
+                    </div>
+                    <div class="c-CollectionCard__text">
+                        ${collectionCard.description}
+                    </div>
 
-             </div>
+                 </div>
+            </a>
         </div>
     </div>
 </jsp:root>

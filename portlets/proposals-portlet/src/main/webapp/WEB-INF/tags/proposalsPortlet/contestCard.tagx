@@ -6,69 +6,65 @@
 
 	<jsp:directive.attribute name="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper" required="true" rtexprvalue="true" description="Contest" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
-	<div class="c-ContestCard">
-        <div class="c-ContestCard__text">
-            <h3 class="c-ContestCard__text__title">
-                <collab:contestLink contest="${contest}" />
-            </h3>
-            ${contest.contestName }
-        </div>
-        <div class="c-ContestCard__meta__flags">
-            <c:if test="${contest.flag ge 0}">
+    <a href="${contest.contestUrl}">
+        <div class="c-ContestCard">
+            <div class="c-ContestCard__text">
+                <h3 class="c-ContestCard__text__title">
+                    ${contest.contestShortName}
+                </h3>
+                ${contest.contestName }
+            </div>
+            <div class="c-ContestCard__meta__flags">
+                <c:if test="${contest.flag ge 0}">
+                    <c:choose>
+                        <c:when test="${not empty contest.flagText and contest.flag == 1}">
+                            <div class="c-ContestCard__meta__flag--grey"> ${contest.flagText} </div>
+                        </c:when>
+                        <c:when test="${not empty contest.flagText and contest.flag == 2}">
+                            <div class="c-ContestCard__meta__flag--grey"> ${contest.flagText} </div>
+                        </c:when>
+                        <c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
+                            <div class="c-ContestCard__meta__flag--grey" style="font-size: 13px;"> Winners to be announced </div>
+                        </c:when>
+                        <c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
+                            <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
+                        </c:when>
+                        <c:when test='${not empty contest.activePhase.status}'>
+                            <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
+                        </c:when>
+                    </c:choose>
+                </c:if>
+            </div>
+            <div class="c-ContestCard__image">
+                <img src="http://climatecolab.org/image/contest?img_id=${contest.contestLogoId}" alt="${contest.contestShortName }" />
+            </div>
+            <div class="c-ContestCard__meta__count">
+                <div class="prop"><strong>${contest.proposalsCount}</strong>
+                    <c:choose>
+                        <c:when test="${contest.proposalsCount == 1}">
+                            ${contestType.proposalName}</c:when>
+                        <c:otherwise> ${contestType.proposalNamePlural}</c:otherwise>
+                    </c:choose>
+                </div>
                 <c:choose>
-                    <c:when test="${not empty contest.flagText and contest.flag == 1}">
-                        <div class="c-ContestCard__meta__flag--grey"> ${contest.flagText} </div>
+                    <c:when test="${not empty contest.activePhase and contest.activePhase.canVote }">
+                        <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong>
+                            <c:choose>
+                                <c:when test="${contest.votesCount == 1}"> vote</c:when>
+                                <c:otherwise> votes</c:otherwise>
+                            </c:choose>
+                        </div>
                     </c:when>
-                    <c:when test="${not empty contest.flagText and contest.flag == 2}">
-                        <div class="c-ContestCard__meta__flag--grey"> ${contest.flagText} </div>
-                    </c:when>
-                    <c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
-                        <div class="c-ContestCard__meta__flag--grey" style="font-size: 13px;"> Winners to be announced </div>
-                    </c:when>
-                    <c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
-                        <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
-                    </c:when>
-                    <c:when test='${not empty contest.activePhase.status}'>
-                        <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
-                    </c:when>
-                </c:choose>
-            </c:if>
-        </div>
-        <div class="c-ContestCard__image">
-        	<a href="${contest.contestUrl}">
-            	<img src="http://climatecolab.org/image/contest?img_id=${contest.contestLogoId}" alt="${contest.contestShortName }" />
-            </a>
-        </div>
-        <div class="c-ContestCard__meta__count">
-            <div class="prop"><strong>${contest.proposalsCount}</strong>
-                <c:choose>
-                    <c:when test="${contest.proposalsCount == 1}">
-                        ${contestType.proposalName}</c:when>
-                    <c:otherwise> ${contestType.proposalNamePlural}</c:otherwise>
+                    <c:otherwise>
+                        <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.totalCommentsCount}</strong>
+                            <c:choose>
+                                <c:when test="${contest.totalCommentsCount == 1}"> comment</c:when>
+                                <c:otherwise> comments</c:otherwise>
+                            </c:choose>
+                        </div>
+                    </c:otherwise>
                 </c:choose>
             </div>
-
-            <c:choose>
-                <c:when test="${not empty contest.activePhase and contest.activePhase.canVote }">
-                    <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong>
-                        <c:choose>
-                            <c:when test="${contest.votesCount == 1}"> vote</c:when>
-                            <c:otherwise> votes</c:otherwise>
-                        </c:choose>
-
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.totalCommentsCount}</strong>
-                        <c:choose>
-                            <c:when test="${contest.totalCommentsCount == 1}"> comment</c:when>
-                            <c:otherwise> comments</c:otherwise>
-                        </c:choose>
-
-                    </div>
-                </c:otherwise>
-            </c:choose>
-
-        </div>
-     </div>
+         </div>
+    </a>
 </jsp:root>

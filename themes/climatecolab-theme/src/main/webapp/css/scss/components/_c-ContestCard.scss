@@ -73,7 +73,7 @@ $c-ContestCard__border__bottom: null !default;
   font-size: 15px;
   color: $c-ContestCard__text__title__textColor;
 
-  a:hover {
+  &:hover {
     color: $c-ContestCard__text__title__textColor--hover;
     text-decoration: none;
   }
