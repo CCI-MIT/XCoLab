@@ -88,15 +88,15 @@ public class ContestController {
         return contestService.getContestsByOntologyTerm(focusAreaOntologyTerm);
     }
 
-    @RequestMapping(value = "/contests/getNumberOfContestMatchingOntologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public int getNumberOfContestMatchingOntologyTerms(
-            @RequestParam(required = false) List<Long> focusAreaOntologyTerms){
-        return contestService.getNumberOfContestsMatchingOntologyTerms(focusAreaOntologyTerms);
+    @RequestMapping(value = "/contests/getNumberOfContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public int getNumberOfContestsByOntologyTerm(
+            @RequestParam(required = false) Long focusAreaOntologyTerm){
+        return contestService.getNumberOfContestsByOntologyTerm(focusAreaOntologyTerm);
     }
 
     @RequestMapping(value = "contests/getNumberOfContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public int getNumberOfContestsInCollectionCard(@RequestParam(required = true) long collectionCardId) {
-        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId);
+    public int getNumberOfContestsInCollectionCard(@RequestParam(required = true) long collectionCardId, @RequestParam(required = false) boolean countOnlyActive) {
+        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, countOnlyActive);
     }
 
     @RequestMapping(value = "/contests/{contestId}/subContestsByOntologySpaceId", method = {RequestMethod.GET, RequestMethod.HEAD})

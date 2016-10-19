@@ -86,9 +86,13 @@ public final class ContestClientUtil {
         return contestClient.getContestByOntologyTerm(ontologyTermId);
     }
 
-    public static int getNumberOfContestMatchingOntologyTerms(
-            List<Long> ontologyTermIds) {
-        return contestClient.getNumberOfContestMatchingOntologyTerms(ontologyTermIds);
+    public static int getNumberOfContestsByOntologyTerm(
+            Long ontologyTermId) {
+        return contestClient.getNumberOfContestsByOntologyTerm(ontologyTermId);
+    }
+
+    public static int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive) {
+        return contestClient.getNumberOfContestsInCollectionCard(collectionCardId, countOnlyActive);
     }
 
     public static List<Contest> getSubContestsByOntologySpaceId(

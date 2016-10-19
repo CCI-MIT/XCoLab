@@ -18,7 +18,7 @@
                 <div class="c-CollectionCard" style="right:3px; bottom:3px;">
                     <div class="c-CollectionCard__separator">
                         <div class="c-CollectionCard__circle">
-                            ${collectionCard.numberOfContests}
+                            ${collectionCard.numberOfActiveContests}
                         </div>
                     </div>
                     <div class="c-CollectionCard__meta__info">

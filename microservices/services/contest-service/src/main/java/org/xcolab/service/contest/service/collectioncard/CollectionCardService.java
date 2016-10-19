@@ -27,7 +27,10 @@ public class CollectionCardService {
         this.contestCollectionCardDao=contestCollectionCardDao;
     }
 
-    public int getNumberOfContestsInCollectionCard(Long collectionCardId) {
+    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive) {
+        if(countOnlyActive == null) {
+            countOnlyActive = false;
+        }
         int count = 0;
         List<Long> contestList = new ArrayList<>();
         List<Long> collectionCards = new ArrayList<>();
@@ -36,10 +39,11 @@ public class CollectionCardService {
             while(!collectionCards.isEmpty()) {
                 for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load())) {
                     if(!contestList.contains(contest.getContestPK())) {
-                        contestList.add(contest.getContestPK());
+                        if((countOnlyActive && contest.getContestActive()) || !countOnlyActive) {
+                            contestList.add(contest.getContestPK());
+                        }
                     }
                 }
-
                 for(ContestCollectionCard childCollectionCards : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {
                     collectionCards.add(childCollectionCards.getId_());
                 }
@@ -51,4 +55,5 @@ public class CollectionCardService {
         }
         return count;
     }
+
 }

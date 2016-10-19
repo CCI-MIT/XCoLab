@@ -214,6 +214,13 @@ public class ContestClient {
                 .getList(), contestService);
     }
 
+    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive) {
+        return contestResource.service("getNumberOfContestsInCollectionCard", Integer.class)
+                .queryParam("collectionCardId", collectionCardId)
+                .queryParam("countOnlyActive", countOnlyActive)
+                .execute();
+    }
+
     public List<Contest> getContestByOntologyTerm(Long ontologyTermId) {
         return DtoUtil.toPojos(contestResource
                 .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
@@ -221,9 +228,9 @@ public class ContestClient {
                 .getList(), contestService);
     }
 
-    public int getNumberOfContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
-        return contestResource.service("getNumberOfContestMatchingOntologyTerms", Integer.class)
-                .queryParam("ontologyTermIds", ontologyTermIds.toArray())
+    public int getNumberOfContestsByOntologyTerm(Long ontologyTermId) {
+        return contestResource.service("getNumberOfContestsByOntologyTerm", Integer.class)
+                .queryParam("ontologyTermId", ontologyTermId)
                 .execute();
     }
 
