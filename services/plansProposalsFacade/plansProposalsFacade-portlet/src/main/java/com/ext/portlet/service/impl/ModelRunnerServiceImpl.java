@@ -9,11 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 
 import com.ext.portlet.model.ModelGlobalPreference;
-import com.ext.portlet.models.ui.IllegalUIConfigurationException;
-import com.ext.portlet.models.ui.ModelDisplay;
-import com.ext.portlet.models.ui.ModelInputDisplayItem;
-import com.ext.portlet.models.ui.ModelOutputDisplayItem;
-import com.ext.portlet.models.ui.ModelUIFactory;
 import com.ext.portlet.service.base.ModelRunnerServiceBaseImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -28,6 +23,11 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.ac.AccessControlled;
 
 import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
+import org.xcolab.client.modeling.models.ui.ModelDisplay;
+import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
+import org.xcolab.client.modeling.models.ui.ModelOutputDisplayItem;
+import org.xcolab.client.modeling.models.ui.ModelUIFactory;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.IOException;
@@ -121,7 +121,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
     }
     
     @Override
-    public void refreshModels() throws SystemException, IOException {
+    public void refreshModels() throws IOException {
     	RomaClientUtil.repository().getManager().clearCache();
     	RomaClientUtil.repository().getManager().refreshSimulations();
     }

@@ -93,9 +93,9 @@ function ModelingWidget(selector, options) {
 	this.options.defaultValues = this.options.defaultValues || {};
 }
 
-ModelingWidget.prototype.getScenarioUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/get-scenario';
-ModelingWidget.prototype.getModelUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/get-model';
-ModelingWidget.prototype.runModelUrl = '/plansProposalsFacade-portlet/api/jsonws/modelrunner/run-model';
+ModelingWidget.prototype.getScenarioUrl = '/web/guest/plans/-/plans/getScenario';
+ModelingWidget.prototype.getModelUrl = '/web/guest/plans/-/plans/getModel';
+ModelingWidget.prototype.runModelUrl = '/web/guest/plans/-/plans/runModel';
 
 /**
  * returns true if value is valid, false otherwise, 

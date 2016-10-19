@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ModelRunnerServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;
@@ -43,7 +43,8 @@ public class ContestModelController extends BaseProposalsController {
             throws PortalException, SystemException, IOException {
     	
     	if (refreshModels) {
-    		ModelRunnerServiceUtil.refreshModels();
+			RomaClientUtil.repository().getManager().clearCache();
+			RomaClientUtil.repository().getManager().refreshSimulations();
     	}
 		Long modelId = 0L;
     	Long contestPK = proposalsContext.getContest(request).getContestPK();
