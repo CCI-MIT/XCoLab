@@ -20,10 +20,10 @@ public final class ProposalContestPhaseAttributeClient {
 
     public static List<ProposalContestPhaseAttribute> getAllProposalContestPhaseProposalAttributes(Long contestPhaseId, Long proposalId) {
         return proposalContestPhaseAttributeResource.list()
-                .withCache(CacheKeys.withClass(ProposalContestPhaseAttribute.class)
-                                .withParameter("proposalId", proposalId)
-                                .withParameter("contestPhaseId", contestPhaseId).asList(),
-                        CacheRetention.MEDIUM)
+//                .withCache(CacheKeys.withClass(ProposalContestPhaseAttribute.class)
+//                                .withParameter("proposalId", proposalId)
+//                                .withParameter("contestPhaseId", contestPhaseId).asList(),
+//                        CacheRetention.MEDIUM)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute();
@@ -38,6 +38,7 @@ public final class ProposalContestPhaseAttributeClient {
         }
 
     }
+
 
     public static ProposalContestPhaseAttribute getProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name) {
         try {
@@ -67,7 +68,7 @@ public final class ProposalContestPhaseAttributeClient {
     }
 
     public static boolean persistSelectedJudgesAttribute(Long proposalId, Long contestPhaseId, List<Long> selectedJudges) {
-        ProposalContestPhaseAttribute judges = getProposalContestPhaseAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
+        ProposalContestPhaseAttribute judges = getOrCreateProposalContestPhaseAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, null,null,null);
 
         StringBuilder attributeValue = new StringBuilder("");
         if (selectedJudges != null) {
@@ -100,6 +101,23 @@ public final class ProposalContestPhaseAttributeClient {
             proposalContestPhaseAttribute.setNumericValue(numericValue);
             proposalContestPhaseAttribute.setStringValue(stringValue);
             updateProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+            return proposalContestPhaseAttribute;
+        } else {
+            proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();
+            proposalContestPhaseAttribute.setProposalId(proposalId);
+            proposalContestPhaseAttribute.setName(name);
+            proposalContestPhaseAttribute.setAdditionalId(aditionalId);
+            proposalContestPhaseAttribute.setNumericValue(numericValue);
+            proposalContestPhaseAttribute.setStringValue(stringValue);
+            proposalContestPhaseAttribute.setContestPhaseId(contestPhaseId);
+            proposalContestPhaseAttribute = createProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+            return proposalContestPhaseAttribute;
+        }
+    }
+
+    public static ProposalContestPhaseAttribute getOrCreateProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+        if (proposalContestPhaseAttribute != null) {
             return proposalContestPhaseAttribute;
         } else {
             proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();

@@ -18,6 +18,7 @@ import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
 import org.xcolab.service.contest.utils.promotion.AutoPromoteHelper;
 
 import java.util.Date;
@@ -36,6 +37,10 @@ public class ContestPhaseController {
 
     @Autowired
     private AutoPromoteHelper autoPromoteHelper;
+
+
+    @Autowired
+    private ContestPhaseService contestPhaseService;
 
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestPK,
@@ -89,6 +94,20 @@ public class ContestPhaseController {
         }
         throw new NotFoundException();
     }
+
+    @PutMapping(value = "/contestPhases/{contestPhasePK}/forcePromotionOfProposalInContestPhaseId")
+    public boolean forcePropomotionOfProposalInContestPhaseId(@PathVariable long contestPhasePK,
+                                      @RequestParam Long proposalId) throws NotFoundException {
+
+        if (contestPhaseDao.exists(contestPhasePK)) {
+             contestPhaseService.forcePromotionOfProposalInPhase(proposalId, contestPhasePK);
+            return true;
+        } else {
+            throw new NotFoundException("No ContestPhase with id " + contestPhasePK);
+        }
+    }
+
+
 
     @GetMapping(value = "/contestPhases/autoPromoteProposals")
     public Boolean autoPromoteProposals(){

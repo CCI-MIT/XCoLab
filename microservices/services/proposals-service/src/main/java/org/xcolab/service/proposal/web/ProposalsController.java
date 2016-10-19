@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.*;
-import org.xcolab.model.tables.pojos.*;
+
 
 import org.xcolab.model.tables.pojos.Proposal;
+import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
 import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
-import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
+
 
 import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
-import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
+
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+
 
 
 import java.util.List;
@@ -141,7 +141,19 @@ public class ProposalsController {
         int counter = 0;
         for (Proposal p : proposals) {
             String judges = "";
-            judges = proposalContestPhaseAttributeDao.getByProposalIdContestPhaseIdName(p.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
+            ProposalContestPhaseAttribute pcpa = proposalContestPhaseAttributeDao.getByProposalIdContestPhaseIdName(p.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
+            if(pcpa == null ){
+                pcpa = new ProposalContestPhaseAttribute();
+                pcpa.setProposalId(p.getProposalId());
+                pcpa.setContestPhaseId(contestPhaseId);
+                pcpa.setName(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
+                pcpa.setStringValue("");
+                pcpa.setNumericValue(0l);
+                pcpa.setRealValue(0.0);
+                pcpa.setAdditionalId(0l);
+                pcpa = proposalContestPhaseAttributeDao.create(pcpa);
+            }
+            judges = pcpa.getStringValue();
             if (StringUtils.containsIgnoreCase(judges, userId + "")) {
                 counter++;
             }

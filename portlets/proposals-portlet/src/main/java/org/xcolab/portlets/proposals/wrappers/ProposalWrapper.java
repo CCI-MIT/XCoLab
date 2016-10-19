@@ -433,9 +433,8 @@ public class ProposalWrapper extends BaseProposalWrapper {
             if (!getSelectedJudges().isEmpty()) {
                 for (long userId : getSelectedJudges()) {
                     List<ProposalRating> proposalRatings = ProposalRatingClient
-                    .getProposalRatingsByProposalUserContestPhase(
-                                    userId, proposal.getProposalId(),
-                                    contestPhase.getContestPhasePK());
+                    .getProposalRatingsByProposalUserContestPhase(proposal.getProposalId(),
+                                    contestPhase.getContestPhasePK(),userId);
                     ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId,
                             proposalRatings);
                     if (!wrapper.isReviewComplete()) {

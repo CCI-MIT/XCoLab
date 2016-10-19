@@ -477,6 +477,11 @@ public class JudgeProposalActionController {
                     proposalRating.setRatingValueId(newRatingValueId);
                     proposalRating.setComment_(comment);
                     proposalRating.setOtherDataString("");
+                    if (comment != null && !comment.isEmpty()) {
+                        proposalRating.setCommentEnabled(true);
+                    }else{
+                        proposalRating.setCommentEnabled(false);
+                    }
                     proposalRating.setOnlyForInternalUsage(isPublicRating);
 
                     proposalRating = ProposalRatingClient.createProposalRating(proposalRating);

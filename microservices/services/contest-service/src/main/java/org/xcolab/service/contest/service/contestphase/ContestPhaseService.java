@@ -1,11 +1,14 @@
 package org.xcolab.service.contest.service.contestphase;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.Proposal2PhaseClient;
 import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalVoteClient;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -13,13 +16,19 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalSupporter;
 import org.xcolab.model.tables.pojos.Contest;
+
 import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.service.contest.domain.contest.ContestDao;
+import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
+import org.xcolab.service.contest.utils.promotion.AutoPromoteHelper;
+import org.xcolab.service.contest.utils.promotion.PhasePromotionHelper;
 import org.xcolab.service.contest.utils.promotion.enums.ContestPhaseTypeValue;
 import org.xcolab.service.contest.utils.promotion.enums.ContestStatus;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,6 +41,7 @@ import java.util.Set;
 @Service
 public class ContestPhaseService {
 
+    private static final Logger _log = LoggerFactory.getLogger(ContestPhaseService.class);
 
 
     @Autowired
@@ -40,6 +50,12 @@ public class ContestPhaseService {
 
     @Autowired
     private ContestPhaseTypeDao contestPhaseTypeDao;
+
+    @Autowired
+    private ContestPhaseDao contestPhaseDao;
+
+    @Autowired
+    private ContestDao contestDao;
 
 
     public ContestStatus getContestStatus(ContestPhase contestPhase) {
@@ -62,7 +78,7 @@ public class ContestPhaseService {
             if (currentFound) {
                 return phase;
             }
-            if (phase.getContestPhasePK() == contestPhase.getContestPhasePK()) {
+            if (phase.getContestPhasePK().longValue() == contestPhase.getContestPhasePK().longValue()) {
                 currentFound = true;
             }
         }
@@ -156,6 +172,38 @@ public class ContestPhaseService {
         }
 
         return userToSupportsMap;
+    }
+
+    public void forcePromotionOfProposalInPhase(Long proposalId, Long phaseId) throws NotFoundException {
+        ContestPhase phase = contestPhaseDao.get(phaseId).get();
+        try {
+            Proposal p = ProposalsClient.getProposal(proposalId);
+            ContestPhase nextPhase = getNextContestPhase(phase);
+            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase, contestDao);
+            //skip already promoted proposal
+            if (phasePromotionHelper.hasProposalAlreadyBeenPromoted(p)) {
+                return;
+            }
+
+            // Decide about the promotion
+            if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
+                Proposal2PhaseClient.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+            }
+
+            // Enable this line to post promotion comment to Evaluation tab comment section
+            // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
+
+            //TODO: Migrate logic to send email , the method is blank so there may be no need for this
+        /*try {
+            proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
+        } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
+            _log.error("Could not send proposal promotion colab messaging notification", e);
+        }*/
+
+            _log.info("done forcefully promoting proposal " + p.getProposalId() + " from phase " + phase.getContestPhasePK());
+        }catch(ProposalNotFoundException pnfe){
+            _log.error("could not find proposal :" + proposalId + " in promotion from phase " + phase.getContestPhasePK());
+        }
     }
 
 

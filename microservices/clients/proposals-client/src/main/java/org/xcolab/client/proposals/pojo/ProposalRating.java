@@ -4,6 +4,7 @@
 package org.xcolab.client.proposals.pojo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.apache.commons.lang3.StringUtils;
@@ -255,6 +256,7 @@ public class ProposalRating implements Serializable {
         return sb.toString();
     }
 
+    @JsonIgnore
     public boolean isRatingComplete() {
         return (this.getRatingValueId() > 0 && (!this.getCommentEnabled() || (this.getComment_() != null && !StringUtils.isEmpty(this.getComment_()))));
     }

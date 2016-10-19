@@ -72,7 +72,7 @@ public class AutoPromoteHelper {
     }
 
     public void doBasicPromotion() {
-        for (ContestPhase phase : contestPhaseDao.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
+            for (ContestPhase phase : contestPhaseDao.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase, contestDao);
             if (phasePromotionHelper.isPhaseContestScheduleTemplatePhase()) {
                 continue;
@@ -170,6 +170,7 @@ public class AutoPromoteHelper {
 
                             // Add this check for extra security to prevent proposal authors from being spammed (see COLAB-500)
                             if (phasePromotionHelper.hasProposalAlreadyBeenReviewed(p)) {
+                                //TODO: Migrate logic to send email.
                                 //ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(p, phase, null);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
 
@@ -342,7 +343,7 @@ public class AutoPromoteHelper {
                                 currentProposalVersionNumber, currentProposalVersionNumber, p2p)).sendMessage();
             } catch (Proposal2PhaseNotFoundException e) {
                 p2p = new Proposal2Phase();
-                p2p.setContestPhaseId(proposalId);
+                p2p.setProposalId(proposalId);
                 p2p.setContestPhaseId(completedPhasePK);
                 Proposal2PhaseClient.createProposal2Phase(p2p);
                 _log.debug(String.format("Created new p2p: %s", p2p));
