@@ -68,7 +68,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="${viewType == 'OUTLINE' }">
+	<c:if test="${viewType != 'OUTLINE' }">
 		<div class="c-ontology-selector">
 			<portlet:renderURL var="changeFeaturedRootURL">
 				<portlet:param name="currentCollectionCardId" value="1" />
