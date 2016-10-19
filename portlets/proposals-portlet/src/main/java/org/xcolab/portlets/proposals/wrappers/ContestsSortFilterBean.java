@@ -16,7 +16,7 @@ public class ContestsSortFilterBean {
     private List<ContestWrapper> contestsFeatured = new ArrayList<ContestWrapper>();
     private List<ContestWrapper> contestsNormal = new ArrayList<ContestWrapper>();
 
-    public ContestsSortFilterBean(Boolean showOnlyFeatured, List<ContestWrapper> contests, final SortFilterPage sortFilterPage) {
+    public ContestsSortFilterBean(List<ContestWrapper> contests, final SortFilterPage sortFilterPage) {
         this(contests, sortFilterPage, null);
     }
 

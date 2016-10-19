@@ -46,7 +46,7 @@
 			</div>
 		</c:if>
 		<div class="c-description">
-			Contests are a beautiful thing, ask Lukas! Contests are a beautiful thing, ask Lukas! Contests are a beautiful thing, ask Lukas! Contests are a beautiful thing, ask Lukas!
+			Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool!
 		</div>
     </div>
 	<!--
@@ -68,65 +68,67 @@
 		</c:otherwise>
 	</c:choose>
 
-	<div class="c-ontology-selector">
-		<portlet:renderURL var="changeFeaturedRootURL">
-			<portlet:param name="currentCollectionCardId" value="1" />
-		</portlet:renderURL>
-		<portlet:renderURL var="changeTopicRootURL">
-			<portlet:param name="currentCollectionCardId" value="2" />
-		</portlet:renderURL>
-		<portlet:renderURL var="changeLocationRootURL">
-			<portlet:param name="currentCollectionCardId" value="3" />
-		</portlet:renderURL>
-		<a href="${changeFeaturedRootURL}">
-			Featured
-		</a>
-		<a href="${changeTopicRootURL}">
-			By topic
-		</a>
-		<a href="${changeLocationRootURL}">
-			By location
-		</a>
-		<br/>
-		<div class="c-arrow ${ontologySpaceId == 0 ? 'selected' : ''}">
-			<jsp:text />
-		</div>
-		<div class="c-arrow ${ontologySpaceId == 103 ? 'selected' : ''}">
-			<jsp:text />
-		</div>
-		<div class="c-arrow ${ontologySpaceId == 104 ? 'selected' : ''}">
-			<jsp:text />
-		</div>
-
-		<c:if test="${showFilter}">
-			<div class="filter" style="position: relative;">
-				<portlet:renderURL var="filterURL" />
-				<form action="${filterURL }" id="filterContestsForm" method="get">
-					<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
-					<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
-					<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
-					<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
-					<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter ${contestType.contestNamePlural}" name="filter" />
-					<c:if test="${not empty sortFilterPage.filter }">
-						<a href="javascript:;" id="contestsFilterClear">&#160;</a>
-					</c:if>
-				</form>
-			</div>
-		</c:if>
-
-	</div>
-
-	<div class="c-breadcrump">
-		<c:forEach var="collectionCard" items="${collectionHierarchy}" >
-			<span> > </span>
-			<portlet:renderURL var="changeToCollectionCardURL">
-				<portlet:param name="collectionCard" value="${collectionCard.id}" />
+	<c:if test="${viewType == 'OUTLINE' }">
+		<div class="c-ontology-selector">
+			<portlet:renderURL var="changeFeaturedRootURL">
+				<portlet:param name="currentCollectionCardId" value="1" />
 			</portlet:renderURL>
-			<a href="${changeToCollectionCardURL}">
-				${collectionCard.description}
+			<portlet:renderURL var="changeTopicRootURL">
+				<portlet:param name="currentCollectionCardId" value="2" />
+			</portlet:renderURL>
+			<portlet:renderURL var="changeLocationRootURL">
+				<portlet:param name="currentCollectionCardId" value="3" />
+			</portlet:renderURL>
+			<a href="${changeFeaturedRootURL}">
+				Featured
 			</a>
-		</c:forEach>
-	</div>
+			<a href="${changeTopicRootURL}">
+				By topic
+			</a>
+			<a href="${changeLocationRootURL}">
+				By location
+			</a>
+			<br/>
+			<div class="c-arrow ${ontologySpaceId == 0 ? 'selected' : ''}">
+				<jsp:text />
+			</div>
+			<div class="c-arrow ${ontologySpaceId == 103 ? 'selected' : ''}">
+				<jsp:text />
+			</div>
+			<div class="c-arrow ${ontologySpaceId == 104 ? 'selected' : ''}">
+				<jsp:text />
+			</div>
+
+			<c:if test="${showFilter}">
+				<div class="filter" style="position: relative;">
+					<portlet:renderURL var="filterURL" />
+					<form action="${filterURL }" id="filterContestsForm" method="get">
+						<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
+						<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
+						<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
+						<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
+						<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter ${contestType.contestNamePlural}" name="filter" />
+						<c:if test="${not empty sortFilterPage.filter }">
+							<a href="javascript:;" id="contestsFilterClear">&#160;</a>
+						</c:if>
+					</form>
+				</div>
+			</c:if>
+
+		</div>
+
+		<div class="c-breadcrump">
+			<c:forEach var="collectionCard" items="${collectionHierarchy}" >
+				<span> > </span>
+				<portlet:renderURL var="changeToCollectionCardURL">
+					<portlet:param name="collectionCard" value="${collectionCard.id}" />
+				</portlet:renderURL>
+				<a href="${changeToCollectionCardURL}">
+					${collectionCard.description}
+				</a>
+			</c:forEach>
+		</div>
+	</c:if>
 
 	<div class="c-display-selector">
 		<portlet:renderURL var="changeToListViewTypeURL">
