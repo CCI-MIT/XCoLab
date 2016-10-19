@@ -11,7 +11,6 @@
 	<!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
 	
 	<jsp:directive.attribute name="collectionCards" type="java.util.ArrayList" required="true" rtexprvalue="true" description="CollectionCards to be shown" />
-    <jsp:directive.attribute name="featured" type="java.lang.Boolean" required="true" rtexprvalue="true" description="whether the contests are featured" />
 
 	<c:forEach var="collectionCard" items="${collectionCards }">
         <portlet:renderURL var="changeCurrentContestCardURL">
