@@ -33,7 +33,9 @@ CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;
 ALTER TABLE `xcolab_ContestPhaseType`
 CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;
 
-DELETE FROM `xcolab_FocusArea` WHERE `id_`='0';
+UPDATE `xcolab_FocusArea` set id_ = 2  WHERE `id_`='0';
+UPDATE `xcolab_FocusAreaOntologyTerm` set focusAreaId = 2 where focusAreaId = 0;
+
 
 ALTER TABLE `xcolab_FocusArea`
 CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;
