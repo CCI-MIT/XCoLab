@@ -99,8 +99,14 @@ public class ContestService {
 
         List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(
                 Arrays.asList(ontologyTerm));
-        PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
-        return contestDao.findByGiven(ph,null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
+        List<Contest> contests = new ArrayList<>();
+
+        if(!focusAreaOntologyTermsIds.isEmpty()) {
+            PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
+            contests = contestDao.findByGiven(ph,null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
+        }
+
+        return contests;
     }
 
 
