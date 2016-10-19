@@ -13,15 +13,14 @@ import java.util.List;
 public class ContestsSortFilterBean {
     private final List<ContestWrapper> contests;
     private ContestsColumn sortColumn;
-    private Boolean showOnlyFeatured;
     private List<ContestWrapper> contestsFeatured = new ArrayList<ContestWrapper>();
     private List<ContestWrapper> contestsNormal = new ArrayList<ContestWrapper>();
 
     public ContestsSortFilterBean(Boolean showOnlyFeatured, List<ContestWrapper> contests, final SortFilterPage sortFilterPage) {
-        this(showOnlyFeatured, contests, sortFilterPage, null);
+        this(contests, sortFilterPage, null);
     }
 
-    public ContestsSortFilterBean(Boolean showOnlyFeatured, List<ContestWrapper> contests, final SortFilterPage sortFilterPage, ContestsColumn sortColumnConstruct) {
+    public ContestsSortFilterBean( List<ContestWrapper> contests, final SortFilterPage sortFilterPage, ContestsColumn sortColumnConstruct) {
         super();
         List<ContestWrapper> filteredContests = contests;
 
@@ -37,7 +36,6 @@ public class ContestsSortFilterBean {
             }
 
         }
-        this.showOnlyFeatured = showOnlyFeatured;
         this.contests = filteredContests;
 
         // sort contests
@@ -91,10 +89,6 @@ public class ContestsSortFilterBean {
 
     public List<ContestWrapper> getContests() {
         return contests;
-    }
-
-    public Boolean getShowOnlyFeatured() {
-        return this.showOnlyFeatured;
     }
 
 

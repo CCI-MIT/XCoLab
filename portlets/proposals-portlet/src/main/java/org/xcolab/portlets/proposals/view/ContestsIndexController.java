@@ -68,7 +68,7 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false) String viewType,
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
-            @RequestParam(required = false, defaultValue = "" + BY_TOPIC__COLLECTION_CARD_ID) long collectionCard,
+            @RequestParam(required = false, defaultValue = "" + BY_TOPIC__COLLECTION_CARD_ID) long currentCollectionCardId,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
 
@@ -112,7 +112,7 @@ public class ContestsIndexController extends BaseProposalsController {
 
         //Collection cards
         List<CollectionCardWrapper> collectionCards = new ArrayList<>();
-        for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(collectionCard)) {
+        for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
             collectionCards.add(new CollectionCardWrapper(card));
         }
 
@@ -122,7 +122,7 @@ public class ContestsIndexController extends BaseProposalsController {
         if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
 
             LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
-            long tempId = collectionCard;
+            long tempId = currentCollectionCardId;
             while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
                 collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId)));
                 tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
@@ -131,18 +131,19 @@ public class ContestsIndexController extends BaseProposalsController {
             model.addAttribute("collectionHierarchy", collectionHierarchy);
 
 
-            if(collectionCard == FEATURED_COLLECTION_CARD_ID) {
+            if(currentCollectionCardId == FEATURED_COLLECTION_CARD_ID) {
                 showOnlyFeatured = true;
                 for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil.getAllContests()) {
                     contests.add(new ContestWrapper(contest));
                 }
             } else {
                 for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil
-                        .getContestByOntologyTerm(ContestClientUtil.getContestCollectionCard(collectionCard)
+                        .getContestByOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
                                         .getOntology_term_to_load())) {
                     contests.add(new ContestWrapper(contest));
                 }
             }
+            model.addAttribute("showOnlyFeatured", showOnlyFeatured);
         }
 
 
@@ -242,10 +243,11 @@ public class ContestsIndexController extends BaseProposalsController {
 
 
         model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));
+        model.addAttribute("currentCollectionCardId", currentCollectionCardId);
 
         //if only featured
-        if(ContestClientUtil.getContestCollectionCard(collectionCard).getOntology_term_to_load() != null) {
-            model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(collectionCard).getOntology_term_to_load()).getOntologySpaceId());
+        if(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load() != null) {
+            model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load()).getOntologySpaceId());
         } else {
             model.addAttribute("ontologySpaceId", 0);
         }
@@ -255,7 +257,7 @@ public class ContestsIndexController extends BaseProposalsController {
         //model.addAttribute("priorContestsExist", !priorContests.isEmpty());
         model.addAttribute("priorContestsExist", true);
         //hacked
-        model.addAttribute("contestsSorted", new ContestsSortFilterBean(showOnlyFeatured, contests, sortFilterPage,
+        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
                 showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);

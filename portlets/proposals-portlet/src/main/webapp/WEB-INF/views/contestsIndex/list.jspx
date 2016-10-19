@@ -4,6 +4,7 @@
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+    <!--@elvariable id="showOnlyFeatured" type="java.lang.Boolean"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
@@ -17,11 +18,11 @@
 
     <div class="c-ListView tooltips">
         <br/>
-        <proposalsPortlet:collectionListItem collectionCards="${collectionCards.collectionCards }" featured="false"/>
+        <proposalsPortlet:collectionListItem collectionCards="${collectionCards.collectionCards }"/>
         <c:if test="${not empty contestsSorted.contestsFeatured }">
             <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsFeatured }" featured="true"/>
         </c:if>
-        <c:if test="${not contestsSorted.showOnlyFeatured}">
+        <c:if test="${not showOnlyFeatured}">
             <c:if test="${not empty contestsSorted.contestsNormal }">
                 <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
             </c:if>

@@ -9,7 +9,7 @@
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
 
     <portlet:renderURL var="changeCurrentContestCardURL">
-        <portlet:param name="collectionCard" value="${collectionCard.id}" />
+        <portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
     </portlet:renderURL>
 
     <div class="c-CollectionCard--background-container" >
@@ -18,7 +18,7 @@
                 <div class="c-CollectionCard" style="right:3px; bottom:3px;">
                     <div class="c-CollectionCard__separator">
                         <div class="c-CollectionCard__circle">
-                            ${collectionCard.numberOfActiveContests}
+                            ${collectionCard.numberOfAllContests}
                         </div>
                     </div>
                     <div class="c-CollectionCard__meta__info">

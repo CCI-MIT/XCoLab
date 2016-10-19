@@ -15,14 +15,14 @@
 
 	<c:forEach var="collectionCard" items="${collectionCards }">
         <portlet:renderURL var="changeCurrentContestCardURL">
-            <portlet:param name="collectionCard" value="${collectionCard.id}" />
+            <portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
         </portlet:renderURL>
         <div class="c-ListItem--background-container" style="  margin-left: 110px;">
             <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
                 <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
                     <div class="c-ListItem__contests">
                         <div class="c-ListItem__circle">
-                            ${collectionCard.numberOfContests}
+                            ${collectionCard.numberOfAllContests}
                         </div>
                         contests
                     </div>

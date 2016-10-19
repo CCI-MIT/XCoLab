@@ -2,6 +2,7 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
+	<!--@elvariable id="collectionCard" type="java.lang.Long"-->
 	<!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
 	<!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
 	<!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
@@ -24,6 +25,7 @@
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
 			<portlet:param name="showAllContests" value="${showAllContests }" />
+			<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
 		</portlet:renderURL>
 		<c:if test="${showContestDisplayOptions}">
 			<div class="view">
@@ -132,12 +134,14 @@
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
 			<portlet:param name="showAllContests" value="${showAllContests }" />
+			<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeToGridViewTypeURL">
 			<portlet:param name="viewType" value="GRID" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			<portlet:param name="showActiveContests" value="${showActiveContests }" />
 			<portlet:param name="showAllContests" value="${showAllContests }" />
+			<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
 		</portlet:renderURL>
 		<c:if test="${showContestDisplayOptions}">
 			<div class="view">

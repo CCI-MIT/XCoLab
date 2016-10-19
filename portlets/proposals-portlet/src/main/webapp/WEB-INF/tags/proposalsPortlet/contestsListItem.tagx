@@ -13,7 +13,7 @@
 	<jsp:directive.attribute name="featured" type="java.lang.Boolean" required="true" rtexprvalue="true" description="whether the contests are featured" />
 
 	<c:forEach var="contest" items="${contests }">
-		<c:if test="${contest.showInListView}">
+		<!--<c:if test="${contest.showInListView}">-->
 			<div class="c-ListItem">
 				<div class="c-ListItem__title">
 					<div class="contestFlag">
@@ -55,6 +55,6 @@
 					</div>
 				</div>
 			</div>
-		</c:if>
+		<!--</c:if>-->
 	</c:forEach>
 </jsp:root>

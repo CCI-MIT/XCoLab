@@ -125,8 +125,6 @@ public class ContestController {
 
     @RequestMapping(value = "/contests/countByContestType", method = RequestMethod.GET)
     public Integer countByContestType(@RequestParam("contestTypeId") Long contestTypeId) throws NotFoundException {
-
-
         return contestDao.countByGiven(null, null, null, null, null, null, null, null, contestTypeId, null);
     }
 
