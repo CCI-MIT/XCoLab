@@ -70,13 +70,13 @@
 
 	<div class="c-ontology-selector">
 		<portlet:renderURL var="changeFeaturedRootURL">
-			<portlet:param name="collectionCard" value="1" />
+			<portlet:param name="currentCollectionCardId" value="1" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeTopicRootURL">
-			<portlet:param name="collectionCard" value="2" />
+			<portlet:param name="currentCollectionCardId" value="2" />
 		</portlet:renderURL>
 		<portlet:renderURL var="changeLocationRootURL">
-			<portlet:param name="collectionCard" value="3" />
+			<portlet:param name="currentCollectionCardId" value="3" />
 		</portlet:renderURL>
 		<a href="${changeFeaturedRootURL}">
 			Featured
