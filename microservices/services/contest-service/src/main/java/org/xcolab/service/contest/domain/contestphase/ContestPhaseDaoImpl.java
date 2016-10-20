@@ -86,12 +86,17 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
                 .execute() > 0;
     }
-    /*
-    ContestPhaseLocalServiceUtil.getPhasesForContestScheduleIdAndContest
-    ContestPhaseLocalServiceUtil.getPhasesForContestScheduleId
-    ContestPhaseLocalServiceUtil.getPhasesForContest
-    */
 
+
+    public List<ContestPhase> findByPhaseAutopromote(String contestPhaseAutoPromote) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(CONTEST_PHASE).getQuery();
+
+        query.addConditions(CONTEST_PHASE.CONTEST_PHASE_AUTOPROMOTE.eq(contestPhaseAutoPromote));
+
+        query.addOrderBy(CONTEST_PHASE.PHASE_START_DATE.asc());
+        return query.fetchInto(ContestPhase.class);
+    }
     @Override
     public List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId) {
         final SelectQuery<Record> query = dslContext.select()

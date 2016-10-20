@@ -38,7 +38,7 @@ public class ProposalDaoImpl implements ProposalDao {
                 .from(PROPOSAL)
                 .getQuery();
 
-        if (contestId != null || contestPhaseId != null || ribbon != null) {
+        if (contestId != null || contestPhaseId != null || ribbon != null || (visible != null && visible)) {
             query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
             query.addJoin(CONTEST_PHASE,
                     CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));

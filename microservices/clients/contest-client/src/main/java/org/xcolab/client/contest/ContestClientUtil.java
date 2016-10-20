@@ -248,4 +248,7 @@ public final class ContestClientUtil {
     public static void unsubscribeMemberFromContest(long contestPK, long userId) {
         contestClient.unsubscribeMemberFromContest(contestPK, userId);
     }
+    public static void autoPromoteProposals() {
+        contestClient.autoPromoteProposals();
+    }
 }

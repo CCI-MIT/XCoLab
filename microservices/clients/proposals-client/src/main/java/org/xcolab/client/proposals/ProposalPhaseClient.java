@@ -142,11 +142,9 @@ public final class ProposalPhaseClient {
         }
     }
 
-    public boolean persistSelectedJudgesAttribute(Long proposalId, Long contestPhaseId,
-            List<Long> selectedJudges) {
-        ProposalContestPhaseAttribute judges =
-                getProposalContestPhaseAttribute(proposalId, contestPhaseId,
-                        ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
+
+    public  boolean persistSelectedJudgesAttribute(Long proposalId, Long contestPhaseId, List<Long> selectedJudges) {
+        ProposalContestPhaseAttribute judges = getOrCreateProposalContestPhaseAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, null,null,null);
 
         StringBuilder attributeValue = new StringBuilder("");
         if (selectedJudges != null) {
@@ -160,6 +158,44 @@ public final class ProposalPhaseClient {
         return true;
     }
 
+
+    public  ProposalContestPhaseAttribute persistProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();
+        proposalContestPhaseAttribute.setProposalId(proposalId);
+        proposalContestPhaseAttribute.setName(name);
+        proposalContestPhaseAttribute.setAdditionalId(aditionalId);
+        proposalContestPhaseAttribute.setNumericValue(numericValue);
+        proposalContestPhaseAttribute.setStringValue(stringValue);
+        proposalContestPhaseAttribute.setContestPhaseId(contestPhaseId);
+        proposalContestPhaseAttribute = createProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+        return proposalContestPhaseAttribute;
+    }
+
+    public  Boolean hasProposalContestPhaseAttribute(Long proposalId, long contestPhaseId, String name) {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+        if (proposalContestPhaseAttribute != null) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    public  ProposalContestPhaseAttribute getOrCreateProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
+        ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+        if (proposalContestPhaseAttribute != null) {
+            return proposalContestPhaseAttribute;
+        } else {
+            proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();
+            proposalContestPhaseAttribute.setProposalId(proposalId);
+            proposalContestPhaseAttribute.setName(name);
+            proposalContestPhaseAttribute.setAdditionalId(aditionalId);
+            proposalContestPhaseAttribute.setNumericValue(numericValue);
+            proposalContestPhaseAttribute.setStringValue(stringValue);
+            proposalContestPhaseAttribute.setContestPhaseId(contestPhaseId);
+            proposalContestPhaseAttribute = createProposalContestPhaseAttribute(proposalContestPhaseAttribute);
+            return proposalContestPhaseAttribute;
+        }
+    }
     public boolean updateProposalContestPhaseAttribute(
             ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return proposalContestPhaseAttributeResource

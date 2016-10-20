@@ -69,6 +69,9 @@ public final class ProposalPhaseClientUtil {
             List<Long> selectedJudges) {
         return client.persistSelectedJudgesAttribute(proposalId, contestPhaseId, selectedJudges);
     }
+    public static ProposalContestPhaseAttribute persistProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
+        return client.persistProposalContestPhaseAttribute(proposalId,contestPhaseId, name, aditionalId, numericValue, stringValue);
+    }
 
     public static boolean updateProposalContestPhaseAttribute(
             ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
@@ -80,6 +83,12 @@ public final class ProposalPhaseClientUtil {
             Long numericValue, String stringValue) {
         return client.setProposalContestPhaseAttribute(proposalId, contestPhaseId, name,
                 additionalId, numericValue, stringValue);
+    }
+    public static Boolean hasProposalContestPhaseAttribute(Long proposalId, long contestPhaseId, String name) {
+        return client.hasProposalContestPhaseAttribute(proposalId,contestPhaseId, name);
+    }
+    public static ProposalContestPhaseAttribute getOrCreateProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
+        return client.getOrCreateProposalContestPhaseAttribute(proposalId, contestPhaseId, name,aditionalId, numericValue, stringValue);
     }
 
     public static ProposalContestPhaseAttribute createProposalContestPhaseAttribute(
