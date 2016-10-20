@@ -117,6 +117,9 @@ public class ContestsIndexController extends BaseProposalsController {
         List<ContestWrapper> contests = new ArrayList<>();
         if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
 
+
+
+
             LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
             long tempId = currentCollectionCardId;
             while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
@@ -140,6 +143,10 @@ public class ContestsIndexController extends BaseProposalsController {
             if(currentCollectionCardId == FEATURED_COLLECTION_CARD_ID) {
                 showOnlyFeatured = true;  // filter with JSP  -> TODO: increase performance
                 ontologyTermToLoad = null; //get all
+            } else if(sortFilterPage != null && sortFilterPage.getFilter() != null && !sortFilterPage.getFilter().isEmpty()) { //if search function was used
+                ontologyTermToLoad = null;
+                collectionCards.clear();
+                currentCollectionCardId = BY_TOPIC_COLLECTION_CARD_ID;
             } else {
                 ontologyTermToLoad = ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
                         .getOntology_term_to_load();
