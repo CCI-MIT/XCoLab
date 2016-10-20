@@ -12,6 +12,8 @@
 
     <portlet:renderURL var="changeCurrentContestCardURL">
         <portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
+        <portlet:param name="showActiveContests" value="${showActiveContests }" />
+        <portlet:param name="showAllContests" value="${showAllContests }" />
     </portlet:renderURL>
 
     <div class="c-CollectionCard--background-container" >

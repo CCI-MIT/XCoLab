@@ -121,7 +121,9 @@
 			<c:forEach var="collectionCard" items="${collectionHierarchy}" >
 				<span> > </span>
 				<portlet:renderURL var="changeToCollectionCardURL">
-					<portlet:param name="collectionCard" value="${collectionCard.id}" />
+					<portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
+					<portlet:param name="showActiveContests" value="${showActiveContests }" />
+					<portlet:param name="showAllContests" value="${showAllContests }" />
 				</portlet:renderURL>
 				<a href="${changeToCollectionCardURL}">
 					${collectionCard.description}
@@ -180,21 +182,18 @@
 				<div class="show-active">
 					<portlet:renderURL var="changeToActiveURL">
 						<portlet:param name="viewType" value="${viewType}" />
-						<portlet:param name="filter" value="${sortFilterPage.filter }" />
 						<portlet:param name="showActiveContests" value="true" />
 						<portlet:param name="showAllContests" value="false" />
 						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
 					</portlet:renderURL>
 					<portlet:renderURL var="changeToPriorURL">
 						<portlet:param name="viewType" value="${viewType}" />
-						<portlet:param name="filter" value="${sortFilterPage.filter }" />
 						<portlet:param name="showActiveContests" value="false" />
 						<portlet:param name="showAllContests" value="false" />
 						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
 					</portlet:renderURL>
 					<portlet:renderURL var="changeToAllURL">
 						<portlet:param name="viewType" value="${viewType}" />
-						<portlet:param name="filter" value="${sortFilterPage.filter }" />
 						<portlet:param name="showActiveContests" value="false" />
 						<portlet:param name="showAllContests" value="true" />
 						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />

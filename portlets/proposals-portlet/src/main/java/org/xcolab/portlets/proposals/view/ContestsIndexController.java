@@ -60,7 +60,7 @@ public class ContestsIndexController extends BaseProposalsController {
     private final static String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
     private static final int MIN_SIZE_CONTEST_FILTER = 9;
     private static final int FEATURED_COLLECTION_CARD_ID = 1;
-    private static final int BY_TOPIC__COLLECTION_CARD_ID = 2;
+    private static final int BY_TOPIC_COLLECTION_CARD_ID = 2;
     private static final int BY_LOCATION_COLLECTION_CARD_ID = 3;
 
     @RequestMapping
@@ -68,7 +68,7 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false) String viewType,
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
-            @RequestParam(required = false, defaultValue = "" + BY_TOPIC__COLLECTION_CARD_ID) long currentCollectionCardId,
+            @RequestParam(required = false, defaultValue = "" + BY_TOPIC_COLLECTION_CARD_ID) long currentCollectionCardId,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
 

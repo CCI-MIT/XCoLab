@@ -9,19 +9,33 @@
 	<liferay-theme:defineObjects />
 
 	<!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
+    <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
 	
 	<jsp:directive.attribute name="collectionCards" type="java.util.ArrayList" required="true" rtexprvalue="true" description="CollectionCards to be shown" />
 
 	<c:forEach var="collectionCard" items="${collectionCards }">
         <portlet:renderURL var="changeCurrentContestCardURL">
             <portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
+            <portlet:param name="showActiveContests" value="${showActiveContests }" />
+            <portlet:param name="showAllContests" value="${showAllContests }" />
         </portlet:renderURL>
         <div class="c-ListItem--background-container" style="  margin-left: 110px;">
             <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
                 <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
                     <div class="c-ListItem__contests">
                         <div class="c-ListItem__circle">
-                            ${collectionCard.numberOfAllContests}
+                            <c:choose>
+                                <c:when test="${showActiveContests }">
+                                    ${collectionCard.numberOfActiveContests}
+                                </c:when>
+                                <c:when test="${not showActiveContests and not showAllContests }">
+                                    ${collectionCard.numberOfPriorContests}
+                                </c:when>
+                                <c:otherwise>
+                                    ${collectionCard.numberOfAllContests}
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         contests
                     </div>
