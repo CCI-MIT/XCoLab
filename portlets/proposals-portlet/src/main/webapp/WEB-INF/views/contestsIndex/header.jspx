@@ -178,6 +178,27 @@
 		<c:if test="${priorContestsExist}">
 			<div class="show">
 				<div class="show-active">
+					<portlet:renderURL var="changeToActiveURL">
+						<portlet:param name="viewType" value="${viewType}" />
+						<portlet:param name="filter" value="${sortFilterPage.filter }" />
+						<portlet:param name="showActiveContests" value="true" />
+						<portlet:param name="showAllContests" value="false" />
+						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
+					</portlet:renderURL>
+					<portlet:renderURL var="changeToPriorURL">
+						<portlet:param name="viewType" value="${viewType}" />
+						<portlet:param name="filter" value="${sortFilterPage.filter }" />
+						<portlet:param name="showActiveContests" value="false" />
+						<portlet:param name="showAllContests" value="false" />
+						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
+					</portlet:renderURL>
+					<portlet:renderURL var="changeToAllURL">
+						<portlet:param name="viewType" value="${viewType}" />
+						<portlet:param name="filter" value="${sortFilterPage.filter }" />
+						<portlet:param name="showActiveContests" value="false" />
+						<portlet:param name="showAllContests" value="true" />
+						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
+					</portlet:renderURL>
 					<c:choose>
 						<c:when test="${showActiveContests }">
 							<a href="#" >Active ${contestType.contestNamePlural}</a>
@@ -191,11 +212,11 @@
 					</c:choose>
 					<div id="priorActiveAllWidget">
 						<ul>
-							<li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
+							<li class="${showActiveContests ?  'active' : ''}"><a href="${changeToActiveURL}" >Active ${contestType.contestNamePlural}</a></li>
 
-							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/prior" >Prior ${contestType.contestNamePlural}</a></li>
+							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="${changeToPriorURL}" >Prior ${contestType.contestNamePlural}</a></li>
 
-							<li class="${showAllContests ?  'active' : ''}"><a href="/web/guest/plans/-/plans/contestsType/all" >All ${contestType.contestNamePlural}</a></li>
+							<li class="${showAllContests ?  'active' : ''}"><a href="${changeToAllURL}" >All ${contestType.contestNamePlural}</a></li>
 						</ul>
 					</div>
 				</div>

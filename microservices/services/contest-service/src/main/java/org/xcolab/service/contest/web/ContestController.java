@@ -84,8 +84,8 @@ public class ContestController {
 
     @RequestMapping(value = "/contests/getContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContestsByOntologyTerm(
-            @RequestParam(required = false) Long focusAreaOntologyTerm){
-        return contestService.getContestsByOntologyTerm(focusAreaOntologyTerm);
+            @RequestParam(required = false) Long focusAreaOntologyTerm, @RequestParam(required = false) Boolean getOnlyActive){
+        return contestService.getContestsByOntologyTerm(focusAreaOntologyTerm, getOnlyActive);
     }
 
     @RequestMapping(value = "/contests/getNumberOfContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})

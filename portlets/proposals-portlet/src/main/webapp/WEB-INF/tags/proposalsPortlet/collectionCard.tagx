@@ -4,6 +4,8 @@
         xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0" >
 
     <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+    <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
+    <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
 
 	<jsp:directive.attribute name="collectionCard" type="org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper" required="true" rtexprvalue="true" description="CollectionCardWrapper" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
@@ -18,7 +20,17 @@
                 <div class="c-CollectionCard" style="right:3px; bottom:3px;">
                     <div class="c-CollectionCard__separator">
                         <div class="c-CollectionCard__circle">
-                            ${collectionCard.numberOfAllContests}
+                            <c:choose>
+                                <c:when test="${showActiveContests }">
+                                    ${collectionCard.numberOfActiveContests}
+                                </c:when>
+                                <c:when test="${not showActiveContests and not showAllContests }">
+                                    ${collectionCard.numberOfPriorContests}
+                                </c:when>
+                                <c:otherwise>
+                                    ${collectionCard.numberOfAllContests}
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                     <div class="c-CollectionCard__meta__info">

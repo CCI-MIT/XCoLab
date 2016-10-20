@@ -37,11 +37,9 @@ public class CollectionCardService {
         try {
             collectionCards.add(contestCollectionCardDao.get(collectionCardId).getId_());
             while(!collectionCards.isEmpty()) {
-                for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load())) {
+                for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load(), countOnlyActive)) {
                     if(!contestList.contains(contest.getContestPK())) {
-                        if((countOnlyActive && contest.getContestActive()) || !countOnlyActive) {
-                            contestList.add(contest.getContestPK());
-                        }
+                        contestList.add(contest.getContestPK());
                     }
                 }
                 for(ContestCollectionCard childCollectionCards : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {

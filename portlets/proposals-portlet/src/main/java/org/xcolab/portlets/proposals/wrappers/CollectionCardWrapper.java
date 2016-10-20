@@ -44,6 +44,10 @@ public class CollectionCardWrapper{
         return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false);
     }
 
+    public int getNumberOfPriorContests() {
+        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false) - ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), true);
+    }
+
     public long getId() {
        return this.contestCollectionCard.getId_();
     }

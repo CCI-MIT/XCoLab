@@ -221,10 +221,11 @@ public class ContestClient {
                 .execute();
     }
 
-    public List<Contest> getContestByOntologyTerm(Long ontologyTermId) {
+    public List<Contest> getContestByOntologyTerm(Long ontologyTermId, Boolean getOnlyActive) {
         return DtoUtil.toPojos(contestResource
                 .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
                 .queryParam("focusAreaOntologyTerm", ontologyTermId)
+                .queryParam("getOnlyActive", getOnlyActive)
                 .getList(), contestService);
     }
 

@@ -128,20 +128,29 @@ public class ContestsIndexController extends BaseProposalsController {
                 tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
             }
 
+            //Queue for breadcrumb
             model.addAttribute("collectionHierarchy", collectionHierarchy);
 
+            Boolean getOnlyActive;
+            if(showActiveContests) {
+                getOnlyActive = true; //active
+            } else if(!showAllContests && showActiveContests){
+                getOnlyActive= false; //prior
+            } else {
+                getOnlyActive=null; //all
+            }
 
+            Long ontologyTermToLoad;
             if(currentCollectionCardId == FEATURED_COLLECTION_CARD_ID) {
                 showOnlyFeatured = true;
-                for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil.getAllContests()) {
-                    contests.add(new ContestWrapper(contest));
-                }
+                ontologyTermToLoad = null;
             } else {
-                for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil
-                        .getContestByOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
-                                        .getOntology_term_to_load())) {
-                    contests.add(new ContestWrapper(contest));
-                }
+                ontologyTermToLoad = ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
+                        .getOntology_term_to_load();
+            }
+            for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil
+                    .getContestByOntologyTerm(ontologyTermToLoad, getOnlyActive)) {
+                contests.add(new ContestWrapper(contest));
             }
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
         }

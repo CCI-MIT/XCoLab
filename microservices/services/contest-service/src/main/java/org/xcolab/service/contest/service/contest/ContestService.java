@@ -90,11 +90,11 @@ public class ContestService {
     }
 
 
-    public List<Contest> getContestsByOntologyTerm(Long ontologyTerm) {
+    public List<Contest> getContestsByOntologyTerm(Long ontologyTerm, Boolean getOnlyActive) {
 
         if (ontologyTerm == null) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
-            return contestDao.findByGiven(ph,null,null,null,null,null,null,null,null,null,null);
+            return contestDao.findByGiven(ph,null,null,getOnlyActive,null,null,null,null,null,null,null);
         }
 
         List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(
@@ -103,7 +103,7 @@ public class ContestService {
 
         if(!focusAreaOntologyTermsIds.isEmpty()) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
-            contests = contestDao.findByGiven(ph,null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
+            contests = contestDao.findByGiven(ph,null,null,getOnlyActive,null,null,focusAreaOntologyTermsIds,null,null,null,null);
         }
 
         return contests;

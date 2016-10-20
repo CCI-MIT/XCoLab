@@ -82,8 +82,8 @@ public final class ContestClientUtil {
     }
 
     public static List<Contest> getContestByOntologyTerm(
-            Long ontologyTermId) {
-        return contestClient.getContestByOntologyTerm(ontologyTermId);
+            Long ontologyTermId, Boolean getOnlyActive) {
+        return contestClient.getContestByOntologyTerm(ontologyTermId, getOnlyActive);
     }
 
     public static int getNumberOfContestsByOntologyTerm(
