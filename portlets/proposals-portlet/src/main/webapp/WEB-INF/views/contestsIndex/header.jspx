@@ -110,7 +110,7 @@
 						<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
 						<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
 						<input type="hidden" name="viewType" value="${viewType}" />
-						<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter ${contestType.contestNamePlural}" name="filter" />
+						<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Search all ${contestType.contestNamePlural}" name="filter" />
 						<c:if test="${not empty sortFilterPage.filter }">
 							<a href="javascript:;" id="contestsFilterClear">&#160;</a>
 						</c:if>
