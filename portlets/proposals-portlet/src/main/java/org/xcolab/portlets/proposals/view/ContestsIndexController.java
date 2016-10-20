@@ -108,15 +108,11 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
 
-
-
-        //Collection cards
         List<CollectionCardWrapper> collectionCards = new ArrayList<>();
         for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
             collectionCards.add(new CollectionCardWrapper(card));
         }
 
-        //contests
         boolean showOnlyFeatured = false;
         List<ContestWrapper> contests = new ArrayList<>();
         if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
@@ -134,7 +130,7 @@ public class ContestsIndexController extends BaseProposalsController {
             Boolean getOnlyActive;
             if(showActiveContests) {
                 getOnlyActive = true; //active
-            } else if(!showAllContests && showActiveContests){
+            } else if(!showAllContests && !showActiveContests){
                 getOnlyActive= false; //prior
             } else {
                 getOnlyActive=null; //all
@@ -142,13 +138,14 @@ public class ContestsIndexController extends BaseProposalsController {
 
             Long ontologyTermToLoad;
             if(currentCollectionCardId == FEATURED_COLLECTION_CARD_ID) {
-                showOnlyFeatured = true;
-                ontologyTermToLoad = null;
+                showOnlyFeatured = true;  // filter with JSP  -> TODO: increase performance
+                ontologyTermToLoad = null; //get all
             } else {
                 ontologyTermToLoad = ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
                         .getOntology_term_to_load();
             }
-            for (org.xcolab.client.contest.pojo.Contest contest : ContestClientUtil
+
+            for (Contest contest : ContestClientUtil
                     .getContestByOntologyTerm(ontologyTermToLoad, getOnlyActive)) {
                 contests.add(new ContestWrapper(contest));
             }
