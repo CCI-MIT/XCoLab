@@ -26,8 +26,8 @@ public class ContestsSortFilterBean {
 
         // filter contests
         if (StringUtils.isNotBlank(sortFilterPage.getFilter())) {
-            String filterString = sortFilterPage.getFilter();
-            filteredContests = new ArrayList<ContestWrapper>();
+            String filterString = sortFilterPage.getFilter().toLowerCase();
+            filteredContests = new ArrayList<>();
             for (ContestWrapper contest: contests) {
                 if (contest.getContestName().toLowerCase().contains(filterString) ||
                         contest.getContestShortName().toLowerCase().contains(filterString)) {

@@ -2,7 +2,7 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-	<!--@elvariable id="collectionCard" type="java.lang.Long"-->
+	<!--@elvariable id="currentCollectionCardId" type="java.lang.Long"-->
 	<!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
 	<!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
 	<!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
@@ -105,6 +105,8 @@
 					<form action="${filterURL }" id="filterContestsForm" method="get">
 						<input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
 						<input type="hidden" name="showActiveContests" value="${showActiveContests }" />
+						<input type="hidden" name="showAllContests" value="${showAllContests }" />
+						<input type="hidden" name="currentCollectionCardId" value="${currentCollectionCardId }" />
 						<input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
 						<input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
 						<input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter ${contestType.contestNamePlural}" name="filter" />
