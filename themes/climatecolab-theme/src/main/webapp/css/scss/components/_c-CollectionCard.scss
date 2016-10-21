@@ -9,14 +9,15 @@ $c-CollectionCard__border__bottom: null !default;
 
 .c-CollectionCard--background-container {
   width: 200px;
+  background-color: $c-CollectionCard__background;
   margin-bottom: 24px;
   float: left;
   position: relative;
   height: 400px;
-  margin-right: 20px;
+  margin-right: 35px;
   border: $c-CollectionCard__border;
   &:hover {
-    border-color: $t-Color__primary;
+    box-shadow: 0 0 3px 3px grey;
   }
   @include border-radius($c-CollectionCard__border__radius);
 }
@@ -56,7 +57,7 @@ $c-CollectionCard__border__bottom: null !default;
   }
 
   &:hover {
-    border-color: $t-Color__primary;
+    box-shadow: 0 0 3px 3px grey;
   }
 
   margin-bottom: 24px;

@@ -1,4 +1,4 @@
-$c-ContestCard__meta__flag__capitalization: $b-Typography__capitalization--none !default;
+$c-ContestCard__meta__flag__capitalization: $b-Typography__capitalization--capitalize !default;
 $c-ContestCard__meta__flag__padding: 0 15px !default;
 $c-ContestCard__meta__flag__textColor: white !default;
 $c-ContestCard__meta__flag__height: 30px !default;
@@ -35,7 +35,7 @@ $c-ContestCard__border__bottom: null !default;
   }
 
   &:hover {
-    border-color: $t-Color__primary;
+    box-shadow: 0 0 3px 3px grey;
   }
 
   margin-bottom: 24px;
@@ -97,15 +97,27 @@ $c-ContestCard__border__bottom: null !default;
   display: inline-block;
   margin: 8px;
   float: left;
+
+  div {
+    padding: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 3px;
+    line-height: 20px;
+    font-size: 12px;
+    color: $c-ContestCard__meta__flag__textColor;
+    text-align: center;
+    text-transform: $c-ContestCard__meta__flag__capitalization;
+  }
 }
 
+
 .c-ContestCard__meta__flag--grey { //.contest-flag-grey {
-  padding: 2px;
-  border-radius: 3px;
-  line-height: 20px;
-  font-size: 12px;
-  color: $c-ContestCard__meta__flag__textColor;
-  text-align: center;
-  text-transform: $c-ContestCard__meta__flag__capitalization;
+
   background: $c-ContestCard__meta__flag__background--grey;
+}
+
+.c-ContestCard__meta__flag--color { //.contest-flag-grey {
+
+  background: $c-ContestCard__meta__flag__background--color;
 }

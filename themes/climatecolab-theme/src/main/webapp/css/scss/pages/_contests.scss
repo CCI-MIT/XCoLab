@@ -15,9 +15,9 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 }
 
 .contests-container {
-  background-color: $t-Color__grey--lightest;
-  padding-top:5px;
-  padding-left:50px;
+  background-color: $t-Color__primary__grey--light;
+  padding-top:15px;
+  padding-left:35px;
   overflow:hidden;
 }
 
@@ -30,7 +30,7 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
     margin-right: 50px;
 
     &.selected {
-      border-bottom: 32px solid $t-Color__grey--lightest;
+      border-bottom: 32px solid $t-Color__primary__grey--light;
       background-color:white;
     }
   }
@@ -43,7 +43,7 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 
 .c-breadcrump {
   font-size: 14px;
-  background-color: $t-Color__grey--lightest;
+  background-color: $t-Color__primary__grey--light;
   padding: 5px;
 
   span {
@@ -58,7 +58,7 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 
 .c-display-selector {
 
-  background-color: $t-Color__grey--lightest;
+  background-color: $t-Color__primary__grey--light;
   height: 65px;
 
   .show-active {
