@@ -229,16 +229,20 @@ public class ProposalsContextImpl implements ProposalsContext {
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
                 }
             }
-            final ProposalsPermissions proposalsPermissions = new ProposalsPermissions(request,
-                    proposal, contestPhase);
+            if(request.getAttribute(PERMISSIONS_ATTRIBUTE)==null) {
+                final ProposalsPermissions proposalsPermissions = new ProposalsPermissions(request,
+                        proposal, contestPhase);
+                request.setAttribute(PERMISSIONS_ATTRIBUTE, proposalsPermissions);
+
+                request.setAttribute(DISPLAY_PERMISSIONS_ATTRIBUTE, new ProposalsDisplayPermissions(
+                        proposalsPermissions, proposal, contestPhase, request));
+            }
 
             request.setAttribute(PROPOSAL_ATTRIBUTE, proposal);
             request.setAttribute(CONTEST_ATTRIBUTE, contest);
             request.setAttribute(CONTEST_PHASE_ATTRIBUTE, contestPhase);
             request.setAttribute(PROPOSAL_2_PHASE_ATTRIBUTE, proposal2Phase);
-            request.setAttribute(PERMISSIONS_ATTRIBUTE, proposalsPermissions);
-            request.setAttribute(DISPLAY_PERMISSIONS_ATTRIBUTE, new ProposalsDisplayPermissions(
-                    proposalsPermissions, proposal, contestPhase, request));
+
             ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
             request.setAttribute(PROPOSALS_PREFERENCES_ATTRIBUTE, preferences);
             request.setAttribute(CONTEST_TYPE_ATTRIBUTE,
