@@ -35,14 +35,14 @@ $c-ContestCard__border__bottom: null !default;
   }
 
   &:hover {
-    box-shadow: 0 0 3px 3px grey;
+    box-shadow: 0 0 3px 3px $t-Color__grey--light;
   }
 
   margin-bottom: 24px;
   float: left;
   position: relative;
   height: 400px;
-  margin-right: 20px;
+  margin-right: 35px;
 }
 
 .c-ContestCard__image { //.contestbox .img-wrap {

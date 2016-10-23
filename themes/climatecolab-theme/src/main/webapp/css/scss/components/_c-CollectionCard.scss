@@ -17,7 +17,7 @@ $c-CollectionCard__border__bottom: null !default;
   margin-right: 35px;
   border: $c-CollectionCard__border;
   &:hover {
-    box-shadow: 0 0 3px 3px grey;
+    box-shadow: 0 0 3px 3px $t-Color__grey--light;
   }
   @include border-radius($c-CollectionCard__border__radius);
 }
@@ -57,7 +57,7 @@ $c-CollectionCard__border__bottom: null !default;
   }
 
   &:hover {
-    box-shadow: 0 0 3px 3px grey;
+    box-shadow: 0 0 3px 3px $t-Color__grey--light;
   }
 
   margin-bottom: 24px;
