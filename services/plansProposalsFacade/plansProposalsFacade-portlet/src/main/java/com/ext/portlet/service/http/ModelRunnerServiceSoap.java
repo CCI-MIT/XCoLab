@@ -1,12 +1,5 @@
 package com.ext.portlet.service.http;
 
-import com.ext.portlet.service.ModelRunnerServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
  * {@link com.ext.portlet.service.ModelRunnerServiceUtil} service utility. The
@@ -37,55 +30,4 @@ import java.rmi.RemoteException;
  * @generated
  */
 public class ModelRunnerServiceSoap {
-    private static Log _log = LogFactoryUtil.getLog(ModelRunnerServiceSoap.class);
-
-    public static java.lang.String getScenario(long scenarioId)
-        throws RemoteException {
-        try {
-            com.liferay.portal.kernel.json.JSONObject returnValue = ModelRunnerServiceUtil.getScenario(scenarioId);
-
-            return returnValue.toString();
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
-
-    public static java.lang.String getModel(long modelId)
-        throws RemoteException {
-        try {
-            com.liferay.portal.kernel.json.JSONObject returnValue = ModelRunnerServiceUtil.getModel(modelId);
-
-            return returnValue.toString();
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
-
-    public static java.lang.String runModel(long modelId,
-        java.lang.String inputs) throws RemoteException {
-        try {
-            com.liferay.portal.kernel.json.JSONObject returnValue = ModelRunnerServiceUtil.runModel(modelId,
-                    inputs);
-
-            return returnValue.toString();
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
-
-    public static void refreshModels() throws RemoteException {
-        try {
-            ModelRunnerServiceUtil.refreshModels();
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
 }

@@ -272,20 +272,6 @@ public class ModelPositionLocalServiceWrapper
             arguments);
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.ModelPosition> getModelPositionsByModelId(
-        java.lang.Long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _modelPositionLocalService.getModelPositionsByModelId(modelId);
-    }
-
-    @Override
-    public void setModelPositions(java.lang.Long modelId,
-        java.util.List<java.lang.Long> positionIds)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _modelPositionLocalService.setModelPositions(modelId, positionIds);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

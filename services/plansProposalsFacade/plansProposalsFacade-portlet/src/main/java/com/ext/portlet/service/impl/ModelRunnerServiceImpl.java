@@ -56,10 +56,6 @@ import java.util.Map;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
 
-    //private ClientRepository repository;
-
-    private final Log _log = LogFactoryUtil.getLog(ModelRunnerServiceImpl.class);
-
     /*
      * NOTE FOR DEVELOPERS:
      * 
@@ -68,127 +64,7 @@ public class ModelRunnerServiceImpl extends ModelRunnerServiceBaseImpl {
      * runner remote service.
      */
     public ModelRunnerServiceImpl() throws SystemException {
-    }
 
-    @Override
-    @JSONWebService
-    @AccessControlled(guestAccessEnabled=true)
-    public JSONObject getScenario(long scenarioId) {
-        try {
-            Scenario scenario = RomaClientUtil.repository().getScenario(scenarioId);
-            return convertScenario(scenario);
-
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (IOException | IllegalUIConfigurationException e) {
-            _log.error(e);
-        }
-        return JSONFactoryUtil.createJSONObject();
-    }
-
-    @Override
-    @JSONWebService
-    @AccessControlled(guestAccessEnabled=true)
-    public JSONObject getModel(long modelId) throws SystemException, IllegalUIConfigurationException, IOException {
-
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
-        
-        return convertModel(simulation);
-    }
-
-    @Override
-    @JSONWebService
-    @AccessControlled(guestAccessEnabled=true)
-    public JSONObject runModel(long modelId, String inputs) throws IOException, ScenarioNotFoundException,
-            ModelNotFoundException, JSONException, SystemException, IllegalUIConfigurationException {
-        JSONObject inputsObject = JSONFactoryUtil.createJSONObject(inputs);
-        Map<Long, Object> inputsValues = new HashMap<>();
-        for (Iterator<String> keyIterator = inputsObject.keys(); keyIterator.hasNext();) {
-            String key = keyIterator.next();
-            inputsValues.put(Long.parseLong(key), inputsObject.getString(key));
-        }
-
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
-
-        Scenario scenario = RomaClientUtil
-                .repository().runModel(simulation, inputsValues, 0L, false);
-
-        if (StringUtils.isNotBlank(scenario.getErrorStackTrace())) {
-            _log.error("Error while fetching scenario: " + Jsoup.parse(scenario.getErrorStackTrace()).getElementById("main").text());
-        }
-
-        return convertScenario(scenario); 
-    }
-    
-    @Override
-    public void refreshModels() throws IOException {
-    	RomaClientUtil.repository().getManager().clearCache();
-    	RomaClientUtil.repository().getManager().refreshSimulations();
-    }
-    
-    private JSONObject convertScenario(Scenario scenario) throws SystemException, IllegalUIConfigurationException, IOException {
-        JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-        if(Validator.isNotNull(scenario.getErrorStackTrace())){
-            jsonObject.put("error", true);
-            jsonObject.put("errorStackTrace", scenario.getErrorStackTrace());
-            return jsonObject;
-        }
-
-        ModelGlobalPreference modelPreference = modelGlobalPreferenceLocalService.getByModelId(scenario.getSimulation().getId());
-        ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);
-
-        jsonObject.put("scenarioId", scenario.getId());
-        jsonObject.put("modelId", scenario.getSimulation().getId());
-        jsonObject.put("modelName", scenario.getSimulation().getName());
-        jsonObject.put("modelDescription", scenario.getSimulation().getDescription());
-
-        JSONArray outputsArray = JSONFactoryUtil.createJSONArray();
-        for (ModelOutputDisplayItem item : display.getOutputs()) {
-            outputsArray.put(item.toJson());
-        }
-        jsonObject.put("outputs", outputsArray);
-
-        JSONArray inputsArray = JSONFactoryUtil.createJSONArray();
-        for (ModelInputDisplayItem item : display.getInputs()) {
-            inputsArray.put(item.toJson());
-        }
-        jsonObject.put("inputs", inputsArray);
-
-        JSONArray inputValuesArray = JSONFactoryUtil.createJSONArray();
-        for (Variable item : scenario.getInputSet()) {
-            inputValuesArray.put(ModelUIFactory.convertToJson(item));
-        }
-        jsonObject.put("inputValues", inputValuesArray);
-        jsonObject.put("usesCustomInputs", modelPreference.isUsesCustomInputs());
-        jsonObject.put("customInputsDefinition", modelPreference.getCustomInputsDefinition());
-        return jsonObject;
-        
-    }
-
-    private JSONObject convertModel(Simulation simulation) throws SystemException, IllegalUIConfigurationException, IOException {
-    	ModelGlobalPreference modelPreference = modelGlobalPreferenceLocalService.getByModelId(simulation.getId());
-        ModelDisplay display = ModelUIFactory.getInstance().getDisplay(simulation);
-        JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-        
-        jsonObject.put("modelId", simulation.getId());
-        jsonObject.put("modelName", simulation.getName());
-        jsonObject.put("modelDescription", simulation.getDescription());
-
-        JSONArray outputsArray = JSONFactoryUtil.createJSONArray();
-        for (ModelOutputDisplayItem item : display.getOutputs()) {
-            outputsArray.put(item.toJson());
-        }
-        jsonObject.put("outputs", outputsArray);
-
-        JSONArray inputsArray = JSONFactoryUtil.createJSONArray();
-        for (ModelInputDisplayItem item : display.getInputs()) {
-            inputsArray.put(item.toJson());
-        }
-        jsonObject.put("inputs", inputsArray);
-        jsonObject.put("usesCustomInputs", modelPreference.isUsesCustomInputs());
-        jsonObject.put("customInputsDefinition", modelPreference.getCustomInputsDefinition());
-        
-        return jsonObject;
     }
 
 }

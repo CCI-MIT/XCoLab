@@ -44,10 +44,6 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
 
     public ModelPositionLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -142,16 +138,6 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "getModelPositionsByModelId";
-
-        _methodParameterTypes19 = new String[] { "java.lang.Long" };
-
-        _methodName20 = "setModelPositions";
-
-        _methodParameterTypes20 = new String[] {
-                "java.lang.Long", "java.util.List"
-            };
     }
 
     @Override
@@ -662,61 +648,5 @@ public class ModelPositionLocalServiceClp implements ModelPositionLocalService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ModelPosition> getModelPositionsByModelId(
-        java.lang.Long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] { ClpSerializer.translateInput(modelId) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.ext.portlet.model.ModelPosition>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public void setModelPositions(java.lang.Long modelId,
-        java.util.List<java.lang.Long> positionIds)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName20,
-                _methodParameterTypes20,
-                new Object[] {
-                    ClpSerializer.translateInput(modelId),
-                    
-                ClpSerializer.translateInput(positionIds)
-                });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
     }
 }

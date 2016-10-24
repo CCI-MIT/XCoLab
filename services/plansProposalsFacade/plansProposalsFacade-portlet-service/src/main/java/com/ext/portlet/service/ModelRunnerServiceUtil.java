@@ -51,36 +51,6 @@ public class ModelRunnerServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.liferay.portal.kernel.json.JSONObject getScenario(
-        long scenarioId) {
-        return getService().getScenario(scenarioId);
-    }
-
-    public static com.liferay.portal.kernel.json.JSONObject getModel(
-        long modelId)
-        throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
-            com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        return getService().getModel(modelId);
-    }
-
-    public static com.liferay.portal.kernel.json.JSONObject runModel(
-        long modelId, java.lang.String inputs)
-        throws com.ext.portlet.models.ui.IllegalUIConfigurationException,
-            com.liferay.portal.kernel.exception.SystemException,
-            com.liferay.portal.kernel.json.JSONException,
-            edu.mit.cci.roma.client.comm.ModelNotFoundException,
-            edu.mit.cci.roma.client.comm.ScenarioNotFoundException,
-            java.io.IOException {
-        return getService().runModel(modelId, inputs);
-    }
-
-    public static void refreshModels()
-        throws com.liferay.portal.kernel.exception.SystemException,
-            java.io.IOException {
-        getService().refreshModels();
-    }
-
     public static void clearService() {
         _service = null;
     }

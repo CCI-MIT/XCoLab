@@ -236,13 +236,4 @@ public interface ModelPositionLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ModelPosition> getModelPositionsByModelId(
-        java.lang.Long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void setModelPositions(java.lang.Long modelId,
-        java.util.List<java.lang.Long> positionIds)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

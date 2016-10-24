@@ -58,7 +58,7 @@ public class ModelInputGroupModelImpl extends BaseModelImpl<ModelInputGroup>
             { "groupType", Types.VARCHAR },
             { "parentGroupPK", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelInputGroup (modelInputGroupPK LONG not null primary key,modelId LONG,nameAndDescriptionMetaDataId LONG,name VARCHAR(1024) null,description TEXT null,displayItemOrder INTEGER,groupType VARCHAR(256) null,parentGroupPK LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelInputGroup (modelInputGroupPK LONG not null primary key,modelId LONG,nameAndDescriptionMetaDataId LONG,name VARCHAR(75) null,description VARCHAR(75) null,displayItemOrder INTEGER,groupType VARCHAR(75) null,parentGroupPK LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelInputGroup";
     public static final String ORDER_BY_JPQL = " ORDER BY modelInputGroup.modelInputGroupPK ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelInputGroup.modelInputGroupPK ASC";

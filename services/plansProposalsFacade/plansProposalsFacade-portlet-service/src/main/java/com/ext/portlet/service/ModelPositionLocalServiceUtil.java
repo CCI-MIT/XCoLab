@@ -261,18 +261,6 @@ public class ModelPositionLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.ext.portlet.model.ModelPosition> getModelPositionsByModelId(
-        java.lang.Long modelId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getModelPositionsByModelId(modelId);
-    }
-
-    public static void setModelPositions(java.lang.Long modelId,
-        java.util.List<java.lang.Long> positionIds)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().setModelPositions(modelId, positionIds);
-    }
-
     public static void clearService() {
         _service = null;
     }

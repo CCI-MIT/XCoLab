@@ -55,7 +55,7 @@ public class PlanTemplateModelImpl extends BaseModelImpl<PlanTemplate>
             { "impactSeriesTemplateId", Types.BIGINT },
             { "focusAreaListTemplateId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanTemplate (id_ LONG not null primary key,name VARCHAR(1024) null,baseTemplateId LONG,impactSeriesTemplateId LONG,focusAreaListTemplateId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanTemplate (id_ LONG not null primary key,name VARCHAR(75) null,baseTemplateId LONG,impactSeriesTemplateId LONG,focusAreaListTemplateId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanTemplate";
     public static final String ORDER_BY_JPQL = " ORDER BY planTemplate.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanTemplate.id_ ASC";

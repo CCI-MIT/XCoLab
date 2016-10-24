@@ -54,7 +54,7 @@ public class ModelCategoryModelImpl extends BaseModelImpl<ModelCategory>
             { "modelCategoryDescription", Types.VARCHAR },
             { "modelCategoryDisplayWeight", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelCategory (modelCategoryPK LONG not null primary key,modelCategoryName VARCHAR(256) null,modelCategoryDescription VARCHAR(2048) null,modelCategoryDisplayWeight INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelCategory (modelCategoryPK LONG not null primary key,modelCategoryName VARCHAR(75) null,modelCategoryDescription VARCHAR(75) null,modelCategoryDisplayWeight INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelCategory";
     public static final String ORDER_BY_JPQL = " ORDER BY modelCategory.modelCategoryPK ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelCategory.modelCategoryPK ASC";

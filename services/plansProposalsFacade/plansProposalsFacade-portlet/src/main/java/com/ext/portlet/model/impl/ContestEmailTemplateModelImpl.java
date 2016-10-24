@@ -46,11 +46,11 @@ public class ContestEmailTemplateModelImpl extends BaseModelImpl<ContestEmailTem
     public static final String TABLE_NAME = "xcolab_ContestEmailTemplate";
     public static final Object[][] TABLE_COLUMNS = {
             { "type_", Types.VARCHAR },
-            { "subject", Types.CLOB },
-            { "header", Types.CLOB },
-            { "footer", Types.CLOB }
+            { "subject", Types.VARCHAR },
+            { "header", Types.VARCHAR },
+            { "footer", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestEmailTemplate (type_ VARCHAR(75) not null primary key,subject TEXT null,header TEXT null,footer TEXT null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestEmailTemplate (type_ VARCHAR(75) not null primary key,subject VARCHAR(75) null,header VARCHAR(75) null,footer VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestEmailTemplate";
     public static final String ORDER_BY_JPQL = " ORDER BY contestEmailTemplate.type ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestEmailTemplate.type_ ASC";

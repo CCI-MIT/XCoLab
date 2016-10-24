@@ -45,10 +45,6 @@ public class ModelPositionLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
-    private String _methodName405;
-    private String[] _methodParameterTypes405;
 
     public ModelPositionLocalServiceClpInvoker() {
         _methodName0 = "addModelPosition";
@@ -140,16 +136,6 @@ public class ModelPositionLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "getModelPositionsByModelId";
-
-        _methodParameterTypes404 = new String[] { "java.lang.Long" };
-
-        _methodName405 = "setModelPositions";
-
-        _methodParameterTypes405 = new String[] {
-                "java.lang.Long", "java.util.List"
-            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -249,19 +235,6 @@ public class ModelPositionLocalServiceClpInvoker {
         if (_methodName399.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
             ModelPositionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
-
-            return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return ModelPositionLocalServiceUtil.getModelPositionsByModelId((java.lang.Long) arguments[0]);
-        }
-
-        if (_methodName405.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
-            ModelPositionLocalServiceUtil.setModelPositions((java.lang.Long) arguments[0],
-                (java.util.List<java.lang.Long>) arguments[1]);
 
             return null;
         }

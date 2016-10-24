@@ -1,5 +1,523 @@
 <?xml version="1.0"?>
 
 <model-hints>
-
+	<model name="com.ext.portlet.model.Contest">
+		<field name="ContestPK" type="long" />
+		<field name="contestTypeId" type="long" />
+		<field name="ContestName" type="String" />
+		<field name="ContestShortName" type="String" />
+		<field name="ContestUrlName" type="String" />
+		<field name="ContestYear" type="long" />
+		<field name="ContestDescription" type="String" />
+		<field name="ContestModelDescription" type="String" />
+		<field name="ContestPositionsDescription" type="String" />
+		<field name="created" type="Date" />
+		<field name="updated" type="Date" />
+		<field name="authorId" type="long" />
+		<field name="contestActive" type="boolean" />
+		<field name="planTemplateId" type="long" />
+		<field name="contestScheduleId" type="long" />
+		<field name="proposalCreationTemplateString" type="String" />
+		<field name="voteTemplateString" type="String" />
+		<field name="proposalVoteTemplateString" type="String" />
+		<field name="proposalVoteConfirmationTemplateString" type="String" />
+		<field name="voteQuestionTemplateString" type="String" />
+		<field name="focusAreaId" type="long" />
+		<field name="contestTier" type="long" />
+		<field name="contestLogoId" type="long" />
+		<field name="featured" type="boolean" />
+		<field name="plansOpenByDefault" type="boolean" />
+		<field name="sponsorLogoId" type="long" />
+		<field name="sponsorText" type="String" />
+		<field name="sponsorLink" type="String" />
+		<field name="flag" type="int" />
+		<field name="flagText" type="String" />
+		<field name="flagTooltip" type="String" />
+		<field name="groupId" type="long" />
+		<field name="discussionGroupId" type="long" />
+		<field name="weight" type="int" />
+		<field name="resourcesUrl" type="String" />
+		<field name="contestPrivate" type="boolean" />
+		<field name="usePermissions" type="boolean" />
+		<field name="contestCreationStatus" type="String" />
+		<field name="defaultModelId" type="long" />
+		<field name="otherModels" type="String" />
+		<field name="defaultModelSettings" type="String" />
+		<field name="points" type="double" />
+		<field name="defaultParentPointType" type="long" />
+		<field name="pointDistributionStrategy" type="String" />
+		<field name="emailTemplateUrl" type="String" />
+		<field name="show_in_tile_view" type="boolean" />
+		<field name="show_in_list_view" type="boolean" />
+		<field name="show_in_outline_view" type="boolean" />
+		<field name="hideRibbons" type="boolean" />
+		<field name="resourceArticleId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ContestDebate">
+		<field name="id" type="long" />
+		<field name="debateId" type="long" />
+		<field name="ContestPK" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ContestDiscussion">
+		<field name="DiscussionId" type="long" />
+		<field name="ContestId" type="long" />
+		<field name="Tab" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ContestEmailTemplate">
+		<field name="type" type="String" />
+		<field name="subject" type="String" />
+		<field name="header" type="String" />
+		<field name="footer" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ContestPhase">
+		<field name="ContestPhasePK" type="long" />
+		<field name="ContestPK" type="long" />
+		<field name="ContestPhaseType" type="long" />
+		<field name="contestScheduleId" type="long" />
+		<field name="fellowScreeningActive" type="boolean" />
+		<field name="contestPhaseAutopromote" type="String" />
+		<field name="ContestPhaseDescriptionOverride" type="String" />
+		<field name="phaseActiveOverride" type="boolean" />
+		<field name="phaseInactiveOverride" type="boolean" />
+		<field name="PhaseStartDate" type="Date" />
+		<field name="PhaseEndDate" type="Date" />
+		<field name="PhaseBufferEndDated" type="Date" />
+		<field name="nextStatus" type="String" />
+		<field name="created" type="Date" />
+		<field name="updated" type="Date" />
+		<field name="authorId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ContestPhaseColumn">
+		<field name="id" type="long" />
+		<field name="ContestPhasePK" type="long" />
+		<field name="columnName" type="String" />
+		<field name="columnWeight" type="int" />
+		<field name="defaultSort" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ContestPhaseRibbonType">
+		<field name="id" type="long" />
+		<field name="ribbon" type="int" />
+		<field name="hoverText" type="String" />
+		<field name="description" type="String" />
+		<field name="copyOnPromote" type="boolean" />
+		<field name="sortOrder" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.ContestPhaseType">
+		<field name="id" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="status" type="String" />
+		<field name="fellowScreeningActiveDefault" type="boolean" />
+		<field name="contestPhaseAutopromoteDefault" type="String" />
+		<field name="invisible" type="boolean" />
+		<field name="pointsAccessible" type="int" />
+		<field name="defaultPromotionType" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ContestSchedule">
+		<field name="id" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="status" type="String" />
+		<field name="baseScheduleId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.ContestTeamMember">
+		<field name="id" type="long" />
+		<field name="contestId" type="long" />
+		<field name="userId" type="long" />
+		<field name="roleId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ContestTeamMemberRole">
+		<field name="id" type="long" />
+		<field name="role" type="String" />
+		<field name="sort" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.ContestType">
+		<field name="id" type="long" />
+		<field name="contestName" type="String" />
+		<field name="contestNamePlural" type="String" />
+		<field name="proposalName" type="String" />
+		<field name="proposalNamePlural" type="String" />
+		<field name="portletName" type="String" />
+		<field name="portletUrl" type="String" />
+		<field name="friendlyUrlStringContests" type="String" />
+		<field name="friendlyUrlStringProposal" type="String" />
+		<field name="menuItemName" type="String" />
+		<field name="hasDiscussion" type="boolean" />
+		<field name="suggestionContestId" type="long" />
+		<field name="rulesPageName" type="String" />
+		<field name="rulesPageUrl" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.EmailList">
+		<field name="id" type="long" />
+		<field name="name" type="String" />
+		<field name="email" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.FocusArea">
+		<field name="id" type="long" />
+		<field name="name" type="String" />
+		<field name="order" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.FocusAreaOntologyTerm">
+		<field name="focusAreaId" type="long" />
+		<field name="ontologyTermId" type="long" />
+		<field name="order" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactDefaultSeries">
+		<field name="seriesId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="focusAreaId" type="long" />
+		<field name="visible" type="boolean" />
+		<field name="editable" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactDefaultSeriesData">
+		<field name="seriesId" type="long" />
+		<field name="year" type="int" />
+		<field name="value" type="double" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactIteration">
+		<field name="iterationId" type="long" />
+		<field name="year" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactTemplateFocusAreaList">
+		<field name="focusAreaListId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactTemplateMaxFocusArea">
+		<field name="focusAreaListId" type="long" />
+		<field name="focusAreaId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ImpactTemplateSeries">
+		<field name="seriesId" type="long" />
+		<field name="iterationId" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.LandingPage">
+		<field name="id" type="long" />
+		<field name="baseUrl" type="String" />
+		<field name="targetUrl" type="String" />
+		<field name="updated" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingIgnoredRecipients">
+		<field name="ignoredRecipientId" type="long" />
+		<field name="email" type="String" />
+		<field name="name" type="String" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessage">
+		<field name="messageId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="subject" type="String" />
+		<field name="body" type="String" />
+		<field name="replyTo" type="String" />
+		<field name="sendToAll" type="boolean" />
+		<field name="conversionCount" type="long" />
+		<field name="redirectURL" type="String" />
+		<field name="creatorId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageConversion">
+		<field name="conversionId" type="long" />
+		<field name="conversionTypeId" type="long" />
+		<field name="messageId" type="long" />
+		<field name="ipAddress" type="String" />
+		<field name="extraData" type="String" />
+		<field name="extraData2" type="String" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageConversionType">
+		<field name="typeId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingMessageRecipient">
+		<field name="recipientId" type="long" />
+		<field name="messageId" type="long" />
+		<field name="userId" type="long" />
+		<field name="emailAddress" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.MessagingRedirectLink">
+		<field name="redirectId" type="long" />
+		<field name="link" type="String" />
+		<field name="messageId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.ModelCategory">
+		<field name="modelCategoryPK" type="long" />
+		<field name="modelCategoryName" type="String" />
+		<field name="modelCategoryDescription" type="String" />
+		<field name="modelCategoryDisplayWeight" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.ModelDiscussion">
+		<field name="modelDiscussionId" type="long" />
+		<field name="modelId" type="long" />
+		<field name="categoryId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ModelGlobalPreference">
+		<field name="modelGlobalPreferencePK" type="long" />
+		<field name="modelId" type="long" />
+		<field name="visible" type="boolean" />
+		<field name="weight" type="int" />
+		<field name="expertEvaluationPageId" type="long" />
+		<field name="modelCategoryId" type="long" />
+		<field name="usesCustomInputs" type="boolean" />
+		<field name="customInputsDefinition" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ModelInputGroup">
+		<field name="modelInputGroupPK" type="long" />
+		<field name="modelId" type="long" />
+		<field name="nameAndDescriptionMetaDataId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="displayItemOrder" type="int" />
+		<field name="groupType" type="String" />
+		<field name="parentGroupPK" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ModelInputItem">
+		<field name="modelInputItemPK" type="long" />
+		<field name="modelId" type="long" />
+		<field name="modelInputItemID" type="long" />
+		<field name="modelGroupId" type="long" />
+		<field name="displayItemOrder" type="int" />
+		<field name="type" type="String" />
+		<field name="properties" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ModelOutputChartOrder">
+		<field name="modelOutputChartOrderPK" type="long" />
+		<field name="modelId" type="long" />
+		<field name="modelOutputLabel" type="String" />
+		<field name="modelOutputChartOrder" type="int" />
+		<field name="modelIndexRangePolicy" type="String" />
+		<field name="modelIndexRangeMessage" type="String" />
+		<field name="modelIndexErrorPolicy" type="String" />
+		<field name="modelIndexErrorMessage" type="String" />
+		<field name="modelChartIsVisible" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ModelOutputItem">
+		<field name="modelOutputItemModifierPK" type="long" />
+		<field name="modelId" type="long" />
+		<field name="modelOutputItemId" type="long" />
+		<field name="modelOutputItemOrder" type="int" />
+		<field name="modelItemRangePolicy" type="String" />
+		<field name="modelItemRangeMessage" type="String" />
+		<field name="modelItemErrorPolicy" type="String" />
+		<field name="modelItemErrorMessage" type="String" />
+		<field name="modelItemLabelFormat" type="String" />
+		<field name="modelItemIsVisible" type="boolean" />
+		<field name="itemType" type="String" />
+		<field name="relatedOutputItem" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ModelPosition">
+		<field name="id" type="long" />
+		<field name="positionId" type="long" />
+		<field name="modelId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.OntologySpace">
+		<field name="id" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="order" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.OntologyTerm">
+		<field name="id" type="long" />
+		<field name="parentId" type="long" />
+		<field name="ontologySpaceId" type="long" />
+		<field name="name" type="String" />
+		<field name="descriptionUrl" type="String" />
+		<field name="order_" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.OntologyTermEntity">
+		<field name="id" type="long" />
+		<field name="termId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanSectionDefinition">
+		<field name="id" type="long" />
+		<field name="type" type="String" />
+		<field name="adminTitle" type="String" />
+		<field name="title" type="String" />
+		<field name="defaultText" type="String" />
+		<field name="helpText" type="String" />
+		<field name="characterLimit" type="int" />
+		<field name="focusAreaId" type="long" />
+		<field name="tier" type="long" />
+		<field name="allowedContestTypeIds" type="String" />
+		<field name="allowedValues" type="String" />
+		<field name="additionalIds" type="String" />
+		<field name="locked" type="boolean" />
+		<field name="contestIntegrationRelevance" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.PlanTemplate">
+		<field name="id" type="long" />
+		<field name="name" type="String" />
+		<field name="baseTemplateId" type="Long" />
+		<field name="impactSeriesTemplateId" type="Long" />
+		<field name="focusAreaListTemplateId" type="Long" />
+	</model>
+	<model name="com.ext.portlet.model.PlanTemplateSection">
+		<field name="planTemplateId" type="long" />
+		<field name="planSectionId" type="long" />
+		<field name="weight" type="int" />
+	</model>
+	<model name="com.ext.portlet.model.PointDistributionTarget">
+		<field name="id" type="long" />
+		<field name="contestId" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="numberOfPoints" type="double" />
+		<field name="pointTypeOverride" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.Points">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="userId" type="long" />
+		<field name="materializedPoints" type="double" />
+		<field name="hypotheticalPoints" type="double" />
+		<field name="pointsSourceId" type="long" />
+		<field name="originatingContestPK" type="long" />
+		<field name="originatingProposalId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.PointsDistributionConfiguration">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="pointTypeId" type="long" />
+		<field name="targetUserId" type="long" />
+		<field name="targetSubProposalId" type="long" />
+		<field name="targetPlanSectionDefinitionId" type="long" />
+		<field name="percentage" type="double" />
+		<field name="creator" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.PointType">
+		<field name="id" type="long" />
+		<field name="parentPointTypeId" type="long" />
+		<field name="percentageOfParent" type="double" />
+		<field name="distributionStrategy" type="String" />
+		<field name="receiverLimitationStrategy" type="String" />
+		<field name="name" type="String" />
+		<field name="sort" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.Proposal">
+		<field name="proposalId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="updatedDate" type="Date" />
+		<field name="currentVersion" type="int" />
+		<field name="authorId" type="long" />
+		<field name="visible" type="boolean" />
+		<field name="discussionId" type="long" />
+		<field name="resultsDiscussionId" type="long" />
+		<field name="judgeDiscussionId" type="long" />
+		<field name="fellowDiscussionId" type="long" />
+		<field name="advisorDiscussionId" type="long" />
+		<field name="groupId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.Proposal2Phase">
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="versionFrom" type="int" />
+		<field name="versionTo" type="int" />
+		<field name="sortWeight" type="int" />
+		<field name="autopromoteCandidate" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalAttribute">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="version" type="int" />
+		<field name="versionWhenCreated" type="int" />
+		<field name="name" type="String" />
+		<field name="additionalId" type="long" />
+		<field name="numericValue" type="long" />
+		<field name="stringValue" type="String" />
+		<field name="realValue" type="double" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalContestPhaseAttribute">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="name" type="String" />
+		<field name="additionalId" type="long" />
+		<field name="numericValue" type="long" />
+		<field name="stringValue" type="String" />
+		<field name="realValue" type="double" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalMoveHistory">
+		<field name="id_" type="long" />
+		<field name="sourceProposalId" type="long" />
+		<field name="sourceContestId" type="long" />
+		<field name="sourcePhaseId" type="long" />
+		<field name="targetProposalId" type="long" />
+		<field name="targetContestId" type="long" />
+		<field name="targetPhaseId" type="long" />
+		<field name="movingUserId" type="long" />
+		<field name="moveDate" type="Date" />
+		<field name="moveType" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalRating">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="ratingValueId" type="long" />
+		<field name="comment" type="String" />
+		<field name="commentEnabled" type="boolean" />
+		<field name="otherDataString" type="String" />
+		<field name="onlyForInternalUsage" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalRatingType">
+		<field name="id" type="long" />
+		<field name="label" type="String" />
+		<field name="description" type="String" />
+		<field name="judgeType" type="int" />
+		<field name="isActive" type="boolean" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalRatingValue">
+		<field name="id" type="long" />
+		<field name="ratingTypeId" type="long" />
+		<field name="value" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalReference">
+		<field name="proposalId" type="long" />
+		<field name="subProposalId" type="long" />
+		<field name="sectionAttributeId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalSupporter">
+		<field name="proposalId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalUnversionedAttribute">
+		<field name="id" type="long" />
+		<field name="proposalId" type="long" />
+		<field name="createAuthorId" type="long" />
+		<field name="lastAuthorId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="lastUpdateDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="addtionalId" type="int" />
+		<field name="numericValue" type="long" />
+		<field name="stringValue" type="String" />
+		<field name="realValue" type="double" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalVersion">
+		<field name="proposalId" type="long" />
+		<field name="version" type="int" />
+		<field name="authorId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="updateType" type="String" />
+		<field name="updateAdditionalId" type="long" />
+	</model>
+	<model name="com.ext.portlet.model.ProposalVote">
+		<field name="proposalId" type="long" />
+		<field name="contestPhaseId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="isValid" type="boolean" />
+		<field name="confirmationEmailSendDate" type="Date" />
+		<field name="confirmationToken" type="String" />
+	</model>
 </model-hints>
