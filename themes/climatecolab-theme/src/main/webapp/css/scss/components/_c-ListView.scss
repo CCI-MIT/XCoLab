@@ -12,8 +12,11 @@
   margin-left: 110px;
   padding-bottom: 15px;
   background-color: white;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   border: 1px solid $t-Color__grey--light;
+  &:hover {
+    box-shadow: 0 0 3px 3px $t-Color__grey--light;
+  }
 }
 
 .c-ListItem--background-container {
@@ -24,8 +27,11 @@
   width: 800px;
   padding-bottom: 15px;
   background-color: white;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   border: 1px solid $t-Color__grey--light;
+  &:hover {
+    box-shadow: 0 0 3px 3px $t-Color__grey--light;
+  }
 }
 
 .c-ListItem__description {
@@ -48,6 +54,7 @@
   width: 214px;
   float: right;
   padding: 8px;
+  height: 60px;
 }
 
 .c-ListItem__proposals {
@@ -71,30 +78,29 @@
   margin-bottom: 20px;
 }
 
-.c-ListItem__meta__flag--grey {
-   span {
-     padding: 2px;
-     border-radius: 3px;
-     line-height: 20px;
-     font-size: 12px;
-     color: $t-Color__grey--medium;
-     background: $t-Color__grey--lightest;
-   }
-   text-align: right;
-   height: 20px;
- }
-
-.c-ListItem__meta__flag--color {
+.c-ListItem__meta__flag{
   span {
     padding: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
     border-radius: 3px;
     line-height: 20px;
     font-size: 12px;
-    color: white;
-    background: $t-Color__secondary;
+    font-weight: bold;
+    text-transform: uppercase;
   }
   text-align: right;
   height: 20px;
+}
+
+.c-ListItem__meta__flag--grey {
+  color: $t-Color__grey--medium;
+  background: $t-Color__grey--lightest;
+ }
+
+.c-ListItem__meta__flag--color {
+  color: white;
+  background: $t-Color__secondary;
 }
 
 .c-ListItem__contests {

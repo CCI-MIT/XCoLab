@@ -23,8 +23,8 @@
         </portlet:renderURL>
         <a href="${changeCurrentContestCardURL}" style="overflow:hidden;"> <!-- -->
             <div class="c-ListItem--background-container" style="  margin-left: 110px;">
-                <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
-                    <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
+                <div class="c-ListItem--background-container" style="right:5px; position: relative; bottom:5px;">
+                    <div class="c-ListItem" style="right:5px; bottom:5px; position: relative; margin-left: 0px;">
                         <div class="c-ListItem__contests">
                             <div class="c-ListItem__circle">
                                 <c:choose>

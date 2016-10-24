@@ -48,7 +48,7 @@
 			</div>
 		</c:if>
 		<div class="c-description">
-			Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool! Lukas is cool!
+			Collaborate with people around the world to develop local, national, and global climate actions and plans, and enter contests to win prizes for you work!
 		</div>
     </div>
 	<div class="c-Headline">
@@ -72,12 +72,15 @@
 		<div class="c-ontology-selector">
 			<portlet:renderURL var="changeFeaturedRootURL">
 				<portlet:param name="currentCollectionCardId" value="1" />
+				<portlet:param name="viewType" value="${viewType}" />
 			</portlet:renderURL>
 			<portlet:renderURL var="changeTopicRootURL">
 				<portlet:param name="currentCollectionCardId" value="2" />
+				<portlet:param name="viewType" value="${viewType}" />
 			</portlet:renderURL>
 			<portlet:renderURL var="changeLocationRootURL">
 				<portlet:param name="currentCollectionCardId" value="3" />
+				<portlet:param name="viewType" value="${viewType}" />
 			</portlet:renderURL>
 			<a href="${changeFeaturedRootURL}" class=" ${ontologySpaceId == 0 ? 'selected' : ''}">
 				Featured
