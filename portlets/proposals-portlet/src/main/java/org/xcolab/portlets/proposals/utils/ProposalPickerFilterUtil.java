@@ -6,7 +6,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
@@ -147,8 +146,7 @@ public class ProposalPickerFilterUtil {
         for (ActivitySubscription as : activitySubscriptions) {
 
             try {
-                if (as.getClassNameId() == ClassNameLocalServiceUtil
-                        .getClassNameId(Proposal.class)) {
+                if (as.getClassNameId() == 1368503) {
                     proposals.add(Pair.of(
                             ProposalsContextUtil.getClients(request).getProposalClient().getProposal(as.getClassPK()),
                             new Date(as.getCreateDate().getTime())

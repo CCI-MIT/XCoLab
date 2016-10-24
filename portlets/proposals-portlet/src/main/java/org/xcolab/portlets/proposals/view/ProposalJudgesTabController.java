@@ -6,13 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ext.portlet.JudgingSystemActions;
-
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
@@ -107,17 +106,15 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         }
 
         List<ProposalRatingsWrapper> judgeRatings = wrapProposalRatings(judgesRatingsUnWrapped);
-        boolean isFrozen = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
+        boolean isFrozen = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
-                ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN,
-                0
+                ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN
         );
-        boolean hasAlreadyBeenPromoted = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
+        boolean hasAlreadyBeenPromoted = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
-                ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
-                0
+                ProposalContestPhaseAttributeKeys.PROMOTE_DONE
         );
 
         model.addAttribute("isFrozen", isFrozen);
@@ -159,11 +156,10 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(
                 proposalWrapper, proposalsContext.getMember(request), request);
 
-        boolean hasAlreadyBeenPromoted = ProposalContestPhaseAttributeLocalServiceUtil.isAttributeSetAndTrue(
+        boolean hasAlreadyBeenPromoted = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
-                ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
-                0
+                ProposalContestPhaseAttributeKeys.PROMOTE_DONE
         );
 
         FellowProposalScreeningBean bean = new FellowProposalScreeningBean(proposalFellowWrapper);

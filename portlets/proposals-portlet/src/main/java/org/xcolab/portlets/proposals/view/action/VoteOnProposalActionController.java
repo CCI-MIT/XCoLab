@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -75,19 +73,19 @@ public class VoteOnProposalActionController {
             long proposalId = proposal.getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
             long memberId = member.getUserId();
-            if (ProposalLocalServiceUtil.hasUserVoted(proposalId, contestPhaseId, memberId)) {
+            if (ProposalMemberRatingClientUtil.hasUserVoted(proposalId, contestPhaseId, memberId)) {
                 // User has voted for this proposal and would like to retract the vote
-                ProposalLocalServiceUtil.removeVote(contestPhaseId, memberId);
+                ProposalMemberRatingClientUtil.deleteProposalVote(contestPhaseId, memberId);
             } else {
-                if (ProposalVoteLocalServiceUtil.hasUserVoted(contestPhaseId, memberId)) {
+                if (ProposalMemberRatingClientUtil.hasUserVoted(contestPhaseId, memberId)) {
                     // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
-                    ProposalLocalServiceUtil.removeVote(contestPhaseId, memberId);
+                    ProposalMemberRatingClientUtil.deleteProposalVote(contestPhaseId, memberId);
                 }
                 ServiceContext serviceContext = new ServiceContext();
                 ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
                 serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
-                ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, memberId);
+                ProposalMemberRatingClientUtil.addProposalVote(proposalId, contestPhaseId, memberId);
 
                 final boolean voteIsValid = validateVote(proposalsContext.getUser(request),
                         member, proposal, contest, serviceContext);
@@ -123,6 +121,7 @@ public class VoteOnProposalActionController {
     }
 
     private boolean validateVote(User user, Member member, Proposal proposal, Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
+
         List<User> usersWithSharedIP = Xcolab_UserLocalServiceUtil.findUsersByLoginIP(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
         if (!usersWithSharedIP.isEmpty()) {

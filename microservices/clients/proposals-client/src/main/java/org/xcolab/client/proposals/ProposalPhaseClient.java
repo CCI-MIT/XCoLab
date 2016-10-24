@@ -111,10 +111,10 @@ public final class ProposalPhaseClient {
     public List<ProposalContestPhaseAttribute> getAllProposalContestPhaseProposalAttributes(
             Long contestPhaseId, Long proposalId) {
         return DtoUtil.toPojos(proposalContestPhaseAttributeResource.list()
-                .withCache(CacheKeys.withClass(ProposalContestPhaseAttributeDto.class)
-                                .withParameter("proposalId", proposalId)
-                                .withParameter("contestPhaseId", contestPhaseId).asList(),
-                        CacheRetention.MEDIUM)
+//                .withCache(CacheKeys.withClass(ProposalContestPhaseAttributeDto.class)
+//                                .withParameter("proposalId", proposalId)
+//                                .withParameter("contestPhaseId", contestPhaseId).asList(),
+//                        CacheRetention.MEDIUM)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);

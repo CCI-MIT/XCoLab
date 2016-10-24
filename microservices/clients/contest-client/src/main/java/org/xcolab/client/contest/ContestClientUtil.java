@@ -10,6 +10,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
+import java.util.Map;
 
 public final class ContestClientUtil {
 
@@ -208,6 +209,10 @@ public final class ContestClientUtil {
         return contestClient.getContestType(id);
     }
 
+    public static String getProposalNames(List<Long> contestTypeIds, String plurality,
+            String conjunction) {
+        return contestClient.getProposalNames(contestTypeIds, plurality, conjunction);
+    }
     public static List<ContestType> getActiveContestTypes() {
         return contestClient.getActiveContestTypes();
     }
@@ -223,6 +228,9 @@ public final class ContestClientUtil {
     public static List<Contest> getContestsByContestType(
             Long contestTypeId) {
         return contestClient.getContestsByContestType(contestTypeId);
+    }
+    public static Map<Long, String> getModelIdsAndNames(long contestPK){
+        return contestClient.getModelIdsAndNames(contestPK);
     }
 
     public static String getContestPhaseName(ContestPhase ck) {

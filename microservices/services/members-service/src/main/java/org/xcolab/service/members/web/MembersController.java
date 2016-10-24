@@ -69,6 +69,11 @@ public class MembersController {
                 email, screenName, facebookId, openId);
     }
 
+    @GetMapping("findByIp")
+    public List<Member> getMemberByIp(@RequestParam String ip){
+        
+    }
+
     @GetMapping("findByScreenName")
 
     public Member getMemberByScreenNameNoRole(@RequestParam String screenName) throws NotFoundException {

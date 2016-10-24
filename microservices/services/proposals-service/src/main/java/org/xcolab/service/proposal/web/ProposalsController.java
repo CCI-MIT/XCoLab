@@ -242,6 +242,17 @@ public class ProposalsController {
         return proposalVoteDao.countByGiven(contestPhaseId, proposalId, userId) == 0;
     }
 
+    @RequestMapping(value = "/proposalVotes", method = RequestMethod.POST)
+    public ProposalVote createProposalVote(@RequestBody ProposalVote proposalVote) {
+        return this.proposalVoteDao.create(proposalVote);
+    }
+
+    @RequestMapping(value = "/proposalVotes/deleteVote", method = RequestMethod.DELETE)
+    public Boolean deleteProposalVote(@RequestParam Long contestPhaseId,@RequestParam Long memberId) {
+        this.proposalVoteDao.delete(memberId,contestPhaseId);
+        return true;
+    }
+
     @RequestMapping(value = "/proposalVotes/updateVote", method = RequestMethod.PUT)
     public boolean updateProposalVote(@RequestBody ProposalVote proposalVote) throws NotFoundException {
 

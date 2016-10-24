@@ -66,8 +66,18 @@ public final class ProposalJudgeRatingClientUtil {
     public static ProposalRatingValue getProposalRatingValue(long id) {
         return client.getProposalRatingValue(id);
     }
+    public static List<ProposalRatingValue> getProposalRatingValuesByProposalRatingTypeId(Long ratingTypeId) {
+        return client.getProposalRatingValuesByProposalRatingTypeId(ratingTypeId);
+    }
 
     public static ProposalRatingType getProposalRatingType(long id) {
         return client.getProposalRatingType(id);
+    }
+
+    public static List<ProposalRatingType> getRatingTypesForJudges() {
+        return client.getRatingTypesForJudges();
+    }
+    public static List<ProposalRatingType> getRatingTypesForFellows() {
+        return client.getRatingTypesForFellows();
     }
 }

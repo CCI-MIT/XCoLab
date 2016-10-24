@@ -7,6 +7,7 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingTypeDto;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValueDto;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
@@ -62,6 +63,19 @@ public final class ProposalJudgeRatingClient {
 
     public List<ProposalRating> getFellowRatingsForProposal(long proposalId, long contestPhaseId) {
         return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.FELLOW.getId());
+    }
+
+
+    public  List<ProposalRatingType> getRatingTypesForJudges() {
+        return this.getRatingTypesForJudgeType(ProposalJudgeType.JUDGE.getId());
+    }
+
+    public List<ProposalRatingType> getRatingTypesForFellows() {
+            return this.getRatingTypesForJudgeType(ProposalJudgeType.FELLOW.getId());
+    }
+
+    private List<ProposalRatingType> getRatingTypesForJudgeType(int judgeType) {
+        return DtoUtil.toPojos(proposalRatingTypeResource.list().queryParam("judgeType",judgeType).execute(),proposalService);
     }
 
     protected List<ProposalRating> getRatingsForProposal(long proposalId, long contestPhaseId,
@@ -120,6 +134,12 @@ public final class ProposalJudgeRatingClient {
     public ProposalRatingValue getProposalRatingValue(long id) {
         return proposalRatingValueResource.get(id)
                 .execute().toPojo(proposalService);
+    }
+
+    public List<ProposalRatingValue> getProposalRatingValuesByProposalRatingTypeId(Long ratingTypeId) {
+        return DtoUtil.toPojos(proposalRatingValueResource.list()
+                .optionalQueryParam("ratingTypeId", ratingTypeId)
+                .execute(),proposalService);
     }
 
     public ProposalRatingType getProposalRatingType(long id) {

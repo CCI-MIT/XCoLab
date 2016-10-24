@@ -4,11 +4,7 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
@@ -414,10 +410,10 @@ public class ProposalWrapper extends BaseProposalWrapper {
         return GenericJudgingStatus.STATUS_UNKNOWN;
     }
 
-    public User getUserForSelectedVersion() {
+    public Member getUserForSelectedVersion() {
         try {
-            return UserLocalServiceUtil.getUser(getSelectedVersion().getAuthorId());
-        } catch (SystemException | PortalException e) {
+            return MembersClient.getMember(getSelectedVersion().getAuthorId());
+        } catch (MemberNotFoundException e) {
             return null;
         }
     }
