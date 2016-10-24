@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -24,6 +23,7 @@ import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -122,13 +122,13 @@ public class VoteOnProposalActionController {
 
     private boolean validateVote(User user, Member member, Proposal proposal, Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
 
-        List<User> usersWithSharedIP = Xcolab_UserLocalServiceUtil.findUsersByLoginIP(user.getLastLoginIP());
+        List<Member> usersWithSharedIP = MembersClient.findMembersByIp(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
         if (!usersWithSharedIP.isEmpty()) {
             final ProposalVote vote = ProposalMemberRatingClientUtil
                     .getProposalVoteByProposalIdUserId(proposal.getProposalId(), member.getUserId());
             int recentVotesFromSharedIP = 0;
-            for (User otherUser : usersWithSharedIP) {
+            for (Member otherUser : usersWithSharedIP) {
                     final ProposalVote otherVote = ProposalMemberRatingClientUtil
                             .getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
                     //check if vote is less than 12 hours old

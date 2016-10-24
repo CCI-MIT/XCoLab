@@ -79,6 +79,11 @@ public final class PointsClient {
                 .execute();
     }
 
+    public void verifyDistributionConfigurationsForProposalId(Long proposalId) {
+         pointsDistributionConfigurationResource.service("verifyDistributionConfigurationsForProposalId", String.class)
+                .queryParam("proposalId", proposalId).execute();
+    }
+
     public Boolean deletePointsDistributionConfigurationByProposalId(Long proposalId) {
         return pointsDistributionConfigurationResource.service("removeByProposalId", Boolean.class)
                 .queryParam("proposalId", proposalId).execute();

@@ -1,10 +1,8 @@
 package org.xcolab.portlets.proposals.requests;
 
 
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -47,7 +45,7 @@ public class AssignPointsBean {
     public void addAllAssignments(PointTypeWrapper pointType, List<Member> members) throws SystemException, PortalException {
         if (pointType.getDistributionStrategy().equals(DistributionStrategy.USER_DEFINED)) {
 
-            PointsDistributionConfigurationLocalServiceUtil.verifyDistributionConfigurationsForProposalId(proposalId);
+            PointsClientUtil.verifyDistributionConfigurationsForProposalId(proposalId);
 
             List<PointsDistributionConfiguration> existingDistributionConfigurations =
                     PointsClientUtil
