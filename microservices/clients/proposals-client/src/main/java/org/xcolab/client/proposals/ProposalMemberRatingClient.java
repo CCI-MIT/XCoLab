@@ -141,6 +141,14 @@ public final class ProposalMemberRatingClient {
                 .optionalQueryParam("proposalId", proposalId)
                 .get();
     }
+    public  Boolean hasUserVoted(Long contestPhaseId, Long memberId) {
+        return proposalVoteResource.service("hasUserVoted", Boolean.class)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("memberId", memberId)
+                .get();
+    }
+
+
 
     public List<ProposalVote> getProposalVotes(Long contestPhaseId, Long proposalId, Long userId) {
         return DtoUtil.toPojos(proposalVoteResource.list()

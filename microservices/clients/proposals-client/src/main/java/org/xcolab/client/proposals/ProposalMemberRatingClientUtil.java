@@ -68,6 +68,9 @@ public final class ProposalMemberRatingClientUtil {
     public static Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
         return client.hasUserVoted(proposalId, contestPhaseId, memberId);
     }
+    public  static Boolean hasUserVoted(Long contestPhaseId, Long memberId) {
+        return client.hasUserVoted(contestPhaseId, memberId);
+    }
 
     public static List<ProposalVote> getProposalVotes(
             Long contestPhaseId, Long proposalId, Long userId) {

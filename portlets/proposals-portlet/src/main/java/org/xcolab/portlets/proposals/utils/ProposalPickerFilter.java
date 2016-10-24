@@ -4,10 +4,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -19,9 +15,12 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -213,22 +212,20 @@ public class ProposalPickerFilter {
                 try{
                     // PROPOSAL NAME
                     //TODO: optimize
-                    String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L).getStringValue();
+                    String proposalName = ProposalAttributeClientUtil.getProposalAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L).getStringValue();
                     if (StringUtils.containsIgnoreCase(proposalName, searchCriterion)){
                         continue;
                     }
                     // CONTEST NAME
-                    String contestName = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()).getContestName();
+                    String contestName = ProposalClientUtil.getCurrentContestForProposal(p.getProposalId()).getContestName();
                     if (StringUtils.containsIgnoreCase(contestName,searchCriterion)){
                         continue;
                     }
                     // Remove element if it does not match any criterion
                     removedProposals.add(p.getProposalId());
                     i.remove();
-                } catch (SystemException e) {
+                } catch (ContestNotFoundException e) {
                     throw new DatabaseAccessException(e);
-                } catch (PortalException e) {
-                    throw new InternalException(e);
                 }
             }
             return removedProposals;
@@ -277,22 +274,16 @@ public class ProposalPickerFilter {
             Set<Long> removedProposals = new HashSet<>();
             for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                 Proposal p = i.next().getLeft();
-                try{
-                    List<Long> phases = Proposal2PhaseLocalServiceUtil.getContestPhasesForProposal(p.getProposalId());
+                    List<Proposal2Phase> phases = ProposalPhaseClientUtil.getProposal2PhaseByProposalId(p.getProposalId());
                     boolean winner = false;
-                    for (long phase : phases){
-                        winner = winner || ProposalContestPhaseAttributeLocalServiceUtil.hasProposalContestPhaseAttribute(
-                                p.getProposalId(), phase, "RIBBON");
+                    for (Proposal2Phase phase : phases){
+                        winner = winner || ProposalPhaseClientUtil.hasProposalContestPhaseAttribute(
+                                p.getProposalId(), phase.getContestPhaseId(), "RIBBON");
                     }
                     if (!winner) {
                         removedProposals.add(p.getProposalId());
                         i.remove();
                     }
-                } catch (SystemException e) {
-                    throw new DatabaseAccessException(e);
-                } catch (PortalException e) {
-                    throw new InternalException(e);
-                }
             }
             return removedProposals;
         }
@@ -319,10 +310,10 @@ public class ProposalPickerFilter {
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
                         try {
-                            if (!tierFilteredContests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) {
+                            if (!tierFilteredContests.contains(ProposalClientUtil.getCurrentContestForProposal(p.getProposalId()))) {
                                 i.remove();
                             }
-                        } catch (SystemException | PortalException e){
+                        } catch (ContestNotFoundException e){
                             i.remove();
                         }
                     }
@@ -373,6 +364,7 @@ public class ProposalPickerFilter {
     public final static ProposalPickerFilter CONTEST_TYPE_FILTER = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
+            Set<Long> removedProposals = new HashSet<>();
 
             final String allowedContestTypeIdsString = (String) additionalFilterCriterion;
 
@@ -381,11 +373,12 @@ public class ProposalPickerFilter {
                 for (Iterator<Pair<Proposal, Date>> i = proposals.iterator(); i.hasNext(); ) {
                     Proposal proposal = i.next().getLeft();
                     try {
-                        long contestTypeId = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposal.getProposalId()).getId();
+
+                        long contestTypeId = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId()).getContestTypeId();
                         if (!allowedContestTypeIds.contains(contestTypeId)) {
                             i.remove();
                         }
-                    } catch (SystemException | PortalException e) {
+                    } catch (ContestNotFoundException  e) {
                         _log.warn(String.format("Could not get ContestType for proposal %d while filtering for contest types",
                                 proposal.getProposalId()), e);
                         i.remove();
@@ -393,7 +386,6 @@ public class ProposalPickerFilter {
                 }
             }
 
-            Set<Long> removedProposals = new HashSet<>();
             return removedProposals;
         }
 
