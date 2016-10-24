@@ -1,5 +1,5 @@
 .c-ListView {
-  background-color: $t-Color__grey--lightest;
+  background-color: $t-Color__primary__grey--light;
   overflow:hidden;
 }
 
@@ -28,13 +28,19 @@
   border: 1px solid $t-Color__grey--light;
 }
 
-.c-ListItem__title {
+.c-ListItem__description {
   width: 474px;
   float: left;
   padding: 8px;
   font-size: 14px;
-  a{
-    font-size: 17px;
+  line-height: 19px;
+  h3{
+    color: $t-Color__primary;
+    font-size: 18px;
+    line-height: 22px;
+    &:hover {
+      color: black;
+    }
   }
 }
 
@@ -66,13 +72,26 @@
 }
 
 .c-ListItem__meta__flag--grey {
+   span {
+     padding: 2px;
+     border-radius: 3px;
+     line-height: 20px;
+     font-size: 12px;
+     color: $t-Color__grey--medium;
+     background: $t-Color__grey--lightest;
+   }
+   text-align: right;
+   height: 20px;
+ }
+
+.c-ListItem__meta__flag--color {
   span {
     padding: 2px;
     border-radius: 3px;
     line-height: 20px;
     font-size: 12px;
-    color: $t-Color__grey--medium;
-    background: $t-Color__grey--lightest;
+    color: white;
+    background: $t-Color__secondary;
   }
   text-align: right;
   height: 20px;

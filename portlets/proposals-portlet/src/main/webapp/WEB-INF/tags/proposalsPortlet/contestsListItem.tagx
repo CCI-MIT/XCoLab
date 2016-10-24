@@ -14,47 +14,48 @@
 
 	<c:forEach var="contest" items="${contests }">
 		<!--<c:if test="${contest.showInListView}">-->
-			<div class="c-ListItem">
-				<div class="c-ListItem__title">
-					<div class="contestFlag">
-						<collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
-						<br/>
+			<a href="${contest.contestUrl}">
+				<div class="c-ListItem">
+					<div class="c-ListItem__description">
+						<h3>
+							${contest.contestShortName}
+						</h3>
 						${contest.contestName}
 					</div>
-				</div>
-				<div class="c-ListItem__meta">
-					<div class="c-ListItem__meta__flag--grey">
-						<c:if test="${not empty contest.flagText }">
-							<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
-							<c:if test="${not empty contest.flagTooltip}">
-								<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
+					<div class="c-ListItem__meta">
+						<div class="${not empty contest.flagText and contest.flag == 1 ? 'c-ListItem__meta__flag--color' : 'c-ListItem__meta__flag--grey'}">
+							<c:if test="${not empty contest.flagText }">
+								<span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
+								<c:if test="${not empty contest.flagTooltip}">
+									<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
+								</c:if>
 							</c:if>
-						</c:if>
-					</div>
-					<div class="c-ListItem__proposals">
-						<strong>
-							${contest.proposalsCount}
-						</strong>
-						proposals
-					</div>
-					<div class="c-ListItem__comments">
-						<c:choose>
-							<c:when test="${contest.activePhase.canVote }">
-								<strong>
-									${contest.votesCount}
-								</strong>
-								contests
-							</c:when>
-							<c:otherwise>
-								<strong>
-									${contest.totalCommentsCount}
-								</strong>
-								comments
-							</c:otherwise>
-						</c:choose>
+						</div>
+						<div class="c-ListItem__proposals">
+							<strong>
+								${contest.proposalsCount}
+							</strong>
+							proposals
+						</div>
+						<div class="c-ListItem__comments">
+							<c:choose>
+								<c:when test="${contest.activePhase.canVote }">
+									<strong>
+										${contest.votesCount}
+									</strong>
+									contests
+								</c:when>
+								<c:otherwise>
+									<strong>
+										${contest.totalCommentsCount}
+									</strong>
+									comments
+								</c:otherwise>
+							</c:choose>
+						</div>
 					</div>
 				</div>
-			</div>
+			</a>
 		<!--</c:if>-->
 	</c:forEach>
 </jsp:root>

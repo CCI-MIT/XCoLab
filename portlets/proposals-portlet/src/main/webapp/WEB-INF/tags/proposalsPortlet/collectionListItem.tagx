@@ -19,8 +19,9 @@
             <portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
             <portlet:param name="showActiveContests" value="${showActiveContests }" />
             <portlet:param name="showAllContests" value="${showAllContests }" />
+            <portlet:param name="viewType" value="LIST" />
         </portlet:renderURL>
-        <a href="${changeCurrentContestCardURL}">
+        <a href="${changeCurrentContestCardURL}" style="overflow:hidden;"> <!-- -->
             <div class="c-ListItem--background-container" style="  margin-left: 110px;">
                 <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
                     <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
@@ -40,11 +41,10 @@
                             </div>
                             contests
                         </div>
-                        <div class="c-ListItem__title">
-                            <a>
+                        <div class="c-ListItem__description">
+                            <h3>
                                 ${collectionCard.ontologyTermToLoad.name}
-                            </a>
-                            <br/>
+                            </h3>
                             ${collectionCard.description}
                         </div>
                         <div class="c-ListItem__meta">

@@ -14,6 +14,7 @@
         <portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
         <portlet:param name="showActiveContests" value="${showActiveContests }" />
         <portlet:param name="showAllContests" value="${showAllContests }" />
+        <portlet:param name="viewType" value="GRID" />
     </portlet:renderURL>
 
     <div class="c-CollectionCard--background-container" >
