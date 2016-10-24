@@ -21,6 +21,7 @@
 		<div class="c-contest-title">
 			${contestType.contestNamePlural}
 		</div>
+		<br/>
 		<portlet:renderURL var="changeToOutlineViewTypeURL">
 			<portlet:param name="viewType" value="OUTLINE" />
 			<portlet:param name="filter" value="${sortFilterPage.filter }" />
@@ -78,13 +79,13 @@
 			<portlet:renderURL var="changeLocationRootURL">
 				<portlet:param name="currentCollectionCardId" value="3" />
 			</portlet:renderURL>
-			<a href="${changeFeaturedRootURL}">
+			<a href="${changeFeaturedRootURL}" class=" ${ontologySpaceId == 0 ? 'selected' : ''}">
 				Featured
 			</a>
-			<a href="${changeTopicRootURL}">
+			<a href="${changeTopicRootURL}" class=" ${ontologySpaceId == 103 ? 'selected' : ''}">
 				By topic
 			</a>
-			<a href="${changeLocationRootURL}">
+			<a href="${changeLocationRootURL}" class=" ${ontologySpaceId == 104 ? 'selected' : ''}">
 				By location
 			</a>
 			<br/>

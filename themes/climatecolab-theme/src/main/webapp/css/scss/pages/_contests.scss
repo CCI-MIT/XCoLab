@@ -38,6 +38,9 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   height: 50px;
   a {
     margin-right: 50px;
+    &.selected {
+      color: $t-Color__grey--medium;
+    }
   }
 }
 
@@ -94,10 +97,16 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 
     .grid {
       background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
+      &.selected {
+        background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px white;
+      }
     }
 
     .list {
       background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
+      &.selected {
+        background: url(../images/icon-list_view-off.png) no-repeat 6px 8px white;
+      }
     }
   }
 }
@@ -125,14 +134,15 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 .c-description {
   margin-right: 400px;
   color: $t-Color__grey--medium;
+  font-size: 15px;
+  line-height: 24px;
 }
 
 .c-contest-title {
   font-family: "Bree serif", Verdana, sans-serif;
-  font-weight: 400;
-  font-size: 32px;
+  font-size: 37px;
   color: #404040;
-  line-height: 1em;
+  line-height: 50px;
 }
 
 .p-Contests__ListViewTable { //table.contest-list-view

@@ -1,12 +1,13 @@
 $c-ContestCard__meta__flag__capitalization: $b-Typography__capitalization--capitalize !default;
 $c-ContestCard__meta__flag__padding: 0 15px !default;
-$c-ContestCard__meta__flag__textColor: white !default;
 $c-ContestCard__meta__flag__height: 30px !default;
 $c-ContestCard__meta__flag__fontSize: 15px !default;
 $c-ContestCard__meta__flag__marginTop: 0 !default;
 $c-ContestCard__meta__flag__isGradient: true !default;
 $c-ContestCard__meta__flag__background--color: $t-Color__secondary !default;
-$c-ContestCard__meta__flag__background--grey: $t-Color__grey--light !default;
+$c-ContestCard__meta__flag__textColor--color: white !default;
+$c-ContestCard__meta__flag__background--grey: $t-Color__primary__grey--light !default;
+$c-ContestCard__meta__flag__textColor--grey: $t-Color__primary__grey--light !default;
 $c-ContestCard__meta__flag__fontWeight: $b-Typography__fontWeight !default;
 
 $c-ContestCard__text__height: 104px !default;
@@ -19,7 +20,7 @@ $c-ContestCard__border__radius: 8px !default;
 $c-ContestCard__border__bottom: null !default;
 
 
-.c-ContestCard { //.contestbox {
+.c-ContestCard {
   width: 200px;
 
   border: $c-ContestCard__border;
@@ -45,7 +46,7 @@ $c-ContestCard__border__bottom: null !default;
   margin-right: 35px;
 }
 
-.c-ContestCard__image { //.contestbox .img-wrap {
+.c-ContestCard__image {
   float: left;
   width: 200px;
 
@@ -57,21 +58,23 @@ $c-ContestCard__border__bottom: null !default;
   }
 }
 
-.c-ContestCard__text { // .contestbox .text-wrap {
+.c-ContestCard__text {
   float: left;
   width: 184px;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 19px;
   padding: 8px;
-  line-height: 15px;
   overflow: hidden;
   color: $t-Color__grey--dark;
   height: $c-ContestCard__text__height;
 }
 
-.c-ContestCard__text__title { // .contestbox h3 {
+.c-ContestCard__text__title {
   margin-bottom: 8px;
-  font-size: 15px;
+  font-size: 18px;
   color: $c-ContestCard__text__title__textColor;
+  line-height: 22px;
+  overflow: hidden;
 
   &:hover {
     color: $c-ContestCard__text__title__textColor--hover;
@@ -79,10 +82,10 @@ $c-ContestCard__border__bottom: null !default;
   }
 }
 
-.c-ContestCard__meta__count { //.contestbox .count
+.c-ContestCard__meta__count {
   color: $t-Color__grey--medium;
   float: left;
-  height: 24px;
+  height: 26px;
   width: 184px;
   padding: 8px;
   font-size: 14px;
@@ -103,21 +106,21 @@ $c-ContestCard__border__bottom: null !default;
     padding-left: 8px;
     padding-right: 8px;
     border-radius: 3px;
-    line-height: 20px;
+    line-height: 14px;
     font-size: 12px;
-    color: $c-ContestCard__meta__flag__textColor;
+    font-weight: bold;
     text-align: center;
     text-transform: $c-ContestCard__meta__flag__capitalization;
   }
 }
 
 
-.c-ContestCard__meta__flag--grey { //.contest-flag-grey {
-
+.c-ContestCard__meta__flag--grey {
   background: $c-ContestCard__meta__flag__background--grey;
+  color: $c-ContestCard__meta__flag__textColor--grey;
 }
 
-.c-ContestCard__meta__flag--color { //.contest-flag-grey {
-
+.c-ContestCard__meta__flag--color {
   background: $c-ContestCard__meta__flag__background--color;
+  color: $c-ContestCard__meta__flag__textColor--color;
 }

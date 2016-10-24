@@ -20,46 +20,46 @@
             <portlet:param name="showActiveContests" value="${showActiveContests }" />
             <portlet:param name="showAllContests" value="${showAllContests }" />
         </portlet:renderURL>
-        <div class="c-ListItem--background-container" style="  margin-left: 110px;">
-            <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
-                <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
-                    <div class="c-ListItem__contests">
-                        <div class="c-ListItem__circle">
-                            <c:choose>
-                                <c:when test="${showActiveContests }">
-                                    ${collectionCard.numberOfActiveContests}
-                                </c:when>
-                                <c:when test="${not showActiveContests and not showAllContests }">
-                                    ${collectionCard.numberOfPriorContests}
-                                </c:when>
-                                <c:otherwise>
-                                    ${collectionCard.numberOfAllContests}
-                                </c:otherwise>
-                            </c:choose>
+        <a href="${changeCurrentContestCardURL}">
+            <div class="c-ListItem--background-container" style="  margin-left: 110px;">
+                <div class="c-ListItem--background-container" style="right:3px; position: relative; bottom:3px;">
+                    <div class="c-ListItem" style="right:3px; bottom:3px; position: relative; margin-left: 0px;">
+                        <div class="c-ListItem__contests">
+                            <div class="c-ListItem__circle">
+                                <c:choose>
+                                    <c:when test="${showActiveContests }">
+                                        ${collectionCard.numberOfActiveContests}
+                                    </c:when>
+                                    <c:when test="${not showActiveContests and not showAllContests }">
+                                        ${collectionCard.numberOfPriorContests}
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${collectionCard.numberOfAllContests}
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            contests
                         </div>
-                        contests
-                    </div>
-                    <div class="c-ListItem__title">
-                        <div class="contestFlag">
-                            <a href="${changeCurrentContestCardURL}">
+                        <div class="c-ListItem__title">
+                            <a>
                                 ${collectionCard.ontologyTermToLoad.name}
                             </a>
                             <br/>
                             ${collectionCard.description}
                         </div>
-                    </div>
-                    <div class="c-ListItem__meta">
-                        <div class="c-ListItem__proposals" style="margin-top: 20px;">
-                            <!--
-                            <strong>
-                                ${collectionCard.numberOfContests}
-                            </strong>
-                            proposals
-                            -->
+                        <div class="c-ListItem__meta">
+                            <div class="c-ListItem__proposals" style="margin-top: 20px;">
+                                <!--
+                                <strong>
+                                    ${collectionCard.numberOfContests}
+                                </strong>
+                                proposals
+                                -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
 	</c:forEach>
 </jsp:root>
