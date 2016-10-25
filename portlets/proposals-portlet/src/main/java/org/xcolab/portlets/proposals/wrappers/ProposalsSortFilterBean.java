@@ -62,36 +62,39 @@ public class ProposalsSortFilterBean {
             proposalComparator = ProposalsColumn.MODIFIED.getComparator();
             sortFilterPage.setSortAscending(!sortFilterPage.isSortAscending()); // default sort is date DESC
         }
-        
-        Collections.sort(this.proposals, new Comparator<ProposalWrapper>() {
-            @Override
-            public int compare(ProposalWrapper o1, ProposalWrapper o2) {
-                if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
-                    final RibbonWrapper ribbon1 = o1.getRibbonWrapper();
-                    final RibbonWrapper ribbon2 = o2.getRibbonWrapper();
 
-                    int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
-                    if (sortOrderDiff != 0) {
-                        return sortOrderDiff;
-                    }
+        if(this.proposals!=null&&this.proposals.size() >0 ) {
 
-                    int ribbonDiff = ribbon1.getRibbon() - ribbon2.getRibbon();
-                    if (ribbonDiff != 0) {
-                        return ribbonDiff;
+            Collections.sort(this.proposals, new Comparator<ProposalWrapper>() {
+                @Override
+                public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+                    if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
+                        final RibbonWrapper ribbon1 = o1.getRibbonWrapper();
+                        final RibbonWrapper ribbon2 = o2.getRibbonWrapper();
+
+                        int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
+                        if (sortOrderDiff != 0) {
+                            return sortOrderDiff;
+                        }
+
+                        int ribbonDiff = ribbon1.getRibbon() - ribbon2.getRibbon();
+                        if (ribbonDiff != 0) {
+                            return ribbonDiff;
+                        }
                     }
+                    if (sortFilterPage.isSortAscending()) {
+                        return proposalComparator.compare(o1, o2);
+                    }
+                    return proposalComparator.compare(o2, o1);
                 }
-                if (sortFilterPage.isSortAscending()) {
-                    return proposalComparator.compare(o1, o2);
+            });
+
+            for (ProposalWrapper contest : this.proposals) {
+                if (contest.getRibbonWrapper().getRibbon() > 0) {
+                    proposalsWithRibbons.add(contest);
+                } else {
+                    proposalsNormal.add(contest);
                 }
-                return proposalComparator.compare(o2, o1);
-            }
-        });
-        
-        for (ProposalWrapper contest: this.proposals) {
-            if (contest.getRibbonWrapper().getRibbon() > 0) {
-                proposalsWithRibbons.add(contest);
-            } else {
-                proposalsNormal.add(contest);
             }
         }
     }
