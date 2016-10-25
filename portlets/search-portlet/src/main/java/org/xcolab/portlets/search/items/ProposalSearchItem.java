@@ -1,16 +1,20 @@
 package org.xcolab.portlets.search.items;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.helpers.ProposalAttributeHelper;
 
@@ -34,28 +38,26 @@ public class ProposalSearchItem extends AbstractSearchItem {
         try {
             searchPojo = pojo;
             this.searchQuery = searchQuery;
-            proposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(searchPojo.getClassPrimaryKey());
-            proposal = ProposalLocalServiceUtil.getProposal(proposalAttribute.getProposalId());
+            proposalAttribute = ProposalAttributeClientUtil.getProposalAttribute(searchPojo.getClassPrimaryKey());
+            proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId());
             ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal);
 
             proposalName = proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        } catch (SystemException | PortalException ignored) {
+        } catch (ProposalAttributeNotFoundException | ProposalNotFoundException ignored) {
 
         }
     }
 
     @Override
     public String getPrintName() {
-        try {
+
             final long contestTypeId =
                     ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestTypeLocalServiceUtil
+            final ContestType contestType = ContestClientUtil
                     .getContestType(contestTypeId);
             return contestType.getProposalNamePlural();
-        } catch (PortalException | SystemException e) {
-            return "Proposals";
-        }
+
     }
 
     @Override

@@ -2,9 +2,9 @@ package org.xcolab.portlets.contestmanagement.utils.schedule;
 
 import org.springframework.util.Assert;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.wrappers.BaseContestWrapper;
 
@@ -23,8 +23,8 @@ public class ContestScheduleChangeHelper {
     public ContestScheduleChangeHelper(Contest contest, long newScheduleId) {
         this.contest = contest;
         this.newScheduleId = newScheduleId;
-        existingPhases = ContestClient.getAllContestPhases(contest.getContestPK());
-        schedulePhases = ContestClient.getPhasesForContestScheduleId(newScheduleId);
+        existingPhases = ContestClientUtil.getAllContestPhases(contest.getContestPK());
+        schedulePhases = ContestClientUtil.getPhasesForContestScheduleId(newScheduleId);
     }
 
     public void changeScheduleForStartedContest() {
@@ -37,7 +37,7 @@ public class ContestScheduleChangeHelper {
     public void changeScheduleForBlankContest() {
         removeExistingContestPhases(contest.getContestPK());
 
-        List<ContestPhase> contestSchedulePhases = ContestClient
+        List<ContestPhase> contestSchedulePhases = ContestClientUtil
                 .getPhasesForContestScheduleId(newScheduleId);
         for (ContestPhase contestSchedulePhase : contestSchedulePhases) {
             createContestPhaseFromExistingContestPhaseWithContestId(contestSchedulePhase,
@@ -51,7 +51,7 @@ public class ContestScheduleChangeHelper {
         for (ContestPhase phase : existingPhases) {
             if (!(phase.getPhaseStartDate().after(now))) {
                 phase.setContestScheduleId(newScheduleId);
-                ContestClient.updateContestPhase(phase);
+                ContestClientUtil.updateContestPhase(phase);
             }
         }
 
@@ -87,7 +87,7 @@ public class ContestScheduleChangeHelper {
 
         List<ContestPhase> existingPhasesToProcess = new ArrayList<>(existingPhases);
 
-        List<ContestPhase> schedulePhases = ContestClient.
+        List<ContestPhase> schedulePhases = ContestClientUtil.
                 getTemplatePhasesForContestScheduleId(newScheduleId);
         List<ContestPhase> newPhasesForContest = new ArrayList<>();
         for (ContestPhase schedulePhase : schedulePhases) {
@@ -124,7 +124,7 @@ public class ContestScheduleChangeHelper {
         existingContestPhase
                 .setFellowScreeningActive(contestSchedulePhase.getFellowScreeningActive());
 
-        ContestClient.updateContestPhase(existingContestPhase);
+        ContestClientUtil.updateContestPhase(existingContestPhase);
 
     }
 
@@ -139,14 +139,14 @@ public class ContestScheduleChangeHelper {
         ContestPhase newContestPhase = ContestPhase
                 .createFromContestPhase(contestSchedulePhase);
         newContestPhase.setContestPK(contestId);
-        ContestClient.createContestPhase(newContestPhase);
+        ContestClientUtil.createContestPhase(newContestPhase);
 
     }
 
     private static void removeExistingContestPhases(long contestId) {
-        List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contestId);
+        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
         for (ContestPhase contestPhase : contestPhases) {
-            ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
+            ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
         }
     }
 

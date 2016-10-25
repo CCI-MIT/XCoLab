@@ -1,25 +1,19 @@
 package org.xcolab.portlets.notificationunregister;
 
-import com.ext.portlet.model.MessagingIgnoredRecipients;
-import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
 import com.ext.utils.NotificationUnregisterUtils;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreferences;
-
-import java.util.Date;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -106,65 +100,3 @@ public class NotificationUnregisterController {
     }
 }
 
-interface NotificationUnregisterHandler {
-    void unregister(Member user) throws SystemException;
-    String getSuccessResponse();
-}
-
-class MassmessagingNotificationUnregisterHandler implements NotificationUnregisterHandler {
-
-    private static final String UNSUBSCRIBE_RESPONSE_TEXT =
-            "Your address has been excluded from our newsletter recipients.";
-
-    @Override
-    public void unregister(Member user) throws SystemException {
-        MessagingIgnoredRecipients ignoredRecipients = null;
-        try {
-            ignoredRecipients = MessagingIgnoredRecipientsLocalServiceUtil.findByUserId(user.getUserId());
-        }
-        catch (Exception e) {
-            //
-        }
-        if (ignoredRecipients == null) {
-            // save
-            Long ignoredRecipientId = CounterLocalServiceUtil.increment(MessagingIgnoredRecipients.class.getName());
-            MessagingIgnoredRecipients ignoredRecipient = MessagingIgnoredRecipientsLocalServiceUtil
-                    .createMessagingIgnoredRecipients(ignoredRecipientId);
-
-            ignoredRecipient.setUserId(user.getUserId());
-            ignoredRecipient.setName(user.getScreenName());
-            ignoredRecipient.setEmail(user.getEmailAddress());
-
-            ignoredRecipient.setCreateDate(new Date());
-
-            MessagingIgnoredRecipientsLocalServiceUtil.addMessagingIgnoredRecipients(ignoredRecipient);
-        }
-    }
-
-    @Override
-    public String getSuccessResponse() {
-        return UNSUBSCRIBE_RESPONSE_TEXT;
-    }
-}
-
-class ActivityDailyDigestNotificationUnregisterHandler implements NotificationUnregisterHandler {
-
-    private static final String UNSUBSCRIBE_RESPONSE_TEXT =
-            "from the daily digest and all email notifications about activity on the Climate CoLab.  " +
-                    "To resubscribe or manage your subscriptions, please log in to your account, select “My profile”, " +
-                    "and select the “Manage” button underneath “Subscribed Activity” on the righthand side.";
-
-    @Override
-    public void unregister(Member member) {
-        final MessagingUserPreferences preferences = MessagingClient
-                .getMessagingPreferencesForMember(member.getUserId());
-        preferences.setEmailActivityDailyDigest(false);
-        preferences.setEmailOnActivity(false);
-        MessagingClient.updateMessagingPreferences(preferences);
-    }
-
-    @Override
-    public String getSuccessResponse() {
-        return UNSUBSCRIBE_RESPONSE_TEXT;
-    }
-}

@@ -1,6 +1,6 @@
 package org.xcolab.portlets.modelsadmin.web;
 
-import com.ext.portlet.models.CollaboratoriumModelingService;
+import org.xcolab.client.modeling.RomaClientUtil;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
@@ -42,10 +42,11 @@ public class ModelsAdminController {
 	@RequestMapping
 	public String showAvailableModels(Model model, @RequestParam(value ="refresh", required=false) boolean refresh) throws SystemException {
 		if (refresh) {
-			CollaboratoriumModelingService.repository().getManager().clearCache();
+			RomaClientUtil.repository().getManager().clearCache();
 		}
 
-		List<Simulation> simulationsSorted = new ArrayList<Simulation>(CollaboratoriumModelingService.repository().getAllSimulations());
+		List<Simulation> simulationsSorted = new ArrayList<Simulation>(
+				RomaClientUtil.repository().getAllSimulations());
 		Collections.sort(simulationsSorted, new Comparator<Simulation>() {
 
 			@Override
@@ -61,7 +62,7 @@ public class ModelsAdminController {
 	@RequestMapping(params="modelId")
 	public String showModelDetails(Model model, @RequestParam Long modelId) throws SystemException, IOException {
 		
-		model.addAttribute("model", CollaboratoriumModelingService.repository().getSimulation(modelId));
+		model.addAttribute("model", RomaClientUtil.repository().getSimulation(modelId));
 		
 		model.addAttribute("tab", "details");
 		model.addAttribute("modelPreferences", ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId));
@@ -71,7 +72,7 @@ public class ModelsAdminController {
 	@RequestMapping(params={"modelId", "tab=inputWidgets"})
 	public String showModelInputWidgets(Model model, @RequestParam Long modelId) throws SystemException, IOException, IllegalUIConfigurationException {
 		
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
 		List<ModelInputGroupDisplayItem> groupsAndTabs = new ArrayList<ModelInputGroupDisplayItem>();
@@ -102,7 +103,7 @@ public class ModelsAdminController {
 	@RequestMapping(params={"modelId", "tab=outputWidgets"})
 	public String showModelOutputWidgets(Model model, @RequestParam Long modelId) throws SystemException, IOException, IllegalUIConfigurationException {
 		
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		
 		model.addAttribute("model", simulation);
@@ -121,7 +122,7 @@ public class ModelsAdminController {
 	@RequestMapping(params={"modelId", "tab=inputTabs"})
 	public String showModelInputTabsEditWidget(Model model, @RequestParam Long modelId) throws SystemException, IOException, IllegalUIConfigurationException {
 		
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		
 		Map<Long, String> individualInputsById = new HashMap<Long, String>();
@@ -162,7 +163,7 @@ public class ModelsAdminController {
 	@RequestMapping(params={"modelId", "tab=modelDisplayByJSON"})
 	public String modelDisplayByJSON(Model model, @RequestParam Long modelId) throws SystemException, IOException, IllegalUIConfigurationException {
 		
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		model.addAttribute("command", new UpdateModelDisplayFromJSONBean());
 		model.addAttribute("model", simulation);

@@ -5,12 +5,12 @@ import com.ext.portlet.contests.ContestStatus;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.proposals.ProposalsClient;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.ProposalVoteClientUtil;
 
 import org.xcolab.wrappers.BaseContestWrapper;
 
@@ -29,9 +29,9 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
 
     public long getTotalCommentsCount() {
 
-        Integer contestComments = CommentClient.countComments(contest.getDiscussionGroupId());
-        ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
-        contestComments += CommentClient.countCommentsInContestPhase(
+        Integer contestComments = CommentClientUtil.countComments(contest.getDiscussionGroupId());
+        ContestPhase phase = ContestClientUtil.getActivePhase(contest.getContestPK());
+        contestComments += CommentClientUtil.countCommentsInContestPhase(
                 phase.getContestPhasePK(), phase.getContestPK());
 
         return contestComments;
@@ -46,7 +46,7 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
     }
 
     public boolean getContestInVotingPhase() {
-            ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
+            ContestPhase phase = ContestClientUtil.getActivePhase(contest.getContestPK());
             if (phase == null) {
                 return false;
             }
@@ -57,8 +57,8 @@ public class ContestWrapper extends BaseContestWrapper implements Serializable {
     }
 
     public long getVotesCount() {
-        ContestPhase phase = ContestClient.getActivePhase(contest.getContestPK());
-        return ProposalsClient.countProposalsInContestPhaseVotes(phase.getContestPhasePK());
+        ContestPhase phase = ContestClientUtil.getActivePhase(contest.getContestPK());
+        return ProposalVoteClientUtil.countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 }
 

@@ -1,8 +1,11 @@
 package org.xcolab.portlets.proposals.requests;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.hibernate.validator.constraints.NotBlank;
+
 import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -10,14 +13,18 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class UpdateProposalDetailsBean {
     private Map<Long, String> sectionsContent = new HashMap<>();
+
+    @Length(max = 140, message = "the pitch is limited to 140 characters")
     private String pitch;
 
-    @NotBlank
+    @NotBlank(message = "please enter a title")
+    @Length(max = 80, message = "the title is limited to 80 characters")
     private String name;
 
-
+    @Length(max = 20, message = "the team name is limited to 20 characters")
     private String team;
     private long imageId;
     private long baseProposalId;

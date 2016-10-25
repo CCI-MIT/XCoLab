@@ -1,10 +1,7 @@
 package org.xcolab.portlets.proposals.utils;
 
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -22,6 +19,10 @@ import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.security.permission.PermissionChecker;
 import org.apache.commons.lang3.StringUtils;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -66,7 +67,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
         }
 
         try {
-            Proposal plan = ProposalLocalServiceUtil.getProposal(id);
+            Proposal plan = ProposalClientUtil.getProposal(id);
             SearchEngineUtil.deleteDocument(getSearchEngineId(), defaultCompanyId, getDocument(plan).getUID());
         } catch (Throwable e) {
             _log.error("Can't remove plan from index: " + obj, e);
@@ -88,7 +89,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             doc.addKeyword(Field.COMPANY_ID, defaultCompanyId);
             doc.addKeyword(Field.PORTLET_ID, PORTLET_ID);
             
-            Contest currentContest = Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(proposal.getProposalId());
+            Contest currentContest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
             
             
 
@@ -115,7 +116,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             doc.addKeyword(Field.ENTRY_CLASS_PK, proposal.getProposalId());
             // doc.addText(Field.URL, Plan);
             return doc;
-        } catch (SystemException e) {
+        } catch (ContestNotFoundException | SystemException e) {
             throw new SearchException("Can't index plan " + obj, e);
         } catch (PortalException e) {
             throw new SearchException("Can't index plan " + obj, e);
@@ -205,7 +206,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             Long proposalId = 0L;
             try {
                 proposalId = (Long) obj;
-                p = ProposalLocalServiceUtil.getProposal(proposalId);
+                p = ProposalClientUtil.getProposal(proposalId);
             } catch (Throwable e) {
                 _log.error("Can't reindex plan " + proposalId, e);
             }
@@ -214,7 +215,7 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
             try {
                 Method m = obj.getClass().getMethod("getProposalId");
                 Long proposalId = (Long) m.invoke(obj);
-                p = ProposalLocalServiceUtil.getProposal(proposalId);
+                p = ProposalClientUtil.getProposal(proposalId);
             } catch (Throwable e) {
                 _log.error("Can't reindex plan " + obj, e);
             }
@@ -238,12 +239,9 @@ public class Indexer implements com.liferay.portal.kernel.search.Indexer {
     public void reindex(String[] ids) throws SearchException {
         long companyId = GetterUtil.getLong(ids[0]);
         List<Proposal> proposals = null;
-        try {
-            proposals = ProposalLocalServiceUtil.getProposals(Integer.MIN_VALUE, Integer.MAX_VALUE);
-        } catch (SystemException e) {
-            _log.error("Can't reindex plans", e);
-            throw new SearchException("Can't reindex plans", e);
-        }
+        
+            proposals = ProposalClientUtil.getAllProposals();
+
         Collection<Document> documents = new ArrayList<>();
         for (Proposal p : proposals) {
             if (!p.getVisible()) {

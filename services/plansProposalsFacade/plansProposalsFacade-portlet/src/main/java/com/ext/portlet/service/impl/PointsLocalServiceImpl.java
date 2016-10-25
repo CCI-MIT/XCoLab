@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.PointsTarget;
-import org.xcolab.points.ReceiverLimitationStrategy;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -167,7 +167,8 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
         }
 		
 		_log.info("Distributing points to proposal: " + logString);
-		
+
+        /*
 		DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
 		ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());
 		
@@ -238,6 +239,8 @@ public class PointsLocalServiceImpl extends PointsLocalServiceBaseImpl {
 			}
 		}
         return materializedPointsList;
+        */
+        return null;
 	}
 
     @Override

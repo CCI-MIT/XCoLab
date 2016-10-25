@@ -1,6 +1,6 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
@@ -15,7 +15,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.utils.TemplateReplacementUtil;
 
@@ -59,7 +59,7 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		}
 
 		ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposalId);
-		org.xcolab.client.contest.pojo.ContestType contestTypeMicro = ContestClient.getContestType(contestType.getId());
+		org.xcolab.client.contest.pojo.ContestType contestTypeMicro = ContestClientUtil.getContestType(contestType.getId());
 		String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
 		String proposalLink = String.format("<a href='%s'>%s</a>", ProposalLocalServiceUtil.getProposalLinkUrl(proposalId), proposalName);
 

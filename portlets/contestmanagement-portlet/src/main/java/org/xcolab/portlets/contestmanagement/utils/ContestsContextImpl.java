@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.interfaces.TabContext;
@@ -75,7 +75,7 @@ public class ContestsContextImpl implements TabContext {
             final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
             Contest contest;
             try {
-                contest = ContestClient.getContest(contestId);
+                contest = ContestClientUtil.getContest(contestId);
             } catch (ContestNotFoundException e) {
                 throw new InternalException(e);
             }

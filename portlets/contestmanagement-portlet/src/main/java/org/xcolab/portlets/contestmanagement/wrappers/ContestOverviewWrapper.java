@@ -3,7 +3,8 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
-import org.xcolab.client.contest.ContestClient;
+
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -14,11 +15,12 @@ import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrappers.BaseContestWrapper;
 
-import javax.portlet.PortletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.portlet.PortletRequest;
 
 public class ContestOverviewWrapper {
 
@@ -61,7 +63,7 @@ public class ContestOverviewWrapper {
     }
 
     private void populateContestWrappersAndSelectedContestList() {
-            List<Contest> contests = ContestClient.getAllContests();
+            List<Contest> contests = ContestClientUtil.getAllContests();
             for (Contest contest : contests) {
                 contestWrappers.add(new BaseContestWrapper(contest));
                 selectedContest.add(false);
@@ -136,7 +138,7 @@ public class ContestOverviewWrapper {
             for (BaseContestWrapper contestWrapper : contestWrappers) {
                 Contest contest = contestWrapper.getWrapped();
                 contest.setWeight(contestWrapper.getWeight());
-                ContestClient.updateContest(contest);
+                ContestClientUtil.updateContest(contest);
             }
     }
 

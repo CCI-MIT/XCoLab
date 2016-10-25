@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2010. M.I.T. All Rights Reserved
- * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
- * or the license.txt file included in this distribution for the full text of the license.
- */
-
 package com.ext.portlet.models.ui;
 
 import java.io.IOException;
@@ -21,16 +15,11 @@ import edu.mit.cci.roma.client.Variable;
 
 /**
  * Layout information for individual (non-group) display elements.
- *
- * @author: jintrone
- * @date: May 25, 2010
  */
 public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
 	ModelInputWidgetType type = ModelInputWidgetType.TEXT_FIELD;
     ModelInputItem item;
 
@@ -44,8 +33,6 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     /**
      * Returns the variable associated with this element if a "setScenario" has
      * been called with a valid scenario.
-     *
-     * @return
      */
      public Variable getVariable() {
         if (getScenario()!=null) {
@@ -56,8 +43,8 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
 
     /**
      * The widget type for this element
-     * @return
      */
+    @Override
     public ModelInputWidgetType getType() {
       return item.getType()==null?ModelInputWidgetType.TEXT_FIELD:ModelInputWidgetType.valueOf(item.getType());
     }
@@ -65,10 +52,8 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
 
     /**
      * Sets the widget type for this element.  Updates the backing store.
-     *
-     * @param type
-     * @throws SystemException
      */
+    @Override
     public void setType(ModelInputWidgetType type) throws SystemException {
          item.setType(type.name());
          ModelInputItemLocalServiceUtil.updateModelInputItem(item);
@@ -78,19 +63,16 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     /**
      * The order of this element within its parent container, which may either be a group
      * or the top level display element.
-     *
-     * @return
      */
+    @Override
     public int getOrder() {
         return item.getDisplayItemOrder();
     }
 
     /**
      * Set the display position of this element.  Updates the backing store.
-     *
-     * @param order
-     * @throws SystemException
      */
+    @Override
     public void setOrder(int order) throws SystemException {
        item.setDisplayItemOrder(order);
        ModelInputItemLocalServiceUtil.updateModelInputItem(item);
@@ -101,13 +83,6 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
      * This is the preferred means for creating a new, non-group display item.
      * Note that calling {@link com.ext.portlet.models.ui.ModelInputGroupDisplayItem#addDisplayItem(mit.simulation.climate.client.MetaData, ModelInputWidgetType)}
      * will call this code and then set the group id on the item.
-     *
-     * @param sim
-     * @param md
-     * @param type
-     * @return
-     * @throws SystemException
-     * @throws IOException 
      */
     public static ModelInputIndividualDisplayItem create(Simulation sim, MetaData md, ModelInputWidgetType type) throws SystemException, IOException {
          Long pk = CounterLocalServiceUtil.increment(ModelInputItem.class.getName());
@@ -136,7 +111,6 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     
     /**
      * Sets group ID.
-     * @throws SystemException 
      */
     public void setGroupId(Long modelGroupId) throws SystemException {
         if (modelGroupId!=null && modelGroupId <= 0) {

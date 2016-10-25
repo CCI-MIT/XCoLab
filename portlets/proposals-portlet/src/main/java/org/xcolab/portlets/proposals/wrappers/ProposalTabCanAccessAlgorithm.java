@@ -3,16 +3,17 @@ package org.xcolab.portlets.proposals.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -60,7 +61,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 			ContestPhase contestPhase = context.getContestPhase(request);
 			ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote());
-			if (phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED && !contestPhase.isFellowScreeningActive()) {
+			if (phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED && !contestPhase.getFellowScreeningActive()) {
 				return true;
 			}
 
@@ -99,7 +100,7 @@ interface ProposalTabCanAccessAlgorithm {
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
 			ContestPhase contestPhase = context.getContestPhase(request);
 			if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll() || permissions.getCanContestManagerActions()) ||
-					!contestPhase.isFellowScreeningActive()) {
+					!contestPhase.getFellowScreeningActive()) {
 				return false;
 			}
 
@@ -115,7 +116,7 @@ interface ProposalTabCanAccessAlgorithm {
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
 			try {
 				return permissions.getCanEdit();
-			} catch (SystemException | PortalException e) {
+			} catch (SystemException e) {
 				_log.error("can't check if user is allowed to edit proposal", e);
 			}
 			return false;
@@ -129,18 +130,14 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			try {
 				Contest contest = context.getContest(request);
 
 				//first, check if the contest has points activated.
 				if ((contest != null && contest.getDefaultParentPointType() > 0)) {
 					//if yes, check if contest phase allows viewing
-					Integer pointsAccessible = ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest(contest);
+					Integer pointsAccessible = ContestClientUtil.getPointsAccessibleForActivePhaseOfContest(contest);
 					return (pointsAccessible != null && pointsAccessible >= 1);
 				}
-			} catch (SystemException | PortalException e) {
-				_log.error("can't check if user is allowed to access points", e);
-			}
 			return false;
 		}
 
@@ -158,7 +155,7 @@ interface ProposalTabCanAccessAlgorithm {
 				//first, check if user is a team member and if the contest has points activated.
 				if ((contest != null && contest.getDefaultParentPointType() > 0) && (permissions.getIsTeamMember() || permissions.getCanAdminProposal())) {
 					//if yes, check if contest phase allows editing
-					Integer pointsAccessible = ContestLocalServiceUtil.getPointsAccessibleForActivePhaseOfContest(contest);
+					Integer pointsAccessible = ContestClientUtil.getPointsAccessibleForActivePhaseOfContest(contest);
 					return permissions.getCanAdminAll() || (pointsAccessible != null && pointsAccessible >= 2);
 				}
 			} catch (SystemException | PortalException e) {
@@ -198,7 +195,7 @@ interface ProposalTabCanAccessAlgorithm {
             final List<Long> excludedOntologyTermIds = ConfigurationAttributeKey
 					.IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS.get();
             for (Long excludedOntologyTermId : excludedOntologyTermIds) {
-                if (OntologyTermLocalServiceUtil
+                if (OntologyClientUtil
                         .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
                                         focusAreaId, excludedOntologyTermId)) {
                     return true;

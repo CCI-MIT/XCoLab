@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
@@ -105,7 +105,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
                 FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
                 focusAreaId = focusArea.getId();
                 contest.setFocusAreaId(focusAreaId);
-                ContestClient.updateContest(contest);
+                ContestClientUtil.updateContest(contest);
             }
 
             for (FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil

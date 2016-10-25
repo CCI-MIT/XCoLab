@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.comment.CommentClientRaw;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.model.tables.pojos.Category;
 import org.xcolab.model.tables.pojos.CategoryGroup;
 import org.xcolab.model.tables.pojos.Comment;
@@ -27,30 +24,20 @@ import org.xcolab.service.comments.domain.thread.ThreadDao;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.http.caching.CacheRetention;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class CommentController {
 
-    private static final RestService commentService = new RefreshingRestService("comment-service",
-            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
-
     private final CommentDao commentDao;
     private final CategoryGroupDao groupDao;
     private final CategoryDao categoryDao;
     private final ThreadDao threadDao;
-
-    private final CommentClientRaw commentClient = new CommentClientRaw(commentService);
 
     @Autowired
     public CommentController(CategoryGroupDao groupDao, ThreadDao threadDao, CommentDao commentDao,
@@ -65,6 +52,7 @@ public class CommentController {
         this.categoryDao = categoryDao;
     }
 
+    //TODO: move /comments endpoint to "/threads/{threadId}/comments"
     @RequestMapping(value = "/comments", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Comment> listComments(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
@@ -81,13 +69,10 @@ public class CommentController {
         return commentDao.findByGiven(paginationHelper, authorId, threadId, includeDeleted);
     }
 
+    //TODO: move to contestPhase endpoint in contest-service
     @GetMapping("/comments/countCommentsInContestPhase")
     public Integer countCommentsInContestPhase(@RequestParam long contestPhaseId,
             @RequestParam long contestId) {
-        if (ContestClient.isContestShared(contestId)) {
-            return commentClient.countCommentsInContestPhase(contestPhaseId, contestId,
-                    CacheRetention.MEDIUM);
-        }
         return commentDao.countProposalCommentsByContestPhase(contestPhaseId);
     }
 
@@ -191,10 +176,6 @@ public class CommentController {
 
     @GetMapping("/threads/{threadId}/getProposalIdForThread")
     public Long getProposalIdForThread(@PathVariable Long threadId) throws NotFoundException {
-        final Optional<Long> sharedColabThreadId = threadDao.getSharedColabThreadId(threadId);
-        if (sharedColabThreadId.isPresent()) {
-            return commentClient.getProposalIdForThread(sharedColabThreadId.get(), CacheRetention.LONG);
-        }
         return threadDao.getProposalIdForThread(threadId).orElseThrow(NotFoundException::new);
     }
 
@@ -215,13 +196,17 @@ public class CommentController {
     }
 
     @GetMapping("/threads/{threadId}/lastActivityDate")
-    public Date getLastActivityDate(@PathVariable long threadId) throws NotFoundException {
-        final Timestamp timestamp = threadDao.lastActivityDate(threadId);
-        return new Date(timestamp.getTime());
+    public Date getLastActivityDate(@PathVariable long threadId) {
+        return threadDao.getLastComment(threadId)
+                .map(Comment::getCreateDate)
+                .map(timestamp -> new Date(timestamp.getTime()))
+                .orElse(new Date(0));
     }
 
     @GetMapping("/threads/{threadId}/lastActivityAuthorId")
     public long getLastActivityAuthor(@PathVariable long threadId) throws NotFoundException {
-        return threadDao.lastActivityAuthor(threadId);
+        return threadDao.getLastComment(threadId)
+                .map(Comment::getAuthorId)
+                .orElseThrow(NotFoundException::new);
     }
 }

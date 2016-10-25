@@ -11,9 +11,9 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
@@ -35,7 +35,7 @@ public final class ContestCreatorUtil {
 
     public static Contest createNewContest(String contestShortName)  {
 
-        Contest contest = ContestClient.createContest(10144L, contestShortName);
+        Contest contest = ContestClientUtil.createContest(10144L, contestShortName);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShow_in_tile_view(true);
@@ -45,7 +45,7 @@ public final class ContestCreatorUtil {
         contest.setContestScheduleId(DEFAULT_CONTEST_SCHEDULE_ID);
         contest.setContestTypeId(
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-        ContestClient.updateContest(contest);
+        ContestClientUtil.updateContest(contest);
         ContestScheduleChangeHelper changeHelper = new ContestScheduleChangeHelper(contest, DEFAULT_CONTEST_SCHEDULE_ID);
         changeHelper.changeScheduleForBlankContest();
         try {
@@ -71,10 +71,10 @@ public final class ContestCreatorUtil {
         thread.setTitle(c.getContestName() + " discussion");
         thread.setAuthorId(c.getAuthorId());
         thread.setIsQuiet(false);
-        long discussionId = CommentClient.createThread(thread).getThreadId();
+        long discussionId = ThreadClientUtil.createThread(thread).getThreadId();
         c.setGroupId(group.getGroupId());
         c.setDiscussionGroupId(discussionId);
-        ContestClient.updateContest(c);
+        ContestClientUtil.updateContest(c);
     }
 
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() {

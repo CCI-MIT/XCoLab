@@ -1,16 +1,17 @@
 package org.xcolab.utils.judging;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+
+
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
+
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
@@ -34,12 +35,12 @@ public class ProposalReviewCsvExporter {
     private final Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap;
     private final List<ProposalRatingType> ratingTypes;
 
-    public ProposalReviewCsvExporter(Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap, List<ProposalRatingType> ratingTypes) {
+    public ProposalReviewCsvExporter(Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap, List<ProposalRatingType> ratingTypes) {
         this.proposalToProposalReviewsMap = proposalToProposalReviewsMap;
         this.ratingTypes = ratingTypes;
     }
 
-    public String getCsvString() throws SystemException, NoSuchProposalAttributeException {
+    public String getCsvString() {
         if (proposalToProposalReviewsMap.isEmpty()) {
             return StringPool.BLANK;
         }
@@ -48,11 +49,11 @@ public class ProposalReviewCsvExporter {
         for (Map.Entry<Proposal, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
             final Proposal proposal = entry.getKey();
             final List<ProposalReview> proposalReviews = entry.getValue();
-            String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposal.getProposalId(),
-                    ProposalAttributeKeys.NAME, 0).getStringValue();
+            String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposal.getProposalId(),
+                    ProposalAttributeKeys.NAME, 0l).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {
-                for (User reviewer : proposalReview.getReviewers()) {
+                for (Member reviewer : proposalReview.getReviewers()) {
 
                     tableBody.append(getRowHeader(proposalName, proposalReview));
                     tableBody.append(String.format("\"%s %s\"", reviewer.getFirstName(), reviewer.getLastName()));
@@ -68,12 +69,11 @@ public class ProposalReviewCsvExporter {
                     }
 
                     for (ProposalRatingType ratingType : ratingTypes) {
-                        Double rating = proposalReview.getUserRating(reviewer,ratingType);
+                        Double rating = proposalReview.getUserRating(reviewer, ratingType);
                         if (Validator.isNull(rating)) {
-                            if(proposalReview.getReviewers().contains(reviewer)) {
+                            if (proposalReview.getReviewers().contains(reviewer)) {
                                 commentString.append(delimiter + "\"-\"" + TQF);
-                            }
-                            else {
+                            } else {
                                 commentString.append(delimiter + "\"\"");
                             }
                         } else {
@@ -100,7 +100,7 @@ public class ProposalReviewCsvExporter {
         return replaceNonAsciiCharacters(deAccent(rawCsv));
     }
 
-    private String getAverageRatings(ProposalReview proposalReview){
+    private String getAverageRatings(ProposalReview proposalReview) {
         StringBuilder averageRating = new StringBuilder();
         averageRating.append(String.format("\"Average\"%s\"%s%s\"", delimiter, df.format(proposalReview.getRatingAverage()), TQF));
 
@@ -116,13 +116,11 @@ public class ProposalReviewCsvExporter {
         return averageRating.toString();
     }
 
-    private String getRowHeader(String proposalName, ProposalReview proposalReview){
+    private String getRowHeader(String proposalName, ProposalReview proposalReview) {
         String contestPhaseName = "";
-        try {
-            contestPhaseName = ContestPhaseTypeLocalServiceUtil.fetchContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
-        } catch(SystemException s){
-            // Ignore contest phase
-        }
+
+        contestPhaseName = ContestClientUtil.getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
+
         return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s", TQF, escapeQuote(proposalName), delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()), delimiter, proposalReview.getProposalUrl(), delimiter, escapeQuote(contestPhaseName), delimiter);
     }
 
@@ -133,10 +131,10 @@ public class ProposalReviewCsvExporter {
             ratingSubHeader.append(String.format("\"%s\"%s", ratingTitle, delimiter));
         }
 
-        return  TQF + "\"Proposal title\"" + delimiter +
+        return TQF + "\"Proposal title\"" + delimiter +
                 "\"Author/Team name\"" + delimiter +
                 "\"Proposal URL\"" + delimiter +
-                "\"Contest Phase\""  + delimiter +
+                "\"Contest Phase\"" + delimiter +
                 "\"Judge\"" + delimiter +
                 "\"Average\"" + delimiter +
                 ratingSubHeader.toString() +
@@ -150,7 +148,7 @@ public class ProposalReviewCsvExporter {
         return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
-    private String replaceNonAsciiCharacters(String str){
+    private String replaceNonAsciiCharacters(String str) {
         return str.replaceAll("[^\\x00-\\x7F]", "");
     }
 

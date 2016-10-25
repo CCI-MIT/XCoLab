@@ -11,7 +11,7 @@ import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
@@ -75,7 +75,7 @@ public class WikiController {
             @RequestParam String contestUrlName, @RequestParam long contestYear)
             throws ContestNotFoundException {
 
-        final Contest contest = ContestClient.getContest(contestUrlName, contestYear);
+        final Contest contest = ContestClientUtil.getContest(contestUrlName, contestYear);
 
         try {
             if (contest.getResourceArticleId() > 0) {

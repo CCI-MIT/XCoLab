@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface FocusAreaOntologyTermDao {
     List<FocusAreaOntologyTerm> findByGiven(Long focusAreaId, Long ontologyTermId);
+    FocusAreaOntologyTerm create(FocusAreaOntologyTerm focusAreaOntologyTerm);
+    List<FocusAreaOntologyTerm> findByOntologyTermIds(List<Long> ontologyTermId);
 }

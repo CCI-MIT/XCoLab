@@ -6,14 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalRating;
+
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.ProposalRatingClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
@@ -91,11 +92,11 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
 
 
-        List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingLocalServiceUtil.getFellowRatingsForProposal(
+        List<ProposalRating> fellowRatingsUnWrapped = ProposalRatingClientUtil.getFellowRatingsForProposal(
                 proposal.getProposalId(), contestPhase.getContestPhasePK());
         List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
-        List<ProposalRating> judgesRatingsUnWrapped = ProposalRatingLocalServiceUtil.getJudgeRatingsForProposal(
+        List<ProposalRating> judgesRatingsUnWrapped = ProposalRatingClientUtil.getJudgeRatingsForProposal(
                 proposal.getProposalId(), contestPhase.getContestPhasePK());
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ){

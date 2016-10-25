@@ -1,98 +1,55 @@
 package org.xcolab.client.comment.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadSortColumn;
+import org.xcolab.client.comment.CategoryClient;
+import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.util.CategoryClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.comment.util.ThreadSortColumn;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
 
-import java.io.Serializable;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(Include.NON_NULL)
-public class CategoryGroup implements Serializable {
-    public static final TypeProvider<CategoryGroup> TYPES =
-            new TypeProvider<>(CategoryGroup.class,
-                    new ParameterizedTypeReference<List<CategoryGroup>>() {
-                    });
+public class CategoryGroup extends AbstractCategoryGroup {
+    public static final TypeProvider<CategoryGroupDto> TYPES = new TypeProvider<>(CategoryGroupDto.class,
+                    new ParameterizedTypeReference<List<CategoryGroupDto>>() {});
 
-    private static final long serialVersionUID = -1843163875;
-
-    private Long groupid;
-    private String description;
-    private String url;
-    private Boolean isquiet;
+    private final ThreadClient threadClient;
+    private final CategoryClient categoryClient;
 
     public CategoryGroup() {
+        threadClient = ThreadClientUtil.getThreadClient();
+        categoryClient = CategoryClientUtil.getCategoryClient();
     }
 
-    public CategoryGroup(Long groupid, String description, String url, Boolean isquiet) {
-        this.groupid = groupid;
-        this.description = description;
-        this.url = url;
-        this.isquiet = isquiet;
+    public CategoryGroup(Long groupId, String description, String url, Boolean isQuiet) {
+        super(groupId, description, url, isQuiet);
+        threadClient = ThreadClientUtil.getThreadClient();
+        categoryClient = CategoryClientUtil.getCategoryClient();
     }
 
-    public Long getGroupId() {
-        return this.groupid;
-    }
-
-    public void setGroupId(Long groupid) {
-        this.groupid = groupid;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUrl() {
-        return this.url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Boolean getIsQuiet() {
-        return this.isquiet;
-    }
-
-    public void setIsQuiet(Boolean isquiet) {
-        this.isquiet = isquiet;
+    CategoryGroup(AbstractCategoryGroup abstractCategoryGroup, RestService commentService) {
+        super(abstractCategoryGroup);
+        threadClient = new ThreadClient(commentService);
+        categoryClient = new CategoryClient(commentService);
     }
 
     @JsonIgnore
     public List<CommentThread> getThreads(ThreadSortColumn sortColumn, boolean ascending) {
-        return CommentClient.listThreads(0, Integer.MAX_VALUE,
-                null, groupid, sortColumn, ascending);
+        return threadClient.listThreads(0, Integer.MAX_VALUE,
+                null, getGroupId(), sortColumn, ascending);
     }
 
     @JsonIgnore
     public List<Category> getCategories() {
-        return CommentClient.listCategories(0, Integer.MAX_VALUE, groupid);
+        return categoryClient.listCategories(0, Integer.MAX_VALUE, getGroupId());
     }
 
     @JsonIgnore
     public String getLinkUrl() {
         return getUrl();
-    }
-
-    @Override
-    public String toString() {
-
-        return "CategoryGroup (" + groupid +
-                ", " + description +
-                ", " + url +
-                ", " + isquiet +
-                ")";
     }
 }

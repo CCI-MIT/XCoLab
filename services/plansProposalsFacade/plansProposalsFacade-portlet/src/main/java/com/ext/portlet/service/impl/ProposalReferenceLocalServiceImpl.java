@@ -1,12 +1,8 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.NoSuchProposalReferenceException;
-import com.ext.portlet.PlanSectionTypeKeys;
-import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.PlanSectionDefinition;
 import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalReference;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalReferenceLocalServiceBaseImpl;
@@ -16,10 +12,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
-import org.apache.commons.lang3.StringUtils;
-import org.xcolab.helpers.ProposalAttributeHelper;
-import org.xcolab.utils.LinkUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -85,7 +77,7 @@ public class ProposalReferenceLocalServiceImpl
     public void populateTableWithProposal(Proposal proposal) throws PortalException, SystemException {
         final List<ProposalReference> existingReferences = getByProposalId(proposal.getProposalId());
         for (ProposalReference existingReference : existingReferences) {
-            deleteProposalReference(existingReference);
+                deleteProposalReference(existingReference);
         }
         populateTableWithProposal(proposal, new HashSet<Long>());
     }
@@ -99,6 +91,7 @@ public class ProposalReferenceLocalServiceImpl
             deleteProposalReference(existingReference);
         }
         processedProposals.add(proposal.getProposalId());
+        /*
         for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal).getAttributesByName(ProposalAttributeKeys.SECTION)) {
             PlanSectionDefinition psd = planSectionDefinitionLocalService.getPlanSectionDefinition(attribute.getAdditionalId());
 
@@ -136,7 +129,7 @@ public class ProposalReferenceLocalServiceImpl
                 addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId());
                 populateTableWithProposal(proposalLocalService.fetchProposal(subProposalId), processedProposals);
             }
-        }
+        }*/
     }
 
     private void addProposalReference(long proposalId, long subProposalId, long sectionAttributeId) throws SystemException {

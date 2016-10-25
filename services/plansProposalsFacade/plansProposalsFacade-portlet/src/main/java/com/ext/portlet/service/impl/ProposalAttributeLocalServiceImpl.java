@@ -1,7 +1,7 @@
 package com.ext.portlet.service.impl;
 
 import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.Proposal;
@@ -15,9 +15,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Transactional;
 
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.proposals.events.ProposalAttributeRemovedEvent;
 import org.xcolab.proposals.events.ProposalAttributeUpdatedEvent;
 import org.xcolab.services.EventBusService;
@@ -152,10 +152,10 @@ public class ProposalAttributeLocalServiceImpl
         // Update the proposal name in the discussion category
         if (attributeName.equals(ProposalAttributeKeys.NAME)) {
             try {
-                CommentThread thread = CommentClient.getThread(proposal.getDiscussionId());
+                CommentThread thread = ThreadClientUtil.getThread(proposal.getDiscussionId());
                 ContestType contestType = contestTypeLocalService.getContestTypeFromProposalId(proposalId);
                 thread.setTitle(String.format("%s %s", contestType.getProposalName(), stringValue));
-                CommentClient.updateThread(thread);
+                ThreadClientUtil.updateThread(thread);
             } catch (ThreadNotFoundException ignored) {
             }
         }

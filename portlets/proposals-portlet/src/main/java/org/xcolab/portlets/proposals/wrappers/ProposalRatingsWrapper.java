@@ -1,17 +1,17 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,8 +69,8 @@ public class ProposalRatingsWrapper {
             return comment;
         } else {
             for (ProposalRatingWrapper r : proposalRatings) {
-                if (r.unwrap().isCommentEnabled()) {
-                    return r.unwrap().getComment();
+                if (r.unwrap().getCommentEnabled()) {
+                    return r.unwrap().getComment_();
                 }
             }
             return "";
@@ -95,19 +95,16 @@ public class ProposalRatingsWrapper {
     public String getContestPhase(){
         String contestPhaseTitle = "";
 
-        try {
             if(this.contestPhase != null) {
-                contestPhaseTitle = ContestPhaseLocalServiceUtil.getName(this.contestPhase);
+                contestPhaseTitle = ContestClientUtil.getContestPhaseName(this.contestPhase);
             } else {
                 if (!proposalRatings.isEmpty()) {
                     long contestPhaseId = proposalRatings.get(0).unwrap().getContestPhaseId();
-                    ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(contestPhaseId);
-                    contestPhaseTitle = ContestPhaseLocalServiceUtil.getName(contestPhase);
+                    ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+                    contestPhaseTitle = ContestClientUtil.getContestPhaseName(contestPhase);
                 }
             }
-        } catch (PortalException | SystemException e){
-            _log.warn("Could not get phase title for rating wrapper", e);
-        }
+
 
         return contestPhaseTitle.replace("selection", "Evaluation");
     }

@@ -7,8 +7,8 @@ import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
@@ -102,7 +102,7 @@ public class TabWrapper implements Serializable {
                     ContestTypeLocalServiceUtil.getContestTypeFromContestId(contestId)
                             .getContestName()
                             + " " + contestId + " " + tabName + " discussion");
-            long discussionId = CommentClient.createThread(thread).getThreadId();
+            long discussionId = ThreadClientUtil.createThread(thread).getThreadId();
 
             ContestDiscussion newContestDiscussion = ContestDiscussionLocalServiceUtil.
                     createContestDiscussion(discussionId);

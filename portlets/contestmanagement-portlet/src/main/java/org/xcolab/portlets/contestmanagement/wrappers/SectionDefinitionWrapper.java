@@ -1,32 +1,22 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.NoSuchPointsDistributionConfigurationException;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologySpace;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.PlanTemplateSection;
-import com.ext.portlet.model.PointsDistributionConfiguration;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.PlanSectionDefinitionLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
-import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.enums.OntologySpaceEnum;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.utils.OntologyTermToFocusAreaMapper;
 
@@ -65,32 +55,31 @@ public class SectionDefinitionWrapper implements Serializable {
     private List<Long> whoTermIds = new ArrayList<>();
     private List<Long> howTermIds = new ArrayList<>();
 
-    public SectionDefinitionWrapper() { }
+    public SectionDefinitionWrapper() {
+    }
 
     public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition) {
         initPlanSectionDefinition(planSectionDefinition);
     }
 
     public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition,
-            Long planTemplateId) {
-        try {
-            initPlanSectionDefinition(planSectionDefinition);
+                                    Long planTemplateId) {
 
-            List<PlanTemplateSection> planTemplateSections =
-                    PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId(planTemplateId);
+        initPlanSectionDefinition(planSectionDefinition);
 
-            // TODO very inefficient, add finder to service layer
-            for (PlanTemplateSection planTemplateSection : planTemplateSections) {
-                if (planTemplateSection.getPlanSectionId() == planSectionDefinition.getId()) {
-                    initPlanTemplateSection(planTemplateSection);
-                    break;
-                }
+        List<PlanTemplateSection> planTemplateSections =
+                PlanTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
+
+        // TODO very inefficient, add finder to service layer
+        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
+            if (planTemplateSection.getPlanSectionId() == planSectionDefinition.getId_()) {
+                initPlanTemplateSection(planTemplateSection);
+                break;
             }
-
-            initPlanSectionDefinition(planSectionDefinition);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
         }
+
+        initPlanSectionDefinition(planSectionDefinition);
+
     }
 
     private void initPlanTemplateSection(PlanTemplateSection planTemplateSection) {
@@ -98,8 +87,8 @@ public class SectionDefinitionWrapper implements Serializable {
     }
 
     private void initPlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
-        this.id = planSectionDefinition.getId();
-        this.type = planSectionDefinition.getType();
+        this.id = planSectionDefinition.getId_();
+        this.type = planSectionDefinition.getType_();
         this.title = planSectionDefinition.getTitle();
         this.defaultText = planSectionDefinition.getDefaultText();
         this.helpText = planSectionDefinition.getHelpText();
@@ -112,57 +101,47 @@ public class SectionDefinitionWrapper implements Serializable {
         this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
         this.allowedContestTypeIds = IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds());
 
-        try {
-            PointsDistributionConfiguration pdc =
-                    PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(id);
-            this.pointPercentage = Double.toString(pdc.getPercentage());
-            this.pointType = pdc.getPointTypeId();
-        } catch (NoSuchPointsDistributionConfigurationException e) {
-            this.pointPercentage = "0";
-            this.pointType = 0L;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
+        PointsDistributionConfiguration pdc =
+                PointsDistributionConfigurationClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+        this.pointPercentage = Double.toString(pdc.getPercentage());
+        this.pointType = pdc.getPointTypeId();
+
 
         initOntologyTermIdsWithFocusAreaId();
     }
 
     private void initOntologyTermIdsWithFocusAreaId() {
-        try {
-            if (this.focusAreaId != 0) {
-                FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(this.focusAreaId);
+        if (this.focusAreaId != 0) {
+            FocusArea focusArea = OntologyClientUtil.getFocusArea(this.focusAreaId);
 
-                OntologySpace space = OntologySpaceLocalServiceUtil
-                        .getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
-                List<OntologyTerm> terms =
-                        FocusAreaLocalServiceUtil
-                                .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea,
-                                        space);
-                this.whatTermIds = getIdsFromOntologyTerms(terms);
+            OntologySpace space = OntologyClientUtil
+                    .getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
+            List<OntologyTerm> terms =
+                    OntologyClientUtil
+                            .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea,
+                                    space);
+            this.whatTermIds = getIdsFromOntologyTerms(terms);
 
-                space = OntologySpaceLocalServiceUtil
-                        .getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
-                terms = FocusAreaLocalServiceUtil
-                        .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
-                this.whereTermIds = getIdsFromOntologyTerms(terms);
+            space = OntologyClientUtil
+                    .getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
+            terms = OntologyClientUtil
+                    .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
+            this.whereTermIds = getIdsFromOntologyTerms(terms);
 
-                space = OntologySpaceLocalServiceUtil
-                        .getOntologySpace(OntologySpaceEnum.WHO.getSpaceId());
-                terms = FocusAreaLocalServiceUtil
-                        .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
-                this.whoTermIds = getIdsFromOntologyTerms(terms);
+            space = OntologyClientUtil
+                    .getOntologySpace(OntologySpaceEnum.WHO.getSpaceId());
+            terms = OntologyClientUtil
+                    .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
+            this.whoTermIds = getIdsFromOntologyTerms(terms);
 
-                space = OntologySpaceLocalServiceUtil
-                        .getOntologySpace(OntologySpaceEnum.HOW.getSpaceId());
-                terms = FocusAreaLocalServiceUtil
-                        .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
-                this.howTermIds = getIdsFromOntologyTerms(terms);
-            }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new InternalException("Failed to initialize", e);
+            space = OntologyClientUtil
+                    .getOntologySpace(OntologySpaceEnum.HOW.getSpaceId());
+            terms = OntologyClientUtil
+                    .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
+            this.howTermIds = getIdsFromOntologyTerms(terms);
         }
+
     }
 
     public SectionDefinitionWrapper(String title) {
@@ -182,7 +161,7 @@ public class SectionDefinitionWrapper implements Serializable {
     }
 
     public SectionDefinitionWrapper(String title, Integer characterLimit, String helpText, String content,
-            boolean deletable) {
+                                    boolean deletable) {
         this.title = title;
         this.characterLimit = characterLimit;
         this.helpText = helpText;
@@ -332,7 +311,7 @@ public class SectionDefinitionWrapper implements Serializable {
 
     public long getFocusAreaId() {
         if (ontologyTermsSet()) {
-            focusAreaId = getFocusAreaViaOntologyTerms().getId();
+            focusAreaId = getFocusAreaViaOntologyTerms().getId_();
         }
         return focusAreaId;
     }
@@ -412,105 +391,54 @@ public class SectionDefinitionWrapper implements Serializable {
     }
 
     private FocusArea createNewFocusAreaWithTerms(List<OntologyTerm> focusAreaOntologyTerms) {
-        try {
-            FocusArea newFocusArea =
-                    FocusAreaLocalServiceUtil.createFocusArea(
-                            CounterLocalServiceUtil.increment(FocusArea.class.getName()));
-            newFocusArea.setName("created for planSectionDefinition '" + this.title + "'");
-            for (OntologyTerm ontologyTerm : focusAreaOntologyTerms) {
-                try {
-                    FocusAreaLocalServiceUtil.addTerm(newFocusArea, ontologyTerm.getId());
-                } catch (PortalException ignored) {
-                    //can't happen - we know the ontology term exists
-                }
-            }
+        FocusArea newFocusArea = new FocusArea();
 
-            FocusAreaLocalServiceUtil.store(newFocusArea);
-            return newFocusArea;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+        newFocusArea.setName("created for planSectionDefinition '" + this.title + "'");
+
+        newFocusArea = OntologyClientUtil.createFocusArea(newFocusArea);
+
+        for (OntologyTerm ontologyTerm : focusAreaOntologyTerms) {
+            OntologyClientUtil
+                    .addOntologyTermsToFocusAreaByOntologyTermId(newFocusArea.getId_(), ontologyTerm.getId_());
         }
+
+        return newFocusArea;
+
     }
 
     private List<Long> getIdsFromOntologyTerms(List<OntologyTerm> ontologyTerms) {
         List<Long> ids = new ArrayList<>(ontologyTerms.size());
         for (OntologyTerm term : ontologyTerms) {
-            ids.add(term.getId());
+            ids.add(term.getId_());
         }
 
         return ids;
     }
 
     private List<OntologyTerm> getAllSelectedOntologyTerms() {
-        try {
-            List[] ontologyTermIdLists = {
-                    getWhatTermIds(), getWhereTermIds(), getWhoTermIds(), getHowTermIds()
-            };
 
-            List<OntologyTerm> selectedOntologyTerms = new ArrayList<>();
-            for (List<Long> ontologyTermIds : ontologyTermIdLists) {
-                for (Long ontologyTermId : ontologyTermIds) {
-                    try {
-                        selectedOntologyTerms
-                                .add(OntologyTermLocalServiceUtil.getOntologyTerm(ontologyTermId));
-                    } catch (PortalException e) {
-                        throw ReferenceResolutionException
-                                .toObject(OntologyTerm.class, ontologyTermId)
-                                .fromObject(PlanSectionDefinition.class, id);
-                    }
-                }
+        List[] ontologyTermIdLists = {
+                getWhatTermIds(), getWhereTermIds(), getWhoTermIds(), getHowTermIds()
+        };
+
+        List<OntologyTerm> selectedOntologyTerms = new ArrayList<>();
+        for (List<Long> ontologyTermIds : ontologyTermIdLists) {
+            for (Long ontologyTermId : ontologyTermIds) {
+                selectedOntologyTerms
+                        .add(OntologyClientUtil.getOntologyTerm(ontologyTermId));
             }
-            return selectedOntologyTerms;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
         }
+        return selectedOntologyTerms;
+
     }
 
     public void persist(boolean createNew) {
-        try {
-            PlanSectionDefinition psd;
-            PointsDistributionConfiguration pdc = null;
-            if (id == null || createNew) {
-                psd = PlanSectionDefinitionLocalServiceUtil.
-                        createPlanSectionDefinition(
-                                CounterLocalServiceUtil
-                                        .increment(PlanSectionDefinition.class.getName()));
-                id = psd.getId();
-            } else {
-                try {
-                    psd = PlanSectionDefinitionLocalServiceUtil.getPlanSectionDefinition(id);
+        PlanSectionDefinition psd;
+        PointsDistributionConfiguration pdc = null;
+        if (id == null || createNew) {
+            psd = new PlanSectionDefinition();
 
-                    try {
-                        pdc = PointsDistributionConfigurationLocalServiceUtil
-                                .getByPlanSectionDefinitionId(id);
-                        if (pointType == 0L) {
-                            PointsDistributionConfigurationLocalServiceUtil
-                                    .deletePointsDistributionConfiguration(pdc);
-                        } else {
-                            pdc.setPercentage(Double.valueOf(pointPercentage));
-                            pdc.setPointTypeId(pointType);
-                            pdc.setTargetPlanSectionDefinitionId(id);
-                            pdc.persist();
-                        }
-                    } catch (NoSuchPointsDistributionConfigurationException ignored) { }
-                } catch (PortalException e) {
-                    throw ReferenceResolutionException.toObject(PlanSectionDefinition.class, id)
-                            .fromObject(PlanSectionDefinition.class, "update");
-                }
-            }
-            if (pdc == null) {
-                if (pointType > 0L) {
-                    pdc = PointsDistributionConfigurationLocalServiceUtil
-                            .createPointsDistributionConfiguration(
-                                    CounterLocalServiceUtil.increment(
-                                            PointsDistributionConfiguration.class.getName()));
-                    pdc.setPercentage(Double.valueOf(pointPercentage));
-                    pdc.setPointTypeId(pointType);
-                    pdc.setTargetPlanSectionDefinitionId(id);
-                    pdc.persist();
-                }
-            }
-            psd.setType(this.getType());
+            psd.setType_(this.getType());
             psd.setTitle(this.getTitle());
             psd.setDefaultText(this.getDefaultText());
             psd.setCharacterLimit(this.getCharacterLimit());
@@ -522,23 +450,43 @@ public class SectionDefinitionWrapper implements Serializable {
             psd.setAllowedContestTypeIds(
                     IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
             psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
-            psd.persist();
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+
+            psd = PlanTemplateClientUtil.createPlanSectionDefinition(psd);
+            id = psd.getId_();
+        } else {
+            psd = PlanTemplateClientUtil.getPlanSectionDefinition(id);
+            pdc = PointsDistributionConfigurationClientUtil
+                    .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+            if (pointType == 0L) {
+                PointsDistributionConfigurationClientUtil
+                        .deletePointsDistributionConfiguration(pdc.getId_());
+            } else {
+                pdc.setPercentage(Double.valueOf(pointPercentage));
+                pdc.setPointTypeId(pointType);
+                pdc.setTargetPlanSectionDefinitionId(id);
+                PointsDistributionConfigurationClientUtil.updatePointsDistributionConfiguration(pdc);
+            }
+
+
         }
+        if (pdc == null) {
+            if (pointType > 0L) {
+                pdc = new PointsDistributionConfiguration();
+                pdc.setPercentage(Double.valueOf(pointPercentage));
+                pdc.setPointTypeId(pointType);
+                pdc.setTargetPlanSectionDefinitionId(id);
+                pdc = PointsDistributionConfigurationClientUtil.createPointsDistributionConfiguration(pdc);
+            }
+        }
+
+        PlanTemplateClientUtil.updatePlanSectionDefinition(psd);
+
     }
 
-    public boolean hasUpdates()  {
-        try {
-            PlanSectionDefinition psd = PlanSectionDefinitionLocalServiceUtil
-                    .getPlanSectionDefinition(id);
-            return !this.equals(new SectionDefinitionWrapper(psd));
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            // shouldn't happen
-            return true;
-        }
+    public boolean hasUpdates() {
+        PlanSectionDefinition psd = PlanTemplateClientUtil
+                .getPlanSectionDefinition(id);
+        return !this.equals(new SectionDefinitionWrapper(psd));
     }
 
     @Override

@@ -1,24 +1,28 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.pojo.ContestTeamMember;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.util.List;
 
 public class ContestTeamWrapper {
+
+    private static final Logger log = LoggerFactory.getLogger(ContestTeamWrapper.class);
 
     private final ContestTeamBean contestTeamBean;
     private final Long contestId;
@@ -61,23 +65,25 @@ public class ContestTeamWrapper {
         }
     }
 
-    private void assignMembersToContestWithRole(List<Long> userIds, MemberRole memberRole)
-            throws SystemException, PortalException {
+    private void assignMembersToContestWithRole(List<Long> userIds, MemberRole memberRole) {
         for (Long userId : userIds) {
 
             ContestTeamMember contestTeamMember = new ContestTeamMember();
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
             contestTeamMember.setRoleId(memberRole.getRoleId());
-            ContestClient.createContestTeamMember(contestTeamMember);
+            ContestTeamMemberClientUtil.createContestTeamMember(contestTeamMember);
         }
     }
 
-    private void removeAllContestTeamMembersForContest()
-            throws SystemException, PortalException {
-        List<ContestTeamMember> contestTeamMembers = ContestClient.getTeamMembers(contestId);
+    private void removeAllContestTeamMembersForContest() {
+        List<ContestTeamMember> contestTeamMembers = ContestTeamMemberClientUtil.getTeamMembers(contestId);
         for (ContestTeamMember contestTeamMember : contestTeamMembers) {
-            ContestClient.deleteContestTeamMember(contestTeamMember.getId_());
+            try {
+                ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId_());
+            } catch (UncheckedEntityNotFoundException e) {
+                log.warn("ContestTeamMember {} already deleted", contestTeamMember.getId_());
+            }
         }
     }
 

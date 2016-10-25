@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.model.ProposalUnversionedAttribute;
-import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -10,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.client.proposals.ProposalUnversionedAttributeClientUtil;
+import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.utils.ProposalUnversionedAttributeUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -56,21 +56,23 @@ public class UpdateProposalScenarioActionController {
             proposal.setModelRegion(region, proposalsContext.getUser(request).getUserId());
         }
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeServiceUtil.
-                getAttributes(proposal.getProposalId());
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeClientUtil
+
+                .
+                getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
 
         if(impactAuthorComment!=null||impactIAFComment!=null) {
               if(impactAuthorComment!=null) {
 
-                  ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
+                  ProposalUnversionedAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
                           HtmlUtil.cleanAll(impactAuthorComment),
                           ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
-                          proposal, unversionedAttributes);
+                          proposal.getProposalId());
                 }
                 if(impactIAFComment!=null) {
-                    ProposalUnversionedAttributeUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                    ProposalUnversionedAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                             ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
-                            proposal, unversionedAttributes);
+                            proposal.getProposalId());
                 }
         }
         proposalsContext.invalidateContext(request);

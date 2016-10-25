@@ -1,56 +1,44 @@
-# Compiled source #
-###################
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
+### Intellij ###
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-# Packages #
-############
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
+#module and compilation related files (optional)
+*.iml
+.idea/compiler.xml
+.idea/modules.xml
+.idea/encodings.xml
+.idea/misc.xml
 
-# Logs and databases #
-######################
-*.log
-#*.sql
-*.sqlite
+# User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
 
-# OS generated files #
-######################
-.DS_Store*
-ehthumbs.db
-Icon?
-Thumbs.db
+# Sensitive or high-churn files:
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
 
+# Gradle:
+.idea/gradle.xml
+.idea/libraries
+
+# IntelliJ
+/out/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+### Maven ###
 target/
 
-
-# to prevent modification to xcolab bundles
-#pom.xml
-
-#IDE specific files
-*.settings
-*.project
-*.classpath
-*.iml
-.idea*
+### Other ###
+*.jar
+*.zip
 rebel.xml
-
-/other/logwatcher/src/main/resources/config.properties
-
-#sitemonitor
-/other/site-monitor/src/main/resources/siteMonitor-config.xml
-atlassian-ide-plugin.xml
-portlets/userprofile-portlet/src/test/
-portlets/userprofile-portlet/test/
+.idea/artifacts
+.DS_Store

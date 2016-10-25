@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 
@@ -37,7 +37,7 @@ public class ContestsController {
         final List<Long> selectedContests = contestPreferences.getSelectedContests();
         if (selectedContests.isEmpty()) {
 
-            List<Contest> contests = ContestClient.findContestsByActiveFeatured(true, true);
+            List<Contest> contests = ContestClientUtil.findContestsByActiveFeatured(true, true);
             Collections.shuffle(contests);
             for (Contest contest : contests) {
                 if (contestWrappers.size() >= contestPreferences.getFeedSize()) {
@@ -58,7 +58,7 @@ public class ContestsController {
                     break;
                 }
                 try {
-                    contestWrappers.add(new ContestWrapper(ContestClient.getContest(contestId)));
+                    contestWrappers.add(new ContestWrapper(ContestClientUtil.getContest(contestId)));
                 } catch (ContestNotFoundException e) {
                     _log.error("Could not find contest " + contestId);
                 }
@@ -69,7 +69,7 @@ public class ContestsController {
         model.addAttribute("preferences", contestPreferences);
         //TODO: allow setting on a per-contest/per portlet basis
         model.addAttribute("contestType",
-                ContestClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
+                ContestClientUtil.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
         return "showContests";
     }
 }

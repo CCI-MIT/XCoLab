@@ -1,6 +1,6 @@
 package org.xcolab.activityEntry;
 
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
@@ -13,13 +13,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang.StringUtils;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.utils.IdListUtil;
 
@@ -71,20 +72,20 @@ public class ActivitySubscriptionNameGenerator {
         StringBuilder name = new StringBuilder();
 
         try {
-            CategoryGroup categoryGroup = CommentClient.getCategoryGroup(classPK);
+            CategoryGroup categoryGroup = CategoryClientUtil.getCategoryGroup(classPK);
             name.append(getCategoryGroupHyperlink(categoryGroup));
 
             if (extraData != null && !extraData.isEmpty()) {
                 List<Long> ids = IdListUtil.getIdsFromString(extraData);
                 if (!ids.isEmpty()) {
                     long categoryId = ids.get(0);
-                    Category category = CommentClient.getCategory(categoryId);
+                    Category category = CategoryClientUtil.getCategory(categoryId);
                     name.append(" &gt; ");
                     name.append(getCategoryHyperlink(category));
                 }
                 if (ids.size() > 1) {
                     long threadId = ids.get(1);
-                    CommentThread thread = CommentClient.getThread(threadId);
+                    CommentThread thread = ThreadClientUtil.getThread(threadId);
 
                     name.append(" &gt; ");
                     name.append(getDiscussion(thread));

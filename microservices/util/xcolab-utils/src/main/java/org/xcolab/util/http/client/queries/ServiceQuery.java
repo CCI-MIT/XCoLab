@@ -1,5 +1,6 @@
 package org.xcolab.util.http.client.queries;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
@@ -7,37 +8,79 @@ import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.util.List;
+
 public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
     private final UriBuilder uriBuilder;
     private final Class<R> returnType;
+    private final ParameterizedTypeReference<List<T>> typeReference;
     private CacheKey<T, R> cacheKey;
     private CacheRetention cacheRetention;
 
     public ServiceQuery(HttpResource httpResource, long id, String serviceName,
             Class<R> returnType) {
         this.returnType = returnType;
+        this.typeReference = null;
         this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
     }
 
     public ServiceQuery(HttpResource httpResource, String id, String serviceName,
             Class<R> returnType) {
         this.returnType = returnType;
+        this.typeReference = null;
         this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
     }
 
     public ServiceQuery(HttpResource httpResource, long id, Class<R> returnType) {
         this.returnType = returnType;
+        this.typeReference = null;
         this.uriBuilder = httpResource.getResourceUrl(id);
     }
 
     public ServiceQuery(HttpResource httpResource, String serviceNameOrId,
             Class<R> returnType) {
         this.returnType = returnType;
+        this.typeReference = null;
         this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceNameOrId);
     }
 
     public ServiceQuery(HttpResource httpResource, Class<R> returnType) {
         this.returnType = returnType;
+        this.typeReference = null;
+        this.uriBuilder = httpResource.getResourceUrl();
+    }
+
+
+    public ServiceQuery(HttpResource httpResource, long id, String serviceName,
+                        ParameterizedTypeReference<List<T>> typeReference) {
+        this.returnType = null;
+        this.typeReference = typeReference;
+        this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
+    }
+
+    public ServiceQuery(HttpResource httpResource, String id, String serviceName,
+                        ParameterizedTypeReference<List<T>> typeReference) {
+        this.returnType = null;
+        this.typeReference = typeReference;
+        this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
+    }
+
+    public ServiceQuery(HttpResource httpResource, long id, ParameterizedTypeReference<List<T>> typeReference) {
+        this.typeReference = typeReference;
+        this.returnType = null;
+        this.uriBuilder = httpResource.getResourceUrl(id);
+    }
+
+    public ServiceQuery(HttpResource httpResource, String serviceNameOrId,
+                        ParameterizedTypeReference<List<T>> typeReference) {
+        this.typeReference = typeReference;
+        this.returnType = null;
+        this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceNameOrId);
+    }
+
+    public ServiceQuery(HttpResource httpResource, ParameterizedTypeReference<List<T>> typeReference) {
+        this.typeReference = typeReference;
+        this.returnType = null;
         this.uriBuilder = httpResource.getResourceUrl();
     }
 
@@ -59,6 +102,15 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
             return RequestUtils.getUnchecked(uriBuilder, returnType);
         } else {
             return RequestUtils.getUnchecked(uriBuilder, returnType, cacheKey, cacheRetention);
+        }
+    }
+
+    public List<T> getList() {
+        if (cacheKey == null) {
+            return RequestUtils.getList(uriBuilder, typeReference);
+        } else {
+            //TODO : Implement cache for service lists
+            return RequestUtils.getList(uriBuilder, typeReference);
         }
     }
 

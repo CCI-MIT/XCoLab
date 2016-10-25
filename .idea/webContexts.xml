@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebContextManager">
+    <option name="state">
+      <map>
+        <entry key="file://$PROJECT_DIR$/portlets/proposals-portlet/src/main/webapp/WEB-INF/tags/proposalsPortlet/contestLink.tagx" value="file://$PROJECT_DIR$/portlets/proposals-portlet/src/main/webapp/WEB-INF/tags/proposalsPortlet" />
+      </map>
+    </option>
+  </component>
+</project>

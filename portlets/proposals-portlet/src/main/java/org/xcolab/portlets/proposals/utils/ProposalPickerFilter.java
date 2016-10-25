@@ -1,14 +1,11 @@
 package org.xcolab.portlets.proposals.utils;
 
-import com.ext.portlet.ProposalAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestLocalServiceUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
 import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
 import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
@@ -16,10 +13,15 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -82,22 +84,31 @@ public class ProposalPickerFilter {
 
                 List<OntologyTerm> terms = getOntologyTermsFromSectionAndContest(sectionFocusAreaId, contestFocusAreaId);
 
+
                 if (!terms.isEmpty()) {
-                    List<Contest> contests = ContestLocalServiceUtil.getContestsMatchingOntologyTerms(terms);
+                    List<Long> otIds = new ArrayList<>();
+                    for(OntologyTerm ot : terms){
+                        otIds.add(ot.getId_());
+                    }
+                    List<Contest> contests = ContestClientUtil.getContestMatchingOntologyTerms(otIds);
                     for (long filterExceptionContestId : filterExceptionContestIds) {
-                        final Contest filterExceptionContest = ContestLocalServiceUtil.fetchContest(filterExceptionContestId);
-                        if (!contests.contains(filterExceptionContest)) {
-                            contests.add(filterExceptionContest);
+                        try {
+                            final Contest filterExceptionContest = ContestClientUtil.getContest(filterExceptionContestId);
+                            if (!contests.contains(filterExceptionContest)) {
+                                contests.add(filterExceptionContest);
+                            }
+                        }catch (ContestNotFoundException ignored){
+
                         }
                     }
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                         Proposal p = i.next().getLeft();
                         try {
-                            if (!contests.contains(Proposal2PhaseLocalServiceUtil.getCurrentContestForProposal(p.getProposalId()))) {
+                            if (!contests.contains(ProposalClientUtil.getCurrentContestForProposal(p.getProposalId()))) {
                                 removedProposals.add(p.getProposalId());
                                 i.remove();
                             }
-                        } catch (SystemException | PortalException e){
+                        } catch (ContestNotFoundException  e){
                             removedProposals.add(p.getProposalId());
                             i.remove();
                         }
@@ -128,11 +139,10 @@ public class ProposalPickerFilter {
                     if (filterExceptionContestIds.contains(contest.getContestPK())) {
                         continue;
                     }
-                    try {
-                        FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(contest.getFocusAreaId());
-                        List<OntologyTerm> contestTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
+                        FocusArea focusArea = OntologyClientUtil.getFocusArea(contest.getFocusAreaId());
+                        List<OntologyTerm> contestTerms = OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
                         for (OntologyTerm requiredTerm : requiredTerms) {
-                            List<OntologyTerm> requiredDescendantTerms = OntologyTermLocalServiceUtil.getAllDescendantTerms(requiredTerm);
+                            List<OntologyTerm> requiredDescendantTerms = OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId_());
                             requiredDescendantTerms.add(requiredTerm);
                             if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
                                 removedContests.add(contest.getContestPK());
@@ -140,10 +150,7 @@ public class ProposalPickerFilter {
                                 break;
                             }
                         }
-                    } catch (SystemException | PortalException e){
-                        removedContests.add(contest.getContestPK());
-                        i.remove();
-                    }
+
                 }
             } catch (SystemException e) {
                 throw new DatabaseAccessException(e);
@@ -164,9 +171,9 @@ public class ProposalPickerFilter {
             }
             List<OntologyTerm> terms = new ArrayList<>();
 
-            FocusArea focusArea = FocusAreaLocalServiceUtil.getFocusArea(focusAreaId);
+            FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
             addTermsInFocusArea(terms, focusArea);
-            FocusArea contestFocusArea = FocusAreaLocalServiceUtil.getFocusArea(localContestFocusAreaId);
+            FocusArea contestFocusArea = OntologyClientUtil.getFocusArea(localContestFocusAreaId);
             addTermsInFocusArea(terms, contestFocusArea);
 
             return terms;
@@ -174,7 +181,7 @@ public class ProposalPickerFilter {
 
         private void addTermsInFocusArea(List<OntologyTerm> terms, FocusArea focusArea) throws PortalException, SystemException {
             if (focusArea != null) {
-                final List<OntologyTerm> focusAreaTerms = FocusAreaLocalServiceUtil.getTerms(focusArea);
+                final List<OntologyTerm> focusAreaTerms = OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
                 removeRootTerms(focusAreaTerms);
                 _log.debug(String.format("Added %d non-root contest terms", focusAreaTerms.size()));
                 terms.addAll(focusAreaTerms);
@@ -185,7 +192,7 @@ public class ProposalPickerFilter {
             for (Iterator<OntologyTerm> i = terms.iterator(); i.hasNext();){
                 OntologyTerm o = i.next();
 
-                if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId())) {
+                if (o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId_())) {
                     i.remove();
                 }
             }
@@ -237,33 +244,27 @@ public class ProposalPickerFilter {
             for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
                 ContestWrapper c = i.next().getLeft();
 
-                try{
-                    // CONTEST NAME
-                    if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
-                        continue;
-                    }
-                    if (StringUtils.containsIgnoreCase(c.getContestShortName(), searchCriterion)) {
-                        continue;
-                    }
-                    // focus area
-                    if (StringUtils.containsIgnoreCase(c.getWhatName(), searchCriterion)) {
-                        continue;
-                    }
-                    if (StringUtils.containsIgnoreCase(c.getWhoName(), searchCriterion)) {
-                        continue;
-                    }
-                    if (StringUtils.containsIgnoreCase(c.getWhereName(), searchCriterion)) {
-                        continue;
-                    }
-
-                    // Remove element if it does not match any criterion
-                    removedContests.add(c.getContestPK());
-                    i.remove();
-                } catch (SystemException e) {
-                    throw new DatabaseAccessException(e);
-                } catch (PortalException e) {
-                    throw new InternalException(e);
+                // CONTEST NAME
+                if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
+                    continue;
                 }
+                if (StringUtils.containsIgnoreCase(c.getContestShortName(), searchCriterion)) {
+                    continue;
+                }
+                // focus area
+                if (StringUtils.containsIgnoreCase(c.getWhatName(), searchCriterion)) {
+                    continue;
+                }
+                if (StringUtils.containsIgnoreCase(c.getWhoName(), searchCriterion)) {
+                    continue;
+                }
+                if (StringUtils.containsIgnoreCase(c.getWhereName(), searchCriterion)) {
+                    continue;
+                }
+
+                // Remove element if it does not match any criterion
+                removedContests.add(c.getContestPK());
+                i.remove();
             }
             return removedContests;
         }
@@ -300,7 +301,7 @@ public class ProposalPickerFilter {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
-            try{
+
                 final Set<Long> allowedContestTiers = getAllowedTiers((Long) additionalFilterCriterion);
 
                 if (!allowedContestTiers.isEmpty()) {
@@ -308,7 +309,7 @@ public class ProposalPickerFilter {
                     for (Long tier : allowedContestTiers) {
                         ContestTier contestTier = ContestTier.getContestTierByTierType(tier);
                         if (contestTier != null) {
-                            tierFilteredContests.addAll(ContestLocalServiceUtil.getContestsMatchingTier(contestTier.getTierType()));
+                            tierFilteredContests.addAll(ContestClientUtil.getContestsMatchingTier(contestTier.getTierType()));
                         } else {
                             _log.error(String.format("Could not find contest tier %d. Tier ignored in filtering.", tier));
                         }
@@ -325,11 +326,7 @@ public class ProposalPickerFilter {
                         }
                     }
                 }
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            } catch (PortalException e) {
-                throw new InternalException(e);
-            }
+
             return removedProposals;
         }
 
@@ -375,7 +372,6 @@ public class ProposalPickerFilter {
     public final static ProposalPickerFilter CONTEST_TYPE_FILTER = new ProposalPickerFilter() {
         @Override
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
-            Set<Long> removedProposals = new HashSet<>();
 
             final String allowedContestTypeIdsString = (String) additionalFilterCriterion;
 
@@ -396,6 +392,7 @@ public class ProposalPickerFilter {
                 }
             }
 
+            Set<Long> removedProposals = new HashSet<>();
             return removedProposals;
         }
 

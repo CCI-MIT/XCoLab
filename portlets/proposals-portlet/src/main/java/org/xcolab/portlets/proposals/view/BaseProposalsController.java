@@ -1,11 +1,11 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.util.PortalUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.liferay.portal.util.PortalUtil;
+
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
 
 import javax.portlet.PortletRequest;
@@ -21,18 +21,21 @@ public class BaseProposalsController {
         super();
     }
 
-    protected void setSeoTexts(PortletRequest request, String pageTitle, String pageSubtitle, String pageDescription)
-            throws PortalException, SystemException {
+    protected void setSeoTexts(PortletRequest request,
+            String pageTitle, String pageSubtitle, String pageDescription) {
 
         HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
 
-        if (StringUtils.isNotBlank(pageTitle))
+        if (StringUtils.isNotBlank(pageTitle)) {
             PortalUtil.setPageTitle(pageTitle, httpRequest);
+        }
 
-        if (StringUtils.isNotBlank(pageDescription))
+        if (StringUtils.isNotBlank(pageDescription)) {
             PortalUtil.setPageDescription(pageDescription, httpRequest);
+        }
 
-        if (StringUtils.isNotBlank(pageSubtitle))
+        if (StringUtils.isNotBlank(pageSubtitle)) {
             PortalUtil.setPageSubtitle(pageSubtitle, httpRequest);
+        }
     }
 }

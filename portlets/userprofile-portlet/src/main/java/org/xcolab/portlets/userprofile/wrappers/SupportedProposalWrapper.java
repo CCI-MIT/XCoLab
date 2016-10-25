@@ -1,9 +1,12 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
-import com.ext.portlet.model.ProposalSupporter;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.wrappers.BaseProposalWrapper;
 
 import java.io.Serializable;
@@ -13,11 +16,15 @@ public class SupportedProposalWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private final ProposalSupporter proposalSupporter;
-    private final BaseProposalWrapper proposalWrapper;
+    private  BaseProposalWrapper proposalWrapper;
 
     public SupportedProposalWrapper(ProposalSupporter ps) throws SystemException, PortalException {
         this.proposalSupporter = ps;
-        this.proposalWrapper = new BaseProposalWrapper(ProposalLocalServiceUtil.getProposal(ps.getProposalId()));
+        try {
+            this.proposalWrapper = new BaseProposalWrapper(ProposalClientUtil.getProposal(ps.getProposalId()));
+        }catch (ProposalNotFoundException ignored){
+            this.proposalWrapper = null;
+        }
     }
 
     public Date getSupportedSinceDate() {

@@ -25,7 +25,7 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -333,7 +333,7 @@ public class ReportingController {
 			userActivities.get(activity.getUserId()).addActivity();
 		}
 
-		for (Comment comment : CommentClient.listComments(0, Integer.MAX_VALUE)) {
+		for (Comment comment : CommentClientUtil.listComments(0, Integer.MAX_VALUE)) {
 			if (!userActivities.containsKey(comment.getAuthorId())) {
 				continue;
 			}

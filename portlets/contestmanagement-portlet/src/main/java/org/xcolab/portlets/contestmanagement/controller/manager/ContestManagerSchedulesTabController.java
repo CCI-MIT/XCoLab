@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.interfaces.TabEnum;
@@ -129,7 +129,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
 
     private Long getFirstScheduleId() {
             final List<ContestSchedule> contestSchedules =
-                    ContestClient.getAllContestSchedules();
+                    ContestClientUtil.getAllContestSchedules();
             if (!contestSchedules.isEmpty()) {
                 return contestSchedules.get(0).getId_();
             }
@@ -139,7 +139,7 @@ public class ContestManagerSchedulesTabController extends ContestManagerBaseTabC
     private List<LabelValue> getContestPhaseTypesSelectionItems() {
         List<LabelValue> contestPhaseTypesSelectionItems = new ArrayList<>();
 
-        List<ContestPhaseType> contestPhases = ContestClient.getAllContestPhaseTypes();
+        List<ContestPhaseType> contestPhases = ContestClientUtil.getAllContestPhaseTypes();
         for (ContestPhaseType contestPhaseType : contestPhases) {
             contestPhaseTypesSelectionItems
                     .add(new LabelValue(contestPhaseType.getId_(), contestPhaseType.getName()));

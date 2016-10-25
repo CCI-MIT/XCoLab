@@ -1,12 +1,15 @@
 package org.xcolab.portlets.proposals.requests;
 
-import com.ext.portlet.model.PointsDistributionConfiguration;
+
 import com.ext.portlet.service.PointsDistributionConfigurationLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
+
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
@@ -28,7 +31,7 @@ public class AssignPointsBean {
     //The percentages are from 0 to 100 here, in order to make it easier to display it to the user
     private final Map<Long, Map<Long, Double>> assignmentsByUserIdByPointTypeId;
 
-    private List<User> usersNotInTeam;
+    private List<Member> usersNotInTeam;
 
     public AssignPointsBean() {
         this.proposalId = 0;
@@ -40,17 +43,18 @@ public class AssignPointsBean {
         assignmentsByUserIdByPointTypeId = new HashMap<>();
     }
 
-    public void addAllAssignments(PointTypeWrapper pointType, List<User> members) throws SystemException, PortalException {
+    public void addAllAssignments(PointTypeWrapper pointType, List<Member> members) throws SystemException, PortalException {
         if (pointType.getDistributionStrategy().equals(DistributionStrategy.USER_DEFINED)) {
 
             PointsDistributionConfigurationLocalServiceUtil.verifyDistributionConfigurationsForProposalId(proposalId);
 
             List<PointsDistributionConfiguration> existingDistributionConfigurations =
-                    PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposalId, pointType.getId());
+                    PointsDistributionConfigurationClientUtil
+                            .getPointsDistributionByProposalIdPointTypeId(proposalId, pointType.getId());
 
             switch(pointType.getReceiverLimitationStrategy().getType()) {
                 case USER:
-                    List<User> presetUsers = null;
+                    List<Member> presetUsers = null;
                     if (pointType.getReceiverLimitationStrategy().equals(ReceiverLimitationStrategy.ANY_TEAM_MEMBER)) {
                         presetUsers = members;
                     }
@@ -70,23 +74,23 @@ public class AssignPointsBean {
         initializeUsers(members);
     }
 
-    public void initializeUsers(List<User> teamMembers) throws SystemException {
-        usersNotInTeam = new ArrayList<>(UserLocalServiceUtil.getUsers(QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+    public void initializeUsers(List<Member> teamMembers) throws SystemException {
+        usersNotInTeam = new ArrayList<>(MembersClient.listAllMembers());
         usersNotInTeam.removeAll(teamMembers);
     }
 
-    public void addAssignment(PointTypeWrapper pointType, List<User> users,
+    public void addAssignment(PointTypeWrapper pointType, List<Member> users,
                               List<PointsDistributionConfiguration> existingDistributionConfigurations) {
 
         final double percentMultiplicationFactor = pointType.getPercentageOfTotal() * 100;
 
         Map<Long, Double> entityPercentages = new HashMap<>();
         if (users != null) {
-            for (User u : users) {
+            for (Member u : users) {
                 double percentage = (1.0/users.size()) * percentMultiplicationFactor;
                 PointsDistributionConfiguration foundElement = null;
                 for (PointsDistributionConfiguration distribution : existingDistributionConfigurations) {
-                    if (distribution.getTargetUserId() == u.getUserId()) {
+                    if (distribution.getTargetUserId() == u.getId_()) {
                         percentage = distribution.getPercentage() * percentMultiplicationFactor;
                         foundElement = distribution;
                         break;
@@ -131,7 +135,7 @@ public class AssignPointsBean {
         return assignmentsByUserIdByPointTypeId;
     }
 
-    public List<User> getUsersNotInTeam() {
+    public List<Member> getUsersNotInTeam() {
         return usersNotInTeam;
     }
 }

@@ -1,13 +1,14 @@
 package org.xcolab.utils.judging;
 
-import com.ext.portlet.model.ProposalRating;
-import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.model.ProposalRatingValue;
-import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
+
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalRatingClientUtil;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 
 /**
  * Created by Manuel Thurner
@@ -45,7 +46,7 @@ public class ProposalRatingWrapper {
     public Long getRatingTypeId() {
         ProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
-            return ratingType.getId();
+            return ratingType.getId_();
         } else {
             return null;
         }
@@ -53,30 +54,26 @@ public class ProposalRatingWrapper {
 
     public ProposalRatingType getRatingType()  {
         ProposalRatingValue ratingValue = this.getRatingValue();
-        try {
             if (ratingValue != null) {
-                ProposalRatingType ratingType = ProposalRatingTypeLocalServiceUtil.fetchProposalRatingType(ratingValue.getRatingTypeId());
+                ProposalRatingType ratingType = ProposalRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
                 return ratingType;
             }
-        } catch (SystemException e) {
-        }
+
         return null;
     }
 
     public ProposalRatingValue getRatingValue()  {
-        try {
-            ProposalRatingValue ratingValue = ProposalRatingValueLocalServiceUtil.fetchProposalRatingValue(this.proposalRating.getRatingValueId());
+
+            ProposalRatingValue ratingValue = ProposalRatingClientUtil.getProposalRatingValue(this.proposalRating.getRatingValueId());
             return ratingValue;
-        } catch (SystemException e) {
-            return null;
-        }
+
     }
 
-    public User getUser()  {
+    public Member getUser()  {
         try {
-            User u = UserLocalServiceUtil.fetchUser(this.proposalRating.getUserId());
+            Member u = MembersClient.getMember(this.proposalRating.getUserId());
             return u;
-        } catch (SystemException e) {
+        } catch (MemberNotFoundException e) {
             return null;
         }
     }

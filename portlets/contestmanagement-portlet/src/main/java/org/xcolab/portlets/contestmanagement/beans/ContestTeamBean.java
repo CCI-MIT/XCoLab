@@ -3,7 +3,7 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.utils.IdListUtil;
 
@@ -48,26 +48,26 @@ public class ContestTeamBean implements Serializable {
     }
 
     private void populateJudges() {
-        for (Long judge : ContestClient.getJudgesForContest(contest.getContestPK())) {
+        for (Long judge : ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK())) {
             userIdsJudges.add(judge);
         }
     }
 
     private void populateFellows() {
-        for (Long fellow : ContestClient.getFellowsForContest(contest.getContestPK())) {
+        for (Long fellow : ContestTeamMemberClientUtil.getFellowsForContest(contest.getContestPK())) {
             userIdsFellows.add(fellow);
         }
     }
 
     private void populateAdvisors() {
-        for (Long advisor : ContestClient.getAdvisorsForContest(contest.getContestPK())) {
+        for (Long advisor : ContestTeamMemberClientUtil.getAdvisorsForContest(contest.getContestPK())) {
             userIdsAdvisors.add(advisor);
         }
     }
 
     private void populateContestManagers() {
 
-        for (Long contestManager : ContestClient
+        for (Long contestManager : ContestTeamMemberClientUtil
                 .getContestManagersForContest(contest.getContestPK())) {
             userIdsContestManagers.add(contestManager);
         }

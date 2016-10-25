@@ -1,10 +1,13 @@
-/*
- * Copyright (c) 2010. M.I.T. All Rights Reserved
- * Licensed under the MIT license. Please see http://www.opensource.org/licenses/mit-license.php
- * or the license.txt file included in this distribution for the full text of the license.
- */
-
 package com.ext.portlet.models.ui;
+
+import edu.mit.cci.roma.client.MetaData;
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
+
+import com.ext.portlet.models.ModelInputGroupType;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,38 +18,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ext.portlet.models.ModelInputGroupType;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import edu.mit.cci.roma.client.MetaData;
-import edu.mit.cci.roma.client.Scenario;
-import edu.mit.cci.roma.client.Simulation;
-
-/**
- * @author: jintrone
- * @date: May 24, 2010
- */
 public class ModelDisplay implements Serializable {
 
-    /**
-	 * 
-	 */
+    private static final Log _log = LogFactoryUtil.getLog(ModelDisplay.class);
+
 	private static final long serialVersionUID = 1L;
 	List<ModelInputDisplayItem> inputs;
     List<ModelOutputDisplayItem> outputs;
-
-
-
-    private static Log _log = LogFactoryUtil.getLog(ModelDisplay.class);
 
     private List<ModelInputGroupDisplayItem> tabs = new ArrayList<ModelInputGroupDisplayItem>();
     private List<ModelInputGroupDisplayItem> groups = new ArrayList<ModelInputGroupDisplayItem>();
     private Map<MetaData,ModelInputIndividualDisplayItem> individuals = new HashMap<MetaData,ModelInputIndividualDisplayItem>();
      List<ModelInputDisplayItem> nonTabs = new ArrayList<ModelInputDisplayItem>();
 
-            
+
 
     private Simulation sim;
 
@@ -128,10 +113,6 @@ public class ModelDisplay implements Serializable {
         }
         return result;
     }
-
-
-
-
 
     public List<ModelOutputDisplayItem> getOutputs() {
         Collections.sort(outputs, new Comparator<ModelOutputDisplayItem>() {

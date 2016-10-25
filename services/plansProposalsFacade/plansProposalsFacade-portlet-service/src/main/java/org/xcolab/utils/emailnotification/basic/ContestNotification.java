@@ -1,9 +1,6 @@
 package org.xcolab.utils.emailnotification.basic;
 
 
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 import org.joda.time.DateTime;
@@ -17,6 +14,7 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 
@@ -70,11 +68,9 @@ public class ContestNotification extends EmailNotification {
     }
 
     private Date getActivePhaseDeadline() {
-        try {
-            return ContestPhaseLocalServiceUtil.getActivePhaseForContest(getLiferayContestFromContest(contest)).getPhaseEndDate();
-        } catch (SystemException | PortalException e) {
-            return null;
-        }
+
+            return ContestClientUtil.getActivePhase(contest.getContestPK()).getPhaseEndDate();
+
     }
 
     private String getOtherContestLink(String linkText) {

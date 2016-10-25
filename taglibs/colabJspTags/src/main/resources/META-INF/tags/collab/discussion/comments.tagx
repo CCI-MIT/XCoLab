@@ -12,11 +12,12 @@
     <jsp:directive.attribute name="categoryGroupId" type="java.lang.Long" required="false" rtexprvalue="true" description="CategoryGroup id" />
     <jsp:directive.attribute name="categoryId" type="java.lang.Long" required="false" rtexprvalue="true" description="Category id" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="false" rtexprvalue="true" description="Proposal id" />
+    <jsp:directive.attribute name="sharedColabId" type="java.lang.Long" required="false" rtexprvalue="true" description="The id of the partner CoLab, if applicable" />
     <c:set var="categoryGroupId" value="${empty categoryGroupId ? 0 : categoryGroupId}" />
     <c:set var="categoryId" value="${empty categoryId ? 0 : categoryId}" />
     <c:set var="proposalId" value="${empty proposalId ? 0 : proposalId}" />
 
-	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}">
+	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}" sharedColabId="${sharedColabId}">
         <!--@elvariable id="thread" type="org.xcolab.client.comment.pojo.CommentThread"-->
         <!--@elvariable id="newMessage" type="org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper"-->
         <!--@elvariable id="discussionPermissions" type="org.xcolab.jspTags.discussion.DiscussionPermissions"-->
@@ -74,7 +75,7 @@
                     </a>
 				</c:if>
 				<div class="c-Comment__share">
-					<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
+					<a href="https://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
 					   addthis:title="${shareTitle}"
 					   addthis:description="${shareTitle}">
 						<img src="${themeDisplay.pathThemeImages}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
@@ -96,6 +97,7 @@
 			<c:otherwise>
 				<table class="c-Comment__list" id="commentsTable" >
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
+                        <!-- TODO COLAB-1387: replace client calls -->
 						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
 							<!--@elvariable id="role" type="org.xcolab.enums.MemberRole"-->
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">

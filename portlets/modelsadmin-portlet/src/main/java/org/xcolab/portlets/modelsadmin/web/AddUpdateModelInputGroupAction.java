@@ -1,7 +1,11 @@
 package org.xcolab.portlets.modelsadmin.web;
 
+import edu.mit.cci.roma.client.Simulation;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.ext.portlet.model.ModelInputGroup;
-import com.ext.portlet.models.CollaboratoriumModelingService;
 import com.ext.portlet.models.ui.IllegalUIConfigurationException;
 import com.ext.portlet.models.ui.ModelDisplay;
 import com.ext.portlet.models.ui.ModelInputDisplayItem;
@@ -10,11 +14,8 @@ import com.ext.portlet.service.ModelInputGroupLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import edu.mit.cci.roma.client.Simulation;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class AddUpdateModelInputGroupAction {
 			UpdateModelInputGroupBean updateModelInputGroup,
 			@RequestParam Long modelId) throws SystemException,
 			IllegalUIConfigurationException, IOException, PortalException {
-		Simulation simulation = CollaboratoriumModelingService.repository().getSimulation(modelId);
+		Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
 		ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 		
 

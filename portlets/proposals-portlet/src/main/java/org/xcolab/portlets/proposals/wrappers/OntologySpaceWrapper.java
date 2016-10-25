@@ -1,6 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.OntologySpace;
+
+
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class OntologySpaceWrapper {
 	}
 	
 	public long getId() {
-		return wrapped.getId();
+		return wrapped.getId_();
 	}
 	
 	public List<OntologyTermWrapper> getRootTerms() {
@@ -47,7 +49,7 @@ public class OntologySpaceWrapper {
 	}
 	
 	public int getOrder() {
-		return wrapped.getOrder();
+		return wrapped.getOrder_();
 	}
 	
 

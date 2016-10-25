@@ -1,14 +1,15 @@
 package org.xcolab.utils.emailnotification.basic;
 
-import com.ext.portlet.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
-import com.ext.portlet.model.Proposal;
+
 import com.liferay.portal.service.ServiceContext;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 public class ProposalNotification extends ContestNotification {
 

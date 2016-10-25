@@ -1,6 +1,8 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.FocusArea;
+
+
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class FocusAreaWrapper {
 	}
 	
 	public long getId() {
-		return wrapped.getId();
+		return wrapped.getId_();
 	}
 	
 	public String getTermsIdsStr() {

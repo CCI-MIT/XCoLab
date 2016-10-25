@@ -7,7 +7,7 @@ import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
@@ -40,7 +40,7 @@ public class WikiPageWrapper {
     }
 
     public ContestResourcesBean getContestResourcesBean() {
-        final ContestType contestType = ContestClient.getContestType(contest.getContestTypeId());
+        final ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
         ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
         String resourcesContent = contentArticleVersion.getContent();
         contestResourcesBean.fillSectionsWithContent(resourcesContent);
@@ -89,7 +89,7 @@ public class WikiPageWrapper {
 
                 final long resourceArticleId = contentArticle.getContentArticleId();
                 contest.setResourceArticleId(resourceArticleId);
-                ContestClient.updateContest(contest);
+                ContestClientUtil.updateContest(contest);
 
             } catch (ContentNotFoundException e) {
                 throw new IllegalStateException("Could not retrieve ContentArticle after creation: " + contentArticle);

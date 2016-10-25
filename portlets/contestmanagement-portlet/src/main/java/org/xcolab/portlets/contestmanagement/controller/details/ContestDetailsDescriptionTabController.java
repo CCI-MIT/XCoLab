@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -123,7 +123,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                 try {
                     ThemeDisplay themeDisplay = (ThemeDisplay) request
                             .getAttribute(WebKeys.THEME_DISPLAY);
-                    Contest contest = ContestClient.getContest(updatedContestDescriptionBean.getContestPK());
+                    Contest contest = ContestClientUtil.getContest(updatedContestDescriptionBean.getContestPK());
                     sendEmailNotificationToAuthor(themeDisplay, contest);
                 } catch (ContestNotFoundException | MemberNotFoundException e) {
                     throw new DatabaseAccessException(e);

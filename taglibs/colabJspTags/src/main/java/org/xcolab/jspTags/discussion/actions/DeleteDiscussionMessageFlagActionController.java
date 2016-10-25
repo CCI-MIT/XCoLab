@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
@@ -24,7 +24,7 @@ public class DeleteDiscussionMessageFlagActionController extends BaseDiscussions
             throws IOException, DiscussionAuthorizationException {
 
         checkPermissions(request, "User isn't allowed to delete message", 0L);
-        CommentClient.deleteComment(commentId);
+        CommentClientUtil.deleteComment(commentId);
         redirectToReferrer(request, response);
     }
 

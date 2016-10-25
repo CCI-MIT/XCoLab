@@ -1,5 +1,13 @@
 package org.xcolab.portlets.loginregister;
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
+
 import com.liferay.portal.CookieNotSupportedException;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.PasswordExpiredException;
@@ -17,13 +25,6 @@ import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -49,9 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "view")
 public class ForgotPasswordController {
 
-    private static final long DEFAULT_COMPANY_ID = 10112L;
-
-    private static final String FORGOTPASSWORDURL = "/web/guest/loginregister/-/login/forgotPassword/";
+    private static final String FORGOT_PASSWORD_URL = "/web/guest/loginregister/-/login/forgotPassword/";
 
 
     @ActionMapping(params = {"isForgotpass=true"})
@@ -87,7 +86,7 @@ public class ForgotPasswordController {
 
             String token = MembersClient.createForgotPasswordToken(member.getUserId());
             String colabUrl = ConfigurationAttributeKey.COLAB_URL.get();
-            String passwordLink = colabUrl + FORGOTPASSWORDURL + "" + token;
+            String passwordLink = colabUrl + FORGOT_PASSWORD_URL + "" + token;
 
             sendEmailNotificationToForPasswordReset(
                     PortalUtil.getHttpServletRequest(request).getRemoteAddr(),
@@ -156,7 +155,7 @@ public class ForgotPasswordController {
         return redirectToErrorPageOnPasswordReset(model, request);
     }
 
-    public String redirectToErrorPageOnPasswordReset(Model model, PortletRequest request) {
+    private String redirectToErrorPageOnPasswordReset(Model model, PortletRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         model.addAttribute("message",
                 "Your password reset ticket has expired. Please try to reset your password again.");
@@ -168,10 +167,8 @@ public class ForgotPasswordController {
 
 
     @RequestMapping(params = "pageToDisplay=password_reset")
-    public String openResetPassword(PortletRequest request,
-                                    PortletResponse response,
-                                    Model model,
-                                    @RequestParam String resetTicket) {
+    public String openResetPassword(PortletRequest request, PortletResponse response,
+                                    Model model, @RequestParam String resetTicket) {
 
         if (!MembersClient.isForgotPasswordTokenValid(resetTicket)) {
             return redirectToErrorPageOnPasswordReset(model, request);
@@ -201,9 +198,7 @@ public class ForgotPasswordController {
                 SessionMessages.clear(request);
                 response.sendRedirect("/");
 
-            } catch (MemberNotFoundException e) {
-                response.setRenderParameter("isError", "true");
-            } catch (PortalException e) {
+            } catch (MemberNotFoundException | PortalException e) {
                 response.setRenderParameter("isError", "true");
             }
 

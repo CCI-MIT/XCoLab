@@ -1,7 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -86,7 +88,7 @@ public class RemoveUserFromProposalTeamActionController {
             }
         }
 
-        ProposalLocalServiceUtil.removeUserFromTeam(proposalId,memberUserId);
-        response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId) + "/tab/TEAM");
+        ProposalClientUtil.removeUserFromProposalTeam(proposalId,memberUserId);
+        response.sendRedirect(proposal.getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
     }
 }

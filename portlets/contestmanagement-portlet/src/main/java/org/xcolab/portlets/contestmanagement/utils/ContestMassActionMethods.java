@@ -1,6 +1,6 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import com.ext.portlet.model.Proposal;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -9,12 +9,14 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
@@ -47,7 +49,7 @@ public class ContestMassActionMethods {
         for (Long contestId : contestList) {
             try {
                 List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
-                ContestPhase activeContestPhase = ContestClient.getActivePhase(contestId);
+                ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
                 csvExportHelper
                         .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
             } catch (SystemException e) {
@@ -116,9 +118,9 @@ public class ContestMassActionMethods {
     private static void deleteContestPhases(Long contestId) throws PortalException, SystemException {
 
 
-        List<ContestPhase> contestPhases = ContestClient.getAllContestPhases(contestId);
+        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
         for (ContestPhase contestPhase : contestPhases) {
-            ContestClient.deleteContestPhase(contestPhase.getContestPhasePK());
+            ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
         }
     }
 
@@ -144,7 +146,7 @@ public class ContestMassActionMethods {
         if((Boolean) actionConfirmed) {
             for (Long contestId : contestList) {
                 List<ContestPhase> contestPhases =
-                        ContestClient.getAllContestPhases(contestId);
+                        ContestClientUtil.getAllContestPhases(contestId);
                 if (!contestPhases.isEmpty()) {
                     deleteContestAndPhases(contestId);
                 } else {
@@ -161,7 +163,7 @@ public class ContestMassActionMethods {
             throws PortalException, SystemException {
         for (Long contestId : contestList) {
             try{
-                Contest contest = ContestClient.getContest(contestId);
+                Contest contest = ContestClientUtil.getContest(contestId);
                 ContestFlagTextToolTipBean contestFlagTextToolTipBean = (ContestFlagTextToolTipBean) flagTexToolTipValue;
                 contestFlagTextToolTipBean.persist(contest);
             }catch (ContestNotFoundException ignored){
@@ -175,7 +177,7 @@ public class ContestMassActionMethods {
             throws PortalException, SystemException {
         for (Long contestId : contestList) {
             try {
-                Contest contest = ContestClient.getContest(contestId);
+                Contest contest = ContestClientUtil.getContest(contestId);
                 ContestModelSettingsBean contestModelSettingsBean = (ContestModelSettingsBean) modelSettings;
                 contestModelSettingsBean.persist(contest);
             }catch (ContestNotFoundException ignored){
@@ -186,7 +188,7 @@ public class ContestMassActionMethods {
 
     private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK)
             throws PortalException, SystemException {
-        ContestPhase activeContestPhase = ContestClient.getActivePhase(contestPK);
-        return ProposalLocalServiceUtil.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
+        ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestPK);
+        return ProposalClientUtil.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
     }
 }
