@@ -356,7 +356,8 @@ public class ContestClient {
     }
 
     public static String getContestStatusStr(Long contestPhaseId) {
-        return null;
+        return getContestPhase(contestPhaseId).getContestStatusStr();
+
     }
 
     public static ContestType getContestType(long id) {

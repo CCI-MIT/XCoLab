@@ -9,6 +9,9 @@ import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public final class ProposalVoteClient {
@@ -53,11 +56,20 @@ public final class ProposalVoteClient {
     }
 
     public static List<ProposalVote> getProposalVotes(Long contestPhaseId, Long proposalId, Long userId) {
-        return proposalVoteResource.list()
-                .optionalQueryParam("contestPhaseId", contestPhaseId)
-                .optionalQueryParam("proposalId", proposalId)
-                .optionalQueryParam("userId", userId)
-                .execute();
+            return proposalVoteResource.list()
+                    .optionalQueryParam("contestPhaseId", contestPhaseId)
+                    .optionalQueryParam("proposalId", proposalId)
+                    .optionalQueryParam("userId", userId)
+                    .execute();
+
+
+    }
+
+    public static void removeProposalVote(Long contestPhaseId, Long userid) {
+         proposalVoteResource.service("removeVote", Boolean.class)
+                .queryParam("userId",userid)
+                .queryParam("contestPhaseId", contestPhaseId)
+                .delete();
     }
 
     public static boolean updateProposalVote(ProposalVote proposalVote) {
@@ -66,9 +78,22 @@ public final class ProposalVoteClient {
     }
 
     public static ProposalVote getProposalVoteByProposalIdUserId(Long proposalId, Long userId) {
-        return proposalVoteResource.service("getProposalVoteByProposalIdUserId", ProposalVote.class)
-                .optionalQueryParam("proposalId", proposalId)
-                .optionalQueryParam("userId", userId)
-                .get();
+        try {
+            return proposalVoteResource
+                    .service("getProposalVoteByProposalIdUserId", ProposalVote.class)
+                    .optionalQueryParam("proposalId", proposalId)
+                    .optionalQueryParam("userId", userId)
+                    .getChecked();
+        }catch (EntityNotFoundException ignored){
+            return null;
+        }
+    }
+    public static void addVote(Long proposalId,Long contestPhaseId,Long userId){
+        ProposalVote pv = new ProposalVote();
+        pv.setProposalId(proposalId);
+        pv.setContestPhaseId(contestPhaseId);
+        pv.setUserId(userId);
+        pv.setCreateDate(new Timestamp(new Date().getTime()));
+        proposalVoteResource.create(pv).execute();
     }
 }

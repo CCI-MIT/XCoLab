@@ -1,9 +1,7 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
-import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -20,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.ContestClient;
@@ -75,19 +75,19 @@ public class VoteOnProposalActionController {
             long proposalId = proposal.getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
             long userId = user.getUserId();
-            if (ProposalLocalServiceUtil.hasUserVoted(proposalId, contestPhaseId, userId)) {
+            if (ProposalVoteClient.hasUserVoted(proposalId, contestPhaseId, userId)) {
                 // User has voted for this proposal and would like to retract the vote
-                ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
+                ProposalVoteClient.removeProposalVote(contestPhaseId, userId);
             } else {
-                if (ProposalVoteLocalServiceUtil.hasUserVoted(contestPhaseId, userId)) {
+                if (ProposalVoteClient.hasUserVoted(contestPhaseId, userId)) {
                     // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
-                    ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
+                    ProposalVoteClient.removeProposalVote(contestPhaseId, userId);
                 }
                 ServiceContext serviceContext = new ServiceContext();
                 ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
                 serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
-                ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
+                ProposalVoteClient.addVote(proposalId, contestPhaseId, userId);
 
                 final boolean voteIsValid = validateVote(user, member, proposal, contest, serviceContext);
                 if (voteIsValid) {
@@ -125,7 +125,7 @@ public class VoteOnProposalActionController {
         List<User> usersWithSharedIP = Xcolab_UserLocalServiceUtil.findUsersByLoginIP(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
         if (!usersWithSharedIP.isEmpty()) {
-            final ProposalVote vote = ProposalVoteClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), user.getUserId());
+                final ProposalVote vote = ProposalVoteClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), user.getUserId());
             int recentVotesFromSharedIP = 0;
             for (User otherUser : usersWithSharedIP) {
                     final ProposalVote otherVote = ProposalVoteClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
@@ -173,7 +173,7 @@ public class VoteOnProposalActionController {
         boolean success = false;
         try {
             ProposalVote vote = ProposalVoteClient.getProposalVoteByProposalIdUserId(proposalId, userId);
-            if (!vote.getConfirmationToken().isEmpty()
+            if (vote!=null &&!vote.getConfirmationToken().isEmpty()
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
                 ProposalVoteClient.updateProposalVote(vote);

@@ -27,11 +27,11 @@ public final class ProposalRatingClient {
 
     public static List<ProposalRating> getProposalRatingsByProposalUserContestPhase(Long proposalId, Long contestPhaseId, Long userId) {
         return proposalRatingResource.list()
-                .withCache(CacheKeys.withClass(ProposalRating.class)
-                                .withParameter("proposalId", proposalId)
-                                .withParameter("contestPhaseId", contestPhaseId)
-                                .withParameter("userId", userId).asList(),
-                        CacheRetention.MEDIUM)
+                //.withCache(CacheKeys.withClass(ProposalRating.class)
+                 //               .withParameter("proposalId", proposalId)
+                 //               .withParameter("contestPhaseId", contestPhaseId)
+                 //               .withParameter("userId", userId).asList(),
+                 //       CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("userId", userId)
