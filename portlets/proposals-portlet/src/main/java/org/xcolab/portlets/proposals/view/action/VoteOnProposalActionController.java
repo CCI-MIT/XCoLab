@@ -1,13 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -18,6 +11,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
+
+import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -132,6 +127,7 @@ public class VoteOnProposalActionController {
                     final ProposalVote otherVote = ProposalMemberRatingClientUtil
                             .getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
                     //check if vote is less than 12 hours old
+                if(otherVote!=null) {
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
                         recentVotesFromSharedIP++;
                     }
@@ -140,6 +136,7 @@ public class VoteOnProposalActionController {
                         vote.setIsValid(false);
                         break;
                     }
+                }
 
             }
             if (vote.getIsValid() && recentVotesFromSharedIP > 7) {
@@ -176,7 +173,7 @@ public class VoteOnProposalActionController {
         try {
             ProposalVote vote = ProposalMemberRatingClientUtil
                     .getProposalVoteByProposalIdUserId(proposalId, userId);
-            if (!vote.getConfirmationToken().isEmpty()
+            if (vote!=null&&!vote.getConfirmationToken().isEmpty()
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
                 ProposalMemberRatingClientUtil.updateProposalVote(vote);

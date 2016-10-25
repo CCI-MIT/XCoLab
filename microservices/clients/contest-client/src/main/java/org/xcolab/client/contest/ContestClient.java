@@ -430,7 +430,7 @@ public class ContestClient {
     }
 
     public String getContestStatusStr(Long contestPhaseId) {
-        return null;
+		return getContestPhase(contestPhaseId).getContestStatusStr();
     }
 
     public ContestType getContestType(long id) {

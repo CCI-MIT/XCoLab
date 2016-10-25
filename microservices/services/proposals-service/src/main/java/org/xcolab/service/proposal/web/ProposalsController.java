@@ -239,7 +239,7 @@ public class ProposalsController {
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long userId
     ) {
-        return proposalVoteDao.countByGiven(contestPhaseId, proposalId, userId) == 0;
+        return proposalVoteDao.countByGiven(proposalId,contestPhaseId, userId) != 0;
     }
 
     @RequestMapping(value = "/proposalVotes", method = RequestMethod.POST)
@@ -253,20 +253,19 @@ public class ProposalsController {
         return true;
     }
 
-    @RequestMapping(value = "/proposalVotes/updateVote", method = RequestMethod.PUT)
+    @RequestMapping(value = "/proposalVotes/updateVote", method = RequestMethod.POST)
     public boolean updateProposalVote(@RequestBody ProposalVote proposalVote) throws NotFoundException {
 
-            return proposalVoteDao.update(proposalVote);
+        return proposalVoteDao.update(proposalVote);
 
     }
 
     @RequestMapping(value = "/proposalVotes/getProposalVoteByProposalIdUserId", method = {RequestMethod.GET})
     public ProposalVote getProposalVoteByProposalIdUserId(
-            @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long userId
     ) throws NotFoundException {
-        List<ProposalVote> votesForUser = proposalVoteDao.findByGiven(null, proposalId, userId);
+        List<ProposalVote> votesForUser = proposalVoteDao.findByGiven(proposalId, null, userId);
         if (votesForUser != null && votesForUser.size() > 0) {
             return votesForUser.get(0);
         } else {
