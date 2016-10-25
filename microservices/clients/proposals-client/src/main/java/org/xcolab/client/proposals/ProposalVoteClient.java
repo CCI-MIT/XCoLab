@@ -66,8 +66,8 @@ public final class ProposalVoteClient {
     }
 
     public static void removeProposalVote(Long contestPhaseId, Long userid) {
-         proposalVoteResource.service("removeVote", Boolean.class)
-                .queryParam("userId",userid)
+         proposalVoteResource.service("deleteVote", Boolean.class)
+                .queryParam("memberId",userid)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .delete();
     }
@@ -93,6 +93,7 @@ public final class ProposalVoteClient {
         pv.setProposalId(proposalId);
         pv.setContestPhaseId(contestPhaseId);
         pv.setUserId(userId);
+        pv.setIsValid(true);
         pv.setCreateDate(new Timestamp(new Date().getTime()));
         proposalVoteResource.create(pv).execute();
     }

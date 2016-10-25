@@ -130,14 +130,20 @@ public class VoteOnProposalActionController {
             for (User otherUser : usersWithSharedIP) {
                     final ProposalVote otherVote = ProposalVoteClient.getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
                     //check if vote is less than 12 hours old
+                if(otherVote!=null) {
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
                         recentVotesFromSharedIP++;
                     }
-                    if (StringUtils.getLevenshteinDistance(user.getFirstName(), otherUser.getFirstName()) < 3
-                            && StringUtils.getLevenshteinDistance(user.getLastName(), otherUser.getLastName()) < 3) {
+                    if (StringUtils
+                            .getLevenshteinDistance(user.getFirstName(), otherUser.getFirstName())
+                            < 3
+                            && StringUtils
+                            .getLevenshteinDistance(user.getLastName(), otherUser.getLastName())
+                            < 3) {
                         vote.setIsValid(false);
                         break;
                     }
+                }
 
             }
             if (vote.getIsValid() && recentVotesFromSharedIP > 7) {
