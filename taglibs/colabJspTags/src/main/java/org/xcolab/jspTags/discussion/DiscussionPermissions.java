@@ -7,7 +7,9 @@ import com.liferay.portal.theme.ThemeDisplay;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.flagging.TargetType;
 
 import javax.portlet.PortletRequest;
@@ -17,11 +19,13 @@ public class DiscussionPermissions {
     public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
 
     protected final User currentUser;
+    protected final Member currentMember;
 
     public DiscussionPermissions(PortletRequest request) {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         currentUser = themeDisplay.getUser();
+        currentMember = MembersClient.getMemberUnchecked(currentUser.getUserId());
     }
 
     public boolean getCanReport() {
@@ -34,8 +38,8 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanReportMessage(Comment comment) {
-        return getCanReport() && comment.getAuthorId() != currentUser.getUserId()
-                && FlaggingClient.countReports(currentUser.getUserId(), TargetType.COMMENT,
+        return getCanReport() && comment.getAuthorId() != currentMember.getUserId()
+                && FlaggingClient.countReports(currentMember.getUserId(), TargetType.COMMENT,
                 comment.getCommentId(), null, null) == 0;
     }
 
@@ -60,7 +64,7 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(currentUser.getUserId());
+        return PermissionsClient.canAdminAll(currentMember.getUserId());
     }
 
     public boolean getMustFilterContent() {

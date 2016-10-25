@@ -1,35 +1,35 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
-import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
+import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("view")
@@ -51,8 +51,8 @@ public class AssignPointsActionController {
     public void savePointAssignments(ActionRequest request, Model model,
                                 ActionResponse response, @Valid AssignPointsBean assignPointsBean,
                                 BindingResult result, PortletRequest portletRequest)
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
-        final User currentUser = proposalsContext.getUser(request);
+            throws ProposalsAuthorizationException, IOException {
+        final Member currentMember = proposalsContext.getMember(request);
         final Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
@@ -70,15 +70,16 @@ public class AssignPointsActionController {
         }
 
         //first, delete the existing configuration
-        PointsDistributionConfigurationClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+        ProposalsContextUtil.getClients(request).getPointsClient()
+                .deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
 
         try {
-            PointType contestRootPointType = PointsDistributionConfigurationClientUtil
+            PointType contestRootPointType = PointsClientUtil
 
                     .getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype
-            this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));
+            this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType, request));
 
             //custom user assignments
             for (Long pointTypeId : assignPointsBean.getAssignmentsByUserIdByPointTypeId().keySet()) {
@@ -100,9 +101,10 @@ public class AssignPointsActionController {
                     pointsDistributionConfiguration.setTargetUserId(entry.getKey());
                     pointsDistributionConfiguration.setTargetSubProposalId(null);
                     pointsDistributionConfiguration.setPercentage(percentage);
-                    pointsDistributionConfiguration.setCreator(currentUser.getUserId());
+                    pointsDistributionConfiguration.setCreator(currentMember.getUserId());
 
-                    PointsDistributionConfigurationClientUtil.createPointsDistributionConfiguration(pointsDistributionConfiguration);
+                    ProposalsContextUtil.getClients(request).getPointsClient()
+                            .createPointsDistributionConfiguration(pointsDistributionConfiguration);
 
                 }
                 //round to two decimals
@@ -111,11 +113,11 @@ public class AssignPointsActionController {
                     throw new IllegalArgumentException("Error while adding PointsDistributionConfiguration: The sum of distributed percentages do not sum up to 1: " + sum);
                 }
             }
-        } catch (SystemException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             //in case a (validation) error occurs, we simply delete all created configurations.
             //since we do client-side validations, this state will not be reached by regular uses
             // of the UI.
-            PointsDistributionConfigurationClientUtil.deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+            ProposalsContextUtil.getClients(request).getPointsClient().deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
             throw e;
         }
 

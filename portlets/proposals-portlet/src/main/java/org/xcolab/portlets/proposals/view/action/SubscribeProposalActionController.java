@@ -1,19 +1,21 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.client.proposals.ProposalClientUtil;
+
+import org.xcolab.client.proposals.ProposalClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
+
+import java.io.IOException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -24,18 +26,24 @@ public class SubscribeProposalActionController {
     
     @RequestMapping(params = {"action=subscribeProposal"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response)
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException, IOException {
         
         if (proposalsContext.getPermissions(request).getCanSubscribeProposal()) {
-            long proposalId = proposalsContext.getProposal(request).getProposalId();
-            long userId = proposalsContext.getUser(request).getUserId();
-            if (ProposalClientUtil.isMemberSubscribedToProposal(proposalId, userId)) {
-                ProposalClientUtil.unsubscribeMemberFromProposal(proposalId, userId);
+            final Proposal proposal = proposalsContext.getProposal(request);
+            long proposalId = proposal.getProposalId();
+            long memberId = proposalsContext.getMember(request).getUserId();
+            final ProposalClient proposalClient =
+                    ProposalsContextUtil.getClients(request).getProposalClient();
+            if (proposalClient
+                    .isMemberSubscribedToProposal(proposalId, memberId)) {
+                proposalClient
+                        .unsubscribeMemberFromProposal(proposalId, memberId);
             }
             else {
-                ProposalClientUtil.subscribeMemberToProposal(proposalId, userId);
+                proposalClient
+                        .subscribeMemberToProposal(proposalId, memberId);
             }
-            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)));
+            response.sendRedirect(proposal.getProposalLinkUrl(proposalsContext.getContest(request)));
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to subscribe proposal");

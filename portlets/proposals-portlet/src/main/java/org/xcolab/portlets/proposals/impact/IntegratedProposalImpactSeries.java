@@ -8,6 +8,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.utils.SectorTypes;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.portlet.PortletRequest;
 
 public class IntegratedProposalImpactSeries {
 
@@ -31,6 +34,7 @@ public class IntegratedProposalImpactSeries {
     private static final String[] REFERENCE_SERIES_TYPE_DESCRIPTIONS = {
             "Business as usual (BAU)",
     };
+    private final PortletRequest request;
 
     private Map<String, String> seriesTypeToDescriptionMap;
 
@@ -42,7 +46,9 @@ public class IntegratedProposalImpactSeries {
 
     private OntologyTerm regionOntologyTerm;
 
-    public IntegratedProposalImpactSeries(Proposal proposal, Contest contest) {
+    public IntegratedProposalImpactSeries(Proposal proposal, Contest contest,
+            PortletRequest request) {
+        this.request = request;
         try {
             org.xcolab.client.contest.pojo.Contest contestMicro =
                     ContestClientUtil.getContest(contest.getContestPK());
@@ -55,23 +61,23 @@ public class IntegratedProposalImpactSeries {
         } catch (ContestNotFoundException ignored) {
 
         }
-
     }
 
-    public static Set<Proposal> getSubProposalsOnContestTier(Proposal proposal, Long contestTierId) {
+    public static Set<Proposal> getSubProposalsOnContestTier(Proposal proposal, Long contestTierId,
+            PortletRequest request) {
         Set<Proposal> subProposalsOnContestTier = new HashSet<>();
         getSubProposalsOnContestTier(Arrays.asList(proposal), subProposalsOnContestTier,
-                contestTierId);
+                contestTierId, request);
         return subProposalsOnContestTier;
     }
 
     public static void getSubProposalsOnContestTier(List<Proposal> proposals,
-            Set<Proposal> subProposalsOnContestTier, Long contestTierId) {
+            Set<Proposal> subProposalsOnContestTier, Long contestTierId, PortletRequest request) {
         if (!proposals.isEmpty()) {
             for (Proposal proposal : proposals) {
                 try {
                     Contest contestOfProposal =
-                            ProposalClientUtil.getLatestContestInProposal(proposal.getProposalId());
+                            ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestInProposal(proposal.getProposalId());
                     if (Objects.equals(contestTierId, contestOfProposal.getContestTier())) {
                         subProposalsOnContestTier.addAll(proposals);
                     } else {
@@ -79,7 +85,7 @@ public class IntegratedProposalImpactSeries {
                                 .getContestIntegrationRelevantSubproposals(
                                         proposal.getProposalId());
                         getSubProposalsOnContestTier(subProposals, subProposalsOnContestTier,
-                                contestTierId);
+                                contestTierId, request);
                     }
                 } catch (ContestNotFoundException ignored) {
 
@@ -106,7 +112,7 @@ public class IntegratedProposalImpactSeries {
 
     private void calculateIntegratedImpactSeries(boolean global) {
         Set<Proposal> referencedSubProposals =
-                getSubProposalsOnContestTier(proposal, ContestTier.BASIC.getTierType());
+                getSubProposalsOnContestTier(proposal, ContestTier.BASIC.getTierType(), request);
         seriesTypeToAggregatedSeriesMap = new LinkedHashMap<>(REFERENCE_SERIES_TYPES.length);
         seriesTypeToDescriptionMap = new LinkedHashMap<>(REFERENCE_SERIES_TYPES.length);
 

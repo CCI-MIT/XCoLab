@@ -1,31 +1,29 @@
-
 package org.xcolab.portlets.proposals.view;
 
-
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
-
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -55,7 +53,7 @@ public class CreateProposalController extends BaseProposalsController {
         long userId = themeDisplay.getUserId();
         
         Proposal proposal = new Proposal();
-        proposal.setProposalId(0l);
+        proposal.setProposalId(0L);
         proposal.setCurrentVersion(0);
         proposal.setVisible(true);
         proposal.setAuthorId(themeDisplay.getUserId());
@@ -67,7 +65,8 @@ public class CreateProposalController extends BaseProposalsController {
         if (baseProposalId != null && baseProposalId > 0) {
             try {
                 Contest baseContest = ContestClientUtil.getContest(baseContestId);
-                ProposalWrapper baseProposalWrapper = new ProposalWrapper(ProposalClientUtil.getProposal(baseProposalId),
+                ProposalWrapper baseProposalWrapper = new ProposalWrapper(
+                        ProposalsContextUtil.getClients(request).getProposalClient().getProposal(baseProposalId),
                         baseProposalVersion, baseContest, ContestClientUtil.getActivePhase(baseContest.getContestPK()), null);
 
 

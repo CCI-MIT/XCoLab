@@ -1,7 +1,7 @@
 package org.xcolab.points;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
@@ -47,7 +47,7 @@ public class PointsDistributionUtil {
                         .getProposalAttribute(reference.getSectionAttributeId());
                 final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
 
-                PointsDistributionConfiguration pdc = PointsDistributionConfigurationClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(planSectionDefinitionId);
+                PointsDistributionConfiguration pdc = PointsClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(planSectionDefinitionId);
                 targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
             } catch (ProposalAttributeNotFoundException  ignored) {
             }
@@ -57,7 +57,7 @@ public class PointsDistributionUtil {
 
     public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
-        for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationClientUtil
+        for (PointsDistributionConfiguration pdc : PointsClientUtil
                 .getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
             if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
                 PointsTarget target = new PointsTarget();

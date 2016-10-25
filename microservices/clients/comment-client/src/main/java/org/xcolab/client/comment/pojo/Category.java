@@ -24,16 +24,16 @@ public class Category extends AbstractCategory {
     private final ThreadClient threadClient;
 
     public Category() {
-        categoryClient = CategoryClientUtil.getCategoryClient();
-        threadClient = ThreadClientUtil.getThreadClient();
+        categoryClient = CategoryClientUtil.getClient();
+        threadClient = ThreadClientUtil.getClient();
     }
 
     public Category(Long categoryId, Long groupId, Long authorId, String name, String description,
             Timestamp createDate, Timestamp deletedDate, Integer sort, Boolean isQuiet) {
         super(categoryId, groupId, authorId, name, description,
                 createDate, deletedDate, sort, isQuiet);
-        categoryClient = CategoryClientUtil.getCategoryClient();
-        threadClient = ThreadClientUtil.getThreadClient();
+        categoryClient = CategoryClientUtil.getClient();
+        threadClient = ThreadClientUtil.getClient();
     }
 
     public Category(AbstractCategory abstractCategory, RestService commentService) {

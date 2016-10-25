@@ -1,6 +1,6 @@
 package org.xcolab.enums;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import org.springframework.util.Assert;
 
 public enum ContestTier {
     NONE(0L, "None"),
@@ -27,11 +27,12 @@ public enum ContestTier {
     }
 
     public static ContestTier getContestTierByTierType(Long tierType)  {
+        Assert.notNull(tierType, "TierType cannot be null");
         for (ContestTier contestTier : ContestTier.values()) {
             if (contestTier.getTierType() == tierType) {
                 return contestTier;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No ContestTierType " + tierType);
     }
 }

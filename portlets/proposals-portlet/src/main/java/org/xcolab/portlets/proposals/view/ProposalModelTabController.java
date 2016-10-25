@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.utils.IdListUtil;
 

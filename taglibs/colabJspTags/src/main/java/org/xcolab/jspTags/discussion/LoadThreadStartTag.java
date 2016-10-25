@@ -54,8 +54,8 @@ public class LoadThreadStartTag extends BodyTagSupport {
                 threadClient = new ThreadClient(sharedCommentService);
                 categoryClient = new CategoryClient(sharedCommentService);
             } else {
-                threadClient = ThreadClientUtil.getThreadClient();
-                categoryClient = CategoryClientUtil.getCategoryClient();
+                threadClient = ThreadClientUtil.getClient();
+                categoryClient = CategoryClientUtil.getClient();
             }
 
             String shareTitle = null;

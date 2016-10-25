@@ -8,11 +8,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -49,7 +50,7 @@ public class AssignPointsBean {
             PointsDistributionConfigurationLocalServiceUtil.verifyDistributionConfigurationsForProposalId(proposalId);
 
             List<PointsDistributionConfiguration> existingDistributionConfigurations =
-                    PointsDistributionConfigurationClientUtil
+                    PointsClientUtil
                             .getPointsDistributionByProposalIdPointTypeId(proposalId, pointType.getId());
 
             switch(pointType.getReceiverLimitationStrategy().getType()) {
@@ -119,10 +120,10 @@ public class AssignPointsBean {
         return Double.valueOf(newFormat.format(d));
     }
 
-    public Map<Long, Double> getAssignmentsByUserId(Long pointTypeId) throws PortalException {
+    public Map<Long, Double> getAssignmentsByUserId(Long pointTypeId) {
         final Map<Long, Double> assignmentsByUserId = this.assignmentsByUserIdByPointTypeId.get(pointTypeId);
         if (assignmentsByUserId == null) {
-            throw new PortalException("No assignments found for pointTypeId "+pointTypeId);
+            throw new InternalException("No assignments found for pointTypeId " + pointTypeId);
         }
         return assignmentsByUserId;
     }

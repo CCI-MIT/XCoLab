@@ -1,24 +1,16 @@
 package org.xcolab.portlets.proposals.discussion;
 
-
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
 
 import javax.portlet.PortletRequest;
 
@@ -27,12 +19,14 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     private final String discussionTabName;
     private final Long proposalId;
     private final Long contestPhaseId;
+    private final PortletRequest request;
 
     public ProposalDiscussionPermissions(PortletRequest request) {
         super(request);
         discussionTabName = getTabName(request);
         proposalId = getProposalId(request);
         contestPhaseId = getContestPhaseId(request);
+        this.request = request;
     }
 
     private String getTabName(PortletRequest request) {
@@ -70,7 +64,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 phaseId = Long.parseLong(contestPhaseIdParameter);
             } else if (proposalId != null && proposalId > 0) {
-                phaseId = ProposalClientUtil.getLatestContestPhaseInContest(proposalId).getContestPhasePK();
+                phaseId = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestPhaseInContest(proposalId).getContestPhasePK();
             }
         } catch (NumberFormatException  ignored) {
         }
@@ -80,14 +74,13 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     @Override
     public boolean getCanSeeAddCommentButton() {
         boolean canSeeAddCommentButton = false;
-        boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
         boolean isEvaluationTabActive = discussionTabName != null
                 && discussionTabName.equals(ProposalTab.EVALUATION.name());
 
         if (isEvaluationTabActive) {
+            boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
             if (isIdsInitialized) {
-                canSeeAddCommentButton = isUserAllowedToAddCommentsToProposalEvaluationInContestPhase(currentUser,
-                        proposalId, contestPhaseId);
+                canSeeAddCommentButton = isAllowedToAddCommentsToProposalEvaluationInContestPhase();
             }
         } else {
             canSeeAddCommentButton = true;
@@ -99,60 +92,47 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     public boolean getCanAdminMessage(Comment comment) {
         if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
             try {
-                Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+                Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
                 ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
-                return proposalWrapper.isUserAmongFellows(currentUser) || getCanAdminAll();
+                return proposalWrapper.isUserAmongFellows(currentMember) || getCanAdminAll();
             } catch (ProposalNotFoundException ignored) {
             }
         }
         return comment.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
     }
 
-    private boolean isUserAllowedToAddCommentsToProposalEvaluationInContestPhase
-            (User user, Long proposalId, Long contestPhaseId) {
+    private boolean isAllowedToAddCommentsToProposalEvaluationInContestPhase() {
 
         boolean isUserAllowed = false;
         try {
-            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
-            isUserAllowed = isUserFellowOrJudgeOrAdvisor(user, proposal, contestPhaseId)
-                    || isUserProposalAuthorOrTeamMember(user, proposal)
+            Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
+            isUserAllowed = isUserFellowOrJudgeOrAdvisor(proposal)
+                    || isUserProposalAuthorOrTeamMember(proposal)
                     || getCanAdminAll();
         } catch (ProposalNotFoundException ignored) {
         }
         return isUserAllowed;
     }
 
-    private boolean isUserFellowOrJudgeOrAdvisor(User user, Proposal proposal, Long contestPhaseId) {
-
-        try {
-            ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+    private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
+        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
 
 
-            ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
+        ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
 
-            boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
-                    MembersClient.getMemberUnchecked(user.getUserId()));
-            boolean isFellow = proposalWrapper.isUserAmongFellows(user);
-            boolean isAdvisor = contestWrapper.isUserAmongAdvisors(user);
+        boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
+                MembersClient.getMemberUnchecked(currentMember.getUserId()));
+        boolean isFellow = proposalWrapper.isUserAmongFellows(currentMember);
+        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(currentMember);
 
-            return isFellow || isJudge || isAdvisor;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new InternalException(e);
-        }
-
+        return isFellow || isJudge || isAdvisor;
     }
 
-    private boolean isUserProposalAuthorOrTeamMember(User user, Proposal proposal) {
-        boolean isAuthor = false;
-        boolean isMember = false;
-
-            isAuthor = proposal.getAuthorId() == user.getUserId();
-            isMember = MembersClient.isUserInGroup(user.getUserId(), proposal.getProposalId());
-
+    private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
+        boolean isAuthor = proposal.getAuthorId() == currentMember.getUserId();
+        boolean isMember = MembersClient.isUserInGroup(currentMember.getUserId(), proposal.getProposalId());
 
         return isAuthor || isMember;
     }

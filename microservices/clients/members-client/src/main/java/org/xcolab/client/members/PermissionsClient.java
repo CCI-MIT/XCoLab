@@ -64,6 +64,9 @@ public final class PermissionsClient {
     }
 
     private static boolean memberHasRole(Long memberId, long roleIdToTest) {
+        if (memberId == 0) {
+            return false;
+        }
         List<Role_> roles = MembersClient.getMemberRoles(memberId);
         if (roles != null && !roles.isEmpty()) {
             for (Role_ role : roles) {
@@ -76,6 +79,9 @@ public final class PermissionsClient {
     }
 
     private static boolean memberHasRoleInContest(Long memberId, Long contestId, MemberRole roleToTest) {
+        if (memberId == 0) {
+            return false;
+        }
         List<Role_> roles = MembersClient.getMemberRolesInContest(memberId, contestId);
         if (roles != null && !roles.isEmpty()) {
             for (Role_ role : roles) {

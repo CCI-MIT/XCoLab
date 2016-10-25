@@ -66,7 +66,11 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
         if (name != null) {
             query.addConditions(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NAME.eq(name));
         }
-        return query.fetchOne().into(ProposalContestPhaseAttribute.class);
+        final Record record = query.fetchOne();
+        if(record == null){
+            return null;
+        }
+        return record.into(ProposalContestPhaseAttribute.class);
     }
     @Override
     public List<ProposalContestPhaseAttribute> findByGiven(Long proposalId, Long contestPhaseId, String name) {

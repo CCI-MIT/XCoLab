@@ -3,16 +3,12 @@ package org.xcolab.portlets.proposals.requests;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class UpdateProposalDetailsBean {
     private Map<Long, String> sectionsContent = new HashMap<>();
@@ -42,7 +38,7 @@ public class UpdateProposalDetailsBean {
 
 
 
-    public UpdateProposalDetailsBean(ProposalWrapper proposal) throws PortalException, SystemException {
+    public UpdateProposalDetailsBean(ProposalWrapper proposal) {
         for (ProposalSectionWrapper section : proposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
@@ -53,7 +49,7 @@ public class UpdateProposalDetailsBean {
         description = proposal.getDescription();
     }
     
-    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal) throws PortalException, SystemException {
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal) {
         for (ProposalSectionWrapper section : baseProposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
@@ -66,7 +62,8 @@ public class UpdateProposalDetailsBean {
         baseProposalContestId = baseProposal.getContestPK();
     }
     
-    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal, boolean isMove, MoveType moveType) throws PortalException, SystemException {
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal,
+            boolean isMove, MoveType moveType) {
     	this(proposal, baseProposal);
     	this.isMove = isMove;
         this.moveType = moveType;

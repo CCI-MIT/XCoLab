@@ -4,6 +4,7 @@ import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
@@ -70,8 +71,8 @@ public final class ProposalAttributeClientUtil {
     }
 
     public static ProposalAttribute setProposalAttribute(
-            Long userId, Long proposalId, String name, Long aditionalId, Long numericValue) {
-        return client.setProposalAttribute(userId, proposalId, name, aditionalId, numericValue);
+            Long userId, Long proposalId, String name, Long additionalId, Long numericValue) {
+        return client.setProposalAttribute(userId, proposalId, name, additionalId, numericValue);
     }
 
     public static ProposalAttribute setProposalAttribute(
@@ -92,4 +93,35 @@ public final class ProposalAttributeClientUtil {
             Long userId, Long proposalId, String name, Long aditionalId, String stringValue) {
         return client.setProposalAttribute(userId, proposalId, name, aditionalId, stringValue);
     }
+
+    public static Boolean deleteProposalUnversionedAttribute(Long id_) {
+        return client.deleteProposalUnversionedAttribute(id_);
+    }
+
+    public static List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(
+            Long proposalId) {
+        return client.getProposalUnversionedAttributesByProposalId(proposalId);
+    }
+
+    public static void createOrUpdateProposalUnversionedAttribute(long authorId,
+            String attributeValue, String attributeName, Long proposalId) {
+        client.createOrUpdateProposalUnversionedAttribute(authorId, attributeValue, attributeName,
+                proposalId);
+    }
+
+    public static ProposalUnversionedAttribute createProposalUnversionedAttribute(
+            ProposalUnversionedAttribute proposalUnversionedAttribute) {
+        return client.createProposalUnversionedAttribute(proposalUnversionedAttribute);
+    }
+
+    public static ProposalUnversionedAttribute getProposalUnversionedAttribute(
+            Long proposalId, String name) {
+        return client.getProposalUnversionedAttribute(proposalId, name);
+    }
+
+    public static boolean updateProposalUnversionedAttribute(
+            ProposalUnversionedAttribute proposalUnversionedAttribute) {
+        return client.updateProposalUnversionedAttribute(proposalUnversionedAttribute);
+    }
+
 }

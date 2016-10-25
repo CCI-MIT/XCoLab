@@ -1,9 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -17,7 +13,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.util.List;
 
@@ -114,15 +110,8 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			try {
 				return permissions.getCanEdit();
-			} catch (SystemException e) {
-				_log.error("can't check if user is allowed to edit proposal", e);
-			}
-			return false;
 		}
-
-		private final Logger _log = LoggerFactory.getLogger(ProposalTabCanAccessAlgorithm.class);
 	};
 
 
@@ -140,31 +129,23 @@ interface ProposalTabCanAccessAlgorithm {
 				}
 			return false;
 		}
-
-        private final Logger _log = LoggerFactory.getLogger(ProposalTabCanAccessAlgorithm.class);
-	};
-
+    };
 
 	ProposalTabCanAccessAlgorithm pointsEditAccess = new ProposalTabCanAccessAlgorithm() {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			try {
-				Contest contest = context.getContest(request);
+			Contest contest = context.getContest(request);
 
-				//first, check if user is a team member and if the contest has points activated.
-				if ((contest != null && contest.getDefaultParentPointType() > 0) && (permissions.getIsTeamMember() || permissions.getCanAdminProposal())) {
-					//if yes, check if contest phase allows editing
-					Integer pointsAccessible = ContestClientUtil.getPointsAccessibleForActivePhaseOfContest(contest);
-					return permissions.getCanAdminAll() || (pointsAccessible != null && pointsAccessible >= 2);
-				}
-			} catch (SystemException | PortalException e) {
-				_log.error("can't check if user is allowed to edit points", e);
+			//first, check if user is a team member and if the contest has points activated.
+			if ((contest != null && contest.getDefaultParentPointType() > 0) && (permissions.getIsTeamMember() || permissions.getCanAdminProposal())) {
+				//if yes, check if contest phase allows editing
+				Integer pointsAccessible = ContestClientUtil.getPointsAccessibleForActivePhaseOfContest(contest);
+				return permissions.getCanAdminAll() || (pointsAccessible != null && pointsAccessible >= 2);
 			}
 			return false;
 		}
 
-        private final Logger _log = LoggerFactory.getLogger(ProposalTabCanAccessAlgorithm.class);
 	};
 
 	ProposalTabCanAccessAlgorithm impactViewAccess = new ProposalTabCanAccessAlgorithm() {
@@ -210,24 +191,23 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			try {
-				Contest contest = context.getContest(request);
+			Contest contest = context.getContest(request);
 
-				// Only let team members, IAF fellows or admins edit impact
-				if (contest != null && (
-							contest.getContestTier() == ContestTier.BASIC.getTierType() ||
-							contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType() ||
-							contest.getContestTier() == ContestTier.GLOBAL.getTierType()
-						) && (permissions.getIsTeamMember() || permissions.getCanAdminProposal() || permissions.getCanIAFActions())) {
-					return true;
-				}
-			} catch (SystemException | PortalException e) {
-				_log.error("can't check if user is allowed to edit impact tab", e);
+			final boolean memberCanAccess = permissions.getIsTeamMember()
+					|| permissions.getCanAdminProposal()
+					|| permissions.getCanIAFActions();
+			if (!memberCanAccess || contest == null || contest.getContestTier() == null) {
+				return false;
 			}
-			return false;
+			switch (ContestTier.getContestTierByTierType(contest.getContestTier())) {
+				case BASIC:
+				case REGION_AGGREGATE:
+				case GLOBAL:
+					return true;
+				default:
+					return false;
+			}
 		}
-
-        private final Logger _log = LoggerFactory.getLogger(ProposalTabCanAccessAlgorithm.class);
 	};
 
 }

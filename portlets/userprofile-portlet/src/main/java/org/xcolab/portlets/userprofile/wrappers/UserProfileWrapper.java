@@ -28,7 +28,7 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.proposals.ProposalSupporterClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
@@ -136,7 +136,7 @@ public class UserProfileWrapper implements Serializable {
             userSubscriptions = new UserSubscriptionsWrapper(user);
             supportedProposals.clear();
             userActivities.clear();
-            for (ProposalSupporter ps : ProposalSupporterClientUtil.getProposalSupportersByUserId(user.getId_())) {
+            for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(user.getId_())) {
                 supportedProposals.add(new SupportedProposalWrapper(ps));
             }
 

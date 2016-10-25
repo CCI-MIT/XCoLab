@@ -18,7 +18,10 @@ import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
+import org.xcolab.service.contest.utils.promotion.AutoPromoteHelper;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -31,6 +34,13 @@ public class ContestPhaseController {
 
     @Autowired
     private ContestPhaseTypeDao contestPhaseTypeDao;
+
+    @Autowired
+    private AutoPromoteHelper autoPromoteHelper;
+
+
+    @Autowired
+    private ContestPhaseService contestPhaseService;
 
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestPK,
@@ -45,8 +55,7 @@ public class ContestPhaseController {
     }
 
     @RequestMapping(value = "/contestPhaseRibbonTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestPhaseRibbonType> getContestPhaseRibbonTypes(
-    ) {
+    public List<ContestPhaseRibbonType> getContestPhaseRibbonTypes() {
         return contestPhaseRibbonTypeDao.findByGiven();
     }
 
@@ -83,6 +92,31 @@ public class ContestPhaseController {
             return contestPhaseDao.delete(contestPhasePK);
         }
         throw new NotFoundException();
+    }
+
+    @PutMapping(value = "/contestPhases/{contestPhasePK}/forcePromotionOfProposalInContestPhaseId")
+    public boolean forcePropomotionOfProposalInContestPhaseId(@PathVariable long contestPhasePK,
+                                      @RequestParam Long proposalId) throws NotFoundException {
+
+        if (contestPhaseDao.exists(contestPhasePK)) {
+             contestPhaseService.forcePromotionOfProposalInPhase(proposalId, contestPhasePK);
+            return true;
+        } else {
+            throw new NotFoundException("No ContestPhase with id " + contestPhasePK);
+        }
+    }
+
+
+
+    @GetMapping(value = "/contestPhases/autoPromoteProposals")
+    public Boolean autoPromoteProposals(){
+        Date now = new Date();
+        autoPromoteHelper.setNow(now);
+        autoPromoteHelper.doBasicPromotion();
+        autoPromoteHelper.doJudgingBasedPromotion();
+        autoPromoteHelper.distributeRibbons();
+
+        return true;
     }
 
     @GetMapping(value = "/contestPhaseTypes/{contestPhaseTypeId}")

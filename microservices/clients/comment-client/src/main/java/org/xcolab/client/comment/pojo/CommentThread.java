@@ -31,17 +31,17 @@ public class CommentThread extends AbstractCommentThread {
     private final CategoryClient categoryClient;
 
     public CommentThread() {
-        commentClient = CommentClientUtil.getCommentClient();
-        threadClient = ThreadClientUtil.getThreadClient();
-        categoryClient = CategoryClientUtil.getCategoryClient();
+        commentClient = CommentClientUtil.getClient();
+        threadClient = ThreadClientUtil.getClient();
+        categoryClient = CategoryClientUtil.getClient();
     }
 
     public CommentThread(Long threadId, Long categoryId, Long authorId, String title,
             Timestamp createDate, Timestamp deletedDate, Boolean isQuiet) {
         super(threadId, categoryId, authorId, title, createDate, deletedDate, isQuiet);
-        commentClient = CommentClientUtil.getCommentClient();
-        threadClient = ThreadClientUtil.getThreadClient();
-        categoryClient = CategoryClientUtil.getCategoryClient();
+        commentClient = CommentClientUtil.getClient();
+        threadClient = ThreadClientUtil.getClient();
+        categoryClient = CategoryClientUtil.getClient();
     }
 
     public CommentThread(AbstractCommentThread abstractCommentThread, RestService commentService) {

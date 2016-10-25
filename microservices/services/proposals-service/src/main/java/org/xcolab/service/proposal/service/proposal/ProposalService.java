@@ -282,6 +282,7 @@ public class ProposalService {
     public Contest getLatestProposalContest(Long proposalId) {
         Contest contest = null;
         try {
+            //TODO: this looks very shady
             contest = ProposalClientUtil.getLatestContestInProposal(proposalId);
         } catch (ContestNotFoundException ignored) {
         }

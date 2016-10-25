@@ -53,7 +53,7 @@ public enum ContestPhaseTypeValue {
         throw new NoSuchContestPhaseTypeValueException("Unknown contestPhaseTypeId given: " + typeId);
     }
 
-    public static class NoSuchContestPhaseTypeValueException extends PortalException {
+    public static class NoSuchContestPhaseTypeValueException extends IllegalStateException {
         public NoSuchContestPhaseTypeValueException(String message) {
             super(message);
         }

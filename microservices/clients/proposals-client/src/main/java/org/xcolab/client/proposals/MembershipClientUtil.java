@@ -6,14 +6,13 @@ import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
-public class MembershipRequestClientUtil {
+public class MembershipClientUtil {
 
     private static final RestService proposalService = new RestService("proposals-service");
 
-    private static final MembershipRequestClient client =
-            MembershipRequestClient.fromService(proposalService);
+    private static final MembershipClient client = MembershipClient.fromService(proposalService);
 
-    public static MembershipRequestClient getClient() {
+    public static MembershipClient getClient() {
         return client;
     }
 
@@ -23,8 +22,7 @@ public class MembershipRequestClientUtil {
                 updateAuthorId);
     }
 
-    public static boolean updateMembershipRequest(
-            MembershipRequest membershipRequest) {
+    public static boolean updateMembershipRequest(MembershipRequest membershipRequest) {
         return client.updateMembershipRequest(membershipRequest);
     }
 
@@ -32,19 +30,17 @@ public class MembershipRequestClientUtil {
         return client.hasUserRequestedMembership(proposalId, userId);
     }
 
-    public static List<MembershipRequest> getMembershipRequestsByUser(
-            Long groupId, Long userId) {
+    public static List<MembershipRequest> getMembershipRequestsByUser(Long groupId, Long userId) {
         return client.getMembershipRequestsByUser(groupId, userId);
     }
 
-    public static MembershipRequest getMembershipRequest(
-            long MembershipRequestId) throws MembershipRequestNotFoundException {
+    public static MembershipRequest getMembershipRequest(long MembershipRequestId)
+            throws MembershipRequestNotFoundException {
         return client.getMembershipRequest(MembershipRequestId);
     }
 
     public static void approveMembershipRequest(long proposalId, Long userId,
-            MembershipRequest request, String reply,
-            Long updateAuthorId) {
+            MembershipRequest request, String reply, Long updateAuthorId) {
         client.approveMembershipRequest(proposalId, userId, request, reply, updateAuthorId);
     }
 
@@ -53,8 +49,7 @@ public class MembershipRequestClientUtil {
         return client.addInvitedMembershipRequest(proposalId, userId, comment);
     }
 
-    public static MembershipRequest createMembershipRequest(
-            MembershipRequest membershipRequest) {
+    public static MembershipRequest createMembershipRequest(MembershipRequest membershipRequest) {
         return client.createMembershipRequest(membershipRequest);
     }
 
@@ -63,8 +58,7 @@ public class MembershipRequestClientUtil {
         return client.addRequestedMembershipRequest(proposalId, userId, comment);
     }
 
-    public static List<MembershipRequest> getMembershipRequests(
-            Long proposalId) {
+    public static List<MembershipRequest> getMembershipRequests(Long proposalId) {
         return client.getMembershipRequests(proposalId);
     }
 

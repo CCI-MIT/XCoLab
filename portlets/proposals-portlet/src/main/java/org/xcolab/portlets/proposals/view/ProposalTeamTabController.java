@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
 import javax.portlet.PortletRequest;

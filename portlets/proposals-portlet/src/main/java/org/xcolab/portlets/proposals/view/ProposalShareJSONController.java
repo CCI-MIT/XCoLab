@@ -25,7 +25,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;
 import java.util.ArrayList;

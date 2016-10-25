@@ -21,6 +21,11 @@ public class RefreshingRestService extends RestService {
     }
 
     @Override
+    public RestService withServiceName(String serviceName) {
+        return new RefreshingRestService(serviceName, hostNameAttribute, portAttribute);
+    }
+
+    @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + hostNameAttribute.hashCode();

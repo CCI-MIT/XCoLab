@@ -21,6 +21,18 @@ public class RestService implements HttpEndpoint {
         uriProvider = getBaseUrl(DEFAULT_HOST_NAME, DEFAULT_PORT);
     }
 
+    /**
+     * Creates a new RestService instance that is identical to this one except for the new service name.
+     *
+     * Has to be overridden in child classes to copy all other internal state, if present.
+     *
+     * @param serviceName The new service name
+     * @return a copy of this instance with a different service name
+     */
+    public RestService withServiceName(String serviceName) {
+        return new RestService(serviceName);
+    }
+
     @Override
     public UriProvider getBaseUrl() {
         return uriProvider;

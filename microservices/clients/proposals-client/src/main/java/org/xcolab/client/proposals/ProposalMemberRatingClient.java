@@ -2,13 +2,18 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporterDto;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVoteDto;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -16,23 +21,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class ProposalSupporterClient {
+public final class ProposalMemberRatingClient {
 
-    private static final Map<RestService, ProposalSupporterClient> instances = new HashMap<>();
+    private static final Map<RestService, ProposalMemberRatingClient> instances = new HashMap<>();
 
     private final RestService proposalService;
     private final RestResource1<ProposalSupporterDto, Long> proposalSupporterResource;
+    private final RestResource<ProposalVoteDto, Long> proposalVoteResource;
 
-    private ProposalSupporterClient(RestService proposalService) {
+    private ProposalMemberRatingClient(RestService proposalService) {
         proposalSupporterResource = new RestResource1<>(proposalService,
                 "proposalSupporters", ProposalSupporterDto.TYPES);
+        proposalVoteResource = new RestResource1<>(proposalService,
+                "proposalVotes", ProposalVoteDto.TYPES);
         this.proposalService = proposalService;
     }
 
-    public static ProposalSupporterClient fromService(RestService proposalService) {
-        ProposalSupporterClient instance = instances.get(proposalService);
+    public static ProposalMemberRatingClient fromService(RestService proposalService) {
+        ProposalMemberRatingClient instance = instances.get(proposalService);
         if (instance == null) {
-            instance = new ProposalSupporterClient(proposalService);
+            instance = new ProposalMemberRatingClient(proposalService);
             instances.put(proposalService, instance);
         }
         return instance;
@@ -103,5 +111,62 @@ public final class ProposalSupporterClient {
                 .queryParam("proposalId", proposalId)
                 .queryParam("memberId", memberId)
                 .delete();
+    }
+
+    public Integer countProposalVotesInContestPhase(Long contestPhaseId) {
+        try {
+            return proposalVoteResource.<Proposal, Integer>service("count", Integer.class)
+                    .optionalQueryParam("contestPhaseId", contestPhaseId)
+                    .withCache(CacheKeys.withClass(Proposal.class)
+                            .withParameter("contestPhaseId", contestPhaseId)
+                            .asCount(), CacheRetention.REQUEST)
+                    .getChecked();
+        } catch (EntityNotFoundException e) {
+            return 0;
+        }
+    }
+
+    public Integer countProposalVotesInContestPhaseProposalId(Long proposalId,
+            Long contestPhaseId) {
+        return proposalVoteResource.service("count", Integer.class)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("proposalId", proposalId)
+                .get();
+    }
+
+    public Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
+        return proposalVoteResource.service("hasUserVoted", Boolean.class)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("memberId", memberId)
+                .optionalQueryParam("proposalId", proposalId)
+                .get();
+    }
+    public  Boolean hasUserVoted(Long contestPhaseId, Long memberId) {
+        return proposalVoteResource.service("hasUserVoted", Boolean.class)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("memberId", memberId)
+                .get();
+    }
+
+
+
+    public List<ProposalVote> getProposalVotes(Long contestPhaseId, Long proposalId, Long userId) {
+        return DtoUtil.toPojos(proposalVoteResource.list()
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("userId", userId)
+                .execute(), proposalService);
+    }
+
+    public boolean updateProposalVote(ProposalVote proposalVote) {
+        return proposalVoteResource.service("updateVote", Boolean.class)
+                .post(proposalVote);
+    }
+
+    public ProposalVote getProposalVoteByProposalIdUserId(Long proposalId, Long userId) {
+        return proposalVoteResource.service("getProposalVoteByProposalIdUserId", ProposalVote.class)
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("userId", userId)
+                .get();
     }
 }

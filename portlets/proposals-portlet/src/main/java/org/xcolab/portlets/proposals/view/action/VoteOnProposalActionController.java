@@ -1,6 +1,14 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.ext.portlet.service.ProposalVoteLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
@@ -13,26 +21,19 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalVoteClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.emailnotification.proposal.ProposalVoteNotification;
@@ -69,27 +70,27 @@ public class VoteOnProposalActionController {
         boolean hasVoted = false;
         final Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
-        final User user = proposalsContext.getUser(request);
         final Member member = proposalsContext.getMember(request);
         if (proposalsContext.getPermissions(request).getCanVote()) {
             long proposalId = proposal.getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-            long userId = user.getUserId();
-            if (ProposalLocalServiceUtil.hasUserVoted(proposalId, contestPhaseId, userId)) {
+            long memberId = member.getUserId();
+            if (ProposalLocalServiceUtil.hasUserVoted(proposalId, contestPhaseId, memberId)) {
                 // User has voted for this proposal and would like to retract the vote
-                ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
+                ProposalLocalServiceUtil.removeVote(contestPhaseId, memberId);
             } else {
-                if (ProposalVoteLocalServiceUtil.hasUserVoted(contestPhaseId, userId)) {
+                if (ProposalVoteLocalServiceUtil.hasUserVoted(contestPhaseId, memberId)) {
                     // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
-                    ProposalLocalServiceUtil.removeVote(contestPhaseId, userId);
+                    ProposalLocalServiceUtil.removeVote(contestPhaseId, memberId);
                 }
                 ServiceContext serviceContext = new ServiceContext();
                 ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
                 serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
-                ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, userId);
+                ProposalLocalServiceUtil.addVote(proposalId, contestPhaseId, memberId);
 
-                final boolean voteIsValid = validateVote(user, member, proposal, contest, serviceContext);
+                final boolean voteIsValid = validateVote(proposalsContext.getUser(request),
+                        member, proposal, contest, serviceContext);
                 if (voteIsValid) {
                     try {
                         org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
@@ -101,14 +102,14 @@ public class VoteOnProposalActionController {
                 }
 
                 //publish event per contestPhaseId to allow voting on exactly one proposal per contest(phase)
-                AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY + contestPhaseId,
+                AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
                         VOTE_ANALYTICS_CATEGORY,
                         VOTE_ANALYTICS_ACTION,
                         VOTE_ANALYTICS_LABEL,
                         1);
             }
         } else {
-            if (user == null || user.getUserId() == 10115) {
+            if (member == null || member.getUserId() == 10115) {
                 /* User is not logged in - don't count vote and let user log in*/
                 request.setAttribute("promptLoginWindow", "true");
                 return;
@@ -125,18 +126,18 @@ public class VoteOnProposalActionController {
         List<User> usersWithSharedIP = Xcolab_UserLocalServiceUtil.findUsersByLoginIP(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
         if (!usersWithSharedIP.isEmpty()) {
-            final ProposalVote vote = ProposalVoteClientUtil
-                    .getProposalVoteByProposalIdUserId(proposal.getProposalId(), user.getUserId());
+            final ProposalVote vote = ProposalMemberRatingClientUtil
+                    .getProposalVoteByProposalIdUserId(proposal.getProposalId(), member.getUserId());
             int recentVotesFromSharedIP = 0;
             for (User otherUser : usersWithSharedIP) {
-                    final ProposalVote otherVote = ProposalVoteClientUtil
+                    final ProposalVote otherVote = ProposalMemberRatingClientUtil
                             .getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
                     //check if vote is less than 12 hours old
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
                         recentVotesFromSharedIP++;
                     }
-                    if (StringUtils.getLevenshteinDistance(user.getFirstName(), otherUser.getFirstName()) < 3
-                            && StringUtils.getLevenshteinDistance(user.getLastName(), otherUser.getLastName()) < 3) {
+                    if (StringUtils.getLevenshteinDistance(member.getFirstName(), otherUser.getFirstName()) < 3
+                            && StringUtils.getLevenshteinDistance(member.getLastName(), otherUser.getLastName()) < 3) {
                         vote.setIsValid(false);
                         break;
                     }
@@ -146,7 +147,7 @@ public class VoteOnProposalActionController {
                 vote.setIsValid(false);
                 sendConfirmationMail(vote, proposal, contest, member, serviceContext);
             }
-            ProposalVoteClientUtil.updateProposalVote(vote);
+            ProposalMemberRatingClientUtil.updateProposalVote(vote);
             return vote.getIsValid();
         }
         return true;
@@ -174,13 +175,14 @@ public class VoteOnProposalActionController {
                               @RequestParam String confirmationToken) {
         boolean success = false;
         try {
-            ProposalVote vote = ProposalVoteClientUtil
+            ProposalVote vote = ProposalMemberRatingClientUtil
                     .getProposalVoteByProposalIdUserId(proposalId, userId);
             if (!vote.getConfirmationToken().isEmpty()
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
-                ProposalVoteClientUtil.updateProposalVote(vote);
-                ProposalWrapper proposal = new ProposalWrapper(ProposalClientUtil.getProposal(proposalId));
+                ProposalMemberRatingClientUtil.updateProposalVote(vote);
+                ProposalWrapper proposal = new ProposalWrapper(
+                        ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId));
                 model.addAttribute("proposal", proposal);
                 success = true;
             } else {

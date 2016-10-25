@@ -21,11 +21,8 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalUnversionedAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
@@ -36,7 +33,8 @@ import org.xcolab.portlets.proposals.impact.ProposalImpactSeries;
 import org.xcolab.portlets.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.html.HtmlUtil;
 
@@ -138,12 +136,8 @@ public class ProposalImpactJSONController {
 
         JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
         ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), focusArea, requestJson);
-        try {
-            Member member = MembersClient.getMember(proposalsContext.getUser(request).getUserId());
-            impactSeries.persistWithAuthor(member);
-        } catch (MemberNotFoundException ignored) {
-
-        }
+        Member member = proposalsContext.getMember(request);
+        impactSeries.persistWithAuthor(member);
 
         responseJSON.put("success", true);
         response.getPortletOutputStream().write(responseJSON.toString().getBytes());
@@ -170,7 +164,7 @@ public class ProposalImpactJSONController {
 
         for (ProposalAttribute proposalAttribute : ProposalAttributeClientUtil
                 .getImpactProposalAttributes(proposal, focusArea)) {
-            ProposalAttributeClientUtil.deleteProposalAttribute(proposalAttribute.getId_());
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient().deleteProposalAttribute(proposalAttribute.getId_());
         }
 
         responseJSON.put("success", true);
@@ -200,12 +194,9 @@ public class ProposalImpactJSONController {
         try {
             ProposalImpactDataParser dataParser = new ProposalImpactDataParser(requestJson.getString("data"), proposal, contest);
             ProposalImpactSeriesList impactSeriesList = dataParser.parse();
-            try {
-                Member member = MembersClient.getMember(proposalsContext.getUser(request).getUserId());
-                impactSeriesList.persistImpactSeriesesWithAuthor(member);
-            }catch (MemberNotFoundException ignored){
 
-            }
+            Member member = proposalsContext.getMember(request);
+            impactSeriesList.persistImpactSeriesesWithAuthor(member);
 
             responseJSON.put("success", true);
         } catch(ProposalImpactDataParserException e) {
@@ -223,32 +214,29 @@ public class ProposalImpactJSONController {
                 @RequestParam(required = false) String impactIAFComment)
             throws IOException, SystemException, PortalException {
 
-
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
-        if ( !permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
+        if (!permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
             responseJSON.put("success", false);
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;
         }
         ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalUnversionedAttributeClientUtil
-
-                .
-                getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
+        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
+                .getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
 
         if (impactAuthorComment != null || impactIAFComment != null) {
             if(impactAuthorComment != null) {
 
-                ProposalUnversionedAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(),
+                ProposalsContextUtil.getClients(request).getProposalAttributeClient().createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(),
                         HtmlUtil.cleanAll(impactAuthorComment),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
                         proposal.getProposalId());
             }
             if (impactIAFComment != null) {
-                ProposalUnversionedAttributeClientUtil.createOrUpdateProposalUnversionedAttribute(proposalsContext.getUser(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
+                ProposalsContextUtil.getClients(request).getProposalAttributeClient().createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(), HtmlUtil.cleanAll(impactIAFComment),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
                         proposal.getProposalId());
             }

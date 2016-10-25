@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -15,6 +15,7 @@ import org.xcolab.client.proposals.pojo.ProposalVersionDto;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -38,14 +39,20 @@ public final class ProposalClient {
     private final RestResource1<ProposalVersionDto, Long> proposalVersionResource;
     private final RestResource1<ProposalReferenceDto, Long> proposalReferenceResource;
 
+    //TODO: methods that use this should be in the service!
+    private final ContestClient contestClient;
+
     private ProposalClient(RestService proposalService) {
+        this.proposalService = proposalService;
+
         proposalResource = new RestResource1<>(
                 proposalService, "proposals", ProposalDto.TYPES);
         proposalVersionResource = new RestResource1<>(proposalService,
                 "proposalVersions", ProposalVersionDto.TYPES);
         proposalReferenceResource = new RestResource1<>(proposalService,
                 "proposalReference", ProposalReferenceDto.TYPES);
-        this.proposalService = proposalService;
+
+        contestClient = ContestClient.fromService(proposalService.withServiceName("contest-service"));
     }
 
     public static ProposalClient fromService(RestService proposalService) {
@@ -87,7 +94,7 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getProposalsInContest(Long contestPK) {
-        ContestPhase cp = ContestClientUtil.getActivePhase(contestPK);
+        ContestPhase cp = contestClient.getActivePhase(contestPK);
 
         return listProposals(0, Integer.MAX_VALUE, null, true, cp.getContestPhasePK(), null);
     }
@@ -256,17 +263,18 @@ public final class ProposalClient {
     public ContestType getContestTypeFromProposalId(Long proposalId) {
         try {
             Contest contest = getCurrentContestForProposal(proposalId);
-            return ContestClientUtil.getContestType(contest.getContestTypeId());
-        } catch (ContestNotFoundException ignored) {
-            return null;
+            return contestClient.getContestType(contest.getContestTypeId());
+        } catch (ContestNotFoundException e) {
+            throw ReferenceResolutionException.toObject(Contest.class, "")
+                    .fromObject(Proposal.class, proposalId);
         }
     }
 
     public Contest getCurrentContestForProposal(Long proposalId) throws ContestNotFoundException {
 
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-        return ContestClientUtil.getContest(contestPhase.getContestPK());
+        ContestPhase contestPhase = contestClient.getContestPhase(contestPhaseId);
+        return contestClient.getContest(contestPhase.getContestPK());
 
     }
 
@@ -276,14 +284,14 @@ public final class ProposalClient {
     }
 
     public Contest getLatestContestInProposal(Long proposalId) throws ContestNotFoundException {
-        return ContestClientUtil
+        return contestClient
                 .getContest(getLatestContestPhaseInContest(proposalId).getContestPK());
     }
 
 
     public ContestPhase getLatestContestPhaseInContest(Long proposalId) {
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-        return ContestClientUtil.getContestPhase(contestPhaseId);
+        return contestClient.getContestPhase(contestPhaseId);
     }
 
 

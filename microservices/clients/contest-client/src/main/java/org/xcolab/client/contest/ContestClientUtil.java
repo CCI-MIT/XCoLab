@@ -21,7 +21,7 @@ public final class ContestClientUtil {
     private ContestClientUtil() {
     }
 
-    public static ContestClient getContestClient() {
+    public static ContestClient getClient() {
         return contestClient;
     }
 
@@ -281,5 +281,7 @@ public final class ContestClientUtil {
         return contestClient.getContestCollectionCard(id);
     }
 
-
+    public static void autoPromoteProposals() {
+        contestClient.autoPromoteProposals();
+    }
 }

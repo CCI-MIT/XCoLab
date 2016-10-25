@@ -82,7 +82,10 @@ public class OntologyController {
 
     @RequestMapping(value = "/focusAreas/{focusAreaId}", method = RequestMethod.GET)
     public FocusArea getFocusArea(@PathVariable("focusAreaId") Long focusAreaId) throws NotFoundException {
-        if (focusAreaId == null || focusAreaId == 0) {
+        if(focusAreaId == 0 ){
+            focusAreaId = 2l; //This is done because a lot of old contests use focus area id = 0 that the auto increment no longer allows.
+        }
+        if (focusAreaId == null ) {
             throw new NotFoundException("No focusAreaId given");
         } else {
             return focusAreaDao.get(focusAreaId);

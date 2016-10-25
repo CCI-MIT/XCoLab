@@ -3,7 +3,7 @@ package org.xcolab.portlets.proposals.view.interceptors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
 
 import javax.portlet.RenderRequest;

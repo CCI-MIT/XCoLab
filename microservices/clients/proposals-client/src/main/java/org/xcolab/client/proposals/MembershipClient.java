@@ -24,23 +24,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MembershipRequestClient {
+public class MembershipClient {
 
-    private static final Map<RestService, MembershipRequestClient> instances = new HashMap<>();
+    private static final Map<RestService, MembershipClient> instances = new HashMap<>();
 
     private final RestService proposalService;
     private final RestResource1<MembershipRequestDto, Long> membershipRequestResource;
 
-    private MembershipRequestClient(RestService proposalService) {
+    private final ProposalClient proposalClient;
+
+    private MembershipClient(RestService proposalService) {
         membershipRequestResource = new RestResource1<>(proposalService,
                 "membershipRequests", MembershipRequestDto.TYPES);
+        proposalClient = ProposalClient.fromService(proposalService);
         this.proposalService = proposalService;
     }
 
-    public static MembershipRequestClient fromService(RestService proposalService) {
-        MembershipRequestClient instance = instances.get(proposalService);
+    public static MembershipClient fromService(RestService proposalService) {
+        MembershipClient instance = instances.get(proposalService);
         if (instance == null) {
-            instance = new MembershipRequestClient(proposalService);
+            instance = new MembershipClient(proposalService);
             instances.put(proposalService, instance);
         }
         return instance;
@@ -71,7 +74,7 @@ public class MembershipRequestClient {
 
     public Boolean hasUserRequestedMembership(Long proposalId, Long userId) {
         try {
-            Long groupId = ProposalClientUtil.getProposal(proposalId).getGroupId();
+            Long groupId = proposalClient.getProposal(proposalId).getGroupId();
             List<MembershipRequest> userRequests = getMembershipRequestsByUser(groupId, userId);
             if (userRequests != null && userRequests.size() > 0) {
                 return true;
@@ -137,7 +140,7 @@ public class MembershipRequestClient {
     private MembershipRequest createMembershipRequest(Long proposalId, Long userId, String comment,
             Integer status) {
         try {
-            Long groupId = ProposalClientUtil.getProposal(proposalId).getGroupId();
+            Long groupId = proposalClient.getProposal(proposalId).getGroupId();
 
             MembershipRequest membershipRequest = new MembershipRequest();
             membershipRequest.setComments(comment == null ? "" : comment);
@@ -167,7 +170,7 @@ public class MembershipRequestClient {
     public List<MembershipRequest> getMembershipRequests(Long proposalId) {
 
         try {
-            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+            Proposal proposal = proposalClient.getProposal(proposalId);
             List<MembershipRequest> invited = getMembershipRequestsByStatus(proposal.getGroupId(),
                     MembershipRequestStatus.STATUS_PENDING_INVITED);
             List<MembershipRequest> requested = getMembershipRequestsByStatus(proposal.getGroupId(),

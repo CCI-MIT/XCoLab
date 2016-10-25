@@ -2,8 +2,6 @@ package org.xcolab.portlets.proposals.utils;
 
 import jodd.util.StringUtil;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -37,13 +35,7 @@ public enum ContestsColumn {
 
         @Override
         public int compare(ContestWrapper o1, ContestWrapper o2) {
-
-            try {
-                return (int) (o1.getVotesCount() - o2.getVotesCount());
-            } catch (PortalException | SystemException e) {
-                _log.error("Can't get votes count", e);
-            }
-            return 0;
+            return (int) (o1.getVotesCount() - o2.getVotesCount());
         }
     }),
     WHAT(new Comparator<ContestWrapper>() {

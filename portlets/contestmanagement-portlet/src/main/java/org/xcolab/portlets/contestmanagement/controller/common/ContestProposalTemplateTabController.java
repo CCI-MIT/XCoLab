@@ -18,7 +18,7 @@ import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.proposals.PointsDistributionConfigurationClientUtil;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.enums.ContestTier;
@@ -128,7 +128,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     private List<LabelValue> getPointTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         selectItems.add(new LabelValue(0L, "Default"));
-        for (PointType pointType : PointsDistributionConfigurationClientUtil.getAllPointTypes()) {
+        for (PointType pointType : PointsClientUtil.getAllPointTypes()) {
             if (pointType.getDistributionStrategy()
                     .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
                 selectItems.add(new LabelValue(pointType.getId_(),

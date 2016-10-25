@@ -1,5 +1,8 @@
 package org.xcolab.service.contest.service.contest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,17 +14,26 @@ import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.domain.ontologyterm.OntologyTermDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
+import org.xcolab.service.contest.utils.promotion.enums.ContestPhaseTypeValue;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Service
 public class ContestService {
+
+    private static final Logger _log = LoggerFactory.getLogger(ContestService.class);
 
     private final ContestDao contestDao;
 
@@ -131,15 +143,59 @@ public class ContestService {
     public int getNumberOfContestsByOntologyTerm(Long ontologyTerm) {
         int count = 0;
         if (ontologyTerm != null) {
-            List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(
-                    Arrays.asList(ontologyTerm));
-            for(Long areaId : focusAreaOntologyTermsIds) {
-                count +=  contestDao.countByGiven(null,null,null,null,null,null,areaId,null,null,null);
+            List<Long> focusAreaOntologyTermsIds =
+                    ontologyService.getFocusAreasIdForOntologyTermIds(
+                            Arrays.asList(ontologyTerm));
+            for (Long areaId : focusAreaOntologyTermsIds) {
+                count += contestDao
+                        .countByGiven(null, null, null, null, null, null, areaId, null, null, null);
             }
         } else {
-            count += contestDao.countByGiven(null,null,null,null,null,null,null,null,null,null);
+            count += contestDao
+                    .countByGiven(null, null, null, null, null, null, null, null, null, null);
         }
         return count;
+    }
+
+    private Integer getYearFromDate(Date date) {
+        GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Eastern"));
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public void addContestYearSuffixToContest(Contest contest, boolean checkForCompleted) {
+        ContestPhase latestPhase = getActiveOrLastPhase(contest.getContestPK());
+        String[] contestNameParts = contest.getContestShortName().split(" ");
+        _log.info("addContestYearSuffixToContest: " + contest.getContestPK());
+        // Is in completed phase and inactive? - or is flag set to false?
+        boolean isCompleted = ((contestNameParts).length>0 &&
+                (latestPhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
+                        latestPhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId()));
+        if (!checkForCompleted || isCompleted) {
+            _log.info("Contest phase type : " + latestPhase.getContestPhaseType());
+
+            String lastNamePart = contestNameParts[contestNameParts.length - 1];
+            Integer phaseEndYear = getYearFromDate(latestPhase.getPhaseStartDate());
+
+            String newContestShortName;
+            try {
+                final int suffixYear = Integer.parseInt(lastNamePart);
+
+                // Same year suffix detected - skip contest
+                if (suffixYear == phaseEndYear) {
+                    return;
+                }
+
+                // Unlikely event that a suffix has been created but the phase end date has changed - adapt to new suffix
+                contestNameParts[contestNameParts.length - 1] = phaseEndYear.toString();
+                newContestShortName = StringUtils.join(contestNameParts, " ");
+            } catch (NumberFormatException e) {
+                // No year suffix detected - add new one
+                newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
+            }
+            contest.setContestShortName(newContestShortName);
+            contestDao.update(contest);
+        }
     }
 
 }

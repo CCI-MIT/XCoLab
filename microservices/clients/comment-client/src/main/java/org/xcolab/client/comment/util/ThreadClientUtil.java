@@ -46,7 +46,7 @@ public final class ThreadClientUtil {
         return threadClient.getLastActivityAuthorId(threadId);
     }
 
-    public static ThreadClient getThreadClient() {
+    public static ThreadClient getClient() {
         return threadClient;
     }
 }

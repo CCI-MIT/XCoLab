@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;
 import java.net.URLDecoder;

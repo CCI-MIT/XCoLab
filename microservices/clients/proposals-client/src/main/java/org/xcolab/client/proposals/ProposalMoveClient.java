@@ -14,23 +14,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class ProposalMoveHistoryClient {
+public final class ProposalMoveClient {
 
-    private static final Map<RestService, ProposalMoveHistoryClient> instances = new HashMap<>();
+    private static final Map<RestService, ProposalMoveClient> instances = new HashMap<>();
 
     private final RestService proposalService;
     private final RestResource1<ProposalMoveHistoryDto, Long> proposalMoveHistoryResource;
 
-    private ProposalMoveHistoryClient(RestService proposalService) {
+    private ProposalMoveClient(RestService proposalService) {
         proposalMoveHistoryResource = new RestResource1<>(proposalService,
                 "proposalMoveHistories", ProposalMoveHistoryDto.TYPES);
         this.proposalService = proposalService;
     }
 
-    public static ProposalMoveHistoryClient fromService(RestService proposalService) {
-        ProposalMoveHistoryClient instance = instances.get(proposalService);
+    public static ProposalMoveClient fromService(RestService proposalService) {
+        ProposalMoveClient instance = instances.get(proposalService);
         if (instance == null) {
-            instance = new ProposalMoveHistoryClient(proposalService);
+            instance = new ProposalMoveClient(proposalService);
             instances.put(proposalService, instance);
         }
         return instance;

@@ -6,6 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -159,6 +164,9 @@ public class ContestsIndexController extends BaseProposalsController {
             }
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
         }
+        boolean showContestManagementLink = PermissionsClient
+                .canAdminAll(proposalsContext.getMemberId(request)) ;
+        model.addAttribute("showContestManagementLink", showContestManagementLink);
 
 
 
@@ -280,9 +288,9 @@ public class ContestsIndexController extends BaseProposalsController {
 
         //PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
 
-        boolean showContestManagementLink = PermissionsClient
-                .canAdminAll(proposalsContext.getUser(request).getUserId()) ; //permissionChecker.isOmniadmin();
-        model.addAttribute("showContestManagementLink", showContestManagementLink);
+        //boolean showContestManagementLink = PermissionsClient
+          //      .canAdminAll(proposalsContext.getUser(request).getUserId()) ; //permissionChecker.isOmniadmin();
+        //model.addAttribute("showContestManagementLink", showContestManagementLink);
 
         model.addAttribute("showContestDisplayOptions",
                 ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());

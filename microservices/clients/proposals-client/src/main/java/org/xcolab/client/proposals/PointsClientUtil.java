@@ -6,13 +6,13 @@ import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
-public final class PointsDistributionConfigurationClientUtil {
+public final class PointsClientUtil {
     private static final RestService proposalService = new RestService("proposals-service");
 
-    private static final PointsDistributionConfigurationClient client
-            = PointsDistributionConfigurationClient.fromService(proposalService);
+    private static final PointsClient client
+            = PointsClient.fromService(proposalService);
 
-    public static PointsDistributionConfigurationClient getClient() {
+    public static PointsClient getClient() {
         return client;
     }
 

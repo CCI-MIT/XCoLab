@@ -1,27 +1,29 @@
 package org.xcolab.portlets.proposals.view.action;
 
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalSupporterClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
+
+import java.io.IOException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("view")
@@ -42,26 +44,26 @@ public class SupportProposalActionController {
             throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
         
         if (proposalsContext.getPermissions(request).getCanSupportProposal()) {
-            long userId = proposalsContext.getUser(request).getUserId();
+            long memberId = proposalsContext.getMember(request).getUserId();
             long proposalId = proposalsContext.getProposal(request).getProposalId();
 
-            if (ProposalSupporterClientUtil.isMemberProposalSupporter(proposalId, userId)) {
-                ProposalSupporterClientUtil.removeProposalSupporter(proposalId, userId);
+            if (ProposalMemberRatingClientUtil.isMemberProposalSupporter(proposalId, memberId)) {
+                ProposalMemberRatingClientUtil.removeProposalSupporter(proposalId, memberId);
             }
             else {
-                ProposalSupporterClientUtil.addProposalSupporter(proposalId, userId);
-                int supportedCount = ProposalSupporterClientUtil.getProposalSupportersCount(userId);
+                ProposalMemberRatingClientUtil.addProposalSupporter(proposalId, memberId);
+                int supportedCount = ProposalMemberRatingClientUtil.getProposalSupportersCount(memberId);
                 if (supportedCount > 0) {
                     int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(supportedCount);
-                    AnalyticsUtil.publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue,
+                    AnalyticsUtil.publishEvent(request, memberId, SUPPORT_ANALYTICS_KEY + analyticsValue,
             			SUPPORT_ANALYTICS_CATEGORY,
             			SUPPORT_ANALYTICS_ACTION,
             			SUPPORT_ANALYTICS_LABEL,
             			analyticsValue);
                 }
                 try {
-                    Contest contest = ProposalClientUtil.getLatestContestInProposal(proposalId);
-                    SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
+                    Contest contest = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestInProposal(proposalId);
+                    SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
                 }catch (ContestNotFoundException ignore){
 
                 }

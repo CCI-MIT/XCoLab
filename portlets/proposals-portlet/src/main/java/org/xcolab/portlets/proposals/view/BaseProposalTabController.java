@@ -7,11 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.portlets.proposals.utils.ProposalsContext;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
@@ -55,13 +54,14 @@ public class BaseProposalTabController extends BaseProposalsController {
 
         final ContestWrapper contestWrapped = proposalsContext.getContestWrapped(request);
         final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
+        final ProposalClient proposalClient = proposalsContext.getClients(request).getProposalClient();
 
         String pageTitle = contestWrapped.getContestShortName();
         String pageSubTitle = proposalWrapped.getName();
         String pageDescription = proposalWrapped.getPitch();
         
         if (pageSubTitle == null || StringUtils.isBlank(pageSubTitle)) {
-            final ContestType contestType = ProposalClientUtil.getContestTypeFromProposalId(proposalWrapped.getProposalId());
+            final ContestType contestType = proposalClient.getContestTypeFromProposalId(proposalWrapped.getProposalId());
             pageSubTitle = contestType.getProposalName() + " for " + contestWrapped.getContestShortName();
         }
 
@@ -83,6 +83,7 @@ public class BaseProposalTabController extends BaseProposalsController {
                         + proposalsContext.getProposalWrapped(request).getName()
                         + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return ThreadClientUtil.createThread(thread).getThreadId();
+        return proposalsContext.getClients(request).getThreadClient()
+                .createThread(thread).getThreadId();
     }
 }
