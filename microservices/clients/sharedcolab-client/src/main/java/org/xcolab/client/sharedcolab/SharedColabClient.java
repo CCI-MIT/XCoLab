@@ -2,6 +2,7 @@ package org.xcolab.client.sharedcolab;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException;
+import org.xcolab.client.sharedcolab.pojo.Contest;
 import org.xcolab.client.sharedcolab.pojo.Member;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestResource;
@@ -23,6 +24,9 @@ public class SharedColabClient {
     private static final RestResource<Member, Long> partnerMemberResource = new RestResource1<>(
             partnerMemberService, "members", Member.TYPES);
 
+    private static final RestResource<Contest, Long> partnerContestResource = new RestResource1<>(
+            partnerMemberService, "contests", Contest.TYPES);
+
     private static final ServiceResource sharedColabResource = new ServiceResource1(
             sharedColabService, "members");
 
@@ -42,6 +46,15 @@ public class SharedColabClient {
         return sharedColabResource.service("retrieveSharedId", Long.class)
                 .queryParam("email", email)
                 .queryParam("screenName", screenName)
+                .queryParam("colabOrigin", colabName)
+                .post();
+    }
+
+
+
+    public static Long retrieveContestSharedId(String sharedContestName, String colabName) {
+        return partnerContestResource.service("retrieveSharedId", Long.class)
+                .queryParam("sharedContestName", sharedContestName)
                 .queryParam("colabOrigin", colabName)
                 .post();
     }
