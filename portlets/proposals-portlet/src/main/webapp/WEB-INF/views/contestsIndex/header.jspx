@@ -91,17 +91,6 @@
 			<a href="${changeLocationRootURL}" class=" ${ontologySpaceId == 104 ? 'selected' : ''}">
 				By location
 			</a>
-			<br/>
-			<div class="c-arrow ${ontologySpaceId == 0 ? 'selected' : ''}">
-				<jsp:text />
-			</div>
-			<div class="c-arrow ${ontologySpaceId == 103 ? 'selected' : ''}">
-				<jsp:text />
-			</div>
-			<div class="c-arrow ${ontologySpaceId == 104 ? 'selected' : ''}">
-				<jsp:text />
-			</div>
-
 			<c:if test="${showFilter}">
 				<div class="filter" style="position: relative;">
 					<portlet:renderURL var="filterURL" />
@@ -120,6 +109,16 @@
 					</form>
 				</div>
 			</c:if>
+			<br/>
+			<div class="c-arrow ${ontologySpaceId == 0 ? 'selected' : ''}">
+				<jsp:text />
+			</div>
+			<div class="c-arrow ${ontologySpaceId == 103 ? 'selected' : ''}">
+				<jsp:text />
+			</div>
+			<div class="c-arrow ${ontologySpaceId == 104 ? 'selected' : ''}">
+				<jsp:text />
+			</div>
 
 		</div>
 		<c:if test="${not showOnlyFeatured}">
