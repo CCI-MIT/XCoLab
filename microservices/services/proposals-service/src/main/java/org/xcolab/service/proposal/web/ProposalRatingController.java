@@ -73,7 +73,7 @@ public class ProposalRatingController {
         }
     }
 
-    @RequestMapping(value = "/proposalRatingTypes/")
+    @RequestMapping(value = "/proposalRatingTypes")
     public List<ProposalRatingType> getProposalRatingTypes(@RequestParam("judgeType") Integer judgeType) throws NotFoundException {
         return proposalRatingTypeDao.findByGiven(judgeType);
     }
