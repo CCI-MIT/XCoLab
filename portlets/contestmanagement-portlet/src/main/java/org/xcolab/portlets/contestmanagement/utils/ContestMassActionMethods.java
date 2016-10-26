@@ -8,7 +8,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -26,17 +25,12 @@ import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.mail.internet.AddressException;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 public class ContestMassActionMethods {
 
@@ -135,24 +129,32 @@ public class ContestMassActionMethods {
         ContestLocalServiceUtil.deleteContest(contestId);
     }
 
-    public static void deleteContest(List<Long> contestList, Object deletePhasesObj, PortletRequest request)
+    public static void deleteContest(List<Long> contestList, Object actionConfirmed, PortletRequest request)
             throws PortalException, SystemException, MassActionRequiresConfirmationException {
-        Boolean deletePhases = (Boolean) deletePhasesObj;
-        Boolean showContestPhaseDeleteConfirmation = false;
-        for (Long contestId : contestList) {
-            List<ContestPhase> contestPhases =
-                    ContestClientUtil.getAllContestPhases(contestId);
-            if (!contestPhases.isEmpty()) {
-                if (deletePhases) {
-                    deleteContestAndPhases(contestId);
-                } else {
-                    showContestPhaseDeleteConfirmation = true;
-                }
-            } else {
+        if((Boolean) actionConfirmed) {
+            for (Long contestId : contestList) {
                 ContestLocalServiceUtil.deleteContest(contestId);
             }
         }
-        if (showContestPhaseDeleteConfirmation) {
+        else {
+            throw new MassActionRequiresConfirmationException();
+        }
+    }
+
+    public static void deleteContestwithPhases(List<Long> contestList, Object actionConfirmed, PortletRequest request)
+            throws PortalException, SystemException, MassActionRequiresConfirmationException {
+        if((Boolean) actionConfirmed) {
+            for (Long contestId : contestList) {
+                List<ContestPhase> contestPhases =
+                        ContestClientUtil.getAllContestPhases(contestId);
+                if (!contestPhases.isEmpty()) {
+                    deleteContestAndPhases(contestId);
+                } else {
+                    ContestLocalServiceUtil.deleteContest(contestId);
+                }
+            }
+        }
+        else {
             throw new MassActionRequiresConfirmationException();
         }
     }
