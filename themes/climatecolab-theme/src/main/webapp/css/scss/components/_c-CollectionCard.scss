@@ -5,8 +5,16 @@ $c-CollectionCard__background: white !default;
 $c-CollectionCard__border: 1px solid $t-Color__grey--light !default;
 $c-CollectionCard__border__radius: 8px !default;
 $c-CollectionCard__border__bottom: null !default;
+$c-CollectionCard__shadow--hover: 0 0 3px 3px $t-Color__grey--light;
+$c-CollectionCard__background__container__shadow--hover: $c-CollectionCard__shadow--hover;
+$c-CollectionCard__circle__background__color: $t-Color__primary;
+$c-CollectionCard__circle__textColor: white;
+$c-CollectionCard__separator__border-bottom: 2px solid $t-Color__grey--lightest;
+$c-CollectionCard__text__parent__title__textColor: black;
+$c-CollectionCard__text__textColor:  $t-Color__grey--dark;
+$c-CollectionCard__contests__tag__textColor: $t-Color__grey--medium;
 
-.c-CollectionCard--background-container {
+.c-CollectionCard__background__container {
   width: 200px;
   background-color: $c-CollectionCard__background;
   margin-bottom: 24px;
@@ -16,13 +24,13 @@ $c-CollectionCard__border__bottom: null !default;
   margin-right: 35px;
   border: $c-CollectionCard__border;
   &:hover {
-    box-shadow: 0 0 3px 3px $t-Color__grey--light;
+    box-shadow: $c-CollectionCard__background__container__shadow--hover;
   }
   @include border-radius($c-CollectionCard__border__radius);
 }
 
 .c-CollectionCard__separator {
-  border-bottom: 2px solid $t-Color__grey--lightest;
+  border-bottom: $c-CollectionCard__separator__border-bottom;
   width: 184px;
   margin-left: 8px;
   float: left;
@@ -31,11 +39,11 @@ $c-CollectionCard__border__bottom: null !default;
 .c-CollectionCard__circle {
   border-radius: 50%;
   height: 40px;
-  background-color: $t-Color__primary;
+  background-color: $c-CollectionCard__circle__background__color;
   width: 40px;
   float:left;
   margin-left: 80px;
-  color: white;
+  color: $c-CollectionCard__circle__textColor;
   text-align: center;
   font-size: 20px;
   line-height: 40px;
@@ -48,7 +56,7 @@ $c-CollectionCard__border__bottom: null !default;
 }
 
 .c-CollectionCard__contests__tag {
-  color: $t-Color__grey--medium;
+  color: $c-CollectionCard__contests__tag__textColor;
   font-size: 12px;
   text-align: center;
   position: relative;
@@ -70,7 +78,7 @@ $c-CollectionCard__border__bottom: null !default;
   }
 
   &:hover {
-    box-shadow: 0 0 3px 3px $t-Color__grey--light;
+    box-shadow: $c-CollectionCard__shadow--hover;
   }
 
   margin-bottom: 24px;
@@ -98,7 +106,7 @@ $c-CollectionCard__border__bottom: null !default;
   font-size: 14px;
   padding: 8px;
   line-height: 19px;
-  color: $t-Color__grey--dark;
+  color: $c-CollectionCard__text__textColor;
   height: 170px;
   overflow: hidden;
 }
@@ -123,7 +131,7 @@ $c-CollectionCard__border__bottom: null !default;
 
 .c-CollectionCard__text__parent__title {
   font-size: 13px;
-  color: black;
+  color: $c-CollectionCard__text__parent__title__textColor;
   width: 200px;
   margin-top: 30px;
   text-align: center;

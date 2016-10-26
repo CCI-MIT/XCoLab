@@ -17,8 +17,8 @@
         <portlet:param name="viewType" value="GRID" />
     </portlet:renderURL>
 
-    <div class="c-CollectionCard--background-container" >
-        <div class="c-CollectionCard--background-container" style="right:5px; bottom:5px;">
+    <div class="c-CollectionCard__background__container" >
+        <div class="c-CollectionCard__background__container" style="right:5px; bottom:5px;">
             <a href="${changeCurrentContestCardURL}">
                 <div class="c-CollectionCard" style="right:5px; bottom:5px;">
                     <div class="c-CollectionCard__plceholder__top">
