@@ -29,7 +29,15 @@ public class ContestTeamMembersController {
 
     @PostMapping(value = "/contestTeamMembers")
     public ContestTeamMember createContestTeamMember(@RequestBody ContestTeamMember contestTeamMember) {
-        return this.contestTeamMemberDao.create(contestTeamMember);
+        ContestTeamMember alreadyExists = contestTeamMemberDao.findOneBy(contestTeamMember.getUserId(),
+                contestTeamMember.getContestId(),
+                contestTeamMember.getRoleId());
+        if (alreadyExists != null) {
+            return alreadyExists;
+        } else {
+            return this.contestTeamMemberDao.create(contestTeamMember);
+        }
+
     }
 
     @GetMapping(value = "/contestTeamMembers/{contestTeamMemberId}")
