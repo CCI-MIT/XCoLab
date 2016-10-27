@@ -20,6 +20,7 @@ import org.xcolab.service.sharedcolab.domain.sharedMember.SharedMemberDao;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class SharedColabController {
@@ -70,7 +71,7 @@ public class SharedColabController {
     }
 
 
-    @RequestMapping(value = "/contests/retrieveSharedId", method = RequestMethod.GET)
+    @RequestMapping(value = "/contests/retrieveSharedId", method = RequestMethod.POST)
     public Long retrieveSharedIdForContests(@RequestParam("sharedContestName") String sharedContestName,
             @RequestParam("colabOrigin") String colabOrigin) throws NotFoundException {
         checkSharedCoLabServiceActive();
@@ -84,6 +85,13 @@ public class SharedColabController {
             sc = sharedContestDao.create(sc);
             return sc.getSharedContestId();
         }
+    }
+
+    @RequestMapping(value = "/contests", method = RequestMethod.GET)
+    public List<SharedContest> retrieveSharedContestsFromForeingColab(
+            @RequestParam("colabOrigin") String colabOrigin) throws NotFoundException {
+
+        return sharedContestDao.findByGiven(colabOrigin);
     }
 
     @RequestMapping(value = "/contests/{sharedContestId}/updateSharedContestName", method = RequestMethod.PUT)

@@ -103,8 +103,9 @@ public class ContestClient {
         return null;
     }
 
-    public Contest createContest(Long userId, String name) {
+    public Contest createContest(Long contestId, Long userId, String name) {
         Contest c = new Contest();
+        c.setContestPK(contestId);
         c.setAuthorId(userId);
         c.setContestName(name);
         c.setContestShortName(name);

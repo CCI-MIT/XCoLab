@@ -12,6 +12,7 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 
@@ -86,7 +87,7 @@ public class ContestDescriptionBean implements Serializable {
         }
 
         if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {
-            contest.setContestUrlName((contest).getContestUrlName());
+            contest.setContestUrlName((contest).generateContestUrlName());
                 ContestClientUtil.updateContest(contest);
         }
         WikiPageWrapper.updateContestWiki(contest);
@@ -172,6 +173,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         ContestClientUtil.updateContest(contest);
+        SharedColabClient.updateSharedContestName(contest.getContestPK(),contest.getContestName());
 
     }
 

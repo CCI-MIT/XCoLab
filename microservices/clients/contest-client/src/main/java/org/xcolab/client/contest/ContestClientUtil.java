@@ -34,8 +34,8 @@ public final class ContestClientUtil {
         return contestClient.getContestByContestUrlNameContestYear(contestUrlName, contestYear);
     }
 
-    public static Contest createContest(Long userId, String name) {
-        return contestClient.createContest(userId, name);
+    public static Contest createContest(Long contestId, Long userId, String name) {
+        return contestClient.createContest(contestId, userId, name);
     }
 
     public static Contest createContest(

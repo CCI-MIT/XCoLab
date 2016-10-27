@@ -3,12 +3,15 @@ package org.xcolab.service.sharedcolab.domain.sharedContest;
 import com.sun.jersey.api.NotFoundException;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.pojos.SharedContest;
 import org.xcolab.model.tables.records.SharedContestRecord;
+
+import java.util.List;
 
 import static org.xcolab.model.Tables.SHARED_CONTEST;
 
@@ -41,6 +44,18 @@ public class SharedContestDaoImpl implements SharedContestDao {
         }
 
     }
+
+    @Override
+    public List<SharedContest> findByGiven(String colabOrigin) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(SHARED_CONTEST).getQuery();
+
+        if (colabOrigin != null) {
+            query.addConditions(SHARED_CONTEST.COLAB_ORIGIN.ne(colabOrigin));
+        }
+        return query.fetchInto(SharedContest.class);
+    }
+
 
     public boolean update(SharedContest sharedContest) {
         return dslContext.update(SHARED_CONTEST)

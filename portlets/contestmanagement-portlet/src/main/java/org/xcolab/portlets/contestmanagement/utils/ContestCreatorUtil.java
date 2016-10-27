@@ -15,6 +15,8 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
@@ -35,7 +37,8 @@ public final class ContestCreatorUtil {
 
     public static Contest createNewContest(String contestShortName)  {
 
-        Contest contest = ContestClientUtil.createContest(10144L, contestShortName);
+        Long sharedId = SharedColabClient.retrieveContestSharedId(contestShortName,ConfigurationAttributeKey.COLAB_NAME.get());
+        Contest contest = ContestClientUtil.createContest(sharedId,10144L, contestShortName);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShow_in_tile_view(true);
