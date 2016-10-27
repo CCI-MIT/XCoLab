@@ -50,11 +50,11 @@ public final class ProposalJudgeRatingClient {
     public List<ProposalRating> getProposalRatingsByProposalUserContestPhase(Long proposalId,
             Long contestPhaseId, Long userId) {
         return DtoUtil.toPojos(proposalRatingResource.list()
-                .withCache(CacheKeys.withClass(ProposalRatingDto.class)
-                                .withParameter("proposalId", proposalId)
-                                .withParameter("contestPhaseId", contestPhaseId)
-                                .withParameter("userId", userId).asList(),
-                        CacheRetention.MEDIUM)
+                //.withCache(CacheKeys.withClass(ProposalRatingDto.class)
+                //                .withParameter("proposalId", proposalId)
+                //                .withParameter("contestPhaseId", contestPhaseId)
+                //                .withParameter("userId", userId).asList(),
+                //        CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("userId", userId)
