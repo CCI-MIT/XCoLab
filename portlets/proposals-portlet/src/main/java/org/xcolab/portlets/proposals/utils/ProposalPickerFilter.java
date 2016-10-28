@@ -1,18 +1,14 @@
 package org.xcolab.portlets.proposals.utils;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.ext.portlet.ProposalAttributeKeys;
-
-
-
-
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.OntologyClient;
@@ -316,8 +312,10 @@ public class ProposalPickerFilter {
                             _log.error(String.format("Could not find contest tier %d. Tier ignored in filtering.", tier));
                         }
                     }
-
+                    int count = 0;
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
+                        count++;
+                        System.out.println("Filtered proposal No. " + count + " for contest tier");
                         Proposal p = i.next().getLeft();
                         try {
                             if (!tierFilteredContests.contains(ProposalsClient.getCurrentContestForProposal(p.getProposalId()))) {
@@ -345,8 +343,8 @@ public class ProposalPickerFilter {
                     if (!allowedContestTiers.contains(contest.getContestTier())) {
                         removedContests.add(contest.getContestPK());
                         i.remove();
-                        _log.error(String.format("Contest %d caused an error while filtering for contest tier." +
-                                "Removing contests from list...", contest.getContestPK()));
+                        //_log.error(String.format("Contest %d caused an error while filtering for contest tier." +
+                        //        "Removing contests from list...", contest.getContestPK()));
                     }
                 }
             }

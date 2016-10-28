@@ -1,13 +1,14 @@
 package org.xcolab.portlets.proposals.utils;
 
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ClassNameLocalServiceUtil;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClient;
@@ -187,12 +188,16 @@ public class ProposalPickerFilterUtil {
         if (contestPK > 0) {
             proposalsRaw = ProposalsClient
                     .getProposalsInContest(contestPK);
-        } else {
+        } else { //takes already 5 seconds
             proposalsRaw = ProposalsClient.getAllProposals();
         }
+        int count = 0;
         for (Proposal p : proposalsRaw) {
             proposals.add(Pair.of(p, new Date(0)));
+            count++;
+            System.out.println("Proposal No. " + count + " added!");
         }
+        System.out.println("done!");
 
         filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
 
@@ -204,6 +209,7 @@ public class ProposalPickerFilterUtil {
             ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         filterByParameter(filterKey, proposals);
+        //TODO: takes at least one minute and lets request expire
         filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
@@ -222,11 +228,16 @@ public class ProposalPickerFilterUtil {
         ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
                 new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
 
+        //TODO: takes another 5 minutes
         ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
 
+    //TODO:filters 8000 proposals here --> not that efficient
     private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
+        int count=0;
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
+            count++;
+            System.out.println("Proposal Pair No. "+ count+" filtered!");
             Proposal proposal = iterator.next().getLeft();
             if (proposal.isDeleted()) {
                 iterator.remove();

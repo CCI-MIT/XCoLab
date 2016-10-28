@@ -266,9 +266,10 @@ public class Proposal implements Serializable {
         if(this.proposalid == 0){
             return false;
         }
-        final ContestPhase contestPhase = ContestClient.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
+        final ContestPhase contestPhase;
         long visibleAttributeValue = 1;
-        if (contestPhase != null) {
+        if(ContestClient.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId())) != null) {
+            contestPhase = ContestClient.getContestPhase(ProposalsClient.getLatestContestPhaseIdInProposal(this.getProposalId()));
             ProposalContestPhaseAttribute pcpa = ProposalContestPhaseAttributeClient.getProposalContestPhaseAttribute(this.getProposalId(),
                     contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
             if(pcpa!=null) {
