@@ -210,7 +210,7 @@ public class ProposalPickerFilterUtil {
             throws SystemException, PortalException {
         filterByParameter(filterKey, proposals);
         //TODO: takes at least one minute and lets request expire
-        filterByVisibility(proposals);
+        //filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
@@ -225,11 +225,11 @@ public class ProposalPickerFilterUtil {
         } else {
             contestFocusAreaId = 0;
         }
-        ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
-                new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
+        //ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
+        //        new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
 
         //TODO: takes another 5 minutes
-        ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
+        //ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
 
     //TODO:filters 8000 proposals here --> not that efficient

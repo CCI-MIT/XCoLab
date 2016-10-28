@@ -61,11 +61,11 @@
 					<ul>
 						<li class="c-TabBar__tab--first active"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'contests');"> Search
-								by <span class="contestTypeContestNames">&#160;</span>
+								by Contest<span class="contestTypeContestNames">&#160;</span>
 						</a></li>
 						<li class="c-TabBar__tab"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'all');"> Search
-								by <span class="contestTypeProposalNames">&#160;</span>
+								by Name <span class="contestTypeProposalNames">&#160;</span>
 								<div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div>
 						</a></li>
 						<li class="c-TabBar__tab--last"><a href="javascript:;"
