@@ -351,7 +351,7 @@ public class ProposalPickerFilter {
             return removedContests;
         }
 
-        private Set<Long> getAllowedTiers(Long filterTier) {
+        public Set<Long> getAllowedTiers(Long filterTier) {
             // if filterTier < 0:
             //  allow tier <= (-filterTier)
             // else if filterTier > 0

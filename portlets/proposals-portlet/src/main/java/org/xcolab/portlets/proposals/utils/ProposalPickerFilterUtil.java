@@ -185,11 +185,20 @@ public class ProposalPickerFilterUtil {
             throws SystemException, PortalException {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<Proposal> proposalsRaw;
+
+
+        //Optimize picker by retrieving just proposals out of contest with corrext tier
+
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
+        final List<Long> allowedContestTiers = new ArrayList<>();
+        allowedContestTiers.addAll(getAllowedTiers(planSectionDefinition.getTier()));
+
         if (contestPK > 0) {
             proposalsRaw = ProposalsClient
                     .getProposalsInContest(contestPK);
         } else { //takes already 5 seconds
-            proposalsRaw = ProposalsClient.getAllProposals();
+            //proposalsRaw = ProposalsClient.getAllProposals();
+            proposalsRaw = ProposalsClient.getProposalsByCurrentContests(0, Integer.MAX_VALUE, allowedContestTiers,true);
         }
         int count = 0;
         for (Proposal p : proposalsRaw) {
@@ -204,12 +213,30 @@ public class ProposalPickerFilterUtil {
         return proposals;
     }
 
+    //TODO: redundant to ProposalPickerFilter
+    private static Set<Long> getAllowedTiers(Long filterTier) {
+        // if filterTier < 0:
+        //  allow tier <= (-filterTier)
+        // else if filterTier > 0
+        //  only allow tier == filterTier
+        Set<Long> allowedTiers = new HashSet<>();
+        final long positiveFilterTier = Math.abs(filterTier);
+        allowedTiers.add(positiveFilterTier);
+
+        if (filterTier < 0) {
+            for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
+                allowedTiers.add(currentTier);
+            }
+        }
+        return allowedTiers;
+    }
+
     private static void filterProposals(List<Pair<Proposal, Date>> proposals,
             String filterKey, long sectionId, PortletRequest request,
             ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         filterByParameter(filterKey, proposals);
-        //TODO: takes at least one minute and lets request expire
+        //TODO: removed function since is partially redundant to query "notDeleted" and just affects 50 out of 8000
         //filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
@@ -236,11 +263,12 @@ public class ProposalPickerFilterUtil {
     private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
         int count=0;
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
-            count++;
-            System.out.println("Proposal Pair No. "+ count+" filtered!");
+
             Proposal proposal = iterator.next().getLeft();
             if (proposal.isDeleted()) {
                 iterator.remove();
+                count++;
+                System.out.println("Proposal  No. "+ count+" removed since deleted !");
             }
         }
     }

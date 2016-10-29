@@ -11,25 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-
-
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
 import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
-
-
 import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
-
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-
-
 
 import java.util.List;
 
@@ -266,4 +259,12 @@ public class ProposalsController {
         }
 
     }
+
+    @RequestMapping(value = "/proposals/getProposalsByCurrentContests", method = {RequestMethod.GET})
+    public List<Proposal> getProposalsByCurrentContests(
+            @RequestParam("contestTierIds") List<Long> contestTierIds,
+            @RequestParam("active") Boolean active) {
+        return proposalService.getProposalsByCurrentContests(contestTierIds, active);
+    }
+
 }

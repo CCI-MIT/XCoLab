@@ -81,6 +81,15 @@ public final class ProposalsClient {
     }
 
 
+    public static List<Proposal> getProposalsByCurrentContests(int start, int limit, List<Long> contestTierIds,
+            Boolean active) {
+        return proposalResource.list()
+                .addRange(start, limit)
+                .queryParam("contestTierIds", contestTierIds)
+                .optionalQueryParam("active", active)
+                .execute();
+    }
+
     public static List<Proposal> listProposals(int start, int limit, Long contestId,
                                                Boolean visible, Long contestPhaseId, Integer ribbon) {
         return proposalResource.list()

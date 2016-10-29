@@ -93,14 +93,14 @@
 							<thead>
 							<tr class="c-Table__row--title">
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Name"><span class="contestTypeContestNames">&#160;</span></a>
+									<a href="#" data-sort-column="Name"> Contest Name <span class="contestTypeContestNames">&#160;</span></a>
 									<div class="c-Tooltip">
 										click to sort by name
 										<div class="c-Tooltip__arrow"><!-- --></div>
 									</div>
 								</th>
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Proposals">
+									<a href="#" data-sort-column="Proposals"> Proposals
 										<span class="contestTypeProposalNamesPlural">&#160;</span>
 									</a>
 									<div class="c-Tooltip">

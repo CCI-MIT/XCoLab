@@ -31,6 +31,7 @@ import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.sql.Timestamp;
@@ -335,5 +336,19 @@ public class ProposalService {
         } catch (NotFoundException ignored) {
             return false;
         }
+    }
+
+    public List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, boolean active) {
+        List<Proposal> proposals = new ArrayList<>();
+        PaginationHelper paginationHelper = new PaginationHelper(null, null, null);
+        for(Long contestTierId : contestTierIds) {
+            for (Contest contest : ContestClient.getContestsMatchingTier(contestTierId)) {
+                ContestPhase contestPhase = ContestClient.getActivePhase(contest.getContestPK());
+                proposals.addAll(proposalDao
+                        .findByGiven(paginationHelper, contest.getContestPK(), active,
+                                contestPhase.getContestPhasePK(), null));
+            }
+        }
+        return proposals;
     }
 }
