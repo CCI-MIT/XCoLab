@@ -22,7 +22,6 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.enums.ContestTier;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.IdListUtil;
@@ -66,7 +65,7 @@ public class ProposalPickerFilter {
      * @param additionalFilterCriterion The additional filter criterion - if any - used by this filter
      * @return A list of all contests that were removed
      */
-    public Set<Long> filterContests(List<Pair<ContestWrapper,Date>> contests, Object additionalFilterCriterion){
+    public Set<Long> filterContests(List<Pair<Contest,Date>> contests, Object additionalFilterCriterion){
         return new HashSet<>();
     }
 
@@ -123,7 +122,7 @@ public class ProposalPickerFilter {
         }
 
         @Override
-        public Set<Long> filterContests(List<Pair<ContestWrapper, Date>> contests,
+        public Set<Long> filterContests(List<Pair<Contest, Date>> contests,
                                         Object additionalFilterCriterion) {
             Set<Long> removedContests = new HashSet<>();
             try {
@@ -134,8 +133,8 @@ public class ProposalPickerFilter {
 
                 List<OntologyTerm> requiredTerms = getOntologyTermsFromSectionAndContest(sectionFocusAreaId, contestFocusAreaId);
 
-                for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
-                    ContestWrapper contest = i.next().getLeft();
+                for (Iterator<Pair<Contest,Date>> i = contests.iterator(); i.hasNext();){
+                    Contest contest = i.next().getLeft();
                     if (filterExceptionContestIds.contains(contest.getContestPK())) {
                         continue;
                     }
@@ -232,15 +231,15 @@ public class ProposalPickerFilter {
         }
 
         @Override
-        public Set<Long> filterContests(List<Pair<ContestWrapper, Date>> contests,
+        public Set<Long> filterContests(List<Pair<Contest, Date>> contests,
                                         Object additionalFilterCriterion) {
             Set<Long> removedContests = new HashSet<>();
             if (!(additionalFilterCriterion instanceof String)) {
                 return removedContests;
             }
             String searchCriterion = (String) additionalFilterCriterion;
-            for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
-                ContestWrapper c = i.next().getLeft();
+            for (Iterator<Pair<Contest,Date>> i = contests.iterator(); i.hasNext();){
+                Contest c = i.next().getLeft();
 
                 // CONTEST NAME
                 if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
@@ -323,15 +322,15 @@ public class ProposalPickerFilter {
         }
 
         @Override
-        public Set<Long> filterContests(List<Pair<ContestWrapper, Date>> contests,
+        public Set<Long> filterContests(List<Pair<Contest, Date>> contests,
                                         Object additionalFilterCriterion) {
             Set<Long> removedContests = new HashSet<>();
 
             final Set<Long> allowedContestTiers = getAllowedTiers((Long) additionalFilterCriterion);
 
             if (!allowedContestTiers.isEmpty()) { //empty list = allow all
-                for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
-                    ContestWrapper contest = i.next().getLeft();
+                for (Iterator<Pair<Contest,Date>> i = contests.iterator(); i.hasNext();){
+                    Contest contest = i.next().getLeft();
                     if (!allowedContestTiers.contains(contest.getContestTier())) {
                         removedContests.add(contest.getContestPK());
                         i.remove();
@@ -390,7 +389,7 @@ public class ProposalPickerFilter {
         }
 
         @Override
-        public Set<Long> filterContests(List<Pair<ContestWrapper, Date>> contests, Object additionalFilterCriterion) {
+        public Set<Long> filterContests(List<Pair<Contest, Date>> contests, Object additionalFilterCriterion) {
             Set<Long> removedContests = new HashSet<>();
 
             final String allowedContestTypeIdsString = (String) additionalFilterCriterion;
@@ -398,8 +397,8 @@ public class ProposalPickerFilter {
             if (!allowedContestTypeIdsString.isEmpty()) { //no selection = allow all
                 List<Long> allowedContestTypeIds = IdListUtil.getIdsFromString(allowedContestTypeIdsString);
 
-                for (Iterator<Pair<ContestWrapper, Date>> i = contests.iterator(); i.hasNext(); ) {
-                    ContestWrapper contest = i.next().getLeft();
+                for (Iterator<Pair<Contest, Date>> i = contests.iterator(); i.hasNext(); ) {
+                    Contest contest = i.next().getLeft();
                     if (!allowedContestTypeIds.contains(contest.getContestTypeId())) {
                         removedContests.add(contest.getContestPK());
                         i.remove();

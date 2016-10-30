@@ -25,7 +25,6 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.RenderRequest;
@@ -72,7 +71,7 @@ public class CreateProposalController extends BaseProposalsController {
 
                 model.addAttribute("baseProposal", baseProposalWrapper);
 
-                model.addAttribute("baseContest", new ContestWrapper(baseContest));
+                model.addAttribute("baseContest", baseContest);
 
                 model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper));
             }catch (ContestNotFoundException | ProposalNotFoundException ignored){

@@ -5,13 +5,14 @@ import org.joda.time.DateTime;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.portlets.proposals.utils.MoveType;
-import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
 public class MoveHistoryWrapper {
 
@@ -33,16 +34,12 @@ public class MoveHistoryWrapper {
         }
     }
 
-    public ContestWrapper getSourceContest() {
-        try {
-            return new ContestWrapper(wrapped.getSourceContestId());
-        } catch (ContestNotFoundException ignored) {
-            return null;
-        }
+    public Contest getSourceContest() {
+            return new Contest(wrapped.getSourceContestId());
     }
 
-    public BaseContestPhaseWrapper getSourceContestPhase() {
-        return new BaseContestPhaseWrapper(wrapped.getSourcePhaseId());
+    public ContestPhase getSourceContestPhase() {
+        return new ContestPhase(ContestClientUtil.getContestPhase(wrapped.getSourcePhaseId()));
     }
 
     public long getSourceContestPhaseId() {
@@ -57,16 +54,12 @@ public class MoveHistoryWrapper {
         }
     }
 
-    public ContestWrapper getTargetContest() {
-        try {
-            return new ContestWrapper(wrapped.getTargetContestId());
-        } catch (ContestNotFoundException ignored) {
-            return null;
-        }
+    public Contest getTargetContest() {
+            return new Contest(wrapped.getTargetContestId());
     }
 
-    public BaseContestPhaseWrapper getTargetContestPhase() {
-        return new BaseContestPhaseWrapper(wrapped.getTargetPhaseId());
+    public ContestPhase getTargetContestPhase() {
+        return new ContestPhase(ContestClientUtil.getContestPhase(wrapped.getTargetPhaseId()));
     }
 
     public Member getMovingUser() {

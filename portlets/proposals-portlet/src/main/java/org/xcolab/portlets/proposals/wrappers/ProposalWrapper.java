@@ -197,14 +197,8 @@ public class ProposalWrapper extends BaseProposalWrapper {
 
     public long getVotesCount() {
         if (proposal.getProposalId() > 0) {
-            try {
-                org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-                long votingPhasePK = new ContestWrapper(contestMicro).getVotingPhasePK();
+                long votingPhasePK = contest.getVotingPhasePK();
                 return ProposalMemberRatingClientUtil.countProposalVotesInContestPhaseProposalId(proposal.getProposalId(), votingPhasePK);
-            } catch (ContestNotFoundException ignored) {
-
-            }
-
         }
         return 0;
     }

@@ -61,6 +61,15 @@
                             update contest URLs (<strong>Warning:</strong> Contest URL will change if checked)<br/>
                         </div>
                     </c:if>
+
+                    <c:if test="${not contestWrapper.contestActive}">
+                        <div>
+                            <form:checkbox path="isSharedContest"
+                                           id="isSharedContest">
+                            </form:checkbox>
+                            shared contest(<strong>Warning:</strong> This will create a SHARED Contest between partner colabs)<br/>
+                        </div>
+                    </c:if>
                 </div>
             </div>
 

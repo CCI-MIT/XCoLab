@@ -1,9 +1,6 @@
 package org.xcolab.portlets.proposals.impact;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 public class ProposalSimulationScenarioRegionWrapper {
@@ -19,8 +16,8 @@ public class ProposalSimulationScenarioRegionWrapper {
         proposalName = proposalWrapper.getName();
         Contest contestForProposal = proposalWrapper.getContest();
 
-        ContestWrapper contestWrapper = new ContestWrapper(contestForProposal); //contestForProposal
-        this.region = contestWrapper.getWhereName();
+        //ContestWrapper contestWrapper = new ContestWrapper(contestForProposal); //contestForProposal
+        this.region = contestForProposal.getWhereName();
 
     }
 
@@ -52,14 +49,7 @@ public class ProposalSimulationScenarioRegionWrapper {
     }
 
     public void setRegion(Contest contest) {
-
-        try {
-            org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-            ContestWrapper contestWrapper = new ContestWrapper(contestMicro);//contest
-            this.region = contestWrapper.getWhereName();
-        } catch (ContestNotFoundException ignored) {
-
-        }
+            this.region = contest.getWhereName();
     }
 
     public void setProposalWrapper(ProposalWrapper proposalWrapper) {

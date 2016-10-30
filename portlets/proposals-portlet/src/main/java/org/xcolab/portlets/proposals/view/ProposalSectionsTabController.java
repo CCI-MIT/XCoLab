@@ -27,7 +27,7 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+
 import org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
@@ -99,12 +99,10 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                         baseContest, baseContestPhase, null);
                 model.addAttribute("baseProposal", baseProposalWrapped);
 
-                try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(baseContest.getContestPK());
-                    model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
-                } catch (ContestNotFoundException ignored) {
 
-                }
+
+                model.addAttribute("baseContest", baseContest);//baseContest
+
 
                 model.addAttribute("isMove", true);
 

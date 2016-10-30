@@ -1,12 +1,80 @@
 package org.xcolab.client.contest.pojo;
 
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.contest.pojo.team.ContestTeamMember;
+import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClient;
+import org.xcolab.client.proposals.ProposalPhaseClient;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+import org.xcolab.client.contest.helper.Tuple;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Contest extends AbstractContest {
 
     private final ContestClient contestClient;
+
+
+    //private final static Log _log = LogFactoryUtil.getLog(Contest.class);
+    private final static Map<Long, FocusArea> faCache = new HashMap<>();
+    private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
+
+    protected static final String WHERE = "where";
+    protected static final String WHAT = "what";
+    protected static final String WHO = "who";
+    protected static final String HOW = "how";
+    private static final long ONTOLOGY_SPACE_ID_WHERE = 104L;
+    private static final long ONTOLOGY_SPACE_ID_WHO = 102L;
+    private static final long ONTOLOGY_SPACE_ID_WHAT = 103L;
+    private static final long ONTOLOGY_SPACE_ID_HOW = 103L;
+    private static final long CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS = 3L;
+    private static final String EMAIL_TEMPLATE_URL = "/resources/-/wiki/Main/Judging+Mail+Templates";
+
+    private Map<String, String> ontologyJoinedNames = new HashMap<>();
+    private List<ContestPhase> visiblePhases;
+
+
+    protected List<ContestPhase> phases;
+    protected org.xcolab.client.contest.pojo.ContestType contestType;
+    protected List<ContestTeamMemberRole> contestTeamMembersByRole;
+
+    protected ContestPhase activePhase;
+
+
+    private RestService restService;
+
+    public Contest(Long contestId) {
+        contestClient = ContestClientUtil.getClient();
+        //try{
+        //    super(contestClient.getContest(contestId));
+        //}catch (ContestNotFoundException ignored){
+
+        //};
+    }
 
     public Contest() {
         contestClient = ContestClientUtil.getClient();
@@ -19,6 +87,7 @@ public class Contest extends AbstractContest {
 
     public Contest(AbstractContest abstractContest, RestService restService) {
         super(abstractContest);
+        restService = restService;
         contestClient = ContestClient.fromService(restService);
     }
 
@@ -43,4 +112,475 @@ public class Contest extends AbstractContest {
         String contestUrlName = this.getContestShortName().toLowerCase();
         return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
     }
+
+    public void persist() {
+        contestClient.updateContest(this);
+    }
+
+
+
+    public boolean isContestActive() {
+        return this.getContestActive();
+    }
+
+
+    public boolean isFeatured() {
+        return this.getFeatured_();
+    }
+
+    public boolean isPlansOpenByDefault() {
+        return this.getPlansOpenByDefault();
+    }
+
+
+    public boolean getSponsorLinkAvailable() {
+        return !this.getSponsorLink().equals("");
+    }
+
+
+    public long getProposalsCount() {
+        try {
+            ContestPhase cp = contestClient.getActivePhase(this.getContestPK());
+            if (cp != null) {
+                //TODO:REPLACE THIS CALL FOR SYNCD CONTEST REFERENCE
+                return ProposalPhaseClientUtil
+                        .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
+            }
+        } catch (UncheckedEntityNotFoundException e) {
+            //fall through - return 0
+        }
+        return 0L;
+    }
+
+        /*public long getTotalProposalsCount() {
+            Set<Proposal> proposalList = new HashSet<>();
+            try {
+                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil
+                        .getPhasesForContest(contest);
+                for (ContestPhase contestPhase : contestPhases) {
+                    try {
+                        List<Proposal> proposals = ProposalLocalServiceUtil
+                                .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+                        proposalList.addAll(proposals);
+                    } catch (PortalException e) {
+                        _log.error("Proposal count: failed to retrieve active proposals in contest phase " + contestPhase
+                                .getContestPhasePK());
+                    }
+                }
+            } catch (SystemException e) {
+                throw new DatabaseAccessException(e);
+            }
+            return proposalList.size();
+        }*/
+
+    public long getCommentsCount() {
+        RestService commentService =  restService.withServiceName("comment-service");
+        Integer contestComments = CommentClient.fromService(commentService).countComments(this.getDiscussionGroupId());
+        //TODO: get each proposal comment count.
+        return contestComments;
+    }
+
+    public List<OntologyTerm> getWho() {
+        return getTermFromSpace(WHO);
+    }
+
+    public List<OntologyTerm> getWhat() {
+        return getTermFromSpace(WHAT);
+    }
+
+    public List<OntologyTerm> getWhere() {
+        return getTermFromSpace(WHERE);
+    }
+
+    public List<OntologyTerm> getHow() {
+        return getTermFromSpace(HOW);
+    }
+
+    protected List<OntologyTerm> getTermFromSpace(String space) {
+
+        RestService ontologyService =  restService.withServiceName("contest-service");
+
+
+        if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {
+            if (!faCache.containsKey(this.getFocusAreaId())) {
+                FocusArea fa = OntologyClient.fromService(ontologyService).getFocusArea(this
+                        .getFocusAreaId());
+                if (fa == null) {
+                    ontologySpaceCache.put(space, null);
+                    return null;
+                }
+                faCache.put(fa.getId_(), fa);
+            }
+            List<OntologyTerm> terms = new ArrayList<>();
+            for (OntologyTerm t : OntologyClient.fromService(ontologyService)
+                    .getOntologyTermsForFocusArea(faCache.get(this.getFocusAreaId()))) {
+                if (OntologyClient.fromService(ontologyService).getOntologySpace(t.getOntologySpaceId()).getName()
+                        .equalsIgnoreCase(space)) {
+                    terms.add(t);
+                }
+            }
+            ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
+        }
+        return ontologySpaceCache.get(space);
+
+    }
+
+    public List<ContestPhase> getPhases() {
+        if (phases == null) {
+            phases = new ArrayList<>();
+            for (ContestPhase phase : contestClient.getAllContestPhases(this.getContestPK())) {
+                phases.add(phase);
+            }
+        }
+        return phases;
+    }
+
+    public List<ContestTeamMemberRole> getContestTeamMembersByRole() {
+        
+        if (contestTeamMembersByRole == null) {
+            Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
+            for (ContestTeamMember teamMember : ContestTeamMemberClientUtil
+
+                    .getTeamMembers(this.getContestPK())) {
+                try {
+                    ContestTeamMemberRole role = ContestTeamMemberClientUtil
+                            .getContestTeamMemberRole(teamMember.getRoleId());
+                    List<Member> roleUsers = teamRoleUsersMap
+                            .get(new Tuple<>(role.getRole(), role.getSort()));
+                    if (roleUsers == null) {
+                        roleUsers = new ArrayList<>();
+                        teamRoleUsersMap
+                                .put(new Tuple<>(role.getRole(), role.getSort()), roleUsers);
+                    }
+                    roleUsers.add(MembersClient.getMember(teamMember.getUserId()));
+                } catch (MemberNotFoundException e) {
+                    //_log.warn("Contest team member " + teamMember.getUserId() + " does not have an account");
+                }
+            }
+            contestTeamMembersByRole = new ArrayList<>(teamRoleUsersMap.size());
+            for (Map.Entry<Tuple<String, Integer>, List<Member>> entry : teamRoleUsersMap.entrySet()) {
+                final Tuple<String, Integer> role = entry.getKey();
+                contestTeamMembersByRole.add(new ContestTeamMemberRole(role.getLeft(), entry.getValue(), role.getRight()));
+            }
+            Collections.sort(contestTeamMembersByRole);
+
+        }
+        return contestTeamMembersByRole;
+    }
+
+    public boolean getHasUserRoleInContest(long memberId, String role) {
+
+        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase(role)) {
+                for (Member user : c.getUsers()) {
+                    if (user.getUserId() == memberId) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public ContestPhase getActivePhase() {
+        if (activePhase == null) {
+            ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
+            if (phase == null) {
+                return null;
+            }
+            activePhase = new ContestPhase(phase);
+        }
+        return activePhase;
+    }
+
+    public List<Member> getContestJudges() {
+        List<Member> judges = null;
+        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Judge")) {
+                judges = c.getUsers();
+            }
+        }
+        if (judges == null) {
+            return Collections.emptyList();
+        }
+        return judges;
+    }
+
+    public List<Member> getContestFellows() {
+        List<Member> fellows = null;
+        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Fellow")) {
+                fellows = c.getUsers();
+            }
+        }
+        return fellows;
+    }
+
+    public List<Member> getContestAdvisors() {
+        List<Member> advisors = null;
+        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("Advisor")||c.getRoleName().equalsIgnoreCase("Curator")) {
+                advisors = c.getUsers();
+            }
+        }
+        if (advisors == null) {
+            return Collections.emptyList();
+        }
+        return advisors;
+    }
+
+    public long getTotalProposalsCount() {
+        Set<Proposal> proposalList = new HashSet<>();
+
+        List<ContestPhase> contestPhases = contestClient.getAllContestPhases(this.getContestPK());
+        for (ContestPhase contestPhase : contestPhases) {
+            List<Proposal> proposals = ProposalClientUtil
+                    .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
+            proposalList.addAll(proposals);
+
+        }
+
+        return proposalList.size();
+    }
+
+    public org.xcolab.client.contest.pojo.ContestType getContestType() {
+        if (contestType == null) {
+            contestType = ContestClientUtil.getContestType(this.getContestTypeId());
+        }
+        return contestType;
+    }
+
+    public Contest getWrapped() {
+        return this;
+    }
+
+    public String getContestUrl() {
+        return this.getContestLinkUrl();
+    }
+
+    public Long getResourceArticleId() {
+        return this.getResourceArticleId();
+    }
+
+    public String getResourceArticleUrl() {
+        return "/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
+                + "/" + this.getContestUrlName();
+    }
+
+    @Override
+    public String getEmailTemplateUrl() {
+        if (super.getEmailTemplateUrl().isEmpty()) {
+            return EMAIL_TEMPLATE_URL;
+        } else {
+            return this.getEmailTemplateUrl();
+        }
+    }
+    public long getTotalCommentsCount() {
+
+        RestService commentService =  restService.withServiceName("comment-service");
+
+
+        Integer contestComments = CommentClient.fromService(commentService).countComments(this.getDiscussionGroupId());
+        ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
+        contestComments += CommentClient.fromService(commentService).countCommentsInContestPhase(
+                phase.getContestPhasePK(), phase.getContestPK());
+
+        return contestComments;
+    }
+
+    public long getVotesCount() {
+        ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
+        RestService proposalMemberRatingService =  restService.withServiceName("proposals-service");
+
+        return ProposalMemberRatingClient.fromService(proposalMemberRatingService).countProposalVotesInContestPhase(phase.getContestPhasePK());
+    }
+
+
+    public ContestPhase getLastPhase() {
+        ContestPhase last = null;
+        for (ContestPhase ph : getPhases()) {
+            if (last == null || (ph.getPhaseReferenceDate() != null
+                    && ph.getPhaseReferenceDate().compareTo(last.getPhaseReferenceDate()) > 0)) {
+                last = ph;
+            }
+        }
+        return last;
+    }
+
+    public String getWhoName() {
+        return getTermNameFromSpace(WHO);
+    }
+
+    public String getWhatName() {
+        return getTermNameFromSpace(WHAT);
+    }
+
+    public String getWhereName() {
+        return getTermNameFromSpace(WHERE);
+    }
+
+    public String getHowName() {
+        return getTermNameFromSpace(HOW);
+    }
+
+    private String getTermNameFromSpace(String space) {
+        String ontologyJoinedName = ontologyJoinedNames.get(space);
+        if (ontologyJoinedName == null) {
+            getTermFromSpace(space);
+            ontologyJoinedName = ontologyJoinedNames.get(space);
+        }
+
+        if (ontologyJoinedName == null) {
+            return "";
+        }
+        return ontologyJoinedName;
+    }
+
+    public boolean getShowSubContests(){
+        // Removed due to COLAB-518; keep the functionality in the code base for the case that we need it again.
+        //        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
+        return false;
+    }
+
+    public boolean getShowParentContest(){
+        return this.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS - 1;
+    }
+
+    public List<Contest> getSubContests() {
+        List <Contest> subContests = contestClient
+                .getSubContestsByOntologySpaceId(this.getContestPK(), ONTOLOGY_SPACE_ID_WHERE);
+        Collections.sort(subContests, new Comparator<Contest>() {
+            @Override
+            public int compare(Contest c1, Contest c2) {
+                return c1.getWeight() - c2.getWeight();
+            }
+        });
+        return subContests;
+    }
+
+    public Contest getParentContest() {
+        List<OntologyTerm> list = OntologyClientUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(
+                OntologyClientUtil.getFocusArea(this.getFocusAreaId()), OntologyClientUtil.getOntologySpace(ONTOLOGY_SPACE_ID_WHERE));
+        List<Long> focusAreaOntologyTermIds = new ArrayList<>();
+        for(OntologyTerm ot: list){
+            focusAreaOntologyTermIds.add(ot.getId_());
+        }
+
+        List<Contest> contests = contestClient
+                .findContestsTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
+        return contests.get(0);
+    }
+
+    public Long getVotingPhasePK() {
+        ContestPhase lastVotingPhase = null;
+        for (ContestPhase ph : getPhases()) {
+            final ContestPhaseType contestPhaseType = ph.getContestPhaseTypeObject();
+            if (contestPhaseType != null && "VOTING".equals(
+                    contestPhaseType.getStatus())) {
+                lastVotingPhase = ph;
+            }
+        }
+        return lastVotingPhase != null ? lastVotingPhase.getContestPhasePK() : 0;
+    }
+
+    public boolean isContestCompleted(ContestPhase contestPhase) {
+        ContestPhaseType type;
+        ContestPhase activePhase;
+        try {
+            activePhase = contestClient.getActivePhase(this.getContestPK());
+            type = new ContestPhase(activePhase).getContestPhaseTypeObject();
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return false;
+        }
+        return !(type == null || activePhase == null
+                || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()
+        ) && ("COMPLETED".equals(type.getStatus()));
+    }
+
+    public List<ContestPhase> getVisiblePhases() {
+        if (visiblePhases == null) {
+            visiblePhases = new ArrayList<>();
+            for (ContestPhase phase : contestClient
+                    .getVisibleContestPhases(this.getContestPK())) {
+                visiblePhases.add(phase);
+            }
+        }
+        return visiblePhases;
+    }
+
+    public boolean getHasFocusArea() {
+        return this.getFocusAreaId() > 0;
+    }
+
+    public boolean isUserAmongAdvisors(Member memberInQuestion) {
+        for (Member judge : getContestAdvisors()) {
+            if (judge.getUserId() == memberInQuestion.getUserId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determine if judges are done with proposal
+     *
+     * @return 0 if judge action is incomplete, 1 judge actions completed
+     */
+    public boolean getJudgeStatus() {
+        try {
+
+            RestService proposalsService =  restService.withServiceName("proposals-service");
+            RestService proposals2PhaseService =  restService.withServiceName("proposals-service");
+
+
+            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
+            for (Proposal proposal : ProposalClient.fromService(proposalsService).getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+                Proposal2Phase p2p = ProposalPhaseClient.fromService(proposals2PhaseService).getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                /*
+                final Proposal proposalWrapper =
+                        new ProposalWrapper(proposal, proposal.getCurrentVersion(), this,
+                                contestPhase, p2p);
+                if (proposalWrapper.getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
+                    return false;
+                }
+                */
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Determine if fellows are done with proposal
+     *
+     * @return 0 if fellow action is incomplete, 1 fellow action completed
+     */
+    public boolean getScreeningStatus() {
+        try {
+            RestService proposalsService =  restService.withServiceName("proposals-service");
+            RestService proposals2PhaseService =  restService.withServiceName("proposals-service");
+
+            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
+
+            for (Proposal proposal : ProposalClient.fromService(proposalsService).getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+                Proposal2Phase p2p = ProposalPhaseClient.fromService(proposals2PhaseService).getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                /*
+                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), this, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
+                    return false;
+                }*/
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    public String getNewProposalLinkUrl() {
+        final String portletUrl = getContestType().getPortletUrl();
+        return String.format("%s/%s/%s/createProposal",
+                portletUrl, this.getContestYear(), this.getContestUrlName());
+    }
+
 }

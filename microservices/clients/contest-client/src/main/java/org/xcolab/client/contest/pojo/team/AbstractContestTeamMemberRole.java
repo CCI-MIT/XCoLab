@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.team;
 
-public class AbstractContestTeamMemberRole {
+public class  AbstractContestTeamMemberRole {
 
     private Long id_;
     private String role;

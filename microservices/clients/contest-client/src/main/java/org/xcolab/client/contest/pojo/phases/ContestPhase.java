@@ -1,12 +1,20 @@
 package org.xcolab.client.contest.pojo.phases;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.ProposalPhaseClient;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.client.RestService;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ContestPhase extends AbstractContestPhase {
@@ -14,6 +22,10 @@ public class ContestPhase extends AbstractContestPhase {
     public static final long SCHEDULE_TEMPLATE_PHASE_CONTEST_ID = 0L;
 
     private final ContestClient contestClient;
+
+    private RestService restService;
+
+    protected ContestStatus status;
 
     public ContestPhase() {
         contestClient = ContestClientUtil.getClient();
@@ -114,4 +126,107 @@ public class ContestPhase extends AbstractContestPhase {
         return contestClient.getContestPhaseType(getContestPhaseType()).getStatus();
     }
 
+    public ContestPhaseType getContestPhaseTypeObject() {
+        return contestClient.getContestPhaseType(this.getContestPhaseType());
+    }
+
+    public Date getPhaseStartDateDt() {
+        return this.getPhaseStartDate();
+    }
+
+    public Date getPhaseEndDateDt() {
+        return this.getPhaseEndDate();
+    }
+
+    public Date getPhaseReferenceDate() {
+        return (this.getPhaseEndDate() == null) ? this.getPhaseStartDateDt()
+                : this.getPhaseEndDateDt();
+    }
+
+    public String getPhaseReferenceYear() {
+        Date referenceDate = getPhaseReferenceDate();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(referenceDate);
+
+        return "" + cal.get(Calendar.YEAR);
+    }
+
+
+    public ContestStatus getStatus() {
+        if (status == null) {
+            String statusStr = contestClient.getContestStatusStr(this.getContestPhasePK());
+            if (statusStr != null) {
+                status = ContestStatus.valueOf(statusStr);
+            }
+        }
+        return status;
+    }
+
+    public boolean getCanVote() {
+        return (getStatus() != null) && getStatus().isCanVote();
+    }
+
+    public boolean getCanEdit() {
+        return (getStatus() != null) && getStatus().isCanEdit();
+    }
+
+    public boolean isActive() {
+        return this.getPhaseActive();
+    }
+
+    public long getMillisecondsTillEnd() {
+        return (this.getPhaseEndDate() != null) ? (this.getPhaseEndDate().getTime() - System
+                .currentTimeMillis()) : -1;
+    }
+
+    public String getName() {
+        return contestClient.getContestPhaseType(this.getContestPhaseType()).getName();
+    }
+
+    public boolean isEnded() {
+        Date now = new Date();
+        return (this.getPhaseEndDate() != null) && this.getPhaseEndDate().before(now);
+    }
+
+    public boolean isAlreadyStarted() {
+        Date now = new Date();
+        return this.getPhaseStartDate().before(now);
+    }
+
+    public Boolean getProposalVisibility(long proposalId) {
+        RestService proposalService = restService.withServiceName("proposals-service");
+
+        ProposalContestPhaseAttribute attr = ProposalPhaseClient.fromService(proposalService)
+                .getProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
+                        ProposalContestPhaseAttributeKeys.VISIBLE);
+        return attr.getNumericValue() == 1;
+
+    }
+
+    public boolean setProposalVisibility(long proposalId, boolean visible) {
+        RestService proposalService = restService.withServiceName("proposals-service");
+        ProposalPhaseClient.fromService(proposalService)
+                .setProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
+                        ProposalContestPhaseAttributeKeys.VISIBLE, 0l, visible ? 1l : 0l, "");
+        return true;
+    }
+
+    public String getPhaseStatusDescription() {
+        String descriptionOverride = this.getContestPhaseDescriptionOverride();
+        if (StringUtils.isBlank(descriptionOverride)) {
+            return contestClient.getContestPhaseType(this.getContestPhaseType())
+                    .getDescription();
+
+        }
+        return descriptionOverride;
+    }
+
+
+    public ContestPhase getWrapped() {
+        return this;
+    }
+
+    public String getContestPhaseUrl() {
+        return this.getContestPhaseLinkUrl();
+    }
 }

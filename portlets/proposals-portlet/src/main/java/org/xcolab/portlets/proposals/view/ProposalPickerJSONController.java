@@ -1,13 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -17,12 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilter;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
@@ -123,7 +124,7 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) Long sectionId) throws IOException,
 			SystemException, PortalException {
 
-		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+		List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getAllContests();
 		Map<Long, String> removedContests = ProposalPickerFilterUtil.filterContests(
 				new ArrayList<>(contests), sectionId, request, proposalsContext, true);
 
@@ -224,13 +225,13 @@ public class ProposalPickerJSONController {
 	}
 
 	private String getJSONObjectMappingContests(
-			List<Pair<ContestWrapper, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests)
+			List<Pair<Contest, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests)
 			throws SystemException, PortalException {
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 
-		for (Pair<ContestWrapper, Date> p : contests) {
-			ContestWrapper wrapped = p.getLeft();
+		for (Pair<Contest, Date> p : contests) {
+			Contest wrapped = p.getLeft();
 			final long contestPK = wrapped.getContestPK();
 			JSONObject o = JSONFactoryUtil.createJSONObject();
 

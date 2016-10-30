@@ -4,7 +4,7 @@
 	<jsp:directive.include file="./init.jspx" />
 
 	<!--PopulateContextInterceptor-->
-	<jsp:useBean id="contest" scope="request" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"/>
+	<jsp:useBean id="contest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
 	<jsp:useBean id="contestPhase" scope="request" type="org.xcolab.wrappers.BaseContestPhaseWrapper"/>
 	<jsp:useBean id="preferences" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"/>
 	<jsp:useBean id="proposalsPermissions" scope="request" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"/>

@@ -10,10 +10,9 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
-import org.xcolab.wrappers.BaseContestPhaseWrapper;
+
 
 import javax.portlet.PortletRequest;
 
@@ -61,12 +60,12 @@ public final class ProposalsContextUtil {
         return proposalsContext.getProposalWrapped(request);
     }
 
-    public static ContestWrapper getContestWrapped(
+    public static Contest getContestWrapped(
             PortletRequest request) {
         return proposalsContext.getContestWrapped(request);
     }
 
-    public static BaseContestPhaseWrapper getContestPhaseWrapped(
+    public static ContestPhase getContestPhaseWrapped(
             PortletRequest request) {
         return proposalsContext.getContestPhaseWrapped(request);
     }

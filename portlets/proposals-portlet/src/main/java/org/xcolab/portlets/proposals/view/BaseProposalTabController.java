@@ -7,11 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -52,7 +52,7 @@ public class BaseProposalTabController extends BaseProposalsController {
         model.addAttribute("currentTab", tab);
         model.addAttribute("currentTabWrapped", new ProposalTabWrapper(tab, request, proposalsContext));
 
-        final ContestWrapper contestWrapped = proposalsContext.getContestWrapped(request);
+        final Contest contestWrapped = proposalsContext.getContestWrapped(request);
         final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
         final ProposalClient proposalClient = proposalsContext.getClients(request).getProposalClient();
 

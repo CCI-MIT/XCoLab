@@ -27,7 +27,7 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+
 import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
 import org.xcolab.portlets.proposals.wrappers.FocusAreaWrapper;
 import org.xcolab.portlets.proposals.wrappers.OntologySpaceWrapper;
@@ -103,7 +103,7 @@ public class ContestsIndexController extends BaseProposalsController {
         if (viewType == null) {
             viewType = VIEW_TYPE_DEFAULT;
         }
-        List<ContestWrapper> contests = new ArrayList<>();
+        List<Contest> contests = new ArrayList<>();
         List<Contest> contestsToWrap = showAllContests ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_()) :
         	ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
         List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
@@ -122,12 +122,8 @@ public class ContestsIndexController extends BaseProposalsController {
 
         for (Contest contest: contestsToWrap) {
         	if (! contest.getContestPrivate()) {
-                try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-                    contests.add(new ContestWrapper(contestMicro));//contest
-                }catch (ContestNotFoundException ignored){
+                    contests.add((contest));//contest
 
-                }
             }
         }
 
@@ -184,15 +180,11 @@ public class ContestsIndexController extends BaseProposalsController {
         		focusAreas.get(faTerm.getFocusAreaId()).addOntologyTerm(ontologyTerms.get(faTerm.getOntologyTermId()));
         	}
 
-            List<ContestWrapper> otherContests = new ArrayList<>();
+            List<Contest> otherContests = new ArrayList<>();
             for (Contest contest: ContestClientUtil
                     .getContestsByActivePrivate(!showActiveContests, false)) {
-                try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-                    otherContests.add(new ContestWrapper(contestMicro));//contest
-                }catch (ContestNotFoundException ignored){
+                    otherContests.add(contest);//contest
 
-                }
             }
         	List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
         	Collections.sort(sortedSpaces, new Comparator<OntologySpaceWrapper>() {

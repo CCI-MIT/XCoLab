@@ -2,13 +2,13 @@ package org.xcolab.portlets.proposals.discussion;
 
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
@@ -120,7 +120,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
 
 
-        ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
+        Contest contestWrapper =  proposalWrapper.getContest();
 
         boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
                 MembersClient.getMemberUnchecked(currentMember.getUserId()));
