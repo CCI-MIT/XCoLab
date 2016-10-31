@@ -235,6 +235,7 @@ public class ContestClient {
     public static List<Contest> getContestsByActivePrivateType(boolean contestActive, boolean contestPrivate, Long contestTypeId) {
         return contestResource
                 .list()
+                .addRange(0, Integer.MAX_VALUE)
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
                 .queryParam("contestTypeId", contestTypeId)
