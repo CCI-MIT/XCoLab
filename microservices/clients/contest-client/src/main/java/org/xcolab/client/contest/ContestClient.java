@@ -18,6 +18,7 @@ import org.xcolab.client.contest.pojo.ContestScheduleDto;
 import org.xcolab.client.contest.pojo.ContestTypeDto;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.IdListUtil;
+import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -509,10 +510,7 @@ public class ContestClient {
 
 
 
-    //Do we even use this?
-    public enum Plurality {
-        SINGULAR, PLURAL
-    }
+
 
 
     private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,

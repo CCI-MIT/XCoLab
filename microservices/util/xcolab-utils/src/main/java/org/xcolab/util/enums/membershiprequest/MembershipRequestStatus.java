@@ -1,4 +1,4 @@
-package org.xcolab.client.proposals.enums;
+package org.xcolab.util.enums.membershiprequest;
 
 
 public class MembershipRequestStatus {

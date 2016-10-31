@@ -1,4 +1,4 @@
-package org.xcolab.service.contest.utils.promotion.enums;
+package org.xcolab.util.enums.promotion;
 
 public enum ContestPhasePromoteType {
     DEFAULT(-1, "DEFAULT", "Default autopromote used"),

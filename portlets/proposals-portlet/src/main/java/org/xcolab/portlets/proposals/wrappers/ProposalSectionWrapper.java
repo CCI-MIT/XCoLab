@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ext.portlet.PlanSectionTypeKeys;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -34,20 +32,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProposalSectionWrapper {
+public class ProposalSectionWrapper extends  PlanSectionDefinition {
 
     private final static Logger _log = LoggerFactory.getLogger(ProposalSectionWrapper.class);
 
-    private final PlanSectionDefinition definition;
-    private final ProposalWrapper wrappedProposal;
+    private final Proposal wrappedProposal;
 
-    public ProposalSectionWrapper(PlanSectionDefinition definition, ProposalWrapper wrappedProposal) {
-        this.definition = definition;
+    public ProposalSectionWrapper(PlanSectionDefinition definition , Proposal wrappedProposal) {
+        super(definition);
         this.wrappedProposal = wrappedProposal;
-    }
-
-    public String getTitle() {
-        return definition.getTitle();
     }
 
     public String getContent() {
@@ -63,7 +56,7 @@ public class ProposalSectionWrapper {
         String content = getContent();
         if (content == null) {
             //default text if available
-            return (definition!=null && !StringUtils.isEmpty(definition.getDefaultText())) ? definition.getDefaultText() : null;
+            return ( !StringUtils.isEmpty(this.getDefaultText())) ? this.getDefaultText() : null;
         }
         Document contentDocument = Jsoup.parse(content.trim());
         contentDocument = HtmlUtil.addNoFollowToLinkTagsInDocument(contentDocument);
@@ -172,29 +165,26 @@ public class ProposalSectionWrapper {
     }
 
     public PlanSectionTypeKeys getType() {
-        if (StringUtils.isBlank(definition.getType_())) {
+        if (StringUtils.isBlank(this.getType_())) {
             return PlanSectionTypeKeys.TEXT;
         }
-        return PlanSectionTypeKeys.valueOf(definition.getType_());
+        return PlanSectionTypeKeys.valueOf(this.getType_());
     }
 
     public Long getSectionDefinitionId() {
-        return definition.getId_();
+        return this.getId_();
     }
 
     public boolean isLocked() {
-        return definition.getLocked();
+        return this.getLocked();
     }
 
-    public int getCharacterLimit() {
-        return definition.getCharacterLimit();
-    }
 
     public String getHelpText() {
-        return definition.getHelpText();
+        return this.getHelpText();
     }
 
-    public OntologyTerm getNumericValueAsOntologyTerm() throws SystemException, PortalException {
+    public OntologyTerm getNumericValueAsOntologyTerm() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
@@ -202,25 +192,29 @@ public class ProposalSectionWrapper {
         return OntologyClientUtil.getOntologyTerm(attr.getNumericValue());
     }
 
-    public ProposalWrapper getNumericValueAsProposal() throws ProposalNotFoundException {
+    public Proposal getNumericValueAsProposal()  {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
         }
-        return new ProposalWrapper(ProposalClientUtil.getProposal(attr.getNumericValue()));
+        try {
+            return (ProposalClientUtil.getProposal(attr.getNumericValue()));
+        }catch(ProposalNotFoundException ignored){
+            return null;
+        }
     }
 
-    public ProposalWrapper[] getStringValueAsProposalArray() {
+    public Proposal[] getStringValueAsProposalArray() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getStringValue() == null || attr.getStringValue().equals("")) {
             return null;
         }
 
         String[] props = attr.getStringValue().split(",");
-        ProposalWrapper[] ret = new ProposalWrapper[props.length];
+        Proposal[] ret = new Proposal[props.length];
         for (int i = 0; i < props.length; i++) {
             try {
-                ret[i] = new ProposalWrapper(ProposalClientUtil.getProposal(Long.parseLong(props[i])));
+                ret[i] = (ProposalClientUtil.getProposal(Long.parseLong(props[i])));
             } catch (NumberFormatException e) {
                 _log.error(String.format("Could not parse proposalId %s as a number", props[i]));
             } catch (ProposalNotFoundException e) {
@@ -246,31 +240,31 @@ public class ProposalSectionWrapper {
         return attr.getStringValue();
     }
 
-    public List<OntologyTerm> getFocusAreaTerms() throws PortalException, SystemException {
-        if (definition.getFocusAreaId() <= 0) {
+    public List<OntologyTerm> getFocusAreaTerms(){
+        if (this.getFocusAreaId() <= 0) {
             return null;
         }
 
-        FocusArea area = OntologyClientUtil.getFocusArea(definition.getFocusAreaId());
+        FocusArea area = OntologyClientUtil.getFocusArea(this.getFocusAreaId());
 
         return OntologyClientUtil.getOntologyTermsForFocusArea(area);
     }
 
     public List<String> getOptionsForDropdownMenu() {
-        return Arrays.asList(definition.getAllowedValues().split(";"));
+        return Arrays.asList(this.getAllowedValues().split(";"));
     }
 
-    public List<Long> getAllowedContestTypeIds() {
-        return IdListUtil.getIdsFromString(definition.getAllowedContestTypeIds());
+    public List<Long> getAllowedContestTypeIdsList() {
+        return IdListUtil.getIdsFromString(this.getAllowedContestTypeIds());
     }
 
     public String getProposalNames() {
-        return ContestClientUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "or");
+        return ContestClientUtil.getProposalNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
 
 
     private ProposalAttribute getSectionAttribute() {
-        return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", definition.getId_());
+        return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", this.getId_());
     }
 }

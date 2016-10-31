@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.utils;
+package org.xcolab.util.enums.promotion;
 
 /**
  * Created by johannes on 9/23/15.

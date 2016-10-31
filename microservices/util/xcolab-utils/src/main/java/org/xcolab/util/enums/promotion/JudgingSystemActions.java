@@ -1,4 +1,4 @@
-package org.xcolab.service.proposal.helper.autopromotion;
+package org.xcolab.util.enums.promotion;
 
 /**
  * @author pdeboer

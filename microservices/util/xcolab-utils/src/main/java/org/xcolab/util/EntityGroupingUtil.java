@@ -1,4 +1,4 @@
-package org.xcolab.service.proposal.helper;
+package org.xcolab.util;
 
 
 

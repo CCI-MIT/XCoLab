@@ -1,4 +1,4 @@
-package org.xcolab.service.proposal.enums;
+package org.xcolab.util.enums.proposal;
 
 public enum PlanSectionTypeKeys {
     TEXT,

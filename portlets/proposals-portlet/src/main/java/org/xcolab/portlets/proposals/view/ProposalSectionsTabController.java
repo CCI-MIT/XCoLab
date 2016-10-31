@@ -18,6 +18,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMoveClientUtil;
+import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.enums.ContestPhaseTypeValue;
@@ -27,7 +28,6 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-
 import org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
@@ -36,8 +36,6 @@ import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.EntityGroupingUtil;
-import org.xcolab.wrappers.BaseProposalWrapper;
-import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -189,15 +187,15 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 .getSubproposals(proposal.getProposalId(), true);
         Map<ContestType, List<Proposal>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
-        Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
+        Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
         for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
-                    new ContestTypeProposalWrapper(contestType));
+                    new ContestTypeProposal(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
             for (Proposal p : proposalsInContestType) {
                 contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
-                        .getProposals().add(new BaseProposalWrapper(p));
+                        .getProposals().add((p));
             }
         }
         model.addAttribute("linkedProposalContestTypeProposalWrappersByContestTypeId",

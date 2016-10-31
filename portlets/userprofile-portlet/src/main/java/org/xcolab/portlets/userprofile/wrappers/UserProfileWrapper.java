@@ -28,8 +28,9 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.enums.Plurality;
@@ -41,7 +42,6 @@ import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.EntityGroupingUtil;
 import org.xcolab.wrappers.BaseProposalWrapper;
-import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class UserProfileWrapper implements Serializable {
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
     private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
-    private final Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
+    private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
     private List<BaseProposalWrapper> linkingProposals;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
@@ -154,7 +154,7 @@ public class UserProfileWrapper implements Serializable {
                     .groupByContestType(proposals);
             for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
                 contestTypeProposalWrappersByContestTypeId
-                        .put(contestType.getId_(), new ContestTypeProposalWrapper(contestType));
+                        .put(contestType.getId_(), new ContestTypeProposal(contestType));
                 final List<Proposal> proposalsInContestType = proposalsByContestType
                         .get(contestType);
                 for (Proposal p : proposalsInContestType) {
@@ -162,7 +162,7 @@ public class UserProfileWrapper implements Serializable {
                         final BaseProposalWrapper proposalWrapper = new BaseProposalWrapper(p);
                         contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
                                 .getProposals()
-                                .add(proposalWrapper);
+                                .add(p);
                     } catch (DatabaseAccessException e) {
                         //TODO: change exception type
                         // DatabaseAccessException shouldn't be caught,
@@ -340,7 +340,7 @@ public class UserProfileWrapper implements Serializable {
         return userActivities;
     }
 
-    public Collection<ContestTypeProposalWrapper> getContestTypeProposalWrappersByContestTypeId() {
+    public Collection<ContestTypeProposal> getContestTypeProposalWrappersByContestTypeId() {
         return contestTypeProposalWrappersByContestTypeId.values();
     }
 

@@ -1,5 +1,7 @@
 package org.xcolab.client.proposals;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -11,7 +13,10 @@ import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.util.http.client.RestService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class ProposalClientUtil {
 
@@ -190,5 +195,56 @@ public final class ProposalClientUtil {
 
     public static void unsubscribeMemberFromProposal(long proposalId, long userId) {
         client.unsubscribeMemberFromProposal(proposalId, userId);
+    }
+
+    public static Proposal getProposalFromLinkUrl(String linkUrl) {
+        List<Long> proposalIds = getProposalIdsFromLinksInText(linkUrl);
+        if (!proposalIds.isEmpty()) {
+            try {
+                return ProposalClientUtil.getProposal(proposalIds.get(0));
+            } catch (ProposalNotFoundException ignored) {
+            }
+        }
+
+        return null;
+    }
+
+    public static List<Long> getProposalIdsFromLinksInText(String text) {
+        List<Long> proposalIds = new ArrayList<>();
+        Pattern proposalLinkPattern = Pattern.compile(
+                "(href=|https?://).*?/.+?/\\d{4}/[a-z0-9-]+?/(?:c|phase/\\d*)/.+?/(\\d*)");
+        Matcher m = proposalLinkPattern.matcher(text);
+        while (m.find()) {
+            try {
+                final long proposalId = Long.parseLong(m.group(2));
+                proposalIds.add(proposalId);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        proposalIds.addAll(getProposalIdsFromLegacyLinksInText(text));
+        return proposalIds;
+    }
+
+    private static List<Long> getProposalIdsFromLegacyLinksInText(String text) {
+        List<Long> proposalIds = new ArrayList<>();
+        Pattern proposalLinkPattern = Pattern.compile(
+                "(href=|https?://).*?/-/plans/contestId/(\\d*)/(?:phaseId/\\d*/)?planId/(\\d*)");
+        Matcher m = proposalLinkPattern.matcher(text);
+        while (m.find()) {
+            try {
+                final long proposalId = Long.parseLong(m.group(3));
+                proposalIds.add(proposalId);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return proposalIds;
+    }
+
+    public static String getNonBlankStringOrDefault(String string, String defaultString) {
+        if (StringUtils.isNotBlank(string)) {
+            return string;
+        }
+        return defaultString;
     }
 }
