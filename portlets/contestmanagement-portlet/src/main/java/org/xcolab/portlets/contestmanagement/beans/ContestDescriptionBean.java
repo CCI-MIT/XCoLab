@@ -86,7 +86,7 @@ public class ContestDescriptionBean implements Serializable {
         }
 
         if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {
-            contest.setContestUrlName((contest).getContestUrlName());
+            contest.setContestUrlName(contest.generateContestUrlName());
                 ContestClient.updateContest(contest);
         }
         WikiPageWrapper.updateContestWiki(contest);
