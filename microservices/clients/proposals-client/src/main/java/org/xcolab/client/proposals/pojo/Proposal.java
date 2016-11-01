@@ -1,5 +1,7 @@
 package org.xcolab.client.proposals.pojo;
 
+import edu.mit.cci.roma.client.Scenario;
+import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -20,6 +22,7 @@ import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
+import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
@@ -38,9 +41,12 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
+import org.xcolab.util.enums.modeling.ModelRegions;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.GenericJudgingStatus;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
@@ -75,11 +81,11 @@ public class Proposal extends AbstractProposal {
     protected final ProposalAttributeHelper proposalAttributeHelper;
 
     protected List<ProposalTeamMember> members;
-    private List<PlanTemplate> sections;
+    private List<PlanSectionDefinition> sections;
 
 
-    protected ProposalRatingsWrapper proposalRatings;
-    private RibbonWrapper ribbonWrapper;
+    protected ProposalRatings proposalRatings;
+    private ProposalRibbon ribbonWrapper;
     private List<MembershipRequest> membershipRequests;
 
     //private final static Log _log = LogFactoryUtil.getLog(Contest.class)
@@ -621,7 +627,7 @@ public class Proposal extends AbstractProposal {
         return 0;
     }
 
-    public List<PlanTemplate> getSections() {
+    public List<PlanSectionDefinition> getSections() {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
@@ -629,7 +635,8 @@ public class Proposal extends AbstractProposal {
                 if (planTemplate != null) {
                     for (PlanSectionDefinition psd : PlanTemplateClientUtil
                             .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
-                        sections.add((psd, this));
+
+                        sections.add(new PlanSectionDefinition(psd, this));
                     }
                 }
             }
@@ -837,7 +844,7 @@ public class Proposal extends AbstractProposal {
                 List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                         .getProposalRatingsByProposalUserContestPhase(this.getProposalId(),
                                 contestPhase.getContestPhasePK(),userId);
-                ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId,
+                ProposalRatings wrapper = new ProposalRatings(userId,
                         proposalRatings);
                 if (!wrapper.isReviewComplete()) {
                     return false;
@@ -853,16 +860,16 @@ public class Proposal extends AbstractProposal {
         List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                 .getProposalRatingsByProposalUserContestPhase(
                         userId, this.getProposalId(), contestPhase.getContestPhasePK());
-        ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(userId, proposalRatings);
+        ProposalRatings wrapper = new ProposalRatings(userId, proposalRatings);
         return wrapper.isReviewComplete();
 
     }
 
-    public ProposalWrapper getBaseProposal() {
+    public Proposal getBaseProposal() {
         return this;
     }
 
-    public List<ProposalRatingWrapper> getRatings() {
+    public List<ProposalRating> getRatings() {
         if (this.proposalRatings == null) {
             return new ArrayList<>();
         }
@@ -876,9 +883,9 @@ public class Proposal extends AbstractProposal {
         return this.proposalRatings.getComment();
     }
 
-    public RibbonWrapper getRibbonWrapper() {
+    public ProposalRibbon getRibbonWrapper() {
         if (ribbonWrapper == null) {
-            ribbonWrapper = new RibbonWrapper(this);
+            ribbonWrapper = new ProposalRibbon(this);
         }
         return ribbonWrapper;
     }
