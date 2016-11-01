@@ -78,7 +78,7 @@ public class ProposalPickerJSONController {
 				break;
 			case "ALL":
 			case "CONTESTS":
-				proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterType,
+				proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterText, filterType,
 						sectionId, contestPK, request, proposalsContext);
 				break;
 			default:
@@ -89,7 +89,7 @@ public class ProposalPickerJSONController {
 		int totalCount;
 		if (proposals != null) {
 			if (filterText != null && !filterText.isEmpty()) {
-				ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
+				//ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
 			}
 			totalCount = proposals.size();
 

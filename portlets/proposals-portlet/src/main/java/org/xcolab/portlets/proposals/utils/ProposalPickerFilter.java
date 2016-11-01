@@ -207,9 +207,12 @@ public class ProposalPickerFilter {
                 return removedProposals;
             }
             String searchCriterion = (String) additionalFilterCriterion;
+            int count = 0;
             for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                 Proposal p = i.next().getLeft();
                 try{
+                    System.out.println("Filtered Proposal No. " + count + " by string: " + searchCriterion);
+                    count++;
                     // PROPOSAL NAME
                     //TODO: optimize
                     String proposalName = ProposalAttributeClient.getProposalAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L).getStringValue();
@@ -239,10 +242,12 @@ public class ProposalPickerFilter {
                 return removedContests;
             }
             String searchCriterion = (String) additionalFilterCriterion;
+            int count = 0;
             for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
                 ContestWrapper c = i.next().getLeft();
-
                 try{
+                    System.out.println("Filtered Contest No. " + count + " by string: " + searchCriterion);
+                    count++;
                     // CONTEST NAME
                     if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
                         continue;

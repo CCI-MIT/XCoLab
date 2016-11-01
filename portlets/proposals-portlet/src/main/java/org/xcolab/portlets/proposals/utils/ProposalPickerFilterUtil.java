@@ -180,7 +180,7 @@ public class ProposalPickerFilterUtil {
         return proposals;
     }
 
-    public static List<Pair<Proposal, Date>> getFilteredAllProposals(
+    public static List<Pair<Proposal, Date>> getFilteredAllProposals(String filterText,
             String filterKey, long sectionId, Long contestPK, PortletRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
@@ -191,14 +191,17 @@ public class ProposalPickerFilterUtil {
 
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
         final List<Long> allowedContestTiers = new ArrayList<>();
-        allowedContestTiers.addAll(getAllowedTiers(planSectionDefinition.getTier()));
+        //allowedContestTiers.addAll(getAllowedTiers(planSectionDefinition.getTier()));
+        for(Long tierId : getAllowedTiers(planSectionDefinition.getTier())) {
+            allowedContestTiers.add(tierId);
+        }
 
         if (contestPK > 0) {
             proposalsRaw = ProposalsClient
                     .getProposalsInContest(contestPK);
-        } else { //takes already 5 seconds
+        } else {
             //proposalsRaw = ProposalsClient.getAllProposals();
-            proposalsRaw = ProposalsClient.getProposalsByCurrentContests(0, Integer.MAX_VALUE, allowedContestTiers,true);
+            proposalsRaw = ProposalsClient.getProposalsByCurrentContests(allowedContestTiers, filterText.isEmpty() ? null : filterText);
         }
         int count = 0;
         for (Proposal p : proposalsRaw) {

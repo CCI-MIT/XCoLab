@@ -338,14 +338,15 @@ public class ProposalService {
         }
     }
 
-    public List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, boolean active) {
+    public List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, String filterText) {
         List<Proposal> proposals = new ArrayList<>();
         PaginationHelper paginationHelper = new PaginationHelper(null, null, null);
         for(Long contestTierId : contestTierIds) {
-            for (Contest contest : ContestClient.getContestsMatchingTier(contestTierId)) {
+            List<Contest> contests = ContestClient.getContestsMatchingTier(contestTierId);
+            for (Contest  contest: contests) {
                 ContestPhase contestPhase = ContestClient.getActivePhase(contest.getContestPK());
                 proposals.addAll(proposalDao
-                        .findByGiven(paginationHelper, contest.getContestPK(), active,
+                        .findByGiven(paginationHelper, filterText, null, null,
                                 contestPhase.getContestPhasePK(), null));
             }
         }

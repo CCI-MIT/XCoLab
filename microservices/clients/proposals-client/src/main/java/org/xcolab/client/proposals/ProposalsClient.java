@@ -81,13 +81,12 @@ public final class ProposalsClient {
     }
 
 
-    public static List<Proposal> getProposalsByCurrentContests(int start, int limit, List<Long> contestTierIds,
-            Boolean active) {
-        return proposalResource.list()
-                .addRange(start, limit)
-                .queryParam("contestTierIds", contestTierIds)
-                .optionalQueryParam("active", active)
-                .execute();
+    public static List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds,
+            String filterText) {
+        return proposalResource.service("getProposalsByCurrentContests", Proposal.TYPES.getTypeReference())
+                .queryParam("contestTierIds", 1)
+                .queryParam("filterText", filterText)
+                .getList();
     }
 
     public static List<Proposal> listProposals(int start, int limit, Long contestId,
