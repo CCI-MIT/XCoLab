@@ -81,7 +81,6 @@ public class ProposalPickerFilterUtil {
     public static List<Pair<ContestWrapper, Date>> getTextFilteredContests( long sectionId, String contestName) throws SystemException, PortalException {
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
-        final long contestFocusAreaId;
 
         List<OntologyTerm> ontologyTerms = OntologyClient.getOntologyTermsForFocusArea(OntologyClient.getFocusArea(planSectionDefinition.getFocusAreaId()));
         List<Long> ontologyTermIds = new ArrayList<>();
@@ -226,21 +225,19 @@ public class ProposalPickerFilterUtil {
 
             proposalsRaw = ProposalsClient.getProposalsByCurrentContests(contestTypes, getAllowedTiers(planSectionDefinition.getTier()), filterText.isEmpty() ? null : filterText);
         }
-        int count = 0;
         for (Proposal p : proposalsRaw) {
             proposals.add(Pair.of(p, new Date(0)));
-            count++;
-            System.out.println("Proposal No. " + count + " added!");
         }
-        System.out.println("done!");
 
+        // pushed down to Microservices
         //filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
 
         return proposals;
     }
 
     //TODO: redundant to ProposalPickerFilter
-    private static List<Long> getAllowedTiers(Long filterTier) {
+    public static List<Long> getAllowedTiers(Long filterTier) {
+
         // if filterTier < 0:
         //  allow tier <= (-filterTier)
         // else if filterTier > 0
@@ -261,9 +258,11 @@ public class ProposalPickerFilterUtil {
             ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         filterByParameter(filterKey, proposals);
+
         filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
+
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
 
         List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();
@@ -276,23 +275,20 @@ public class ProposalPickerFilterUtil {
         } else {
             contestFocusAreaId = 0;
         }
+
         ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
                 new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
 
-        //TODO: pushed down to Microservice
-        //ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
+        ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
 
-    //TODO:filters 8000 proposals here --> not that efficient
+
     private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
-        int count=0;
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
 
             Proposal proposal = iterator.next().getLeft();
             if (proposal.isDeleted()) {
                 iterator.remove();
-                count++;
-                System.out.println("Proposal  No. "+ count+" removed since deleted !");
             }
         }
     }

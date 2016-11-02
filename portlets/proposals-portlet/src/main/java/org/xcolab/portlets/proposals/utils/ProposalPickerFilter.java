@@ -305,7 +305,7 @@ public class ProposalPickerFilter {
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
 
-                final Set<Long> allowedContestTiers = getAllowedTiers((Long) additionalFilterCriterion);
+                final Set<Long> allowedContestTiers = new HashSet<>(ProposalPickerFilterUtil.getAllowedTiers((Long) additionalFilterCriterion));
 
                 if (!allowedContestTiers.isEmpty()) {
                     Set<Contest> tierFilteredContests = new HashSet<>();
@@ -340,7 +340,7 @@ public class ProposalPickerFilter {
                                         Object additionalFilterCriterion) {
             Set<Long> removedContests = new HashSet<>();
 
-            final Set<Long> allowedContestTiers = getAllowedTiers((Long) additionalFilterCriterion);
+            final Set<Long> allowedContestTiers = new HashSet<>(ProposalPickerFilterUtil.getAllowedTiers((Long) additionalFilterCriterion));
 
             if (!allowedContestTiers.isEmpty()) { //empty list = allow all
                 for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
@@ -348,30 +348,14 @@ public class ProposalPickerFilter {
                     if (!allowedContestTiers.contains(contest.getContestTier())) {
                         removedContests.add(contest.getContestPK());
                         i.remove();
-                        //_log.error(String.format("Contest %d caused an error while filtering for contest tier." +
-                        //        "Removing contests from list...", contest.getContestPK()));
+                        _log.error(String.format("Contest %d caused an error while filtering for contest tier." +
+                                "Removing contests from list...", contest.getContestPK()));
                     }
                 }
             }
             return removedContests;
         }
 
-        public Set<Long> getAllowedTiers(Long filterTier) {
-            // if filterTier < 0:
-            //  allow tier <= (-filterTier)
-            // else if filterTier > 0
-            //  only allow tier == filterTier
-            Set<Long> allowedTiers = new HashSet<>();
-            final long positiveFilterTier = Math.abs(filterTier);
-            allowedTiers.add(positiveFilterTier);
-
-            if (filterTier < 0) {
-                for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
-                    allowedTiers.add(currentTier);
-                }
-            }
-            return allowedTiers;
-        }
     };
 
     public final static ProposalPickerFilter CONTEST_TYPE_FILTER = new ProposalPickerFilter() {

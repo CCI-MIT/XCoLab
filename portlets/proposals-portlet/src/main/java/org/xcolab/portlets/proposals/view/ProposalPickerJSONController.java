@@ -127,7 +127,9 @@ public class ProposalPickerJSONController {
 		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
 		//List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
 		Map<Long, String> removedContests = new HashMap<>();
+
 		/*
+		TODO: Removed since not needed
 		Map<Long, String> removedContests = ProposalPickerFilterUtil.filterContests(
 				new ArrayList<>(contests), sectionId, request, proposalsContext, true);
 
@@ -157,10 +159,11 @@ public class ProposalPickerJSONController {
 	public void proposalPickerCounter(ResourceRequest request,
 									  ResourceResponse response) throws IOException, SystemException,
 			PortalException {
+				/*
+		TODO: Removed to increase performance
 		String filterType = request.getParameter("filterKey");
 		long sectionId = Long.parseLong(request.getParameter("sectionId"));
 		long userId = Long.parseLong(request.getRemoteUser());
-/*
 		int numberOfSubscriptions = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
 				userId, filterType, sectionId, request, proposalsContext).size();
 		int numberOfSupporting = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(userId,
