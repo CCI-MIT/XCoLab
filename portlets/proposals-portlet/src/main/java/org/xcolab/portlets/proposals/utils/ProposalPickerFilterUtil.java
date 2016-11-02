@@ -211,22 +211,20 @@ public class ProposalPickerFilterUtil {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<Proposal> proposalsRaw;
 
-
-        //Optimize picker by retrieving just proposals out of contest with corrext tier
-
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
-        final List<Long> allowedContestTiers = new ArrayList<>();
-        //allowedContestTiers.addAll(getAllowedTiers(planSectionDefinition.getTier()));
-        for(Long tierId : getAllowedTiers(planSectionDefinition.getTier())) {
-            allowedContestTiers.add(tierId);
+        List<Long> contestTypes = new ArrayList<>();
+        contestTypes.addAll(IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()));
+        if(contestTypes.isEmpty()) {
+            long defaultTypeId = 0;
+            contestTypes.add(defaultTypeId);
         }
-
         if (contestPK > 0) {
             proposalsRaw = ProposalsClient
                     .getProposalsInContest(contestPK);
         } else {
             //proposalsRaw = ProposalsClient.getAllProposals();
-            proposalsRaw = ProposalsClient.getProposalsByCurrentContests(IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()), allowedContestTiers, filterText.isEmpty() ? null : filterText);
+
+            proposalsRaw = ProposalsClient.getProposalsByCurrentContests(contestTypes, getAllowedTiers(planSectionDefinition.getTier()), filterText.isEmpty() ? null : filterText);
         }
         int count = 0;
         for (Proposal p : proposalsRaw) {
@@ -242,15 +240,14 @@ public class ProposalPickerFilterUtil {
     }
 
     //TODO: redundant to ProposalPickerFilter
-    private static Set<Long> getAllowedTiers(Long filterTier) {
+    private static List<Long> getAllowedTiers(Long filterTier) {
         // if filterTier < 0:
         //  allow tier <= (-filterTier)
         // else if filterTier > 0
         //  only allow tier == filterTier
-        Set<Long> allowedTiers = new HashSet<>();
+        List<Long> allowedTiers = new ArrayList<>();
         final long positiveFilterTier = Math.abs(filterTier);
         allowedTiers.add(positiveFilterTier);
-
         if (filterTier < 0) {
             for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
                 allowedTiers.add(currentTier);

@@ -81,7 +81,7 @@ public final class ProposalsClient {
     }
 
 
-    public static List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, List<Long> contestTypeIds,
+    public static List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
             String filterText) {
         return proposalResource.service("getProposalsByCurrentContests", Proposal.TYPES.getTypeReference())
                 .queryParam("contestTypeIds", convertListToGetParameter(contestTypeIds,"contestTypeIds"))
