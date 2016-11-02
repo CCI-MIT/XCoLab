@@ -262,9 +262,10 @@ public class ProposalsController {
 
     @RequestMapping(value = "/proposals/getProposalsByCurrentContests", method = {RequestMethod.GET})
     public List<Proposal> getProposalsByCurrentContests(
-            @RequestParam(required = false) List<Long> contestTierIds,
+            @RequestParam("contestTierIds") List<Long> contestTierIds,
+            @RequestParam("contestTypeIds") List<Long> contestTypeIds,
             @RequestParam("filterText") String filterText) {
-        return proposalService.getProposalsByCurrentContests(contestTierIds, filterText);
+        return proposalService.getProposalsByCurrentContests(contestTypeIds,contestTierIds, filterText);
     }
 
 }

@@ -169,6 +169,14 @@ public class ContestClient {
                 .execute();
     }
 
+    public static List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds) {
+        return contestResource.service("findContestsByName", Contest.TYPES.getTypeReference())
+                .queryParam("contestName", contestName)
+                .queryParam("ontologyTermIds",  102)
+                .queryParam("contestTypeIds",  0)
+                .getList();
+    }
+
     public static List<Contest> findContestsTierLevelAndOntologyTermIds(Long contestTier, List<Long> focusAreaOntologyTerms) {
         return contestResource.list()
                 .queryParam("contestTier", contestTier)

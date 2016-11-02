@@ -81,10 +81,11 @@ public final class ProposalsClient {
     }
 
 
-    public static List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds,
+    public static List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, List<Long> contestTypeIds,
             String filterText) {
         return proposalResource.service("getProposalsByCurrentContests", Proposal.TYPES.getTypeReference())
-                .queryParam("contestTierIds", 1)
+                .queryParam("contestTypeIds", contestTypeIds.isEmpty() ? null : contestTypeIds.toArray(new String[0]))
+                .queryParam("contestTierIds", contestTierIds.isEmpty() ? null : contestTierIds.toArray(new String[0]))
                 .queryParam("filterText", filterText)
                 .getList();
     }

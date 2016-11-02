@@ -65,9 +65,9 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         if(filterText != null) {
-            query.addJoin(PROPOSAL_ATTRIBUTE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_ATTRIBUTE.PROPOSAL_ID)
+            query.addJoin(PROPOSAL_ATTRIBUTE, JoinType.JOIN, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_ATTRIBUTE.PROPOSAL_ID)
                     .and(PROPOSAL_ATTRIBUTE.STRING_VALUE.like("%" + filterText + "%"))
-                    .and(PROPOSAL_ATTRIBUTE.NAME.eq("NAME")));
+                        .and(PROPOSAL_ATTRIBUTE.NAME.eq("NAME")));
         }
 
         if (visible != null) {

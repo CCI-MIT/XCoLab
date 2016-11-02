@@ -37,6 +37,7 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -338,18 +339,23 @@ public class ProposalService {
         }
     }
 
-    public List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, String filterText) {
-        List<Proposal> proposals = new ArrayList<>();
+    public List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, List<Long> contestTypeIds, String filterText) {
+        HashSet<Proposal> proposals = new HashSet<>();
         PaginationHelper paginationHelper = new PaginationHelper(null, null, null);
-        for(Long contestTierId : contestTierIds) {
-            List<Contest> contests = ContestClient.getContestsMatchingTier(contestTierId);
-            for (Contest  contest: contests) {
-                ContestPhase contestPhase = ContestClient.getActivePhase(contest.getContestPK());
-                proposals.addAll(proposalDao
-                        .findByGiven(paginationHelper, filterText, null, null,
-                                contestPhase.getContestPhasePK(), null));
+        if(contestTypeIds != null && !contestTypeIds.isEmpty() && contestTierIds != null && !contestTierIds.isEmpty()) {
+            for (Long contestTierId : contestTierIds) {
+                List<Contest> contests = ContestClient.getContestsMatchingTier(contestTierId);
+                for (Contest contest : contests) {
+                    if (contestTypeIds.contains(contest.getContestTypeId())) {
+                        ContestPhase contestPhase =
+                                ContestClient.getActivePhase(contest.getContestPK());
+                        proposals.addAll(proposalDao
+                                .findByGiven(paginationHelper, filterText, null, null,
+                                        contestPhase.getContestPhasePK(), null));
+                    }
+                }
             }
         }
-        return proposals;
+        return new ArrayList<>(proposals);
     }
 }

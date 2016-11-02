@@ -12,8 +12,10 @@ import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.client.contest.pojo.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalSupporterClient;
 import org.xcolab.client.proposals.ProposalsClient;
@@ -21,6 +23,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalSupporter;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.utils.IdListUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,6 +75,31 @@ public class ProposalPickerFilterUtil {
         }
         return contests;
     }
+
+
+
+    public static List<Pair<ContestWrapper, Date>> getTextFilteredContests( long sectionId, String contestName) throws SystemException, PortalException {
+        if(contestName == null || contestName.isEmpty()) {
+            return getAllContests();
+        }
+        List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
+        final long contestFocusAreaId;
+
+        List<OntologyTerm> ontologyTerms = OntologyClient.getOntologyTermsForFocusArea(OntologyClient.getFocusArea(planSectionDefinition.getFocusAreaId()));
+        List<Long> ontologyTermIds = new ArrayList<>();
+        for(OntologyTerm term : ontologyTerms) {
+            ontologyTermIds.add(term.getId_());
+        }
+
+        for (Contest c: ContestClient.findContestsByName(contestName, ontologyTermIds, IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()))) {
+            contests.add(Pair.of(new ContestWrapper(c),  //c
+                    c.getCreated() == null ? new Date(0) : c.getCreated()));
+
+        }
+        return contests;
+    }
+
 
     public static Map<Long, String> filterContests(List<Pair<ContestWrapper, Date>> contests,
             long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
@@ -201,7 +229,7 @@ public class ProposalPickerFilterUtil {
                     .getProposalsInContest(contestPK);
         } else {
             //proposalsRaw = ProposalsClient.getAllProposals();
-            proposalsRaw = ProposalsClient.getProposalsByCurrentContests(allowedContestTiers, filterText.isEmpty() ? null : filterText);
+            proposalsRaw = ProposalsClient.getProposalsByCurrentContests(IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()), allowedContestTiers, filterText.isEmpty() ? null : filterText);
         }
         int count = 0;
         for (Proposal p : proposalsRaw) {
@@ -211,7 +239,7 @@ public class ProposalPickerFilterUtil {
         }
         System.out.println("done!");
 
-        filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
+        //filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
 
         return proposals;
     }
@@ -239,8 +267,7 @@ public class ProposalPickerFilterUtil {
             ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         filterByParameter(filterKey, proposals);
-        //TODO: removed function since is partially redundant to query "notDeleted" and just affects 50 out of 8000
-        //filterByVisibility(proposals);
+        filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
@@ -255,10 +282,10 @@ public class ProposalPickerFilterUtil {
         } else {
             contestFocusAreaId = 0;
         }
-        //ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
-        //        new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
+        ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
+                new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
 
-        //TODO: takes another 5 minutes
+        //TODO: pushed down to Microservice
         //ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
 

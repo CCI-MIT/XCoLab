@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.portlets.proposals.utils.ProposalPickerFilter;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.ProposalsContext;
@@ -27,8 +26,8 @@ import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,9 +87,10 @@ public class ProposalPickerJSONController {
 
 		int totalCount;
 		if (proposals != null) {
-			if (filterText != null && !filterText.isEmpty()) {
+			//Pushed down to Microservices
+			//if (filterText != null && !filterText.isEmpty()) {
 				//ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
-			}
+			//}
 			totalCount = proposals.size();
 
 			ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
@@ -124,7 +124,10 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) Long sectionId) throws IOException,
 			SystemException, PortalException {
 
-		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
+		//List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+		Map<Long, String> removedContests = new HashMap<>();
+		/*
 		Map<Long, String> removedContests = ProposalPickerFilterUtil.filterContests(
 				new ArrayList<>(contests), sectionId, request, proposalsContext, true);
 
@@ -132,6 +135,7 @@ public class ProposalPickerJSONController {
 			ProposalPickerFilter.TEXT_BASED.filterContests(contests,
 					filterText);
 		}
+		*/
 		int totalCount = contests.size();
 
 		if (end >= contests.size() && !contests.isEmpty()) {
