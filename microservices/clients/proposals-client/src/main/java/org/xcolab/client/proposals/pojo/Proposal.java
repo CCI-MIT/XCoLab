@@ -621,6 +621,7 @@ public class Proposal extends AbstractProposal {
 
     public long getVotesCount() {
         if (this.getProposalId() > 0) {
+
             long votingPhasePK = contest.getVotingPhasePK();
             return ProposalMemberRatingClientUtil.countProposalVotesInContestPhaseProposalId(this.getProposalId(), votingPhasePK);
         }

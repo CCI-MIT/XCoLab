@@ -62,6 +62,6 @@ public class MembershipRequest extends AbstractMembershipRequest {
     }
 
     public MembershipRequest getMembershipRequest(){
-        return membershipRequest;
+        return this;
     }
 }
