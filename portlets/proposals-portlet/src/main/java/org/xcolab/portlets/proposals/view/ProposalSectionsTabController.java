@@ -15,6 +15,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMoveClientUtil;
@@ -25,15 +26,13 @@ import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
-import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.EntityGroupingUtil;
 
@@ -81,7 +80,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
 
         final Proposal proposal = proposalsContext.getProposal(request);
-        final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
+        final Proposal proposalWrapped = proposalsContext.getProposalWrapped(request);
         try {
             final Contest baseContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
 
@@ -93,7 +92,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 // get base proposal from base contest
                 ContestPhase baseContestPhase = ContestClientUtil.getActivePhase(baseContest.getContestPK());
 
-                ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
+                Proposal baseProposalWrapped = new Proposal(proposal, proposal.getCurrentVersion(),
                         baseContest, baseContestPhase, null);
                 model.addAttribute("baseProposal", baseProposalWrapped);
 
@@ -111,12 +110,12 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
                 Set<Long> newContestSections = new HashSet<>();
 
-                for (ProposalSectionWrapper section : proposalWrapped.getSections()) {
+                for (PlanSectionDefinition section : proposalWrapped.getSections()) {
                     newContestSections.add(section.getSectionDefinitionId());
                 }
 
                 boolean hasNotMappedSections = false;
-                for (ProposalSectionWrapper section : baseProposalWrapped.getSections()) {
+                for (PlanSectionDefinition section : baseProposalWrapped.getSections()) {
                     if (section.getContent() != null && !section.getContent().trim().isEmpty()) {
                         // we have non empty section in base proposal, check if such
                         // section exists in target contest
@@ -203,7 +202,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     }
 
     private void setJudgeProposalBean(Model model, PortletRequest request) {
-        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
+        Proposal proposalWrapper = proposalsContext.getProposalWrapped(request);
         ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(
                 proposalWrapper, proposalsContext.getMember(request));
         JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);

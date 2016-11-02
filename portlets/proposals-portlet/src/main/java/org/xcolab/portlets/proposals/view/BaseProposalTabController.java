@@ -14,7 +14,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,7 @@ public class BaseProposalTabController extends BaseProposalsController {
         model.addAttribute("currentTabWrapped", new ProposalTabWrapper(tab, request, proposalsContext));
 
         final Contest contestWrapped = proposalsContext.getContestWrapped(request);
-        final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
+        final Proposal proposalWrapped = proposalsContext.getProposalWrapped(request);
         final ProposalClient proposalClient = proposalsContext.getClients(request).getProposalClient();
 
         String pageTitle = contestWrapped.getContestShortName();

@@ -24,7 +24,6 @@ import org.xcolab.portlets.proposals.utils.ProposalPickerFilter;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -183,7 +182,7 @@ public class ProposalPickerJSONController {
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 
 		for (Pair<Proposal, Date> p : proposals) {
-			ProposalWrapper wrappedProposal = new ProposalWrapper(p.getLeft());
+			Proposal wrappedProposal = new Proposal(p.getLeft());
 			JSONObject o = JSONFactoryUtil.createJSONObject();
 			o.put("id", p.getLeft().getProposalId());
 			o.put("proposalName", StringUtils.abbreviate(

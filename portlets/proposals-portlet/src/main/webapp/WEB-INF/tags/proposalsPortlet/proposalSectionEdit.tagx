@@ -6,7 +6,7 @@
 
 	<liferay-theme:defineObjects />
 
-	<jsp:directive.attribute name="section" type="org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper" 
+	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.templates.PlanSectionDefinition"
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
 		
 	<jsp:directive.attribute name="showCopySectionContentButton" type="java.lang.Boolean" 

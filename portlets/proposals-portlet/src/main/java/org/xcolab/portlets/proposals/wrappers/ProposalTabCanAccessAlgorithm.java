@@ -10,6 +10,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -61,7 +62,7 @@ interface ProposalTabCanAccessAlgorithm {
 				return true;
 			}
 
-			ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+			Proposal proposalWrapper = new Proposal(context.getProposal(request), context.getContestPhase(request));
 			ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(proposalWrapper, context.getMember(request));
 			return wrapper.shouldShowJudgingTab();
 		}
@@ -79,7 +80,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+			Proposal proposalWrapper = new Proposal(context.getProposal(request), context.getContestPhase(request));
 			if (proposalWrapper.getContest().getContestTier() < 1) {
 				return false;
 			}

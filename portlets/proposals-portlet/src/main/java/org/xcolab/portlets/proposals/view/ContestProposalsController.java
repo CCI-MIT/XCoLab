@@ -63,19 +63,19 @@ public class ContestProposalsController extends BaseProposalsController {
         }
 
         Member u = request.getRemoteUser() != null ? MembersClient.getMemberUnchecked(Long.parseLong(request.getRemoteUser())) : null;
-        List<ProposalWrapper> proposals = new ArrayList<>();
+        List<Proposal> proposals = new ArrayList<>();
 
         for (Proposal proposal : ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
 
             try {
                 Proposal2Phase p2p = proposalsContext.getClients(request).getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                ProposalWrapper proposalWrapper;
+                Proposal proposalWrapper;
 
                 if (u != null && PermissionsClient.hasRoleGroup(u.getUserId(), MemberRole.JUDGE.getRoleId())) {
                     proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
 
                 } else {
-                    proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
+                    proposalWrapper = new Proposal(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
                 }
 
                 proposals.add(proposalWrapper);

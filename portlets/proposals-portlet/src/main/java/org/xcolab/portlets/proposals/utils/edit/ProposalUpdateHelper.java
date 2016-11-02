@@ -2,10 +2,11 @@ package org.xcolab.portlets.proposals.utils.edit;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.ext.portlet.PlanSectionTypeKeys;
+
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -15,8 +16,8 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextImpl;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+
+import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.utils.LinkUtils;
 
@@ -33,14 +34,14 @@ public class ProposalUpdateHelper {
     private final UpdateProposalDetailsBean updateProposalSectionsBean;
     private final ActionRequest request;
     private final ThemeDisplay themeDisplay;
-    private final ProposalWrapper proposalWrapper;
+    private final Proposal proposalWrapper;
     private final Proposal2Phase p2p;
     private final long userId;
 
     private final ProposalsContext proposalsContext = new ProposalsContextImpl();
 
     public ProposalUpdateHelper(@Valid UpdateProposalDetailsBean updateProposalSectionsBean, ActionRequest request,
-            ThemeDisplay themeDisplay, ProposalWrapper proposalWrapper, Proposal2Phase p2p, long userId) {
+            ThemeDisplay themeDisplay, Proposal proposalWrapper, Proposal2Phase p2p, long userId) {
         this.updateProposalSectionsBean = updateProposalSectionsBean;
         this.request = request;
         this.themeDisplay = themeDisplay;
@@ -53,7 +54,7 @@ public class ProposalUpdateHelper {
         boolean filledAll = updateBasicFields();
 
         boolean updateProposalReferences = false;
-        for (ProposalSectionWrapper section : proposalWrapper.getSections()) {
+        for (PlanSectionDefinition section : proposalWrapper.getSections()) {
             String newSectionValue =
                     updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId());
             switch (section.getType()) {

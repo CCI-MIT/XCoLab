@@ -17,7 +17,6 @@ import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
 
@@ -63,7 +62,7 @@ public class RemoveUserFromProposalTeamActionController {
                 Member deletedMember = MembersClient.getMemberUnchecked(memberId);
                 stringBuilder.append(String.format("Deleted member: %s, %d <br/>", deletedMember.getScreenName(), deletedMember.getUserId()));
                 stringBuilder.append(String.format("Deleted from group: %d <br/>", proposal.getGroupId()));
-                stringBuilder.append(String.format("Proposal: %s, %d <br/>", new ProposalWrapper(proposal).getName(), proposalId));
+                stringBuilder.append(String.format("Proposal: %s, %d <br/>", new Proposal(proposal).getName(), proposalId));
                 stringBuilder.append("<br/>Acting user permissions: <br/>");
                 stringBuilder.append(String.format("CanManageUsers: %b <br/>", permissions.getCanManageUsers()));
                 stringBuilder.append(String.format("CanAdminProposal: %b <br/>", permissions.getCanAdminProposal()));

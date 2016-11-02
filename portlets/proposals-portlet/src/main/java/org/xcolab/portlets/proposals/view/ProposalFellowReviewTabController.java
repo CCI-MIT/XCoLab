@@ -14,7 +14,6 @@ import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -29,7 +28,7 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
     public String showFellowReview(PortletRequest request, Model model)
             throws PortalException, SystemException {
 
-        final ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        final Proposal proposal = proposalsContext.getProposalWrapped(request);
 
         long fellowDiscussionId = proposal.getFellowDiscussionId();
         if (fellowDiscussionId == 0) {

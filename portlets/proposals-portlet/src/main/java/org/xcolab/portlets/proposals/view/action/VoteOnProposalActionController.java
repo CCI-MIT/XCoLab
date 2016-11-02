@@ -185,7 +185,7 @@ public class VoteOnProposalActionController {
                     && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
                 vote.setIsValid(true);
                 ProposalMemberRatingClientUtil.updateProposalVote(vote);
-                ProposalWrapper proposal = new ProposalWrapper(
+                Proposal proposal = new Proposal(
                         ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId));
                 model.addAttribute("proposal", proposal);
                 success = true;

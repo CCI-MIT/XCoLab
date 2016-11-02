@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.xcolab.util.http.client.RestService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OntologyTerm extends AbstractOntologyTerm {
 
     public OntologyTerm() {}
@@ -24,5 +27,35 @@ public class OntologyTerm extends AbstractOntologyTerm {
     @JsonIgnore
     public Long getId() {
         return getId_();
+    }
+
+    private OntologyTerm parent;
+    private final List<OntologyTerm> children = new ArrayList<>();
+
+
+    public OntologyTerm getParent() {
+        return parent;
+    }
+
+    public void setParent(OntologyTerm parent) {
+        if (parent != null) {
+            this.parent = parent;
+            parent.children.add(this);
+        }
+    }
+
+    public List<OntologyTerm> getChildren() {
+        return children;
+    }
+
+
+
+    public boolean hasParent() {
+        return this.getParentId() > 0;
+    }
+
+
+    public int getOrder() {
+        return this.getOrder_();
     }
 }

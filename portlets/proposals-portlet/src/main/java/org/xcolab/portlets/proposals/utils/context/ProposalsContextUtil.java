@@ -55,7 +55,7 @@ public final class ProposalsContextUtil {
         return proposalsContext.getViewContestPhaseId(request);
     }
 
-    public static ProposalWrapper getProposalWrapped(
+    public static Proposal getProposalWrapped(
             PortletRequest request) {
         return proposalsContext.getProposalWrapped(request);
     }

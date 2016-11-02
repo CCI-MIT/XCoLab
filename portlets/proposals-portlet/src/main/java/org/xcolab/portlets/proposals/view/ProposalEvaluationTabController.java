@@ -19,6 +19,7 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
@@ -26,9 +27,7 @@ import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
@@ -108,7 +107,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
     private JudgeProposalFeedbackBean getProposalRatingBean(PortletRequest request) {
 
-        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
+        Proposal proposalWrapper = proposalsContext.getProposalWrapped(request);
         ProposalJudgeWrapper proposalJudgeWrapper =
                 new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getMember(request));
         JudgeProposalFeedbackBean proposalRatingBean =
@@ -147,10 +146,10 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return ContestClientUtil.getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
-    private List<ProposalRatingsWrapper> getAverageRatingsForPastPhases(Long contestId,
+    private List<ProposalRatings> getAverageRatingsForPastPhases(Long contestId,
             Proposal proposal, PortletRequest request) {
 
-        List<ProposalRatingsWrapper> proposalRatings = new ArrayList<>();
+        List<ProposalRatings> proposalRatings = new ArrayList<>();
         List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
 
         for (ContestPhase contestPhase : contestPhases) {
@@ -165,11 +164,11 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                     try {
                         ProposalJudgingCommentHelper commentHelper =
                                 new ProposalJudgingCommentHelper(proposal, contestPhase);
-                        ProposalRatingsWrapper proposalRating;
+                        ProposalRatings proposalRating;
                         if (wasProposalPromotedInContestPhase(proposal, contestPhase, request)) {
                             proposalRating = calculateAverageRating(judgeRatingsForProposal);
                         } else {
-                            proposalRating = new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
+                            proposalRating = new ProposalRatings(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
                             proposalRating.setContestPhase(contestPhase);
                         }
                         proposalRating.setComment(commentHelper.getAdvancingComment());
@@ -180,7 +179,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                         throw new InternalException(e);
                     }
                 } else {
-                    ProposalRatingsWrapper proposalRating = getProposalPromotionCommentRating(proposal, contestPhase);
+                    ProposalRatings proposalRating = getProposalPromotionCommentRating(proposal, contestPhase);
                     proposalRatings.add(proposalRating);
                 }
             }
@@ -205,9 +204,9 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         }
     }
 
-    private ProposalRatingsWrapper getProposalPromotionCommentRating(Proposal proposal, ContestPhase contestPhase) {
+    private ProposalRatings getProposalPromotionCommentRating(Proposal proposal, ContestPhase contestPhase) {
         try {
-            ProposalRatingsWrapper proposalRating = new ProposalRatingsWrapper(
+            ProposalRatings proposalRating = new ProposalRatings(
                     ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
             ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(
                     proposal, contestPhase);
@@ -225,7 +224,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         }
     }
 
-    private ProposalRatingsWrapper calculateAverageRating(List<ProposalRating> judgeRatingsForProposal) {
+    private ProposalRatings calculateAverageRating(List<ProposalRating> judgeRatingsForProposal) {
 
         Map<Long, List<ProposalRating>> map = new HashMap<>();
         map.put(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<ProposalRating>());
@@ -262,7 +261,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         List<ProposalRating> userRatings = map.get(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
         try {
-            return new ProposalRatingsWrapper(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
+            return new ProposalRatings(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, userRatings, AVERAGE_RESULT_ROUND_FACTOR);
         } catch (MemberNotFoundException e) {
             throw new InternalException(e);
         }

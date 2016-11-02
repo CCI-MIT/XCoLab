@@ -44,8 +44,6 @@ import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.requests.RatingBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
@@ -311,7 +309,7 @@ public class JudgeProposalActionController {
         }
 
         final Contest contest = proposalsContext.getContest(request);
-        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         Member member = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -441,8 +439,7 @@ public class JudgeProposalActionController {
         //initialize a map of existing ratings
         Map<Long, ProposalRating> typeToRatingMap = new HashMap<>();
         for (ProposalRating r: existingRatings) {
-            ProposalRatingWrapper wrapper = new ProposalRatingWrapper(r);
-            typeToRatingMap.put(wrapper.getRatingTypeId(), r);
+            typeToRatingMap.put(r.getRatingTypeId(), r);
         }
 
         Map<Long, String> ratingsFromForm = ratingBean.getRatingValues();

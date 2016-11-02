@@ -1,4 +1,4 @@
-package org.xcolab.service.proposal.util;
+package org.xcolab.util.enums.contest;
 
 
 
@@ -21,7 +21,7 @@ public enum ContestTier {
 
     private final String tierName;
 
-    ContestTier (long tierType, String tierName) {
+    ContestTier(long tierType, String tierName) {
         this.tierType = tierType;
         this.tierName = tierName;
     }

@@ -32,7 +32,7 @@ public interface ProposalsContext {
 
     Long getViewContestPhaseId(PortletRequest request);
 
-    ProposalWrapper getProposalWrapped(PortletRequest request);
+    Proposal getProposalWrapped(PortletRequest request);
 
     Contest getContestWrapped(PortletRequest request);
 

@@ -60,11 +60,11 @@ public class CreateProposalController extends BaseProposalsController {
         final Contest contest = proposalsContext.getContest(request);
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
-        ProposalWrapper proposalWrapped = new ProposalWrapper(proposal, 0, contest, contestPhase, null);
+        Proposal proposalWrapped = new Proposal(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
             try {
                 Contest baseContest = ContestClientUtil.getContest(baseContestId);
-                ProposalWrapper baseProposalWrapper = new ProposalWrapper(
+                Proposal baseProposalWrapper = new Proposal(
                         ProposalsContextUtil.getClients(request).getProposalClient().getProposal(baseProposalId),
                         baseProposalVersion, baseContest, ContestClientUtil.getActivePhase(baseContest.getContestPK()), null);
 

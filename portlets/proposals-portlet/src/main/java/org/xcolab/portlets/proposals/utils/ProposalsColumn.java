@@ -1,38 +1,38 @@
 package org.xcolab.portlets.proposals.utils;
 
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.Comparator;
 
 public enum ProposalsColumn {
-    NAME(new Comparator<ProposalWrapper>() {
+    NAME(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
         }
         
     }), 
-    AUTHOR(new Comparator<ProposalWrapper>() {
+    AUTHOR(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             return o1.getAuthorName().toLowerCase().compareTo(o2.getAuthorName().toLowerCase());
         }
         
     }),
-    SUPPORTERS(new Comparator<ProposalWrapper>() {
+    SUPPORTERS(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             return (int) (o1.getSupportersCount() - o2.getSupportersCount());
         }
         
     }),
-    VOTES(new Comparator<ProposalWrapper>() {
+    VOTES(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             try {
                 return (int) (o1.getVotesCount() - o2.getVotesCount());
             }
@@ -42,45 +42,45 @@ public enum ProposalsColumn {
         }
         
     }),
-    COMMENTS(new Comparator<ProposalWrapper>() {
+    COMMENTS(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             return (int) (o1.getCommentsCount() - o2.getCommentsCount());
         }
     }),
-    JUDGESTATUS(new Comparator<ProposalWrapper>() {
+    JUDGESTATUS(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             return (o1.getJudgeStatus().getStatusValue() - o2.getJudgeStatus().getStatusValue());
         }
     }),
-    OVERALLSTATUS(new Comparator<ProposalWrapper>() {
+    OVERALLSTATUS(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             return (o1.getOverallStatus().getStatusValue() - o2.getOverallStatus().getStatusValue());
         }
     }),
-    SCREENINGSTATUS(new Comparator<ProposalWrapper>() {
+    SCREENINGSTATUS(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             return (o1.getScreeningStatus().getStatusValue() - o2.getScreeningStatus().getStatusValue());
         }
     }),
-    MODIFIED(new Comparator<ProposalWrapper>() {
+    MODIFIED(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             return o1.getLastModifiedDate().compareTo(o2.getLastModifiedDate());
         }
     }),
-    CONTRIBUTORS(new Comparator<ProposalWrapper>() {
+    CONTRIBUTORS(new Comparator<Proposal>() {
 
         @Override
-        public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+        public int compare(Proposal o1, Proposal o2) {
             if (o1.isOpen()) {
                 return o2.isOpen() ? 0 : -1;
             } else {
@@ -89,13 +89,13 @@ public enum ProposalsColumn {
         }
     });
     
-    private final Comparator<ProposalWrapper> proposalsComparator;
+    private final Comparator<Proposal> proposalsComparator;
     
-    ProposalsColumn(Comparator<ProposalWrapper> comparator) {
+    ProposalsColumn(Comparator<Proposal> comparator) {
         proposalsComparator = comparator;
     }
 
-    public Comparator<ProposalWrapper> getComparator() {
+    public Comparator<Proposal> getComparator() {
         return proposalsComparator;
     }
 

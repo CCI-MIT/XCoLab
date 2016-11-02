@@ -2,6 +2,8 @@ package org.xcolab.portlets.proposals.requests;
 
 
 
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
@@ -22,7 +24,7 @@ public class RatingBean {
 
     private Long screeningUserId;
 
-    public RatingBean(ProposalWrapper wrapper, List<ProposalRatingType> presetRatingTypes) {
+    public RatingBean(Proposal wrapper, List<ProposalRatingType> presetRatingTypes) {
         this.ratingValues = new HashMap<>();
         this.ratingTypes = new ArrayList<>();
 
@@ -33,7 +35,7 @@ public class RatingBean {
         }
 
         //get the existing ratings from the wrapper
-        for (ProposalRatingWrapper ratingWrapper : wrapper.getRatings()) {
+        for (ProposalRating ratingWrapper : wrapper.getRatings()) {
             ratingValues.put(ratingWrapper.getRatingTypeId(), String.valueOf(ratingWrapper.unwrap().getRatingValueId()));
         }
         comment = wrapper.getRatingComment();

@@ -19,7 +19,6 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import javax.portlet.PortletRequest;
@@ -142,15 +141,15 @@ public class ProposalContextHelper {
         return proposal;
     }
 
-    public ProposalWrapper getProposalWrapper(Proposal proposal, Proposal2Phase proposal2Phase,
+    public Proposal getProposalWrapper(Proposal proposal, Proposal2Phase proposal2Phase,
             ContestPhase contestPhase, Contest contest, Member member) {
-        ProposalWrapper proposalWrapper;
+        Proposal proposalWrapper;
         if (givenVersion > 0) {
             if (member != null && PermissionsClient.canJudge(member.getUserId(), contest.getContestPK())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal, givenVersion,
                         contest, contestPhase, proposal2Phase, member);
             } else {
-                proposalWrapper = new ProposalWrapper(proposal, givenVersion,
+                proposalWrapper = new Proposal(proposal, givenVersion,
                         contest,
                         contestPhase, proposal2Phase);
             }
@@ -166,7 +165,7 @@ public class ProposalContextHelper {
                         localVersion,
                         contest, contestPhase, proposal2Phase, member);
             } else {
-                proposalWrapper = new ProposalWrapper(proposal, localVersion,
+                proposalWrapper = new Proposal(proposal, localVersion,
                         contest, contestPhase, proposal2Phase);
             }
         }

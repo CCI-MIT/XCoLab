@@ -34,7 +34,6 @@ import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.IOException;
@@ -221,7 +220,7 @@ public class ProposalImpactJSONController {
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;
         }
-        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
 
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
                 .getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
@@ -286,7 +285,7 @@ public class ProposalImpactJSONController {
 
     private ProposalImpactSeriesList getProposalImpactSeriesList(ResourceRequest request) throws SystemException, PortalException {
         Contest contest = proposalsContext.getContest(request);
-        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
 
         return new ProposalImpactSeriesList(contest, proposal.getWrapped());
     }

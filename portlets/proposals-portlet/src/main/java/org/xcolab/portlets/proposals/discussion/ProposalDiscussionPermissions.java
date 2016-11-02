@@ -93,9 +93,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
             try {
                 Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
-                ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
-                return proposalWrapper.isUserAmongFellows(currentMember) || getCanAdminAll();
+
+                return proposal.isUserAmongFellows(currentMember) || getCanAdminAll();
             } catch (ProposalNotFoundException ignored) {
             }
         }
@@ -117,7 +117,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
 
 
         Contest contestWrapper =  proposalWrapper.getContest();

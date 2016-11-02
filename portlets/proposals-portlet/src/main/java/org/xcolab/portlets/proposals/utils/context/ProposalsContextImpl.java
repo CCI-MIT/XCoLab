@@ -18,7 +18,6 @@ import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidExce
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalContextHelper.InvalidAccessException;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.util.exceptions.InternalException;
 
@@ -116,7 +115,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     @Override
-    public ProposalWrapper getProposalWrapped(PortletRequest request) {
+    public Proposal getProposalWrapped(PortletRequest request) {
         return getAttribute(request, PROPOSAL_WRAPPED_ATTRIBUTE);
     }
 
@@ -221,7 +220,7 @@ public class ProposalsContextImpl implements ProposalsContext {
 
                 contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
                 if (proposal != null) {
-                    ProposalWrapper proposalWrapper = contextHelper.getProposalWrapper(
+                    Proposal proposalWrapper = contextHelper.getProposalWrapper(
                             proposal, proposal2Phase, contestPhase, contest, member);
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
                 }

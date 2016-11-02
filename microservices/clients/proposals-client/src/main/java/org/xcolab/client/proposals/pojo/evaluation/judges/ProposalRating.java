@@ -10,6 +10,10 @@ import java.text.DecimalFormat;
 public class ProposalRating extends AbstractProposalRating {
 
 
+    private ProposalRatingType ratingType;
+    private ProposalRatingValue ratingValue;
+    private Long roundFactor = 1L;
+
     public ProposalRating() {}
 
     public ProposalRating(ProposalRating value) {
@@ -35,9 +39,7 @@ public class ProposalRating extends AbstractProposalRating {
         super(abstractProposalRating);
     }
 
-    private ProposalRatingType ratingType;
-    private ProposalRatingValue ratingValue;
-    private Long roundFactor = 1L;
+
 
     public boolean isRatingComplete() {
         final boolean commentComplete = !getCommentEnabled()

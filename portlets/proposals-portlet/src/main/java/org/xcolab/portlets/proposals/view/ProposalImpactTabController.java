@@ -58,7 +58,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private ProposalsContext proposalsContext;
 
     private Contest contest;
-    private ProposalWrapper proposalWrapper;
+    private Proposal proposalWrapper;
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
     public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
