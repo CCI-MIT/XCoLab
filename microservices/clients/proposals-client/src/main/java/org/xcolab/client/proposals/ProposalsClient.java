@@ -84,8 +84,8 @@ public final class ProposalsClient {
     public static List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, List<Long> contestTypeIds,
             String filterText) {
         return proposalResource.service("getProposalsByCurrentContests", Proposal.TYPES.getTypeReference())
-                .queryParam("contestTypeIds", contestTypeIds.isEmpty() ? null : contestTypeIds.toArray(new String[0]))
-                .queryParam("contestTierIds", contestTierIds.isEmpty() ? null : contestTierIds.toArray(new String[0]))
+                .queryParam("contestTypeIds", convertListToGetParameter(contestTypeIds,"contestTypeIds"))
+                .queryParam("contestTierIds", convertListToGetParameter(contestTierIds,"contestTierIds"))
                 .queryParam("filterText", filterText)
                 .getList();
     }
@@ -306,5 +306,16 @@ public final class ProposalsClient {
         ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
+    private static String convertListToGetParameter(List<Long> list, String parameterName) {
+        if(list.isEmpty()){
+            return "";
+        }
+        String parameterList = "";
+        for(int i=0; i<list.size()-2; i++) {
+            parameterList += list.get(i) + "&" + parameterName + "=";
+        }
+        parameterList += list.get(list.size()-1);
+        return parameterList;
+    }
 
 }

@@ -172,8 +172,8 @@ public class ContestClient {
     public static List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds) {
         return contestResource.service("findContestsByName", Contest.TYPES.getTypeReference())
                 .queryParam("contestName", contestName)
-                .queryParam("ontologyTermIds",  102)
-                .queryParam("contestTypeIds",  0)
+                .queryParam("ontologyTermIds",  convertListToGetParameter(ontologyTermIds, "ontologyTermIds"))
+                .queryParam("contestTypeIds",  convertListToGetParameter(contestTypeIds, "contestTypeIds"))
                 .getList();
     }
 
@@ -430,5 +430,16 @@ public class ContestClient {
         ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
 
+    private static String convertListToGetParameter(List<Long> list, String parameterName) {
+        if(list.isEmpty()){
+            return "";
+        }
+        String parameterList = "";
+        for(int i=0; i<list.size()-2; i++) {
+            parameterList += list.get(i) + "&" + parameterName + "=";
+        }
+        parameterList += list.get(list.size()-1);
+        return parameterList;
+    }
 
 }

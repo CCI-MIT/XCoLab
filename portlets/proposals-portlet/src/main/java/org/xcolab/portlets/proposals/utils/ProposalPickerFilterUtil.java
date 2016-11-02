@@ -79,9 +79,6 @@ public class ProposalPickerFilterUtil {
 
 
     public static List<Pair<ContestWrapper, Date>> getTextFilteredContests( long sectionId, String contestName) throws SystemException, PortalException {
-        if(contestName == null || contestName.isEmpty()) {
-            return getAllContests();
-        }
         List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
         PlanSectionDefinition planSectionDefinition = PlanTemplateClient.getPlanSectionDefinition(sectionId);
         final long contestFocusAreaId;

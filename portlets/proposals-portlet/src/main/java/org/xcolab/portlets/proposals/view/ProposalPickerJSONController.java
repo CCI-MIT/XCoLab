@@ -170,12 +170,8 @@ public class ProposalPickerJSONController {
 		int numberOfSubscriptionsSupporting = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
 				userId, filterType, sectionId, request, proposalsContext).size();
 		int numberOfContests = ProposalPickerFilterUtil.getFilteredContests(sectionId, request, proposalsContext).size();
-*/
-		int numberOfSubscriptions = 5;
-		int numberOfProposals = 5;
-		int numberOfSubscriptionsSupporting = 5;
-		int numberOfSupporting = 5;
-		int numberOfContests = 5;
+
+
 				JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		wrapper.put("numberOfSubscriptions", numberOfSubscriptions);
 		wrapper.put("numberOfSupporting", numberOfSupporting);
@@ -184,6 +180,7 @@ public class ProposalPickerJSONController {
 				numberOfSubscriptionsSupporting);
 		wrapper.put("numberOfContests", numberOfContests);
 		response.getPortletOutputStream().write(wrapper.toString().getBytes());
+		*/
 	}
 
 	private String getJSONObjectMapping(List<Pair<Proposal, Date>> proposals,
