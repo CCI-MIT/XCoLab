@@ -16,7 +16,6 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.TabWrapper;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     private final static Log _log = LogFactoryUtil.getLog(ContestDetailsBaseTabController.class);
 
     private Contest contest;
-    private BaseContestWrapper contestWrapper;
+    private Contest contestWrapper;
     protected TabWrapper tabWrapper;
 
     public static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
@@ -45,7 +44,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
             throws PortalException, SystemException;
 
     @ModelAttribute("contestWrapper")
-    public BaseContestWrapper populateContestWrapper(Model model, PortletRequest request) {
+    public Contest populateContestWrapper(Model model, PortletRequest request) {
         initContest(request);
         return contestWrapper;
     }
@@ -54,7 +53,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         Long contestId = getContestIdFromRequest(request);
         try {
             contest = ContestClientUtil.getContest(contestId);
-            contestWrapper = new BaseContestWrapper(contest);
+            contestWrapper = (contest);
         } catch (ContestNotFoundException e) {
             throw new DatabaseAccessException(e);
         }
@@ -103,11 +102,11 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         this.tabWrapper = tabWrapper;
     }
 
-    public BaseContestWrapper getContestWrapper() {
+    public Contest getContestWrapper() {
         return contestWrapper;
     }
 
-    public void setContestWrapper(BaseContestWrapper contestWrapper) {
+    public void setContestWrapper(Contest contestWrapper) {
         this.contestWrapper = contestWrapper;
     }
 

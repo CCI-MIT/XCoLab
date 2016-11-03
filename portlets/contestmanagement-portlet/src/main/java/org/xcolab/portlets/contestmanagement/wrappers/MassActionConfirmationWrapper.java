@@ -3,12 +3,12 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class MassActionConfirmationWrapper {
 
-    private List<BaseContestWrapper> contestWrappers;
+    private List<Contest> contestWrappers;
     private List<Integer> contestIds;
     private List<Boolean> selectedContest;
     private Integer massActionId;
@@ -57,11 +57,11 @@ public class MassActionConfirmationWrapper {
         this.selectedContest = selectedContest;
     }
 
-    public List<BaseContestWrapper> getContestWrappers() {
+    public List<Contest> getContestWrappers() {
         return contestWrappers;
     }
 
-    public void setContestWrappers(List<BaseContestWrapper> contestWrappers) {
+    public void setContestWrappers(List<Contest> contestWrappers) {
         this.contestWrappers = contestWrappers;
     }
 
@@ -85,7 +85,7 @@ public class MassActionConfirmationWrapper {
         for (Integer contestId : contestIds) {
             try {
                 Contest contest = ContestClientUtil.getContest(contestId);
-                this.contestWrappers.add(new BaseContestWrapper(contest));
+                this.contestWrappers.add(new Contest(contest));
                 this.selectedContest.add(false);
             } catch (ContestNotFoundException ignored) {
                 // Contest was removed already

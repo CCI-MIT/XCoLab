@@ -4,10 +4,10 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -15,7 +15,6 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.wrappers.BaseProposalWrapper;
 
 import java.util.Date;
 
@@ -37,7 +36,7 @@ public class FlaggingReportWrapper {
         switch (TargetType.valueOf(report.getTargetType())) {
             case PROPOSAL:
                 final Proposal proposal = getTargetProposal();
-                return new BaseProposalWrapper(proposal).getName();
+                return (proposal).getName();
             case COMMENT:
                 final Comment commentTarget = getTargetComment();
                 if (commentTarget != null) {
@@ -56,7 +55,7 @@ public class FlaggingReportWrapper {
             case PROPOSAL:
                 final Proposal proposal = getTargetProposal();
                 if (proposal != null) {
-                    return new BaseProposalWrapper(proposal).getProposalUrl();
+                    return (proposal).getProposalUrl();
                 }
                 break;
             case COMMENT:

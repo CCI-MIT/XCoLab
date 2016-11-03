@@ -1,13 +1,10 @@
 package org.xcolab.portlets.proposals.requests;
 
 
-
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingTypeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

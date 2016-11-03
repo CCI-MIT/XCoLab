@@ -16,7 +16,6 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -275,16 +274,16 @@ public class ProposalTemplateWrapper {
         return selectItems;
     }
 
-    public List<BaseContestWrapper> getContestsUsingTemplate() {
-        List<BaseContestWrapper> contestsUsingSelectedTemplate = new ArrayList<>();
-        List<Contest> contestsUsingSelectedTemplateList = new ArrayList<>();
+    public List<Contest> getContestsUsingTemplate() {
+        List<Contest> contestsUsingSelectedTemplate = new ArrayList<>();
+        List<Contest> contestsUsingSelectedTemplateList;
 
         Long planTemplateId = planTemplate.getId_();
         contestsUsingSelectedTemplateList = ContestClientUtil.getContestsByPlanTemplateId(planTemplateId);
 
 
         for (Contest contest : contestsUsingSelectedTemplateList) {
-            contestsUsingSelectedTemplate.add(new BaseContestWrapper(contest));
+            contestsUsingSelectedTemplate.add((contest));
         }
 
         return contestsUsingSelectedTemplate;

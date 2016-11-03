@@ -1,13 +1,15 @@
 package org.xcolab.service.proposal.enums;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
-import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
+import org.xcolab.service.proposal.service.pointsdistributionconfiguration
+		.PointsDistributionConfigurationService;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
-import org.xcolab.service.proposal.util.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 
 import java.util.ArrayList;
 import java.util.HashSet;

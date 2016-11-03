@@ -41,7 +41,6 @@ import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.EntityGroupingUtil;
-import org.xcolab.wrappers.BaseProposalWrapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -78,7 +77,7 @@ public class UserProfileWrapper implements Serializable {
     private List<MessageBean> messages;
     private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
     private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
-    private List<BaseProposalWrapper> linkingProposals;
+    private List<Proposal> linkingProposals;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
@@ -159,7 +158,7 @@ public class UserProfileWrapper implements Serializable {
                         .get(contestType);
                 for (Proposal p : proposalsInContestType) {
                     try {
-                        final BaseProposalWrapper proposalWrapper = new BaseProposalWrapper(p);
+                        final Proposal proposalWrapper = (p);
                         contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
                                 .getProposals()
                                 .add(p);
@@ -388,12 +387,12 @@ public class UserProfileWrapper implements Serializable {
         }
     }
 
-    public List<BaseProposalWrapper> getLinkingProposals() {
+    public List<Proposal> getLinkingProposals() {
         if (linkingProposals == null) {
                 linkingProposals = new ArrayList<>();
                 List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
                 for (Proposal p : proposals) {
-                    linkingProposals.add(new BaseProposalWrapper(p));
+                    linkingProposals.add((p));
                 }
 
         }

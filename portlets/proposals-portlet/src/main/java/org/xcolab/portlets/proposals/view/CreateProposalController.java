@@ -25,7 +25,6 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;

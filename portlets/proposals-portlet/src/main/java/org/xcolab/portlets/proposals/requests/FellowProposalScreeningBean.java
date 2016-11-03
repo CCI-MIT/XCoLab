@@ -1,11 +1,12 @@
 package org.xcolab.portlets.proposals.requests;
 
-import com.ext.portlet.JudgingSystemActions;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 import java.io.Serializable;
 import java.util.List;

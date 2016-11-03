@@ -158,10 +158,12 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
                 // If a match is found create a new <a> tag
                 if (matcher.find()) {
                     final String link = word.substring(matcher.start(), matcher.end());
+                    //TODO: TEST FOR COMPILING
                     final Proposal linkedProposal = ProposalClientUtil.getProposalFromLinkUrl(link);
 
                     String elementName;
                     if (linkedProposal != null) {
+                        //TODO: TEST FOR COMPILING
                         elementName = new Proposal(linkedProposal).getName();
                     } else {
                         elementName = link;
@@ -289,6 +291,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
 
 
     private ProposalAttribute getSectionAttribute() {
+        //TODO: TEST FOR COMPILING
         return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", this.getId_());
     }
 }

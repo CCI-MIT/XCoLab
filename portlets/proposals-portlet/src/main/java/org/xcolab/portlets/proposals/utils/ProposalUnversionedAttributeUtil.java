@@ -5,8 +5,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,7 +21,7 @@ public class ProposalUnversionedAttributeUtil {
     public static void createOrUpdateProposalUnversionedAttribute(long authorId,
                                                                    String attributeValue,
                                                                    String attributeName,
-                                                                   ProposalWrapper proposal,
+                                                                   Proposal proposal,
                                                                    List<ProposalUnversionedAttribute> unversionedAttributes)
             throws PortalException, SystemException {
         ProposalUnversionedAttribute pua = null;

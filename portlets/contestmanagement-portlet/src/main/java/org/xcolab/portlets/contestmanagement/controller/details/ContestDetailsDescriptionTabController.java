@@ -28,13 +28,12 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.utils.emailnotification.contest.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -168,7 +167,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
         Contest contest = getContest(request);
-        BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
+        Contest contestWrapper = new Contest(contest);
         Long existingContestScheduleId = contest.getContestScheduleId();
         Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
         return ContestScheduleLifecycleUtil

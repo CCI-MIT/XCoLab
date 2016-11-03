@@ -28,7 +28,6 @@ import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.util.enums.flagging.TargetType;
@@ -163,10 +162,10 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     private void populateMoveHistory(Model model, Proposal proposal, Contest contest) {
         List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveClientUtil
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
-        List<MoveHistoryWrapper> sourceMoveHistories = new ArrayList<>();
+        List<ProposalMoveHistory> sourceMoveHistories = new ArrayList<>();
 
         for (ProposalMoveHistory sourceMoveHistory : sourceMoveHistoriesRaw) {
-            sourceMoveHistories.add(new MoveHistoryWrapper(sourceMoveHistory));
+            sourceMoveHistories.add(new ProposalMoveHistory(sourceMoveHistory));
         }
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
@@ -174,7 +173,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveClientUtil
                 .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         if (targetMoveHistoryRaw != null) {
-            MoveHistoryWrapper targetMoveHistory = new MoveHistoryWrapper(targetMoveHistoryRaw);
+            ProposalMoveHistory targetMoveHistory = new ProposalMoveHistory(targetMoveHistoryRaw);
             model.addAttribute("targetMoveHistory", targetMoveHistory);
         }
 

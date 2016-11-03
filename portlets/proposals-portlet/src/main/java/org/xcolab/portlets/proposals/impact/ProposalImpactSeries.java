@@ -21,7 +21,6 @@ import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -16,7 +16,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabPermissions;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -40,8 +39,8 @@ public class ContestsContextImpl implements TabContext {
     }
 
     @Override
-    public BaseContestWrapper getContestWrapped(PortletRequest request) {
-        return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE, BaseContestWrapper.class);
+    public Contest getContestWrapped(PortletRequest request) {
+        return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE, Contest.class);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class ContestsContextImpl implements TabContext {
 
             if (contest != null) {
                 request.setAttribute(CONTEST_ATTRIBUTE, contest);
-                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new BaseContestWrapper(contest));
+                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, (contest));
                 request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestPermissions(request, contest));
             }
         }

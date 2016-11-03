@@ -2,7 +2,6 @@ package org.xcolab.portlets.proposals.impact;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 public class ProposalSimulationScenarioRegionWrapper {
 
