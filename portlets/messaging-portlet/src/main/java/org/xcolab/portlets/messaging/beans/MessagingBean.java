@@ -25,7 +25,7 @@ public class MessagingBean implements Serializable {
 
     private int pageNumber = 1;
 
-    private boolean messageLimitExceeded = false;
+    private int numberOfMessagesLeft = Integer.MAX_VALUE;
 
     @SuppressWarnings("unused")
     public MessagingBean() { }
@@ -39,7 +39,7 @@ public class MessagingBean implements Serializable {
 
         messagesCount = MessagingClient.countMessages(user.getUserId(), messageType);
 
-        messageLimitExceeded = !MessagingClient.canMemberSendMessage(user.getUserId());
+        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(user.getUserId());
     }
 
     public MessageType getType() {
@@ -103,7 +103,7 @@ public class MessagingBean implements Serializable {
         return numPages;
     }
 
-    public boolean isMessageLimitExceeded() {
-        return this.messageLimitExceeded;
+    public int getNumberOfMessagesLeft() {
+        return numberOfMessagesLeft;
     }
 }

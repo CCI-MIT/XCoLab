@@ -63,6 +63,26 @@ public class MessageLimitManager {
         }
     }
 
+    public int getNumberOfMessagesLeft(long memberId) {
+        synchronized (getMutex(memberId)) {
+
+            MessagingUserPreferences messagingPreferences = messagingUserPreferencesService.getByMemberId(memberId);
+
+            int messagesLimit;
+            if (messagingPreferences.getDailyMessageLimit() != null) {
+                messagesLimit = messagingPreferences.getDailyMessageLimit();
+            } else {
+                messagesLimit = MESSAGES_DAILY_LIMIT;
+            }
+
+            final Timestamp yesterday = Timestamp.from(Instant.now().minus(Duration.ofDays(1)));
+
+            int count = messageDao.countByGiven(memberId, null, null, null, yesterday);
+
+            return  messagesLimit - count;
+        }
+    }
+
     public synchronized Object getMutex(long senderId) {
         Object mutex = mutexes.get(senderId);
         if (mutex == null) {

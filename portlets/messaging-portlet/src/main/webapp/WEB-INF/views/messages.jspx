@@ -32,18 +32,17 @@
                     <span class="num">${messagingBean.messagesCount}</span> messages
                     <div style="float: right;">
                         <c:choose>
-                            <c:when test="${not messagingBean.messageLimitExceeded}">
+                            <c:when test="${messagingBean.numberOfMessagesLeft >= 1}">
                                 <a href="/web/guest/messaging/-/messaging/compose">
                                     <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> compose message
                                 </a>
                             </c:when>
-                            <c:when test="${ messagingBean.messageLimitExceeded}">
+                            <c:otherwise>
                                 <a style="color: grey;">
                                     <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> message limit exceeded
                                 </a>
-                            </c:when>
+                            </c:otherwise>
                         </c:choose>
-
                     </div>
                 </div>
 
