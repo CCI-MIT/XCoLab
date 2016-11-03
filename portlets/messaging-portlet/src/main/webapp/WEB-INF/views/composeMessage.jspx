@@ -2,7 +2,9 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
-          xmlns:spring="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form">
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:h="http://www.springframework.org/tags/form">
 
     <!--@elvariable id="sendMessageBean" type="org.xcolab.portlets.messaging.beans.SendMessageBean"-->
 
@@ -39,13 +41,24 @@
         </form:form>
     </div>
 
+
+    <div id="numberOfMessagesLeft" style="display:none;"> ${sendMessageBean.numberOfMessagesLeft}</div>
+
+
     <script type="text/javascript">
         jQuery(function() {
             enableDirtyCheck();
 
             jQuery("#messageSendButton").click(function () {
-                disableDirtyCheck();
-                jQuery("#sendMessageForm").submit();
+                var numberOfRecipients = $('#userListRecipients  li').length;
+                var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
+                if( numberOfMessagesLeft >= numberOfRecipients) {
+                    disableDirtyCheck();
+                    jQuery("#sendMessageForm").submit();
+                } else {
+                    alert("Message Limit Exceeded, please remove at least " + (numberOfRecipients - numberOfMessagesLeft) + " recipients!");
+                }
+
             });
         });
     </script>
