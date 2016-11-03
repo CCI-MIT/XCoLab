@@ -454,6 +454,7 @@ public class SectionDefinitionWrapper implements Serializable {
             psd.setAllowedContestTypeIds(
                     IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
             psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
+            psd.setLocked(false);
 
             psd = PlanTemplateClient.createPlanSectionDefinition(psd);
             id = psd.getId_();

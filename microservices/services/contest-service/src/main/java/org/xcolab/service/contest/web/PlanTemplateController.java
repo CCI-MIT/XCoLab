@@ -34,6 +34,7 @@ public class PlanTemplateController {
 
     @RequestMapping(value = "/planTemplates", method = RequestMethod.POST)
     public PlanTemplate createPlanTemplate(@RequestBody PlanTemplate planTemplate) {
+
         return this.planTemplateDao.create(planTemplate);
     }
 
@@ -104,6 +105,9 @@ public class PlanTemplateController {
     }
     @RequestMapping(value = "/planSectionDefinitions", method = RequestMethod.POST)
     public PlanSectionDefinition createPlanSectionDefinition(@RequestBody PlanSectionDefinition planSectionDefinition) {
+        if(planSectionDefinition.getLocked() == null){
+            planSectionDefinition.setLocked(false);
+        }
         return this.planSectionDefinitionDao.create(planSectionDefinition);
     }
 

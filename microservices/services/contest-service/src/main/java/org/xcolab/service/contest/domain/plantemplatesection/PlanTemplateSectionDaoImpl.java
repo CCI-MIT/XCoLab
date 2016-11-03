@@ -27,7 +27,7 @@ public class PlanTemplateSectionDaoImpl implements PlanTemplateSectionDao {
             query.addConditions(PLAN_TEMPLATE_SECTION.PLAN_TEMPLATE_ID.eq(planTemplateId));
         }
 
-        if (planTemplateId != null) {
+        if (planSectionId != null) {
             query.addConditions(PLAN_TEMPLATE_SECTION.PLAN_SECTION_ID.eq(planSectionId));
         }
 

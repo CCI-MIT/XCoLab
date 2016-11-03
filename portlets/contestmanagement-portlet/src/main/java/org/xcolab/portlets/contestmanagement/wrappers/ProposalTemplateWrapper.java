@@ -205,10 +205,15 @@ public class ProposalTemplateWrapper {
     }
 
     private void duplicateExistingPlanTemplate() {
-
-        PlanTemplate newPlanTemplate = PlanTemplateClient.createPlanTemplate(planTemplate);
+        PlanTemplate aux = new PlanTemplate();
+        aux.setBaseTemplateId(planTemplate.getBaseTemplateId());
+        aux.setFocusAreaListTemplateId(planTemplate.getFocusAreaListTemplateId());
+        aux.setImpactSeriesTemplateId(planTemplate.getImpactSeriesTemplateId());
+        aux.setName(planTemplate.getName());
+        PlanTemplate newPlanTemplate = PlanTemplateClient.createPlanTemplate(aux);
         planTemplateId = newPlanTemplate.getId_();
 
+        planTemplate = newPlanTemplate;
         for (SectionDefinitionWrapper section : sections) {
             section.setId(null);
         }
