@@ -151,12 +151,7 @@
 		<!-- microservice dependencies -->
 		<dependency>
 			<groupId>org.xcolab.microservices.clients</groupId>
-			<artifactId>contest-client</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.xcolab.microservices.clients</groupId>
-			<artifactId>proposals-client</artifactId>
+			<artifactId>contestproposal-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

@@ -10,8 +10,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>activities-client</artifactId>
+    <groupId>org.xcolab.microservices.clients</groupId>
+    <artifactId>contestproposal-client</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -27,20 +29,30 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab.microservices.clients</groupId>
-            <artifactId>admin-client</artifactId>
+            <artifactId>members-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.xcolab.microservices.clients</groupId>
-            <artifactId>contestproposal-client</artifactId>
+            <artifactId>modeling-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>edu.mit.cci.roma</groupId>
+            <artifactId>client</artifactId>
+            <version>1.4-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
             <groupId>org.xcolab.microservices.clients</groupId>
-            <artifactId>comment-client</artifactId>
+            <artifactId>activities-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
     
 </project>
