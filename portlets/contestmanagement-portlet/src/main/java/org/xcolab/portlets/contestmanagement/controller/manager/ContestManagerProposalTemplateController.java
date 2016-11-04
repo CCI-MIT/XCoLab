@@ -1,18 +1,19 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.contest.pojo.PlanTemplate;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.controller.common.ContestProposalTemplateTabController;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -20,7 +21,6 @@ import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
         try {
             PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), newTemplate.getId());
+            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(), newTemplate.getId_());
         } catch (IOException e) {
             _log.warn("Create proposal template failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
@@ -151,15 +151,13 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
 
     private Long getFirstPlanTemplateId() {
-        try {
-            final List<PlanTemplate> planTemplates = PlanTemplateLocalServiceUtil
-                    .getPlanTemplates(0, Integer.MAX_VALUE);
+
+            final List<PlanTemplate> planTemplates = PlanTemplateClient
+                    .getPlanTemplates();
             if (!planTemplates.isEmpty()) {
-                return planTemplates.get(0).getId();
+                return planTemplates.get(0).getId_();
             }
             return -1L;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 }

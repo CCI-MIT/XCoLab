@@ -104,10 +104,10 @@ public class SectionDefinitionWrapper implements Serializable {
 
         PointsDistributionConfiguration pdc =
                 PointsDistributionConfigurationClient.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
-        if(pdc != null) {
+        if (pdc != null) {
             this.pointPercentage = Double.toString(pdc.getPercentage());
             this.pointType = pdc.getPointTypeId();
-        }else {
+        } else {
             this.pointPercentage = "0";
             this.pointType = 0L;
         }
@@ -454,21 +454,42 @@ public class SectionDefinitionWrapper implements Serializable {
             psd.setAllowedContestTypeIds(
                     IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
             psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
+            psd.setLocked(false);
 
             psd = PlanTemplateClient.createPlanSectionDefinition(psd);
             id = psd.getId_();
         } else {
             psd = PlanTemplateClient.getPlanSectionDefinition(id);
+            psd.setType_(this.getType());
+            psd.setTitle(this.getTitle());
+            psd.setDefaultText(this.getDefaultText());
+            psd.setCharacterLimit(this.getCharacterLimit());
+            psd.setHelpText(this.getHelpText());
+            psd.setTier(this.getLevel());
+            psd.setFocusAreaId(this.getFocusAreaId());
+            psd.setAdditionalIds(this.getAdditionalIds());
+            psd.setAllowedValues(this.getAllowedValues());
+            psd.setAllowedContestTypeIds(
+                    IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
+            psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
+            psd.setLocked(false);
+
             pdc = PointsDistributionConfigurationClient
                     .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+
             if (pointType == 0L) {
-                PointsDistributionConfigurationClient
-                        .deletePointsDistributionConfiguration(pdc.getId_());
+                if (pdc != null) {
+                    PointsDistributionConfigurationClient
+                            .deletePointsDistributionConfiguration(pdc.getId_());
+                }
             } else {
-                pdc.setPercentage(Double.valueOf(pointPercentage));
-                pdc.setPointTypeId(pointType);
-                pdc.setTargetPlanSectionDefinitionId(id);
-                PointsDistributionConfigurationClient.updatePointsDistributionConfiguration(pdc);
+                if (pdc != null) {
+                    pdc.setPercentage(Double.valueOf(pointPercentage));
+                    pdc.setPointTypeId(pointType);
+                    pdc.setTargetPlanSectionDefinitionId(id);
+
+                    PointsDistributionConfigurationClient.updatePointsDistributionConfiguration(pdc);
+                }
             }
 
 

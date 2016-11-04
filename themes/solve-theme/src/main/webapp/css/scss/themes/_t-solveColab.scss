@@ -64,10 +64,11 @@ $t-Color__outline__level4: #aaa69f; // background slevel4-6
 $b-Typography__fontWeight--light: 300;
 $b-Typography__fontWeight--regular: 400;
 $b-Typography__fontWeight--medium: 500;
+$b-Typography__fontWeight--hard: 700;
 
 $b-Typography__fontFamily: "Neue Haas Grotesk", Helvetica, sans-serif;
 $b-Typography__fontFamily__h1: "Neue Haas Grotesk", Helvetica, sans-serif;
-$b-Typography__fontWeight--bold: $b-Typography__fontWeight--medium;
+$b-Typography__fontWeight--bold: $b-Typography__fontWeight--hard;
 
 $b-Typography__textColor__a--isHover: $t-Color__blue--hover;
 $b-Typography__textDecoration__a--hover: underline;
