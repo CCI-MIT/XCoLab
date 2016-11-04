@@ -67,7 +67,7 @@ public class OntologyController {
 
 
     @RequestMapping(value = "/ontologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<OntologyTerm> getOntologyTerms(@RequestParam String name) {
+    public List<OntologyTerm> getOntologyTerms(@RequestParam(required = false) String name) {
         return ontologyTermDao.findByGiven(name,null);
     }
 

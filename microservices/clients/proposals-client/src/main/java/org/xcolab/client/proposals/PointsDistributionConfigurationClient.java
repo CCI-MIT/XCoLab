@@ -6,6 +6,7 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
@@ -23,9 +24,15 @@ public final class PointsDistributionConfigurationClient {
     }
 
     public static PointsDistributionConfiguration getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(long targetPlanSectionDefinitionId) {
-        return pointsDistributionConfigurationResource.service("getByTargetPlanSectionDefinitionId", PointsDistributionConfiguration.class)
-                .queryParam("targetPlanSectionDefinitionId", targetPlanSectionDefinitionId)
-                .get();
+        try {
+            return pointsDistributionConfigurationResource
+                    .service("getByTargetPlanSectionDefinitionId",
+                            PointsDistributionConfiguration.class)
+                    .queryParam("targetPlanSectionDefinitionId", targetPlanSectionDefinitionId)
+                    .getChecked();
+        }catch (EntityNotFoundException ignored){
+            return null;
+        }
 
     }
 
