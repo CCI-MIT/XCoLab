@@ -31,6 +31,10 @@ public final class PlanTemplateClient {
                 .execute();
     }
 
+    public static  Boolean deletePlanTemplate(Long id_) {
+        return  planTemplateResource.delete(id_).execute();
+    }
+
     public static PlanTemplate createPlanTemplate(PlanTemplate planTemplate) {
         return planTemplateResource.create(planTemplate).execute();
     }
@@ -80,10 +84,14 @@ public final class PlanTemplateClient {
                 .optionalQueryParam("planTemplateId", planTemplateId)
                 .execute();
     }
+    public static  PlanTemplateSection createPlanTemplateSection(PlanTemplateSection planTemplateSection) {
+        return planTemplateSectionResource.create(planTemplateSection).execute();
+    }
+
 
     public static boolean updatePlanTemplateSection(PlanTemplateSection planTemplateSection) {
-        return planTemplateSectionResource.update(planTemplateSection, planTemplateSection.getPlanTemplateId())
-                .execute();
+        return planTemplateSectionResource.service("updateTemplateSection",Boolean.class)
+                .post(planTemplateSection);
     }
 
     public static List<PlanTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(Long planSectionId) {
