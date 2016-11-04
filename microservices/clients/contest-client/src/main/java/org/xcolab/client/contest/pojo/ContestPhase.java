@@ -3,8 +3,6 @@ package org.xcolab.client.contest.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.ContestClient;
@@ -422,10 +420,10 @@ public class ContestPhase {
 
     @JsonIgnore
     public boolean getPhaseActive() {
-        if (this.getPhaseActiveOverride() != null) {
+        if (this.getPhaseActiveOverride() != null && this.getPhaseActiveOverride()) {
             return this.getPhaseActiveOverride();
         }
-        if (this.getPhaseInactiveOverride() != null) {
+        if (this.getPhaseInactiveOverride() != null && this.getPhaseInactiveOverride()) {
             return this.getPhaseInactiveOverride();
         }
         if (this.getPhaseStartDate() != null) {
