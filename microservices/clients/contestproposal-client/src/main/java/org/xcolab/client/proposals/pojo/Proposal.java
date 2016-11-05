@@ -477,7 +477,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public int getVersion() {
-        return this.getVersion();
+        return this.getCurrentVersion();
     }
 
     public long getContestPK() {

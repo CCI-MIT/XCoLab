@@ -33,12 +33,14 @@ public class ProposalJudgeWrapper extends Proposal {
 
     private void setProposalRatings(long proposalId, ContestPhase contestPhase) {
 
+        if(contestPhase!=null) {
             List<ProposalRating> list = ProposalJudgeRatingClientUtil
                     .getJudgeRatingsForProposalAndUser(
                             currentMember.getUserId(),
                             proposalId,
                             contestPhase.getContestPhasePK());
             this.proposalRatings = new ProposalRatings(currentMember, list);
+        }
 
     }
 

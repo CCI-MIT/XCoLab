@@ -209,15 +209,13 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     }
 
 
-    public String getHelpText() {
-        return this.getHelpText();
-    }
 
     public OntologyTerm getNumericValueAsOntologyTerm() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
         }
+
         return OntologyClientUtil.getOntologyTerm(attr.getNumericValue());
     }
 

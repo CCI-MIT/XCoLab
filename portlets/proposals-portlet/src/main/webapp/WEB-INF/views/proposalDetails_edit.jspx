@@ -28,7 +28,7 @@
     <!--ProposalSectionsTabController-->
     <jsp:useBean id="updateProposalSectionsBean" scope="request" type="org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean"/>
     <c:if test="${isMove}">
-        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"/>
+        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
         <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
     </c:if>
 

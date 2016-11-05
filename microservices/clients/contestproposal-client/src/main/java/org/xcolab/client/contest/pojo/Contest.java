@@ -6,6 +6,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.helper.Tuple;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
@@ -86,9 +87,9 @@ public class Contest extends AbstractContest {
         contestClient = ContestClientUtil.getClient();
     }
 
-    public Contest(AbstractContest abstractContest, RestService restService) {
+    public Contest(AbstractContest abstractContest, RestService restServicez) {
         super(abstractContest);
-        restService = restService;
+        this.restService = restServicez;
         contestClient = ContestClient.fromService(restService);
     }
 
@@ -109,6 +110,42 @@ public class Contest extends AbstractContest {
         return "";
     }
 
+    public boolean getShowInTileView(){
+        return this.getShow_in_tile_view();
+    }
+
+    public boolean isShowInTileView(){
+        return this.getShow_in_tile_view();
+    }
+
+    public void setShowInTileView(boolean showInTileView){
+        this.setShow_in_tile_view(showInTileView);
+    }
+
+    public boolean getShowInListView(){
+        return this.getShow_in_list_view();
+    }
+
+    public boolean isShowInListView(){
+        return this.getShow_in_list_view();
+    }
+
+    public void setShowInListView(boolean showInListView){
+        this.setShow_in_list_view(showInListView);
+    }
+
+    public boolean getShowInOutlineView(){
+        return this.getShow_in_outline_view();
+    }
+
+    public boolean isShowInOutlineView(){
+        return this.getShow_in_outline_view();
+    }
+
+    public void setShowInOutlineView(boolean showInOutlineView){
+        this.setShow_in_outline_view(showInOutlineView);
+    }
+
     public String generateContestUrlName() {
         String contestUrlName = this.getContestShortName().toLowerCase();
         return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
@@ -122,6 +159,17 @@ public class Contest extends AbstractContest {
 
     public boolean isContestActive() {
         return this.getContestActive();
+    }
+
+    public boolean getContestInVotingPhase() {
+        ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
+        if (phase == null) {
+            return false;
+        }
+
+        String status = phase.getContestStatusStr();
+        return status != null && ContestStatus.valueOf(status).isCanVote();
+
     }
 
 
@@ -360,9 +408,6 @@ public class Contest extends AbstractContest {
         return this.getContestLinkUrl();
     }
 
-    public Long getResourceArticleId() {
-        return this.getResourceArticleId();
-    }
 
     public String getResourceArticleUrl() {
         return "/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
