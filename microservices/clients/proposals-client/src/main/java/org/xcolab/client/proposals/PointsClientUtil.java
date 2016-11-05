@@ -47,6 +47,9 @@ public final class PointsClientUtil {
     public static Boolean deletePointsDistributionConfigurationByProposalId(Long proposalId) {
         return client.deletePointsDistributionConfigurationByProposalId(proposalId);
     }
+    public static void verifyDistributionConfigurationsForProposalId(Long proposalId){
+         client.verifyDistributionConfigurationsForProposalId(proposalId);
+    }
 
     public static PointType getPointType(long Id_) {
         return client.getPointType(Id_);

@@ -2,10 +2,13 @@ package org.xcolab.service.proposal.domain.proposalratingvalue;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ProposalRatingValue;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+
+import java.util.List;
 
 import static org.xcolab.model.Tables.PROPOSAL_RATING_VALUE;
 
@@ -26,5 +29,16 @@ public class ProposalRatingValueDaoImpl implements ProposalRatingValueDao {
         }
         return record.into(ProposalRatingValue.class);
 
+    }
+
+    @Override
+    public List<ProposalRatingValue> findByGiven(Long ratingTypeId) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(PROPOSAL_RATING_VALUE).getQuery();
+
+        if (ratingTypeId != null) {
+            query.addConditions(PROPOSAL_RATING_VALUE.RATING_TYPE_ID.eq(ratingTypeId));
+        }
+        return query.fetchInto(ProposalRatingValue.class);
     }
 }

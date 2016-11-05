@@ -162,6 +162,25 @@ public final class ProposalMemberRatingClient {
         return proposalVoteResource.service("updateVote", Boolean.class)
                 .post(proposalVote);
     }
+    public boolean deleteProposalVote(Long contestPhaseId , Long memberId) {
+        return proposalVoteResource.service("deleteVote", Boolean.class)
+                .queryParam("memberId", memberId)
+                .queryParam("contestPhaseId", contestPhaseId)
+                .delete();
+    }
+    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId) {
+        ProposalVote pv = new ProposalVote();
+        pv.setContestPhaseId(proposalId);
+        pv.setContestPhaseId(contestPhaseId);
+        pv.setUserId(memberId);
+        pv.setCreateDate(new Timestamp(new Date().getTime()));
+        pv.setIsValid(true);// should this default to true?
+        return createProposalVote(pv);
+    }
+    public ProposalVote createProposalVote(ProposalVote proposalVote) {
+        return proposalVoteResource.create(new ProposalVoteDto(proposalVote)).execute()
+                .toPojo(proposalService);
+    }
 
     public ProposalVote getProposalVoteByProposalIdUserId(Long proposalId, Long userId) {
         return proposalVoteResource.service("getProposalVoteByProposalIdUserId", ProposalVote.class)

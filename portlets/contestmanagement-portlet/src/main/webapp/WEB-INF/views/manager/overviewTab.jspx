@@ -49,7 +49,6 @@
 			<div class="outerVerticalCenter">
 				<div class="innerVerticalCenter">
 					<form:select path="selectedMassAction" id="selectedMassAction">
-
 						<form:options items="${massActionsItems}" itemValue="value" itemLabel="lable"/>
 					</form:select>
 				</div>

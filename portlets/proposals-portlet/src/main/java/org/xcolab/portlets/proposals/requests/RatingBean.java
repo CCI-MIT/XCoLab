@@ -1,7 +1,8 @@
 package org.xcolab.portlets.proposals.requests;
 
-import com.ext.portlet.model.ProposalRatingType;
 
+
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
@@ -27,7 +28,7 @@ public class RatingBean {
 
         //initialize ratingValues and types
         for (ProposalRatingType type : presetRatingTypes) {
-            ratingValues.put(type.getId(), "");
+            ratingValues.put(type.getId_(), "");
             ratingTypes.add(new ProposalRatingTypeWrapper(type));
         }
 

@@ -33,4 +33,6 @@ public interface MemberDao {
             String firstName, String lastName, String shortBio, String country,
             Long facebookId, String openId, Long imageid, Long liferayUserId);
 
+    List<Member> findByIp(String ip) ;
+
 }

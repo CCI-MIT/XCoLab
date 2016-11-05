@@ -1,9 +1,12 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.model.ProposalRatingType;
-import com.ext.portlet.model.ProposalRatingValue;
-import com.ext.portlet.service.ProposalRatingValueLocalServiceUtil;
+
+
 import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 
 import java.util.List;
 
@@ -19,11 +22,12 @@ public class ProposalRatingTypeWrapper {
     }
 
     public List<ProposalRatingValue> getRatingValues() throws SystemException {
-        return ProposalRatingValueLocalServiceUtil.getRatingValuesForRatingTypeId(this.proposalRatingType.getId());
+
+        return ProposalJudgeRatingClientUtil.getProposalRatingValuesByProposalRatingTypeId(this.proposalRatingType.getId_());
     }
 
     public Long getId() {
-        return this.proposalRatingType.getId();
+        return this.proposalRatingType.getId_();
     }
 
     public String getLabel() {

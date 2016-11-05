@@ -9,4 +9,5 @@ public interface ProposalVoteDao {
     List<ProposalVote> findByGiven(Long proposalId, Long contestPhaseId, Long userId);
     Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId);
     boolean update(ProposalVote proposalVote);
+    ProposalVote create(ProposalVote proposalVote);
 }

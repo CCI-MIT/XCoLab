@@ -108,11 +108,14 @@ public class MassActionConfirmationWrapper {
             }
         }
         if (massActionId == ContestMassActions.DELETE.ordinal()) {
-            final boolean deletePhases = true;
-            ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, deletePhases, null);
+            final boolean actionConfirmed = true;
+            ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, actionConfirmed, null);
+        } else if (massActionId == ContestMassActions.DELETE_WITH_PHASES.ordinal()){
+            final boolean actionConfirmed = true;
+            ContestMassActions.values()[massActionId].getMethod().invoke(null, contestToBeDeleted, actionConfirmed, null);
         } else {
             throw new IllegalArgumentException(
-                    "No action defined for mass action id: " + massActionId);
+                        "No action defined for mass action id: " + massActionId);
         }
     }
 

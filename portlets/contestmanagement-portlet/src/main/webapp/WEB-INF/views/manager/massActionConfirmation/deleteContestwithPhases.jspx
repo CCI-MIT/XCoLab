@@ -18,8 +18,8 @@
                 <div class="proposal-title"><h1>Mass Action Confirmation</h1>
                     <span class="floatLeft clearLeft">
                     <h3>
-                    The following contest(s) have associated contest phases, which will preserve<br/>
-                    Please confirm the contest(s) that you want to delete!
+                    The following contest(s) have associated contest phases.<br/>
+                    Please confirm the contest(s) that you want to delete including their phases!
                     </h3>
                 </span>
                 </div>
@@ -33,7 +33,7 @@
                    id="editForm" method="post">
             <div class="cmsDetailsBox">
                 <div class="outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s)</a>
+                    <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s) and phases</a>
                     <a class="c-Button__secondary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/manager">DISCARD &amp; go back to overview</a>
                 </div>
             </div>

@@ -18,4 +18,6 @@ public interface ContestTeamMemberDao {
     boolean update(ContestTeamMember contestTeamMember);
 
     List<ContestTeamMember> findByGiven(Long contestId);
+
+    ContestTeamMember findOneBy(Long memberId, Long contestId, Long roleId);
 }

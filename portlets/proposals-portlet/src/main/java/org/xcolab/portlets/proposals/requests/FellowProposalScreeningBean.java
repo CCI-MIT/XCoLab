@@ -1,9 +1,10 @@
 package org.xcolab.portlets.proposals.requests;
 
 import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.service.ProposalRatingTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
 
 import java.io.Serializable;
@@ -24,7 +25,7 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
     private ContestEmailTemplateBean emailTemplateBean;
 
     public FellowProposalScreeningBean(ProposalFellowWrapper proposalWrapper) throws PortalException, SystemException {
-        super(proposalWrapper, ProposalRatingTypeLocalServiceUtil.getRatingTypesForFellows());
+        super(proposalWrapper, ProposalJudgeRatingClientUtil.getRatingTypesForFellows());
 
         fellowScreeningAction = proposalWrapper.getFellowAction();
         selectedJudges = proposalWrapper.getSelectedJudges();

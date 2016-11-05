@@ -1,5 +1,7 @@
 package org.xcolab.client.contest;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -15,6 +17,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseTypeDto;
 import org.xcolab.client.contest.pojo.ContestScheduleDto;
 import org.xcolab.client.contest.pojo.ContestTypeDto;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -24,9 +27,15 @@ import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.client.modeling.RomaClientUtil;
 
+import edu.mit.cci.roma.client.Simulation;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +85,7 @@ public class ContestClient {
     public Contest getContest(long contestId) throws ContestNotFoundException {
         try {
             return contestResource.get(contestId)
-                    .withCache(CacheKeys.of(ContestDto.class, contestId), CacheRetention.REQUEST)
+                    //.withCache(CacheKeys.of(ContestDto.class, contestId), CacheRetention.)
                     .executeChecked().toPojo(contestService);
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
@@ -215,16 +224,16 @@ public class ContestClient {
                 .getList(), contestService);
 
     }
-	public void autoPromoteProposals(){
+
+    public void autoPromoteProposals() {
         contestPhasesResource.service("autoPromoteProposals", Boolean.class).get();
     }
 
     public void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
         contestPhasesResource
-                .service(proposalId, "forcePropomotionOfProposalInContestPhaseId", Boolean.class)
-                .queryParam("contestPhaseId", contestPhaseId)
-                .get();
-        //TODO: NEEDS TO MIGRATE A TON OF THINGS.
+                .service(contestPhaseId, "forcePromotionOfProposalInContestPhaseId", Boolean.class)
+                .queryParam("proposalId", proposalId)
+                .put();
 
     }
 
@@ -233,6 +242,39 @@ public class ContestClient {
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("sort", "weight")
                 .execute(), contestService);
+    }
+
+    public Map<Long, String> getModelIdsAndNames(long contestPK) {
+        try {
+            List<Long> modelIds = getModelIds(contestPK);
+
+            Map<Long, String> ret = new HashMap<>();
+            for (Long modelId : modelIds) {
+                try {
+                    Simulation s = RomaClientUtil.repository().getSimulation(modelId);
+                    ret.put(s.getId(), s.getName());
+
+                } catch (IOException e) {
+                }
+            }
+            return ret;
+        } catch (ContestNotFoundException ignored) {
+            return new LinkedHashMap<>();
+        }
+    }
+
+    public List<Long> getModelIds(long contestPK) throws ContestNotFoundException {
+        Contest contest = getContest(contestPK);
+        List<Long> modelIds = new ArrayList<>();
+
+        if (StringUtils.isNotBlank(contest.getOtherModels())) {
+            modelIds.addAll(IdListUtil.getIdsFromString(contest.getOtherModels()));
+        }
+        if (!modelIds.contains(contest.getDefaultModelId())) {
+            modelIds.add(contest.getDefaultModelId());
+        }
+
+        return modelIds;
     }
 
     public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) {
@@ -388,7 +430,7 @@ public class ContestClient {
     }
 
     public String getContestStatusStr(Long contestPhaseId) {
-        return null;
+		return getContestPhase(contestPhaseId).getContestStatusStr();
     }
 
     public ContestType getContestType(long id) {
@@ -452,6 +494,61 @@ public class ContestClient {
 
     public void unsubscribeMemberFromContest(long contestPK, long userId) {
         ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+    }
+
+    public String getProposalNames(List<Long> contestTypeIds, String plurality,
+            String conjunction) {
+        return getJoinedNameString(contestTypeIds, true, plurality, conjunction);
+    }
+
+
+    public String getContestNames(List<Long> contestTypeIds, String plurality, String conjunction) {
+        return getJoinedNameString(contestTypeIds, false, plurality, conjunction);
+    }
+
+
+
+    //Do we even use this?
+    public enum Plurality {
+        SINGULAR, PLURAL
+    }
+
+
+    private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,
+            String plurality, String conjuction) {
+        String proposalsString;
+        StringBuilder stringBuilder = new StringBuilder();
+        Iterator<Long> iterator = contestTypeIds.iterator();
+        int currentWord = 1, totalWords = contestTypeIds.size();
+        while (iterator.hasNext()) {
+            ContestType contestType = getContestType(iterator.next());
+            if (currentWord > 1) {
+                if (currentWord == totalWords) {
+                    stringBuilder.append(String.format(" %s ", conjuction));
+                } else {
+                    stringBuilder.append(", ");
+                }
+            }
+            if (isProposal) {
+                if (plurality.equals(Plurality.SINGULAR.name())) {
+                    stringBuilder.append(contestType.getProposalName());
+                } else {
+                    stringBuilder.append(contestType.getProposalNamePlural());
+                }
+            } else {
+                if (plurality.equals(Plurality.SINGULAR.name())) {
+                    stringBuilder.append(contestType.getContestName());
+                } else {
+                    stringBuilder.append(contestType.getContestNamePlural());
+                }
+            }
+            currentWord++;
+        }
+        proposalsString = stringBuilder.toString();
+
+        proposalsString = "Proposals";
+
+        return proposalsString;
     }
 
 }

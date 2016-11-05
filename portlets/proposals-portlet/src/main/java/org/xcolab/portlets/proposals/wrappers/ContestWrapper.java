@@ -1,13 +1,14 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
@@ -225,8 +226,13 @@ public class ContestWrapper extends BaseContestWrapper {
     }
 
     public ContestWrapper getParentContest() throws SystemException, PortalException {
-        List<Long> focusAreaOntologyTermIds =
-                FocusAreaOntologyTermLocalServiceUtil.getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(contest.getFocusAreaId(), ONTOLOGY_SPACE_ID_WHERE);
+        List<OntologyTerm> list = OntologyClientUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(
+                OntologyClientUtil.getFocusArea(contest.getFocusAreaId()), OntologyClientUtil.getOntologySpace(ONTOLOGY_SPACE_ID_WHERE));
+        List<Long> focusAreaOntologyTermIds = new ArrayList<>();
+        for(OntologyTerm ot: list){
+            focusAreaOntologyTermIds.add(ot.getId_());
+        }
+
         List<Contest> contests = clientHelper.getContestClient()
                 .findContestsTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
         return new ContestWrapper(contests.get(0));

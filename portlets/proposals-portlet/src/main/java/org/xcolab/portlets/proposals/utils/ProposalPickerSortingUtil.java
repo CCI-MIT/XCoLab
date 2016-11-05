@@ -2,16 +2,14 @@ package org.xcolab.portlets.proposals.utils;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.UserLocalServiceUtil;
-
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -158,17 +156,17 @@ public class ProposalPickerSortingUtil {
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
                             try {
-                                return sortOrderModifier * Proposal2PhaseLocalServiceUtil
+                                return sortOrderModifier * ProposalClientUtil
                                         .getCurrentContestForProposal(
                                                 o1.getLeft().getProposalId())
                                         .getContestName()
                                         .compareTo(
-                                                Proposal2PhaseLocalServiceUtil
+                                                ProposalClientUtil
                                                         .getCurrentContestForProposal(
                                                                 o2.getLeft()
                                                                         .getProposalId())
                                                         .getContestName());
-                            } catch (SystemException | PortalException e) {
+                            } catch ( ContestNotFoundException e) {
                                 return 0;
                             }
                         }
@@ -179,19 +177,16 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
-                            try {
-                                return sortOrderModifier * ProposalAttributeLocalServiceUtil
-                                        .getAttribute(o1.getLeft().getProposalId(),
+                                return sortOrderModifier * ProposalAttributeClientUtil
+                                        .getProposalAttribute(o1.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.NAME, 0L)
                                         .getStringValue()
                                         .compareTo(
-                                                ProposalAttributeLocalServiceUtil.getAttribute(
+                                                ProposalAttributeClientUtil.getProposalAttribute(
                                                         o2.getLeft().getProposalId(),
                                                         ProposalAttributeKeys.NAME, 0L)
                                                         .getStringValue());
-                            } catch (SystemException | NoSuchProposalAttributeException e) {
-                                return 0;
-                            }
+
                         }
                     });
                     break;
@@ -210,17 +205,17 @@ public class ProposalPickerSortingUtil {
 
                                 String author1 = t1 == null
                                         || t1.getStringValue().trim().isEmpty()
-                                        ? UserLocalServiceUtil
-                                        .getUser(o1.getLeft().getAuthorId())
+                                        ? MembersClient
+                                        .getMember(o1.getLeft().getAuthorId())
                                         .getScreenName() : t1.getStringValue();
                                 String author2 = t2 == null
                                         || t2.getStringValue().trim().isEmpty()
-                                        ? UserLocalServiceUtil
-                                        .getUser(o2.getLeft().getAuthorId())
+                                        ? MembersClient
+                                        .getMember(o2.getLeft().getAuthorId())
                                         .getScreenName() : t2.getStringValue();
 
                                 return sortOrderModifier * author1.compareTo(author2);
-                            } catch (SystemException | PortalException e) {
+                            } catch (MemberNotFoundException e) {
                                 return 0;
                             }
                         }
@@ -240,16 +235,13 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
-                            try {
-                                return sortOrderModifier * ProposalLocalServiceUtil
-                                        .getSupportersCount(o1
+                                return sortOrderModifier * ProposalMemberRatingClientUtil
+                                        .getProposalSupportersCount(o1
                                                 .getLeft().getProposalId())
-                                        - ProposalLocalServiceUtil
-                                        .getSupportersCount(o2.getLeft()
+                                        - ProposalMemberRatingClientUtil
+                                        .getProposalSupportersCount(o2.getLeft()
                                                 .getProposalId());
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+
                         }
                     });
                     break;
@@ -258,10 +250,10 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
-                            return sortOrderModifier * (int) (ProposalLocalServiceUtil
-                                    .getCommentsCount(o1.getLeft().getProposalId())
-                                    - ProposalLocalServiceUtil
-                                    .getCommentsCount(o2.getLeft().getProposalId()));
+                            return sortOrderModifier * (int) (CommentClientUtil
+                                    .countComments(o1.getLeft().getDiscussionId())
+                                    - CommentClientUtil
+                                    .countComments(o2.getLeft().getDiscussionId()));
                         }
                     });
                     break;

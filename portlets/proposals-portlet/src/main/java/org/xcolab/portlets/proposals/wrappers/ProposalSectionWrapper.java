@@ -10,14 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ext.portlet.PlanSectionTypeKeys;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -200,7 +199,7 @@ public class ProposalSectionWrapper {
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
         }
-        return OntologyTermLocalServiceUtil.getOntologyTerm(attr.getNumericValue());
+        return OntologyClientUtil.getOntologyTerm(attr.getNumericValue());
     }
 
     public ProposalWrapper getNumericValueAsProposal() throws ProposalNotFoundException {
@@ -252,9 +251,9 @@ public class ProposalSectionWrapper {
             return null;
         }
 
-        FocusArea area = FocusAreaLocalServiceUtil.getFocusArea(definition.getFocusAreaId());
+        FocusArea area = OntologyClientUtil.getFocusArea(definition.getFocusAreaId());
 
-        return FocusAreaLocalServiceUtil.getTerms(area);
+        return OntologyClientUtil.getOntologyTermsForFocusArea(area);
     }
 
     public List<String> getOptionsForDropdownMenu() {
@@ -266,20 +265,10 @@ public class ProposalSectionWrapper {
     }
 
     public String getProposalNames() {
-        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "or");
+        return ContestClientUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "or");
     }
 
-    public String getProposalNamesPlural() {
-        return ContestTypeLocalServiceUtil.getProposalNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "and");
-    }
 
-    public String getContestNames() {
-        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.SINGULAR.name(), "or");
-    }
-
-    public String getContestNamesPlural() {
-        return ContestTypeLocalServiceUtil.getContestNames(getAllowedContestTypeIds(), Plurality.PLURAL.name(), "or");
-    }
 
     private ProposalAttribute getSectionAttribute() {
         return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", definition.getId_());

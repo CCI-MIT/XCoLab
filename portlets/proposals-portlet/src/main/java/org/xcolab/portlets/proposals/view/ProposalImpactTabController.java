@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -107,7 +106,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         boolean tabUsesModeling = (isRegionalContest(contest) || isGlobalContest(contest));
         if (tabUsesModeling){
-            model.addAttribute("availableModels", ContestLocalServiceUtil.getModelIdsAndNames(contest.getContestPK()));
+            model.addAttribute("availableModels", ContestClientUtil.getModelIdsAndNames(contest.getContestPK()));
             model.addAttribute("modelId", getModelIdIfProposalHasScenarioIdOrContestDefaultModelId());
             model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
         }
