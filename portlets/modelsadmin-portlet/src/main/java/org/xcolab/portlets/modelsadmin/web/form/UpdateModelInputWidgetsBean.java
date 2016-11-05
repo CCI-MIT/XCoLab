@@ -1,63 +1,67 @@
 package org.xcolab.portlets.modelsadmin.web.form;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.ext.portlet.models.ui.ModelDisplay;
-import com.ext.portlet.models.ui.ModelInputDisplayItem;
-import com.ext.portlet.models.ui.ModelInputIndividualDisplayItem;
-import com.ext.portlet.models.ui.ModelInputWidgetType;
 import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.modeling.models.ui.ModelDisplay;
+import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
+import org.xcolab.client.modeling.models.ui.ModelInputIndividualDisplayItem;
+import org.xcolab.client.modeling.models.ui.ModelInputWidgetType;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class UpdateModelInputWidgetsBean {
-	private Map<Long, ModelInputWidgetType> widgets = new HashMap<>();
-	private Map<Long, Long> groups = new HashMap<>();
-	private Map<Long, Integer> orders = new HashMap<>();
-	private String customInputWidgets;
-	
-	public UpdateModelInputWidgetsBean() {
-	}
-	
-	public UpdateModelInputWidgetsBean(ModelDisplay display, long modelId) throws SystemException {
-		for (ModelInputDisplayItem item: display.getAllIndividualInputs()) {
-			widgets.put(item.getMetaData().getId(), item.getType());
-			orders.put(item.getMetaData().getId(), item.getOrder());
-			groups.put(item.getMetaData().getId(), ((ModelInputIndividualDisplayItem) item).getGroupId());
-		}
-		customInputWidgets = ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId).getCustomInputsDefinition();
-	}
 
-	public Map<Long, ModelInputWidgetType> getWidgets() {
-		return widgets;
-	}
+    private Map<Long, ModelInputWidgetType> widgets = new HashMap<>();
+    private Map<Long, Long> groups = new HashMap<>();
+    private Map<Long, Integer> orders = new HashMap<>();
+    private String customInputWidgets;
 
-	public void setWidgets(Map<Long, ModelInputWidgetType> widgets) {
-		this.widgets = widgets;
-	}
+    public UpdateModelInputWidgetsBean() {
+    }
 
-	public Map<Long, Long> getGroups() {
-		return groups;
-	}
+    public UpdateModelInputWidgetsBean(ModelDisplay display, long modelId) throws SystemException {
+        for (ModelInputDisplayItem item : display.getAllIndividualInputs()) {
+            widgets.put(item.getMetaData().getId(), item.getType());
+            orders.put(item.getMetaData().getId(), item.getOrder());
+            groups.put(item.getMetaData().getId(),
+                    ((ModelInputIndividualDisplayItem) item).getGroupId());
+        }
+        customInputWidgets = ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId)
+                .getCustomInputsDefinition();
+    }
 
-	public void setGroups(Map<Long, Long> groups) {
-		this.groups = groups;
-	}
+    public Map<Long, ModelInputWidgetType> getWidgets() {
+        return widgets;
+    }
 
-	public Map<Long, Integer> getOrders() {
-		return orders;
-	}
+    public void setWidgets(Map<Long, ModelInputWidgetType> widgets) {
+        this.widgets = widgets;
+    }
 
-	public void setOrders(Map<Long, Integer> orders) {
-		this.orders = orders;
-	}
+    public Map<Long, Long> getGroups() {
+        return groups;
+    }
 
-	public String getCustomInputWidgets() {
-		return customInputWidgets;
-	}
+    public void setGroups(Map<Long, Long> groups) {
+        this.groups = groups;
+    }
 
-	public void setCustomInputWidgets(String customInputWidgets) {
-		this.customInputWidgets = customInputWidgets;
-	}
+    public Map<Long, Integer> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Map<Long, Integer> orders) {
+        this.orders = orders;
+    }
+
+    public String getCustomInputWidgets() {
+        return customInputWidgets;
+    }
+
+    public void setCustomInputWidgets(String customInputWidgets) {
+        this.customInputWidgets = customInputWidgets;
+    }
 
 }
