@@ -98,6 +98,12 @@ public class CommentController {
     public boolean deleteComment(@PathVariable Long commentId) throws NotFoundException {
         Comment comment = commentDao.get(commentId);
         comment.setDeletedDate(new Timestamp(new Date().getTime()));
+        //If last comment in thread, delete thread
+        if(commentDao.countByGiven(null, comment.getThreadId()) == 1) {
+            Thread thread = threadDao.get(comment.getThreadId());
+            thread.setDeletedDate(new Timestamp(new Date().getTime()));
+            threadDao.update(thread);
+        }
         return commentDao.update(comment);
     }
 
