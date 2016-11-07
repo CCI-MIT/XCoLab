@@ -55,6 +55,7 @@ public abstract class AbstractContest {
     private Boolean   hideribbons;
     private Long      resourcearticleid;
     private Boolean   issharedcontest;
+    private String    sharedorigin;
 
     public AbstractContest() {}
 
@@ -110,6 +111,7 @@ public abstract class AbstractContest {
         this.hideribbons = value.hideribbons;
         this.resourcearticleid = value.resourcearticleid;
         this.issharedcontest = value.issharedcontest;
+        this.sharedorigin = value.sharedorigin;
     }
 
     public AbstractContest(
@@ -163,7 +165,8 @@ public abstract class AbstractContest {
             Boolean   showInOutlineView,
             Boolean   hideribbons,
             Long      resourcearticleid,
-            Boolean   issharedcontest
+            Boolean   issharedcontest,
+            String   sharedorigin
     ) {
         this.contestpk = contestpk;
         this.contesttypeid = contesttypeid;
@@ -216,6 +219,7 @@ public abstract class AbstractContest {
         this.hideribbons = hideribbons;
         this.resourcearticleid = resourcearticleid;
         this.issharedcontest = issharedcontest;
+        this.sharedorigin = sharedorigin;
     }
 
     public Long getContestPK() {
@@ -624,6 +628,14 @@ public abstract class AbstractContest {
 
     public void setIsSharedContest(Boolean issharedcontest) {
         this.issharedcontest = issharedcontest;
+    }
+
+    public String getSharedOrigin() {
+        return this.sharedorigin;
+    }
+
+    public void setSharedOrigin(String sharedorigin) {
+        this.sharedorigin = sharedorigin;
     }
 
     @Override

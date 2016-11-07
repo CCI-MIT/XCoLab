@@ -4,11 +4,13 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -23,12 +25,14 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
@@ -68,10 +72,18 @@ public class Proposal extends AbstractProposal {
 
     private final ContestClient contestClient;
     private final ProposalClient proposalClient;
+    private final CommentClient commentClient;
+
+    private final ProposalMemberRatingClient proposalMemberRatingClient;
+
+    private final MembershipClient membershipClient;
+
     private final ProposalAttributeClient proposalAttributeClient;
     private final ProposalPhaseClient proposalPhaseClient;
+    private final ContestTeamMemberClient contestTeamMemberClient;
 
 
+    private RestService restService;
 
     protected final Contest contest;
 
@@ -106,6 +118,10 @@ public class Proposal extends AbstractProposal {
         proposalClient = ProposalClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        commentClient = CommentClientUtil.getClient();
+        proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
+        membershipClient = MembershipClientUtil.getClient();
 
         this.contestPhase =  fetchContestPhase();
         this.contest =  fetchContest(contestPhase);
@@ -127,6 +143,10 @@ public class Proposal extends AbstractProposal {
         proposalClient = ProposalClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
+        commentClient = CommentClientUtil.getClient();
+        membershipClient = MembershipClientUtil.getClient();
 
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);
@@ -149,6 +169,12 @@ public class Proposal extends AbstractProposal {
         proposalClient = ProposalClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+
+        commentClient = CommentClientUtil.getClient();
+        proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
+        membershipClient = MembershipClientUtil.getClient();
+
         this.contest = contest == null ? fetchContest(contestPhase) : contest;
         this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
@@ -170,6 +196,10 @@ public class Proposal extends AbstractProposal {
         proposalClient = ProposalClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        commentClient = CommentClientUtil.getClient();
+        proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
+        membershipClient = MembershipClientUtil.getClient();
 
         this.contestPhase =  fetchContestPhase();
         this.contest =  fetchContest(contestPhase);
@@ -187,11 +217,23 @@ public class Proposal extends AbstractProposal {
 
     public Proposal(AbstractProposal abstractProposal, RestService restService) {
         super(abstractProposal);
+        this.restService = restService;
         //TODO: we should not be using that here
-        contestClient = ContestClientUtil.getClient();
-        proposalClient = ProposalClient.fromService(restService);
+        RestService contest =  restService.withServiceName("contest-service");
+        contestClient = ContestClient.fromService(contest);
+        proposalClient = ProposalClient.fromService(restService);;
         proposalAttributeClient = ProposalAttributeClient.fromService(restService);
         proposalPhaseClient = ProposalPhaseClient.fromService(restService);
+        RestService contestTeamMember =  restService.withServiceName("contest-service");
+        contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestTeamMember);
+
+        RestService commentService =  restService.withServiceName("comment-service");
+        commentClient = CommentClient.fromService(commentService);
+
+        proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
+
+        membershipClient = MembershipClient.fromService(restService);
+
 
         this.contestPhase =  fetchContestPhase();
         this.contest =  fetchContest(contestPhase);
@@ -205,9 +247,9 @@ public class Proposal extends AbstractProposal {
     private Contest fetchContest(ContestPhase contestPhase) {
         try {
             if (contestPhase != null) {
-                return ContestClientUtil.getContest(contestPhase.getContestPK());
+                return contestClient.getContest(contestPhase.getContestPK());
             }
-            return ProposalClientUtil.getCurrentContestForProposal(this.getProposalId());
+            return proposalClient.getCurrentContestForProposal(this.getProposalId());
         } catch (ContestNotFoundException e) {
             throw new IllegalStateException("Could not find a contest for proposal "
                     + this.getProposalId(), e);
@@ -216,10 +258,10 @@ public class Proposal extends AbstractProposal {
 
     private ContestPhase fetchContestPhase() {
         if (proposal2Phase != null) {
-            return ContestClientUtil.getContestPhase(proposal2Phase.getContestPhaseId());
+            return contestClient.getContestPhase(proposal2Phase.getContestPhaseId());
         }
         if (contest != null) {
-            return ContestClientUtil.getActivePhase(contest.getContestPK());
+            return contestClient.getActivePhase(contest.getContestPK());
         }
         //_log.error(String.format("Could not get contest phase for proposal %d", this.getProposalId()));
         return null;
@@ -230,7 +272,7 @@ public class Proposal extends AbstractProposal {
             return null;
         }
         try {
-            return ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(this.getProposalId(), contestPhase.getContestPhasePK());
+            return proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(this.getProposalId(), contestPhase.getContestPhasePK());
         } catch (Proposal2PhaseNotFoundException e) {
             //_log.warn(String.format("Could not fetch p2p for proposal %d, contest phase %d",
 
@@ -305,7 +347,7 @@ public class Proposal extends AbstractProposal {
             commentThread = ThreadClientUtil.createThread(commentThread);
             fellowDiscussionId =  commentThread.getThreadId();
             this.setFellowDiscussionId(fellowDiscussionId);
-            ProposalClientUtil.updateProposal(this);
+            proposalClient.updateProposal(this);
 
         }
         return fellowDiscussionId;
@@ -325,7 +367,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public boolean isUserAmongFellows(Member memberInQuestion) {
-        for (Long fellowId : ContestTeamMemberClientUtil.getFellowsForContest(contest.getContestPK())) {
+        for (Long fellowId : contestTeamMemberClient.getFellowsForContest(contest.getContestPK())) {
             if (fellowId == memberInQuestion.getUserId()) {
                 return true;
             }
@@ -334,7 +376,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public boolean isUserAmongJudges(Member userInQuestion) {
-        for (Long judge : ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK())) {
+        for (Long judge : contestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
             if (judge == userInQuestion.getUserId()) {
                 return true;
             }
@@ -366,14 +408,14 @@ public class Proposal extends AbstractProposal {
 
     public long getCommentsCount() {
         if (this.getProposalId() > 0) {
-            return CommentClientUtil.countComments(this.getDiscussionId());
+            return commentClient.countComments(this.getDiscussionId());
         }
         return 0;
     }
 
     public long getFellowReviewCommentsCount() {
         if (this.getProposalId() > 0) {
-            return CommentClientUtil.countComments(this.getFellowDiscussionId());
+            return commentClient.countComments(this.getFellowDiscussionId());
         }
         return 0;
     }
@@ -390,7 +432,7 @@ public class Proposal extends AbstractProposal {
         if (proposal2Phase.getVersionTo() == -1) {
             return getLastModifiedDate();
         }
-        return ProposalClientUtil
+        return proposalClient
                 .getProposalVersionByProposalIdVersion(this.getProposalId(), this.getVersion()).getCreateDate();
 
     }
@@ -420,7 +462,7 @@ public class Proposal extends AbstractProposal {
 
     public List<Member> getSupporters() {
         List<Member> supporters = new ArrayList<>();
-        for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupporters(this.getProposalId())) {
+        for (ProposalSupporter ps : proposalMemberRatingClient.getProposalSupporters(this.getProposalId())) {
             try {
                 supporters.add(MembersClient.getMember(ps.getUserId()));
             } catch (MemberNotFoundException ignored) {
@@ -449,10 +491,10 @@ public class Proposal extends AbstractProposal {
 
     public Contest getWasMovedToContest() {
         try {
-            Contest c = ProposalClientUtil.getCurrentContestForProposal(this.getProposalId());
+            Contest c = proposalClient.getCurrentContestForProposal(this.getProposalId());
             if (c.getContestPK() != contest.getContestPK().longValue()) {
                 try {
-                    return ContestClientUtil.getContest(c.getContestPK());
+                    return contestClient.getContest(c.getContestPK());
                 } catch (ContestNotFoundException ignored) {
                 }
 
@@ -464,7 +506,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public ProposalVersion getSelectedVersion() {
-        for (ProposalVersion pv : ProposalClientUtil.getAllProposalVersions(this.getProposalId())) {
+        for (ProposalVersion pv : proposalClient.getAllProposalVersions(this.getProposalId())) {
             if (pv.getVersion() == this.getVersion()) {
                 return pv;
             }
@@ -498,7 +540,7 @@ public class Proposal extends AbstractProposal {
 
     public ContestPhase getContestPhase() {
 
-        return ContestClientUtil.getContestPhase(contestPhase.getContestPhasePK());
+        return contestClient.getContestPhase(contestPhase.getContestPhasePK());
     }
 
     public List<ProposalTeamMember> getMembers() {
@@ -558,7 +600,7 @@ public class Proposal extends AbstractProposal {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (Long judge : ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK())) {
+            for (Long judge : contestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
 
                 selectedJudges.add(judge);
             }
@@ -580,7 +622,7 @@ public class Proposal extends AbstractProposal {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (Long judgeId : ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK())) {
+            for (Long judgeId : contestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
 
                 try {
                     Member judge = MembersClient.getMember(judgeId);
@@ -623,7 +665,7 @@ public class Proposal extends AbstractProposal {
         if (this.getProposalId() > 0) {
 
             long votingPhasePK = contest.getVotingPhasePK();
-            return ProposalMemberRatingClientUtil.countProposalVotesInContestPhaseProposalId(this.getProposalId(), votingPhasePK);
+            return proposalMemberRatingClient.countProposalVotesInContestPhaseProposalId(this.getProposalId(), votingPhasePK);
         }
         return 0;
     }
@@ -652,7 +694,7 @@ public class Proposal extends AbstractProposal {
     public List<MembershipRequest> getMembershipRequests() {
         if (this.membershipRequests == null) {
             membershipRequests = new ArrayList<>();
-            for (MembershipRequest m : MembershipClientUtil.getMembershipRequests(this.getProposalId())) {
+            for (MembershipRequest m : membershipClient.getMembershipRequests(this.getProposalId())) {
                 if (m.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED) {
                     membershipRequests.add((m));
                 }

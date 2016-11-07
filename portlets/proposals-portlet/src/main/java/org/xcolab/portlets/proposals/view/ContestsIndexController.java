@@ -25,6 +25,7 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
+import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
@@ -116,7 +117,19 @@ public class ContestsIndexController extends BaseProposalsController {
 
         for (Contest contest: contestsToWrap) {
         	if (! contest.getContestPrivate()) {
-                    contests.add((contest));//contest
+                if(contest.getIsSharedContest() && !ConfigurationAttributeKey.COLAB_NAME.get().equals(contest.getSharedOrigin())){
+                    ClientHelper ch = new ClientHelper(contest);
+                    try {
+                        Contest foreignContest =
+                                ch.getContestClient().getContest(contest.getContestPK());
+                        contests.add(foreignContest);
+
+                    }catch (ContestNotFoundException notFound){
+
+                    }
+                }else {
+                    contests.add((contest));
+                }
 
             }
         }
