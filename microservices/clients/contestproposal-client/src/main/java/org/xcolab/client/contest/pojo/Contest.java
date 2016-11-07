@@ -338,7 +338,7 @@ public class Contest extends AbstractContest {
             if (phase == null) {
                 return null;
             }
-            activePhase = new ContestPhase(phase);
+            activePhase =phase;
         }
         return activePhase;
     }
@@ -535,7 +535,7 @@ public class Contest extends AbstractContest {
         ContestPhase activePhase;
         try {
             activePhase = contestClient.getActivePhase(this.getContestPK());
-            type = new ContestPhase(activePhase).getContestPhaseTypeObject();
+            type = activePhase.getContestPhaseTypeObject();
         } catch (IllegalArgumentException | NullPointerException e) {
             return false;
         }

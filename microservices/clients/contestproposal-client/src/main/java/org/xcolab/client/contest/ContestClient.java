@@ -305,6 +305,7 @@ public class ContestClient {
             boolean contestPrivate, Long contestTypeId) {
         return DtoUtil.toPojos(contestResource
                 .list()
+                .addRange(0, Integer.MAX_VALUE)
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
                 .queryParam("contestTypeId", contestTypeId)
