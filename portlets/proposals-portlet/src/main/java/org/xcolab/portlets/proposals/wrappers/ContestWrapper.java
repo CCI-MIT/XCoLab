@@ -11,7 +11,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
@@ -155,7 +154,10 @@ public class ContestWrapper extends BaseContestWrapper {
         ContestPhase phase = clientHelper.getContestClient().getActivePhase(contest.getContestPK());
         contestComments += commentClient.countCommentsInContestPhase(
                 phase.getContestPhasePK(), phase.getContestPK());
-        ProposalClientUtil.getProposalsInContest()
+        //for(Proposal proposal: ProposalClientUtil.getProposalsInContest(this.getContestPK())){
+
+//        }
+
         return contestComments;
     }
 
