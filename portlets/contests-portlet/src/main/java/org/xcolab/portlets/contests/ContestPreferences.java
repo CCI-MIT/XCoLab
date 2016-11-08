@@ -1,5 +1,7 @@
 package org.xcolab.portlets.contests;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -92,7 +94,13 @@ public class ContestPreferences {
             });
 
             for (Contest c: contests) {
-                final ContestPhase activeOrLastPhase = ContestClientUtil.getActivePhase(c.getContestPK());
+                ContestPhase activeOrLastPhase = null;
+                if(c.isContestActive() &&! c.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
+                    activeOrLastPhase = ContestClient.fromService(c.getRestService()).getActivePhase(c.getContestPK());
+                }else{
+                    activeOrLastPhase =
+                            ContestClientUtil.getActivePhase(c.getContestPK());
+                }
                 final String phaseName;
                 if (activeOrLastPhase != null) {
                     final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();

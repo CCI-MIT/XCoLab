@@ -220,7 +220,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                 request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE,contest);
                 request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,contestPhase);
 
-                contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
+                contestType = contextHelper.getClientHelper().getContestClient().getContestType(contest.getContestTypeId());
                 if (proposal != null) {
                     Proposal proposalWrapper = contextHelper.getProposalWrapper(
                             proposal, proposal2Phase, contestPhase, contest, member);

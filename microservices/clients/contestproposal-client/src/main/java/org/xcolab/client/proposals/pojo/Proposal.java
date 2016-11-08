@@ -4,6 +4,7 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
@@ -12,6 +13,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -81,7 +83,7 @@ public class Proposal extends AbstractProposal {
     private final ProposalAttributeClient proposalAttributeClient;
     private final ProposalPhaseClient proposalPhaseClient;
     private final ContestTeamMemberClient contestTeamMemberClient;
-
+    private final PlanTemplateClient planTemplateClient;
 
 
     private RestService restService;
@@ -123,7 +125,7 @@ public class Proposal extends AbstractProposal {
         commentClient = CommentClientUtil.getClient();
         proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
         membershipClient = MembershipClientUtil.getClient();
-
+        planTemplateClient = PlanTemplateClientUtil.getClient();
         this.contestPhase =  fetchContestPhase();
         this.contest =  fetchContest(contestPhase);
         this.proposal2Phase = fetchProposal2Phase();
@@ -144,11 +146,12 @@ public class Proposal extends AbstractProposal {
             this.restService = value.getRestService();
             RestService contestservice =  restService.withServiceName("contest-service");
             contestClient = ContestClient.fromService(contestservice);
+            planTemplateClient = PlanTemplateClient.fromService(contestservice);
             proposalClient = ProposalClient.fromService(restService);;
             proposalAttributeClient = ProposalAttributeClient.fromService(restService);
             proposalPhaseClient = ProposalPhaseClient.fromService(restService);
-            RestService contestTeamMember =  restService.withServiceName("contest-service");
-            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestTeamMember);
+
+            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestservice);
 
             RestService commentService =  restService.withServiceName("comment-service");
             commentClient = CommentClient.fromService(commentService);
@@ -160,7 +163,7 @@ public class Proposal extends AbstractProposal {
             proposalAttributeClient = ProposalAttributeClientUtil.getClient();
             proposalPhaseClient = ProposalPhaseClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-
+            planTemplateClient = PlanTemplateClientUtil.getClient();
             commentClient = CommentClientUtil.getClient();
             proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
             membershipClient = MembershipClientUtil.getClient();
@@ -186,12 +189,12 @@ public class Proposal extends AbstractProposal {
         if(proposal.getRestService()!=null){
             this.restService = proposal.getRestService();
             RestService contestservice =  restService.withServiceName("contest-service");
+            planTemplateClient = PlanTemplateClient.fromService(contestservice);
             contestClient = ContestClient.fromService(contestservice);
             proposalClient = ProposalClient.fromService(restService);;
             proposalAttributeClient = ProposalAttributeClient.fromService(restService);
             proposalPhaseClient = ProposalPhaseClient.fromService(restService);
-            RestService contestTeamMember =  restService.withServiceName("contest-service");
-            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestTeamMember);
+            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestservice);
 
             RestService commentService =  restService.withServiceName("comment-service");
             commentClient = CommentClient.fromService(commentService);
@@ -203,7 +206,7 @@ public class Proposal extends AbstractProposal {
             proposalAttributeClient = ProposalAttributeClientUtil.getClient();
             proposalPhaseClient = ProposalPhaseClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-
+            planTemplateClient = PlanTemplateClientUtil.getClient();
             commentClient = CommentClientUtil.getClient();
             proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
             membershipClient = MembershipClientUtil.getClient();
@@ -233,7 +236,7 @@ public class Proposal extends AbstractProposal {
         commentClient = CommentClientUtil.getClient();
         proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
         membershipClient = MembershipClientUtil.getClient();
-
+        planTemplateClient = PlanTemplateClientUtil.getClient();
         this.contestPhase =  fetchContestPhase();
         this.contest =  fetchContest(contestPhase);
         this.proposal2Phase = fetchProposal2Phase();
@@ -254,6 +257,7 @@ public class Proposal extends AbstractProposal {
 
         RestService contest =  restService.withServiceName("contest-service");
         contestClient = ContestClient.fromService(contest);
+        planTemplateClient = PlanTemplateClient.fromService(contest);
         proposalClient = ProposalClient.fromService(restService);;
         proposalAttributeClient = ProposalAttributeClient.fromService(restService);
         proposalPhaseClient = ProposalPhaseClient.fromService(restService);
@@ -322,10 +326,16 @@ public class Proposal extends AbstractProposal {
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
         String link = "/";
         Long proposalId = this.getProposalId();
-
-        final ContestType contestType =
-                contestClient.getContestType(contest.getContestTypeId());
+        ContestType contestType = null;
+        if(contest.getIsSharedContest() && ! contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
+            contestType =
+                    ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+        }else{
+            contestType =
+                    contestClient.getContestType(contest.getContestTypeId());
+        }
         link += contestType.getFriendlyUrlStringContests();
+
         String friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
 
         if (contestPhaseId > 0) {
@@ -436,7 +446,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public long getSupportersCount() {
-        return ProposalMemberRatingClientUtil.getProposalSupportersCount(this.getProposalId());
+        return proposalMemberRatingClient.getProposalSupportersCount(this.getProposalId());
     }
 
     public long getCommentsCount() {
@@ -580,7 +590,8 @@ public class Proposal extends AbstractProposal {
         if (members == null) {
             members = new ArrayList<>();
             boolean hasOwner = false;
-            for (UsersGroups user : UsersGroupsClient.getUserGroupsByUserIdGroupId(null, this.getGroupId())) {
+            RestService membersService = restService.withServiceName("members-service");
+            for (UsersGroups user : UsersGroupsClient.fromService(membersService).getUserGroupsByUserIdGroupId(null, this.getGroupId())) {
 
                 try {
                     Member member = MembersClient.getMember(user.getUserId());
@@ -707,9 +718,9 @@ public class Proposal extends AbstractProposal {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
-                PlanTemplate planTemplate = PlanTemplateClientUtil.getPlanTemplate(contest.getPlanTemplateId());
+                PlanTemplate planTemplate = planTemplateClient.getPlanTemplate(contest.getPlanTemplateId());
                 if (planTemplate != null) {
-                    for (PlanSectionDefinition psd : PlanTemplateClientUtil
+                    for (PlanSectionDefinition psd : planTemplateClient
                             .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
 
                         sections.add(new PlanSectionDefinition(psd, this));

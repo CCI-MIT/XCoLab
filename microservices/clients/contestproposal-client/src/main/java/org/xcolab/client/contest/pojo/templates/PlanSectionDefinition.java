@@ -33,23 +33,41 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
 
     private final Proposal wrappedProposal;
 
+    private final RestService restService;
+
     public PlanSectionDefinition() {
         wrappedProposal = null;
+        restService = null;
     }
 
     public PlanSectionDefinition(PlanSectionDefinition value) {
         super(value);
+        if(value.getRestService() != null){
+            restService = value.getRestService();
+        }else{
+            restService = null;
+        }
         wrappedProposal = null;
     }
 
     public PlanSectionDefinition(PlanSectionDefinition value, Proposal proposal) {
         super(value);
+        if(value.getRestService() != null){
+            restService = value.getRestService();
+        }else{
+            if(proposal.getRestService()!=null){
+                restService = proposal.getRestService();
+            }else {
+                restService = null;
+            }
+        }
         this.wrappedProposal = proposal;
     }
     public PlanSectionDefinition(AbstractPlanSectionDefinition abstractPlanSectionDefinition,
             RestService restService) {
         super(abstractPlanSectionDefinition);
         wrappedProposal = null;
+        this.restService = restService;
     }
 
     public List<Long> getAdditionalIdsAsList() {
@@ -164,7 +182,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
                     String elementName;
                     if (linkedProposal != null) {
                         //TODO: TEST FOR COMPILING
-                        elementName = new Proposal(linkedProposal).getName();
+                        elementName = (linkedProposal).getName();
                     } else {
                         elementName = link;
                     }
@@ -286,10 +304,12 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
+    public RestService getRestService() {
+        return restService;
+    }
 
 
     private ProposalAttribute getSectionAttribute() {
-        //TODO: TEST FOR COMPILING
         return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", this.getId_());
     }
 }

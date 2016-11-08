@@ -47,9 +47,9 @@ public class CommentThread extends AbstractCommentThread {
     public CommentThread(AbstractCommentThread abstractCommentThread, RestService commentService) {
         super(abstractCommentThread);
 
-        commentClient = new CommentClient(commentService);
-        threadClient = new ThreadClient(commentService);
-        categoryClient = new CategoryClient(commentService);
+        commentClient = CommentClient.fromService(commentService);
+        threadClient =  ThreadClient.fromService(commentService);
+        categoryClient =  CategoryClient.fromService(commentService);
     }
 
     @JsonIgnore

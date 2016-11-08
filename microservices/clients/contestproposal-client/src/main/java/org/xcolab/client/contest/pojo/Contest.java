@@ -4,6 +4,7 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -41,6 +42,9 @@ public class Contest extends AbstractContest {
 
     private final ContestClient contestClient;
 
+    private final ContestTeamMemberClient contestTeamMemberClient;
+
+    private final OntologyClient ontologyClient;
 
     //private final static Log _log = LogFactoryUtil.getLog(Contest.class);
     private final static Map<Long, FocusArea> faCache = new HashMap<>();
@@ -68,30 +72,41 @@ public class Contest extends AbstractContest {
     protected ContestPhase activePhase;
 
 
+
+
     private RestService restService;
 
     public Contest(Long contestId) {
         contestClient = ContestClientUtil.getClient();
-        //try{
-        //    super(contestClient.getContest(contestId));
-        //}catch (ContestNotFoundException ignored){
-
-        //};
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        ontologyClient = OntologyClientUtil.getClient();
     }
 
     public Contest() {
         contestClient = ContestClientUtil.getClient();
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        ontologyClient = OntologyClientUtil.getClient();
     }
 
     public Contest(Contest value) {
         super(value);
-        contestClient = ContestClientUtil.getClient();
+        if(value.getRestService()!=null){
+            contestClient = ContestClient.fromService(restService);
+            contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
+            ontologyClient = OntologyClient.fromService(restService);
+        }else {
+            contestClient = ContestClientUtil.getClient();
+            contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+            ontologyClient = OntologyClientUtil.getClient();
+        }
     }
 
     public Contest(AbstractContest abstractContest, RestService restServicez) {
         super(abstractContest);
         this.restService = restServicez;
         contestClient = ContestClient.fromService(restService);
+        contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
+        ontologyClient = OntologyClient.fromService(restService);
     }
 
     public String getContestLinkUrl() {
@@ -99,8 +114,7 @@ public class Contest extends AbstractContest {
         String link = "/";
 
         if(this.getIsSharedContest() && ! this.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME)){
-            //TODO: HANDLE COLAB LINK
-            link += contestClient.getContestType(this.getContestTypeId())
+            link += ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
                     .getFriendlyUrlStringContests();
         }else{
             link += contestClient.getContestType(this.getContestTypeId())
@@ -112,12 +126,20 @@ public class Contest extends AbstractContest {
     }
 
     public String getLogoPath() {
-        Long i = this.getContestLogoId();
-        if (i != null) {
-            return "/contest?img_id="
-                    + i;// + "&t=" + ImageServletTokenUtil.getToken(i.getImageId());
+        if(this.getIsSharedContest() && ! this.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
+
+            Long i = this.getContestLogoId();
+            if (i != null) {
+                return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_LOCATION+"/image/contest?img_id=" + i;
+            }
+            return "";
+        }else{
+            Long i = this.getContestLogoId();
+            if (i != null) {
+                return "/image/contest?img_id=" + i;
+            }
+            return "";
         }
-        return "";
     }
 
     public boolean getShowInTileView(){
@@ -259,12 +281,12 @@ public class Contest extends AbstractContest {
 
     protected List<OntologyTerm> getTermFromSpace(String space) {
 
-        RestService ontologyService =  restService.withServiceName("contest-service");
+
 
 
         if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {
             if (!faCache.containsKey(this.getFocusAreaId())) {
-                FocusArea fa = OntologyClient.fromService(ontologyService).getFocusArea(this
+                FocusArea fa = ontologyClient.getFocusArea(this
                         .getFocusAreaId());
                 if (fa == null) {
                     ontologySpaceCache.put(space, null);
@@ -273,9 +295,9 @@ public class Contest extends AbstractContest {
                 faCache.put(fa.getId_(), fa);
             }
             List<OntologyTerm> terms = new ArrayList<>();
-            for (OntologyTerm t : OntologyClient.fromService(ontologyService)
+            for (OntologyTerm t : ontologyClient
                     .getOntologyTermsForFocusArea(faCache.get(this.getFocusAreaId()))) {
-                if (OntologyClient.fromService(ontologyService).getOntologySpace(t.getOntologySpaceId()).getName()
+                if (ontologyClient.getOntologySpace(t.getOntologySpaceId()).getName()
                         .equalsIgnoreCase(space)) {
                     terms.add(t);
                 }
@@ -300,11 +322,11 @@ public class Contest extends AbstractContest {
 
         if (contestTeamMembersByRole == null) {
             Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
-            for (ContestTeamMember teamMember : ContestTeamMemberClientUtil
+            for (ContestTeamMember teamMember : contestTeamMemberClient
 
                     .getTeamMembers(this.getContestPK())) {
                 try {
-                    ContestTeamMemberRole role = ContestTeamMemberClientUtil
+                    ContestTeamMemberRole role = contestTeamMemberClient
                             .getContestTeamMemberRole(teamMember.getRoleId());
                     List<Member> roleUsers = teamRoleUsersMap
                             .get(new Tuple<>(role.getRole(), role.getSort()));
@@ -395,8 +417,9 @@ public class Contest extends AbstractContest {
         Set<Proposal> proposalList = new HashSet<>();
 
         List<ContestPhase> contestPhases = contestClient.getAllContestPhases(this.getContestPK());
+        RestService proposalService =  restService.withServiceName("proposals-service");
         for (ContestPhase contestPhase : contestPhases) {
-            List<Proposal> proposals = ProposalClientUtil
+            List<Proposal> proposals = ProposalClient.fromService(proposalService)
                     .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
             proposalList.addAll(proposals);
 
@@ -407,7 +430,7 @@ public class Contest extends AbstractContest {
 
     public ContestType getContestType() {
         if (contestType == null) {
-            contestType = ContestClientUtil.getContestType(this.getContestTypeId());
+            contestType = contestClient.getContestType(this.getContestTypeId());
         }
         return contestType;
     }
@@ -466,6 +489,11 @@ public class Contest extends AbstractContest {
         return last;
     }
 
+
+    public RestService getRestService() {
+        return restService;
+    }
+
     public String getWhoName() {
         return getTermNameFromSpace(WHO);
     }
@@ -518,8 +546,9 @@ public class Contest extends AbstractContest {
     }
 
     public Contest getParentContest() {
-        List<OntologyTerm> list = OntologyClientUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace(
-                OntologyClientUtil.getFocusArea(this.getFocusAreaId()), OntologyClientUtil.getOntologySpace(ONTOLOGY_SPACE_ID_WHERE));
+
+        List<OntologyTerm> list = ontologyClient.getAllOntologyTermsFromFocusAreaWithOntologySpace(
+                ontologyClient.getFocusArea(this.getFocusAreaId()), ontologyClient.getOntologySpace(ONTOLOGY_SPACE_ID_WHERE));
         List<Long> focusAreaOntologyTermIds = new ArrayList<>();
         for(OntologyTerm ot: list){
             focusAreaOntologyTermIds.add(ot.getId_());
@@ -580,6 +609,9 @@ public class Contest extends AbstractContest {
         return false;
     }
 
+    public boolean isSharedContestInForeignColab(){
+        return this.getIsSharedContest() && !ConfigurationAttributeKey.COLAB_NAME.get().equals(this.getSharedOrigin());
+    }
     /**
      * Determine if judges are done with proposal
      *
@@ -589,12 +621,12 @@ public class Contest extends AbstractContest {
         try {
 
             RestService proposalsService =  restService.withServiceName("proposals-service");
-            RestService proposals2PhaseService =  restService.withServiceName("proposals-service");
+
 
 
             ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
             for (Proposal proposal : ProposalClient.fromService(proposalsService).getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                Proposal2Phase p2p = ProposalPhaseClient.fromService(proposals2PhaseService).getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                Proposal2Phase p2p = ProposalPhaseClient.fromService(proposalsService).getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
                 /*
                 final Proposal proposalWrapper =
                         new ProposalWrapper(proposal, proposal.getCurrentVersion(), this,
@@ -618,12 +650,12 @@ public class Contest extends AbstractContest {
     public boolean getScreeningStatus() {
         try {
             RestService proposalsService =  restService.withServiceName("proposals-service");
-            RestService proposals2PhaseService =  restService.withServiceName("proposals-service");
+
 
             ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
 
             for (Proposal proposal : ProposalClient.fromService(proposalsService).getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                Proposal2Phase p2p = ProposalPhaseClient.fromService(proposals2PhaseService).getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                Proposal2Phase p2p = ProposalPhaseClient.fromService(proposalsService).getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
                 /*
                 if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), this, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
                     return false;

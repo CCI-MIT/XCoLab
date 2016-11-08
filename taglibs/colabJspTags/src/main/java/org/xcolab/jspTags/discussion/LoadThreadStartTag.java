@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CategoryClient;
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -14,6 +15,9 @@ import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
@@ -47,12 +51,12 @@ public class LoadThreadStartTag extends BodyTagSupport {
             ThreadClient threadClient;
             CategoryClient categoryClient;
             if (sharedColabId != null && sharedColabId > 0) {
-                // TODO COLAB-1387: move initialization to shared utility
-                RestService sharedCommentService = new RefreshingRestService("comment-service",
-                        ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                        ConfigurationAttributeKey.PARTNER_COLAB_PORT);
-                threadClient = new ThreadClient(sharedCommentService);
-                categoryClient = new CategoryClient(sharedCommentService);
+                    RestService contestService = new RefreshingRestService("contest-service",
+                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+                    threadClient = ThreadClient.fromService(contestService);
+                    categoryClient = CategoryClient.fromService(contestService);
             } else {
                 threadClient = ThreadClientUtil.getClient();
                 categoryClient = CategoryClientUtil.getClient();

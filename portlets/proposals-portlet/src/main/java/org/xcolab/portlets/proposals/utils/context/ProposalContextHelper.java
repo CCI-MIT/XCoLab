@@ -55,8 +55,21 @@ public class ProposalContextHelper {
         givenPhaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         givenVersion = ParamUtil.getInteger(request, VERSION_PARAM);
 
-        contest = fetchContest();
-        clientHelper = new ClientHelper(contest);
+        Contest transientContest = fetchContest();
+
+        clientHelper = new ClientHelper(transientContest);
+
+        contest = setupContestFromTheRightClient(transientContest.getContestPK());
+
+    }
+    private Contest setupContestFromTheRightClient(Long contestId){
+        Contest localContest = null;
+        try {
+            localContest = clientHelper.getContestClient().getContest(contestId);
+        }catch (ContestNotFoundException ignored){
+
+        }
+        return localContest;
     }
 
     public Member getMember() {

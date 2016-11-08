@@ -8,12 +8,16 @@ import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CategoryClient {
 
     private final CommentServiceWrapper commentServiceWrapper;
     private final RestService commentService;
+
+    private static final Map<RestService, CategoryClient> instances = new HashMap<>();
 
     public CategoryClient(RestService commentService) {
         commentServiceWrapper = CommentServiceWrapper.fromService(commentService);
@@ -45,4 +49,14 @@ public class CategoryClient {
         return commentServiceWrapper.getCategoryGroup(groupId, CacheRetention.RUNTIME)
                 .toPojo(commentService);
     }
+
+    public static CategoryClient fromService(RestService contestService) {
+        CategoryClient client = instances.get(contestService);
+        if (client == null) {
+            client = new CategoryClient(contestService);
+            instances.put(contestService, client);
+        }
+        return client;
+    }
+
 }

@@ -16,6 +16,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.UsersGroupsClient;
+import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
@@ -116,7 +117,7 @@ public class ProposalService {
 
             proposalDao.update(proposal);
 
-            UsersGroupsClient.createUsersGroups(authorId, proposal.getGroupId());
+            UsersGroupsClientUtil.createUsersGroups(authorId, proposal.getGroupId());
             MembersClient.createUserGroupRole(authorId,proposal.getGroupId());
 
             if (contestPhaseId > 0) {
@@ -294,7 +295,7 @@ public class ProposalService {
         try {
             Proposal proposal = proposalDao.get(proposalId);
             ArrayList<Member> members = new ArrayList<>();
-            for (UsersGroups user : UsersGroupsClient.getUserGroupsByUserIdGroupId(null, proposal.getGroupId())) {
+            for (UsersGroups user : UsersGroupsClientUtil.getUserGroupsByUserIdGroupId(null, proposal.getGroupId())) {
                 try {
                     members.add(MembersClient.getMember(user.getUserId()));
                 } catch (MemberNotFoundException ignored) {
@@ -310,14 +311,14 @@ public class ProposalService {
     public void removeProposalTeamMember(Long proposalId, Long userId) throws ProposalNotFoundException {
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            UsersGroupsClient.deleteUsersGroups(userId, proposal.getGroupId());
+            UsersGroupsClientUtil.deleteUsersGroups(userId, proposal.getGroupId());
         } catch (NotFoundException ignored) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
         }
     }
 
     public List<Proposal> getMemberProposals(Long userId) {
-        List<UsersGroups> ug = UsersGroupsClient.getUserGroupsByUserIdGroupId(userId, null);
+        List<UsersGroups> ug = UsersGroupsClientUtil.getUserGroupsByUserIdGroupId(userId, null);
         List<Proposal> proposals = new ArrayList<>();
         for (UsersGroups ugroup : ug) {
             try {
@@ -333,7 +334,7 @@ public class ProposalService {
 
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            return UsersGroupsClient.isUserInGroups(userId, proposal.getGroupId());
+            return UsersGroupsClientUtil.isUserInGroups(userId, proposal.getGroupId());
         } catch (NotFoundException ignored) {
             return false;
         }

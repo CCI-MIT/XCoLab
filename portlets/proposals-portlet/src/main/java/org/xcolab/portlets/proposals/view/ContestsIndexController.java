@@ -117,7 +117,7 @@ public class ContestsIndexController extends BaseProposalsController {
 
         for (Contest contest: contestsToWrap) {
         	if (! contest.getContestPrivate()) {
-                if(contest.getIsSharedContest() && !ConfigurationAttributeKey.COLAB_NAME.get().equals(contest.getSharedOrigin())){
+                if(contest.isSharedContestInForeignColab()){
                     ClientHelper ch = new ClientHelper(contest);
                     try {
                         Contest foreignContest =
