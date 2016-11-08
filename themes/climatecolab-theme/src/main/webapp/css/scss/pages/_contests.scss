@@ -256,20 +256,6 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   height: 0;
 }
 
-.prop {
-  display: inline;
-  padding-right: 18px;
-  text-transform: lowercase;
-}
-
-.comm {
-  display: inline;
-}
-
-.prop a, .comm a {
-  font-weight: $b-Typography__fontWeight--bold;
-}
-
 /* the table with rows of users  */
 .userslist {
   clear: both;

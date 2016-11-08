@@ -92,6 +92,18 @@ $c-ContestCard__shadow--hover: 0 0 3px 3px $t-Color__grey--light;
   padding: 8px;
   font-size: 14px;
 
+
+  .prop {
+    display: inline;
+    padding-right: 10px;
+    text-transform: lowercase;
+  }
+
+  .comm {
+    display: inline;
+  }
+
+
   strong {
     color: $c-ContestCard__text__title__textColor;
   }

@@ -35,7 +35,7 @@
                     </c:choose>
                 </c:if>
             </div>
-            <div class="c-ContestCard__image">
+            <div class="c-ContestCard__image"> <!--TODO: Make link dynamic for production server-->
                 <img src="http://climatecolab.org/image/contest?img_id=${contest.contestLogoId}" alt="${contest.contestShortName }" />
             </div>
             <div class="c-ContestCard__meta__count">
