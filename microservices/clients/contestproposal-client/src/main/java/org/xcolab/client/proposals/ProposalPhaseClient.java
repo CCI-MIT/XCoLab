@@ -57,11 +57,11 @@ public final class ProposalPhaseClient {
             Long contestPhaseId) throws Proposal2PhaseNotFoundException {
         try {
             return proposal2PhaseResource
-                    .service("getByContestPhaseIdProposalId", Proposal2Phase.class)
+                    .service("getByContestPhaseIdProposalId", Proposal2PhaseDto.class)
                     .queryParam("proposalId", proposalId)
                     .queryParam("contestPhaseId", contestPhaseId)
 
-                    .getChecked();
+                    .getChecked().toPojo(proposalService);
         } catch (EntityNotFoundException ignored) {
             throw new Proposal2PhaseNotFoundException(proposalId);
         }
@@ -130,11 +130,12 @@ public final class ProposalPhaseClient {
             Long contestPhaseId, String name) {
         try {
             return proposalContestPhaseAttributeResource
-                    .service("getByContestPhaseProposalIdName", ProposalContestPhaseAttribute.class)
+                    .service("getByContestPhaseProposalIdName", ProposalContestPhaseAttributeDto.class)
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("name", name)
-                    .getChecked();
+                    .getChecked()
+                    .toPojo(proposalService);
         } catch (EntityNotFoundException ignored) {
             return null;
         }

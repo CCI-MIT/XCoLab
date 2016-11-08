@@ -83,6 +83,7 @@ public class Proposal extends AbstractProposal {
     private final ContestTeamMemberClient contestTeamMemberClient;
 
 
+
     private RestService restService;
 
     protected final Contest contest;
@@ -139,14 +140,31 @@ public class Proposal extends AbstractProposal {
         this.contest =  fetchContest(contestPhase);
         this.proposal2Phase = fetchProposal2Phase();
 
-        contestClient = ContestClientUtil.getClient();
-        proposalClient = ProposalClientUtil.getClient();
-        proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
-        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-        proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
-        commentClient = CommentClientUtil.getClient();
-        membershipClient = MembershipClientUtil.getClient();
+        if(value.getRestService()!=null){
+            this.restService = value.getRestService();
+            RestService contestservice =  restService.withServiceName("contest-service");
+            contestClient = ContestClient.fromService(contestservice);
+            proposalClient = ProposalClient.fromService(restService);;
+            proposalAttributeClient = ProposalAttributeClient.fromService(restService);
+            proposalPhaseClient = ProposalPhaseClient.fromService(restService);
+            RestService contestTeamMember =  restService.withServiceName("contest-service");
+            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestTeamMember);
+
+            RestService commentService =  restService.withServiceName("comment-service");
+            commentClient = CommentClient.fromService(commentService);
+            proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
+            membershipClient = MembershipClient.fromService(restService);
+        }else {
+            contestClient = ContestClientUtil.getClient();
+            proposalClient = ProposalClientUtil.getClient();
+            proposalAttributeClient = ProposalAttributeClientUtil.getClient();
+            proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+            contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+
+            commentClient = CommentClientUtil.getClient();
+            proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
+            membershipClient = MembershipClientUtil.getClient();
+        }
 
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);
@@ -165,16 +183,31 @@ public class Proposal extends AbstractProposal {
             ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal);
 
-        contestClient = ContestClientUtil.getClient();
-        proposalClient = ProposalClientUtil.getClient();
-        proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
-        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        if(proposal.getRestService()!=null){
+            this.restService = proposal.getRestService();
+            RestService contestservice =  restService.withServiceName("contest-service");
+            contestClient = ContestClient.fromService(contestservice);
+            proposalClient = ProposalClient.fromService(restService);;
+            proposalAttributeClient = ProposalAttributeClient.fromService(restService);
+            proposalPhaseClient = ProposalPhaseClient.fromService(restService);
+            RestService contestTeamMember =  restService.withServiceName("contest-service");
+            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestTeamMember);
 
-        commentClient = CommentClientUtil.getClient();
-        proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
-        membershipClient = MembershipClientUtil.getClient();
+            RestService commentService =  restService.withServiceName("comment-service");
+            commentClient = CommentClient.fromService(commentService);
+            proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
+            membershipClient = MembershipClient.fromService(restService);
+        }else {
+            contestClient = ContestClientUtil.getClient();
+            proposalClient = ProposalClientUtil.getClient();
+            proposalAttributeClient = ProposalAttributeClientUtil.getClient();
+            proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+            contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
 
+            commentClient = CommentClientUtil.getClient();
+            proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
+            membershipClient = MembershipClientUtil.getClient();
+        }
         this.contest = contest == null ? fetchContest(contestPhase) : contest;
         this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
         this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
@@ -218,7 +251,7 @@ public class Proposal extends AbstractProposal {
     public Proposal(AbstractProposal abstractProposal, RestService restService) {
         super(abstractProposal);
         this.restService = restService;
-        //TODO: we should not be using that here
+
         RestService contest =  restService.withServiceName("contest-service");
         contestClient = ContestClient.fromService(contest);
         proposalClient = ProposalClient.fromService(restService);;
@@ -540,7 +573,7 @@ public class Proposal extends AbstractProposal {
 
     public ContestPhase getContestPhase() {
 
-        return contestClient.getContestPhase(contestPhase.getContestPhasePK());
+        return contestPhase;
     }
 
     public List<ProposalTeamMember> getMembers() {
@@ -926,9 +959,13 @@ public class Proposal extends AbstractProposal {
         return this.proposalRatings.getComment();
     }
 
+    public RestService getRestService() {
+        return restService;
+    }
+
     public ProposalRibbon getRibbonWrapper() {
         if (ribbonWrapper == null) {
-            ribbonWrapper = new ProposalRibbon(this);
+            ribbonWrapper = new ProposalRibbon(this,restService);
         }
         return ribbonWrapper;
     }

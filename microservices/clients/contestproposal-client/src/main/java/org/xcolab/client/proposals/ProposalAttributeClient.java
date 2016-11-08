@@ -149,7 +149,7 @@ public final class ProposalAttributeClient {
 
     public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,
             Long authorId) {
-        return proposalAttributeResource.service("setProposalAttribute", ProposalAttribute.class)
+        return proposalAttributeResource.service("setProposalAttribute", ProposalAttributeDto.class)
                 .queryParam("proposalId", proposalAttribute.getProposalId())
                 .queryParam("name", proposalAttribute.getName())
                 .queryParam("stringValue", proposalAttribute.getStringValue())
@@ -159,7 +159,8 @@ public final class ProposalAttributeClient {
                 .queryParam("version", proposalAttribute.getVersion())
                 .queryParam("versionWhenCreated", proposalAttribute.getVersionWhenCreated())
                 .queryParam("authorId", authorId)
-                .post();
+                .post()
+                .toPojo(proposalService);
     }
 
     public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
@@ -230,10 +231,11 @@ public final class ProposalAttributeClient {
     public ProposalUnversionedAttribute getProposalUnversionedAttribute(Long proposalId,
             String name) {
         return proposalUnversionedAttributeResource
-                .service("getByProposalIdName", ProposalUnversionedAttribute.class)
+                .service("getByProposalIdName", ProposalUnversionedAttributeDto.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("name", name)
-                .get();
+                .get()
+                .toPojo(proposalService);
     }
 
     public boolean updateProposalUnversionedAttribute(

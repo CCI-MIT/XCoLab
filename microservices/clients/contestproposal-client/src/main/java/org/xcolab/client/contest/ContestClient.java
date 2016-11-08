@@ -369,7 +369,7 @@ public class ContestClient {
     }
 
     public ContestPhase getActivePhase(Long contestId) {
-        return contestResource.service(contestId, "activePhase", ContestPhase.class).get();
+        return contestResource.service(contestId, "activePhase", ContestPhaseDto.class).get().toPojo(contestService);
     }
 
     public ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {

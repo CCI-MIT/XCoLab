@@ -125,11 +125,11 @@ public final class ProposalClient {
     }
 
     public Proposal createProposal(long authorId, long contestPhaseId, boolean publishActivity) {
-        return proposalResource.service("createProposal", Proposal.class)
+        return proposalResource.service("createProposal", ProposalDto.class)
                 .queryParam("authorId", authorId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .queryParam("publishActivity", publishActivity)
-                .post();
+                .post().toPojo(proposalService);
     }
 
     public List<Proposal> getContestIntegrationRelevantSubproposals(Long proposalId) {
@@ -236,10 +236,11 @@ public final class ProposalClient {
     }
 
     public ProposalVersion getProposalVersionByProposalIdVersion(Long proposalId, Integer version) {
-        return proposalVersionResource.service("getByProposalIdVersion", ProposalVersion.class)
+        return proposalVersionResource.service("getByProposalIdVersion", ProposalVersionDto.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("version", version)
-                .get();
+                .get()
+                .toPojo(proposalService);
     }
 
     public Integer countProposalVersions(Long proposalId) {
@@ -249,9 +250,10 @@ public final class ProposalClient {
     }
 
     public ProposalVersion getProposalVersionByProposal(Long proposalId) {
-        return proposalVersionResource.service("getByProposalIdVersion", ProposalVersion.class)
+        return proposalVersionResource.service("getByProposalIdVersion", ProposalVersionDto.class)
                 .queryParam("proposalId", proposalId)
-                .get();
+                .get()
+                .toPojo(proposalService);
     }
 
     public List<ProposalVersion> getAllProposalVersions(Long proposalId) {

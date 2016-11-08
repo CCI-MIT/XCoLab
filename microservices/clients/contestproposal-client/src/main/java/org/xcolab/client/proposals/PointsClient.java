@@ -52,9 +52,9 @@ public final class PointsClient {
     getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(
             long targetPlanSectionDefinitionId) {
         return pointsDistributionConfigurationResource.service("getByTargetPlanSectionDefinitionId",
-                PointsDistributionConfiguration.class)
+                PointsDistributionConfigurationDto.class)
                 .queryParam("targetPlanSectionDefinitionId", targetPlanSectionDefinitionId)
-                .get();
+                .get().toPojo(proposalService);
 
     }
 

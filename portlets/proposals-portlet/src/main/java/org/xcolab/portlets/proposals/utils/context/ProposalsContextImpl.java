@@ -54,6 +54,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
     private static final String CLIENTS_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "clients";
+    public static final String PROPOSAL_CONTEST_HELPER = "ProposalContextHelper";
 
     public ProposalsContextImpl() {
     }
@@ -215,6 +216,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                     proposal = contextHelper.getProposal();
                 }
 
+                request.setAttribute(PROPOSAL_CONTEST_HELPER,contextHelper);
                 request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE,contest);
                 request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,contestPhase);
 

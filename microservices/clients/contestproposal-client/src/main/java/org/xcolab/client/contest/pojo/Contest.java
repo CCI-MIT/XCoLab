@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -94,9 +95,18 @@ public class Contest extends AbstractContest {
     }
 
     public String getContestLinkUrl() {
+
         String link = "/";
-        link += contestClient.getContestType(this.getContestTypeId())
-                .getFriendlyUrlStringContests();
+
+        if(this.getIsSharedContest() && ! this.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME)){
+            //TODO: HANDLE COLAB LINK
+            link += contestClient.getContestType(this.getContestTypeId())
+                    .getFriendlyUrlStringContests();
+        }else{
+            link += contestClient.getContestType(this.getContestTypeId())
+                    .getFriendlyUrlStringContests();
+        }
+
         link += "/%d/%s";
         return String.format(link, this.getContestYear(), this.getContestUrlName());
     }
@@ -192,7 +202,9 @@ public class Contest extends AbstractContest {
             ContestPhase cp = contestClient.getActivePhase(this.getContestPK());
             if (cp != null) {
                 //TODO:REPLACE THIS CALL FOR SYNCD CONTEST REFERENCE
-                return ProposalPhaseClientUtil
+                RestService proposalService =  restService.withServiceName("proposals-service");
+
+                return ProposalPhaseClient.fromService(proposalService)
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
             }
         } catch (UncheckedEntityNotFoundException e) {

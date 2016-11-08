@@ -2,13 +2,16 @@ package org.xcolab.client.proposals.pojo.proposals;
 
 
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
+import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.http.client.RestService;
 
 
 public class ProposalRibbon {
@@ -17,9 +20,13 @@ public class ProposalRibbon {
     private ContestPhaseRibbonType contestPhaseRibbonType;
     private final Proposal proposalWrapper;
 
-    public ProposalRibbon(Proposal proposalWrapper) {
+    private final RestService proposalRestService;
+
+    public ProposalRibbon(Proposal proposalWrapper, RestService restService) {
         this.proposalWrapper = proposalWrapper;
+        this.proposalRestService = restService;
         contestPhaseRibbonType = getContestPhaseRibbonType();
+
     }
 
     private ContestPhaseRibbonType getContestPhaseRibbonType() {
@@ -31,14 +38,17 @@ public class ProposalRibbon {
             }
             ContestPhase contestPhase = null;
 
-            contestPhase = ContestClientUtil.getContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
+
+            RestService contestService =  proposalRestService.withServiceName("contest-service");
+            contestPhase = ContestClient.fromService(contestService).getContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
 
             if (contestPhase == null) {
                 //_log.info(String.format("Could not retrieve ribbon type. Wrapper for proposal %d in Contest %d has no contestPhase.",
                 //        proposalId, proposalWrapper.getContestPK()));
                 return null;
             }
-                ribbonAttribute = ProposalPhaseClientUtil
+
+                ribbonAttribute = ProposalPhaseClient.fromService(proposalRestService)
                         .getProposalContestPhaseAttribute(
                                 proposalId,
                                 contestPhase.getContestPhasePK(),
@@ -47,7 +57,7 @@ public class ProposalRibbon {
                 if (ribbonAttribute != null) {
                     long typeId = ribbonAttribute.getNumericValue();
                     if (typeId >= 0) {
-                        contestPhaseRibbonType = ContestClientUtil.getContestPhaseRibbonType(typeId);
+                        contestPhaseRibbonType = ContestClient.fromService(contestService).getContestPhaseRibbonType(typeId);
                     }
                 } else {
                     //_log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalId));
