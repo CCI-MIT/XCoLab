@@ -1,0 +1,25 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+    <!--@elvariable id="collectionCardWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+
+    <jsp:directive.include file="../init.jspx"/>
+    <jsp:directive.include file="./header.jspx"/>
+
+
+
+
+    <script type="text/javascript">
+        <![CDATA[
+
+        jQuery('document').ready(function () {
+            alert("loaded");
+        });
+
+
+        ]]>
+    </script>
+
+</jsp:root>
