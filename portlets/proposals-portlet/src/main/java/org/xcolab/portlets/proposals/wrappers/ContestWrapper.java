@@ -11,6 +11,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.utils.GenericJudgingStatus;
@@ -147,16 +148,18 @@ public class ContestWrapper extends BaseContestWrapper {
 
     public long getTotalCommentsCount() {
         final CommentClient commentClient = clientHelper.getCommentClient();
+        int contestComments = 0;
+        List<Long> ThreadIds = ProposalClientUtil
+                .listProposalThreadIds(0,Integer.MAX_VALUE,this.getContestPK(),true,null,null);
+        contestComments += commentClient.countCommentsInProposals(ThreadIds);
         if (getContestType().getHasDiscussion()) {
-           return commentClient.countComments(contest.getDiscussionGroupId());
+           return contestComments + commentClient.countComments(contest.getDiscussionGroupId());
         }
-        Integer contestComments = commentClient.countComments(contest.getDiscussionGroupId());
+        contestComments += commentClient.countComments(contest.getDiscussionGroupId());
         ContestPhase phase = clientHelper.getContestClient().getActivePhase(contest.getContestPK());
         contestComments += commentClient.countCommentsInContestPhase(
                 phase.getContestPhasePK(), phase.getContestPK());
-        //for(Proposal proposal: ProposalClientUtil.getProposalsInContest(this.getContestPK())){
 
-//        }
 
         return contestComments;
     }

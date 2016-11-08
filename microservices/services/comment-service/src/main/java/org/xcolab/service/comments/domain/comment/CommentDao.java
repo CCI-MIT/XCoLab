@@ -21,4 +21,6 @@ public interface CommentDao {
     Comment create(Comment comment);
 
     int countProposalCommentsByContestPhase(Long contestPhaseId);
+
+    int countByGiven(List<Long> threadIds);
 }

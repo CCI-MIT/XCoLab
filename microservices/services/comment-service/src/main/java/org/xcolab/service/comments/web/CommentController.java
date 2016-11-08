@@ -76,6 +76,12 @@ public class CommentController {
         return commentDao.countProposalCommentsByContestPhase(contestPhaseId);
     }
 
+    @GetMapping("/comments/countCommentsInProposals")
+    public Integer countCommentsInContestPhase(
+            @RequestParam List<Long> threadIds) {
+        return commentDao.countByGiven(threadIds);
+    }
+
     @GetMapping("/comments/{commentId}")
     public Comment getComment(@PathVariable Long commentId,
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)

@@ -41,6 +41,11 @@ public class CommentClient {
                 CacheRetention.SHORT);
     }
 
+    public int countCommentsInProposals(List<Long> threadIds) {
+        return commentServiceWrapper.countCommentsInProposals(threadIds,
+                CacheRetention.LONG);
+    }
+
     public Comment getComment(long commentId) throws CommentNotFoundException {
         return getComment(commentId, false);
     }

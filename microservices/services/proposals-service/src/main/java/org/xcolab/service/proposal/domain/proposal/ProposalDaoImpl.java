@@ -87,6 +87,116 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
     @Override
+    public List<Long> findIdsByGiven(PaginationHelper paginationHelper, Long contestId,
+            Boolean visible, Long contestPhaseId, Integer ribbon) {
+        final SelectQuery query = dslContext.select(PROPOSAL.PROPOSAL_ID)
+                .from(PROPOSAL)
+                .getQuery();
+
+        if (contestId != null || contestPhaseId != null || ribbon != null || (visible != null && visible)) {
+            query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
+            query.addJoin(CONTEST_PHASE,
+                    CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
+        }
+
+
+        if (ribbon != null) {
+            final ProposalContestPhaseAttributeTable ribbonAttribute =
+                    PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("ribbonAttribute");
+            query.addJoin(ribbonAttribute,
+                    ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
+                            .and(ribbonAttribute.CONTEST_PHASE_ID
+                                    .eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
+            query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
+                    ribbonAttribute.NAME.eq(
+                            ProposalContestPhaseAttributeKeys.RIBBON)
+                            .and(CONTEST_PHASE_RIBBON_TYPE.ID_
+                                    .eq(ribbonAttribute.NUMERIC_VALUE)));
+        }
+
+        if (contestPhaseId != null) {
+            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhaseId));
+        }
+
+        if (visible != null) {
+            query.addConditions(PROPOSAL.VISIBLE.eq(visible));
+            if (visible) {
+                final ProposalContestPhaseAttributeTable visibleAttribute =
+                        PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("visibleAttribute");
+                query.addJoin(visibleAttribute, JoinType.LEFT_OUTER_JOIN,
+                        visibleAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
+                                .and(visibleAttribute.CONTEST_PHASE_ID
+                                        .eq(CONTEST_PHASE.CONTEST_PHASE_PK))
+                                .and(visibleAttribute.NAME
+                                        .eq(ProposalContestPhaseAttributeKeys.VISIBLE))
+                                .and(visibleAttribute.NUMERIC_VALUE.eq(0L)));
+                query.addConditions(visibleAttribute.ID_.isNull());
+            }
+        }
+
+        if (contestId != null) {
+            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
+        }
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
+        return query.fetchInto(Long.class);
+    }
+
+    @Override
+    public List<Long> findThreadIdsByGiven(PaginationHelper paginationHelper, Long contestId,
+            Boolean visible, Long contestPhaseId, Integer ribbon) {
+        final SelectQuery query = dslContext.select(PROPOSAL.DISCUSSION_ID)
+                .from(PROPOSAL)
+                .getQuery();
+
+        if (contestId != null || contestPhaseId != null || ribbon != null || (visible != null && visible)) {
+            query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
+            query.addJoin(CONTEST_PHASE,
+                    CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
+        }
+
+
+        if (ribbon != null) {
+            final ProposalContestPhaseAttributeTable ribbonAttribute =
+                    PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("ribbonAttribute");
+            query.addJoin(ribbonAttribute,
+                    ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
+                            .and(ribbonAttribute.CONTEST_PHASE_ID
+                                    .eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
+            query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
+                    ribbonAttribute.NAME.eq(
+                            ProposalContestPhaseAttributeKeys.RIBBON)
+                            .and(CONTEST_PHASE_RIBBON_TYPE.ID_
+                                    .eq(ribbonAttribute.NUMERIC_VALUE)));
+        }
+
+        if (contestPhaseId != null) {
+            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhaseId));
+        }
+
+        if (visible != null) {
+            query.addConditions(PROPOSAL.VISIBLE.eq(visible));
+            if (visible) {
+                final ProposalContestPhaseAttributeTable visibleAttribute =
+                        PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("visibleAttribute");
+                query.addJoin(visibleAttribute, JoinType.LEFT_OUTER_JOIN,
+                        visibleAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
+                                .and(visibleAttribute.CONTEST_PHASE_ID
+                                        .eq(CONTEST_PHASE.CONTEST_PHASE_PK))
+                                .and(visibleAttribute.NAME
+                                        .eq(ProposalContestPhaseAttributeKeys.VISIBLE))
+                                .and(visibleAttribute.NUMERIC_VALUE.eq(0L)));
+                query.addConditions(visibleAttribute.ID_.isNull());
+            }
+        }
+
+        if (contestId != null) {
+            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
+        }
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
+        return query.fetchInto(Long.class);
+    }
+
+    @Override
     public Proposal create(Proposal proposal) {
 
         ProposalRecord ret = this.dslContext.insertInto(PROPOSAL)

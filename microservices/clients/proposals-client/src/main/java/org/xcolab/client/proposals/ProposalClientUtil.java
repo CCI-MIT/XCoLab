@@ -36,6 +36,16 @@ public final class ProposalClientUtil {
         return client.listProposals(start, limit, contestId, visible, contestPhaseId, ribbon);
     }
 
+    public static List<Long> listProposalIds(int start, int limit,
+            Long contestId, Boolean visible, Long contestPhaseId, Integer ribbon) {
+        return client.listProposalIds(start, limit, contestId, visible, contestPhaseId, ribbon);
+    }
+
+    public static List<Long> listProposalThreadIds(int start, int limit,
+            Long contestId, Boolean visible, Long contestPhaseId, Integer ribbon) {
+        return client.listThreadIds(start, limit, contestId, visible, contestPhaseId, ribbon);
+    }
+
     public static List<Proposal> getProposalsInContestPhase(
             Long contestPhaseId) {
         return client.getProposalsInContestPhase(contestPhaseId);

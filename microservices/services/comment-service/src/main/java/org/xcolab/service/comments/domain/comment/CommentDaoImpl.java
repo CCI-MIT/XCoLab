@@ -42,6 +42,19 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
+    public int countByGiven(List<Long> threadIds) {
+        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
+                .from(COMMENT)
+                .getQuery();
+        if (threadIds == null || threadIds.isEmpty()) {
+            return 0;
+        }
+        query.addConditions(COMMENT.THREAD_ID.in(threadIds));
+        query.addConditions(COMMENT.DELETED_DATE.isNull());
+        return query.fetchOne().into(Integer.class);
+    }
+
+    @Override
     public List<Comment> findByGiven(PaginationHelper paginationHelper,
             Long authorId, Long threadId, boolean includeDeleted) {
         final SelectQuery<Record> query = dslContext.select()

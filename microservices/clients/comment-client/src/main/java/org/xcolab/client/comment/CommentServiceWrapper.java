@@ -90,6 +90,19 @@ class CommentServiceWrapper {
         }
     }
 
+    public int countCommentsInProposals(List<Long> threadIds, CacheRetention cacheRetention) {
+        try {
+            return commentResource.<Comment, Integer>service("countCommentsInProposals", Integer.class)
+                    .queryParam("threadIds", convertListToGetParameter(threadIds, "threadIds"))
+                    .withCache(CacheKeys.withClass(Comment.class)
+                            .withParameter("threadIds", convertListToGetParameter(threadIds, "threadIds"))
+                            .asCount(), cacheRetention)
+                    .getChecked();
+        } catch(EntityNotFoundException ignored) {
+            return 0;
+        }
+    }
+
     public CommentDto getComment(long commentId, boolean includeDeleted,
             CacheRetention cacheRetention)
             throws CommentNotFoundException {
@@ -236,5 +249,17 @@ class CommentServiceWrapper {
         } catch (EntityNotFoundException e) {
             throw new CategoryGroupNotFoundException(groupId);
         }
+    }
+
+    private static String convertListToGetParameter(List<Long> list, String parameterName) {
+        if(list.isEmpty()){
+            return "";
+        }
+        String parameterList = "";
+        for(int i=0; i<list.size()-2; i++) {
+            parameterList += list.get(i) + "&" + parameterName + "=";
+        }
+        parameterList += list.get(list.size()-1);
+        return parameterList;
     }
 }
