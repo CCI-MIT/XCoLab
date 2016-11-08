@@ -1,56 +1,40 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.wrapper.OntologySpaceWrapper;
-import org.xcolab.wrapper.OntologyTermWrapper;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.pojo.ContestCollectionCard;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class CollectionCardWrapper {
 
-    private final Map<Long, OntologySpaceWrapper> ontologySpaces;
-    private final Map<Long, OntologyTermWrapper> ontologyTerms;
+    private final ContestCollectionCard contestCollectionCard;
 
-    public CollectionCardWrapper() {
-        ontologySpaces = new HashMap<>();
-        ontologyTerms = new TreeMap<>();
-        initOntologySpacesAndTerms();
+    public CollectionCardWrapper(long collectionCardId) {
+        this.contestCollectionCard = ContestClientUtil.getContestCollectionCard(collectionCardId);
     }
 
-    public Collection<OntologyTermWrapper> getOntologyTerms() {
-        return ontologyTerms.values();
+    public CollectionCardWrapper(ContestCollectionCard contestCollectionCard) {
+        this.contestCollectionCard = contestCollectionCard;
     }
 
-    public Collection<OntologySpaceWrapper> getOntologySpaces() {
-        return ontologySpaces.values();
+    public List<CollectionCardWrapper> getChildren() {
+        List<CollectionCardWrapper> childList = new ArrayList<>();
+        for(ContestCollectionCard contestCollectionCard: ContestClientUtil.getSubContestCollectionCards(this.contestCollectionCard.getId_())){
+            childList.add(new CollectionCardWrapper(contestCollectionCard));
+        }
+        return childList;
     }
 
-    public List<OntologySpaceWrapper> getSortedOntologySpaces() {
-        List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
-        Collections.sort(sortedSpaces, new Comparator<OntologySpaceWrapper>() {
-            @Override
-            public int compare(OntologySpaceWrapper o1, OntologySpaceWrapper o2) {
-                return o1.getOrder() - o2.getOrder();
-            }
-
-        });
-        return sortedSpaces;
+    public String getDescription() {
+        return contestCollectionCard.getDescription();
     }
 
-    public List<Long> getOntologyTermIdsForFocusAreaOfContest(Contest contest) {
-            return  new ArrayList<>();
-    }
-
-    private void initOntologySpacesAndTerms() {
-        System.out.println("lol");
+    public OntologyTerm getOntologyTermToLoad() {
+        return OntologyClientUtil.getOntologyTerm(contestCollectionCard.getOntology_term_to_load());
     }
 
 }

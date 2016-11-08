@@ -1,24 +1,66 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:contestmanagementPortlet="urn:jsptagdir:/WEB-INF/tags"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
     <!--@elvariable id="collectionCardWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="section" type="java.lang.Integer"-->
+    <!--@elvariable id="level" type="java.lang.Integer"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
 
+    <div class="collectionCard-outline-left">
+        <div class="expand">
+            <a href="#" class="showall" style="display: inline;">Expand All</a>
+            <a href="#" class="hideall" style="display: none;">Collapse All</a>
+        </div>
+        CollectionCards:
+            <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapper}" section="${section + 1 }" level="${level + 1 }" />
+    </div>
 
 
     <script type="text/javascript">
         <![CDATA[
+        jQuery(".collectionCard-outline-left").on('click', 'a', function(event) {
+            event.preventDefault();
+            var that = this;
+            var self = jQuery(this);
+            if (self.hasClass('showall') || self.hasClass('hideall')) {
+                return;
+            }
+            var container = self.parent();
+            container.addClass('currentlyClicked');
+            jQuery('.collectionCard-outline-left li.active').not('.currentlyClicked').removeClass(
+                    'active');
+            jQuery('.collectionCard-outline-left a.open').each(function () {
+                if (that == this) return;
 
-        jQuery('document').ready(function () {
-            alert("loaded");
+                var parent = jQuery(this).parent();
+                if (!parent.hasClass('currentlyClicked') && parent.find(".currentlyClicked").length
+                        == 0) {
+                    // this is different branch than the one currently clicked, close it
+                    parent.find(".open").removeClass("open");
+                    parent.find("> ul").slideUp();
+                }
+            });
+            container.removeClass('currentlyClicked').toggleClass('active');
+            if (!container.hasClass('active')) {
+                container.find("> ul").slideUp();
+                self.removeClass('open');
+            }
+            else {
+                self.addClass('open');
+                container.find("> ul").slideDown();
+
+                if (container.find("> ul > li").length == 1) {
+                    container.find("> ul > li > a").not(".open").addClass('open');
+                    container.find("> ul > li > ul").slideDown();
+                }
+            }
         });
-
-
         ]]>
     </script>
 

@@ -41,22 +41,8 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
-/*
-        String templateType = elementId != null ? elementId : getFirstTemplateName();
-        model.addAttribute("templateType", templateType);
-        if (!StringUtils.isBlank(templateType)) {
-            model.addAttribute("emailTemplateWrapper",
-                    new CollectionCardWrapper(templateType));
-        }
-        final List<ContestCollectionCard> emailTemplates = CollectionCardClient
-                .listAllContestCollectionCards();
-        List <LabelStringValue> templateSelectionItems = new ArrayList<>();
-        for (ContestCollectionCard emailTemplate : emailTemplates) {
-            templateSelectionItems.add(new LabelStringValue(emailTemplate.getType_(),
-                    emailTemplate.getType_()));
-        }
-        */
-        model.addAttribute("collectionCardWrapper", new CollectionCardWrapper());
+
+        model.addAttribute("collectionCardWrapper", new CollectionCardWrapper(2));
         setPageAttributes(request, model, tab);
         return TAB_VIEW;
     }

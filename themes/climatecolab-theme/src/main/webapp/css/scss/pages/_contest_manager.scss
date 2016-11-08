@@ -10,3 +10,18 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
   color: $t-Color__primary;
   font-weight: $p-cms__uploadWidget__fontWeight;
 }
+
+.collectionCardListItem {
+  list-style: none;
+  border-bottom: 1px solid #ccc;
+  display: none;
+
+  .active{
+    display: inline-block;
+  }
+
+  a {
+    background: url(/images/contest-icon-plus.png) no-repeat 18px center;
+    padding: 10px 10px 10px 10px;
+  }
+}
