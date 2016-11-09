@@ -14,11 +14,11 @@
 
 
 		<c:choose>
-			<c:when test="${contest.isSharedContestInForeignColab} == true">
-				<discussionsTagFiles:evaluationComments threadId="${discussionId }" />
+			<c:when test="${contest.isSharedContestInForeignColab}">
+				<discussionsTagFiles:evaluationComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
 			</c:when>
 			<c:otherwise>
-				<discussionsTagFiles:evaluationComments threadId="${discussionId }" sharedContestId="${contest.contestPK}" />
+				<discussionsTagFiles:evaluationComments threadId="${discussionId }"  />
 			</c:otherwise>
 		</c:choose>
 

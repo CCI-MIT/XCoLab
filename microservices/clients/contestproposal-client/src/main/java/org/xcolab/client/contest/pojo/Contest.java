@@ -609,7 +609,8 @@ public class Contest extends AbstractContest {
         return false;
     }
 
-    public boolean isSharedContestInForeignColab(){
+
+    public boolean getIsSharedContestInForeignColab(){
         return this.getIsSharedContest() && !ConfigurationAttributeKey.COLAB_NAME.get().equals(this.getSharedOrigin());
     }
     /**

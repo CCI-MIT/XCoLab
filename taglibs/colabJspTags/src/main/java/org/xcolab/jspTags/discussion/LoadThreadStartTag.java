@@ -51,7 +51,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
             ThreadClient threadClient;
             CategoryClient categoryClient;
             if (sharedColabId != null && sharedColabId > 0) {
-                    RestService contestService = new RefreshingRestService("contest-service",
+                    RestService contestService = new RefreshingRestService("comment-service",
                             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 

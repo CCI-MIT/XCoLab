@@ -10,10 +10,12 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.proposals.ProposalJudgeRatingClient;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -30,6 +32,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
 
 import java.util.ArrayList;
@@ -83,9 +86,9 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
 
             model.addAttribute("evaluationDiscussionId", discussionId);
-            model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(contest.getContestPK(), proposal,
+            model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(contest, proposal,
                     request));
-            model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(contest));
+            model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(contest,request));
             model.addAttribute("showEvaluation", true);
             model.addAttribute("isJudgeReadOnly", true);
             model.addAttribute("authorId", proposal.getAuthorId());
@@ -123,8 +126,9 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
         Contest contest = proposalsContext.getContest(request);
-        ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
-        List<ContestPhase> allContestPhasesForCurrentContest = ContestClientUtil.getAllContestPhases(contest.getContestPK());
+        RestService contestRestService = contest.getRestService();
+        ContestPhase activeContestPhase = ContestClient.fromService(contestRestService).getActivePhase(contest.getContestPK());
+        List<ContestPhase> allContestPhasesForCurrentContest = ContestClient.fromService(contestRestService).getAllContestPhases(contest.getContestPK());
 
         for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
             boolean isLastContestPhase = activeContestPhase.getPhaseEndDate() == null;
@@ -140,24 +144,27 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return hasContestPassedScreeningPhaseAlready;
     }
 
-    private boolean isActiveContestPhaseOpenForEdit(Contest contest) {
-        ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
+    private boolean isActiveContestPhaseOpenForEdit(Contest contest, PortletRequest request) {
+
+        ContestPhase activeContestPhase = proposalsContext.getClients(request).getContestClient().getActivePhase(contest.getContestPK());
         Long contestPhaseTypeId = activeContestPhase.getContestPhaseType();
-        return ContestClientUtil.getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
+        return proposalsContext.getClients(request).getContestClient().getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
-    private List<ProposalRatings> getAverageRatingsForPastPhases(Long contestId,
+    private List<ProposalRatings> getAverageRatingsForPastPhases(Contest contest,
             Proposal proposal, PortletRequest request) {
+        RestService contestRestService = contest.getRestService();
 
         List<ProposalRatings> proposalRatings = new ArrayList<>();
-        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
+        List<ContestPhase> contestPhases = proposalsContext.getClients(request).getContestClient().getAllContestPhases(contest.getContestPK());
 
         for (ContestPhase contestPhase : contestPhases) {
             boolean isPhasePastScreeningPhase =
                     contestPhase.getFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
             if (isPhasePastScreeningPhase) {
 
-                List<ProposalRating> judgeRatingsForProposal = ProposalJudgeRatingClientUtil
+                List<ProposalRating> judgeRatingsForProposal =
+                        proposalsContext.getClients(request).getProposalJudgeRatingClient()
                         .getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
 
                 if (!judgeRatingsForProposal.isEmpty()) {

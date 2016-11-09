@@ -3,6 +3,6 @@
 	version="2.0">
 
 	<jsp:directive.attribute name="threadId" type="java.lang.Long" required="true" rtexprvalue="true" description="Thread id" />
-	<jsp:directive.attribute name="sharedContestId" type="java.lang.Long" required="false" rtexprvalue="true" description="ContestId id" />
-	<collab:discussionComments threadId="${threadId}" sharedColabId="${contestId}"/>
+	<jsp:directive.attribute name="sharedColabId" type="java.lang.Long" required="false" rtexprvalue="true" description="ContestId id" />
+	<collab:discussionComments threadId="${threadId}" sharedColabId="${sharedColabId}"/>
 </jsp:root>
