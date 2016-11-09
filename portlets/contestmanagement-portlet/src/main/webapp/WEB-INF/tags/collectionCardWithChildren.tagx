@@ -9,7 +9,7 @@
 		<ul class="level-${level }">
 			<c:forEach var="collectionCard" items="${collectionCard.children }">
 				<li class="collectionCardListItem" >
-					<a href="#"  data-term-id="lol">
+					<a href="#"  data-card-id="${collectionCard.id}">
 						<span>${collectionCard.description}</span>
 					</a>
 					<c:if test="${not empty collectionCard.children }">
@@ -19,5 +19,6 @@
 			</c:forEach>
 		</ul>
 	</c:if>
+
 	
 </jsp:root>

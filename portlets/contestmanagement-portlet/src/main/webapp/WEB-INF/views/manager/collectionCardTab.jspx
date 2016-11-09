@@ -22,8 +22,28 @@
             <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapper}" section="${section + 1 }" level="${level + 1 }" />
     </div>
 
+    <div class="collectionCard-outline-right">
+        <portlet:actionURL var="changeElementURL">
+            <portlet:param name="tab" value="${param.tab}" />
+            <portlet:param name="elementId" value="${planTemplateId}" />
+        </portlet:actionURL>
+
+        <form:form action="${changeElementURL }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
+            <div class="collectionCard-edit-form">
+
+            </div>
+        </form:form>
+    </div>
+
 
     <script type="text/javascript">
+
+        var collectionCards = {};
+        <c:forEach var="collectionCard" items="${collectionCardWrapper.allCollectionCards}">
+        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parent: ${collectionCard.parentId}, bigOntologyTerm: ${collectionCard.bigOntologyTerm}, smallOntologyTerm: ${collectionCard.smallOntologyTerm},  ontologyTermToLoad: ${collectionCard.ontologyTermToLoad}, visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: ${collectionCard.description}};
+        </c:forEach>
+
+
         <![CDATA[
         jQuery(".collectionCard-outline-left").on('click', 'a', function(event) {
             event.preventDefault();
@@ -74,6 +94,25 @@
                 jQuery(".collectionCard-outline-left .level0 ul").slideUp();
             }
         });
+
+        jQuery(".collectionCard-outline-left").on('click', 'a', function(event) {
+            event.preventDefault();
+            if (self.hasClass('showall') || self.hasClass('hideall')) {
+                return;
+            }
+            loadCollectionCardForm(container.attr('data-card-id'));
+        }
+
+
+        function loadCollectionCardForm(collectionCardId) {
+            var formHtml="";
+            var collectionCard = collectionCards[collectionCardId];
+            formHtml.push("<h1>Change Collectioncard '"+ collectionCard.description);
+            formHtml.push("<form:input path='templateName'/>");
+
+
+            container.find(".collectionCard-edit-form").html(formHtml.join(''));
+        }
 
         ]]>
     </script>

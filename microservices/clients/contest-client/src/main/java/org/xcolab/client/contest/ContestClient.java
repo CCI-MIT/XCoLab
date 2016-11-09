@@ -487,7 +487,7 @@ public class ContestClient {
                 .execute(),contestService);
     }
 
-    public List<ContestCollectionCard> getSubContestCollectionCards() {
+    public List<ContestCollectionCard> getAllContestCollectionCards() {
         return DtoUtil.toPojos(contestCollectionCardRestResource.list()
                 .execute(), contestService);
     }

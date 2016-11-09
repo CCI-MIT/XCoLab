@@ -273,8 +273,8 @@ public final class ContestClientUtil {
         return contestClient.getSubContestCollectionCards(parentCollectionCardId);
     }
 
-    public static List<ContestCollectionCard> getSubContestCollectionCards() {
-        return contestClient.getSubContestCollectionCards();
+    public static List<ContestCollectionCard> getAllContestCollectionCards() {
+        return contestClient.getAllContestCollectionCards();
     }
 
     public static ContestCollectionCard getContestCollectionCard(long id) {
