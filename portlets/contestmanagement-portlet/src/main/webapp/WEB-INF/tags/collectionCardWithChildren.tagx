@@ -6,7 +6,7 @@
 	<jsp:directive.attribute name="section" type="java.lang.Integer" required="true" rtexprvalue="true" description="Section" />
 	<jsp:directive.attribute name="level" type="java.lang.Integer" required="true" rtexprvalue="true" description="Level" />
 	<c:if test="${not empty collectionCard }">
-		<ul class="level${level }">
+		<ul class="level-${level }">
 			<c:forEach var="collectionCard" items="${collectionCard.children }">
 				<li class="collectionCardListItem" >
 					<a href="#"  data-term-id="lol">

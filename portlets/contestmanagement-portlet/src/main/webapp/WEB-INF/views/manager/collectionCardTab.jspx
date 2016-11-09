@@ -17,6 +17,7 @@
             <a href="#" class="showall" style="display: inline;">Expand All</a>
             <a href="#" class="hideall" style="display: none;">Collapse All</a>
         </div>
+        <br/>
         CollectionCards:
             <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapper}" section="${section + 1 }" level="${level + 1 }" />
     </div>
@@ -61,6 +62,19 @@
                 }
             }
         });
+
+        jQuery(".expand a").click(function() {
+            jQuery(".expand a").toggle();
+            if (jQuery(this).hasClass('showall')) {
+                jQuery(".collectionCard-outline-left a").addClass('open');
+                jQuery(".collectionCard-outline-left .level0 ul").slideDown();
+            }
+            else {
+                jQuery(".collectionCard-outline-left a").removeClass('open');
+                jQuery(".collectionCard-outline-left .level0 ul").slideUp();
+            }
+        });
+
         ]]>
     </script>
 

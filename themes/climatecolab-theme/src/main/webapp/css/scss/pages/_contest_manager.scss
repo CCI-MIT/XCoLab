@@ -11,17 +11,111 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
   font-weight: $p-cms__uploadWidget__fontWeight;
 }
 
-.collectionCardListItem {
-  list-style: none;
-  border-bottom: 1px solid #ccc;
-  display: none;
+.collectionCard-outline-left{
+  width:50%;
+  float: left;
 
-  .active{
+  .expand{
+    width: 100%;
+  }
+
+  .collectionCardListItem {
+    list-style: none;
+
+  }
+
+  .level-1 {
+    ul {
+      display: none;
+    }
+  }
+
+  .level-1 li.anything a.open {
+    background-color: $t-Color__primary--darkest;
+  }
+
+  .level-1 li a {
+    background: url(../images/contest-icon-plus.png) no-repeat 18px center;
+  }
+
+  .level-1 li.active > a {
+    color: white;
+    background-color: $t-Color__primary--darkest
+  }
+
+  .level-1 li a.open {
+    background-image: url(../images/contest-icon-minus-orange.png);
+  }
+
+  .level-1 li.active a.open {
+    background-image: url(../images/contest-icon-minus.png);
+  }
+
+  .level-1 li.active a.open.active .count {
+    color: white;
+  }
+
+  .level-1 li.no-child a, .level1 li.no-child a.open {
+    background-image: none;
+  }
+
+  .level-1 li.anything a {
+    background: white url(../images/pattern-6x6-lite.png) repeat top left;
+  }
+
+
+  ul {
+    margin-bottom: 0;
+  }
+
+  ul li {
+    background: none;
+    padding: 0;
+    font-size: 12px;
+  }
+
+  ul.level1 li {
+    padding-left: 0;
+  }
+
+  ul.level2 li {
+    padding-left: 32px;
+    font-size: 12px;
+  }
+
+  ul.level3 li {
+    padding-left: 32px;
+  }
+
+  ul.level4 li {
+    padding-left: 32px;
+  }
+
+  ul.level1 li a {
+    padding: 10px 20px 10px 46px;
+    font-size: 14px;
+  }
+
+  ul.level2 li a {
+    padding: 10px 20px 10px 40px;
+    font-size: 12px;
+  }
+
+  ul.level3 li a {
+    padding: 10px 20px 10px 35px;
+  }
+
+   li a {
+    border-bottom: 1px solid #ccc;
     display: inline-block;
+    width: 100%;
+    color: black;
   }
 
-  a {
-    background: url(/images/contest-icon-plus.png) no-repeat 18px center;
-    padding: 10px 10px 10px 10px;
-  }
+}
+
+
+.collectionCard-outline-right {
+  float:left;
+  width:50%;
 }
