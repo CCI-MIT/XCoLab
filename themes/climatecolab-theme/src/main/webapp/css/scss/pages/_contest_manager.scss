@@ -16,6 +16,10 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
   float: left;
   padding-right: 60px;
 
+  .collectionCard-category {
+    padding: 10px;
+  }
+
   .expand{
     width: 100%;
   }

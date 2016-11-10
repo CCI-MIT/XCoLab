@@ -4,7 +4,8 @@
           xmlns:contestmanagementPortlet="urn:jsptagdir:/WEB-INF/tags"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <!--@elvariable id="collectionCardWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="collectionCardWrapperWhat" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="collectionCardWrapperWhere" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
     <!--@elvariable id="section" type="java.lang.Integer"-->
     <!--@elvariable id="level" type="java.lang.Integer"-->
 
@@ -18,8 +19,14 @@
             <a href="#" class="hideall" style="display: none;">Collapse All</a>
         </div>
         <br/>
-        CollectionCards:
-            <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapper}" section="${section + 1 }" level="${level + 1 }" />
+        <h2 class="collectionCard-category">
+            Any action:
+        </h2>
+            <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapperWhat}" section="${section + 1 }" level="${level + 1 }" />
+        <h2 class="collectionCard-category">
+            Anywhere:
+        </h2>
+            <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapperWhere}" section="${section + 1 }" level="${level + 1 }" />
     </div>
 
     <div class="collectionCard-outline-right">
@@ -28,7 +35,7 @@
             <portlet:param name="elementId" value="${planTemplateId}" />
         </portlet:actionURL>
 
-        <form:form action="${changeElementURL }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
+        <form:form action="${changeElementURL }" commandName="collectionCardWrapperWhat" id="selectForm" method="post">
             <div class="collectionCard-edit-form">
                 <h1 id="title">
                     <!-- -->
@@ -44,7 +51,7 @@
                 </div>
                 <div class="addpropbox">
                     <strong class="inputTitleLeft">Big Ontologyterm</strong>
-                    <input id="bigOntologyTerm" name="bigOntologyTerm" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                    <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
                 </div>
                 <div class="addpropbox">
                     <strong class="inputTitleLeft">Small Ontologyterm</strong>
@@ -58,13 +65,13 @@
     <script type="text/javascript">
 
         var collectionCards = {};
-        <c:forEach var="collectionCard" items="${collectionCardWrapper.allCollectionCards}">
+        <c:forEach var="collectionCard" items="${collectionCardWrapperWhat.allCollectionCards}">
                 <c:choose>
                     <c:when test="${not empty collectionCard.parentId}">
-                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parent: ${collectionCard.parentId}, bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parent: ${collectionCard.parentId}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
                     </c:when>
                     <c:otherwise>
-                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id},  bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
                     </c:otherwise>
                 </c:choose>
         </c:forEach>
@@ -139,7 +146,7 @@
             jQuery(".collectionCard-edit-form #title").html(collectionCard.description)
             jQuery(".collectionCard-edit-form #description").val(collectionCard.description);
             jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(collectionCard.ontologyTermToLoad);
-            jQuery(".collectionCard-edit-form #bigOntologyTerm").val(collectionCard.bigOntologyTerm);
+            jQuery(".collectionCard-edit-form #bigOntologyTerm").val(collectionCard.bigOntologyTermId);
             jQuery(".collectionCard-edit-form #smallOntologyTerm").val(collectionCard.smallOntologyTerm);
 
         }

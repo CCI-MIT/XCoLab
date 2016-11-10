@@ -42,7 +42,8 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
             return NO_PERMISSION_TAB_VIEW;
         }
 
-        model.addAttribute("collectionCardWrapper", new CollectionCardWrapper(2));
+        model.addAttribute("collectionCardWrapperWhat", new CollectionCardWrapper(2));
+        model.addAttribute("collectionCardWrapperWhere", new CollectionCardWrapper(3));
         setPageAttributes(request, model, tab);
         return TAB_VIEW;
     }

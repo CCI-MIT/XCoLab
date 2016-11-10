@@ -4,9 +4,12 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CollectionCardWrapper {
 
@@ -26,6 +29,14 @@ public class CollectionCardWrapper {
             cardList.add(new CollectionCardWrapper(contestCollectionCard));
         }
         return cardList;
+    }
+
+    public Map<Long , String > getOntologyTerms() {
+        Map<Long, String> ontologyTerms = new HashMap<>();
+        for(OntologyTerm term: OntologyClientUtil.getAllOntologyTerms()) {
+            ontologyTerms.put(term.getId(), term.getName());
+        }
+        return ontologyTerms;
     }
 
     public CollectionCardWrapper(ContestCollectionCard contestCollectionCard) {
@@ -55,7 +66,11 @@ public class CollectionCardWrapper {
         return "";
     }
 
-    public void getOntologyTermToLoad(long ontologyTermToLoadId) {
+    public long getOntologyTermToLoadId() {
+        return contestCollectionCard.getOntology_term_to_load();
+    }
+
+    public void setOntologyTermToLoad(long ontologyTermToLoadId) {
         contestCollectionCard.setOntology_term_to_load(ontologyTermToLoadId);
     }
 
@@ -64,6 +79,10 @@ public class CollectionCardWrapper {
             return OntologyClientUtil.getOntologyTerm(contestCollectionCard.getBig_ontology_term()).getName();
         }
         return "";
+    }
+
+    public long getBigOntologyTermId() {
+        return contestCollectionCard.getBig_ontology_term() != null ? contestCollectionCard.getBig_ontology_term() : 0;
     }
 
     public void setBigOntologyTerm(long bigOntologyTermId) {
@@ -75,6 +94,10 @@ public class CollectionCardWrapper {
             return OntologyClientUtil.getOntologyTerm(contestCollectionCard.getSmall_ontology_term()).getName();
         }
         return "";
+    }
+
+    public long getSmallOntologyTermId() {
+        return contestCollectionCard.getSmall_ontology_term();
     }
 
     public void setSmallOntologyTerm(long smallOntologyTermId) {
