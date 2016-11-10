@@ -9,7 +9,7 @@
 
     <!--@elvariable id="voted" type="java.lang.Boolean"-->
     <!--@elvariable id="votingDeadline" type="java.lang.String"-->
-    <!--@elvariable id="targetMoveHistory" type="org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper"-->
+    <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->
     <!--@elvariable id="sourceMoveHistories" type="java.util.List<org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper>"-->
 
     <jsp:directive.include file="./init_proposal_tab.jspx" />
@@ -54,13 +54,13 @@
                         <c:if test="${not empty targetMoveHistory}">
                             <div>
                                 <c:choose>
-                                    <c:when test="${targetMoveHistory.moveType.name() == 'MOVE_PERMANENTLY'}">
+                                    <c:when test="${targetMoveHistory.moveTypez.name() == 'MOVE_PERMANENTLY'}">
                                         This ${contestType.proposalName} was moved here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
                                     </c:when>
-                                    <c:when test="${targetMoveHistory.moveType.name() == 'COPY'}">
+                                    <c:when test="${targetMoveHistory.moveTypez.name() == 'COPY'}">
                                         This ${contestType.proposalName} was reopen here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
                                     </c:when>
-                                    <c:when test="${targetMoveHistory.moveType.name() == 'FORK'}">
+                                    <c:when test="${targetMoveHistory.moveTypez.name() == 'FORK'}">
                                         This ${contestType.proposalName} was forked from <collab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/>
                                         in the ${contestType.contestName} <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
                                     </c:when>
