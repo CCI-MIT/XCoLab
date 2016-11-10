@@ -30,7 +30,26 @@
 
         <form:form action="${changeElementURL }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
             <div class="collectionCard-edit-form">
-
+                <h1 id="title">
+                    <!-- -->
+                </h1>
+                <br/>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Description:</strong>
+                    <input id="description" name="Description" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                </div>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Ontologyterm to load:</strong>
+                    <input id="ontologyTermToLoad" name="ontologyTermToLoad" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                </div>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Big Ontologyterm</strong>
+                    <input id="bigOntologyTerm" name="bigOntologyTerm" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                </div>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Small Ontologyterm</strong>
+                    <input id="smallOntologyTerm" name="smallOntologyTerm" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                </div>
             </div>
         </form:form>
     </div>
@@ -40,7 +59,14 @@
 
         var collectionCards = {};
         <c:forEach var="collectionCard" items="${collectionCardWrapper.allCollectionCards}">
-        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parent: ${collectionCard.parentId}, bigOntologyTerm: ${collectionCard.bigOntologyTerm}, smallOntologyTerm: ${collectionCard.smallOntologyTerm},  ontologyTermToLoad: ${collectionCard.ontologyTermToLoad}, visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: ${collectionCard.description}};
+                <c:choose>
+                    <c:when test="${not empty collectionCard.parentId}">
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parent: ${collectionCard.parentId}, bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
+                    </c:when>
+                    <c:otherwise>
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id},  bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
+                    </c:otherwise>
+                </c:choose>
         </c:forEach>
 
 
@@ -84,6 +110,8 @@
         });
 
         jQuery(".expand a").click(function() {
+            var that = this;
+            var self = jQuery(this);
             jQuery(".expand a").toggle();
             if (jQuery(this).hasClass('showall')) {
                 jQuery(".collectionCard-outline-left a").addClass('open');
@@ -97,21 +125,23 @@
 
         jQuery(".collectionCard-outline-left").on('click', 'a', function(event) {
             event.preventDefault();
+            var self = jQuery(this);
             if (self.hasClass('showall') || self.hasClass('hideall')) {
                 return;
             }
-            loadCollectionCardForm(container.attr('data-card-id'));
-        }
+            loadCollectionCardForm(self.attr('data-card-id'));
+        });
 
 
         function loadCollectionCardForm(collectionCardId) {
-            var formHtml="";
             var collectionCard = collectionCards[collectionCardId];
-            formHtml.push("<h1>Change Collectioncard '"+ collectionCard.description);
-            formHtml.push("<form:input path='templateName'/>");
 
+            jQuery(".collectionCard-edit-form #title").html(collectionCard.description)
+            jQuery(".collectionCard-edit-form #description").val(collectionCard.description);
+            jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(collectionCard.ontologyTermToLoad);
+            jQuery(".collectionCard-edit-form #bigOntologyTerm").val(collectionCard.bigOntologyTerm);
+            jQuery(".collectionCard-edit-form #smallOntologyTerm").val(collectionCard.smallOntologyTerm);
 
-            container.find(".collectionCard-edit-form").html(formHtml.join(''));
         }
 
         ]]>

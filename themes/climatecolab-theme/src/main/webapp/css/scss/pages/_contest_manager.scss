@@ -14,6 +14,7 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
 .collectionCard-outline-left{
   width:50%;
   float: left;
+  padding-right: 60px;
 
   .expand{
     width: 100%;
@@ -74,34 +75,34 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
     font-size: 12px;
   }
 
-  ul.level1 li {
+  ul.level-1 li {
     padding-left: 0;
   }
 
-  ul.level2 li {
+  ul.level-2 li {
     padding-left: 32px;
     font-size: 12px;
   }
 
-  ul.level3 li {
+  ul.level-3 li {
     padding-left: 32px;
   }
 
-  ul.level4 li {
+  ul.level-4 li {
     padding-left: 32px;
   }
 
-  ul.level1 li a {
+  ul.level-1 li a {
     padding: 10px 20px 10px 46px;
     font-size: 14px;
   }
 
-  ul.level2 li a {
+  ul.level-2 li a {
     padding: 10px 20px 10px 40px;
     font-size: 12px;
   }
 
-  ul.level3 li a {
+  ul.level-3 li a {
     padding: 10px 20px 10px 35px;
   }
 
@@ -117,5 +118,37 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
 
 .collectionCard-outline-right {
   float:left;
-  width:50%;
+  width:40%;
+
+  .collectionCard-edit-form{
+
+    padding: 10px;
+
+    .addpropbox {
+      background: #efefe7;
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      -ms-border-radius: 12px;
+      -o-border-radius: 12px;
+      border-radius: 12px;
+      padding: 13px 15px 12px 12px;
+      margin-bottom: 13px;
+      line-height: 19px;
+      display: block;
+
+      .inputTitleLeft {
+        float: left;
+        line-height: 30px;
+        padding-right: 10px;
+      }
+
+      .wideLargeInput {
+        height: 30px;
+        width: 300px;
+        font-size: 16px;
+        padding-left: 5px;
+        text-align: left;
+      }
+    }
+  }
 }

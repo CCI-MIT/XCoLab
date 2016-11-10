@@ -367,3 +367,17 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 .accordion, .accordion li {
   list-style: none;
 }
+
+.prop {
+   display: inline;
+  padding-right: 18px;
+  text-transform: lowercase;
+}
+
+.comm {
+  display: inline;
+}
+
+.prop a, .comm a {
+   font-weight: $b-Typography__fontWeight--bold;
+}
