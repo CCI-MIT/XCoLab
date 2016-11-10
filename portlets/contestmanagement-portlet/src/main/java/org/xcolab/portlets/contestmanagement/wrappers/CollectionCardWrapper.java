@@ -33,10 +33,20 @@ public class CollectionCardWrapper {
 
     public Map<Long , String > getOntologyTerms() {
         Map<Long, String> ontologyTerms = new HashMap<>();
+        ontologyTerms.put((long) (-1), "null");
         for(OntologyTerm term: OntologyClientUtil.getAllOntologyTerms()) {
             ontologyTerms.put(term.getId(), term.getName());
         }
         return ontologyTerms;
+    }
+
+    public Map<Long , String > getCollectionCards() {
+        Map<Long, String> cards = new HashMap<>();
+        cards.put((long) (-1), "null");
+        for(ContestCollectionCard card: ContestClientUtil.getAllContestCollectionCards()) {
+            cards.put(card.getId_(), card.getDescription());
+        }
+        return cards;
     }
 
     public CollectionCardWrapper(ContestCollectionCard contestCollectionCard) {
@@ -67,7 +77,7 @@ public class CollectionCardWrapper {
     }
 
     public long getOntologyTermToLoadId() {
-        return contestCollectionCard.getOntology_term_to_load();
+        return contestCollectionCard.getOntology_term_to_load() != null ? contestCollectionCard.getOntology_term_to_load() : -1;
     }
 
     public void setOntologyTermToLoad(long ontologyTermToLoadId) {
@@ -82,7 +92,7 @@ public class CollectionCardWrapper {
     }
 
     public long getBigOntologyTermId() {
-        return contestCollectionCard.getBig_ontology_term() != null ? contestCollectionCard.getBig_ontology_term() : 0;
+        return contestCollectionCard.getBig_ontology_term() != null ? contestCollectionCard.getBig_ontology_term() : -1;
     }
 
     public void setBigOntologyTerm(long bigOntologyTermId) {
@@ -97,15 +107,15 @@ public class CollectionCardWrapper {
     }
 
     public long getSmallOntologyTermId() {
-        return contestCollectionCard.getSmall_ontology_term();
+        return contestCollectionCard.getSmall_ontology_term() != null ? contestCollectionCard.getSmall_ontology_term() : -1;
     }
 
     public void setSmallOntologyTerm(long smallOntologyTermId) {
         contestCollectionCard.setBig_ontology_term(smallOntologyTermId);
     }
 
-    public Long getParentId() {
-        return this.contestCollectionCard.getParent();
+    public long getParentId() {
+        return this.contestCollectionCard.getParent() != null ?  this.contestCollectionCard.getParent() : -1;
     }
 
     public void setParent(Long parentId) {

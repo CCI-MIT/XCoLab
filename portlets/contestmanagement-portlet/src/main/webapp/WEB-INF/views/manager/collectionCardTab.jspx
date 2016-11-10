@@ -46,8 +46,12 @@
                     <input id="description" name="Description" class="wideLargeInput" type="text" value="" validatelength="false"/>
                 </div>
                 <div class="addpropbox">
-                    <strong class="inputTitleLeft">Ontologyterm to load:</strong>
-                    <input id="ontologyTermToLoad" name="ontologyTermToLoad" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                    <strong class="inputTitleLeft">Parent CollectionCard</strong>
+                    <form:select path="parentId" id="parentId" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.collectionCards}" />
+                </div>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Ontologyterm to load</strong>
+                    <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
                 </div>
                 <div class="addpropbox">
                     <strong class="inputTitleLeft">Big Ontologyterm</strong>
@@ -55,8 +59,17 @@
                 </div>
                 <div class="addpropbox">
                     <strong class="inputTitleLeft">Small Ontologyterm</strong>
-                    <input id="smallOntologyTerm" name="smallOntologyTerm" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                    <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
                 </div>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Only Featured</strong>
+                    <form:checkbox path="onlyFeatured" id="onlyFeatured" cssClass="wideLargeInput"/>
+                </div>
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Visible</strong>
+                    <form:checkbox path="visible" id="visible" cssClass="wideLargeInput"/>
+                </div>
+
             </div>
         </form:form>
     </div>
@@ -68,7 +81,7 @@
         <c:forEach var="collectionCard" items="${collectionCardWrapperWhat.allCollectionCards}">
                 <c:choose>
                     <c:when test="${not empty collectionCard.parentId}">
-                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parent: ${collectionCard.parentId}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parentId: ${collectionCard.parentId}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
                     </c:when>
                     <c:otherwise>
                         collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
@@ -145,9 +158,12 @@
 
             jQuery(".collectionCard-edit-form #title").html(collectionCard.description)
             jQuery(".collectionCard-edit-form #description").val(collectionCard.description);
-            jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(collectionCard.ontologyTermToLoad);
+            jQuery(".collectionCard-edit-form #parentId").val(collectionCard.parentId);
+            jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(collectionCard.ontologyTermToLoadId);
             jQuery(".collectionCard-edit-form #bigOntologyTerm").val(collectionCard.bigOntologyTermId);
-            jQuery(".collectionCard-edit-form #smallOntologyTerm").val(collectionCard.smallOntologyTerm);
+            jQuery(".collectionCard-edit-form #smallOntologyTerm").val(collectionCard.smallOntologyTermId);
+            jQuery(".collectionCard-edit-form #onlyFeatured").val(collectionCard.onlyFeatured);
+            jQuery(".collectionCard-edit-form #visible").val(collectionCard.visible);
 
         }
 
