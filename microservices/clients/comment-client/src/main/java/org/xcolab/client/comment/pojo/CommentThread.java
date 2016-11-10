@@ -54,17 +54,17 @@ public class CommentThread extends AbstractCommentThread {
 
     @JsonIgnore
     public int getCommentsCount() {
-        return CommentClientUtil.countComments(getThreadId());
+        return commentClient.countComments(getThreadId());
     }
 
     @JsonIgnore
     public List<Comment> getComments() {
-        return CommentClientUtil.listComments(0, Integer.MAX_VALUE, getThreadId());
+        return commentClient.listComments(0, Integer.MAX_VALUE, getThreadId());
     }
 
     @JsonIgnore
     public long getLastActivityAuthorId() {
-        return ThreadClientUtil.getLastActivityAuthorId(getThreadId());
+        return threadClient.getLastActivityAuthorId(getThreadId());
     }
 
     @JsonIgnore
@@ -78,7 +78,7 @@ public class CommentThread extends AbstractCommentThread {
 
     @JsonIgnore
     public Date getLastActivityDate() {
-        return ThreadClientUtil.getLastActivityDate(getThreadId());
+        return threadClient.getLastActivityDate(getThreadId());
     }
 
     @JsonIgnore
@@ -100,7 +100,7 @@ public class CommentThread extends AbstractCommentThread {
         final Long categoryId = getCategoryId();
         if (categoryId != null && categoryId > 0) {
             try {
-                return CategoryClientUtil.getCategory(categoryId);
+                return categoryClient.getCategory(categoryId);
             } catch (CategoryNotFoundException ignored) {
                 //throw new KeyReferenceException(e);
             }

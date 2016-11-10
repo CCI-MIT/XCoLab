@@ -11,6 +11,7 @@ import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.http.client.RestService;
 
 import javax.portlet.PortletRequest;
 
@@ -79,9 +80,13 @@ public class ProposalsDisplayPermissions {
     }
 
     private boolean isSubscribedToContest() {
+
+
+
+
         return contestPhase != null
                 &&
-                ActivitiesClient.isSubscribedToActivity(memberId,
+                clientHelper.getActivitiesClient().isSubscribedToActivity(memberId,
                         ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPhase.getContestPK(),
                         0, "");
     }

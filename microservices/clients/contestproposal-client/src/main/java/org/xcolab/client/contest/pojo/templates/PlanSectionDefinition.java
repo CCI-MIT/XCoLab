@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
@@ -300,8 +301,27 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     }
 
     public String getProposalNames() {
-        return ContestClientUtil
+        RestService contestservice =  restService.withServiceName("contest-service");
+        return ContestClient.fromService(contestservice)
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
+    }
+
+
+    public String getProposalNamesPlural() {
+        RestService contestservice =  restService.withServiceName("contest-service");
+        return ContestClient.fromService(contestservice)
+                .getProposalNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "and");
+    }
+
+    public String getContestNames() {
+        RestService contestservice =  restService.withServiceName("contest-service");
+        return ContestClient.fromService(contestservice)
+                .getContestNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
+    }
+
+    public String getContestNamesPlural() {
+        RestService contestservice =  restService.withServiceName("contest-service");
+        return ContestClient.fromService(contestservice).getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
     }
 
     public RestService getRestService() {

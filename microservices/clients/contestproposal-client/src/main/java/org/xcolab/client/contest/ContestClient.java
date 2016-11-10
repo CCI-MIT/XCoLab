@@ -4,6 +4,7 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestDto;
@@ -486,16 +487,16 @@ public class ContestClient {
     }
 
     public boolean isMemberSubscribedToContest(long contestPK, long userId) {
-        return ActivitiesClient.isSubscribedToActivity(userId,
+        return ActivitiesClientUtil.isSubscribedToActivity(userId,
                 ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK, 0, "");
     }
 
     public void subscribeMemberToContest(long contestPK, long userId) {
-        ActivitiesClient.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+        ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
 
     public void unsubscribeMemberFromContest(long contestPK, long userId) {
-        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+        ActivitiesClientUtil.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
 
     public String getProposalNames(List<Long> contestTypeIds, String plurality,

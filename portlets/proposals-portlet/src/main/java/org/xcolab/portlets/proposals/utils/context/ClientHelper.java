@@ -1,5 +1,7 @@
 package org.xcolab.portlets.proposals.utils.context;
 
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.CommentClient;
@@ -61,6 +63,12 @@ public class ClientHelper {
     private final ThreadClient threadClient;
     private final CategoryClient categoryClient;
 
+    //Activity
+
+    private final ActivitiesClient activitiesClient;
+
+
+
     public ClientHelper(Contest contest) {
         if (contest != null && contest.getIsSharedContest() && !contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME)) {
             RestService proposalService = new RefreshingRestService("proposals-service",
@@ -90,6 +98,8 @@ public class ClientHelper {
             commentClient = new CommentClient(commentService);
             threadClient = new ThreadClient(commentService);
             categoryClient = new CategoryClient(commentService);
+            RestService activitiesService  = proposalService.withServiceName("activities-service");
+            activitiesClient = ActivitiesClient.fromService(activitiesService);
         } else {
             proposalClient = ProposalClientUtil.getClient();
             membershipClient = MembershipClientUtil.getClient();
@@ -109,7 +119,13 @@ public class ClientHelper {
             commentClient = CommentClientUtil.getClient();
             threadClient = ThreadClientUtil.getClient();
             categoryClient = CategoryClientUtil.getClient();
+
+            activitiesClient = ActivitiesClientUtil.getClient();
         }
+    }
+
+    public ActivitiesClient getActivitiesClient() {
+        return activitiesClient;
     }
 
     public ProposalClient getProposalClient() {

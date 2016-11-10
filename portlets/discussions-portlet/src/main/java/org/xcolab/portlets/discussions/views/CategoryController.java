@@ -1,7 +1,5 @@
 package org.xcolab.portlets.discussions.views;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,14 +7,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.comment.util.CategoryClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.comment.util.ThreadSortColumn;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CategoryClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -67,7 +68,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortColumn", threadSortColumn);
         model.addAttribute("sortAscending", sortAscending);
 
-        model.addAttribute("isSubscribed", ActivitiesClient.isSubscribedToActivity(themeDisplay.getUserId(),
+        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(themeDisplay.getUserId(),
                 ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0, ""));
 
         return "category";
@@ -99,7 +100,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("threads", currentCategory.getThreads(threadSortColumn, sortAscending));
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
-        model.addAttribute("isSubscribed", ActivitiesClient.isSubscribedToActivity(themeDisplay.getUserId(),
+        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(themeDisplay.getUserId(),
                 ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0,Long.toString(categoryId) ));
 
         return "category";
@@ -162,10 +163,10 @@ public class CategoryController extends BaseDiscussionController {
         if (!themeDisplay.getUser().isDefaultUser()) {
             final long memberId = themeDisplay.getUserId();
             if (categoryId > 0) {
-                ActivitiesClient.addSubscription(memberId,
+                ActivitiesClientUtil.addSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryId, Long.toString(categoryId));
             } else {
-                ActivitiesClient.addSubscription(memberId,
+                ActivitiesClientUtil.addSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
             }
         }
@@ -182,12 +183,12 @@ public class CategoryController extends BaseDiscussionController {
         if (!themeDisplay.getUser().isDefaultUser()) {
             final long memberId = themeDisplay.getUserId();
             if (categoryId > 0) {
-                ActivitiesClient.deleteSubscription(memberId,
+                ActivitiesClientUtil.deleteSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(),
                         Long.toString(categoryId));
 
             } else {
-                ActivitiesClient.deleteSubscription(memberId,
+                ActivitiesClientUtil.deleteSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
             }
         }

@@ -49,4 +49,5 @@ public interface ProposalsContext {
     ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request);
 
     ClientHelper getClients(PortletRequest request);
+
 }

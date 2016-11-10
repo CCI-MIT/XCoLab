@@ -17,6 +17,7 @@ import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -139,7 +140,7 @@ public class UserProfileWrapper implements Serializable {
                 supportedProposals.add(new SupportedProposalWrapper(ps));
             }
 
-            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient
+            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                     .getActivityEntries(0, MAX_ACTIVITIES_COUNT, user.getId_(), null))) {
 
                 UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
@@ -323,7 +324,7 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
             for (ActivityEntry activity : ActivityUtil.groupActivities(
-                    ActivitiesClient.getActivityEntries(0, 100, this.user.getId_(), null))) {
+                    ActivitiesClientUtil.getActivityEntries(0, 100, this.user.getId_(), null))) {
 
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }

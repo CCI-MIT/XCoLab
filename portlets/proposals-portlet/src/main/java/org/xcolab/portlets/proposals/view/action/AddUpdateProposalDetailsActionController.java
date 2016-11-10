@@ -96,11 +96,11 @@ public class AddUpdateProposalDetailsActionController {
             ProposalCreationUtil.sendAuthorNotification(themeDisplay, proposalWrapper, contestPhase,
                     request);
 
-            ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
+            ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(),userId,proposalWrapper.getProposalId(),null,
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
         }else{
-            ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
+            ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(),userId,proposalWrapper.getProposalId(),null,
                     ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);

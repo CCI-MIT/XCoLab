@@ -120,12 +120,16 @@ public class MembershipClient {
 
             }
 
-            ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+            RestService activitiesService  = proposalService.withServiceName("activities-service");
+            ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
+
+            ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
                     ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
 
-            if (!ActivitiesClient.isSubscribedToActivity(userId,
+
+            if (!activityClient.isSubscribedToActivity(userId,
                     ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
-                ActivitiesClient
+                activityClient
                         .addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
 
             }

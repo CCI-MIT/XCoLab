@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
@@ -140,7 +141,7 @@ public class ProposalPickerFilterUtil {
             long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        List<ActivitySubscription> activitySubscriptions = ActivitiesClient.getActivitySubscriptions(null, null, userId);
+        List<ActivitySubscription> activitySubscriptions = ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
 
         for (ActivitySubscription as : activitySubscriptions) {
 

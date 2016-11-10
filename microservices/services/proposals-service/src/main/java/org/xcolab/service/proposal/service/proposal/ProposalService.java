@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -144,7 +145,7 @@ public class ProposalService {
     }
 
     public void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
-        ActivitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     private Group_ createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) {

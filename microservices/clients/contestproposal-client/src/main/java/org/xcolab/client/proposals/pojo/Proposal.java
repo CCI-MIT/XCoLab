@@ -138,10 +138,6 @@ public class Proposal extends AbstractProposal {
     public Proposal(Proposal value) {
         super(value);
 
-        this.contestPhase =  fetchContestPhase();
-        this.contest =  fetchContest(contestPhase);
-        this.proposal2Phase = fetchProposal2Phase();
-
         if(value.getRestService()!=null){
             this.restService = value.getRestService();
             RestService contestservice =  restService.withServiceName("contest-service");
@@ -168,6 +164,10 @@ public class Proposal extends AbstractProposal {
             proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
             membershipClient = MembershipClientUtil.getClient();
         }
+
+        this.contestPhase =  fetchContestPhase();
+        this.contest =  fetchContest(contestPhase);
+        this.proposal2Phase = fetchProposal2Phase();
 
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);

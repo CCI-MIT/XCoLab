@@ -1,5 +1,6 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -88,8 +89,11 @@ public final class ProposalMemberRatingClient {
         supporter.setCreateDate(new Timestamp(new Date().getTime()));
         createProposalSupporter(supporter);
 
+        RestService activitiesService  = proposalService.withServiceName("activities-service");
+        ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
+
         if (publishActivity) {
-            ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+            ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
                     ActivityProvidersType.ProposalSupporterAddedActivityEntry.getType());
         }
     }
@@ -102,7 +106,10 @@ public final class ProposalMemberRatingClient {
 
     public void removeProposalSupporter(long proposalId, long userId) {
         deleteProposalSupporter(proposalId, userId);
-        ActivityEntryHelper.createActivityEntry(userId, proposalId, null,
+        RestService activitiesService  = proposalService.withServiceName("activities-service");
+        ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
+
+        ActivityEntryHelper.createActivityEntry(activityClient, userId, proposalId, null,
                 ActivityProvidersType.ProposalSupporterRemovedActivityEntry.getType());
     }
 

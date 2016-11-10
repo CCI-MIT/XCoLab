@@ -42,6 +42,8 @@ public final class ProposalClient {
     //TODO: methods that use this should be in the service!
     private final ContestClient contestClient;
 
+    private final ActivitiesClient activitiesClient;
+
     private ProposalClient(RestService proposalService) {
         this.proposalService = proposalService;
 
@@ -53,6 +55,10 @@ public final class ProposalClient {
                 "proposalReference", ProposalReferenceDto.TYPES);
 
         contestClient = ContestClient.fromService(proposalService.withServiceName("contest-service"));
+
+        RestService activitiesService  = proposalService.withServiceName("activities-service");
+         activitiesClient = ActivitiesClient.fromService(activitiesService);
+
     }
 
     public static ProposalClient fromService(RestService proposalService) {
@@ -305,7 +311,7 @@ public final class ProposalClient {
     }
 
     public boolean isMemberSubscribedToProposal(long proposalId, long userId) {
-        return ActivitiesClient.isSubscribedToActivity(userId,
+        return activitiesClient.isSubscribedToActivity(userId,
                 ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "");
     }
 
@@ -315,7 +321,7 @@ public final class ProposalClient {
     }
 
     private void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
-        ActivitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        activitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     public void unsubscribeMemberFromProposal(long proposalId, long userId) {
@@ -323,7 +329,7 @@ public final class ProposalClient {
     }
 
     private void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {
-        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        activitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
 }

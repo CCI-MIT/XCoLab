@@ -52,7 +52,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			if (!permissions.getCanSeeAdvancingTab()) {
+			if (!permissions.getCanSeeAdvancingTab()|| context.getContest(request).getIsSharedContestInForeignColab()) {
 				return false;
 			}
 
@@ -101,7 +101,7 @@ interface ProposalTabCanAccessAlgorithm {
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
 			ContestPhase contestPhase = context.getContestPhase(request);
 			if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll() || permissions.getCanContestManagerActions()) ||
-					!contestPhase.getFellowScreeningActive()) {
+					!contestPhase.getFellowScreeningActive() || context.getContest(request).getIsSharedContestInForeignColab()) {
 				return false;
 			}
 

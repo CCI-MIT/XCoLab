@@ -10,6 +10,8 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.comment.util.CommentClientUtil;
@@ -100,7 +102,7 @@ public class ThreadController extends BaseDiscussionController {
             comment = CommentClientUtil.createComment(comment);
 
             if( !thread.getIsQuiet()) {
-                ActivityEntryHelper.createActivityEntry(userId, categoryId, (comment.getCommentId()+""),
+                ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(),userId, categoryId, (comment.getCommentId()+""),
                         ActivityProvidersType.DiscussionAddedActivityEntry.getType());
             }
 

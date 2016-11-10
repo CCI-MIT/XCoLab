@@ -31,6 +31,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.enums.ColabConstants;
@@ -53,7 +54,7 @@ public class ActivityUtil {
     private static final String ADMINISTRATOR_ROLE_NAME = "Administrator";
 
     public static List<ActivityEntry> retrieveAllActivities(int pagestart, int next) throws SystemException {
-       return  ActivitiesClient.getActivityEntries(pagestart, next, null, null);
+       return  ActivitiesClientUtil.getActivityEntries(pagestart, next, null, null);
         //return SocialActivityLocalServiceUtil.getSocialActivities(pagestart, next);
     }
 
@@ -83,7 +84,7 @@ public class ActivityUtil {
 
         for (Document activityDoc : hits.getDocs()) {
             try {
-                ActivityEntry sa = ActivitiesClient.getActivityEntry(GetterUtil.getLong(activityDoc.getField("activityId").getValue()));
+                ActivityEntry sa = ActivitiesClientUtil.getActivityEntry(GetterUtil.getLong(activityDoc.getField("activityId").getValue()));
                 aggregatedSocialActivities.add(sa);
             } catch (ActivityEntryNotFoundException ignored) {
             }
@@ -98,7 +99,7 @@ public class ActivityUtil {
 
     public static List<ActivityEntry> groupUserActivities(long userId) throws SystemException {
         return groupActivities(
-                ActivitiesClient.getActivityEntries(0,1000,userId, null)
+                ActivitiesClientUtil.getActivityEntries(0,1000,userId, null)
         );
     }
 
@@ -117,7 +118,7 @@ public class ActivityUtil {
 
     public static int getAllActivitiesCount() throws SystemException, SearchException {
 
-        return ActivitiesClient.countActivities(null, null);
+        return ActivitiesClientUtil.countActivities(null, null);
 
     }
 
