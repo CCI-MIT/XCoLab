@@ -48,7 +48,7 @@ public final class ProposalCreationUtil {
                                                  ContestPhase contestPhase) {
         final ClientHelper clientHelper = new ClientHelper(contest);
         try {
-            Proposal newProposal = ProposalClientUtil
+            Proposal newProposal = clientHelper.getProposalClient()
                     .createProposal(userId, contestPhase.getContestPhasePK(), true);
             Proposal2Phase newProposal2Phase = clientHelper.getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(
                     newProposal.getProposalId(), contestPhase.getContestPhasePK());

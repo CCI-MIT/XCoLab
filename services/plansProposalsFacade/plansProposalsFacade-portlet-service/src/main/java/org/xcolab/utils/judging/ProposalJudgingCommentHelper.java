@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -148,7 +149,7 @@ public class ProposalJudgingCommentHelper {
                                         : "ADVANCING_DO_NOT_ADVANCE";
 
                         EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                                EmailTemplateClient.getContestEmailTemplateByType(templateToLoad),
+                                EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
                                 proposalName,
                                 contestName
                         );
@@ -173,7 +174,7 @@ public class ProposalJudgingCommentHelper {
                 }
 
                 EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                        EmailTemplateClient.getContestEmailTemplateByType(templateToLoad),
+                        EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
                         proposalName,
                         contestName
                 );

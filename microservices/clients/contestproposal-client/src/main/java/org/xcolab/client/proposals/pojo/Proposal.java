@@ -127,6 +127,8 @@ public class Proposal extends AbstractProposal {
         membershipClient = MembershipClientUtil.getClient();
         planTemplateClient = PlanTemplateClientUtil.getClient();
 
+        this.setProposalId(0L);
+        this.setCurrentVersion(0);
         this.contestPhase =  fetchContestPhase();
         this.contest =  fetchContest(contestPhase);
         this.proposal2Phase = fetchProposal2Phase();
@@ -249,7 +251,10 @@ public class Proposal extends AbstractProposal {
 
 
 
-
+    public Proposal( RestService restService) {
+        this();
+        this.restService = restService;
+    }
 
     public Proposal(AbstractProposal abstractProposal, RestService restService) {
         super(abstractProposal);
@@ -286,7 +291,11 @@ public class Proposal extends AbstractProposal {
             if (contestPhase != null) {
                 return contestClient.getContest(contestPhase.getContestPK());
             }
-            return proposalClient.getCurrentContestForProposal(this.getProposalId());
+            if(this.getProposalId() != null && this.getProposalId().longValue() != 0l) {
+                return proposalClient.getCurrentContestForProposal(this.getProposalId());
+            }else{
+                return null;
+            }
         } catch (ContestNotFoundException e) {
             throw new IllegalStateException("Could not find a contest for proposal "
                     + this.getProposalId(), e);
@@ -305,7 +314,7 @@ public class Proposal extends AbstractProposal {
     }
 
     private Proposal2Phase fetchProposal2Phase() {
-        if (this.getProposalId() == 0 || contestPhase == null || contestPhase.getContestPhasePK() == 0) {
+        if (this.getProposalId() == null || this.getProposalId() == 0 || contestPhase == null || contestPhase.getContestPhasePK() == 0) {
             return null;
         }
         try {

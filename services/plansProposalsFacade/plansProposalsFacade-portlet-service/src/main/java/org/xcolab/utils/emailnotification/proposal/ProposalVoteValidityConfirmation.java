@@ -1,5 +1,6 @@
 package org.xcolab.utils.emailnotification.proposal;
 
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
 
@@ -46,7 +47,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
             proposalVoteConfirmationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final ContestEmailTemplate emailTemplate =
-                EmailTemplateClient.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
+                EmailTemplateClientUtil.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
         templateWrapper =
                 new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getContestShortName());
 

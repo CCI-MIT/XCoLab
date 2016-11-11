@@ -25,6 +25,8 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -49,20 +51,32 @@ public class CreateProposalController extends BaseProposalsController {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         long userId = themeDisplay.getUserId();
-        
-        Proposal proposal = new Proposal();
+
+        final Contest contest = proposalsContext.getContest(request);
+        Proposal proposal;
+
+        if(contest.getIsSharedContestInForeignColab()){
+            RestService proposalService = new RefreshingRestService("proposals-service",
+                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+            proposal = new Proposal(proposalService);
+        }else{
+            proposal = new Proposal();
+        }
+
+
         proposal.setProposalId(0L);
         proposal.setCurrentVersion(0);
         proposal.setVisible(true);
         proposal.setAuthorId(themeDisplay.getUserId());
 
-        final Contest contest = proposalsContext.getContest(request);
+
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
         Proposal proposalWrapped = new Proposal(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
             try {
-                Contest baseContest = ContestClientUtil.getContest(baseContestId);
+                Contest baseContest = ProposalsContextUtil.getClients(request).getContestClient().getContest(baseContestId);
                 Proposal baseProposalWrapper = new Proposal(
                         ProposalsContextUtil.getClients(request).getProposalClient().getProposal(baseProposalId),
                         baseProposalVersion, baseContest, ContestClientUtil.getActivePhase(baseContest.getContestPK()), null);

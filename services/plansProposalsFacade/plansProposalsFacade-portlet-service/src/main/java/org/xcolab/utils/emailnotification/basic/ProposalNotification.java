@@ -1,5 +1,7 @@
 package org.xcolab.utils.emailnotification.basic;
 
+import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
 
@@ -10,6 +12,8 @@ import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 public class ProposalNotification extends ContestNotification {
 
@@ -37,8 +41,19 @@ public class ProposalNotification extends ContestNotification {
         final String proposalName =
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
+        final EmailTemplateClient emailTemplateClient;
+        if(contest.getIsSharedContestInForeignColab()){
+            RestService adminService = new RefreshingRestService("comment-service",
+                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+            emailTemplateClient = EmailTemplateClient.fromService(adminService);
+        }else{
+            emailTemplateClient = EmailTemplateClientUtil.getClient();
+        }
+
         final ContestEmailTemplate emailTemplate =
-                EmailTemplateClient.getContestEmailTemplateByType(templateName);
+                emailTemplateClient.getContestEmailTemplateByType(templateName);
 
         templateWrapper = new ProposalNotificationTemplate(emailTemplate, proposalName, contest.getContestShortName());
 

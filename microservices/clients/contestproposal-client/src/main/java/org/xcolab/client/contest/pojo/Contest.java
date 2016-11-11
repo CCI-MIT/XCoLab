@@ -669,9 +669,16 @@ public class Contest extends AbstractContest {
     }
 
     public String getNewProposalLinkUrl() {
-        final String portletUrl = getContestType().getPortletUrl();
-        return String.format("%s/%s/%s/createProposal",
-                portletUrl, this.getContestYear(), this.getContestUrlName());
+        if(getIsSharedContestInForeignColab()){
+            final String portletUrl = ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
+                    .getPortletUrl();
+            return String.format("%s/%s/%s/createProposal",
+                    portletUrl, this.getContestYear(), this.getContestUrlName());
+        }else {
+            final String portletUrl = getContestType().getPortletUrl();
+            return String.format("%s/%s/%s/createProposal",
+                    portletUrl, this.getContestYear(), this.getContestUrlName());
+        }
     }
 
 }
