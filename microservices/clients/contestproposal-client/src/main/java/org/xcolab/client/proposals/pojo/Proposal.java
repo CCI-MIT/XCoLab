@@ -126,10 +126,10 @@ public class Proposal extends AbstractProposal {
         proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
         membershipClient = MembershipClientUtil.getClient();
         planTemplateClient = PlanTemplateClientUtil.getClient();
+
         this.contestPhase =  fetchContestPhase();
         this.contest =  fetchContest(contestPhase);
         this.proposal2Phase = fetchProposal2Phase();
-
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);
         proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),proposalAttributeClient);
@@ -137,7 +137,6 @@ public class Proposal extends AbstractProposal {
 
     public Proposal(Proposal value) {
         super(value);
-
         if(value.getRestService()!=null){
             this.restService = value.getRestService();
             RestService contestservice =  restService.withServiceName("contest-service");
@@ -175,6 +174,7 @@ public class Proposal extends AbstractProposal {
         proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),proposalAttributeClient);
 
     }
+
 
 
 
