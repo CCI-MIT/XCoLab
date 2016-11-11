@@ -126,6 +126,8 @@ public final class ProposalAttributeClient {
 
     }
 
+    //TODO: Replaced since post param too long when sending some attributes 11/16
+    /*
     public static ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute, Long authorId) {
         return proposalAttributeResource.service("setProposalAttribute", ProposalAttribute.class)
                 .queryParam("proposalId", proposalAttribute.getProposalId())
@@ -138,5 +140,11 @@ public final class ProposalAttributeClient {
                 .queryParam("versionWhenCreated", proposalAttribute.getVersionWhenCreated())
                 .queryParam("authorId", authorId)
                 .post();
+    }*/
+
+    public static ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute, Long authorId) {
+        return proposalAttributeResource.service("setProposalAttribute", ProposalAttribute.class)
+                .queryParam("authorId", authorId)
+                .post(proposalAttribute);
     }
 }
