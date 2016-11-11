@@ -167,9 +167,8 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
         Contest contest = getContest(request);
-        Contest contestWrapper = new Contest(contest);
         Long existingContestScheduleId = contest.getContestScheduleId();
-        Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
+        Boolean contestHasProposals = contest.getProposalsCount() > 0;
         return ContestScheduleLifecycleUtil
                 .getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
     }

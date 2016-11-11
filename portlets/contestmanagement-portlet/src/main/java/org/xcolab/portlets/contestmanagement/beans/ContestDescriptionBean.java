@@ -168,7 +168,7 @@ public class ContestDescriptionBean implements Serializable {
         this.shouldUpdateContestUrlName = shouldUpdateContestUrlName;
     }
 
-    public boolean isSharedContest() {
+    public boolean getIsSharedContest() {
         return isSharedContest;
     }
 

@@ -3,7 +3,10 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -11,6 +14,8 @@ import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -62,7 +67,20 @@ public class ContestOverviewWrapper {
     private void populateContestWrappersAndSelectedContestList() {
             List<Contest> contests = ContestClientUtil.getAllContests();
             for (Contest contest : contests) {
-                contestWrappers.add(new Contest(contest));
+                if(contest.getIsSharedContestInForeignColab()){
+                    try {
+                        RestService contestService = new RefreshingRestService("contest-service",
+                                ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                                ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+                        Contest foreignContest = ContestClient.fromService(contestService).getContest(contest.getContestPK());
+                        contestWrappers.add(foreignContest);
+
+                    }catch (ContestNotFoundException notFound){
+                    }
+                }else {
+                    contestWrappers.add((contest));
+                }
                 selectedContest.add(false);
             }
     }
