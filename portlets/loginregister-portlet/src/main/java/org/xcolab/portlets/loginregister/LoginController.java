@@ -28,6 +28,7 @@ import com.liferay.portal.util.PortalUtil;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.liferay.LoginRegisterUtil;
 
 import java.io.IOException;
@@ -70,6 +71,9 @@ public class LoginController {
             String login = request.getParameter("login");
 
             user = LoginRegisterUtil.login(request, response, login, request.getParameter("password"), redirect);
+            if(user==null) {
+                throw new AuthException("Wrong Password!");
+            }
 
         } catch (Exception e) {
             if (e instanceof AuthException) {
@@ -83,6 +87,7 @@ public class LoginController {
                     SessionErrors.add(request, e.getClass().getName());
                 }
             } else if (e instanceof CookieNotSupportedException ||
+                    e instanceof MemberNotFoundException ||
                     e instanceof NoSuchUserException ||
                     e instanceof PasswordExpiredException ||
                     e instanceof UserEmailAddressException ||
