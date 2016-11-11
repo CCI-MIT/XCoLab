@@ -91,7 +91,7 @@ public class ProposalRequestMembershipActionController {
         final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorId());
         final Contest contest = proposalsContext.getContest(request);
 
-        MembershipClientUtil
+        proposalsContext.getClients(request).getMembershipClient()
                 .addRequestedMembershipRequest(proposalId, sender.getUserId(), comment);
 
         ServiceContext serviceContext = new ServiceContext();
@@ -137,7 +137,7 @@ public class ProposalRequestMembershipActionController {
                     if (Validator.isNull(comment)) {
                         comment = "No message specified";
                     }
-                    MembershipRequest memberRequest = MembershipClientUtil
+                    MembershipRequest memberRequest = proposalsContext.getClients(request).getMembershipClient()
                             .addInvitedMembershipRequest(proposalId, recipient.getUserId(),
                                     comment);
 
@@ -210,10 +210,10 @@ public class ProposalRequestMembershipActionController {
             comment = "no comments";
         }
         if (approve.equalsIgnoreCase("APPROVE")) {
-            ProposalsContextUtil.getClients(request).getMembershipClient().approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
+            proposalsContext.getClients(request).getMembershipClient().approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
             sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
         } else if (approve.equalsIgnoreCase("DENY")) {
-            MembershipClientUtil
+            proposalsContext.getClients(request).getMembershipClient()
                     .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
             sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
         }
@@ -235,7 +235,7 @@ public class ProposalRequestMembershipActionController {
         }
 
         List<Long> contributorIds = new ArrayList<>();
-        for (Member contributor : ProposalsContextUtil.getClients(request).getProposalClient().getProposalMembers(proposalId)) {
+        for (Member contributor : proposalsContext.getClients(request).getProposalClient().getProposalMembers(proposalId)) {
             contributorIds.add(contributor.getUserId());
         }
 

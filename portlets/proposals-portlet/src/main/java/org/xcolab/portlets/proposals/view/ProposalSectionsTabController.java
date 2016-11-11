@@ -17,6 +17,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
@@ -54,6 +55,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
     @Autowired
     private ProposalsContext proposalsContext;
+
 
     @RequestMapping(params = "pageToDisplay=proposalDetails")
     public String showProposalDetails(
@@ -147,9 +149,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             if (proposalsPermissions.getCanJudgeActions()) {
                 setJudgeProposalBean(model, request);
             }
-            setLinkedProposals(model, proposal);
+            setLinkedProposals(model, proposal, request);
             final Contest contest = proposalsContext.getContest(request);
-            populateMoveHistory(model, proposal, contest);
+            populateMoveHistory(model, proposal, contest, request);
         } catch (ContestNotFoundException ignored) {
 
         } catch (SystemException e) {
@@ -159,35 +161,36 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         return "proposalDetails";
     }
 
-    private void populateMoveHistory(Model model, Proposal proposal, Contest contest) {
-        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveClientUtil
+    private void populateMoveHistory(Model model, Proposal proposal, Contest contest, PortletRequest request) {
+
+        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalsContextUtil.getClients(request).getProposalMoveClient()
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         List<ProposalMoveHistory> sourceMoveHistories = new ArrayList<>();
 
         for (ProposalMoveHistory sourceMoveHistory : sourceMoveHistoriesRaw) {
-            sourceMoveHistories.add(new ProposalMoveHistory(sourceMoveHistory));
+            sourceMoveHistories.add((sourceMoveHistory));
         }
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
 
-        ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveClientUtil
+        ProposalMoveHistory targetMoveHistoryRaw = ProposalsContextUtil.getClients(request).getProposalMoveClient()
                 .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
         if (targetMoveHistoryRaw != null) {
-            ProposalMoveHistory targetMoveHistory = new ProposalMoveHistory(targetMoveHistoryRaw);
+            ProposalMoveHistory targetMoveHistory = (targetMoveHistoryRaw);
             model.addAttribute("targetMoveHistory", targetMoveHistory);
         }
 
     }
 
-    private void setLinkedProposals(Model model, Proposal proposal)
+    private void setLinkedProposals(Model model, Proposal proposal, PortletRequest request)
             throws PortalException, SystemException {
-        List<Proposal> linkedProposals = ProposalClientUtil
+        List<Proposal> linkedProposals = ProposalsContextUtil.getClients(request).getProposalClient()
                 .getSubproposals(proposal.getProposalId(), true);
         Map<ContestType, List<Proposal>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
+        for (ContestType contestType : ProposalsContextUtil.getClients(request).getContestClient().getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
                     new ContestTypeProposal(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
