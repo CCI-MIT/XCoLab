@@ -72,7 +72,8 @@ public class LoginController {
 
             user = LoginRegisterUtil.login(request, response, login, request.getParameter("password"), redirect);
             if(user==null) {
-                throw new AuthException("Wrong Password!");
+                //Notify about wrong password
+                throw new AuthException();
             }
 
         } catch (Exception e) {
