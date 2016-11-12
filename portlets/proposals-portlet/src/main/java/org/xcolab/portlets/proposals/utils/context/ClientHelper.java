@@ -70,7 +70,7 @@ public class ClientHelper {
 
 
     public ClientHelper(Contest contest) {
-        if (contest != null && contest.getIsSharedContest() && !contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME)) {
+        if (contest != null && contest.getIsSharedContest() && !contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
             RestService proposalService = new RefreshingRestService("proposals-service",
                     ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                     ConfigurationAttributeKey.PARTNER_COLAB_PORT);

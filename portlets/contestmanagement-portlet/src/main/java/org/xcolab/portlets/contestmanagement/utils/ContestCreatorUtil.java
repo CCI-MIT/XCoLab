@@ -44,6 +44,7 @@ public final class ContestCreatorUtil {
         contest.setShow_in_tile_view(true);
         contest.setShow_in_list_view(true);
         contest.setShow_in_outline_view(true);
+        contest.setIsSharedContest(true);
         contest.setSharedOrigin(ConfigurationAttributeKey.COLAB_NAME.get());
         contest.setPlanTemplateId(DEFAULT_CONTEST_TEMPLATE_ID);
         contest.setContestScheduleId(DEFAULT_CONTEST_SCHEDULE_ID);
