@@ -119,7 +119,8 @@ public class ContestClient {
     }
 
     public static List<Contest> getContestsMatchingTier(Long contestTier) {
-        return contestResource.list().queryParam("contestTier", contestTier).execute();
+        return contestResource.list().queryParam("contestTier", contestTier)
+                .queryParam("limitRecord", Integer.MAX_VALUE).execute();
     }
 
     public static boolean updateContest(Contest contest) {

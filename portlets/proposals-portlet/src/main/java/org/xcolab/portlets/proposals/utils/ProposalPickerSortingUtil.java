@@ -1,17 +1,17 @@
 package org.xcolab.portlets.proposals.utils;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
-import com.ext.portlet.ProposalAttributeKeys;
+import org.apache.commons.lang3.tuple.Pair;
 
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
+import com.ext.portlet.ProposalAttributeKeys;
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.apache.commons.lang3.tuple.Pair;
 
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.ProposalSupporterClient;
+import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalAttribute;
 import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
@@ -178,17 +178,15 @@ public class ProposalPickerSortingUtil {
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
                             try {
-                                return sortOrderModifier * Proposal2PhaseLocalServiceUtil
-                                        .getCurrentContestForProposal(
+                                return sortOrderModifier * ProposalsClient.getLatestContestInProposal(
                                                 o1.getLeft().getProposalId())
                                         .getContestName()
                                         .compareTo(
-                                                Proposal2PhaseLocalServiceUtil
-                                                        .getCurrentContestForProposal(
+                                                ProposalsClient.getLatestContestInProposal(
                                                                 o2.getLeft()
                                                                         .getProposalId())
                                                         .getContestName());
-                            } catch (SystemException | PortalException e) {
+                            } catch (ContestNotFoundException e) {
                                 return 0;
                             }
                         }
@@ -199,19 +197,15 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
-                            try {
-                                return sortOrderModifier * ProposalAttributeLocalServiceUtil
-                                        .getAttribute(o1.getLeft().getProposalId(),
+                                return sortOrderModifier * ProposalAttributeClient
+                                        .getProposalAttribute(o1.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.NAME, 0L)
                                         .getStringValue()
                                         .compareTo(
-                                                ProposalAttributeLocalServiceUtil.getAttribute(
+                                                ProposalAttributeClient.getProposalAttribute(
                                                         o2.getLeft().getProposalId(),
                                                         ProposalAttributeKeys.NAME, 0L)
                                                         .getStringValue());
-                            } catch (SystemException | NoSuchProposalAttributeException e) {
-                                return 0;
-                            }
                         }
                     });
                     break;
@@ -260,16 +254,13 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
-                            try {
-                                return sortOrderModifier * ProposalLocalServiceUtil
-                                        .getSupportersCount(o1
+                                return sortOrderModifier * ProposalSupporterClient
+                                        .getProposalSupportersCount(o1
                                                 .getLeft().getProposalId())
-                                        - ProposalLocalServiceUtil
-                                        .getSupportersCount(o2.getLeft()
+                                        - ProposalSupporterClient
+                                        .getProposalSupportersCount(o2.getLeft()
                                                 .getProposalId());
-                            } catch (PortalException | SystemException e) {
-                                return 0;
-                            }
+
                         }
                     });
                     break;

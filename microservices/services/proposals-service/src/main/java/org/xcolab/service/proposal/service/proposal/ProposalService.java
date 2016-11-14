@@ -345,13 +345,21 @@ public class ProposalService {
         if(contestTypeIds != null && !contestTypeIds.isEmpty() && contestTierIds != null && !contestTierIds.isEmpty()) {
             for (Long contestTierId : contestTierIds) {
                 List<Contest> contests = ContestClient.getContestsMatchingTier(contestTierId);
+                int count = 0;
+                int countProposalsInContest = 0;
                 for (Contest contest : contests) {
+                    System.out.println("Search Proposals in Contest No. " + count + " with name: " + contest.getContestShortName());
+                    count++;
+                    countProposalsInContest = proposals.size();
                     if (contestTypeIds.contains(contest.getContestTypeId())) {
+
                         ContestPhase contestPhase =
                                 ContestClient.getActivePhase(contest.getContestPK());
+                        System.out.println("Active Phase: " +contestPhase.getContestStatusStr());
                         proposals.addAll(proposalDao
                                 .findByGiven(paginationHelper, filterText, null, null,
                                         contestPhase.getContestPhasePK(), null));
+                        System.out.println("Added " + (proposals.size() - countProposalsInContest) + " Proposals");
                     }
                 }
             }
