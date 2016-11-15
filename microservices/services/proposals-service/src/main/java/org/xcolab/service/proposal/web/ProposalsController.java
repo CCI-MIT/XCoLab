@@ -269,7 +269,7 @@ public class ProposalsController {
         if (votesForUser != null && !votesForUser.isEmpty()) {
             return votesForUser.get(0);
         } else {
-            throw new NotFoundException("Proposal vote not found");
+            throw new NotFoundException();
         }
 
     }

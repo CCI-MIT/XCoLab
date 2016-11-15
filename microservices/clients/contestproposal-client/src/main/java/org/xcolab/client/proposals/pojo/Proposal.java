@@ -33,6 +33,7 @@ import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalJudgeRatingClient;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
@@ -77,6 +78,7 @@ public class Proposal extends AbstractProposal {
     private final CommentClient commentClient;
 
     private final ProposalMemberRatingClient proposalMemberRatingClient;
+    private final ProposalJudgeRatingClient proposalJudgeRatingClient;
 
     private final MembershipClient membershipClient;
 
@@ -126,6 +128,7 @@ public class Proposal extends AbstractProposal {
         proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
         membershipClient = MembershipClientUtil.getClient();
         planTemplateClient = PlanTemplateClientUtil.getClient();
+        proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
 
         this.setProposalId(0L);
         this.setCurrentVersion(0);
@@ -153,6 +156,7 @@ public class Proposal extends AbstractProposal {
             RestService commentService =  restService.withServiceName("comment-service");
             commentClient = CommentClient.fromService(commentService);
             proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
+            proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(restService);
             membershipClient = MembershipClient.fromService(restService);
         }else {
             contestClient = ContestClientUtil.getClient();
@@ -164,6 +168,7 @@ public class Proposal extends AbstractProposal {
             commentClient = CommentClientUtil.getClient();
             proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
             membershipClient = MembershipClientUtil.getClient();
+            proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
         }
 
         this.contestPhase =  fetchContestPhase();
@@ -202,6 +207,7 @@ public class Proposal extends AbstractProposal {
             commentClient = CommentClient.fromService(commentService);
             proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
             membershipClient = MembershipClient.fromService(restService);
+            proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(restService);
         }else {
             contestClient = ContestClientUtil.getClient();
             proposalClient = ProposalClientUtil.getClient();
@@ -211,6 +217,7 @@ public class Proposal extends AbstractProposal {
             planTemplateClient = PlanTemplateClientUtil.getClient();
             commentClient = CommentClientUtil.getClient();
             proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
+            proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
             membershipClient = MembershipClientUtil.getClient();
         }
         this.contest = contest == null ? fetchContest(contestPhase) : contest;
@@ -237,6 +244,7 @@ public class Proposal extends AbstractProposal {
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         commentClient = CommentClientUtil.getClient();
         proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
+        proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
         membershipClient = MembershipClientUtil.getClient();
         planTemplateClient = PlanTemplateClientUtil.getClient();
         this.contestPhase =  fetchContestPhase();
@@ -273,7 +281,7 @@ public class Proposal extends AbstractProposal {
         commentClient = CommentClient.fromService(commentService);
 
         proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
-
+        proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(restService);
         membershipClient = MembershipClient.fromService(restService);
 
 

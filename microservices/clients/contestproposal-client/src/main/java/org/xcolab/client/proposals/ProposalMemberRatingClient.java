@@ -177,7 +177,7 @@ public final class ProposalMemberRatingClient {
     }
     public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId) {
         ProposalVote pv = new ProposalVote();
-        pv.setContestPhaseId(proposalId);
+        pv.setProposalId(proposalId);
         pv.setContestPhaseId(contestPhaseId);
         pv.setUserId(memberId);
         pv.setCreateDate(new Timestamp(new Date().getTime()));
