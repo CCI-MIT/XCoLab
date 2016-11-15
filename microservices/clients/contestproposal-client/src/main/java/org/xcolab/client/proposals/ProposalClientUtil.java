@@ -208,6 +208,10 @@ public final class ProposalClientUtil {
 
         return null;
     }
+    public static  List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
+            String filterText) {
+            return client.getProposalsByCurrentContests(contestTypeIds, contestTierIds, filterText);
+    }
 
     public static List<Long> getProposalIdsFromLinksInText(String text) {
         List<Long> proposalIds = new ArrayList<>();

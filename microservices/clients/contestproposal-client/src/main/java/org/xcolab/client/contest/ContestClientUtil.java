@@ -259,4 +259,8 @@ public final class ContestClientUtil {
     public static void autoPromoteProposals() {
         contestClient.autoPromoteProposals();
     }
+
+    public static List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds){
+        return contestClient.findContestsByName(contestName,ontologyTermIds, contestTypeIds);
+    }
 }

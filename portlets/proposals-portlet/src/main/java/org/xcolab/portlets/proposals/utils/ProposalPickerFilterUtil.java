@@ -7,7 +7,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -18,12 +17,12 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.proposals.ProposalsClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.util.IdListUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,7 +88,7 @@ public class ProposalPickerFilterUtil {
         }
 
         for (Contest c: ContestClientUtil.findContestsByName(contestName, ontologyTermIds, IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()))) {
-            contests.add(Pair.of(new ContestWrapper(c),  //c
+            contests.add(Pair.of((c),  //c
                     c.getCreated() == null ? new Date(0) : c.getCreated()));
 
         }
@@ -222,8 +221,7 @@ public class ProposalPickerFilterUtil {
         } else {
             //proposalsRaw = ProposalsClient.getAllProposals();
 
-            proposalsRaw = ProposalsClient
-                    .getProposalsByCurrentContests(contestTypes, getAllowedTiers(planSectionDefinition.getTier()), filterText.isEmpty() ? null : filterText);
+            proposalsRaw = ProposalClientUtil.getProposalsByCurrentContests(contestTypes, getAllowedTiers(planSectionDefinition.getTier()), filterText.isEmpty() ? null : filterText);
         }
         for (Proposal p : proposalsRaw) {
             proposals.add(Pair.of(p, new Date(0)));
