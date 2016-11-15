@@ -190,10 +190,15 @@ public final class ProposalMemberRatingClient {
     }
 
     public ProposalVote getProposalVoteByProposalIdUserId(Long proposalId, Long userId) {
-        return proposalVoteResource.service("getProposalVoteByProposalIdUserId", ProposalVoteDto.class)
-                .optionalQueryParam("proposalId", proposalId)
-                .optionalQueryParam("userId", userId)
-                .get()
-                .toPojo(proposalService);
+        try {
+            return proposalVoteResource
+                    .service("getProposalVoteByProposalIdUserId", ProposalVoteDto.class)
+                    .optionalQueryParam("proposalId", proposalId)
+                    .optionalQueryParam("userId", userId)
+                    .getChecked()
+                    .toPojo(proposalService);
+        }catch (EntityNotFoundException ig){
+            return null;
+        }
     }
 }
