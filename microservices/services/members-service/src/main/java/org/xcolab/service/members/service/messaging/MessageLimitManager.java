@@ -4,13 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.model.tables.pojos.MessagingUserPreferences;
+import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.service.members.domain.messaging.MessageDao;
+import org.xcolab.service.members.service.role.RoleService;
 
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,12 +31,14 @@ public class MessageLimitManager {
 
     private final MessagingUserPreferencesService messagingUserPreferencesService;
     private final MessageDao messageDao;
+    private final RoleService roleService;
 
     @Autowired
     private MessageLimitManager(MessagingUserPreferencesService messagingUserPreferencesService,
-            MessageDao messageDao) {
+            MessageDao messageDao, RoleService roleService) {
         this.messagingUserPreferencesService = messagingUserPreferencesService;
         this.messageDao = messageDao;
+        this.roleService = roleService;
     }
 
     /**
@@ -60,6 +65,32 @@ public class MessageLimitManager {
             long count = messageDao.countByGiven(memberId, null, null, null, yesterday);
 
             return messagesLimit >= count + messagesToSend;
+        }
+    }
+
+    public int getNumberOfMessagesLeft(long memberId) {
+        synchronized (getMutex(memberId)) {
+            List<Role_> memberRoles = roleService.getMemberRoles(memberId);
+            for(Role_ role :memberRoles) {
+                if(role.getRoleId() == 10118) {
+                    return Integer.MAX_VALUE; // Admin has unlimited messages
+                }
+            }
+
+            MessagingUserPreferences messagingPreferences = messagingUserPreferencesService.getByMemberId(memberId);
+
+            int messagesLimit;
+            if (messagingPreferences.getDailyMessageLimit() != null) {
+                messagesLimit = messagingPreferences.getDailyMessageLimit();
+            } else {
+                messagesLimit = MESSAGES_DAILY_LIMIT;
+            }
+
+            final Timestamp yesterday = Timestamp.from(Instant.now().minus(Duration.ofDays(1)));
+
+            int count = messageDao.countByGiven(memberId, null, null, null, yesterday);
+
+            return  messagesLimit - count;
         }
     }
 

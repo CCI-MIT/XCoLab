@@ -2,6 +2,7 @@ package org.xcolab.portlets.messaging.beans;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
 
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
@@ -25,6 +26,7 @@ public class SendMessageBean implements Serializable {
     private MessageBean replyMessage;
     //honeypot is a field supposed to be left blank by humans, and to be filled in by bots, in order to protect from spam.
     private String messageHoneypot;
+    private int numberOfMessagesLeft = Integer.MAX_VALUE;
 
     public SendMessageBean(MessageBean replyMessage) {
         this();
@@ -35,6 +37,11 @@ public class SendMessageBean implements Serializable {
         this.messageContent = "<br /><br />-- original message begin --<br /><br />"
                 + replyMessage.getContent() + "<br /><br />-- original message end --<br />";
         this.replyMessage = replyMessage;
+    }
+
+    public SendMessageBean(User user) {
+        this();
+        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(user.getUserId());
     }
 
     public SendMessageBean() {
@@ -119,5 +126,9 @@ public class SendMessageBean implements Serializable {
 
     public List<Member> getRecipientList() {
         return recipientList;
+    }
+
+    public int getNumberOfMessagesLeft() {
+        return numberOfMessagesLeft;
     }
 }

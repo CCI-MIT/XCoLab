@@ -2,7 +2,6 @@ package org.xcolab.service.contest.web;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,34 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
-import org.xcolab.model.tables.pojos.ContestPhaseType;
-import org.xcolab.model.tables.pojos.ContestSchedule;
-import org.xcolab.model.tables.pojos.ContestTeamMember;
-import org.xcolab.model.tables.pojos.ContestTeamMemberRole;
 import org.xcolab.model.tables.pojos.ContestType;
-import org.xcolab.model.tables.pojos.ImpactTemplateSeries;
-import org.xcolab.model.tables.pojos.ImpactIteration;
-
-
 import org.xcolab.service.contest.domain.contest.ContestDao;
-import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
-import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
-import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
-import org.xcolab.service.contest.domain.contestschedule.ContestScheduleDao;
-import org.xcolab.service.contest.domain.contestteammember.ContestTeamMemberDao;
-import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMemberRoleDao;
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
-import org.xcolab.service.contest.domain.impactiteration.ImpactIterationDao;
-import org.xcolab.service.contest.domain.impacttemplateseries.ImpactTemplateSeriesDao;
-
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.utils.PaginationHelper;
-
 
 import java.util.List;
 
@@ -156,4 +135,13 @@ public class ContestController {
     }
 
 
+
+    @RequestMapping(value = "contests/findContestsByName", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Contest> findContestsByName(
+            @RequestParam("contestName") String contestName,
+            @RequestParam("ontologyTermIds") List<Long> ontologyTermIds,
+            @RequestParam("contestTypeIds") List<Long> contestTypeIds){
+
+        return contestService.findContestsByName(contestName, ontologyTermIds, contestTypeIds);
+    }
 }

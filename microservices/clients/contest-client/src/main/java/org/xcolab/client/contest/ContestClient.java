@@ -150,7 +150,7 @@ public class ContestClient {
 
     public List<Contest> getContestsMatchingTier(Long contestTier) {
         return DtoUtil.toPojos(
-                contestResource.list().queryParam("contestTier", contestTier).execute(),
+                contestResource.list().queryParam("contestTier", contestTier).queryParam("limitRecord", Integer.MAX_VALUE).execute(),
                 contestService);
     }
 
@@ -200,6 +200,15 @@ public class ContestClient {
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
                 .execute(), contestService);
+    }
+
+    public List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds) {
+        return DtoUtil.toPojos(contestResource
+                .service("findContestsByName", ContestDto.TYPES.getTypeReference())
+                .queryParam("contestName", contestName)
+                .queryParam("ontologyTermIds",  convertListToGetParameter(ontologyTermIds, "ontologyTermIds"))
+                .queryParam("contestTypeIds",  convertListToGetParameter(contestTypeIds, "contestTypeIds"))
+                .getList(), contestService);
     }
 
     public List<Contest> findContestsTierLevelAndOntologyTermIds(Long contestTier,
@@ -304,6 +313,7 @@ public class ContestClient {
             boolean contestPrivate, Long contestTypeId) {
         return DtoUtil.toPojos(contestResource
                 .list()
+                .addRange(0, Integer.MAX_VALUE)
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
                 .queryParam("contestTypeId", contestTypeId)
@@ -549,6 +559,18 @@ public class ContestClient {
         proposalsString = "Proposals";
 
         return proposalsString;
+    }
+
+    private static String convertListToGetParameter(List<Long> list, String parameterName) {
+        if(list.isEmpty()){
+            return "";
+        }
+        String parameterList = "";
+        for(int i=0; i<list.size()-2; i++) {
+            parameterList += list.get(i) + "&" + parameterName + "=";
+        }
+        parameterList += list.get(list.size()-1);
+        return parameterList;
     }
 
 }

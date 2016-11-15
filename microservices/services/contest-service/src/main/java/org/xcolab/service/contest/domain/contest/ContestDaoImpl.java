@@ -172,6 +172,25 @@ public class ContestDaoImpl implements ContestDao {
         return record.into(Contest.class);
     }
 
+    public List<Contest> findByGiven(String contestName, List<Long> focusAreaOntologyTermsIds, List<Long> contestTypeIds) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(CONTEST).getQuery();
+        if(contestName != null && !contestName.isEmpty()){
+            query.addConditions(CONTEST.CONTEST_NAME.like("%" + contestName + "%")
+            .or(CONTEST.CONTEST_SHORT_NAME.like("%" + contestName + "%")));
+        }
+
+        if(focusAreaOntologyTermsIds != null && !focusAreaOntologyTermsIds.isEmpty()){
+            query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTermsIds));
+        }
+
+        if(contestTypeIds != null && !contestTypeIds.isEmpty()) {
+            query.addConditions(CONTEST.CONTEST_TYPE_ID.in(contestTypeIds));
+        }
+        query.addOrderBy(CONTEST.CREATED.desc());
+        return query.fetchInto(Contest.class);
+    }
+
     @Override
     public List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate) {
         final SelectQuery<Record> query = dslContext.select()

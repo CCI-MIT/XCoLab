@@ -31,9 +31,18 @@
                 <div id="message-info">
                     <span class="num">${messagingBean.messagesCount}</span> messages
                     <div style="float: right;">
-                        <a href="/web/guest/messaging/-/messaging/compose">
-                            <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> compose message
-                        </a>
+                        <c:choose>
+                            <c:when test="${messagingBean.numberOfMessagesLeft >= 1}">
+                                <a href="/web/guest/messaging/-/messaging/compose">
+                                    <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> compose message
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a style="color: grey;">
+                                    <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> message limit exceeded
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
 

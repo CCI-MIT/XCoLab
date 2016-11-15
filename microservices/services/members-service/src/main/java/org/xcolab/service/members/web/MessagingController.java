@@ -133,4 +133,9 @@ public class MessagingController {
             @RequestParam(required = false, defaultValue = "1") int messagesToSend) {
         return messageLimitManager.canSendMessages(messagesToSend, memberId);
     }
+
+    @RequestMapping(value = "/members/{memberId}/numberOfMessagesLeft", method = RequestMethod.GET)
+    public int getNumberOfMessagesLeft(@PathVariable long memberId) {
+        return messageLimitManager.getNumberOfMessagesLeft(memberId);
+    }
 }

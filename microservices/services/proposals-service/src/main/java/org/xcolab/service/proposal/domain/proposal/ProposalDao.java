@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProposalDao {
 
-    List<Proposal> findByGiven(PaginationHelper paginationHelper, Long contestId, Boolean visible,
+    List<Proposal> findByGiven(PaginationHelper paginationHelper, String filterText, Long contestId, Boolean visible,
             Long contestPhaseId, Integer ribbon);
 
     Proposal create(Proposal proposal);

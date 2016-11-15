@@ -55,6 +55,11 @@ public class PlanTemplateClient {
                 .execute(), contestService);
     }
 
+    public  Boolean deletePlanTemplate(Long id_) {
+        return  planTemplateResource.delete(id_).execute();
+    }
+
+
     public PlanTemplate createPlanTemplate(PlanTemplate planTemplate) {
         return planTemplateResource.create(new PlanTemplateDto(planTemplate))
                 .execute().toPojo(contestService);
@@ -108,6 +113,10 @@ public class PlanTemplateClient {
                 .optionalQueryParam("planTemplateId", planTemplateId)
                 .execute(), contestService);
     }
+    public  PlanTemplateSection createPlanTemplateSection(PlanTemplateSection planTemplateSection) {
+        return planTemplateSectionResource.create(new PlanTemplateSectionDto(planTemplateSection))
+                .execute().toPojo(contestService);
+    }
 
     public boolean updatePlanTemplateSection(PlanTemplateSection planTemplateSection) {
         return planTemplateSectionResource.update(new PlanTemplateSectionDto(planTemplateSection),
@@ -115,8 +124,7 @@ public class PlanTemplateClient {
                 .execute();
     }
 
-    public List<PlanTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(
-            Long planSectionId) {
+    public List<PlanTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(Long planSectionId) {
         return DtoUtil.toPojos(planTemplateSectionResource.list()
                 .optionalQueryParam("planSectionId", planSectionId)
                 .execute(), contestService);

@@ -158,7 +158,7 @@ public class ForgotPasswordController {
     private String redirectToErrorPageOnPasswordReset(Model model, PortletRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         model.addAttribute("message",
-                "Your password reset ticket has expired. Please try to reset your password again.");
+                "Your password reset ticket has expired or is invalid. Please try to reset your password again.");
         model.addAttribute("redirect_url", themeDisplay.getPortalURL());
 
         ModelAttributeUtil.populateModelWithPlatformConstants(model);

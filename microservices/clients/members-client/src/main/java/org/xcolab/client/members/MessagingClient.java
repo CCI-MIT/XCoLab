@@ -182,8 +182,15 @@ public final class MessagingClient {
                 .execute();
     }
 
-    public static boolean canMemberSendMessage(long memberId) {
+
+    public static boolean canMemberSendMessage(long memberId, int messagesToSend) {
         return memberResource.service(memberId, "canSendMessage", Boolean.class)
+                .queryParam("messagesToSend", messagesToSend)
+                .get();
+    }
+
+    public static int getNumberOfMessagesLeft(long memberId) {
+        return memberResource.service(memberId, "numberOfMessagesLeft", Integer.class)
                 .get();
     }
 }

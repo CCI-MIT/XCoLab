@@ -207,9 +207,12 @@ public class ProposalPickerFilter {
                 return removedProposals;
             }
             String searchCriterion = (String) additionalFilterCriterion;
+            int count = 0;
             for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
                 Proposal p = i.next().getLeft();
                 try{
+                    System.out.println("Filtered Proposal No. " + count + " by string: " + searchCriterion);
+                    count++;
                     // PROPOSAL NAME
                     //TODO: optimize
                     String proposalName = ProposalAttributeClientUtil.getProposalAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L).getStringValue();
@@ -239,9 +242,9 @@ public class ProposalPickerFilter {
                 return removedContests;
             }
             String searchCriterion = (String) additionalFilterCriterion;
+            int count = 0;
             for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
                 ContestWrapper c = i.next().getLeft();
-
                 // CONTEST NAME
                 if (StringUtils.containsIgnoreCase(c.getContestName(),searchCriterion)){
                     continue;
@@ -294,7 +297,7 @@ public class ProposalPickerFilter {
         public Set<Long> filter(List<Pair<Proposal, Date>> proposals, Object additionalFilterCriterion) {
             Set<Long> removedProposals = new HashSet<>();
 
-                final Set<Long> allowedContestTiers = getAllowedTiers((Long) additionalFilterCriterion);
+                final Set<Long> allowedContestTiers = new HashSet<>(ProposalPickerFilterUtil.getAllowedTiers((Long) additionalFilterCriterion));
 
                 if (!allowedContestTiers.isEmpty()) {
                     Set<Contest> tierFilteredContests = new HashSet<>();
@@ -306,8 +309,10 @@ public class ProposalPickerFilter {
                             _log.error(String.format("Could not find contest tier %d. Tier ignored in filtering.", tier));
                         }
                     }
-
+                    int count = 0;
                     for (Iterator<Pair<Proposal,Date>> i = proposals.iterator(); i.hasNext();){
+                        count++;
+                        System.out.println("Filtered proposal No. " + count + " for contest tier");
                         Proposal p = i.next().getLeft();
                         try {
                             if (!tierFilteredContests.contains(ProposalClientUtil.getCurrentContestForProposal(p.getProposalId()))) {
@@ -327,7 +332,7 @@ public class ProposalPickerFilter {
                                         Object additionalFilterCriterion) {
             Set<Long> removedContests = new HashSet<>();
 
-            final Set<Long> allowedContestTiers = getAllowedTiers((Long) additionalFilterCriterion);
+            final Set<Long> allowedContestTiers = new HashSet<>(ProposalPickerFilterUtil.getAllowedTiers((Long) additionalFilterCriterion));
 
             if (!allowedContestTiers.isEmpty()) { //empty list = allow all
                 for (Iterator<Pair<ContestWrapper,Date>> i = contests.iterator(); i.hasNext();){
@@ -343,22 +348,6 @@ public class ProposalPickerFilter {
             return removedContests;
         }
 
-        private Set<Long> getAllowedTiers(Long filterTier) {
-            // if filterTier < 0:
-            //  allow tier <= (-filterTier)
-            // else if filterTier > 0
-            //  only allow tier == filterTier
-            Set<Long> allowedTiers = new HashSet<>();
-            final long positiveFilterTier = Math.abs(filterTier);
-            allowedTiers.add(positiveFilterTier);
-
-            if (filterTier < 0) {
-                for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
-                    allowedTiers.add(currentTier);
-                }
-            }
-            return allowedTiers;
-        }
     };
 
     public final static ProposalPickerFilter CONTEST_TYPE_FILTER = new ProposalPickerFilter() {

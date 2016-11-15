@@ -21,6 +21,7 @@ import static org.xcolab.model.Tables.CONTEST_PHASE_RIBBON_TYPE;
 import static org.xcolab.model.Tables.POINTS;
 import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
 import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
 
 import static org.jooq.impl.DSL.sum;
@@ -32,7 +33,7 @@ public class ProposalDaoImpl implements ProposalDao {
     private DSLContext dslContext;
 
     @Override
-    public List<Proposal> findByGiven(PaginationHelper paginationHelper, Long contestId,
+    public List<Proposal> findByGiven(PaginationHelper paginationHelper, String filterText, Long contestId,
                                       Boolean visible, Long contestPhaseId, Integer ribbon) {
         final SelectQuery<Record> query = dslContext.select(PROPOSAL.fields())
                 .from(PROPOSAL)
@@ -61,6 +62,12 @@ public class ProposalDaoImpl implements ProposalDao {
 
         if (contestPhaseId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhaseId));
+        }
+
+        if(filterText != null) {
+            query.addJoin(PROPOSAL_ATTRIBUTE, JoinType.JOIN, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_ATTRIBUTE.PROPOSAL_ID)
+                    .and(PROPOSAL_ATTRIBUTE.STRING_VALUE.like("%" + filterText + "%"))
+                        .and(PROPOSAL_ATTRIBUTE.NAME.eq("NAME")));
         }
 
         if (visible != null) {

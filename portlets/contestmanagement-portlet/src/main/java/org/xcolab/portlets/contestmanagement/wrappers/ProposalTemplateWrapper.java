@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -15,7 +14,6 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
@@ -209,8 +207,17 @@ public class ProposalTemplateWrapper {
     private void duplicateExistingPlanTemplate() {
 
         PlanTemplate newPlanTemplate = PlanTemplateClientUtil.createPlanTemplate(planTemplate);
+        /*
+        PlanTemplate aux = new PlanTemplate();
+        aux.setBaseTemplateId(planTemplate.getBaseTemplateId());
+        aux.setFocusAreaListTemplateId(planTemplate.getFocusAreaListTemplateId());
+        aux.setImpactSeriesTemplateId(planTemplate.getImpactSeriesTemplateId());
+        aux.setName(planTemplate.getName());
+        PlanTemplate newPlanTemplate = PlanTemplateClient.createPlanTemplate(aux);
+        */
         planTemplateId = newPlanTemplate.getId_();
 
+        planTemplate = newPlanTemplate;
         for (SectionDefinitionWrapper section : sections) {
             section.setId(null);
         }
@@ -235,7 +242,6 @@ public class ProposalTemplateWrapper {
 
     private void createOrUpdateIfExistsPlanTemplateSection(
             SectionDefinitionWrapper sectionDefinitionWrapper) {
-        try {
             boolean wasUpdated = false;
             Long planTemplateId = planTemplate.getId_();
             Long sectionDefinitionId = sectionDefinitionWrapper.getId();
@@ -246,7 +252,7 @@ public class ProposalTemplateWrapper {
                             .getPlanTemplateSectionByPlanSectionDefinitionId(sectionDefinitionWrapper.getId());
 
             for (PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
-                if (planTemplateSection.getPlanTemplateId() == planTemplateId) {
+                if (planTemplateSection.getPlanTemplateId().longValue() == planTemplateId) {
                     planTemplateSection.setWeight(weight);
                     PlanTemplateClientUtil
                             .updatePlanTemplateSection(planTemplateSection);
@@ -257,12 +263,14 @@ public class ProposalTemplateWrapper {
             }
 
             if (!wasUpdated) {
-                PlanTemplateSectionLocalServiceUtil
-                        .addPlanTemplateSection(planTemplateId, sectionDefinitionId, weight);
+                PlanTemplateSection pts = new PlanTemplateSection();
+                pts.setPlanSectionId(sectionDefinitionId);
+                pts.setPlanTemplateId(planTemplateId);
+                pts.setWeight(weight);
+
+                PlanTemplateClientUtil.createPlanTemplateSection(pts);
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     public static List<LabelValue> getAllPlanTemplateSelectionItems() {

@@ -61,17 +61,17 @@
 					<ul>
 						<li class="c-TabBar__tab--first active"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'contests');"> Search
-								by <span class="contestTypeContestNames">&#160;</span>
+								by Contest<span class="contestTypeContestNames">&#160;</span>
 						</a></li>
 						<li class="c-TabBar__tab"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'all');"> Search
-								by <span class="contestTypeProposalNames">&#160;</span>
-								<div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div>
+								by Name <span class="contestTypeProposalNames">&#160;</span>
+								<!-- <div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div> -->
 						</a></li>
 						<li class="c-TabBar__tab--last"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'subscriptionsAndSupporting');">
 							<span class="contestTypeProposalNamesPlural">&#160;</span> I support or subscribe to
-								<div class="c-TabBar__tab__count" id="numberOfSubscriptionsSupporting">&#160;</div>
+								<!-- <div class="c-TabBar__tab__count" id="numberOfSubscriptionsSupporting">&#160;</div> -->
 						</a></li>
 					</ul>
 				</div>
@@ -93,14 +93,14 @@
 							<thead>
 							<tr class="c-Table__row--title">
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Name"><span class="contestTypeContestNames">&#160;</span></a>
+									<a href="#" data-sort-column="Name"> Contest Name <span class="contestTypeContestNames">&#160;</span></a>
 									<div class="c-Tooltip">
 										click to sort by name
 										<div class="c-Tooltip__arrow"><!-- --></div>
 									</div>
 								</th>
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Proposals">
+									<a href="#" data-sort-column="Proposals"> Proposals
 										<span class="contestTypeProposalNamesPlural">&#160;</span>
 									</a>
 									<div class="c-Tooltip">

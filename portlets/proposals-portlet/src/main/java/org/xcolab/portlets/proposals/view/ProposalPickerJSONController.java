@@ -1,13 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -17,8 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.portlets.proposals.utils.ProposalPickerFilter;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -26,8 +26,8 @@ import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +77,7 @@ public class ProposalPickerJSONController {
 				break;
 			case "ALL":
 			case "CONTESTS":
-				proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterType,
+				proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterText, filterType,
 						sectionId, contestPK, request, proposalsContext);
 				break;
 			default:
@@ -87,9 +87,10 @@ public class ProposalPickerJSONController {
 
 		int totalCount;
 		if (proposals != null) {
-			if (filterText != null && !filterText.isEmpty()) {
-				ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
-			}
+			//Pushed down to Microservices
+			//if (filterText != null && !filterText.isEmpty()) {
+				//ProposalPickerFilter.TEXT_BASED.filter(proposals, filterText);
+			//}
 			totalCount = proposals.size();
 
 			ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
@@ -123,7 +124,12 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) Long sectionId) throws IOException,
 			SystemException, PortalException {
 
-		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
+		//List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+		Map<Long, String> removedContests = new HashMap<>();
+
+		/*
+		TODO: Removed since not needed
 		Map<Long, String> removedContests = ProposalPickerFilterUtil.filterContests(
 				new ArrayList<>(contests), sectionId, request, proposalsContext, true);
 
@@ -131,6 +137,7 @@ public class ProposalPickerJSONController {
 			ProposalPickerFilter.TEXT_BASED.filterContests(contests,
 					filterText);
 		}
+		*/
 		int totalCount = contests.size();
 
 		if (end >= contests.size() && !contests.isEmpty()) {
@@ -152,10 +159,11 @@ public class ProposalPickerJSONController {
 	public void proposalPickerCounter(ResourceRequest request,
 									  ResourceResponse response) throws IOException, SystemException,
 			PortalException {
+				/*
+		TODO: Removed to increase performance
 		String filterType = request.getParameter("filterKey");
 		long sectionId = Long.parseLong(request.getParameter("sectionId"));
 		long userId = Long.parseLong(request.getRemoteUser());
-
 		int numberOfSubscriptions = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
 				userId, filterType, sectionId, request, proposalsContext).size();
 		int numberOfSupporting = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(userId,
@@ -166,7 +174,8 @@ public class ProposalPickerJSONController {
 				userId, filterType, sectionId, request, proposalsContext).size();
 		int numberOfContests = ProposalPickerFilterUtil.getFilteredContests(sectionId, request, proposalsContext).size();
 
-		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
+
+				JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		wrapper.put("numberOfSubscriptions", numberOfSubscriptions);
 		wrapper.put("numberOfSupporting", numberOfSupporting);
 		wrapper.put("numberOfProposals", numberOfProposals);
@@ -174,6 +183,7 @@ public class ProposalPickerJSONController {
 				numberOfSubscriptionsSupporting);
 		wrapper.put("numberOfContests", numberOfContests);
 		response.getPortletOutputStream().write(wrapper.toString().getBytes());
+		*/
 	}
 
 	private String getJSONObjectMapping(List<Pair<Proposal, Date>> proposals,

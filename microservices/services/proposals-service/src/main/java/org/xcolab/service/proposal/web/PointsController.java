@@ -85,7 +85,7 @@ public class PointsController {
         if (targetPlanSectionDefinitionId == null || targetPlanSectionDefinitionId == 0) {
             throw new NotFoundException("No PointsDistributionConfiguration with the id given");
         } else {
-            return pointsDistributionConfigurationDao.get(targetPlanSectionDefinitionId);
+            return pointsDistributionConfigurationDao.getByPlanSectionDefinitionId(targetPlanSectionDefinitionId);
         }
     }
     @RequestMapping(value = "/pointsDistributionConfigurations/{id_}", method = RequestMethod.DELETE)

@@ -178,6 +178,7 @@ public class ProposalPickerSortingUtil {
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
                                 return sortOrderModifier * ProposalAttributeClientUtil
+
                                         .getProposalAttribute(o1.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.NAME, 0L)
                                         .getStringValue()
@@ -186,7 +187,6 @@ public class ProposalPickerSortingUtil {
                                                         o2.getLeft().getProposalId(),
                                                         ProposalAttributeKeys.NAME, 0L)
                                                         .getStringValue());
-
                         }
                     });
                     break;

@@ -130,6 +130,7 @@ public class Proposal extends AbstractProposal {
                             contestPhase.getContestPhasePK(),
                             ProposalContestPhaseAttributeKeys.VISIBLE);
             if (pcpa != null) {
+
                 visibleAttributeValue = pcpa.getNumericValue();
             }
         }
