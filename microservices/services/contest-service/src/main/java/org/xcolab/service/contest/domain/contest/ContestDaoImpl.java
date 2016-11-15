@@ -33,8 +33,8 @@ public class ContestDaoImpl implements ContestDao {
     @Override
     public Contest create(Contest contest) {
 
-        ContestRecord ret = this.dslContext.insertInto(CONTEST)
-                //.set(CONTEST.CONTEST_PK, contest.getContestPK())
+        this.dslContext.insertInto(CONTEST)
+                .set(CONTEST.CONTEST_PK, contest.getContestPK())
                 .set(CONTEST.CONTEST_TYPE_ID, contest.getContestTypeId())
                 .set(CONTEST.CONTEST_NAME, contest.getContestName())
                 .set(CONTEST.CONTEST_SHORT_NAME, contest.getContestShortName())
@@ -84,14 +84,11 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShow_in_outline_view())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
-                .returning(CONTEST.CONTEST_PK)
-                .fetchOne();
-        if (ret != null) {
-            contest.setContestPK(ret.getValue(CONTEST.CONTEST_PK));
+                .set(CONTEST.IS_SHARED_CONTEST, contest.getIsSharedContest())
+                .set(CONTEST.SHARED_ORIGIN, contest.getSharedOrigin())
+                .execute();
+
             return contest;
-        } else {
-            return null;
-        }
 
     }
 
@@ -147,6 +144,8 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShow_in_outline_view())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
+                .set(CONTEST.IS_SHARED_CONTEST, contest.getIsSharedContest())
+                .set(CONTEST.SHARED_ORIGIN, contest.getSharedOrigin())
                 .where(CONTEST.CONTEST_PK.eq(contest.getContestPK()))
                 .execute() > 0;
     }

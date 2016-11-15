@@ -18,12 +18,11 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
 import java.util.Date;
@@ -124,7 +123,7 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) Long sectionId) throws IOException,
 			SystemException, PortalException {
 
-		List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
+		List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
 		//List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
 		Map<Long, String> removedContests = new HashMap<>();
 
@@ -192,7 +191,7 @@ public class ProposalPickerJSONController {
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 
 		for (Pair<Proposal, Date> p : proposals) {
-			ProposalWrapper wrappedProposal = new ProposalWrapper(p.getLeft());
+			Proposal wrappedProposal = new Proposal(p.getLeft());
 			JSONObject o = JSONFactoryUtil.createJSONObject();
 			o.put("id", p.getLeft().getProposalId());
 			o.put("proposalName", StringUtils.abbreviate(
@@ -234,13 +233,13 @@ public class ProposalPickerJSONController {
 	}
 
 	private String getJSONObjectMappingContests(
-			List<Pair<ContestWrapper, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests)
+			List<Pair<Contest, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests)
 			throws SystemException, PortalException {
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 
-		for (Pair<ContestWrapper, Date> p : contests) {
-			ContestWrapper wrapped = p.getLeft();
+		for (Pair<Contest, Date> p : contests) {
+			Contest wrapped = p.getLeft();
 			final long contestPK = wrapped.getContestPK();
 			JSONObject o = JSONFactoryUtil.createJSONObject();
 

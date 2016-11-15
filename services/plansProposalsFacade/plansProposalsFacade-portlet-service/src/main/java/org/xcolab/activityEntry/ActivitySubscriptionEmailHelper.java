@@ -13,6 +13,7 @@ import com.liferay.portal.service.ServiceContext;
 import org.apache.commons.collections.comparators.ComparatorChain;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.comment.util.CommentClientUtil;
@@ -238,7 +239,7 @@ public class ActivitySubscriptionEmailHelper {
 
     private static List<ActivityEntry> getActivitiesAfter(Date minDate) {
 
-        List<ActivityEntry> activityObjects = ActivitiesClient.getActivityEntriesAfter(minDate);
+        List<ActivityEntry> activityObjects = ActivitiesClientUtil.getActivityEntriesAfter(minDate);
 
         //clean list of activities first in order not to send out activities concerning the same proposal multiple times
         ActivityEntryMessageLimitationHelper h = new ActivityEntryMessageLimitationHelper(
@@ -323,7 +324,7 @@ public class ActivitySubscriptionEmailHelper {
 
         List<ActivitySubscription> filteredResults = new ArrayList<>();
 
-        List<ActivitySubscription> ret = ActivitiesClient.getActivitySubscriptions(activity.getPrimaryType(),
+        List<ActivitySubscription> ret = ActivitiesClientUtil.getActivitySubscriptions(activity.getPrimaryType(),
                 activity.getClassPrimaryKey(), null);
 
         // Check for constraints which users should receive notifications

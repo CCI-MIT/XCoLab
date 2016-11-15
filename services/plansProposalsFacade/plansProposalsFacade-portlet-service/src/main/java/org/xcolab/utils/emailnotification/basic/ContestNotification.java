@@ -12,11 +12,14 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,8 +63,20 @@ public class ContestNotification extends EmailNotification {
             return templateWrapper;
         }
 
+        final EmailTemplateClient emailTemplateClient;
+        if(contest.getIsSharedContestInForeignColab()){
+            RestService adminService = new RefreshingRestService("admin-service",
+                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+            emailTemplateClient = EmailTemplateClient.fromService(adminService);
+        }else{
+            emailTemplateClient = EmailTemplateClientUtil.getClient();
+        }
+
         final ContestEmailTemplate emailTemplate =
-                EmailTemplateClient.getContestEmailTemplateByType(templateName);
+                emailTemplateClient.getContestEmailTemplateByType(templateName);
+
         templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getContestShortName());
 
         return templateWrapper;

@@ -19,7 +19,6 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import javax.portlet.PortletRequest;
@@ -45,7 +44,7 @@ public class ProposalContextHelper {
     private final Contest contest;
     private final ClientHelper clientHelper;
 
-    public ProposalContextHelper(PortletRequest request){
+    public ProposalContextHelper(PortletRequest request) {
         this.request = request;
         final long proposalIdParam = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
         givenProposalId = (proposalIdParam == 0)
@@ -56,8 +55,24 @@ public class ProposalContextHelper {
         givenPhaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         givenVersion = ParamUtil.getInteger(request, VERSION_PARAM);
 
-        contest = fetchContest();
-        clientHelper = new ClientHelper(contest);
+        Contest transientContest = fetchContest();
+
+        clientHelper = new ClientHelper(transientContest);
+        if (transientContest != null) {
+            contest = setupContestFromTheRightClient(transientContest.getContestPK());
+        }else{
+            contest = null;
+        }
+    }
+
+    private Contest setupContestFromTheRightClient(Long contestId) {
+        Contest localContest = null;
+        try {
+            localContest = clientHelper.getContestClient().getContest(contestId);
+        } catch (ContestNotFoundException ignored) {
+
+        }
+        return localContest;
     }
 
     public Member getMember() {
@@ -142,15 +157,16 @@ public class ProposalContextHelper {
         return proposal;
     }
 
-    public ProposalWrapper getProposalWrapper(Proposal proposal, Proposal2Phase proposal2Phase,
+    public Proposal getProposalWrapper(Proposal proposal, Proposal2Phase proposal2Phase,
             ContestPhase contestPhase, Contest contest, Member member) {
-        ProposalWrapper proposalWrapper;
+        Proposal proposalWrapper;
         if (givenVersion > 0) {
-            if (member != null && PermissionsClient.canJudge(member.getUserId(), contest.getContestPK())) {
+            if (member != null && PermissionsClient
+                    .canJudge(member.getUserId(), contest.getContestPK())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal, givenVersion,
                         contest, contestPhase, proposal2Phase, member);
             } else {
-                proposalWrapper = new ProposalWrapper(proposal, givenVersion,
+                proposalWrapper = new Proposal(proposal, givenVersion,
                         contest,
                         contestPhase, proposal2Phase);
             }
@@ -161,12 +177,13 @@ public class ProposalContextHelper {
                     hasVersionTo ? proposal2Phase.getVersionTo()
                             : proposal.getCurrentVersion();
 
-            if (member != null && PermissionsClient.canJudge(member.getUserId(), contest.getContestPK())) {
+            if (member != null && PermissionsClient
+                    .canJudge(member.getUserId(), contest.getContestPK())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal,
                         localVersion,
                         contest, contestPhase, proposal2Phase, member);
             } else {
-                proposalWrapper = new ProposalWrapper(proposal, localVersion,
+                proposalWrapper = new Proposal(proposal, localVersion,
                         contest, contestPhase, proposal2Phase);
             }
         }

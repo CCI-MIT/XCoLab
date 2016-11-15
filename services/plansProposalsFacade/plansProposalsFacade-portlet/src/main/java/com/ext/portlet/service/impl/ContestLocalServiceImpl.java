@@ -56,6 +56,7 @@ import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
@@ -415,7 +416,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     public boolean isSubscribed(long contestPK, long userId) {
         //return activitySubscriptionLocalService.isSubscribed(userId, Contest.class, contestPK, 0, "");
-        return ActivitiesClient.isSubscribedToActivity(userId,ActivityEntryType.CONTEST.getPrimaryTypeId(),contestPK,0,"");
+        return ActivitiesClientUtil.isSubscribedToActivity(userId,ActivityEntryType.CONTEST.getPrimaryTypeId(),contestPK,0,"");
     }
 
     /**
@@ -429,7 +430,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     @Transactional
     public void subscribe(long contestPK, long userId) throws PortalException, SystemException {
-        ActivitiesClient.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+        ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
 
     /**
@@ -443,7 +444,7 @@ public class ContestLocalServiceImpl extends ContestLocalServiceBaseImpl {
     @Override
     @Transactional
     public void unsubscribe(long contestPK, long userId) throws PortalException, SystemException {
-        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+        ActivitiesClientUtil.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
     }
 
     @Override

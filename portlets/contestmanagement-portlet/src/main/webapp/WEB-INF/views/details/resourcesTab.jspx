@@ -4,7 +4,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-	<!--@elvariable id="contestWrapper" type="org.xcolab.wrappers.BaseContestWrapper"-->
+	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
 	<!--@elvariable id="contestResourcesBean" type="org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean"-->
 
 	<jsp:directive.include file="../init.jspx" />

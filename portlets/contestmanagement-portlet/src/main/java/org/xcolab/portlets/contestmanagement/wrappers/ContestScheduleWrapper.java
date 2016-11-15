@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestSchedule;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
-import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper.IllegalScheduleChangeException;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper
+        .IllegalScheduleChangeException;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,7 +25,7 @@ public class ContestScheduleWrapper {
 
     private List<ContestPhaseBean> schedulePhases;
     private ContestSchedule contestSchedule;
-    private List<BaseContestWrapper> contestsUsingSelectedSchedule;
+    private List<Contest> contestsUsingSelectedSchedule;
     private Boolean createNew = false;
 
     public ContestScheduleWrapper() {
@@ -73,16 +73,16 @@ public class ContestScheduleWrapper {
         return dummyContestPhaseBean;
     }
 
-    private List<BaseContestWrapper> loadContestsUsingSchedule(long scheduleId) {
-        List<BaseContestWrapper> wrappedContestsUsingSchedule = new ArrayList<>();
+    private List<Contest> loadContestsUsingSchedule(long scheduleId) {
+        List<Contest> wrappedContestsUsingSchedule = new ArrayList<>();
         List<Contest> contestsUsingSchedule = ContestClientUtil.getContestsByContestScheduleId(scheduleId);
         for (Contest contest : contestsUsingSchedule) {
-            wrappedContestsUsingSchedule.add(new BaseContestWrapper(contest));
+            wrappedContestsUsingSchedule.add((contest));
         }
         return wrappedContestsUsingSchedule;
     }
 
-    public List<BaseContestWrapper> getContestsUsingSelectedSchedule() {
+    public List<Contest> getContestsUsingSelectedSchedule() {
         return contestsUsingSelectedSchedule;
     }
 

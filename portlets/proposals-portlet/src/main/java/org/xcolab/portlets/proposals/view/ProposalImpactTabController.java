@@ -33,9 +33,7 @@ import org.xcolab.portlets.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,7 +57,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private ProposalsContext proposalsContext;
 
     private Contest contest;
-    private ProposalWrapper proposalWrapper;
+    private Proposal proposalWrapper;
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
     public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
@@ -278,8 +276,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                         ContestTier.BASIC.getTierType(), request);
         try {
             Contest contest = ContestClientUtil.getContest(this.contest.getContestPK());
-            ContestWrapper contestWrapper = new ContestWrapper(contest);
-            List<OntologyTerm> ontologyTermList = contestWrapper.getWhere();
+
+            List<OntologyTerm> ontologyTermList = contest.getWhere();
             List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
             for (Proposal proposal : referencedSubProposals) {
                 ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(

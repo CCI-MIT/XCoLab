@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
-
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -24,8 +23,8 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
 import org.xcolab.service.contest.utils.email.EmailToAdminDispatcher;
-import org.xcolab.service.contest.utils.promotion.enums.ContestPhasePromoteType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 
 import java.util.Collection;
 import java.util.Date;
@@ -73,7 +72,8 @@ public class AutoPromoteHelper {
     }
 
     public void doBasicPromotion() {
-            for (ContestPhase phase : contestPhaseDao.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue())) {
+            for (ContestPhase phase : contestPhaseDao.findByPhaseAutopromote(
+                    ContestPhasePromoteType.PROMOTE.getValue())) {
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase, contestDao);
             if (phasePromotionHelper.isPhaseContestScheduleTemplatePhase()) {
                 continue;

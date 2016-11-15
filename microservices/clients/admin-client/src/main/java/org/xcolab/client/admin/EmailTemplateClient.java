@@ -7,19 +7,29 @@ import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class EmailTemplateClient {
 
-    private static final RestService adminService = new RestService("admin-service");
-    private static final RestResource<ContestEmailTemplate, String> emailTemplatesResource =
-            new RestResource1<>(adminService, "emailTemplates", ContestEmailTemplate.TYPES);
+    private final RestService adminService;
 
-    public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
+    private static final Map<RestService, EmailTemplateClient> instances = new HashMap<>();
+    private final RestResource<ContestEmailTemplate, String> emailTemplatesResource;
+
+    private EmailTemplateClient(RestService restService){
+        this.adminService = restService;
+        emailTemplatesResource = new RestResource1<>(adminService, "emailTemplates", ContestEmailTemplate.TYPES);
+    }
+
+
+
+    public  List<ContestEmailTemplate> listAllContestEmailTemplates() {
         return emailTemplatesResource.list().execute();
     }
 
-    public static ContestEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
+    public  ContestEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
         try {
             return emailTemplatesResource.get(emailTemplateType).executeChecked();
         } catch (EntityNotFoundException e) {
@@ -27,12 +37,22 @@ public final class EmailTemplateClient {
         }
     }
 
-    public static void updateContestEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
+    public  void updateContestEmailTemplate(ContestEmailTemplate contestEmailTemplate) {
         emailTemplatesResource.update(contestEmailTemplate, contestEmailTemplate.getType_())
                 .execute();
     }
 
-    public static ContestEmailTemplate createEmailTemplate(ContestEmailTemplate template) {
+    public  ContestEmailTemplate createEmailTemplate(ContestEmailTemplate template) {
         return emailTemplatesResource.create(template).execute();
     }
+
+    public static EmailTemplateClient fromService(RestService contestService) {
+        EmailTemplateClient client = instances.get(contestService);
+        if (client == null) {
+            client = new EmailTemplateClient(contestService);
+            instances.put(contestService, client);
+        }
+        return client;
+    }
+
 }

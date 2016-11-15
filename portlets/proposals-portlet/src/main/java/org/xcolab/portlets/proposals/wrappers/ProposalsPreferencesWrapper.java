@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -56,16 +57,16 @@ public class ProposalsPreferencesWrapper {
             return termsOfServiceTemplateWrapper;
         }
         termsOfServiceTemplateWrapper = new EmailTemplateWrapper(
-                EmailTemplateClient.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF), "", "");
+                EmailTemplateClientUtil.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF), "", "");
 
         return termsOfServiceTemplateWrapper;
     }
 
     public void store(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
         PortletPreferences preferences = request.getPreferences();
-        ContestEmailTemplate template = EmailTemplateClient.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
+        ContestEmailTemplate template = EmailTemplateClientUtil.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
         template.setHeader(termsOfService);
-        EmailTemplateClient.updateContestEmailTemplate(template);
+        EmailTemplateClientUtil.updateContestEmailTemplate(template);
 
         preferences.setValue(CALL_TO_ACTION, callToAction);
         preferences.setValue(CONTEST_TYPE_ID, contestTypeId);

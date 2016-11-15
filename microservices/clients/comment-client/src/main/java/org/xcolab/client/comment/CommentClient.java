@@ -6,12 +6,15 @@ import org.xcolab.client.comment.pojo.CommentDto;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommentClient {
 
     private final CommentServiceWrapper commentServiceWrapper;
     private final RestService commentService;
+    private static final Map<RestService, CommentClient> instances = new HashMap<>();
 
     public CommentClient(RestService commentService) {
         commentServiceWrapper = CommentServiceWrapper.fromService(commentService);
@@ -61,5 +64,14 @@ public class CommentClient {
 
     public boolean deleteComment(long commentId) {
         return commentServiceWrapper.deleteComment(commentId);
+    }
+
+    public static CommentClient fromService(RestService contestService) {
+        CommentClient client = instances.get(contestService);
+        if (client == null) {
+            client = new CommentClient(contestService);
+            instances.put(contestService, client);
+        }
+        return client;
     }
 }

@@ -10,9 +10,7 @@ import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.log4j.Logger;
 
 import org.xcolab.client.modeling.RomaClientUtil;
-
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -71,10 +69,10 @@ public class ProposalImpactScenarioCombinationWrapper {
         fillProposalNameToModelScenarioRegionMap();
 
         for (Proposal proposal : proposals) {
-            ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
-            ProposalSimulationScenarioRegionWrapper simulationScenarioRegion = new ProposalSimulationScenarioRegionWrapper(proposalWrapper);
+
+            ProposalSimulationScenarioRegionWrapper simulationScenarioRegion = new ProposalSimulationScenarioRegionWrapper(proposal);
             presentRegion.add(simulationScenarioRegion.getRegion());
-            Long scenarioId = proposalWrapper.getScenarioId();
+            Long scenarioId = proposal.getScenarioId();
             Scenario scenarioForProposal = null;
             if (scenarioId != null && scenarioId > 0) {
                 try {

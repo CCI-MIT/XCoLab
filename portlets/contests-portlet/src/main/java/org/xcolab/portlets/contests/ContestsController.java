@@ -33,7 +33,7 @@ public class ContestsController {
 
         ContestPreferences contestPreferences = new ContestPreferences(request);
 
-        List<ContestWrapper> contestWrappers = new ArrayList<>();
+        List<Contest> contestWrappers = new ArrayList<>();
         final List<Long> selectedContests = contestPreferences.getSelectedContests();
         if (selectedContests.isEmpty()) {
 
@@ -43,12 +43,8 @@ public class ContestsController {
                 if (contestWrappers.size() >= contestPreferences.getFeedSize()) {
                     break;
                 }
-                try {
-                    if (!contest.getContestPrivate()) {
-                        contestWrappers.add(new ContestWrapper(contest));
-                    }
-                } catch (ContestNotFoundException ignored) {
-                    //LR
+                if (!contest.getContestPrivate()) {
+                    contestWrappers.add(contest);
                 }
             }
         } else {
@@ -58,7 +54,7 @@ public class ContestsController {
                     break;
                 }
                 try {
-                    contestWrappers.add(new ContestWrapper(ContestClientUtil.getContest(contestId)));
+                    contestWrappers.add(ContestClientUtil.getContest(contestId));
                 } catch (ContestNotFoundException e) {
                     _log.error("Could not find contest " + contestId);
                 }

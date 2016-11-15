@@ -1,10 +1,14 @@
 package org.xcolab.portlets.contests;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.util.IdListUtil;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -91,12 +95,25 @@ public class ContestPreferences {
                 }
             });
 
+            ContestClient cc;
             for (Contest c: contests) {
-                final ContestPhase activeOrLastPhase = ContestClientUtil.getActivePhase(c.getContestPK());
+                ContestPhase activeOrLastPhase = null;
+
+                if(c.getIsSharedContestInForeignColab()) {
+                    RestService contestService = new RefreshingRestService("contest-service",
+                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                    cc = ContestClient.fromService(contestService);
+                    activeOrLastPhase = cc.getActivePhase(c.getContestPK());
+                }else{
+                    cc = ContestClientUtil.getClient();
+                    activeOrLastPhase =
+                            cc.getActivePhase(c.getContestPK());
+                }
                 final String phaseName;
                 if (activeOrLastPhase != null) {
                     final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();
-                    final ContestPhaseType contestPhaseType= ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
+                    final ContestPhaseType contestPhaseType= cc.getContestPhaseType(contestPhaseTypeId);
                     phaseName = contestPhaseType.getName();
                 } else {
                     phaseName = " ";

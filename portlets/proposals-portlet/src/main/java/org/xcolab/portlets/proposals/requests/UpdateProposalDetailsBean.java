@@ -3,9 +3,9 @@ package org.xcolab.portlets.proposals.requests;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.portlets.proposals.utils.MoveType;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.enums.proposal.MoveType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +38,8 @@ public class UpdateProposalDetailsBean {
 
 
 
-    public UpdateProposalDetailsBean(ProposalWrapper proposal) {
-        for (ProposalSectionWrapper section : proposal.getSections()) {
+    public UpdateProposalDetailsBean(Proposal proposal) {
+        for (PlanSectionDefinition section : proposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
         pitch = proposal.getPitch();
@@ -49,8 +49,8 @@ public class UpdateProposalDetailsBean {
         description = proposal.getDescription();
     }
     
-    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal) {
-        for (ProposalSectionWrapper section : baseProposal.getSections()) {
+    public UpdateProposalDetailsBean(Proposal proposal, Proposal baseProposal) {
+        for (PlanSectionDefinition section : baseProposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
         pitch = baseProposal.getPitch();
@@ -62,7 +62,7 @@ public class UpdateProposalDetailsBean {
         baseProposalContestId = baseProposal.getContestPK();
     }
     
-    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal,
+    public UpdateProposalDetailsBean(Proposal proposal, Proposal baseProposal,
             boolean isMove, MoveType moveType) {
     	this(proposal, baseProposal);
     	this.isMove = isMove;

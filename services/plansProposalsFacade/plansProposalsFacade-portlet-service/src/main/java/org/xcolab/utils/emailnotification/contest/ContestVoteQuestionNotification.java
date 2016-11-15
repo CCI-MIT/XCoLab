@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
@@ -43,7 +44,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
             voteQuestionTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final ContestEmailTemplate emailTemplate =
-                EmailTemplateClient.getContestEmailTemplateByType(voteQuestionTemplateString);
+                EmailTemplateClientUtil.getContestEmailTemplateByType(voteQuestionTemplateString);
         templateWrapper = new ContestVoteQuestionTemplate(emailTemplate, contest.getContestShortName());
 
         return templateWrapper;

@@ -4,9 +4,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import java.io.IOException;
 
@@ -20,11 +27,36 @@ public class DeleteDiscussionMessageFlagActionController extends BaseDiscussions
     @RequestMapping(params = "action=deleteDiscussionMessageFlag")
     public void handleAction(
             ActionRequest request, ActionResponse response,
-            @RequestParam long commentId)
+            @RequestParam long commentId,
+            @RequestParam(value = "contestId", required = false) String contestId)
             throws IOException, DiscussionAuthorizationException {
 
         checkPermissions(request, "User isn't allowed to delete message", 0L);
-        CommentClientUtil.deleteComment(commentId);
+
+        final CommentClient commentClient;
+
+        if (contestId != null && !contestId.equals("")) {
+            Long contestIdLong = Long.parseLong(contestId);
+            Contest contest = null;
+            try {
+                contest = ContestClientUtil.getContest(contestIdLong);
+            } catch (ContestNotFoundException ignored) {
+
+            }
+            if (contest != null && contest.getIsSharedContestInForeignColab()) {
+                RestService commentsService = new RefreshingRestService("comment-service",
+                        ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                        ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+                commentClient = CommentClient.fromService(commentsService);
+            } else {
+                commentClient = CommentClientUtil.getClient();
+            }
+        }else {
+            commentClient = CommentClientUtil.getClient();
+        }
+
+        commentClient.deleteComment(commentId);
         redirectToReferrer(request, response);
     }
 

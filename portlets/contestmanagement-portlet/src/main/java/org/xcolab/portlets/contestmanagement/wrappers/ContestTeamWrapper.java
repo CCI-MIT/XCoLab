@@ -10,6 +10,7 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.enums.MemberRole;
@@ -89,7 +90,7 @@ public class ContestTeamWrapper {
 
     private void subscribeUsersToContest(List<Long> userIds) {
         for (Long userId : userIds) {
-            ActivitiesClient.addSubscription(userId, ActivityEntryType.CONTEST, contestId, "");
+            ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.CONTEST, contestId, "");
         }
     }
 }

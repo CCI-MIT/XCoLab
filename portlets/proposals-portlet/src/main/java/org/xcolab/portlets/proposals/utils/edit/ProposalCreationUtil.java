@@ -5,7 +5,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -21,7 +20,6 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
 
 import java.util.HashSet;
@@ -45,17 +43,17 @@ public final class ProposalCreationUtil {
     private ProposalCreationUtil() {
     }
 
-    public static ProposalWrapper createProposal(long userId,
+    public static Proposal createProposal(long userId,
                                                  @Valid UpdateProposalDetailsBean updateProposalSectionsBean, Contest contest, ThemeDisplay themeDisplay,
                                                  ContestPhase contestPhase) {
         final ClientHelper clientHelper = new ClientHelper(contest);
         try {
-            Proposal newProposal = ProposalClientUtil
+            Proposal newProposal = clientHelper.getProposalClient()
                     .createProposal(userId, contestPhase.getContestPhasePK(), true);
             Proposal2Phase newProposal2Phase = clientHelper.getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(
                     newProposal.getProposalId(), contestPhase.getContestPhasePK());
 
-            ProposalWrapper proposalWrapper = new ProposalWrapper(newProposal, 0, contest, contestPhase, newProposal2Phase);
+            Proposal proposalWrapper = new Proposal(newProposal, 0, contest, contestPhase, newProposal2Phase);
 
             final long baseProposalId = updateProposalSectionsBean.getBaseProposalId();
             if (baseProposalId > 0) {
@@ -89,7 +87,7 @@ public final class ProposalCreationUtil {
     }
 
     public static void sendAuthorNotification(ThemeDisplay themeDisplay,
-            ProposalWrapper proposalWrapper, ContestPhase contestPhase, PortletRequest request) {
+            Proposal proposalWrapper, ContestPhase contestPhase, PortletRequest request) {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setPortalURL(themeDisplay.getPortalURL());
         try {

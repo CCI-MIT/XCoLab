@@ -2,12 +2,13 @@ package org.xcolab.portlets.proposals.requests;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.ext.portlet.JudgingSystemActions;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 public class ProposalAdvancingBean extends RatingBean {
 
@@ -25,7 +26,7 @@ public class ProposalAdvancingBean extends RatingBean {
     public ProposalAdvancingBean() {
     }
 
-    public ProposalAdvancingBean(ProposalWrapper wrapper) throws PortalException, SystemException {
+    public ProposalAdvancingBean(Proposal wrapper) throws PortalException, SystemException {
         super(wrapper, ProposalJudgeRatingClientUtil.getRatingTypesForJudges());
 
         advanceDecision = wrapper.getJudgeDecision();

@@ -6,12 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ext.portlet.PlanSectionTypeKeys;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -21,8 +22,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 
 import java.io.IOException;
 
@@ -53,7 +53,7 @@ public class ProposalRevertActionController {
         long userId = themeDisplay.getUserId();
 
         if (proposalsContext.getProposal(request) != null) {
-            ProposalWrapper oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
+            Proposal oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
             updateProposalSpecialAttributes(userId, oldProposalVersionToBeBecomeCurrent);
 
             updateProposalAttributes(request, userId, oldProposalVersionToBeBecomeCurrent);
@@ -65,9 +65,9 @@ public class ProposalRevertActionController {
         }
     }
 
-    private void updateProposalAttributes(ActionRequest request, long userId, ProposalWrapper oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
+    private void updateProposalAttributes(ActionRequest request, long userId, Proposal oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
         boolean updateProposalReferences = false;
-        for (ProposalSectionWrapper section: oldProposalVersionToBeBecomeCurrent.getSections()) {
+        for (PlanSectionDefinition section: oldProposalVersionToBeBecomeCurrent.getSections()) {
             String newSectionValue = section.getStringValue();
             if (section.getType() == PlanSectionTypeKeys.TEXT
                     || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
@@ -138,7 +138,7 @@ public class ProposalRevertActionController {
         }
     }
 
-    private void updateProposalSpecialAttributes(long userId, ProposalWrapper oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
+    private void updateProposalSpecialAttributes(long userId, Proposal oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
         ProposalAttributeClientUtil.setProposalAttribute(userId,  oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.NAME,0l, oldProposalVersionToBeBecomeCurrent.getName());
         ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.PITCH,0l, oldProposalVersionToBeBecomeCurrent.getPitch());
         ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.DESCRIPTION,0l, oldProposalVersionToBeBecomeCurrent.getDescription());

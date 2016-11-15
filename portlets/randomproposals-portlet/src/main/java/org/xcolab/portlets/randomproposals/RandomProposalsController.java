@@ -1,11 +1,10 @@
 package org.xcolab.portlets.randomproposals;
 
 
-import com.ext.portlet.NoSuchContestException;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -34,9 +33,9 @@ public class RandomProposalsController {
     	return "showProposals";
     }
 
-    private List<ProposalWrapper> getProposals(RandomProposalsPreferences preferences) {
+    private List<Proposal> getProposals(RandomProposalsPreferences preferences) {
 
-        List<ProposalWrapper> ret = new ArrayList<>();
+        List<Proposal> ret = new ArrayList<>();
 		List<Proposal> proposals = getAvailableProposals(preferences);
 
         //TODO LR: remove loop and use micro service pojo
@@ -44,9 +43,9 @@ public class RandomProposalsController {
             Collections.shuffle(proposals);
             for (int i = 0; i < proposals.size() && i < preferences.getFeedSize(); ++i) {
                 try {
-                    ret.add(new ProposalWrapper(
+                    ret.add((
                             ProposalClientUtil.getProposal(proposals.get(i).getProposalId())));
-                } catch (ProposalNotFoundException | NoSuchContestException e) {
+                } catch (ProposalNotFoundException  e) {
                     //ignored for now, will be removed after LR
                 }
             }

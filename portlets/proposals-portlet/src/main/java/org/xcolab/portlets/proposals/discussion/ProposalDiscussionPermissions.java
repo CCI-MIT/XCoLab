@@ -2,15 +2,14 @@ package org.xcolab.portlets.proposals.discussion;
 
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -93,9 +92,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
             try {
                 Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
-                ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
-                return proposalWrapper.isUserAmongFellows(currentMember) || getCanAdminAll();
+
+                return proposal.isUserAmongFellows(currentMember) || getCanAdminAll();
             } catch (ProposalNotFoundException ignored) {
             }
         }
@@ -117,10 +116,10 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
 
 
-        ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
+        Contest contestWrapper =  proposalWrapper.getContest();
 
         boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
                 MembersClient.getMemberUnchecked(currentMember.getUserId()));

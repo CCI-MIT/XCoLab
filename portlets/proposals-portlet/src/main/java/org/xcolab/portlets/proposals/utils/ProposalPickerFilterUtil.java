@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -23,8 +24,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.utils.IdListUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,19 +57,19 @@ public class ProposalPickerFilterUtil {
         }
     }
 
-    public static List<Pair<ContestWrapper, Date>> getFilteredContests(
+    public static List<Pair<Contest, Date>> getFilteredContests(
             long sectionId, ResourceRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
-        List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+        List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getAllContests();
         ProposalPickerFilterUtil.filterContests(contests, sectionId, request, proposalsContext, false);
         return contests;
     }
 
-    public static List<Pair<ContestWrapper, Date>> getAllContests() throws SystemException, PortalException {
-        List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
+    public static List<Pair<Contest, Date>> getAllContests() throws SystemException, PortalException {
+        List<Pair<Contest, Date>> contests = new ArrayList<>();
 
         for (Contest c: ContestClientUtil.getAllContests()) {
-                contests.add(Pair.of(new ContestWrapper(c),  //c
+                contests.add(Pair.of(c,  //c
                         c.getCreated() == null ? new Date(0) : c.getCreated()));
 
         }
@@ -79,8 +78,8 @@ public class ProposalPickerFilterUtil {
 
 
 
-    public static List<Pair<ContestWrapper, Date>> getTextFilteredContests( long sectionId, String contestName) throws SystemException, PortalException {
-        List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
+    public static List<Pair<Contest, Date>> getTextFilteredContests( long sectionId, String contestName) throws SystemException, PortalException {
+        List<Pair<Contest, Date>> contests = new ArrayList<>();
         PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
 
         List<OntologyTerm> ontologyTerms = OntologyClientUtil.getOntologyTermsForFocusArea(OntologyClientUtil.getFocusArea(planSectionDefinition.getFocusAreaId()));
@@ -98,7 +97,7 @@ public class ProposalPickerFilterUtil {
     }
 
 
-    public static Map<Long, String> filterContests(List<Pair<ContestWrapper, Date>> contests,
+    public static Map<Long, String> filterContests(List<Pair<Contest, Date>> contests,
             long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
             throws SystemException, PortalException {
         PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
@@ -166,7 +165,7 @@ public class ProposalPickerFilterUtil {
             long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
             throws SystemException, PortalException {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        List<ActivitySubscription> activitySubscriptions = ActivitiesClient.getActivitySubscriptions(null, null, userId);
+        List<ActivitySubscription> activitySubscriptions = ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
 
         for (ActivitySubscription as : activitySubscriptions) {
 

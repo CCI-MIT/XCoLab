@@ -8,14 +8,14 @@ public class ActivityEntryHelper {
 
 
 
-    public static void createActivityEntry(Long memberId,
+    public static void createActivityEntry(ActivitiesClient activityClient, Long memberId,
                                            Long classPrimaryKey,
                                            String extraData,
                                            Integer providerType) {
 
 
 
-        ActivitiesClient.createActivityEntry(memberId, classPrimaryKey, extraData, providerType);
+        activityClient.createActivityEntry(memberId, classPrimaryKey, extraData, providerType);
 
 
     }

@@ -98,7 +98,7 @@
 				<table class="c-Comment__list" id="commentsTable" >
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
                         <!-- TODO COLAB-1387: replace client calls -->
-						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
+						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}" contestId="${sharedColabId}">
 							<!--@elvariable id="role" type="org.xcolab.enums.MemberRole"-->
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
@@ -147,14 +147,18 @@
 										${message.content }
 									</div>
 									<div class="c-Comment__actions">
-										<c:if test="${discussionPermissions.getCanReportMessage(message) }">
-											<a style="margin-left: 10px;" href="javascript:;" onclick="reportComment(${message.commentId})">Report</a>
+
+										<c:if test="${ empty sharedColabId} ">
+											<c:if test="${discussionPermissions.getCanReportMessage(message) }">
+												<a style="margin-left: 10px;" href="javascript:;" onclick="reportComment(${message.commentId})">Report</a>
+											</c:if>
 										</c:if>
 										<c:if test="${discussionPermissions.getCanAdminMessage(message) }">
 											<portlet:actionURL var="editCommentURL">
 												<portlet:param name="action" value="editComment" />
                                                 <portlet:param name="commentId" value="${message.commentId}" />
 												<portlet:param name="proposalId" value="${proposalId}" />
+												<portlet:param name="contestId" value="${sharedColabId}" />
 											</portlet:actionURL>
 											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.commentId},'${editCommentURL}');">Edit</a>
 
@@ -163,6 +167,7 @@
 													<portlet:param name="action" value="deleteDiscussionMessageFlag" />
 													<portlet:param name="commentId" value="${message.commentId }" />
 													<portlet:param name="proposalId" value="${proposalId}" />
+													<portlet:param name="contestId" value="${sharedColabId}" />
 												</portlet:actionURL>
 												<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
 											</c:if>
@@ -198,6 +203,7 @@
 					<portlet:actionURL var="addCommentURL">
 						<portlet:param name="action" value="addDiscussionMessage" />
 						<portlet:param name="proposalId" value="${proposalId}" />
+						<portlet:param name="contestId" value="${sharedColabId}" />
 					</portlet:actionURL>
 					<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
                         <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />

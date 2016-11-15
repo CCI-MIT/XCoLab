@@ -2,10 +2,12 @@ package org.xcolab.portlets.proposals.utils.edit;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.ext.portlet.PlanSectionTypeKeys;
+
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -15,9 +17,10 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextImpl;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+
+import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.utils.LinkUtils;
 
 import javax.portlet.ActionRequest;
@@ -33,14 +36,15 @@ public class ProposalUpdateHelper {
     private final UpdateProposalDetailsBean updateProposalSectionsBean;
     private final ActionRequest request;
     private final ThemeDisplay themeDisplay;
-    private final ProposalWrapper proposalWrapper;
+    private final Proposal proposalWrapper;
     private final Proposal2Phase p2p;
     private final long userId;
+
 
     private final ProposalsContext proposalsContext = new ProposalsContextImpl();
 
     public ProposalUpdateHelper(@Valid UpdateProposalDetailsBean updateProposalSectionsBean, ActionRequest request,
-            ThemeDisplay themeDisplay, ProposalWrapper proposalWrapper, Proposal2Phase p2p, long userId) {
+            ThemeDisplay themeDisplay, Proposal proposalWrapper, Proposal2Phase p2p, long userId) {
         this.updateProposalSectionsBean = updateProposalSectionsBean;
         this.request = request;
         this.themeDisplay = themeDisplay;
@@ -53,7 +57,7 @@ public class ProposalUpdateHelper {
         boolean filledAll = updateBasicFields();
 
         boolean updateProposalReferences = false;
-        for (ProposalSectionWrapper section : proposalWrapper.getSections()) {
+        for (PlanSectionDefinition section : proposalWrapper.getSections()) {
             String newSectionValue =
                     updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId());
             switch (section.getType()) {
@@ -61,7 +65,7 @@ public class ProposalUpdateHelper {
                 case PROPOSAL_LIST_TEXT_REFERENCE:
                 case DROPDOWN_MENU:
                     if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                        ProposalAttributeClientUtil
+                        ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                                 .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                         HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
@@ -88,14 +92,14 @@ public class ProposalUpdateHelper {
                     if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
                         final long newNumericValue = Long.parseLong(newSectionValue);
                         if (section.getNumericValue() != newNumericValue) {
-                            ProposalAttributeClientUtil
+                            ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                                     .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                                             ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                             newNumericValue);
                             updateProposalReferences = true;
                         }
                     } else if (StringUtils.isBlank(newSectionValue)) {
-                        ProposalAttributeClientUtil
+                        ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                                 .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
                     }
@@ -112,7 +116,7 @@ public class ProposalUpdateHelper {
                         }
                     }
                     if (!section.getStringValue().equals(cleanedReferences.toString())) {
-                        ProposalAttributeClientUtil
+                        ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                                 .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                         cleanedReferences.toString());
@@ -145,7 +149,7 @@ public class ProposalUpdateHelper {
         boolean filledAll = true;
 
         if (!StringUtils.equals(updateProposalSectionsBean.getName(), proposalWrapper.getName())) {
-            ProposalAttributeClientUtil
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                     .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.NAME, 0L, HtmlUtil.cleanMost(updateProposalSectionsBean.getName()));
         } else {
@@ -153,7 +157,7 @@ public class ProposalUpdateHelper {
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getPitch(), proposalWrapper.getPitch())) {
-            ProposalAttributeClientUtil
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                     .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.PITCH, 0L, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(),
                             LinkUtils.getBaseUri(request)));
@@ -162,7 +166,7 @@ public class ProposalUpdateHelper {
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getDescription(), proposalWrapper.getDescription())) {
-            ProposalAttributeClientUtil
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                     .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.DESCRIPTION, 0L, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(),
                             LinkUtils.getBaseUri(request)));
@@ -171,7 +175,7 @@ public class ProposalUpdateHelper {
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getTeam(), proposalWrapper.getTeam())) {
-            ProposalAttributeClientUtil
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                     .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.TEAM, 0L, HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()));
         } else {
@@ -180,7 +184,7 @@ public class ProposalUpdateHelper {
 
         if (updateProposalSectionsBean.getImageId() > 0
                 && updateProposalSectionsBean.getImageId() != proposalWrapper.getImageId()) {
-            ProposalAttributeClientUtil
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                     .setProposalAttribute(themeDisplay.getUserId(), proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.IMAGE_ID, 0L,updateProposalSectionsBean.getImageId());
         } else {

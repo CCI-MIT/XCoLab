@@ -20,13 +20,12 @@
         <module>admin-client</module>
         <module>ballons-client</module>
         <module>contents-client</module>
-        <module>contest-client</module>
+        <module>contestproposal-client</module>
         <module>comment-client</module>
         <module>emails-client</module>
         <module>files-client</module>
         <module>filtering-client</module>
         <module>members-client</module>
-        <module>proposals-client</module>
         <module>search-client</module>
         <module>sharedcolab-client</module>
         <module>tracking-client</module>

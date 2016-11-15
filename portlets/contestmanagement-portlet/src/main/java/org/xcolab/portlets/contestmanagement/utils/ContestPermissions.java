@@ -11,7 +11,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.interfaces.TabPermissions;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -19,7 +18,7 @@ import javax.portlet.PortletRequest;
 public class ContestPermissions implements TabPermissions {
 
     private final User user;
-    private final BaseContestWrapper contestWrapper;
+    private final Contest contestWrapper;
     private final boolean isUserNotLoggedIn;
 
     public ContestPermissions(PortletRequest request, Contest contest) {
@@ -27,7 +26,7 @@ public class ContestPermissions implements TabPermissions {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         user = themeDisplay.getUser();
         isUserNotLoggedIn = user.isDefaultUser();
-        contestWrapper = new BaseContestWrapper(contest);
+        contestWrapper = (contest);
     }
 
     @Override

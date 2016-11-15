@@ -7,10 +7,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.PointsClientUtil;
+import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.points.DistributionStrategy;
 import org.xcolab.points.ReceiverLimitationStrategy;
-import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.util.exceptions.InternalException;
 
 import java.text.DecimalFormat;
@@ -42,7 +42,7 @@ public class AssignPointsBean {
         assignmentsByUserIdByPointTypeId = new HashMap<>();
     }
 
-    public void addAllAssignments(PointTypeWrapper pointType, List<Member> members) throws SystemException, PortalException {
+    public void addAllAssignments(PointType pointType, List<Member> members) throws SystemException, PortalException {
         if (pointType.getDistributionStrategy().equals(DistributionStrategy.USER_DEFINED)) {
 
             PointsClientUtil.verifyDistributionConfigurationsForProposalId(proposalId);
@@ -51,7 +51,7 @@ public class AssignPointsBean {
                     PointsClientUtil
                             .getPointsDistributionByProposalIdPointTypeId(proposalId, pointType.getId());
 
-            switch(pointType.getReceiverLimitationStrategy().getType()) {
+            switch(pointType.getReceiverLimitationStrategyz().getType()) {
                 case USER:
                     List<Member> presetUsers = null;
                     if (pointType.getReceiverLimitationStrategy().equals(ReceiverLimitationStrategy.ANY_TEAM_MEMBER)) {
@@ -67,7 +67,7 @@ public class AssignPointsBean {
             }
         }
         //follow down the pointType tree
-        for (PointTypeWrapper p: pointType.getChildren()) {
+        for (PointType p: pointType.getChildren()) {
             addAllAssignments(p, members);
         }
         initializeUsers(members);
@@ -78,7 +78,7 @@ public class AssignPointsBean {
         usersNotInTeam.removeAll(teamMembers);
     }
 
-    public void addAssignment(PointTypeWrapper pointType, List<Member> users,
+    public void addAssignment(PointType pointType, List<Member> users,
                               List<PointsDistributionConfiguration> existingDistributionConfigurations) {
 
         final double percentMultiplicationFactor = pointType.getPercentageOfTotal() * 100;

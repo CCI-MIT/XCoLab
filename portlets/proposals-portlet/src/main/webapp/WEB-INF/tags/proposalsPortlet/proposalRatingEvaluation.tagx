@@ -6,7 +6,7 @@
 
     <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
 
-    <jsp:directive.attribute name="wrapper" type="org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper" required="true" rtexprvalue="true" description="ProposalRatings" />
+    <jsp:directive.attribute name="wrapper" type="org.xcolab.client.proposals.pojo.proposals.ProposalRatings" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
     <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
     <jsp:directive.attribute name="showRatingDescription" type="java.lang.Boolean" required="false" rtexprvalue="true"  description="Whether the Rating description should be displayed or not" />
