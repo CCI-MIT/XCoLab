@@ -8,6 +8,7 @@ import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalPhaseClient;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.client.RestService;
@@ -197,9 +198,14 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public Boolean getProposalVisibility(long proposalId) {
-        RestService proposalService = restService.withServiceName("proposals-service");
-
-        ProposalContestPhaseAttribute attr = ProposalPhaseClient.fromService(proposalService)
+        ProposalPhaseClient proposalPhaseClient;
+        if(restService!=null) {
+            RestService proposalService = restService.withServiceName("proposals-service");
+            proposalPhaseClient = ProposalPhaseClient.fromService(proposalService);
+        }else{
+            proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        }
+        ProposalContestPhaseAttribute attr =  proposalPhaseClient
                 .getProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE);
         return attr.getNumericValue() == 1;
