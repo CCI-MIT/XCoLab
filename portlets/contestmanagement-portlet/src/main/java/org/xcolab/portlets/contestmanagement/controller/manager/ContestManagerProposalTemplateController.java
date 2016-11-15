@@ -1,19 +1,20 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.xcolab.client.contest.PlanTemplateClient;
-import org.xcolab.client.contest.pojo.PlanTemplate;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.controller.common.ContestProposalTemplateTabController;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -152,7 +153,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     private Long getFirstPlanTemplateId() {
 
-            final List<PlanTemplate> planTemplates = PlanTemplateClient
+            final List<PlanTemplate> planTemplates = PlanTemplateClientUtil
                     .getPlanTemplates();
             if (!planTemplates.isEmpty()) {
                 return planTemplates.get(0).getId_();

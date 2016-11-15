@@ -1,10 +1,10 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 
-import org.xcolab.client.contest.PlanTemplateClient;
-import org.xcolab.client.contest.pojo.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.PlanTemplate;
-import org.xcolab.client.contest.pojo.PlanTemplateSection;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 
 import java.util.List;
 
@@ -21,34 +21,34 @@ public final class ProposalTemplateLifecycleUtil {
             newPlanTemplate.setImpactSeriesTemplateId(1l);
             newPlanTemplate.setImpactSeriesTemplateId(1l);
             newPlanTemplate.setBaseTemplateId(0l);
-            newPlanTemplate = PlanTemplateClient.createPlanTemplate(newPlanTemplate);
+            newPlanTemplate = PlanTemplateClientUtil.createPlanTemplate(newPlanTemplate);
             return newPlanTemplate;
 
     }
 
     public static void delete(Long templateId) {
-            PlanTemplate planTemplate = PlanTemplateClient.getPlanTemplate(templateId);
+            PlanTemplate planTemplate = PlanTemplateClientUtil.getPlanTemplate(templateId);
             deletePlanTemplateSections(templateId);
             deleteUnusedPlanSectionDefinitions(planTemplate);
-            PlanTemplateClient.deletePlanTemplate(templateId);
+            PlanTemplateClientUtil.deletePlanTemplate(templateId);
 
     }
 
     private static void deletePlanTemplateSections(Long planTemplateId) {
             List<PlanTemplateSection> planTemplateSections =
-                    PlanTemplateClient.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
+                    PlanTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
             for (PlanTemplateSection planTemplateSection : planTemplateSections) {
-                PlanTemplateClient.deletePlanTemplateSection(planTemplateSection.getPlanTemplateId(),planTemplateSection.getPlanSectionId());
+                PlanTemplateClientUtil.deletePlanTemplateSection(planTemplateSection.getPlanTemplateId(),planTemplateSection.getPlanSectionId());
             }
     }
 
     private static void deleteUnusedPlanSectionDefinitions(PlanTemplate planTemplate) {
-            List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateClient
+            List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateClientUtil
                     .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true);
             for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
                 if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId_(),
                         planTemplate.getId_())) {
-                    PlanTemplateClient
+                    PlanTemplateClientUtil
                             .deletePlanSectionDefinition(planSectionDefinition.getId_());
                 }
             }
@@ -58,7 +58,7 @@ public final class ProposalTemplateLifecycleUtil {
     public static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId,
             Long planTemplateId) {
             List<PlanTemplateSection> planTemplateSections =
-                    PlanTemplateClient
+                    PlanTemplateClientUtil
                             .getPlanTemplateSectionByPlanSectionDefinitionId(planSectionDefinitionId);
             return !(planTemplateSections.size() == 1
                     && planTemplateSections.get(0).getPlanTemplateId() == planTemplateId)

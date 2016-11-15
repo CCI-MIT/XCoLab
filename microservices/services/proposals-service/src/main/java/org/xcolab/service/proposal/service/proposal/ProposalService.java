@@ -346,7 +346,7 @@ public class ProposalService {
         PaginationHelper paginationHelper = new PaginationHelper(null, null, null);
         if(contestTypeIds != null && !contestTypeIds.isEmpty() && contestTierIds != null && !contestTierIds.isEmpty()) {
             for (Long contestTierId : contestTierIds) {
-                List<Contest> contests = ContestClient.getContestsMatchingTier(contestTierId);
+                List<Contest> contests = ContestClientUtil.getContestsMatchingTier(contestTierId);
                 int count = 0;
                 int countProposalsInContest = 0;
                 for (Contest contest : contests) {
@@ -356,7 +356,7 @@ public class ProposalService {
                     if (contestTypeIds.contains(contest.getContestTypeId())) {
 
                         ContestPhase contestPhase =
-                                ContestClient.getActivePhase(contest.getContestPK());
+                                ContestClientUtil.getActivePhase(contest.getContestPK());
                         System.out.println("Active Phase: " +contestPhase.getContestStatusStr());
                         proposals.addAll(proposalDao
                                 .findByGiven(paginationHelper, filterText, null, null,

@@ -33,6 +33,9 @@ public final class PlanTemplateClientUtil {
         return client.createPlanTemplate(planTemplate);
     }
 
+    public static  Boolean deletePlanTemplate(Long id_) {
+        return  client.deletePlanTemplate(id_);
+    }
     public static boolean updatePlanTemplate(PlanTemplate planTemplate) {
         return client.updatePlanTemplate(planTemplate);
     }
@@ -49,6 +52,11 @@ public final class PlanTemplateClientUtil {
     public static PlanSectionDefinition createPlanSectionDefinition(
             PlanSectionDefinition planSectionDefinition) {
         return client.createPlanSectionDefinition(planSectionDefinition);
+    }
+
+    public static PlanTemplateSection createPlanTemplateSection(
+            PlanTemplateSection planTemplateSection) {
+        return client.createPlanTemplateSection(planTemplateSection);
     }
 
     public static List<PlanSectionDefinition> getPlanSectionDefinitionByPlanTemplateId(

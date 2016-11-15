@@ -34,6 +34,10 @@ public final class ContestClientUtil {
         return contestClient.getContestByContestUrlNameContestYear(contestUrlName, contestYear);
     }
 
+    public static List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds) {
+        return contestClient.findContestsByName(contestName, ontologyTermIds, contestTypeIds);
+    }
+
     public static Contest createContest(Long userId, String name) {
         return contestClient.createContest(userId, name);
     }
