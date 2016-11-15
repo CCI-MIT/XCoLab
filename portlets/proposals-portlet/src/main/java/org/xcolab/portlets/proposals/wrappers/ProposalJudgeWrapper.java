@@ -19,7 +19,7 @@ public class ProposalJudgeWrapper extends Proposal {
     private final Member currentMember;
 
     public ProposalJudgeWrapper(Proposal proposal, Member currentMember) {
-        super(proposal);
+        super(proposal, proposal.getContestPhase());
         this.currentMember = currentMember;
         setProposalRatings(proposal.getProposalId(), contestPhase);
     }
